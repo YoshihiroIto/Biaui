@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
 
@@ -22,7 +25,13 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     Boxes.BoolFalse,
-                    (s, e) => { ((BiaNumberEditor) s)._IsReadOnly = (bool) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._IsReadOnly = (bool) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
 
         #endregion
 
@@ -40,7 +49,13 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     Colors.Red,
-                    (s, e) => { ((BiaNumberEditor) s)._BorderColor = (Color) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._BorderColor = (Color) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
 
         #endregion
 
@@ -58,7 +73,13 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(SliderBrush), typeof(Brush), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     Brushes.GreenYellow,
-                    (s, e) => { ((BiaNumberEditor) s)._SliderBrush = (Brush) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._SliderBrush = (Brush) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
 
         #endregion
 
@@ -78,10 +99,6 @@ namespace Biaui.Controls
                     Boxes.Double0,
                     (s, e) =>
                     {
-                        // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (((BiaNumberEditor) s)._Value == (double) e.NewValue)
-                            return;
-
                         ((BiaNumberEditor) s)._Value = (double) e.NewValue;
                         ((BiaNumberEditor) s).InvalidateVisual();
                     }));
@@ -102,7 +119,13 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(Caption), typeof(string), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     default(string),
-                    (s, e) => { ((BiaNumberEditor) s)._Caption = (string) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._Caption = (string) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
 
         #endregion
 
@@ -122,13 +145,10 @@ namespace Biaui.Controls
                     Boxes.Double0,
                     (s, e) =>
                     {
-                        // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (((BiaNumberEditor) s)._SliderMinimum == (double) e.NewValue)
-                            return;
+                        var self = (BiaNumberEditor) s;
 
-
-                        ((BiaNumberEditor) s)._SliderMinimum = (double) e.NewValue;
-                        ((BiaNumberEditor) s).InvalidateVisual();
+                        self._SliderMinimum = (double) e.NewValue;
+                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -149,12 +169,10 @@ namespace Biaui.Controls
                     Boxes.Double100,
                     (s, e) =>
                     {
-                        // ReSharper disable once CompareOfFloatsByEqualityOperator
-                        if (((BiaNumberEditor) s)._SliderMaximum == (double) e.NewValue)
-                            return;
+                        var self = (BiaNumberEditor) s;
 
-                        ((BiaNumberEditor) s)._SliderMaximum = (double) e.NewValue;
-                        ((BiaNumberEditor) s).InvalidateVisual();
+                        self._SliderMaximum = (double) e.NewValue;
+                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -173,7 +191,13 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(DisplayFormat), typeof(string), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     "F3",
-                    (s, e) => { ((BiaNumberEditor) s)._DisplayFormat = (string) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._DisplayFormat = (string) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
 
         #endregion
 
@@ -191,10 +215,15 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(UnitString), typeof(string), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     "",
-                    (s, e) => { ((BiaNumberEditor) s)._UnitString = (string) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._UnitString = (string) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
 
         #endregion
-
 
         static BiaNumberEditor()
         {
@@ -266,11 +295,107 @@ namespace Biaui.Controls
             );
         }
 
+        private bool _isMouseDown;
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (IsReadOnly)
+                return;
+
+            _isMouseDown = true;
+            CaptureMouse();
+            //Cursor = Cursors.None;
+
+#if false
+            // 現在値位置にマウス位置を位置させる
+            {
+                var pos = e.GetPosition(this);
+
+                var w = (Value - SliderMinimum) * ActualWidth / SliderWidth;
+
+                var xr = Math.Min(Math.Max(0, w), ActualWidth) / ActualWidth;
+                var x = ActualWidth * xr;
+
+                var p = new Point(x, pos.Y);
+                var dp = PointToScreen(p);
+
+                SetCursorPos((int) dp.X, (int) dp.Y);
+            }
+#endif
+
+            // マウス可動域を設定
+            {
+                var p0 = new Point(0.0, 0.0);
+                var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
+                var dp0 = PointToScreen(p0);
+                var dp1 = PointToScreen(p1);
+                var cr = new Win32RECT((int)dp0.X, (int)dp0.Y, (int)dp1.X, (int)dp1.Y);
+                ClipCursor(ref cr);
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (_isMouseDown == false)
+                return;
+
+            if (IsReadOnly)
+                return;
+
+            // 0から1
+            var xr = Math.Min(Math.Max(0, e.GetPosition(this).X), ActualWidth) / ActualWidth;
+
+            Value = SliderWidth * xr;
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if (IsReadOnly)
+                return;
+
+            _isMouseDown = false;
+            ReleaseMouseCapture();
+            ClipCursor(IntPtr.Zero);
+
+            //Cursor = Cursors.Arrow;
+            //var x = Math.Min(Math.Max(0, e.GetPosition(this).X), ActualWidth);
+            //var y = ActualHeight * 0.5;
+            //var p = PointToScreen(new Point(x, y));
+            //SetCursorPos((int) p.X, (int) p.Y);
+        }
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            InvalidateVisual();
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+
+            if (_isMouseDown)
+            {
+                _isMouseDown = false;
+                ReleaseMouseCapture();
+                ClipCursor(IntPtr.Zero);
+            }
+
+            InvalidateVisual();
+        }
+
         private Pen BorderPen
         {
             get
             {
-                if (_BorderPens.TryGetValue(BorderColor, out var p))
+                if (_borderPens.TryGetValue(BorderColor, out var p))
                     return p;
 
                 var b = new SolidColorBrush(BorderColor);
@@ -279,7 +404,7 @@ namespace Biaui.Controls
                 p = new Pen(b, BorderSize);
                 p.Freeze();
 
-                _BorderPens.Add(BorderColor, p);
+                _borderPens.Add(BorderColor, p);
 
                 return p;
             }
@@ -290,7 +415,7 @@ namespace Biaui.Controls
             get
             {
                 var size = new Size(ActualWidth, ActualHeight);
-                if (_ClipGeoms.TryGetValue(size, out var c))
+                if (_clipGeoms.TryGetValue(size, out var c))
                     return c;
 
                 c = new RectangleGeometry
@@ -302,7 +427,7 @@ namespace Biaui.Controls
 
                 c.Freeze();
 
-                _ClipGeoms.Add(size, c);
+                _clipGeoms.Add(size, c);
 
                 return c;
             }
@@ -312,8 +437,34 @@ namespace Biaui.Controls
         private double SliderWidth => SliderMaximum - SliderMinimum;
 
         private const double BorderSize = 1.0;
+        private static readonly Dictionary<Color, Pen> _borderPens = new Dictionary<Color, Pen>();
 
-        private static readonly Dictionary<Color, Pen> _BorderPens = new Dictionary<Color, Pen>();
-        private static readonly Dictionary<Size, RectangleGeometry> _ClipGeoms = new Dictionary<Size, RectangleGeometry>();
+        private static readonly Dictionary<Size, RectangleGeometry> _clipGeoms =
+            new Dictionary<Size, RectangleGeometry>();
+
+        [DllImport("User32.dll")]
+        private static extern bool SetCursorPos(int X, int Y);
+
+        [DllImport("user32.dll")]
+        private static extern bool ClipCursor(ref Win32RECT lpWin32Rect);
+
+        [DllImport("user32.dll")]
+        private static extern bool ClipCursor(IntPtr ptr);
+
+        public struct Win32RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+
+            public Win32RECT(int left, int top, int right, int bottom)
+            {
+                Left = left;
+                Top = top;
+                Right = right;
+                Bottom = bottom;
+            }
+        }
     }
 }
