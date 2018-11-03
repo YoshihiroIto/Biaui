@@ -59,6 +59,9 @@
     <Page Include="Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BiaNumbeEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Decorator.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>
       <DependentUpon>Controls.xaml</DependentUpon>
@@ -139,6 +142,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BiaNumberEditor.cs" />
     <Compile Include="Internals\Boxes.cs" />
     <Compile Include="Internals\ClippingBorder.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />

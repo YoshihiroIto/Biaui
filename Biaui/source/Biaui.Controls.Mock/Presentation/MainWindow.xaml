@@ -6,13 +6,23 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
                  Title="MainWindow"
                  Width="800"
                  Height="450"
+                 WindowStartupLocation="CenterScreen"
                  mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <behavior:WindowDisposeDataContextOnClosedBehavior />
     </i:Interaction.Behaviors>
 
-    <Grid />
+    <StackPanel Margin="8" Orientation="Horizontal">
+        <StackPanel Margin="0,4,0,0"
+                    Width="160"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <controls:BiaNumberEditor />
+        </StackPanel>
+    </StackPanel>
 </biaui:BiaWindow>

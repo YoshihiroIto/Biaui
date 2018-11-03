@@ -15,7 +15,10 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/TextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/ToggleButton.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/TreeView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/ToolTip.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/TreeView.xaml" />
+
+        <!-- Controls -->
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumbeEditor.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
