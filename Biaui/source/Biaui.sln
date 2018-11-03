@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Controls.Mock", "Biaui.Controls.Mock\Biaui.Controls.Mock.csproj", "{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Test", "Biaui.Controls.Test\Biaui.Controls.Test.csproj", "{6B98094E-DB2C-4829-A3DF-0BF4072C027B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E} = {FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Mock.Foundation", "Biaui.Controls.Mock.Foundation\Biaui.Controls.Mock.Foundation.csproj", "{6D462CD9-DE42-489C-B914-58CBA2D560F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui", "Biaui\Biaui.csproj", "{242505BF-A389-4A70-ACBF-27A2DEBB5E70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Showcase", "Biaui.Showcase\Biaui.Showcase.csproj", "{DE520DBC-4796-430D-803B-D1BFA52E97CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0C51F622-779E-4415-B8F2-198ECFC34C66}
+	EndGlobalSection
+EndGlobal

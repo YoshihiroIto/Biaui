@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Font.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

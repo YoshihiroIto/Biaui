@@ -1,0 +1,18 @@
+﻿<biaui:BiaWindow x:Class="Biaui.Controls.Mock.Presentation.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:behavior="clr-namespace:Biaui.Controls.Mock.Control.Behavior"
+                 xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 Title="MainWindow"
+                 Width="800"
+                 Height="450"
+                 mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <behavior:WindowDisposeDataContextOnClosedBehavior />
+    </i:Interaction.Behaviors>
+
+    <Grid />
+</biaui:BiaWindow>

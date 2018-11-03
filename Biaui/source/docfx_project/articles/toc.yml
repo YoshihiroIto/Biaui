@@ -1,0 +1,16 @@
+- name: 開発の始め方
+  items:
+    - topicUid: dev_env
+    - topicUid: about_dev
+
+- name: 資料
+  items:
+    - topicUid: solution
+    - topicUid: design
+    - topicUid: about_test
+    - topicUid: about_doc
+
+- name: 開発情報
+  items:
+    - topicUid: about_cs
+

@@ -1,0 +1,615 @@
+﻿<biaui:BiaWindow x:Class="Biaui.Showcase.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+                 xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:showcase="clr-namespace:Biaui.Showcase"
+                 Title="Biaui Showcase"
+                 Width="1500"
+                 Height="900"
+                 WindowStartupLocation="CenterScreen"
+                 mc:Ignorable="d">
+    <biaui:BiaWindow.Resources>
+        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Width" Value="140" />
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Width" Value="140" />
+        </Style>
+    </biaui:BiaWindow.Resources>
+
+    <biaui:BiaWindow.Menu>
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" InputGestureText="AAA" />
+                <MenuItem Header="_Open File">
+                    <MenuItem Header="Item A">
+                        <MenuItem Header="E_xit" IsChecked="True" />
+                        <MenuItem Header="_Open File" IsEnabled="False" />
+                        <MenuItem Header="E_xit"
+                                  IsChecked="True"
+                                  IsEnabled="False" />
+                        <Separator />
+                        <MenuItem Header="_Open File" />
+                        <MenuItem Header="E_xit" />
+                        <MenuItem Header="_Open File" />
+                    </MenuItem>
+
+                    <MenuItem Header="Item B" IsEnabled="False" />
+                    <MenuItem Header="Item C" IsChecked="True" />
+                    <MenuItem Header="Item D"
+                              IsChecked="True"
+                              IsEnabled="False" />
+                </MenuItem>
+                <MenuItem Header="E_xit" />
+                <MenuItem Header="_Open File" />
+                <MenuItem Header="E_xit" />
+                <MenuItem Header="_Open File" />
+                <MenuItem Header="E_xit" />
+                <MenuItem Header="_Open File" />
+            </MenuItem>
+
+            <MenuItem Header="_Window">
+                <MenuItem Header="Item A" />
+                <MenuItem Header="Item B" IsEnabled="False" />
+                <MenuItem Header="Item C" IsChecked="True" />
+                <MenuItem Header="Item D"
+                          IsChecked="True"
+                          IsEnabled="False" />
+            </MenuItem>
+
+            <MenuItem Header="Apple" IsEnabled="False">
+                <MenuItem Header="Berry" />
+                <MenuItem Header="Orange" />
+            </MenuItem>
+
+            <MenuItem Header="_Help" />
+
+            <MenuItem Header="ファイル">
+                <MenuItem Header="終了(_X)" />
+            </MenuItem>
+
+            <MenuItem Header="編集(_E)" />
+        </Menu>
+    </biaui:BiaWindow.Menu>
+
+    <StackPanel Margin="8" Orientation="Horizontal">
+        <StackPanel Margin="0,4,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+
+            <Label Content="ベトナム" ToolTip="ホーチミン" />
+            <Label Content="オランダ" ToolTip="アムステルダム" />
+            <Label Content="日本" ToolTip="東京" />
+
+            <Button Content="abc" />
+            <Button Content="1234" />
+
+            <Button Content="東京" IsEnabled="False" />
+            <Button Content="ベトナム" />
+
+            <TextBox Text="あいうえお" />
+            <TextBox IsEnabled="False" Text="将棋" />
+            <TextBox IsReadOnly="True" Text="King Queen Jack" />
+
+            <StackPanel Margin="0,4,0,0" HorizontalAlignment="Left">
+                <ToggleButton Content="ホーチミン" />
+                <ToggleButton Margin="0,1,0,0" Content="ダナン" />
+                <ToggleButton Margin="0,1,0,0" Content="ハノイ" />
+            </StackPanel>
+
+            <ComboBox>
+                <ComboBoxItem>あいうえお</ComboBoxItem>
+                <ComboBoxItem>将棋</ComboBoxItem>
+                <ComboBoxItem>東京</ComboBoxItem>
+                <ComboBoxItem>大阪</ComboBoxItem>
+                <ComboBoxItem>カード</ComboBoxItem>
+                <ComboBoxItem>スピーカー</ComboBoxItem>
+            </ComboBox>
+
+            <ComboBox>
+                <ComboBoxItem>北海道</ComboBoxItem>
+                <ComboBoxItem>青森県</ComboBoxItem>
+                <ComboBoxItem>岩手県</ComboBoxItem>
+                <ComboBoxItem>宮城県</ComboBoxItem>
+                <ComboBoxItem>秋田県</ComboBoxItem>
+                <ComboBoxItem>山形県</ComboBoxItem>
+                <ComboBoxItem>福島県</ComboBoxItem>
+                <ComboBoxItem>茨城県</ComboBoxItem>
+                <ComboBoxItem>栃木県</ComboBoxItem>
+                <ComboBoxItem>群馬県</ComboBoxItem>
+                <ComboBoxItem>埼玉県</ComboBoxItem>
+                <ComboBoxItem>千葉県</ComboBoxItem>
+                <ComboBoxItem>東京都</ComboBoxItem>
+                <ComboBoxItem>神奈川県</ComboBoxItem>
+                <ComboBoxItem>新潟県</ComboBoxItem>
+                <ComboBoxItem>富山県</ComboBoxItem>
+                <ComboBoxItem>石川県</ComboBoxItem>
+                <ComboBoxItem>福井県</ComboBoxItem>
+                <ComboBoxItem>山梨県</ComboBoxItem>
+                <ComboBoxItem>長野県</ComboBoxItem>
+                <ComboBoxItem>岐阜県</ComboBoxItem>
+                <ComboBoxItem>静岡県</ComboBoxItem>
+                <ComboBoxItem>愛知県</ComboBoxItem>
+                <ComboBoxItem>三重県</ComboBoxItem>
+                <ComboBoxItem>滋賀県</ComboBoxItem>
+                <ComboBoxItem>京都府</ComboBoxItem>
+                <ComboBoxItem>大阪府</ComboBoxItem>
+                <ComboBoxItem>兵庫県</ComboBoxItem>
+                <ComboBoxItem>奈良県</ComboBoxItem>
+                <ComboBoxItem>和歌山県</ComboBoxItem>
+                <ComboBoxItem>鳥取県</ComboBoxItem>
+                <ComboBoxItem>島根県</ComboBoxItem>
+                <ComboBoxItem>岡山県</ComboBoxItem>
+                <ComboBoxItem>広島県</ComboBoxItem>
+                <ComboBoxItem>山口県</ComboBoxItem>
+                <ComboBoxItem>徳島県</ComboBoxItem>
+                <ComboBoxItem>香川県</ComboBoxItem>
+                <ComboBoxItem>愛媛県</ComboBoxItem>
+                <ComboBoxItem>高知県</ComboBoxItem>
+                <ComboBoxItem>福岡県</ComboBoxItem>
+                <ComboBoxItem>佐賀県</ComboBoxItem>
+                <ComboBoxItem>長崎県</ComboBoxItem>
+                <ComboBoxItem>熊本県</ComboBoxItem>
+                <ComboBoxItem>大分県</ComboBoxItem>
+                <ComboBoxItem>宮崎県</ComboBoxItem>
+                <ComboBoxItem>鹿児島県</ComboBoxItem>
+                <ComboBoxItem>沖縄県</ComboBoxItem>
+            </ComboBox>
+
+            <StackPanel Margin="0,4,0,0">
+                <RadioButton Content="123" />
+                <RadioButton Content="7890" IsEnabled="False" />
+                <RadioButton Content="XYZ" IsChecked="True" />
+                <RadioButton Content="時計" />
+            </StackPanel>
+
+            <StackPanel Margin="0,4,0,0">
+                <CheckBox Content="123" />
+                <CheckBox Content="456" IsChecked="True" />
+                <CheckBox Content="7890" IsEnabled="False" />
+                <CheckBox Content="ABC"
+                          IsChecked="True"
+                          IsEnabled="False" />
+                <CheckBox Content="XYZ" />
+                <CheckBox Content="パソコン" />
+
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <ListBox Width="100"
+                     Height="200"
+                     Margin="0,4,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top">
+                <ListBoxItem>北海道</ListBoxItem>
+                <ListBoxItem>青森県</ListBoxItem>
+                <ListBoxItem>岩手県</ListBoxItem>
+                <ListBoxItem>宮城県</ListBoxItem>
+                <ListBoxItem>秋田県</ListBoxItem>
+                <ListBoxItem>山形県</ListBoxItem>
+                <ListBoxItem>福島県</ListBoxItem>
+                <ListBoxItem>茨城県</ListBoxItem>
+                <ListBoxItem>栃木県</ListBoxItem>
+                <ListBoxItem>群馬県</ListBoxItem>
+                <ListBoxItem>埼玉県</ListBoxItem>
+                <ListBoxItem>千葉県</ListBoxItem>
+                <ListBoxItem>東京都</ListBoxItem>
+                <ListBoxItem>神奈川県</ListBoxItem>
+                <ListBoxItem>新潟県</ListBoxItem>
+                <ListBoxItem>富山県</ListBoxItem>
+                <ListBoxItem>石川県</ListBoxItem>
+                <ListBoxItem>福井県</ListBoxItem>
+                <ListBoxItem>山梨県</ListBoxItem>
+                <ListBoxItem>長野県</ListBoxItem>
+                <ListBoxItem>岐阜県</ListBoxItem>
+                <ListBoxItem>静岡県</ListBoxItem>
+                <ListBoxItem>愛知県</ListBoxItem>
+                <ListBoxItem>三重県</ListBoxItem>
+                <ListBoxItem>滋賀県</ListBoxItem>
+                <ListBoxItem>京都府</ListBoxItem>
+                <ListBoxItem>大阪府</ListBoxItem>
+                <ListBoxItem>兵庫県</ListBoxItem>
+                <ListBoxItem>奈良県</ListBoxItem>
+                <ListBoxItem>和歌山県</ListBoxItem>
+                <ListBoxItem>鳥取県</ListBoxItem>
+                <ListBoxItem>島根県</ListBoxItem>
+                <ListBoxItem>岡山県</ListBoxItem>
+                <ListBoxItem>広島県</ListBoxItem>
+                <ListBoxItem>山口県</ListBoxItem>
+                <ListBoxItem>徳島県</ListBoxItem>
+                <ListBoxItem>香川県</ListBoxItem>
+                <ListBoxItem>愛媛県</ListBoxItem>
+                <ListBoxItem>高知県</ListBoxItem>
+                <ListBoxItem>福岡県</ListBoxItem>
+                <ListBoxItem>佐賀県</ListBoxItem>
+                <ListBoxItem>長崎県</ListBoxItem>
+                <ListBoxItem>熊本県</ListBoxItem>
+                <ListBoxItem>大分県</ListBoxItem>
+                <ListBoxItem>宮崎県</ListBoxItem>
+                <ListBoxItem>鹿児島県</ListBoxItem>
+                <ListBoxItem>沖縄県</ListBoxItem>
+            </ListBox>
+
+
+            <ListBox Width="100"
+                     Height="200"
+                     Margin="0,4,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     IsEnabled="False">
+                <ListBoxItem>北海道</ListBoxItem>
+                <ListBoxItem>青森県</ListBoxItem>
+                <ListBoxItem>岩手県</ListBoxItem>
+                <ListBoxItem>宮城県</ListBoxItem>
+                <ListBoxItem>秋田県</ListBoxItem>
+                <ListBoxItem>山形県</ListBoxItem>
+                <ListBoxItem>福島県</ListBoxItem>
+                <ListBoxItem>茨城県</ListBoxItem>
+                <ListBoxItem>栃木県</ListBoxItem>
+                <ListBoxItem>群馬県</ListBoxItem>
+                <ListBoxItem>埼玉県</ListBoxItem>
+                <ListBoxItem>千葉県</ListBoxItem>
+                <ListBoxItem>東京都</ListBoxItem>
+                <ListBoxItem>神奈川県</ListBoxItem>
+                <ListBoxItem>新潟県</ListBoxItem>
+                <ListBoxItem>富山県</ListBoxItem>
+                <ListBoxItem>石川県</ListBoxItem>
+                <ListBoxItem>福井県</ListBoxItem>
+                <ListBoxItem>山梨県</ListBoxItem>
+                <ListBoxItem>長野県</ListBoxItem>
+                <ListBoxItem>岐阜県</ListBoxItem>
+                <ListBoxItem>静岡県</ListBoxItem>
+                <ListBoxItem>愛知県</ListBoxItem>
+                <ListBoxItem>三重県</ListBoxItem>
+                <ListBoxItem>滋賀県</ListBoxItem>
+                <ListBoxItem>京都府</ListBoxItem>
+                <ListBoxItem>大阪府</ListBoxItem>
+                <ListBoxItem>兵庫県</ListBoxItem>
+                <ListBoxItem>奈良県</ListBoxItem>
+                <ListBoxItem>和歌山県</ListBoxItem>
+                <ListBoxItem>鳥取県</ListBoxItem>
+                <ListBoxItem>島根県</ListBoxItem>
+                <ListBoxItem>岡山県</ListBoxItem>
+                <ListBoxItem>広島県</ListBoxItem>
+                <ListBoxItem>山口県</ListBoxItem>
+                <ListBoxItem>徳島県</ListBoxItem>
+                <ListBoxItem>香川県</ListBoxItem>
+                <ListBoxItem>愛媛県</ListBoxItem>
+                <ListBoxItem>高知県</ListBoxItem>
+                <ListBoxItem>福岡県</ListBoxItem>
+                <ListBoxItem>佐賀県</ListBoxItem>
+                <ListBoxItem>長崎県</ListBoxItem>
+                <ListBoxItem>熊本県</ListBoxItem>
+                <ListBoxItem>大分県</ListBoxItem>
+                <ListBoxItem>宮崎県</ListBoxItem>
+                <ListBoxItem>鹿児島県</ListBoxItem>
+                <ListBoxItem>沖縄県</ListBoxItem>
+            </ListBox>
+
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <ListView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      ItemsSource="{Binding Areas, Mode=OneTime}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="50"
+                                        DisplayMemberBinding="{Binding Index, Mode=OneTime}"
+                                        Header="番号" />
+                        <GridViewColumn Width="120"
+                                        DisplayMemberBinding="{Binding Name, Mode=OneTime}"
+                                        Header="名前" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <ListView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      IsEnabled="False"
+                      ItemsSource="{Binding Areas, Mode=OneTime}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="50"
+                                        DisplayMemberBinding="{Binding Index, Mode=OneTime}"
+                                        Header="番号" />
+                        <GridViewColumn Width="120"
+                                        DisplayMemberBinding="{Binding Name, Mode=OneTime}"
+                                        Header="名前" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Slider Margin="0,4,0,0" />
+            <Slider Margin="0,4,0,0" IsEnabled="False" />
+
+            <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                <Slider Height="120"
+                        HorizontalAlignment="Left"
+                        Orientation="Vertical" />
+                <Slider Height="120"
+                        Margin="4,0,0,0"
+                        HorizontalAlignment="Left"
+                        IsEnabled="False"
+                        Orientation="Vertical" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <TreeView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      ItemsSource="{Binding Persons, Mode=OneTime}">
+                <TreeView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </TreeView.ItemsPanel>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <TreeView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      IsEnabled="False"
+                      ItemsSource="{Binding Persons, Mode=OneTime}"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling">
+                <TreeView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </TreeView.ItemsPanel>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Top">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Top">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Bottom">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Bottom">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Left">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Left">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Right">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Right">
+                <TabItem Header="TabItem1">
+                    <TextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <TextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <TextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <showcase:TextEditor Width="400"
+                                 Height="600"
+                                 Margin="0,4,0,0">
+                <showcase:TextEditor.Resources>
+                    <Style TargetType="{x:Type avalon:TextArea}">
+                        <Setter Property="Margin" Value="4,0,0,0" />
+                    </Style>
+                </showcase:TextEditor.Resources>
+
+                <showcase:TextEditor.Style>
+                    <Style TargetType="{x:Type avalon:TextEditor}">
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
+                        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="ShowLineNumbers" Value="True" />
+                        <Setter Property="UseLayoutRounding" Value="True" />
+                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                        <Setter Property="FontFamily" Value="{DynamicResource BiauiMonoFontFamily}" />
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type avalon:TextEditor}">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="3">
+                                        <ScrollViewer Name="PART_ScrollViewer"
+                                                      Padding="{TemplateBinding Padding}"
+                                                      HorizontalContentAlignment="Left"
+                                                      VerticalContentAlignment="Top"
+                                                      CanContentScroll="True"
+                                                      Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}"
+                                                      Focusable="False"
+                                                      HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="WordWrap" Value="True">
+                                            <Setter TargetName="PART_ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </showcase:TextEditor.Style>
+            </showcase:TextEditor>
+        </StackPanel>
+    </StackPanel>
+</biaui:BiaWindow>
