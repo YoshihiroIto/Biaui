@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Biaui.Internals;
 
-namespace Biaui
+namespace Biaui.Controls
 {
     public class BiaWindow : Window
     {

@@ -131,7 +131,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="BiaWindow.cs" />
+    <Compile Include="Controls\BiaWindow.cs" />
     <Page Include="ToolTip.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>
       <DependentUpon>Controls.xaml</DependentUpon>

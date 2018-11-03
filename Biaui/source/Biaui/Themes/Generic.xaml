@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
-                    xmlns:internals="clr-namespace:Biaui.Internals">
+                    xmlns:internals="clr-namespace:Biaui.Internals"
+                    xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type internals:SystemButton}">
         <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
         <Setter Property="Background" Value="Transparent" />
@@ -65,7 +66,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type biaui:BiaWindow}">
+    <Style TargetType="{x:Type controls:BiaWindow}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="FontFamily" Value="{DynamicResource BiauiFontFamily}" />
@@ -89,7 +90,7 @@
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type biaui:BiaWindow}">
+                <ControlTemplate TargetType="{x:Type controls:BiaWindow}">
                     <Border x:Name="Border"
                             Background="{DynamicResource BackgroundBackgroundBrushKey}"
                             BorderBrush="{DynamicResource BackgroundBorderBrushKey}"
@@ -135,7 +136,7 @@
                                             Margin="47,1,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            Content="{Binding Path=Menu, RelativeSource={RelativeSource AncestorType={x:Type biaui:BiaWindow}}}"
+                                            Content="{Binding Path=Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}"
                                             WindowChrome.IsHitTestVisibleInChrome="True" />
 
                             <!--  System Button  -->
