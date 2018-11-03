@@ -31,13 +31,26 @@ namespace Biaui.Internals
             FontStretch stretch)
         {
             if (fontFamily == null)
-                throw new ArgumentNullException(nameof(fontFamily));
-
-            _fontSize = fontSize;
+                return;
 
             var typeface = new Typeface(fontFamily, style, weight, stretch);
+
             if (typeface.TryGetGlyphTypeface(out _glyphTypeface) == false)
-                throw new NotSupportedException();
+            {
+                // エラーの場合はデフォルトで作り直す
+                typeface =
+                    new Typeface(
+                        (FontFamily) TextElement.FontFamilyProperty.DefaultMetadata.DefaultValue,
+                        (FontStyle) TextElement.FontStyleProperty.DefaultMetadata.DefaultValue,
+                        (FontWeight) TextElement.FontWeightProperty.DefaultMetadata.DefaultValue,
+                        (FontStretch) TextElement.FontStretchProperty.DefaultMetadata.DefaultValue);
+
+                // デフォルトでもだめなら以降処理しない
+                if (typeface.TryGetGlyphTypeface(out _glyphTypeface) == false)
+                    return;
+            }
+
+            _fontSize = fontSize;
 
             _glyphTypeface.CharacterToGlyphMap.TryGetValue('.', out _dotGlyphIndex);
             _dotAdvanceWidth = _glyphTypeface.AdvanceWidths[_dotGlyphIndex] * _fontSize;
@@ -52,6 +65,9 @@ namespace Biaui.Internals
             double maxWidth,
             TextAlignment align)
         {
+            if (_fontSize == default(double))
+                return;
+
             if (string.IsNullOrEmpty(text))
                 return;
 
