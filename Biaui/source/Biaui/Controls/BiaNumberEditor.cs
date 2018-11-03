@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
 
 namespace Biaui.Controls
 {
-    public class BiaNumberEditor : Control
+    public class BiaNumberEditor : FrameworkElement
     {
         #region IsReadOnly
 
@@ -225,6 +224,78 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region Background
+
+        public Brush Background
+        {
+            get => _Background;
+            set => SetValue(BackgroundProperty, value);
+        }
+
+        private Brush _Background = default(Brush);
+
+        public static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    default(Brush),
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._Background = (Brush) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
+        #region Foreground
+
+        public Brush Foreground
+        {
+            get => _Foreground;
+            set => SetValue(ForegroundProperty, value);
+        }
+
+        private Brush _Foreground = default(Brush);
+
+        public static readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    default(Brush),
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+
+                        self._Foreground = (Brush) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
+        #region Padding
+
+        public Thickness Padding
+        {
+            get => _Padding;
+            set => SetValue(PaddingProperty, value);
+        }
+
+        private Thickness _Padding = default(Thickness);
+
+        public static readonly DependencyProperty PaddingProperty =
+            DependencyProperty.Register(nameof(Padding), typeof(Thickness), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    default(Thickness),
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._Padding = (Thickness) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
+
         static BiaNumberEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNumberEditor),
@@ -309,7 +380,7 @@ namespace Biaui.Controls
             //Cursor = Cursors.None;
 
 #if false
-            // 現在値位置にマウス位置を位置させる
+// 現在値位置にマウス位置を位置させる
             {
                 var pos = e.GetPosition(this);
 
@@ -331,7 +402,7 @@ namespace Biaui.Controls
                 var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
                 var dp0 = PointToScreen(p0);
                 var dp1 = PointToScreen(p1);
-                var cr = new Win32RECT((int)dp0.X, (int)dp0.Y, (int)dp1.X, (int)dp1.Y);
+                var cr = new Win32RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
                 ClipCursor(ref cr);
             }
         }
