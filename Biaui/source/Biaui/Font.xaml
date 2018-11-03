@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <FontFamily x:Key="BiauiFontFamily">
-        pack://application:,,,/Biaui;component/Assets/Fonts/Muli.ttf#Muli,
         pack://application:,,,/Biaui;component/Assets/Fonts/GenShinGothic-P-Regular.ttf#Gen Shin Gothic P Regular
     </FontFamily>
 

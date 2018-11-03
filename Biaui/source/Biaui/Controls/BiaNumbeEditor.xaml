@@ -3,5 +3,35 @@
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type controls:BiaNumberEditor}">
         <Setter Property="Height" Value="22" />
+        <Setter Property="Padding" Value="4.5,3" />
+
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
+        <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
+
+        <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
+            </Trigger>
+
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
+            </Trigger>
+
+            <Trigger Property="IsReadOnly" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+            </Trigger>
+
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
+                <Setter Property="BorderColor" Value="{DynamicResource InactiveBorderColorKey}" />
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+                <Setter Property="SliderBrush" Value="{DynamicResource InactiveControlBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

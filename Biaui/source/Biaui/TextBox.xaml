@@ -35,7 +35,6 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
             </Trigger>
 
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
@@ -52,7 +51,6 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
-
         </Style.Triggers>
     </Style>
 </ResourceDictionary>

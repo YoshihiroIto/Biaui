@@ -4,6 +4,7 @@ namespace Biaui
 {
     public static class Constants
     {
-        public const CornerRadius BasicCornerRadius = new CornerRadius(3.0);
+        public static double BasicCornerRadiusPrim = 3.0;
+        public static CornerRadius BasicCornerRadius = new CornerRadius(BasicCornerRadiusPrim);
     }
 }

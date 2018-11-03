@@ -1,4 +1,5 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--<Color x:Key="ThemeColorKey">#FF2D2D30</Color>
     <SolidColorBrush x:Key="ThemeBrushKey" Color="#FF2D2D30" />-->
@@ -25,7 +26,6 @@
     <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="{StaticResource AccentColorKey}" />
 
 
-
     <LinearGradientBrush x:Key="ToggleButtonBackgroundBrushKey.IsChecked" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Offset="0.0" Color="#2F569E" />
         <GradientStop Offset="1.0" Color="#537CCE" />
@@ -39,14 +39,12 @@
     <SolidColorBrush x:Key="ButtonForegroundBrushKey" Color="#9DA5B4" />
 
 
-
     <LinearGradientBrush x:Key="ButtonPressedBackgroundBrushKey" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Offset="0.0" Color="#393F4B" />
         <GradientStop Offset="1.0" Color="#4B5260" />
     </LinearGradientBrush>
     <SolidColorBrush x:Key="ButtonPressedBorderBrushKey" Color="#181A1F" />
     <SolidColorBrush x:Key="ButtonPressedForegroundBrushKey" Color="#858689" />
-
 
 
     <LinearGradientBrush x:Key="ButtonActiveBackgroundBrushKey" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -57,26 +55,20 @@
     <SolidColorBrush x:Key="ButtonActiveForegroundBrushKey" Color="#BABEC5" />
 
 
-
     <SolidColorBrush x:Key="ButtonInactiveBackgroundBrushKey" Color="#3C424E" />
     <SolidColorBrush x:Key="ButtonInactiveBorderBrushKey" Color="#191A1F" />
     <SolidColorBrush x:Key="ButtonInactiveForegroundBrushKey" Color="#787878" />
 
 
-
-
-
-
-
-
-
-    <SolidColorBrush x:Key="TextBoxBackgroundBrushKey" Color="#242424" />
-    <SolidColorBrush x:Key="TextBoxBorderBrushKey" Color="#3F3F46" />
-    <SolidColorBrush x:Key="TextBoxForegroundBrushKey" Color="#C8C8C8" />
+    <Color x:Key="TextBoxBackgroundColorKey">#242424</Color>
+    <Color x:Key="TextBoxBorderColorKey">#3F3F46</Color>
+    <Color x:Key="TextBoxForegroundColorKey">#C8C8C8</Color>
+    <SolidColorBrush x:Key="TextBoxBackgroundBrushKey" Color="{StaticResource TextBoxBackgroundColorKey}" />
+    <SolidColorBrush x:Key="TextBoxBorderBrushKey" Color="{StaticResource TextBoxBorderColorKey}" />
+    <SolidColorBrush x:Key="TextBoxForegroundBrushKey" Color="{StaticResource TextBoxForegroundColorKey}" />
 
     <SolidColorBrush x:Key="PanelBackgroundBrushKey" Color="#333337" />
     <SolidColorBrush x:Key="PanelBackgroundBrushKey.MouseOver" Color="#404048" />
-
 
 
     <Color x:Key="ForegroundColorKey">#C8C8C8</Color>
@@ -93,7 +85,6 @@
     <SolidColorBrush x:Key="BorderBrushKey" Color="#3F3F46" />
 
 
-
     <Color x:Key="SemiactiveBackgroundColorKey">#FF333337</Color>
     <SolidColorBrush x:Key="SemiactiveBackgroundBrushKey" Color="#FF333337" />
 
@@ -102,7 +93,6 @@
 
     <Color x:Key="SemiActiveForegroundColorKey">#FFA0A0A0</Color>
     <SolidColorBrush x:Key="SemiActiveForegroundBrushKey" Color="#FFA1A0A0" />
-
 
 
     <Color x:Key="ActiveBackgroundColorKey">#FF3F3F46</Color>
@@ -115,7 +105,6 @@
     <SolidColorBrush x:Key="ActiveForegroundBrushKey" Color="#FFFFFF" />
 
 
-
     <Color x:Key="InactiveBackgroundColorKey">#FF2D2D30</Color>
     <SolidColorBrush x:Key="InactiveBackgroundBrushKey" Color="#FF2D2D30" />
 
@@ -126,11 +115,8 @@
     <SolidColorBrush x:Key="InactiveForegroundBrushKey" Color="#FF787878" />
 
 
-
     <Color x:Key="InactiveControlColorKey">#505050</Color>
     <SolidColorBrush x:Key="InactiveControlBrushKey" Color="#505050" />
-
-
 
 
     <Color x:Key="HighlightBackgroundColorKey">#FF686868</Color>
@@ -143,7 +129,6 @@
     <SolidColorBrush x:Key="HighlightForegroundBrushKey" Color="#FFFFFFFF" />
 
 
-
     <Color x:Key="Highlight2BackgroundColorKey">#FFA0A0A0</Color>
     <SolidColorBrush x:Key="Highlight2BackgroundBrushKey" Color="#FFA0A0A0" />
 
@@ -152,7 +137,6 @@
 
     <Color x:Key="Highlight2ForegroundColorKey">#FF000000</Color>
     <SolidColorBrush x:Key="Highlight2ForegroundBrushKey" Color="#FF000000" />
-
 
 
     <Color x:Key="Highlight3BackgroundColorKey">#FFC8C8C8</Color>
@@ -165,13 +149,11 @@
     <SolidColorBrush x:Key="Highlight3ForegroundBrushKey" Color="#FF000000" />
 
 
-
     <Color x:Key="LinkForegroundColorKey">#FF7AC1FF</Color>
     <SolidColorBrush x:Key="LinkForegroundBrushKey" Color="#FF7AC1FF" />
 
     <Color x:Key="ActiveLinkForegroundColorKey">#FF007ACC</Color>
     <SolidColorBrush x:Key="ActiveLinkForegroundBrushKey" Color="#FF007ACC" />
-
 
 
     <SolidColorBrush x:Key="MenuSeparatorBorderBrush" Color="#333337" />
