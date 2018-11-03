@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 
 namespace Biaui.Internals
 {
@@ -16,5 +17,6 @@ namespace Biaui.Internals
         internal static object Double100 = 100.0;
         internal static object DoubleMax = double.MaxValue;
 
+        internal static object ColorRed = Colors.Red;
     }
 }

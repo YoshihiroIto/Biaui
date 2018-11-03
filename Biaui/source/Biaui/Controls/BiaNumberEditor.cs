@@ -27,7 +27,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._IsReadOnly = (bool) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -47,11 +46,10 @@ namespace Biaui.Controls
         public static readonly DependencyProperty BorderColorProperty =
             DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaNumberEditor),
                 new PropertyMetadata(
-                    Colors.Red,
+                    Boxes.ColorRed,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._BorderColor = (Color) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -75,7 +73,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._SliderBrush = (Brush) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -98,8 +95,9 @@ namespace Biaui.Controls
                     Boxes.Double0,
                     (s, e) =>
                     {
-                        ((BiaNumberEditor) s)._Value = (double) e.NewValue;
-                        ((BiaNumberEditor) s).InvalidateVisual();
+                        var self = (BiaNumberEditor) s;
+                        self._Value = (double) e.NewValue;
+                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -121,7 +119,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._Caption = (string) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -145,7 +142,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._SliderMinimum = (double) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -169,7 +165,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._SliderMaximum = (double) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -193,7 +188,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._DisplayFormat = (string) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -217,7 +211,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._UnitString = (string) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -241,7 +234,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._Background = (Brush) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -265,7 +257,6 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-
                         self._Foreground = (Brush) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -285,7 +276,7 @@ namespace Biaui.Controls
         public static readonly DependencyProperty PaddingProperty =
             DependencyProperty.Register(nameof(Padding), typeof(Thickness), typeof(BiaNumberEditor),
                 new PropertyMetadata(
-                    default(Thickness),
+                    Boxes.Thickness0,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
@@ -294,7 +285,6 @@ namespace Biaui.Controls
                     }));
 
         #endregion
-
 
         static BiaNumberEditor()
         {
