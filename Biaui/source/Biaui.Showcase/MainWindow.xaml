@@ -6,6 +6,7 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:showcase="clr-namespace:Biaui.Showcase"
                  xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+                 xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
                  Title="Biaui Showcase"
                  Width="1500"
                  Height="900"
@@ -588,7 +589,7 @@
                                     <Border Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="3">
+                                            CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
                                         <ScrollViewer Name="PART_ScrollViewer"
                                                       Padding="{TemplateBinding Padding}"
                                                       HorizontalContentAlignment="Left"

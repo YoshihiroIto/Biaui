@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:internals="clr-namespace:Biaui.Internals">
+                    xmlns:internals="clr-namespace:Biaui.Internals"
+                    xmlns:biaui="clr-namespace:Biaui">
 
     <Style TargetType="{x:Type Menu}">
         <Setter Property="FontFamily" Value="{DynamicResource BiauiFontFamily}" />
@@ -78,7 +79,7 @@
                                                                   Background="{DynamicResource SubmenuItemBackground}"
                                                                   BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
                                                                   BorderThickness="1"
-                                                                  CornerRadius="3"
+                                                                  CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
                                                                   SnapsToDevicePixels="True"
                                                                   UseLayoutRounding="True">
                                             <StackPanel Grid.IsSharedSizeScope="True"

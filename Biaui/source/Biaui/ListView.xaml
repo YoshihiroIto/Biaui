@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:internals="clr-namespace:Biaui.Internals">
+                    xmlns:internals="clr-namespace:Biaui.Internals"
+                    xmlns:biaui="clr-namespace:Biaui">
 
     <Style x:Key="GridViewScrollViewerStyle" TargetType="ScrollViewer">
         <Setter Property="Template">
@@ -85,7 +86,7 @@
                                               Background="{TemplateBinding Background}"
                                               BorderBrush="{TemplateBinding BorderBrush}"
                                               BorderThickness="{TemplateBinding BorderThickness}"
-                                              CornerRadius="3">
+                                              CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
                         <ScrollViewer Padding="{TemplateBinding Padding}" Style="{DynamicResource GridViewScrollViewerStyle}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:internals="clr-namespace:Biaui.Internals">
+                    xmlns:internals="clr-namespace:Biaui.Internals"
+                    xmlns:biaui="clr-namespace:Biaui">
 
     <Style x:Key="DropDownToggleButtonStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrushKey}" />
@@ -57,7 +58,7 @@
                             <ControlTemplate TargetType="{x:Type ComboBoxItem}">
                                 <Border Padding="1"
                                         Background="{TemplateBinding Background}"
-                                        CornerRadius="0"
+CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <ContentPresenter Margin="4,0,0,0" />
                                 </Border>
@@ -82,7 +83,7 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3">
+                                CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
                             <Grid Margin="-1">
                                 <ToggleButton x:Name="toggleButton"
                                               ClickMode="Press"
@@ -129,7 +130,7 @@
                                VerticalOffset="1">
                             <internals:ClippingBorder x:Name="dropdown"
                                     MaxHeight="414"
-                                    CornerRadius="3"
+                                    CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
                                     Background="{DynamicResource SubmenuItemBackground}"
                                     BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
                                     BorderThickness="1"
