@@ -519,56 +519,73 @@ namespace Biaui.Controls
 
             InvalidateVisual();
         }
-        private TextBox _textBox;
-        private bool _conformedPopup;
+
+        private static readonly TextBox _textBox = new TextBox
+        {
+            IsTabStop = false,
+            IsUndoEnabled = false
+        };
+
+
+        private static readonly Popup _popup = new Popup
+        {
+            Child = _textBox,
+            AllowsTransparency = true,
+            StaysOpen = false,
+        };
+
+        private bool _isInPopup;
+        private PopupResult _popupResult;
+
+        private enum PopupResult
+        {
+            Ok,
+            Cancel
+        }
 
         private void ShowEditBox()
         {
-            _conformedPopup = false;
-
-            _textBox = new TextBox
-            {
-                Width = ActualWidth,
-                Height = ActualHeight,
-                IsTabStop = false,
-                Text = FormattedValueString
-            };
-
+            _textBox.Width = ActualWidth;
+            _textBox.Height = ActualHeight;
+            _textBox.Text = FormattedValueString;
             _textBox.TextChanged += TextBoxOnTextChanged;
 
-            var popup = new Popup
-            {
-                Child = _textBox,
-                AllowsTransparency = true,
-                PlacementTarget = this,
-                StaysOpen = false,
-                VerticalOffset = -ActualHeight,
-                IsOpen = true
-            };
+            _popup.PlacementTarget = this;
+            _popup.VerticalOffset = -ActualHeight;
+            _popup.Closed += PopupOnClosed;
+            _popup.PreviewKeyDown += PopupOnPreviewKeyDown;
 
-            popup.Closed += PopupOnClosed;
-            popup.PreviewKeyDown += PopupOnPreviewKeyDown;
+            _popupResult = PopupResult.Ok;
+            _popup.IsOpen = true;
+            _isInPopup = true;
 
-            _textBox.SelectAll();
             _textBox.Focus();
-        }
-
-        private void TextBoxOnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            InvalidateVisual();
+            _textBox.SelectAll();
         }
 
         private void PopupOnClosed(object sender, EventArgs e)
         {
-            var popup = (Popup) sender;
-            popup.Closed -= PopupOnClosed;
-            popup.PreviewKeyDown -= PopupOnClosed;
-
-            if (_conformedPopup == false)
+            if (_popupResult == PopupResult.Ok)
                 ConfirmValue();
 
+            _popup.Closed -= PopupOnClosed;
+            _popup.PreviewKeyDown -= PopupOnPreviewKeyDown;
             _textBox.TextChanged -= TextBoxOnTextChanged;
-            _textBox = null;
+
+            _isInPopup = false;
+
+            InvalidateVisual();
+
+            void ConfirmValue()
+            {
+                var v = MakeValueFromString(_textBox.Text);
+                if (v.Ok)
+                    Value = v.Value;
+            }
+        }
+
+        private void TextBoxOnTextChanged(object sender, TextChangedEventArgs e)
+        {
             InvalidateVisual();
         }
 
@@ -578,33 +595,23 @@ namespace Biaui.Controls
             {
                 case Key.Return:
                 case Key.Tab:
-                    _conformedPopup = true;
-                    ConfirmValue();
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
                     break;
 
                 case Key.Escape:
-                    _conformedPopup = true;
+                    _popupResult = PopupResult.Cancel;
                     _textBox.Text = FormattedValueString;
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
                     break;
             }
 
-            void ClosePopup() =>
-                ((Popup) sender).IsOpen = false;
-        }
-
-        private void ConfirmValue()
-        {
-            var v = MakeValueFromString(_textBox.Text);
-            if (v.Ok)
-                Value = v.Value;
+            void ClosePopup() => ((Popup) sender).IsOpen = false;
         }
 
         private (bool Ok, double Value) MakeValueFromString(string src)
         {
             if (double.TryParse(src, out var v))
-                return (true,  Math.Min(Maximum, Math.Max(Minimum, v)));
+                return (true, Math.Min(Maximum, Math.Max(Minimum, v)));
 
             return (false, default(double));
         }
@@ -617,7 +624,7 @@ namespace Biaui.Controls
         {
             get
             {
-                if (_textBox == null)
+                if (_isInPopup == false)
                     return FormattedValueString + UnitString;
 
                 var v = MakeValueFromString(_textBox.Text);
@@ -633,7 +640,7 @@ namespace Biaui.Controls
         {
             get
             {
-                if (_textBox == null)
+                if (_isInPopup == false)
                     return Value;
 
                 var v = MakeValueFromString(_textBox.Text);
