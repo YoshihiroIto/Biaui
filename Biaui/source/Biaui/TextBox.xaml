@@ -9,6 +9,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
         <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrushKey}" />
+        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
         <Setter Property="SelectionOpacity" Value="0.5" />
 
         <Setter Property="Template">

@@ -1,9 +1,11 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrushKey}" />
         <Setter Property="Padding" Value="10,3" />
+        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
 
         <Setter Property="Template">

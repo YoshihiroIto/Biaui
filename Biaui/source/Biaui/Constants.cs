@@ -6,5 +6,7 @@ namespace Biaui
     {
         public static double BasicCornerRadiusPrim = 3.0;
         public static CornerRadius BasicCornerRadius = new CornerRadius(BasicCornerRadiusPrim);
+
+        public static double BasicOneLineHeight = 24.0;
     }
 }

@@ -44,6 +44,8 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
+        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type ComboBoxItem}">
@@ -58,7 +60,6 @@
                             <ControlTemplate TargetType="{x:Type ComboBoxItem}">
                                 <Border Padding="1"
                                         Background="{TemplateBinding Background}"
-CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <ContentPresenter Margin="4,0,0,0" />
                                 </Border>
