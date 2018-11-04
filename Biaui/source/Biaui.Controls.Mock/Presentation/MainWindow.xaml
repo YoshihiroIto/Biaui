@@ -32,7 +32,8 @@
             </StackPanel.Resources>
 
             <controls:BiaNumberEditor Caption="あいうえお値" Value="12.34" UnitString=" %" SliderMinimum="-100" Minimum="-100"/>
-            <controls:BiaNumberEditor Caption="Value" Value="87.654"  UnitString=" %"  SliderMinimum="0" Minimum="0"  SliderMaximum="100" Maximum="1000"/>
+            <controls:BiaNumberEditor Caption="Simple" Value="87.654"  UnitString=" %"  SliderMinimum="0" Minimum="0"  SliderMaximum="100" Maximum="1000" Mode="Simple"/>
+            <controls:BiaNumberEditor Caption="WideRange" Value="87.654"  UnitString=" メートル"  SliderMinimum="-10000" Minimum="-10000"  SliderMaximum="10000" Maximum="10000" Mode="WideRange"/>
             <controls:BiaNumberEditor Caption="Apple" Value="1.000"  UnitString=" %"/>
             <controls:BiaNumberEditor Caption="Biaui" Value="45.654"  UnitString=" メートル"  DisplayFormat="F1"/>
             <controls:BiaNumberEditor Caption="あいうえお" Value="100" DisplayFormat="F0"/>

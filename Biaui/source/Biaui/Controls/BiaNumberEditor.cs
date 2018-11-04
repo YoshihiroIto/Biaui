@@ -11,6 +11,12 @@ using Biaui.Internals;
 
 namespace Biaui.Controls
 {
+    public enum BiaNumberMode
+    {
+        Simple,
+        WideRange
+    }
+
     public class BiaNumberEditor : FrameworkElement
     {
         #region IsReadOnly
@@ -335,6 +341,47 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region Mode
+
+        public BiaNumberMode Mode
+        {
+            get => _mode;
+            set => SetValue(ModeProperty, value);
+        }
+
+        private BiaNumberMode _mode = BiaNumberMode.Simple;
+
+        public static readonly DependencyProperty ModeProperty =
+            DependencyProperty.Register(nameof(Mode), typeof(BiaNumberMode), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    Boxes.BiaNumberModeSimple,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._mode = (BiaNumberMode) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
+        #region Increment
+
+        public double Increment
+        {
+            get => _Increment;
+            set => SetValue(IncrementProperty, value);
+        }
+
+        private double _Increment = 1.0;
+
+        public static readonly DependencyProperty IncrementProperty =
+            DependencyProperty.Register(nameof(Increment), typeof(double), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    Boxes.Double1,
+                    (s, e) => { ((BiaNumberEditor) s)._Increment = (double) e.NewValue; }));
+
+        #endregion
+        
         static BiaNumberEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNumberEditor),
@@ -344,7 +391,10 @@ namespace Biaui.Controls
         protected override void OnRender(DrawingContext dc)
         {
             DrawBackground(dc);
-            DrawSlider(dc);
+
+            if (Mode == BiaNumberMode.Simple)
+                DrawSlider(dc);
+
             DrawBorder(dc);
             DrawText(dc);
         }
@@ -408,6 +458,7 @@ namespace Biaui.Controls
         private bool _isMouseDown;
         private bool _isMouseMoved;
         private Point _oldPos;
+        private Point _mouseDownPos;
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -419,28 +470,12 @@ namespace Biaui.Controls
             _isMouseDown = true;
             _isMouseMoved = false;
             _oldPos = e.GetPosition(this);
+            _mouseDownPos = _oldPos;
 
             CaptureMouse();
-            //Cursor = Cursors.None;
-
-#if false
-// 現在値位置にマウス位置を位置させる
-            {
-                var pos = e.GetPosition(this);
-
-                var w = (Value - ActualSliderMinimum) * ActualWidth / SliderWidth;
-
-                var xr = Math.Min(Math.Max(0, w), ActualWidth) / ActualWidth;
-                var x = ActualWidth * xr;
-
-                var p = new Point(x, pos.Y);
-                var dp = PointToScreen(p);
-
-                SetCursorPos((int) dp.X, (int) dp.Y);
-            }
-#endif
 
             // マウス可動域を設定
+            if (Mode == BiaNumberMode.Simple)
             {
                 var p0 = new Point(0.0, 0.0);
                 var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
@@ -468,12 +503,36 @@ namespace Biaui.Controls
                 return;
 
             _isMouseMoved = true;
+
+            switch (Mode)
+            {
+                case BiaNumberMode.Simple:
+                {
+                    // 0から1
+                    var xr = Math.Min(Math.Max(0, currentPos.X), ActualWidth) / ActualWidth;
+                    Value = SliderWidth * xr + ActualSliderMinimum;
+                    break;
+                }
+
+                case BiaNumberMode.WideRange:
+                {
+                    Cursor = Cursors.None;
+
+                    var w = currentPos.X - _oldPos.X;
+                    var v = Value + w * Increment;
+
+                    Value = Math.Min(ActualSliderMaximum, Math.Max(ActualSliderMinimum, v));
+
+                    // 移動量だけ取れれば良いので、現在位置をスタート位置に戻す
+                    var p = PointToScreen(_mouseDownPos);
+                    SetCursorPos((int)p.X, (int)p.Y);
+                    currentPos = _mouseDownPos;
+
+                    break;
+                }
+            }
+
             _oldPos = currentPos;
-
-            // 0から1
-            var xr = Math.Min(Math.Max(0, currentPos.X), ActualWidth) / ActualWidth;
-
-            Value = SliderWidth * xr + ActualSliderMinimum;
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)
@@ -483,20 +542,29 @@ namespace Biaui.Controls
             if (IsReadOnly)
                 return;
 
-            _isMouseDown = false;
             ReleaseMouseCapture();
-            ClipCursor(IntPtr.Zero);
 
-#if false
-            Cursor = Cursors.Arrow;
-            var x = Math.Min(Math.Max(0, e.GetPosition(this).X), ActualWidth);
-            var y = ActualHeight * 0.5;
-            var p = PointToScreen(new Point(x, y));
-            SetCursorPos((int) p.X, (int) p.Y);
-#endif
+            switch (Mode)
+            {
+                case BiaNumberMode.Simple:
+                    ClipCursor(IntPtr.Zero);
+                    break;
+
+                case BiaNumberMode.WideRange:
+                {
+                    var p = PointToScreen(_mouseDownPos);
+                    SetCursorPos((int) p.X, (int) p.Y);
+                    Cursor = Cursors.Arrow;
+                    break;
+                }
+            }
 
             if (_isMouseMoved == false)
                 ShowEditBox();
+
+            _isMouseDown = false;
+
+            InvalidateVisual();
         }
 
         protected override void OnMouseEnter(MouseEventArgs e)
