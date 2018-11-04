@@ -20,6 +20,6 @@ namespace Biaui.Internals
 
         internal static object ColorRed = Colors.Red;
 
-        internal static object BiaNumberModeSimple = BiaNumberMode.Simple;
+        internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
     }
 }

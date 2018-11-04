@@ -11,7 +11,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls
 {
-    public enum BiaNumberMode
+    public enum BiaNumberEditorMode
     {
         Simple,
         WideRange
@@ -343,22 +343,22 @@ namespace Biaui.Controls
 
         #region Mode
 
-        public BiaNumberMode Mode
+        public BiaNumberEditorMode Mode
         {
             get => _mode;
             set => SetValue(ModeProperty, value);
         }
 
-        private BiaNumberMode _mode = BiaNumberMode.Simple;
+        private BiaNumberEditorMode _mode = BiaNumberEditorMode.Simple;
 
         public static readonly DependencyProperty ModeProperty =
-            DependencyProperty.Register(nameof(Mode), typeof(BiaNumberMode), typeof(BiaNumberEditor),
+            DependencyProperty.Register(nameof(Mode), typeof(BiaNumberEditorMode), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     Boxes.BiaNumberModeSimple,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._mode = (BiaNumberMode) e.NewValue;
+                        self._mode = (BiaNumberEditorMode) e.NewValue;
                         self.InvalidateVisual();
                     }));
 
@@ -378,7 +378,12 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(Increment), typeof(double), typeof(BiaNumberEditor),
                 new PropertyMetadata(
                     Boxes.Double1,
-                    (s, e) => { ((BiaNumberEditor) s)._Increment = (double) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._Increment = (double) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
 
         #endregion
 
@@ -386,17 +391,33 @@ namespace Biaui.Controls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(typeof(BiaNumberEditor)));
+
+            SetupSpinGeom();
+        }
+
+        public BiaNumberEditor()
+        {
+            IsEnabledChanged += (_, __) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)
         {
-            DrawBackground(dc);
+            dc.PushClip(ClipGeom);
+            {
+                DrawBackground(dc);
 
-            if (Mode == BiaNumberMode.Simple)
-                DrawSlider(dc);
+                if (Mode == BiaNumberEditorMode.Simple)
+                    DrawSlider(dc);
 
-            DrawBorder(dc);
-            DrawText(dc);
+                DrawText(dc);
+
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (IsReadOnly == false && IsEnabled && Increment != 0)
+                    DrawSpin(dc);
+
+                DrawBorder(dc);
+            }
+            dc.Pop();
         }
 
         private void DrawBackground(DrawingContext dc)
@@ -427,16 +448,16 @@ namespace Biaui.Controls
             var sliderBodyW = ActualWidth - BorderSize * 0.5 * 2;
             var w = (UiValue - ActualSliderMinimum) * sliderBodyW / SliderWidth;
 
-            dc.PushClip(ClipGeom);
             dc.DrawRectangle(SliderBrush, null, new Rect(BorderSize * 0.5, 0.0, w, ActualHeight));
-            dc.Pop();
         }
+
+        private const double SpinWidth = 14.0;
 
         private void DrawText(DrawingContext dc)
         {
             TextRenderer.Default.Draw(
                 Caption,
-                Padding.Left,
+                Padding.Left + SpinWidth,
                 Padding.Top,
                 Foreground,
                 dc,
@@ -450,9 +471,41 @@ namespace Biaui.Controls
                 Padding.Top,
                 Foreground,
                 dc,
-                ActualWidth - Padding.Left - Padding.Right,
+                ActualWidth - Padding.Left - Padding.Right - SpinWidth,
                 TextAlignment.Right
             );
+        }
+
+        private void DrawSpin(DrawingContext dc)
+        {
+            var moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
+
+            {
+                var offsetX = 5.0;
+                var offsetY = 8.0;
+
+                if (_mouseOverType == MouseOverType.DecSpin)
+                    dc.DrawRectangle(_SpinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
+
+                dc.PushTransform(new TranslateTransform(offsetX, offsetY));
+                dc.DrawGeometry(
+                    _mouseOverType == MouseOverType.DecSpin ? moBrush : Foreground, null, _DecSpinGeom);
+                dc.Pop();
+            }
+
+            {
+                var offsetX = ActualWidth - 5.0 * 2 + 1;
+                var offsetY = 8.0;
+
+                if (_mouseOverType == MouseOverType.IncSpin)
+                    dc.DrawRectangle(_SpinBackground, null,
+                        new Rect(ActualWidth - SpinWidth, 0, SpinWidth, ActualHeight));
+
+                dc.PushTransform(new TranslateTransform(offsetX, offsetY));
+                dc.DrawGeometry(
+                    _mouseOverType == MouseOverType.IncSpin ? moBrush : Foreground, null, _IncSpinGeom);
+                dc.Pop();
+            }
         }
 
         private bool _isMouseDown;
@@ -475,7 +528,7 @@ namespace Biaui.Controls
             CaptureMouse();
 
             // マウス可動域を設定
-            if (Mode == BiaNumberMode.Simple)
+            if (Mode == BiaNumberEditorMode.Simple)
             {
                 var p0 = new Point(0.0, 0.0);
                 var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
@@ -486,9 +539,30 @@ namespace Biaui.Controls
             }
         }
 
+        private enum MouseOverType
+        {
+            None,
+            DecSpin,
+            IncSpin,
+            Slider
+        }
+
+        private MouseOverType _mouseOverType;
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            base.OnMouseMove(e);
+            var currentPos = e.GetPosition(this);
+
+            {
+                if (currentPos.X <= SpinWidth)
+                    _mouseOverType = MouseOverType.DecSpin;
+                else if (currentPos.X >= ActualWidth - SpinWidth)
+                    _mouseOverType = MouseOverType.IncSpin;
+                else
+                    _mouseOverType = MouseOverType.Slider;
+            }
+
+            InvalidateVisual();
 
             if (_isMouseDown == false)
                 return;
@@ -496,17 +570,16 @@ namespace Biaui.Controls
             if (IsReadOnly)
                 return;
 
-            var currentPos = e.GetPosition(this);
-
             // Down直後マウス移動ない場合でもOnMouseMoveが呼ばれることがあるため、判定する。
             if (currentPos == _oldPos)
                 return;
 
             _isMouseMoved = true;
+            _mouseOverType = MouseOverType.Slider;
 
             switch (Mode)
             {
-                case BiaNumberMode.Simple:
+                case BiaNumberEditorMode.Simple:
                 {
                     // 0から1
                     var xr = Math.Min(Math.Max(0, currentPos.X), ActualWidth) / ActualWidth;
@@ -514,7 +587,7 @@ namespace Biaui.Controls
                     break;
                 }
 
-                case BiaNumberMode.WideRange:
+                case BiaNumberEditorMode.WideRange:
                 {
                     Cursor = Cursors.None;
 
@@ -545,11 +618,11 @@ namespace Biaui.Controls
 
                 switch (Mode)
                 {
-                    case BiaNumberMode.Simple:
+                    case BiaNumberEditorMode.Simple:
                         ClipCursor(IntPtr.Zero);
                         break;
 
-                    case BiaNumberMode.WideRange:
+                    case BiaNumberEditorMode.WideRange:
                     {
                         var p = PointToScreen(_mouseDownPos);
                         SetCursorPos((int) p.X, (int) p.Y);
@@ -562,7 +635,16 @@ namespace Biaui.Controls
             }
 
             if (_isMouseMoved == false)
-                ShowEditBox();
+            {
+                var p = e.GetPosition(this);
+
+                if (p.X <= SpinWidth && IsReadOnly == false)
+                    AddValue(-Increment);
+                else if (p.X >= ActualWidth - SpinWidth && IsReadOnly == false)
+                    AddValue(Increment);
+                else
+                    ShowEditBox();
+            }
 
             InvalidateVisual();
         }
@@ -584,6 +666,8 @@ namespace Biaui.Controls
                 ReleaseMouseCapture();
                 ClipCursor(IntPtr.Zero);
             }
+
+            _mouseOverType = MouseOverType.None;
 
             InvalidateVisual();
         }
@@ -609,6 +693,13 @@ namespace Biaui.Controls
         {
             Ok,
             Cancel
+        }
+
+        private void AddValue(double i)
+        {
+            var v = Value + i;
+
+            Value = Math.Min(ActualMaximum, Math.Max(ActualMinimum, v));
         }
 
         private void ShowEditBox()
@@ -685,6 +776,49 @@ namespace Biaui.Controls
             return (false, default(double));
         }
 
+        private static void SetupSpinGeom()
+        {
+            {
+                var start = new Point(0, 4);
+
+                var segments = new[]
+                {
+                    new LineSegment(new Point(4, 0), true),
+                    new LineSegment(new Point(4, 8), true)
+                };
+
+                segments[0].Freeze();
+                segments[1].Freeze();
+
+                var figure = new PathFigure(start, segments, true);
+                figure.Freeze();
+
+                _DecSpinGeom = new PathGeometry(new[] {figure});
+                _DecSpinGeom.Freeze();
+            }
+
+            {
+                var start = new Point(4, 4);
+
+                var segments = new[]
+                {
+                    new LineSegment(new Point(0, 0), true),
+                    new LineSegment(new Point(0, 8), true)
+                };
+
+                segments[0].Freeze();
+                segments[1].Freeze();
+
+                var figure = new PathFigure(start, segments, true);
+                figure.Freeze();
+
+                _IncSpinGeom = new PathGeometry(new[] {figure});
+                _IncSpinGeom.Freeze();
+            }
+
+            _SpinBackground = new SolidColorBrush(Color.FromArgb(0x40, 0x00, 0x00, 0x00));
+        }
+
         private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
         private string FormattedValueString => Value.ToString(DisplayFormat);
 
@@ -743,7 +877,7 @@ namespace Biaui.Controls
             }
         }
 
-        private RectangleGeometry ClipGeom
+        private Geometry ClipGeom
         {
             get
             {
@@ -765,6 +899,10 @@ namespace Biaui.Controls
                 return c;
             }
         }
+
+        private static Geometry _DecSpinGeom;
+        private static Geometry _IncSpinGeom;
+        private static Brush _SpinBackground;
 
         private const double BorderSize = 1.0;
         private static readonly Dictionary<Color, Pen> _borderPens = new Dictionary<Color, Pen>();

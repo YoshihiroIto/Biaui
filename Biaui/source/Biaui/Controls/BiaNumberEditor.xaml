@@ -4,7 +4,7 @@
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type controls:BiaNumberEditor}">
         <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
-        <Setter Property="Padding" Value="4.5,3" />
+        <Setter Property="Padding" Value="2,3" />
 
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
