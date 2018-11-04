@@ -381,7 +381,7 @@ namespace Biaui.Controls
                     (s, e) => { ((BiaNumberEditor) s)._Increment = (double) e.NewValue; }));
 
         #endregion
-        
+
         static BiaNumberEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNumberEditor),
@@ -525,7 +525,7 @@ namespace Biaui.Controls
 
                     // 移動量だけ取れれば良いので、現在位置をスタート位置に戻す
                     var p = PointToScreen(_mouseDownPos);
-                    SetCursorPos((int)p.X, (int)p.Y);
+                    SetCursorPos((int) p.X, (int) p.Y);
                     currentPos = _mouseDownPos;
 
                     break;
@@ -539,30 +539,30 @@ namespace Biaui.Controls
         {
             base.OnMouseUp(e);
 
-            if (IsReadOnly)
-                return;
-
-            ReleaseMouseCapture();
-
-            switch (Mode)
+            if (IsReadOnly == false)
             {
-                case BiaNumberMode.Simple:
-                    ClipCursor(IntPtr.Zero);
-                    break;
+                ReleaseMouseCapture();
 
-                case BiaNumberMode.WideRange:
+                switch (Mode)
                 {
-                    var p = PointToScreen(_mouseDownPos);
-                    SetCursorPos((int) p.X, (int) p.Y);
-                    Cursor = Cursors.Arrow;
-                    break;
+                    case BiaNumberMode.Simple:
+                        ClipCursor(IntPtr.Zero);
+                        break;
+
+                    case BiaNumberMode.WideRange:
+                    {
+                        var p = PointToScreen(_mouseDownPos);
+                        SetCursorPos((int) p.X, (int) p.Y);
+                        Cursor = Cursors.Arrow;
+                        break;
+                    }
                 }
+
+                _isMouseDown = false;
             }
 
             if (_isMouseMoved == false)
                 ShowEditBox();
-
-            _isMouseDown = false;
 
             InvalidateVisual();
         }
@@ -615,6 +615,7 @@ namespace Biaui.Controls
         {
             _textBox.Width = ActualWidth;
             _textBox.Height = ActualHeight;
+            _textBox.IsReadOnly = IsReadOnly;
             _textBox.Text = FormattedValueString;
             _textBox.TextChanged += TextBoxOnTextChanged;
 

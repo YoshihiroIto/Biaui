@@ -31,17 +31,45 @@
                 </Style>
             </StackPanel.Resources>
 
-            <controls:BiaNumberEditor Caption="あいうえお値" Value="12.34" UnitString=" %" SliderMinimum="-100" Minimum="-100"/>
-            <controls:BiaNumberEditor Caption="Simple" Value="87.654"  UnitString=" %"  SliderMinimum="0" Minimum="0"  SliderMaximum="100" Maximum="1000" Mode="Simple"/>
-            <controls:BiaNumberEditor Caption="WideRange" Value="87.654"  UnitString=" メートル"  SliderMinimum="-10000" Minimum="-10000"  SliderMaximum="10000" Maximum="10000" Mode="WideRange"/>
-            <controls:BiaNumberEditor Caption="Apple" Value="1.000"  UnitString=" %"/>
-            <controls:BiaNumberEditor Caption="Biaui" Value="45.654"  UnitString=" メートル"  DisplayFormat="F1"/>
-            <controls:BiaNumberEditor Caption="あいうえお" Value="100" DisplayFormat="F0"/>
+            <controls:BiaNumberEditor Caption="あいうえお値"
+                                      Minimum="-100"
+                                      SliderMinimum="-100"
+                                      UnitString=" %"
+                                      Value="12.34" />
+            <controls:BiaNumberEditor Caption="Simple"
+                                      Maximum="1000"
+                                      Minimum="0"
+                                      Mode="Simple"
+                                      SliderMaximum="100"
+                                      SliderMinimum="0"
+                                      UnitString=" %"
+                                      Value="87.654" />
+            <controls:BiaNumberEditor Caption="WideRange"
+                                      Maximum="10000"
+                                      Minimum="-10000"
+                                      Mode="WideRange"
+                                      SliderMaximum="10000"
+                                      SliderMinimum="-10000"
+                                      UnitString=" メートル"
+                                      Value="87.654" />
+            <controls:BiaNumberEditor Caption="Apple"
+                                      UnitString=" %"
+                                      Value="1.000" />
+            <controls:BiaNumberEditor Caption="Biaui"
+                                      DisplayFormat="F1"
+                                      UnitString=" メートル"
+                                      Value="45.654" />
+            <controls:BiaNumberEditor Caption="あいうえお"
+                                      DisplayFormat="F0"
+                                      Value="100" />
 
             <controls:BiaNumberEditor Margin="0,32,0,0"
+                                      Caption="東京"
                                       IsEnabled="False"
                                       Value="40" />
-            <controls:BiaNumberEditor IsReadOnly="True" Value="60" />
+            <controls:BiaNumberEditor Caption="ホーチミン"
+                                      IsReadOnly="True"
+                                      Value="60" />
 
 
             <TextBox Text="あいうえお" />
