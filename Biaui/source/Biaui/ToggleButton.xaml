@@ -6,6 +6,8 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrushKey}" />
         <Setter Property="Padding" Value="10,3" />
+        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
 
         <Setter Property="Template">

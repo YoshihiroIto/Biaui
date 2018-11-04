@@ -19,6 +19,6 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/TreeView.xaml" />
 
         <!-- Controls -->
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumbeEditor.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

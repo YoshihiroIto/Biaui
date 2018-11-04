@@ -59,7 +59,7 @@
     <Page Include="Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\BiaNumbeEditor.xaml">
+    <Page Include="Controls\BiaNumberEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Decorator.xaml">

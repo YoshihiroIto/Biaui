@@ -1,8 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Biaui.Controls">
+                    xmlns:controls="clr-namespace:Biaui.Controls"
+                    xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type controls:BiaNumberEditor}">
-        <Setter Property="Height" Value="22" />
+        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
         <Setter Property="Padding" Value="4.5,3" />
 
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />

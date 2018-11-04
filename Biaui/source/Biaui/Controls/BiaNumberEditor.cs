@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -171,6 +174,52 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region Minimum
+
+        public double Minimum
+        {
+            get => _Minimum;
+            set => SetValue(MinimumProperty, value);
+        }
+
+        private double _Minimum = default(double);
+
+        public static readonly DependencyProperty MinimumProperty =
+            DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._Minimum = (double) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
+        #region Maximum
+
+        public double Maximum
+        {
+            get => _Maximum;
+            set => SetValue(MaximumProperty, value);
+        }
+
+        private double _Maximum = 100.0;
+
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    Boxes.Double100,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._Maximum = (double) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
         #region DisplayFormat
 
         public string DisplayFormat
@@ -326,7 +375,7 @@ namespace Biaui.Controls
                 return;
 
             var sliderBodyW = ActualWidth - BorderSize * 0.5 * 2;
-            var w = (Value - SliderMinimum) * sliderBodyW / SliderWidth;
+            var w = (UiValue - SliderMinimum) * sliderBodyW / SliderWidth;
 
             dc.PushClip(ClipGeom);
             dc.DrawRectangle(SliderBrush, null, new Rect(BorderSize * 0.5, 0.0, w, ActualHeight));
@@ -346,7 +395,7 @@ namespace Biaui.Controls
             );
 
             TextRenderer.Default.Draw(
-                Value.ToString(DisplayFormat) + UnitString,
+                UiValueString,
                 Padding.Left,
                 Padding.Top,
                 Foreground,
@@ -357,6 +406,8 @@ namespace Biaui.Controls
         }
 
         private bool _isMouseDown;
+        private bool _isMouseMoved;
+        private Point _oldPos;
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -366,6 +417,9 @@ namespace Biaui.Controls
                 return;
 
             _isMouseDown = true;
+            _isMouseMoved = false;
+            _oldPos = e.GetPosition(this);
+
             CaptureMouse();
             //Cursor = Cursors.None;
 
@@ -407,8 +461,17 @@ namespace Biaui.Controls
             if (IsReadOnly)
                 return;
 
+            var currentPos = e.GetPosition(this);
+
+            // Down直後マウス移動ない場合でもOnMouseMoveが呼ばれることがあるため、判定する。
+            if (currentPos == _oldPos)
+                return;
+
+            _isMouseMoved = true;
+            _oldPos = currentPos;
+
             // 0から1
-            var xr = Math.Min(Math.Max(0, e.GetPosition(this).X), ActualWidth) / ActualWidth;
+            var xr = Math.Min(Math.Max(0, currentPos.X), ActualWidth) / ActualWidth;
 
             Value = SliderWidth * xr;
         }
@@ -424,11 +487,16 @@ namespace Biaui.Controls
             ReleaseMouseCapture();
             ClipCursor(IntPtr.Zero);
 
-            //Cursor = Cursors.Arrow;
-            //var x = Math.Min(Math.Max(0, e.GetPosition(this).X), ActualWidth);
-            //var y = ActualHeight * 0.5;
-            //var p = PointToScreen(new Point(x, y));
-            //SetCursorPos((int) p.X, (int) p.Y);
+#if false
+            Cursor = Cursors.Arrow;
+            var x = Math.Min(Math.Max(0, e.GetPosition(this).X), ActualWidth);
+            var y = ActualHeight * 0.5;
+            var p = PointToScreen(new Point(x, y));
+            SetCursorPos((int) p.X, (int) p.Y);
+#endif
+
+            if (_isMouseMoved == false)
+                ShowEditBox();
         }
 
         protected override void OnMouseEnter(MouseEventArgs e)
@@ -450,6 +518,128 @@ namespace Biaui.Controls
             }
 
             InvalidateVisual();
+        }
+        private TextBox _textBox;
+        private bool _conformedPopup;
+
+        private void ShowEditBox()
+        {
+            _conformedPopup = false;
+
+            _textBox = new TextBox
+            {
+                Width = ActualWidth,
+                Height = ActualHeight,
+                IsTabStop = false,
+                Text = FormattedValueString
+            };
+
+            _textBox.TextChanged += TextBoxOnTextChanged;
+
+            var popup = new Popup
+            {
+                Child = _textBox,
+                AllowsTransparency = true,
+                PlacementTarget = this,
+                StaysOpen = false,
+                VerticalOffset = -ActualHeight,
+                IsOpen = true
+            };
+
+            popup.Closed += PopupOnClosed;
+            popup.PreviewKeyDown += PopupOnPreviewKeyDown;
+
+            _textBox.SelectAll();
+            _textBox.Focus();
+        }
+
+        private void TextBoxOnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            InvalidateVisual();
+        }
+
+        private void PopupOnClosed(object sender, EventArgs e)
+        {
+            var popup = (Popup) sender;
+            popup.Closed -= PopupOnClosed;
+            popup.PreviewKeyDown -= PopupOnClosed;
+
+            if (_conformedPopup == false)
+                ConfirmValue();
+
+            _textBox.TextChanged -= TextBoxOnTextChanged;
+            _textBox = null;
+            InvalidateVisual();
+        }
+
+        private void PopupOnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Return:
+                case Key.Tab:
+                    _conformedPopup = true;
+                    ConfirmValue();
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
+                    break;
+
+                case Key.Escape:
+                    _conformedPopup = true;
+                    _textBox.Text = FormattedValueString;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
+                    break;
+            }
+
+            void ClosePopup() =>
+                ((Popup) sender).IsOpen = false;
+        }
+
+        private void ConfirmValue()
+        {
+            var v = MakeValueFromString(_textBox.Text);
+            if (v.Ok)
+                Value = v.Value;
+        }
+
+        private (bool Ok, double Value) MakeValueFromString(string src)
+        {
+            if (double.TryParse(src, out var v))
+                return (true,  Math.Min(Maximum, Math.Max(Minimum, v)));
+
+            return (false, default(double));
+        }
+
+        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
+        private double SliderWidth => SliderMaximum - SliderMinimum;
+        private string FormattedValueString => Value.ToString(DisplayFormat);
+
+        private string UiValueString
+        {
+            get
+            {
+                if (_textBox == null)
+                    return FormattedValueString + UnitString;
+
+                var v = MakeValueFromString(_textBox.Text);
+
+                return
+                    v.Ok
+                        ? v.Value.ToString(DisplayFormat) + UnitString
+                        : FormattedValueString + UnitString;
+            }
+        }
+
+        private double UiValue
+        {
+            get
+            {
+                if (_textBox == null)
+                    return Value;
+
+                var v = MakeValueFromString(_textBox.Text);
+
+                return v.Ok ? v.Value : Value;
+            }
         }
 
         private Pen BorderPen
@@ -493,9 +683,6 @@ namespace Biaui.Controls
                 return c;
             }
         }
-
-        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
-        private double SliderWidth => SliderMaximum - SliderMinimum;
 
         private const double BorderSize = 1.0;
         private static readonly Dictionary<Color, Pen> _borderPens = new Dictionary<Color, Pen>();
