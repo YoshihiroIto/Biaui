@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using Biaui.Internals;
 
@@ -591,8 +593,10 @@ namespace Biaui.Controls
                 {
                     Cursor = Cursors.None;
 
+                    // Ctrl押下中は５倍速い
+                    var s = IsCtrl ? 5.0 : 1.0;
                     var w = currentPos.X - _oldPos.X;
-                    var v = Value + w * Increment;
+                    var v = Value + s * w * Increment;
 
                     Value = Math.Min(ActualSliderMaximum, Math.Max(ActualSliderMinimum, v));
 
@@ -636,12 +640,14 @@ namespace Biaui.Controls
 
             if (_isMouseMoved == false)
             {
-                var p = e.GetPosition(this);
+                // Ctrl押下中は５倍速い
+                var inc = IsCtrl ? Increment * 5 : Increment;
 
+                var p = e.GetPosition(this);
                 if (p.X <= SpinWidth && IsReadOnly == false)
-                    AddValue(-Increment);
+                    AddValue(-inc);
                 else if (p.X >= ActualWidth - SpinWidth && IsReadOnly == false)
-                    AddValue(Increment);
+                    AddValue(inc);
                 else
                     ShowEditBox();
             }
@@ -909,6 +915,8 @@ namespace Biaui.Controls
 
         private static readonly Dictionary<Size, RectangleGeometry> _clipGeoms =
             new Dictionary<Size, RectangleGeometry>();
+
+        private static bool IsCtrl => (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
         [DllImport("User32.dll")]
         private static extern bool SetCursorPos(int X, int Y);
