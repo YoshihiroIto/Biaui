@@ -375,7 +375,7 @@ namespace Biaui.Controls
                 return;
 
             var sliderBodyW = ActualWidth - BorderSize * 0.5 * 2;
-            var w = (UiValue - SliderMinimum) * sliderBodyW / SliderWidth;
+            var w = (UiValue - ActualSliderMinimum) * sliderBodyW / SliderWidth;
 
             dc.PushClip(ClipGeom);
             dc.DrawRectangle(SliderBrush, null, new Rect(BorderSize * 0.5, 0.0, w, ActualHeight));
@@ -428,7 +428,7 @@ namespace Biaui.Controls
             {
                 var pos = e.GetPosition(this);
 
-                var w = (Value - SliderMinimum) * ActualWidth / SliderWidth;
+                var w = (Value - ActualSliderMinimum) * ActualWidth / SliderWidth;
 
                 var xr = Math.Min(Math.Max(0, w), ActualWidth) / ActualWidth;
                 var x = ActualWidth * xr;
@@ -473,7 +473,7 @@ namespace Biaui.Controls
             // 0から1
             var xr = Math.Min(Math.Max(0, currentPos.X), ActualWidth) / ActualWidth;
 
-            Value = SliderWidth * xr;
+            Value = SliderWidth * xr + ActualSliderMinimum;
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)
@@ -611,14 +611,20 @@ namespace Biaui.Controls
         private (bool Ok, double Value) MakeValueFromString(string src)
         {
             if (double.TryParse(src, out var v))
-                return (true, Math.Min(Maximum, Math.Max(Minimum, v)));
+                return (true, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
 
             return (false, default(double));
         }
 
         private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
-        private double SliderWidth => SliderMaximum - SliderMinimum;
         private string FormattedValueString => Value.ToString(DisplayFormat);
+
+        private double SliderWidth => Math.Abs(SliderMaximum - SliderMinimum);
+
+        private double ActualSliderMinimum => Math.Min(SliderMinimum, SliderMaximum);
+        private double ActualSliderMaximum => Math.Max(SliderMinimum, SliderMaximum);
+        private double ActualMinimum => Math.Min(Minimum, Maximum);
+        private double ActualMaximum => Math.Max(Minimum, Maximum);
 
         private string UiValueString
         {
