@@ -15,68 +15,63 @@
         <behavior:WindowDisposeDataContextOnClosedBehavior />
     </i:Interaction.Behaviors>
 
-    <StackPanel Margin="8">
-        <StackPanel MinWidth="200"
-                    Margin="0,4,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Orientation="Vertical">
-            <StackPanel.Resources>
-                <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
-                    <Setter Property="Margin" Value="0,4,0,0" />
-                </Style>
+    <TabControl Margin="8">
+        <TabItem Header="BiaNumberEditor" DataContext="{Binding BiaNumberEditorViewModel, Mode=OneTime}">
+            <StackPanel MinWidth="200"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
 
-                <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
-                    <Setter Property="Margin" Value="0,4,0,0" />
-                </Style>
-            </StackPanel.Resources>
+                    <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
 
-            <controls:BiaNumberEditor Caption="あいうえお値"
-                                      Minimum="-100"
-                                      SliderMinimum="-100"
-                                      UnitString=" %"
-                                      Value="12.34" />
-            <controls:BiaNumberEditor Caption="Simple"
-                                      Maximum="1000"
-                                      Minimum="0"
-                                      Mode="Simple"
-                                      SliderMaximum="100"
-                                      SliderMinimum="0"
-                                      UnitString=" %"
-                                      Value="87.654" />
-            <controls:BiaNumberEditor Caption="WideRange"
-                                      Maximum="10000"
-                                      Minimum="-10000"
-                                      Mode="WideRange"
-                                      SliderMaximum="10000"
-                                      SliderMinimum="-10000"
-                                      UnitString=" メートル"
-                                      Value="87.654" />
-            <controls:BiaNumberEditor Caption="Apple"
-                                      UnitString=" %"
-                                      Value="1.000" />
-            <controls:BiaNumberEditor Caption="Biaui"
-                                      DisplayFormat="F1"
-                                      UnitString=" メートル"
-                                      Value="45.654" />
-            <controls:BiaNumberEditor Caption="あいうえお"
-                                      DisplayFormat="F0"
-                                      Value="100" />
+                <controls:BiaNumberEditor Caption="あいうえお値"
+                                          Minimum="-100"
+                                          SliderMinimum="-100"
+                                          UnitString=" %"
+                                          Value="12.34" />
+                <controls:BiaNumberEditor Caption="Simple"
+                                          Maximum="1000"
+                                          Minimum="0"
+                                          Mode="Simple"
+                                          SliderMaximum="100"
+                                          SliderMinimum="0"
+                                          UnitString=" %"
+                                          Value="87.654" />
+                <controls:BiaNumberEditor Caption="WideRange"
+                                          Maximum="10000"
+                                          Minimum="-10000"
+                                          Mode="WideRange"
+                                          SliderMaximum="10000"
+                                          SliderMinimum="-10000"
+                                          UnitString=" メートル"
+                                          Value="87.654" />
+                <controls:BiaNumberEditor Caption="Apple"
+                                          UnitString=" %"
+                                          Value="1.000" />
+                <controls:BiaNumberEditor Caption="Biaui"
+                                          DisplayFormat="F1"
+                                          UnitString=" メートル"
+                                          Value="45.654" />
+                <controls:BiaNumberEditor Caption="あいうえお"
+                                          DisplayFormat="F0"
+                                          Value="100" />
 
-            <controls:BiaNumberEditor Margin="0,32,0,0"
-                                      Caption="東京"
-                                      IsEnabled="False"
-                                      Value="40" />
-            <controls:BiaNumberEditor Caption="ホーチミン"
-                                      IsReadOnly="True"
-                                      Value="60" />
-
-
-            <TextBox Text="あいうえお" />
-            <TextBox IsEnabled="False" Text="将棋" />
-            <TextBox IsReadOnly="True" Text="King Queen Jack" />
-
-
-        </StackPanel>
-    </StackPanel>
+                <controls:BiaNumberEditor Margin="0,32,0,0"
+                                          Caption="東京"
+                                          IsEnabled="False"
+                                          Value="40" />
+                <controls:BiaNumberEditor Caption="ホーチミン"
+                                          IsReadOnly="True"
+                                          Value="60" />
+            </StackPanel>
+        </TabItem>
+    </TabControl>
 </controls:BiaWindow>

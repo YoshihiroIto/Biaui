@@ -539,7 +539,6 @@ namespace Biaui.Controls
             Slider
         }
 
-
         private bool _isMouseDown;
         private bool _isMouseMoved;
         private Point _oldPos;
