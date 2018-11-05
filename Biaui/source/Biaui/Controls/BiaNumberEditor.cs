@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -835,13 +836,23 @@ namespace Biaui.Controls
             Continue
         }
 
+        private static Regex _evalRegex;
+
         private (MakeValueResult Result, double Value) MakeValueFromString(string src)
         {
             if (double.TryParse(src, out var v))
                 return (MakeValueResult.Ok, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
 
-            if (double.TryParse(Evaluator.Eval(src), out var ev))
-                return (MakeValueResult.Continue, Math.Min(ActualMaximum, Math.Max(ActualMinimum, ev)));
+            if (double.TryParse(Evaluator.Eval(src), out v))
+                return (MakeValueResult.Continue, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
+
+            // Math.を補間
+            if (_evalRegex == null)
+                _evalRegex = new Regex("[A-Za-z_]+");
+
+            var rs = _evalRegex.Replace(src, "Math.$0");
+            if (double.TryParse(Evaluator.Eval(rs), out v))
+                return (MakeValueResult.Continue, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
 
             return (MakeValueResult.Cancel, default(double));
         }
