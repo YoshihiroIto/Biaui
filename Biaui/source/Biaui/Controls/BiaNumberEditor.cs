@@ -521,8 +521,8 @@ namespace Biaui.Controls
         private bool _isMouseMoved;
         private Point _oldPos;
         private Point _mouseDownPos;
-        private MouseOverType _mouseOverType;
         private MouseOverType _mouseOverTypeOnMouseDown;
+        private MouseOverType _mouseOverType;
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -537,17 +537,20 @@ namespace Biaui.Controls
             _mouseDownPos = _oldPos;
             _mouseOverTypeOnMouseDown = MakeMouseOverType(e);
 
-            CaptureMouse();
-
-            // マウス可動域を設定
-            if (Mode == BiaNumberEditorMode.Simple)
+            if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
             {
-                var p0 = new Point(0.0, 0.0);
-                var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
-                var dp0 = PointToScreen(p0);
-                var dp1 = PointToScreen(p1);
-                var cr = new Win32RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
-                ClipCursor(ref cr);
+                CaptureMouse();
+
+                // マウス可動域を設定
+                if (Mode == BiaNumberEditorMode.Simple)
+                {
+                    var p0 = new Point(0.0, 0.0);
+                    var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
+                    var dp0 = PointToScreen(p0);
+                    var dp1 = PointToScreen(p1);
+                    var cr = new Win32RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+                    ClipCursor(ref cr);
+                }
             }
         }
 
@@ -603,8 +606,8 @@ namespace Biaui.Controls
                 }
             }
 
-            _isMouseMoved = true;
             _mouseOverType = MouseOverType.Slider;
+            _isMouseMoved = true;
             _oldPos = currentPos;
         }
 
@@ -614,39 +617,45 @@ namespace Biaui.Controls
 
             if (IsReadOnly == false)
             {
-                ReleaseMouseCapture();
-
-                switch (Mode)
+                if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
                 {
-                    case BiaNumberEditorMode.Simple:
-                        ClipCursor(IntPtr.Zero);
-                        break;
+                    ReleaseMouseCapture();
 
-                    case BiaNumberEditorMode.WideRange:
+                    switch (Mode)
                     {
-                        var p = PointToScreen(_mouseDownPos);
-                        SetCursorPos((int) p.X, (int) p.Y);
-                        GuiHelper.ShowCursor();
+                        case BiaNumberEditorMode.Simple:
+                            ClipCursor(IntPtr.Zero);
+                            break;
 
-                        break;
+                        case BiaNumberEditorMode.WideRange:
+                        {
+                            var p = PointToScreen(_mouseDownPos);
+                            SetCursorPos((int) p.X, (int) p.Y);
+                            GuiHelper.ShowCursor();
+                            break;
+                        }
                     }
                 }
-
-                _isMouseDown = false;
             }
+
+            _isMouseDown = false;
 
             if (_isMouseMoved == false)
             {
-                // Ctrl押下中は５倍速い
-                var inc = IsCtrl ? Increment * 5 : Increment;
-
                 var p = e.GetPosition(this);
-                if (p.X <= SpinWidth && IsReadOnly == false)
-                    AddValue(-inc);
-                else if (p.X >= ActualWidth - SpinWidth && IsReadOnly == false)
-                    AddValue(inc);
-                else
-                    ShowEditBox();
+
+                if (p == _mouseDownPos)
+                {
+                    // Ctrl押下中は５倍速い
+                    var inc = IsCtrl ? Increment * 5 : Increment;
+
+                    if (p.X <= SpinWidth && IsReadOnly == false)
+                        AddValue(-inc);
+                    else if (p.X >= ActualWidth - SpinWidth && IsReadOnly == false)
+                        AddValue(inc);
+                    else
+                        ShowEditBox();
+                }
             }
 
             _mouseOverType = MakeMouseOverType(e);
@@ -680,12 +689,18 @@ namespace Biaui.Controls
 
         private MouseOverType MakeMouseOverType(MouseEventArgs e)
         {
-            var currentPos = e.GetPosition(this);
+            var x = e.GetPosition(this).X;
 
-            if (currentPos.X <= SpinWidth)
+            if (x < 0)
+                return MouseOverType.None;
+
+            if (x >= ActualWidth)
+                return MouseOverType.None;
+
+            if (x <= SpinWidth)
                 return MouseOverType.DecSpin;
 
-            if (currentPos.X >= ActualWidth - SpinWidth)
+            if (x >= ActualWidth - SpinWidth)
                 return MouseOverType.IncSpin;
 
             return MouseOverType.Slider;
@@ -696,7 +711,6 @@ namespace Biaui.Controls
             IsTabStop = false,
             IsUndoEnabled = false
         };
-
 
         private static readonly Popup _popup = new Popup
         {
