@@ -546,7 +546,7 @@ namespace Biaui.Controls
         private MouseOverType _mouseOverTypeOnMouseDown;
         private MouseOverType _mouseOverType;
 
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
 
@@ -633,7 +633,7 @@ namespace Biaui.Controls
             _oldPos = currentPos;
         }
 
-        protected override void OnMouseUp(MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
 
