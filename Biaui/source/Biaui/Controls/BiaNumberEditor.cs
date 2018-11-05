@@ -508,10 +508,21 @@ namespace Biaui.Controls
             }
         }
 
+        private enum MouseOverType
+        {
+            None,
+            DecSpin,
+            IncSpin,
+            Slider
+        }
+
+
         private bool _isMouseDown;
         private bool _isMouseMoved;
         private Point _oldPos;
         private Point _mouseDownPos;
+        private MouseOverType _mouseOverType;
+        private MouseOverType _mouseOverTypeOnMouseDown;
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
@@ -524,6 +535,7 @@ namespace Biaui.Controls
             _isMouseMoved = false;
             _oldPos = e.GetPosition(this);
             _mouseDownPos = _oldPos;
+            _mouseOverTypeOnMouseDown = MakeMouseOverType(e);
 
             CaptureMouse();
 
@@ -539,29 +551,11 @@ namespace Biaui.Controls
             }
         }
 
-        private enum MouseOverType
-        {
-            None,
-            DecSpin,
-            IncSpin,
-            Slider
-        }
-
-        private MouseOverType _mouseOverType;
-
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            var currentPos = e.GetPosition(this);
+            base.OnMouseMove(e);
 
-            {
-                if (currentPos.X <= SpinWidth)
-                    _mouseOverType = MouseOverType.DecSpin;
-                else if (currentPos.X >= ActualWidth - SpinWidth)
-                    _mouseOverType = MouseOverType.IncSpin;
-                else
-                    _mouseOverType = MouseOverType.Slider;
-            }
-
+            _mouseOverType = MakeMouseOverType(e);
             InvalidateVisual();
 
             if (_isMouseDown == false)
@@ -571,7 +565,11 @@ namespace Biaui.Controls
                 return;
 
             // Down直後マウス移動ない場合でもOnMouseMoveが呼ばれることがあるため、判定する。
+            var currentPos = e.GetPosition(this);
             if (currentPos == _oldPos)
+                return;
+
+            if (_mouseOverTypeOnMouseDown != MouseOverType.Slider)
                 return;
 
             switch (Mode)
@@ -651,6 +649,8 @@ namespace Biaui.Controls
                     ShowEditBox();
             }
 
+            _mouseOverType = MakeMouseOverType(e);
+
             InvalidateVisual();
         }
 
@@ -676,6 +676,19 @@ namespace Biaui.Controls
             _mouseOverType = MouseOverType.None;
 
             InvalidateVisual();
+        }
+
+        private MouseOverType MakeMouseOverType(MouseEventArgs e)
+        {
+            var currentPos = e.GetPosition(this);
+
+            if (currentPos.X <= SpinWidth)
+                return MouseOverType.DecSpin;
+
+            if (currentPos.X >= ActualWidth - SpinWidth)
+                return MouseOverType.IncSpin;
+
+            return MouseOverType.Slider;
         }
 
         private static readonly TextBox _textBox = new TextBox
