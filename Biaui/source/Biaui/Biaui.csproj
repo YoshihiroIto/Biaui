@@ -172,9 +172,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Resource Include="Assets\Fonts\Muli.ttf" />
-    <Resource Include="Assets\Fonts\GenShinGothic-P-Regular.ttf" />
     <Resource Include="Assets\Fonts\RictyDiminished-Regular.ttf" />
+    <Resource Include="Assets\Fonts\GenMuli.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
