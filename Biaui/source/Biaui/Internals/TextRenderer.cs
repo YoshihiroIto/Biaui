@@ -136,8 +136,8 @@ namespace Biaui.Internals
             if (textWidth == 0.0)
                 return null;
 
-            var x = Math.Round(align == TextAlignment.Left ? 0.0 : maxWidth - textWidth);
-            var y = Math.Round(_glyphTypeface.Baseline * _fontSize);
+            var x = align == TextAlignment.Left ? 0.0 : maxWidth - textWidth;
+            var y = _glyphTypeface.Baseline * _fontSize;
 
             gr =
                 new GlyphRun(
