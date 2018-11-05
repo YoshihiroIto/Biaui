@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shell;
 using System.Windows.Threading;
 using Biaui.Internals;
 
@@ -576,9 +574,6 @@ namespace Biaui.Controls
             if (currentPos == _oldPos)
                 return;
 
-            _isMouseMoved = true;
-            _mouseOverType = MouseOverType.Slider;
-
             switch (Mode)
             {
                 case BiaNumberEditorMode.Simple:
@@ -591,7 +586,8 @@ namespace Biaui.Controls
 
                 case BiaNumberEditorMode.WideRange:
                 {
-                    Cursor = Cursors.None;
+                    if (_isMouseMoved == false)
+                        GuiHelper.HideCursor();
 
                     // Ctrl押下中は５倍速い
                     var s = IsCtrl ? 5.0 : 1.0;
@@ -609,6 +605,8 @@ namespace Biaui.Controls
                 }
             }
 
+            _isMouseMoved = true;
+            _mouseOverType = MouseOverType.Slider;
             _oldPos = currentPos;
         }
 
@@ -630,7 +628,8 @@ namespace Biaui.Controls
                     {
                         var p = PointToScreen(_mouseDownPos);
                         SetCursorPos((int) p.X, (int) p.Y);
-                        Cursor = Cursors.Arrow;
+                        GuiHelper.ShowCursor();
+
                         break;
                     }
                 }
@@ -671,6 +670,7 @@ namespace Biaui.Controls
                 _isMouseDown = false;
                 ReleaseMouseCapture();
                 ClipCursor(IntPtr.Zero);
+                GuiHelper.ShowCursor();
             }
 
             _mouseOverType = MouseOverType.None;
