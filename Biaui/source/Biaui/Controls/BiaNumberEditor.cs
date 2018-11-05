@@ -382,6 +382,28 @@ namespace Biaui.Controls
                     {
                         var self = (BiaNumberEditor) s;
                         self._Increment = (double) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region CornerRadius
+
+        public double CornerRadius
+        {
+            get => _CornerRadius;
+            set => SetValue(CornerRadiusProperty, value);
+        }
+
+        private double _CornerRadius = Constants.BasicCornerRadiusPrim;
+
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    Boxes.ConstantsBasicCornerRadiusPrim,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._CornerRadius = (double) e.NewValue;
                         self.InvalidateVisual();
                     }));
 
@@ -426,8 +448,8 @@ namespace Biaui.Controls
                 Background,
                 null,
                 ActualRectangle, null,
-                Constants.BasicCornerRadiusPrim, null,
-                Constants.BasicCornerRadiusPrim, null);
+                CornerRadius, null,
+                CornerRadius, null);
         }
 
         private void DrawBorder(DrawingContext dc)
@@ -436,8 +458,8 @@ namespace Biaui.Controls
                 null,
                 BorderPen,
                 ActualRectangle, null,
-                Constants.BasicCornerRadiusPrim, null,
-                Constants.BasicCornerRadiusPrim, null);
+                CornerRadius, null,
+                CornerRadius, null);
         }
 
         private void DrawSlider(DrawingContext dc)
@@ -938,8 +960,8 @@ namespace Biaui.Controls
 
                 c = new RectangleGeometry
                 {
-                    RadiusX = Constants.BasicCornerRadiusPrim,
-                    RadiusY = Constants.BasicCornerRadiusPrim,
+                    RadiusX = CornerRadius,
+                    RadiusY = CornerRadius,
                     Rect = new Rect(size)
                 };
 

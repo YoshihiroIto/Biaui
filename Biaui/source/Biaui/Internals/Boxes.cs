@@ -21,5 +21,7 @@ namespace Biaui.Internals
         internal static object ColorRed = Colors.Red;
 
         internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
+
+        internal static object ConstantsBasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
     }
 }
