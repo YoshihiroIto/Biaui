@@ -772,7 +772,8 @@ namespace Biaui.Controls
             void ConfirmValue()
             {
                 var v = MakeValueFromString(_textBox.Text);
-                if (v.Ok)
+                if (v.Result == MakeValueResult.Ok ||
+                    v.Result == MakeValueResult.Continue)
                     Value = v.Value;
             }
         }
@@ -788,7 +789,11 @@ namespace Biaui.Controls
             {
                 case Key.Return:
                 case Key.Tab:
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
+                    var v = MakeValueFromString(_textBox.Text);
+                    if (v.Result == MakeValueResult.Continue)
+                        _textBox.Text = v.Value.ToString(DisplayFormat);
+                    else
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
                     break;
 
                 case Key.Escape:
@@ -801,12 +806,22 @@ namespace Biaui.Controls
             void ClosePopup() => ((Popup) sender).IsOpen = false;
         }
 
-        private (bool Ok, double Value) MakeValueFromString(string src)
+        private enum MakeValueResult
+        {
+            Ok,
+            Cancel,
+            Continue
+        }
+
+        private (MakeValueResult Result, double Value) MakeValueFromString(string src)
         {
             if (double.TryParse(src, out var v))
-                return (true, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
+                return (MakeValueResult.Ok, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
 
-            return (false, default(double));
+            if (double.TryParse(Evaluator.Eval(src), out var ev))
+                return (MakeValueResult.Continue, Math.Min(ActualMaximum, Math.Max(ActualMinimum, ev)));
+
+            return (MakeValueResult.Cancel, default(double));
         }
 
         private static void SetupSpinGeom()
@@ -872,7 +887,7 @@ namespace Biaui.Controls
                 var v = MakeValueFromString(_textBox.Text);
 
                 return
-                    v.Ok
+                    v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
                         ? v.Value.ToString(DisplayFormat) + UnitString
                         : FormattedValueString + UnitString;
             }
@@ -887,7 +902,10 @@ namespace Biaui.Controls
 
                 var v = MakeValueFromString(_textBox.Text);
 
-                return v.Ok ? v.Value : Value;
+                return
+                    v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
+                        ? v.Value
+                        : Value;
             }
         }
 
