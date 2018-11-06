@@ -11,16 +11,24 @@ namespace Biaui.Controls
         public Menu Menu
         {
             get => _Menu;
-            set => SetValue(MenuProperty, value);
+            set
+            {
+                if (value != _Menu)
+                    SetValue(MenuProperty, value);
+            }
         }
 
-        private Menu _Menu;
+        private Menu _Menu = default(Menu);
 
         public static readonly DependencyProperty MenuProperty =
             DependencyProperty.Register(nameof(Menu), typeof(Menu), typeof(BiaWindow),
                 new PropertyMetadata(
                     default(Menu),
-                    (s, e) => { ((BiaWindow) s)._Menu = (Menu) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._Menu = (Menu) e.NewValue;
+                    }));
 
         #endregion
 

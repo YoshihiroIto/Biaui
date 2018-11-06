@@ -11,16 +11,24 @@ namespace Biaui.Internals
         public WindowAction WindowAction
         {
             get => _WindowAction;
-            set => SetValue(WindowActionProperty, value);
+            set
+            {
+                if (value != _WindowAction)
+                    SetValue(WindowActionProperty, value);
+            }
         }
 
-        private WindowAction _WindowAction;
+        private WindowAction _WindowAction = default(WindowAction);
 
         public static readonly DependencyProperty WindowActionProperty =
             DependencyProperty.Register(nameof(WindowAction), typeof(WindowAction), typeof(SystemButton),
                 new PropertyMetadata(
                     default(WindowAction),
-                    (s, e) => { ((SystemButton) s)._WindowAction = (WindowAction) e.NewValue; }));
+                    (s, e) =>
+                    {
+                        var self = (SystemButton) s;
+                        self._WindowAction = (WindowAction) e.NewValue;
+                    }));
 
         #endregion
 

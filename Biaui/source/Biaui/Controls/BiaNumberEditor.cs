@@ -25,7 +25,11 @@ namespace Biaui.Controls
         public bool IsReadOnly
         {
             get => _IsReadOnly;
-            set => SetValue(IsReadOnlyProperty, value);
+            set
+            {
+                if (value != _IsReadOnly)
+                    SetValue(IsReadOnlyProperty, value);
+            }
         }
 
         private bool _IsReadOnly = default(bool);
@@ -48,7 +52,11 @@ namespace Biaui.Controls
         public Color BorderColor
         {
             get => _BorderColor;
-            set => SetValue(BorderColorProperty, value);
+            set
+            {
+                if (value != _BorderColor)
+                    SetValue(BorderColorProperty, value);
+            }
         }
 
         private Color _BorderColor = Colors.Red;
@@ -71,7 +79,11 @@ namespace Biaui.Controls
         public Brush SliderBrush
         {
             get => _SliderBrush;
-            set => SetValue(SliderBrushProperty, value);
+            set
+            {
+                if (value != _SliderBrush)
+                    SetValue(SliderBrushProperty, value);
+            }
         }
 
         private Brush _SliderBrush;
@@ -94,7 +106,12 @@ namespace Biaui.Controls
         public double Value
         {
             get => _Value;
-            set => SetValue(ValueProperty, value);
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _Value)
+                    SetValue(ValueProperty, value);
+            }
         }
 
         private double _Value = default(double);
@@ -119,7 +136,11 @@ namespace Biaui.Controls
         public string Caption
         {
             get => _Caption;
-            set => SetValue(CaptionProperty, value);
+            set
+            {
+                if (value != _Caption)
+                    SetValue(CaptionProperty, value);
+            }
         }
 
         private string _Caption = default(string);
@@ -142,7 +163,12 @@ namespace Biaui.Controls
         public double SliderMinimum
         {
             get => _SliderMinimum;
-            set => SetValue(SliderMinimumProperty, value);
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _SliderMinimum)
+                    SetValue(SliderMinimumProperty, value);
+            }
         }
 
         private double _SliderMinimum = default(double);
@@ -165,7 +191,12 @@ namespace Biaui.Controls
         public double SliderMaximum
         {
             get => _SliderMaximum;
-            set => SetValue(SliderMaximumProperty, value);
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _SliderMaximum)
+                    SetValue(SliderMaximumProperty, value);
+            }
         }
 
         private double _SliderMaximum = 100.0;
@@ -188,7 +219,12 @@ namespace Biaui.Controls
         public double Minimum
         {
             get => _Minimum;
-            set => SetValue(MinimumProperty, value);
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _Minimum)
+                    SetValue(MinimumProperty, value);
+            }
         }
 
         private double _Minimum = default(double);
@@ -216,7 +252,12 @@ namespace Biaui.Controls
         public double Maximum
         {
             get => _Maximum;
-            set => SetValue(MaximumProperty, value);
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _Maximum)
+                    SetValue(MaximumProperty, value);
+            }
         }
 
         private double _Maximum = 100.0;
@@ -244,7 +285,11 @@ namespace Biaui.Controls
         public string DisplayFormat
         {
             get => _DisplayFormat;
-            set => SetValue(DisplayFormatProperty, value);
+            set
+            {
+                if (value != _DisplayFormat)
+                    SetValue(DisplayFormatProperty, value);
+            }
         }
 
         private string _DisplayFormat = "F3";
@@ -267,7 +312,11 @@ namespace Biaui.Controls
         public string UnitString
         {
             get => _UnitString;
-            set => SetValue(UnitStringProperty, value);
+            set
+            {
+                if (value != _UnitString)
+                    SetValue(UnitStringProperty, value);
+            }
         }
 
         private string _UnitString = "";
@@ -290,7 +339,11 @@ namespace Biaui.Controls
         public Brush Background
         {
             get => _Background;
-            set => SetValue(BackgroundProperty, value);
+            set
+            {
+                if (value != _Background)
+                    SetValue(BackgroundProperty, value);
+            }
         }
 
         private Brush _Background = default(Brush);
@@ -313,7 +366,11 @@ namespace Biaui.Controls
         public Brush Foreground
         {
             get => _Foreground;
-            set => SetValue(ForegroundProperty, value);
+            set
+            {
+                if (value != _Foreground)
+                    SetValue(ForegroundProperty, value);
+            }
         }
 
         private Brush _Foreground = default(Brush);
@@ -336,7 +393,11 @@ namespace Biaui.Controls
         public Thickness Padding
         {
             get => _Padding;
-            set => SetValue(PaddingProperty, value);
+            set
+            {
+                if (value != _Padding)
+                    SetValue(PaddingProperty, value);
+            }
         }
 
         private Thickness _Padding = default(Thickness);
@@ -358,11 +419,15 @@ namespace Biaui.Controls
 
         public BiaNumberEditorMode Mode
         {
-            get => _mode;
-            set => SetValue(ModeProperty, value);
+            get => _Mode;
+            set
+            {
+                if (value != _Mode)
+                    SetValue(ModeProperty, value);
+            }
         }
 
-        private BiaNumberEditorMode _mode = BiaNumberEditorMode.Simple;
+        private BiaNumberEditorMode _Mode = BiaNumberEditorMode.Simple;
 
         public static readonly DependencyProperty ModeProperty =
             DependencyProperty.Register(nameof(Mode), typeof(BiaNumberEditorMode), typeof(BiaNumberEditor),
@@ -371,7 +436,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._mode = (BiaNumberEditorMode) e.NewValue;
+                        self._Mode = (BiaNumberEditorMode) e.NewValue;
                         self.InvalidateVisual();
                     }));
 
@@ -382,7 +447,12 @@ namespace Biaui.Controls
         public double Increment
         {
             get => _Increment;
-            set => SetValue(IncrementProperty, value);
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _Increment)
+                    SetValue(IncrementProperty, value);
+            }
         }
 
         private double _Increment = 1.0;
@@ -404,7 +474,12 @@ namespace Biaui.Controls
         public double CornerRadius
         {
             get => _CornerRadius;
-            set => SetValue(CornerRadiusProperty, value);
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _CornerRadius)
+                    SetValue(CornerRadiusProperty, value);
+            }
         }
 
         private double _CornerRadius = Constants.BasicCornerRadiusPrim;
