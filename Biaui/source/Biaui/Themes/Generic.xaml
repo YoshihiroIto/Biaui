@@ -124,7 +124,7 @@
                             <!--  Title  -->
                             <Label Grid.Row="0"
                                    Grid.RowSpan="2"
-                                   Margin="47,0,0,0"
+                                   Margin="47,1,0,0"
                                    Content="{TemplateBinding Title}"
                                    FontSize="18"
                                    Foreground="{DynamicResource AccentForegroundBrushKey}" />
