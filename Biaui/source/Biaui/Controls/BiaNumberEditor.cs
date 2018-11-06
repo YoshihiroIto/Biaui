@@ -522,7 +522,14 @@ namespace Biaui.Controls
                 if (_mouseOverType == MouseOverType.DecSpin)
                     dc.DrawRectangle(_SpinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
 
-                dc.PushTransform(new TranslateTransform(offsetX, offsetY));
+                var key = (offsetX, offsetY);
+                if (_TranslateTransformCache.TryGetValue(key, out var tt) == false)
+                {
+                    tt = new TranslateTransform(offsetX, offsetY);
+                    _TranslateTransformCache.Add(key, tt);
+                }
+
+                dc.PushTransform(tt);
                 dc.DrawGeometry(
                     _mouseOverType == MouseOverType.DecSpin ? moBrush : Foreground, null, _DecSpinGeom);
                 dc.Pop();
@@ -536,7 +543,14 @@ namespace Biaui.Controls
                     dc.DrawRectangle(_SpinBackground, null,
                         new Rect(ActualWidth - SpinWidth, 0, SpinWidth, ActualHeight));
 
-                dc.PushTransform(new TranslateTransform(offsetX, offsetY));
+                var key = (offsetX, offsetY);
+                if (_TranslateTransformCache.TryGetValue(key, out var tt) == false)
+                {
+                    tt = new TranslateTransform(offsetX, offsetY);
+                    _TranslateTransformCache.Add(key, tt);
+                }
+
+                dc.PushTransform(tt);
                 dc.DrawGeometry(
                     _mouseOverType == MouseOverType.IncSpin ? moBrush : Foreground, null, _IncSpinGeom);
                 dc.Pop();
@@ -929,14 +943,19 @@ namespace Biaui.Controls
             get
             {
                 if (_isInPopup == false)
-                    return FormattedValueString + UnitString;
+                    return Concat(FormattedValueString, UnitString);
 
                 var v = MakeValueFromString(_textBox.Text);
 
                 return
                     v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
-                        ? v.Value.ToString(DisplayFormat) + UnitString
-                        : FormattedValueString + UnitString;
+                        ? Concat(v.Value.ToString(DisplayFormat), UnitString)
+                        : Concat(FormattedValueString, UnitString);
+
+                string Concat(string a, string b)
+                    => string.IsNullOrEmpty(b)
+                        ? a
+                        : a + b;
             }
         }
 
@@ -1007,6 +1026,9 @@ namespace Biaui.Controls
 
         private static readonly Dictionary<Size, RectangleGeometry> _clipGeoms =
             new Dictionary<Size, RectangleGeometry>();
+
+        private static readonly Dictionary<(double X, double Y), TranslateTransform> _TranslateTransformCache =
+            new Dictionary<(double X, double Y), TranslateTransform>();
 
         private static bool IsCtrl => (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
