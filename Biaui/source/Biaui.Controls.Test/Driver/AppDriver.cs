@@ -5,10 +5,11 @@ using Biaui.Controls.Test.Helper;
 using Codeer.Friendly.Dynamic;
 using Codeer.Friendly.Windows;
 using Codeer.Friendly.Windows.Grasp;
+using RM.Friendly.WPFStandardControls;
 
 namespace Biaui.Controls.Test.Driver
 {
-    internal class AppDriver : IDisposable
+    public class AppDriver : IDisposable
     {
         private static string ExePath
         {
@@ -44,7 +45,7 @@ namespace Biaui.Controls.Test.Driver
         private readonly Killer _killer;
 
         public AppDriver()
-            : this(null, 5000)
+            : this(null, 10 * 60 * 1000)
         {
         }
 
@@ -53,6 +54,11 @@ namespace Biaui.Controls.Test.Driver
             _proc = Process.Start(ExePath, args);
             _app = new WindowsAppFriend(_proc);
             _mainWindowDriver = new MainWindowDriver(_app.Type<System.Windows.Application>().Current.MainWindow);
+
+            WPFStandardControls_3.Injection(_app);
+            WPFStandardControls_3_5.Injection(_app);
+            WPFStandardControls_4.Injection(_app);
+            WindowsAppExpander.LoadAssembly(_app, GetType().Assembly);
 
             // ReSharper disable once PossibleNullReferenceException
             _killer = new Killer(timeoutMs, _proc.Id);

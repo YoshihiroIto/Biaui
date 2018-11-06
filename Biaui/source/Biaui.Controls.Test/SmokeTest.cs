@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Biaui.Controls.Test
 {
+    [Collection("GUI")]
     public class SmokeTest : IDisposable
     {
         public void Dispose()
@@ -26,7 +27,7 @@ namespace Biaui.Controls.Test
         [Fact]
         public void StartEnd()
         {
-            using (var appDriver = new AppDriver($"--config {AppConfigFilePath}", 5000))
+            using (var appDriver = new AppDriver($"--config {AppConfigFilePath}", 10 * 60 * 1000))
             {
                 appDriver.MainWindow.Close();
             }

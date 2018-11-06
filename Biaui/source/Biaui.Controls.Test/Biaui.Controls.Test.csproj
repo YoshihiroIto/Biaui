@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Codeer.Friendly.Windows.KeyMouse" Version="1.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="RM.Friendly.WPFStandardControls" Version="1.18.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -21,7 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Biaui\Biaui.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
 </Project>
