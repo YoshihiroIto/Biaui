@@ -105,8 +105,10 @@ namespace Biaui.Controls
                     Boxes.Double0,
                     (s, e) =>
                     {
+                        // 最小値・最大値でクランプして保存する
+
                         var self = (BiaNumberEditor) s;
-                        self._Value = (double) e.NewValue;
+                        self._Value = self.ClampValue((double) e.NewValue);
                         self.InvalidateVisual();
                     }));
 
@@ -197,8 +199,13 @@ namespace Biaui.Controls
                     Boxes.Double0,
                     (s, e) =>
                     {
+                        // 変更後の最小値でValueをクランプする
+
                         var self = (BiaNumberEditor) s;
                         self._Minimum = (double) e.NewValue;
+
+                        self.Value = self.ClampValue(self.Value);
+
                         self.InvalidateVisual();
                     }));
 
@@ -220,8 +227,13 @@ namespace Biaui.Controls
                     Boxes.Double100,
                     (s, e) =>
                     {
+                        // 変更後の最大値でValueをクランプする
+
                         var self = (BiaNumberEditor) s;
                         self._Maximum = (double) e.NewValue;
+
+                        self.Value = self.ClampValue(self.Value);
+
                         self.InvalidateVisual();
                     }));
 
@@ -898,6 +910,9 @@ namespace Biaui.Controls
 
             _SpinBackground = new SolidColorBrush(Color.FromArgb(0x40, 0x00, 0x00, 0x00));
         }
+
+        private double ClampValue(double v)
+            => Math.Max(Math.Min(v, ActualMaximum), ActualMinimum);
 
         private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
         private string FormattedValueString => Value.ToString(DisplayFormat);
