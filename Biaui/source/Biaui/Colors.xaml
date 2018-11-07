@@ -4,8 +4,8 @@
     <!--<Color x:Key="ThemeColorKey">#FF2D2D30</Color>
     <SolidColorBrush x:Key="ThemeBrushKey" Color="#FF2D2D30" />-->
 
-    <Color x:Key="AccentColorKey">#537CCE</Color>
-    <Color x:Key="AccentColorKey.IsMouseOver">#689AFF</Color>
+    <Color x:Key="AccentColorKey">#4A6DB5</Color>
+    <Color x:Key="AccentColorKey.IsMouseOver">#537CCE</Color>
 
     <SolidColorBrush x:Key="AccentBrushKey" Color="{StaticResource AccentColorKey}" />
     <SolidColorBrush x:Key="AccentBrushKey.IsMouseOver" Color="{StaticResource AccentColorKey.IsMouseOver}" />
