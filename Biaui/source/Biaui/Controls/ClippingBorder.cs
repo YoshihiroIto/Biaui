@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -37,13 +38,29 @@ namespace Biaui.Controls
 
             if (child == null)
                 return;
-            
-            _clipRect.RadiusX = _clipRect.RadiusY = Math.Max(0.0, CornerRadius.TopLeft - BorderThickness.Left * 0.5);
-            _clipRect.Rect = new Rect(Child.RenderSize);
-            child.Clip = _clipRect;
+
+            var key = (Math.Max(0.0, CornerRadius.TopLeft - BorderThickness.Left * 0.5), new Rect(Child.RenderSize));
+
+            if (_clipRectCache.TryGetValue(key, out var clipRect) == false)
+            {
+                var radius = Math.Max(0.0, CornerRadius.TopLeft - BorderThickness.Left * 0.5);
+
+                clipRect = new RectangleGeometry
+                {
+                    RadiusX = radius,
+                    RadiusY = radius,
+                    Rect = new Rect(Child.RenderSize)
+                };
+
+                _clipRectCache.Add(key, clipRect);
+            }
+
+            child.Clip = clipRect;
         }
 
-        private readonly RectangleGeometry _clipRect = new RectangleGeometry();
         private object _oldClip;
+
+        private static readonly Dictionary<(double Radius, Rect Rect), RectangleGeometry> _clipRectCache =
+            new Dictionary<(double Radius, Rect Rect), RectangleGeometry>();
     }
 }
