@@ -9,13 +9,13 @@
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
-        <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey.SliderRail}" />
+        <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey}" />
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
-                <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey}" />
+                <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey.IsMouseOver}" />
             </Trigger>
 
             <Trigger Property="IsReadOnly" Value="True">

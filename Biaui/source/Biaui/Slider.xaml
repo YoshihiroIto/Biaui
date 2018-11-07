@@ -34,7 +34,7 @@
 
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.MouseOver}" />
+                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.IsMouseOver}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="grip" Property="Fill" Value="{DynamicResource InactiveControlBrushKey}" />
@@ -110,10 +110,10 @@
 
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.MouseOver}" />
+                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.IsMouseOver}" />
             </Trigger>
             <Trigger Property="IsDragging" Value="True">
-                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.MouseOver}" />
+                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.IsMouseOver}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="grip" Property="Fill" Value="{DynamicResource InactiveControlBrushKey}" />
