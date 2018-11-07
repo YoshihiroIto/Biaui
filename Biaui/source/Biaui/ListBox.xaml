@@ -83,19 +83,18 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="False" />
-                                <Condition Property="IsSelected" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedInactive.Border}" />
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="True" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border.IsMouseOver}" />
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />

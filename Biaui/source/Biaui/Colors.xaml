@@ -24,6 +24,8 @@
     <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="{StaticResource AccentColorKey}" />
     <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="{StaticResource AccentColorKey}" />
     <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="{StaticResource AccentColorKey}" />
+    <SolidColorBrush x:Key="Item.SelectedActive.Background.IsMouseOver" Color="{StaticResource AccentColorKey.IsMouseOver}" />
+    <SolidColorBrush x:Key="Item.SelectedActive.Border.IsMouseOver" Color="{StaticResource AccentColorKey.IsMouseOver}" />
 
     <LinearGradientBrush x:Key="ToggleButtonBackgroundBrushKey.IsChecked" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Offset="0.0" Color="#2F569E" />
