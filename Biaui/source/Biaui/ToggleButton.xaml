@@ -16,9 +16,9 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0"
-                            UseLayoutRounding="True"
                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            UseLayoutRounding="True">
                         <ContentPresenter Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -51,16 +51,18 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="SharpToggleButtonStyle" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+    <Style x:Key="SharpToggleButtonStyle"
+           BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0"
-                            UseLayoutRounding="True"
                             CornerRadius="0"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            UseLayoutRounding="True">
                         <ContentPresenter Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />

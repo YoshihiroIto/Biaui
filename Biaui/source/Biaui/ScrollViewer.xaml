@@ -47,11 +47,11 @@
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Border x:Name="ScrollBarThumb"
                             Width="Auto"
-                            CornerRadius="4"
                             Height="Auto"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Background="{TemplateBinding Background}"
+                            CornerRadius="4"
                             SnapsToDevicePixels="True" />
 
                     <ControlTemplate.Triggers>

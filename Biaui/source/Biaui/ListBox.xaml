@@ -1,7 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:internals="clr-namespace:Biaui.Internals"
-                    xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
@@ -52,10 +50,8 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Padding" Value="4,1" />
         <Setter Property="Margin" Value="0" />
-        <Setter Property="HorizontalContentAlignment"
-                Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="VerticalContentAlignment"
-                Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="1" />
@@ -80,34 +76,27 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background"
-                                    Value="{DynamicResource Item.MouseOver.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush"
-                                    Value="{DynamicResource Item.MouseOver.Border}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.MouseOver.Background}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.MouseOver.Border}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="Selector.IsSelectionActive" Value="False" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background"
-                                    Value="{DynamicResource Item.SelectedInactive.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush"
-                                    Value="{DynamicResource Item.SelectedInactive.Border}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedInactive.Border}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="Selector.IsSelectionActive" Value="True" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background"
-                                    Value="{DynamicResource Item.SelectedActive.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush"
-                                    Value="{DynamicResource Item.SelectedActive.Border}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border}" />
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Bd" Property="TextElement.Foreground"
-                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -1,9 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:internals="clr-namespace:Biaui.Internals"
-                    xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
-
     <Style TargetType="{x:Type Menu}">
         <Setter Property="FontFamily" Value="{DynamicResource BiauiFontFamily}" />
         <Setter Property="Background" Value="Transparent" />
@@ -21,8 +18,7 @@
             </Style>
 
             <Style TargetType="{x:Type MenuItem}">
-                <Setter Property="Foreground"
-                        Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Menu}}}" />
+                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Menu}}}" />
 
                 <Setter Property="Template">
                     <Setter.Value>
@@ -119,8 +115,7 @@
                                     <Setter Property="DockPanel.Dock" Value="Top" />
                                     <Setter Property="Padding" Value="12,4,0,4" />
                                     <Setter TargetName="Border" Property="MinHeight" Value="24" />
-                                    <Setter TargetName="Border" Property="Background"
-                                            Value="{DynamicResource SubmenuItemBackground}" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubmenuItemBackground}" />
                                 </Trigger>
 
                                 <Trigger Property="Role" Value="SubmenuItem">
@@ -128,8 +123,7 @@
                                     <Setter Property="Padding" Value="12,4,0,4" />
                                     <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
                                     <Setter TargetName="Border" Property="MinHeight" Value="24" />
-                                    <Setter TargetName="Border" Property="Background"
-                                            Value="{DynamicResource SubmenuItemBackground}" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubmenuItemBackground}" />
                                 </Trigger>
 
                                 <MultiTrigger>
@@ -138,8 +132,7 @@
                                         <Condition Property="Role" Value="TopLevelHeader" />
                                     </MultiTrigger.Conditions>
 
-                                    <Setter TargetName="Border" Property="Background"
-                                            Value="{DynamicResource MenuItemHighlightedBackground}" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuItemHighlightedBackground}" />
                                 </MultiTrigger>
 
                                 <MultiTrigger>
@@ -148,8 +141,7 @@
                                         <Condition Property="Role" Value="TopLevelItem" />
                                     </MultiTrigger.Conditions>
 
-                                    <Setter TargetName="Border" Property="Background"
-                                            Value="{DynamicResource MenuItemHighlightedBackground}" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuItemHighlightedBackground}" />
                                 </MultiTrigger>
 
                                 <MultiTrigger>
@@ -158,8 +150,7 @@
                                         <Condition Property="Role" Value="SubmenuHeader" />
                                     </MultiTrigger.Conditions>
 
-                                    <Setter TargetName="Border" Property="Background"
-                                            Value="{DynamicResource SubmenuItemBackgroundHighlighted}" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubmenuItemBackgroundHighlighted}" />
                                 </MultiTrigger>
 
                                 <MultiTrigger>
@@ -168,8 +159,7 @@
                                         <Condition Property="Role" Value="SubmenuItem" />
                                     </MultiTrigger.Conditions>
 
-                                    <Setter TargetName="Border" Property="Background"
-                                            Value="{DynamicResource SubmenuItemBackgroundHighlighted}" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubmenuItemBackgroundHighlighted}" />
                                 </MultiTrigger>
 
                                 <MultiTrigger>
@@ -178,10 +168,8 @@
                                         <Condition Property="Role" Value="TopLevelHeader" />
                                     </MultiTrigger.Conditions>
 
-                                    <Setter TargetName="Border" Property="Background"
-                                            Value="{DynamicResource SubmenuItemBackground}" />
-                                    <Setter TargetName="Border" Property="BorderBrush"
-                                            Value="{DynamicResource MenuSeparatorBorderBrush}" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubmenuItemBackground}" />
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource MenuSeparatorBorderBrush}" />
                                 </MultiTrigger>
 
                                 <Trigger Property="IsSubmenuOpen" Value="True">
