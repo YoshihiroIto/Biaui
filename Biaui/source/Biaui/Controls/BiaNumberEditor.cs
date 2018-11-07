@@ -497,6 +497,32 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsVisibleBorder
+        
+        public bool IsVisibleBorder
+        {
+            get => _IsVisibleBorder;
+            set
+            {
+                if (value != _IsVisibleBorder)
+                    SetValue(IsVisibleBorderProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleBorder = true;
+        
+        public static readonly DependencyProperty IsVisibleBorderProperty =
+            DependencyProperty.Register(nameof(IsVisibleBorder), typeof(bool), typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._IsVisibleBorder = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+
         static BiaNumberEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNumberEditor),
@@ -512,7 +538,10 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            dc.PushClip(ClipGeom);
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+
+            if (CornerRadius != 0)
+                dc.PushClip(ClipGeom);
             {
                 DrawBackground(dc);
 
@@ -521,33 +550,51 @@ namespace Biaui.Controls
 
                 DrawText(dc);
 
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (IsReadOnly == false && IsEnabled && Increment != 0)
                     DrawSpin(dc);
 
-                DrawBorder(dc);
+                if (IsVisibleBorder)
+                    DrawBorder(dc);
             }
-            dc.Pop();
+            if (CornerRadius != 0)
+                dc.Pop();
+
+            // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
         private void DrawBackground(DrawingContext dc)
         {
-            dc.DrawRoundedRectangle(
-                Background,
-                null,
-                ActualRectangle, null,
-                CornerRadius, null,
-                CornerRadius, null);
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (CornerRadius == 0)
+                dc.DrawRectangle(
+                    Background,
+                    null,
+                    ActualRectangle, null);
+            else
+                dc.DrawRoundedRectangle(
+                    Background,
+                    null,
+                    ActualRectangle, null,
+                    CornerRadius, null,
+                    CornerRadius, null);
         }
 
         private void DrawBorder(DrawingContext dc)
         {
-            dc.DrawRoundedRectangle(
-                null,
-                BorderPen,
-                ActualRectangle, null,
-                CornerRadius, null,
-                CornerRadius, null);
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (CornerRadius == 0)
+                dc.DrawRectangle(
+                    null,
+                    BorderPen,
+                    ActualRectangle, null
+                );
+            else
+                dc.DrawRoundedRectangle(
+                    null,
+                    BorderPen,
+                    ActualRectangle, null,
+                    CornerRadius, null,
+                    CornerRadius, null);
         }
 
         private void DrawSlider(DrawingContext dc)
@@ -555,10 +602,10 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var sliderBodyW = ActualWidth - BorderSize * 0.5 * 2;
+            var sliderBodyW = ActualWidth - 0.5 * 2;
             var w = (UiValue - ActualSliderMinimum) * sliderBodyW / SliderWidth;
 
-            dc.DrawRectangle(SliderBrush, null, new Rect(BorderSize * 0.5, 0.0, w, ActualHeight));
+            dc.DrawRectangle(SliderBrush, null, new Rect(0.5, 0.0, w, ActualHeight));
         }
 
         private const double SpinWidth = 14.0;
@@ -1060,7 +1107,7 @@ namespace Biaui.Controls
                 var b = new SolidColorBrush(BorderColor);
                 b.Freeze();
 
-                p = new Pen(b, BorderSize);
+                p = new Pen(b, 2);
                 p.Freeze();
 
                 _borderPens.Add(BorderColor, p);
@@ -1096,7 +1143,6 @@ namespace Biaui.Controls
         private static Geometry _IncSpinGeom;
         private static Brush _SpinBackground;
 
-        private const double BorderSize = 1.0;
         private static readonly Dictionary<Color, Pen> _borderPens = new Dictionary<Color, Pen>();
 
         private static readonly Dictionary<Size, RectangleGeometry> _clipGeoms =
