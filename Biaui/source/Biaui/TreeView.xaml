@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:internals="clr-namespace:Biaui.Internals">
     <Style TargetType="{x:Type TreeView}">
@@ -26,7 +27,8 @@
                     <controls:ClippingBorder x:Name="Bd"
                                              Background="{TemplateBinding Background}"
                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                             BorderThickness="{TemplateBinding BorderThickness}">
+                                             BorderThickness="{TemplateBinding BorderThickness}"
+                                             CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                         <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
                             <ItemsPresenter />
                         </ScrollViewer>

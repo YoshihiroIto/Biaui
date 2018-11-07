@@ -52,6 +52,8 @@ namespace Biaui.Controls
                     Rect = new Rect(Child.RenderSize)
                 };
 
+                clipRect.Freeze();
+
                 _clipRectCache.Add(key, clipRect);
             }
 

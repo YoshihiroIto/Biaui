@@ -51,18 +51,18 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Top">
-                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="0,0,4,4" />
+                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="0,0,8,8" />
                         </Trigger>
 
                         <Trigger Property="TabStripPlacement" Value="Bottom">
-                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="4,4,0,0" />
+                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="8,8,0,0" />
                             <Setter TargetName="headerPanel" Property="Grid.Row" Value="1" />
                             <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
                             <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
                             <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Left">
-                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="0,4,4,0" />
+                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="0,8,8,0" />
                             <Setter TargetName="headerPanel" Property="Grid.Row" Value="0" />
                             <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
                             <Setter TargetName="headerPanel" Property="Grid.Column" Value="0" />
@@ -73,7 +73,7 @@
                             <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Right">
-                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="4,0,0,4" />
+                            <Setter TargetName="contentPanel" Property="CornerRadius" Value="8,0,0,8" />
                             <Setter TargetName="headerPanel" Property="Grid.Row" Value="0" />
                             <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
                             <Setter TargetName="headerPanel" Property="Grid.Column" Value="1" />

@@ -602,10 +602,9 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var sliderBodyW = ActualWidth - 0.5 * 2;
-            var w = (UiValue - ActualSliderMinimum) * sliderBodyW / SliderWidth;
+            var w = (UiValue - ActualSliderMinimum) * ActualWidth / SliderWidth;
 
-            dc.DrawRectangle(SliderBrush, null, new Rect(0.5, 0.0, w, ActualHeight));
+            dc.DrawRectangle(SliderBrush, null, new Rect(0, 0, w, ActualHeight));
         }
 
         private const double SpinWidth = 14.0;
