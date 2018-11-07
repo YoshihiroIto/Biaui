@@ -78,8 +78,8 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.MouseOver.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.MouseOver.Border}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>

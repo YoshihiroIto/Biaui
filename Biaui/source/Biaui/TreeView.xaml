@@ -143,8 +143,8 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.MouseOver.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.MouseOver.Border}" />
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                         </Trigger>
 
                         <Trigger Property="IsExpanded" Value="false">
