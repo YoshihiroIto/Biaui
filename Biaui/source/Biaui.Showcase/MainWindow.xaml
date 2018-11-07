@@ -20,14 +20,12 @@
 
         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Width" Value="140" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
 
         <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Width" Value="140" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
     </controls:BiaWindow.Resources>
 
@@ -108,9 +106,72 @@
 
             <StackPanel Margin="0,4,0,0" HorizontalAlignment="Left">
                 <ToggleButton Content="ホーチミン" />
-                <ToggleButton Margin="0,1,0,0" Content="ダナン" />
-                <ToggleButton Margin="0,1,0,0" Content="ハノイ" />
+                <ToggleButton Margin="0,4,0,0" Content="ダナン" />
+                <ToggleButton Margin="0,4,0,0" Content="ハノイ" />
             </StackPanel>
+
+            <controls:ClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource SharpToggleButtonStyle}" />
+                    </Grid.Resources>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ToggleButton Grid.Column="0" Content="Asia" />
+                    <ToggleButton Grid.Column="1" Margin="1,0,0,0"
+                                  Content="USA" />
+                    <ToggleButton Grid.Column="2" Margin="1,0,0,0"
+                                  Content="EU" />
+                </Grid>
+            </controls:ClippingBorder>
+
+            <controls:ClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource SharpToggleButtonStyle}" />
+                    </Grid.Resources>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <ToggleButton Grid.Row="0" Grid.Column="0" Content="A0" Margin="0,0,0,0" />
+                    <ToggleButton Grid.Row="0" Grid.Column="1" Content="A1" Margin="1,0,0,0" />
+                    <ToggleButton Grid.Row="0" Grid.Column="2" Content="A2" Margin="1,0,0,0" />
+                    <ToggleButton Grid.Row="0" Grid.Column="3" Content="A3" Margin="1,0,0,0" />
+
+                    <ToggleButton Grid.Row="1" Grid.Column="0" Content="B0" Margin="0,1,0,0" />
+                    <ToggleButton Grid.Row="1" Grid.Column="1" Content="B1" Margin="1,1,0,0" />
+                    <ToggleButton Grid.Row="1" Grid.Column="2" Content="B2" Margin="1,1,0,0" />
+                    <ToggleButton Grid.Row="1" Grid.Column="3" Content="B3" Margin="1,1,0,0" />
+
+                    <ToggleButton Grid.Row="2" Grid.Column="0" Content="C0" Margin="0,1,0,0" />
+                    <ToggleButton Grid.Row="2" Grid.Column="1" Content="C1" Margin="1,1,0,0" />
+                    <ToggleButton Grid.Row="2" Grid.Column="2" Content="C2" Margin="1,1,0,0" />
+                    <ToggleButton Grid.Row="2" Grid.Column="3" Content="C3" Margin="1,1,0,0" />
+
+                    <ToggleButton Grid.Row="3" Grid.Column="0" Content="D0" Margin="0,1,0,0" />
+                    <ToggleButton Grid.Row="3" Grid.Column="1" Content="D1" Margin="1,1,0,0" />
+                    <ToggleButton Grid.Row="3" Grid.Column="2" Content="D2" Margin="1,1,0,0" />
+                    <ToggleButton Grid.Row="3" Grid.Column="3" Content="D3" Margin="1,1,0,0" />
+                </Grid>
+            </controls:ClippingBorder>
+
 
             <ComboBox>
                 <ComboBoxItem>あいうえお</ComboBoxItem>
@@ -631,7 +692,8 @@
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="WordWrap" Value="True">
-                                            <Setter TargetName="PART_ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                                            <Setter TargetName="PART_ScrollViewer"
+                                                    Property="HorizontalScrollBarVisibility" Value="Disabled" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
