@@ -110,7 +110,7 @@
                 <ToggleButton Margin="0,4,0,0" Content="ハノイ" />
             </StackPanel>
 
-            <controls:ClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+            <controls:ClippingBorder Margin="0,4,0,0">
                 <Grid>
                     <Grid.Resources>
                         <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource SharpToggleButtonStyle}" />
@@ -130,7 +130,7 @@
                 </Grid>
             </controls:ClippingBorder>
 
-            <controls:ClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+            <controls:ClippingBorder Margin="0,4,0,0">
                 <Grid>
                     <Grid.Resources>
                         <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource SharpToggleButtonStyle}" />
@@ -497,6 +497,8 @@
                                       Caption="ReadOnly"
                                       IsReadOnly="True"
                                       Value="60" />
+
+            <controls:ClippingBorder />
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"

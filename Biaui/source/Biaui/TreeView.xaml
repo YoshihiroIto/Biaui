@@ -26,10 +26,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TreeView">
                     <controls:ClippingBorder x:Name="Bd"
-                                              Background="{TemplateBinding Background}"
-                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                              BorderThickness="{TemplateBinding BorderThickness}"
-                                              CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             BorderThickness="{TemplateBinding BorderThickness}">
                         <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
                             <ItemsPresenter />
                         </ScrollViewer>
@@ -67,7 +66,8 @@
                                     <Setter Property="Fill" Value="{DynamicResource ForegroundBrushKey}" />
                                     <Style.Triggers>
                                         <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Fill" Value="{DynamicResource InactiveForegroundBrushKey}" />
+                                            <Setter Property="Fill"
+                                                    Value="{DynamicResource InactiveForegroundBrushKey}" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -106,8 +106,10 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Padding" Value="1" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="VerticalContentAlignment"
+                Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
 
@@ -123,7 +125,8 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid Margin="{Binding Converter={StaticResource lengthConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid
+                                Margin="{Binding Converter={StaticResource lengthConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="19" />
                                     <ColumnDefinition />
@@ -144,8 +147,10 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.MouseOver.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.MouseOver.Border}" />
+                            <Setter TargetName="Bd" Property="Background"
+                                    Value="{DynamicResource Item.MouseOver.Background}" />
+                            <Setter TargetName="Bd" Property="BorderBrush"
+                                    Value="{DynamicResource Item.MouseOver.Border}" />
                         </Trigger>
 
                         <Trigger Property="IsExpanded" Value="false">
@@ -156,12 +161,15 @@
                         </Trigger>
 
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedInactive.Border}" />
+                            <Setter TargetName="Bd" Property="Background"
+                                    Value="{DynamicResource Item.SelectedInactive.Background}" />
+                            <Setter TargetName="Bd" Property="BorderBrush"
+                                    Value="{DynamicResource Item.SelectedInactive.Border}" />
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

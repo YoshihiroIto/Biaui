@@ -20,5 +20,6 @@
 
         <!-- Controls -->
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/ClippingBorder.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

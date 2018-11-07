@@ -59,6 +59,9 @@
     <Page Include="Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ClippingBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BiaNumberEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
