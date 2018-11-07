@@ -564,15 +564,17 @@ namespace Biaui.Controls
 
         private void DrawBackground(DrawingContext dc)
         {
+            var brush = _isInPopup ? _textBox.Background : Background;
+
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (CornerRadius == 0)
                 dc.DrawRectangle(
-                    Background,
+                    brush,
                     null,
                     ActualRectangle, null);
             else
                 dc.DrawRoundedRectangle(
-                    Background,
+                    brush,
                     null,
                     ActualRectangle, null,
                     CornerRadius, null,
@@ -603,8 +605,9 @@ namespace Biaui.Controls
                 return;
 
             var w = (UiValue - ActualSliderMinimum) * ActualWidth / SliderWidth;
+            var brush = _isInPopup ? _textBox.Background : SliderBrush;
 
-            dc.DrawRectangle(SliderBrush, null, new Rect(0, 0, w, ActualHeight));
+            dc.DrawRectangle(brush, null, new Rect(0, 0, w, ActualHeight));
         }
 
         private const double SpinWidth = 14.0;
@@ -920,6 +923,7 @@ namespace Biaui.Controls
             _popupResult = PopupResult.Ok;
             _popup.IsOpen = true;
             _isInPopup = true;
+            InvalidateVisual();
 
             _textBox.Focus();
             _textBox.SelectAll();
@@ -935,7 +939,6 @@ namespace Biaui.Controls
             _textBox.TextChanged -= TextBoxOnTextChanged;
 
             _isInPopup = false;
-
             InvalidateVisual();
 
             void ConfirmValue()
