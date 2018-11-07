@@ -3,10 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Biaui.Internals
+namespace Biaui.Controls
 {
     // https://stackoverflow.com/questions/324641/how-to-make-the-contents-of-a-round-cornered-border-be-also-round-cornered
-    internal class ClippingBorder : Border
+    public class ClippingBorder : Border
     {
         protected override void OnRender(DrawingContext dc)
         {

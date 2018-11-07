@@ -145,7 +145,7 @@
   <ItemGroup>
     <Compile Include="Controls\BiaNumberEditor.cs" />
     <Compile Include="Internals\Boxes.cs" />
-    <Compile Include="Internals\ClippingBorder.cs" />
+    <Compile Include="Controls\ClippingBorder.cs" />
     <Compile Include="Internals\Evaluator.cs" />
     <Compile Include="Internals\GuiHelper.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />

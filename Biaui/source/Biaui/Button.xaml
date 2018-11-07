@@ -44,13 +44,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="ListHeaderButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushKey}" />
-        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrushKey}" />
-        <Setter Property="Padding" Value="10,3" />
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
-
+    <Style x:Key="SharpButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -66,24 +60,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource ButtonActiveBackgroundBrushKey}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ButtonActiveBorderBrushKey}" />
-                <Setter Property="Foreground" Value="{DynamicResource ButtonActiveForegroundBrushKey}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource ButtonPressedBackgroundBrushKey}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ButtonPressedBorderBrushKey}" />
-                <Setter Property="Foreground" Value="{DynamicResource ButtonPressedForegroundBrushKey}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="{DynamicResource ButtonInactiveBackgroundBrushKey}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
-                <Setter Property="Foreground" Value="{DynamicResource ButtonInactiveForegroundBrushKey}" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
 </ResourceDictionary>
 
