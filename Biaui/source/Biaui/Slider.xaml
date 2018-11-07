@@ -36,9 +36,6 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.MouseOver}" />
             </Trigger>
-            <Trigger Property="IsDragging" Value="True">
-                <Setter TargetName="grip" Property="Fill" Value="{DynamicResource AccentBrushKey.MouseOver}" />
-            </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="grip" Property="Fill" Value="{DynamicResource InactiveControlBrushKey}" />
             </Trigger>

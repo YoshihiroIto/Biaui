@@ -5,7 +5,7 @@
     <SolidColorBrush x:Key="ThemeBrushKey" Color="#FF2D2D30" />-->
 
     <Color x:Key="AccentColorKey">#537CCE</Color>
-    <Color x:Key="AccentColorKey.MouseOver">#DCECFC</Color>
+    <Color x:Key="AccentColorKey.MouseOver">#689AFF</Color>
 
     <SolidColorBrush x:Key="AccentBrushKey" Color="{StaticResource AccentColorKey}" />
     <SolidColorBrush x:Key="AccentBrushKey.MouseOver" Color="{StaticResource AccentColorKey.MouseOver}" />
