@@ -105,8 +105,8 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Padding" Value="1" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
 
@@ -129,7 +129,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ToggleButton x:Name="Expander"
                                               ClickMode="Press"
-                                              IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                              IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                                               Style="{StaticResource ExpandCollapseToggleStyle}" />
 
                                 <ContentPresenter x:Name="PART_Header"

@@ -135,7 +135,7 @@
                                             Margin="47,1,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            Content="{Binding Path=Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}"
+                                            Content="{Binding Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}"
                                             WindowChrome.IsHitTestVisibleInChrome="True" />
 
                             <!--  System Button  -->

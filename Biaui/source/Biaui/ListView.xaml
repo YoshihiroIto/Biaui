@@ -24,13 +24,13 @@
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Hidden">
                                 <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
-                                <GridViewHeaderRowPresenter AllowsColumnReorder="{Binding Path=TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderContainerStyle="{Binding Path=TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderContextMenu="{Binding Path=TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderTemplate="{Binding Path=TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderTemplateSelector="{Binding Path=TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
-                                                            ColumnHeaderToolTip="{Binding Path=TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
-                                                            Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
+                                <GridViewHeaderRowPresenter AllowsColumnReorder="{Binding TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderContainerStyle="{Binding TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderContextMenu="{Binding TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderTemplate="{Binding TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderTemplateSelector="{Binding TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
                                                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                 <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                             </ScrollViewer>
