@@ -166,11 +166,13 @@ namespace Biaui.Controls
                 dc.DrawRectangle(_backgroundBrush,
                     Caches.GetBorderPen(BorderColor, borderWidth / WpfHelper.PixelsPerDip), rect);
 
-                var y = Value * ActualHeight;
+                var bw = (borderWidth + 2) / WpfHelper.PixelsPerDip;
+                var y = Value * (ActualHeight - bw * 2) + bw;
+
                 if (IsInverseValue)
                     y = ActualHeight - y;
 
-                var r = new Rect(1, y - 2, rect.Width - 1, 5);
+                var r = new Rect(1, y - 2, rect.Width - 1, 4);
 
                 dc.DrawRectangle(null, Caches.PointOut, r);
                 dc.DrawRectangle(null, Caches.PointIn, r);
