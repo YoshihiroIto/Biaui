@@ -171,6 +171,7 @@
     <Compile Include="Internals\TreeViewItemExtensions.cs" />
     <Compile Include="Internals\Win32Helper.cs" />
     <Compile Include="Internals\WindowAction.cs" />
+    <Compile Include="Internals\WpfHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

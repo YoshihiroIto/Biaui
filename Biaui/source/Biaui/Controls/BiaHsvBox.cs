@@ -92,7 +92,7 @@ namespace Biaui.Controls
         #endregion
 
         #region Value
-        
+
         public double Value
         {
             get => _Value;
@@ -103,9 +103,9 @@ namespace Biaui.Controls
                     SetValue(ValueProperty, value);
             }
         }
-        
+
         private double _Value = default(double);
-        
+
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvBox),
                 new PropertyMetadata(
@@ -113,37 +113,49 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaHsvBox) s;
-                        self._Value = (double)e.NewValue;
+                        self._Value = (double) e.NewValue;
                         self.InvalidateVisual();
                     }));
-        
+
         #endregion
-        
+
         protected override void OnRender(DrawingContext dc)
         {
-            var p = Caches.GetBorderPen(BorderColor, 1);
+            var borderWidth = 2.0;
+            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
+            var halfPenWidth = borderWidth / WpfHelper.PixelsPerDip / 2;
 
-            var r = new Rect(0, 0, ActualWidth, ActualHeight);
+            var guidelines = new GuidelineSet();
+            guidelines.GuidelinesX.Add(rect.Left + halfPenWidth);
+            guidelines.GuidelinesX.Add(rect.Right + halfPenWidth);
+            guidelines.GuidelinesY.Add(rect.Top + halfPenWidth);
+            guidelines.GuidelinesY.Add(rect.Bottom + halfPenWidth);
+            guidelines.Freeze();
 
-            dc.DrawRectangle(_hueBrush, p, r);
-            dc.DrawRectangle(_valueBrush, p, r);
+            dc.PushGuidelineSet(guidelines);
+            {
+                var p = Caches.GetBorderPen(BorderColor, 2 / WpfHelper.PixelsPerDip);
 
+                dc.DrawRectangle(_hueBrush, null, rect);
+                dc.DrawRectangle(_valueBrush, null, rect);
 
-            var iv = 1 - Value;
-            iv = Math.Min(Math.Max(0, iv), 1);
+                var iv = 1 - Value;
+                iv = Math.Min(Math.Max(0, iv), 1);
 
-            var vb = new SolidColorBrush(Color.FromArgb((byte)(iv * 0xFF), 0x00, 0x00, 0x00));
-            vb.Freeze();
-            dc.DrawRectangle(vb, p, r);
+                var vb = new SolidColorBrush(Color.FromArgb((byte) (iv * 0xFF), 0x00, 0x00, 0x00));
+                vb.Freeze();
+                dc.DrawRectangle(vb, p, rect);
 
-            //
-            var x = Hue * ActualWidth;
-            var y = (1 - Saturation) * ActualHeight;
+                //
+                var x = Hue * ActualWidth;
+                var y = (1 - Saturation) * ActualHeight;
 
-            var c = new Point(x, y);
-            var s = 3.0;
-            dc.DrawEllipse(null, Caches.PointOut, c, s, s);
-            dc.DrawEllipse(null, Caches.PointIn, c, s, s);
+                var c = new Point(x, y);
+                var s = 3.0;
+                dc.DrawEllipse(null, Caches.PointOut, c, s, s);
+                dc.DrawEllipse(null, Caches.PointIn, c, s, s);
+            }
+            dc.Pop();
         }
 
         private void UpdateParams(MouseEventArgs e)

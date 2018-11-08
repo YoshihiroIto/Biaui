@@ -30,10 +30,10 @@ namespace Biaui.Internals
 
         static Caches()
         {
-            PointIn = new Pen(Brushes.White, 1);
+            PointIn = new Pen(Brushes.White, 2 / WpfHelper.PixelsPerDip);
             PointIn.Freeze();
 
-            PointOut = new Pen(Brushes.Black, 3);
+            PointOut = new Pen(Brushes.Black, 4 / WpfHelper.PixelsPerDip);
             PointOut.Freeze();
         }
     }

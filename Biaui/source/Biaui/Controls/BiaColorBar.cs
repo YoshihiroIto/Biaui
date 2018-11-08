@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
-using static System.Windows.PresentationSource;
 
 namespace Biaui.Controls
 {
@@ -159,16 +158,32 @@ namespace Biaui.Controls
                 UpdateBackgroundBrush();
             }
 
-            dc.DrawRectangle(_backgroundBrush, Caches.GetBorderPen(BorderColor, 1), ActualRectangle);
+            var borderWidth = 2.0;
+            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
+            var halfPenWidth = borderWidth / WpfHelper.PixelsPerDip / 2;
 
-            var y = Value * ActualHeight;
-            if (IsInverseValue)
-                y = ActualHeight - y;
+            var guidelines = new GuidelineSet();
+            guidelines.GuidelinesX.Add(rect.Left + halfPenWidth);
+            guidelines.GuidelinesX.Add(rect.Right + halfPenWidth);
+            guidelines.GuidelinesY.Add(rect.Top + halfPenWidth);
+            guidelines.GuidelinesY.Add(rect.Bottom + halfPenWidth);
+            guidelines.Freeze();
 
-            var r = new Rect(1, y - 2, ActualWidth - 2, 5);
+            dc.PushGuidelineSet(guidelines);
+            {
+                dc.DrawRectangle(_backgroundBrush,
+                    Caches.GetBorderPen(BorderColor, borderWidth / WpfHelper.PixelsPerDip), rect);
 
-            dc.DrawRectangle(null, Caches.PointOut, r);
-            dc.DrawRectangle(null, Caches.PointIn, r);
+                var y = Value * ActualHeight;
+                if (IsInverseValue)
+                    y = ActualHeight - y;
+
+                var r = new Rect(1, y - 2, rect.Width - 1, 5);
+
+                dc.DrawRectangle(null, Caches.PointOut, r);
+                dc.DrawRectangle(null, Caches.PointIn, r);
+            }
+            dc.Pop();
         }
 
         private void UpdateBackgroundBrush()
@@ -249,7 +264,5 @@ namespace Biaui.Controls
 
             InvalidateVisual();
         }
-
-        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
     }
 }

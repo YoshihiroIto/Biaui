@@ -145,7 +145,7 @@ namespace Biaui.Internals
                     0,
                     false,
                     _fontSize,
-                    PixelsPerDip,
+                    (float)WpfHelper.PixelsPerDip,
                     glyphIndexes,
                     new Point(x, y),
                     advanceWidths,
@@ -168,34 +168,6 @@ namespace Biaui.Internals
             _trimmedTextCache.Add(trimmedTextKey, gr);
 
             return gr;
-        }
-
-        private float _pixelsPerDip;
-
-        private float PixelsPerDip
-        {
-            get
-            {
-                if (_pixelsPerDip != default(float))
-                    return _pixelsPerDip;
-
-                var mainWindow = Application.Current.MainWindow;
-                if (mainWindow == null)
-                {
-                    _pixelsPerDip = 1.0f;
-                    return _pixelsPerDip;
-                }
-
-                var v = PresentationSource.FromVisual(mainWindow);
-                if (v?.CompositionTarget == null)
-                {
-                    _pixelsPerDip = 1.0f;
-                    return _pixelsPerDip;
-                }
-
-                _pixelsPerDip = (float) v.CompositionTarget.TransformToDevice.M11;
-                return _pixelsPerDip;
-            }
         }
 
         private double TrimGlyphRun(
