@@ -587,13 +587,13 @@ namespace Biaui.Controls
             if (CornerRadius == 0)
                 dc.DrawRectangle(
                     null,
-                    BorderPen,
+                    Caches.GetBorderPen(BorderColor, 1),
                     ActualRectangle, null
                 );
             else
                 dc.DrawRoundedRectangle(
                     null,
-                    BorderPen,
+                    Caches.GetBorderPen(BorderColor, 2),
                     ActualRectangle, null,
                     CornerRadius, null,
                     CornerRadius, null);
@@ -1099,25 +1099,6 @@ namespace Biaui.Controls
             }
         }
 
-        private Pen BorderPen
-        {
-            get
-            {
-                if (_borderPens.TryGetValue(BorderColor, out var p))
-                    return p;
-
-                var b = new SolidColorBrush(BorderColor);
-                b.Freeze();
-
-                p = new Pen(b, 2);
-                p.Freeze();
-
-                _borderPens.Add(BorderColor, p);
-
-                return p;
-            }
-        }
-
         private Geometry ClipGeom
         {
             get
@@ -1144,8 +1125,6 @@ namespace Biaui.Controls
         private static Geometry _DecSpinGeom;
         private static Geometry _IncSpinGeom;
         private static Brush _SpinBackground;
-
-        private static readonly Dictionary<Color, Pen> _borderPens = new Dictionary<Color, Pen>();
 
         private static readonly Dictionary<Size, RectangleGeometry> _clipGeoms =
             new Dictionary<Size, RectangleGeometry>();

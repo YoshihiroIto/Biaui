@@ -21,5 +21,10 @@
         <!-- Controls -->
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/ClippingBorder.xaml" />
+
+        <!-- Controls.ColorPicker -->
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHueSaturationBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
