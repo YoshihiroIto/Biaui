@@ -160,16 +160,8 @@ namespace Biaui.Controls
 
             var borderWidth = 2.0;
             var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
-            var halfPenWidth = borderWidth / WpfHelper.PixelsPerDip / 2;
 
-            var guidelines = new GuidelineSet();
-            guidelines.GuidelinesX.Add(rect.Left + halfPenWidth);
-            guidelines.GuidelinesX.Add(rect.Right + halfPenWidth);
-            guidelines.GuidelinesY.Add(rect.Top + halfPenWidth);
-            guidelines.GuidelinesY.Add(rect.Bottom + halfPenWidth);
-            guidelines.Freeze();
-
-            dc.PushGuidelineSet(guidelines);
+            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, borderWidth));
             {
                 dc.DrawRectangle(_backgroundBrush,
                     Caches.GetBorderPen(BorderColor, borderWidth / WpfHelper.PixelsPerDip), rect);

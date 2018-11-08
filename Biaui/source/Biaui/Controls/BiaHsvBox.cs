@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -123,16 +124,8 @@ namespace Biaui.Controls
         {
             var borderWidth = 2.0;
             var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
-            var halfPenWidth = borderWidth / WpfHelper.PixelsPerDip / 2;
 
-            var guidelines = new GuidelineSet();
-            guidelines.GuidelinesX.Add(rect.Left + halfPenWidth);
-            guidelines.GuidelinesX.Add(rect.Right + halfPenWidth);
-            guidelines.GuidelinesY.Add(rect.Top + halfPenWidth);
-            guidelines.GuidelinesY.Add(rect.Bottom + halfPenWidth);
-            guidelines.Freeze();
-
-            dc.PushGuidelineSet(guidelines);
+            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, borderWidth));
             {
                 var p = Caches.GetBorderPen(BorderColor, 2 / WpfHelper.PixelsPerDip);
 
@@ -142,8 +135,14 @@ namespace Biaui.Controls
                 var iv = 1 - Value;
                 iv = Math.Min(Math.Max(0, iv), 1);
 
-                var vb = new SolidColorBrush(Color.FromArgb((byte) (iv * 0xFF), 0x00, 0x00, 0x00));
-                vb.Freeze();
+                var key = (byte) (iv * 0xFF);
+                if (_valueBrushCache.TryGetValue(key, out var vb) == false)
+                {
+                    vb = new SolidColorBrush(Color.FromArgb((byte)(iv * 0xFF), 0x00, 0x00, 0x00));
+                    vb.Freeze();
+                    _valueBrushCache.Add(key, vb);
+                }
+
                 dc.DrawRectangle(vb, p, rect);
 
                 //
@@ -157,6 +156,8 @@ namespace Biaui.Controls
             }
             dc.Pop();
         }
+
+        private static Dictionary<byte, SolidColorBrush> _valueBrushCache = new Dictionary<byte, SolidColorBrush>();
 
         private void UpdateParams(MouseEventArgs e)
         {

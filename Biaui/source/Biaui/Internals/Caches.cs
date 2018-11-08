@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Biaui.Internals
@@ -26,14 +27,36 @@ namespace Biaui.Internals
             return p;
         }
 
+        public static GuidelineSet GetGuidelineSet(Rect rect, double borderWidth)
+        {
+            var halfPenWidth = borderWidth / WpfHelper.PixelsPerDip / 2;
+
+            var key = (rect, halfPenWidth);
+
+            if (_guidelineSets.TryGetValue(key, out var p))
+                return p;
+
+            var guidelines = new GuidelineSet();
+            guidelines.GuidelinesX.Add(rect.Left + halfPenWidth);
+            guidelines.GuidelinesX.Add(rect.Right + halfPenWidth);
+            guidelines.GuidelinesY.Add(rect.Top + halfPenWidth);
+            guidelines.GuidelinesY.Add(rect.Bottom + halfPenWidth);
+            guidelines.Freeze();
+
+            _guidelineSets.Add(key, guidelines);
+
+            return guidelines;
+        }
+
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
+        private static readonly Dictionary<(Rect, double), GuidelineSet> _guidelineSets = new Dictionary<(Rect, double), GuidelineSet>();
 
         static Caches()
         {
             PointIn = new Pen(Brushes.White, 2 / WpfHelper.PixelsPerDip);
             PointIn.Freeze();
 
-            PointOut = new Pen(Brushes.Black, 4 / WpfHelper.PixelsPerDip);
+            PointOut = new Pen(Brushes.Black, 5 / WpfHelper.PixelsPerDip);
             PointOut.Freeze();
         }
     }
