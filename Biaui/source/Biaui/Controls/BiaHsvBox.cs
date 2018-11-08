@@ -146,8 +146,10 @@ namespace Biaui.Controls
                 dc.DrawRectangle(vb, p, rect);
 
                 //
-                var x = Hue * ActualWidth;
-                var y = (1 - Saturation) * ActualHeight;
+                var bw = (borderWidth + 2) / WpfHelper.PixelsPerDip;
+
+                var x = Hue * (ActualWidth - bw * 2) + bw;
+                var y = (1 - Saturation) * (ActualHeight - bw * 2) + bw;
 
                 var c = new Point(x, y);
                 var s = 3.0;
@@ -157,7 +159,7 @@ namespace Biaui.Controls
             dc.Pop();
         }
 
-        private static Dictionary<byte, SolidColorBrush> _valueBrushCache = new Dictionary<byte, SolidColorBrush>();
+        private static readonly Dictionary<byte, SolidColorBrush> _valueBrushCache = new Dictionary<byte, SolidColorBrush>();
 
         private void UpdateParams(MouseEventArgs e)
         {
@@ -230,7 +232,6 @@ namespace Biaui.Controls
             if (_isMouseDown)
             {
                 _isMouseDown = false;
-                ReleaseMouseCapture();
                 Win32Helper.ClipCursor(IntPtr.Zero);
             }
 
