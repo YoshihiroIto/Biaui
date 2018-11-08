@@ -236,14 +236,14 @@ namespace Biaui.Controls
             if (max != min)
             {
                 if (max == Red) h = 60.0 / 360 * (Green - Blue) / (max - min);
-                if (max == Green) h = 60.0 / 360 * (Blue - Red) / (max - min) + 120.0 / 360;
-                if (max == Blue) h = 60.0 / 360 * (Red - Green) / (max - min) + 240.0 / 360;
+                else if (max == Green) h = 60.0 / 360 * (Blue - Red) / (max - min) + 120.0 / 360;
+                else if (max == Blue) h = 60.0 / 360 * (Red - Green) / (max - min) + 240.0 / 360;
 
                 s = (max - min) / max;
             }
 
             if (h < 0)
-                h = h + 360;
+                h = h + 1;
 
             Hue = h;
             Saturation = s;

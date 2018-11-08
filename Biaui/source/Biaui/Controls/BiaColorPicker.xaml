@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:colorPicker="clr-namespace:Biaui.Controls"
-                    xmlns:biaui="clr-namespace:Biaui">
+                    xmlns:biaui="clr-namespace:Biaui"
+                    xmlns:colorPicker="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type colorPicker:BiaColorPicker}">
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
 
@@ -14,12 +14,16 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <colorPicker:BiaHueSaturationBox Grid.Column="0" />
+                        <colorPicker:BiaHueSaturationBox Grid.Column="0"
+                                                         Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                         Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                         <colorPicker:BiaColorBar Grid.Column="1"
                                                  Width="{x:Static biaui:Constants.BasicOneLineHeight}"
                                                  Margin="8,0,0,0"
-                                                 HorizontalAlignment="Center" />
+                                                 HorizontalAlignment="Center"
+                                                 IsInverseValue="True"
+                                                 Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

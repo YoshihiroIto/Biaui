@@ -169,6 +169,7 @@
     <Compile Include="Internals\TextRenderer.cs" />
     <Compile Include="Internals\TreeViewHelper.cs" />
     <Compile Include="Internals\TreeViewItemExtensions.cs" />
+    <Compile Include="Internals\Win32Helper.cs" />
     <Compile Include="Internals\WindowAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

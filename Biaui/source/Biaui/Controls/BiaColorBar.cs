@@ -1,12 +1,42 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
+using static System.Windows.PresentationSource;
 
 namespace Biaui.Controls
 {
     public class BiaColorBar : FrameworkElement
     {
+        #region Value
+
+        public double Value
+        {
+            get => _value;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _value)
+                    SetValue(ValueProperty, value);
+            }
+        }
+
+        private double _value = default(double);
+
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaColorBar),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorBar) s;
+                        self._value = (double) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
         #region Color0
 
         public Color Color0
@@ -63,32 +93,6 @@ namespace Biaui.Controls
 
         #endregion
 
-        #region Orientation
-
-        public Orientation Orientation
-        {
-            get => _Orientation;
-            set
-            {
-                if (value != _Orientation)
-                    SetValue(OrientationProperty, value);
-            }
-        }
-
-        private Orientation _Orientation = Orientation.Vertical;
-
-        public static readonly DependencyProperty OrientationProperty =
-            DependencyProperty.Register(nameof(Orientation), typeof(Orientation), typeof(BiaColorBar),
-                new PropertyMetadata(
-                    Boxes.OrientationVertical,
-                    (s, e) =>
-                    {
-                        var self = (BiaColorBar) s;
-                        self._Orientation = (Orientation) e.NewValue;
-                    }));
-
-        #endregion
-
         #region BorderColor
 
         public Color BorderColor
@@ -116,6 +120,32 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsInverseValue
+
+        public bool IsInverseValue
+        {
+            get => _IsInverseValue;
+            set
+            {
+                if (value != _IsInverseValue)
+                    SetValue(IsInverseValueProperty, value);
+            }
+        }
+
+        private bool _IsInverseValue = default(bool);
+
+        public static readonly DependencyProperty IsInverseValueProperty =
+            DependencyProperty.Register(nameof(IsInverseValue), typeof(bool), typeof(BiaColorBar),
+                new PropertyMetadata(
+                    Boxes.BoolFalse,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorBar) s;
+                        self._IsInverseValue = (bool) e.NewValue;
+                    }));
+
+        #endregion
+
         private Brush _backgroundBrush;
         private bool _isRequestUpdateBackgroundBrush = true;
 
@@ -130,12 +160,94 @@ namespace Biaui.Controls
             }
 
             dc.DrawRectangle(_backgroundBrush, Caches.GetBorderPen(BorderColor, 1), ActualRectangle);
+
+            var y = Value * ActualHeight;
+            if (IsInverseValue)
+                y = ActualHeight - y;
+
+            var r = new Rect(1, y - 2, ActualWidth - 2, 5);
+
+            dc.DrawRectangle(null, Caches.PointOut, r);
+            dc.DrawRectangle(null, Caches.PointIn, r);
         }
 
         private void UpdateBackgroundBrush()
         {
             _backgroundBrush = new LinearGradientBrush(Color1, Color0, 90);
             _backgroundBrush.Freeze();
+        }
+
+        private const double borderSize = 1.0;
+
+        private void UpdateParams(MouseEventArgs e)
+        {
+            var pos = e.GetPosition(this);
+
+            var y = pos.Y / (ActualHeight - borderSize);
+
+            Value = IsInverseValue ? 1 - y : y;
+        }
+
+        private bool _isMouseDown;
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            _isMouseDown = true;
+            GuiHelper.HideCursor();
+
+            UpdateParams(e);
+
+            // マウス可動域を設定
+            {
+                var p0 = new Point(0, 0);
+                var p1 = new Point(ActualWidth, ActualHeight);
+                var dp0 = PointToScreen(p0);
+                var dp1 = PointToScreen(p1);
+                var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+                Win32Helper.ClipCursor(ref cr);
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (_isMouseDown == false)
+                return;
+
+            UpdateParams(e);
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+
+            _isMouseDown = false;
+            Win32Helper.ClipCursor(IntPtr.Zero);
+            GuiHelper.ShowCursor();
+        }
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            InvalidateVisual();
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+
+            if (_isMouseDown)
+            {
+                _isMouseDown = false;
+                ReleaseMouseCapture();
+                Win32Helper.ClipCursor(IntPtr.Zero);
+            }
+
+            InvalidateVisual();
         }
 
         private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));

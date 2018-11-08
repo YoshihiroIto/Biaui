@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
 
@@ -33,6 +35,62 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region Hue
+
+        public double Hue
+        {
+            get => _Hue;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _Hue)
+                    SetValue(HueProperty, value);
+            }
+        }
+
+        private double _Hue;
+
+        public static readonly DependencyProperty HueProperty =
+            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHueSaturationBox),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaHueSaturationBox) s;
+                        self._Hue = (double) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
+        #region Saturation
+
+        public double Saturation
+        {
+            get => _Saturation;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _Saturation)
+                    SetValue(SaturationProperty, value);
+            }
+        }
+
+        private double _Saturation;
+
+        public static readonly DependencyProperty SaturationProperty =
+            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHueSaturationBox),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaHueSaturationBox) s;
+                        self._Saturation = (double) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
         protected override void OnRender(DrawingContext dc)
         {
             var p = Caches.GetBorderPen(BorderColor, 1);
@@ -41,6 +99,92 @@ namespace Biaui.Controls
 
             dc.DrawRectangle(_hueBrush, p, r);
             dc.DrawRectangle(_valueBrush, p, r);
+
+            var x = Hue * ActualWidth;
+            var y = (1 - Saturation) * ActualHeight;
+
+            var c = new Point(x, y);
+            var s = 3.0;
+            dc.DrawEllipse(null, Caches.PointOut, c, s, s);
+            dc.DrawEllipse(null, Caches.PointIn, c, s, s);
+        }
+
+        private void UpdateParams(MouseEventArgs e)
+        {
+            var pos = e.GetPosition(this);
+
+            var x = pos.X / (ActualWidth - borderSize);
+            var y = pos.Y / (ActualHeight - borderSize);
+
+            x = Math.Min(Math.Max(x, 0), 1);
+            y = Math.Min(Math.Max(y, 0), 1);
+
+            Hue = x;
+            Saturation = 1 - y;
+        }
+
+        private const double borderSize = 1.0;
+
+        private bool _isMouseDown;
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            _isMouseDown = true;
+            GuiHelper.HideCursor();
+
+            UpdateParams(e);
+
+            // マウス可動域を設定
+            {
+                var p0 = new Point(0, 0);
+                var p1 = new Point(ActualWidth, ActualHeight);
+                var dp0 = PointToScreen(p0);
+                var dp1 = PointToScreen(p1);
+                var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+                Win32Helper.ClipCursor(ref cr);
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (_isMouseDown == false)
+                return;
+
+            UpdateParams(e);
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+
+            _isMouseDown = false;
+            GuiHelper.ShowCursor();
+            Win32Helper.ClipCursor(IntPtr.Zero);
+        }
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            InvalidateVisual();
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+
+            if (_isMouseDown)
+            {
+                _isMouseDown = false;
+                ReleaseMouseCapture();
+                Win32Helper.ClipCursor(IntPtr.Zero);
+            }
+
+            InvalidateVisual();
         }
 
         private static readonly Brush _hueBrush;

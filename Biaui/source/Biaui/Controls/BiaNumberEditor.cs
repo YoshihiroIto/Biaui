@@ -698,7 +698,7 @@ namespace Biaui.Controls
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            base.OnMouseDown(e);
+            base.OnMouseLeftButtonDown(e);
 
             if (IsReadOnly)
                 return;
@@ -720,8 +720,8 @@ namespace Biaui.Controls
                     var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
                     var dp0 = PointToScreen(p0);
                     var dp1 = PointToScreen(p1);
-                    var cr = new Win32RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
-                    ClipCursor(ref cr);
+                    var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+                    Win32Helper.ClipCursor(ref cr);
                 }
             }
         }
@@ -771,7 +771,7 @@ namespace Biaui.Controls
 
                     // 移動量だけ取れれば良いので、現在位置をスタート位置に戻す
                     var p = PointToScreen(_mouseDownPos);
-                    SetCursorPos((int) p.X, (int) p.Y);
+                    Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
                     currentPos = _mouseDownPos;
 
                     break;
@@ -785,7 +785,7 @@ namespace Biaui.Controls
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            base.OnMouseUp(e);
+            base.OnMouseLeftButtonDown(e);
 
             if (IsReadOnly == false)
             {
@@ -796,13 +796,13 @@ namespace Biaui.Controls
                     switch (Mode)
                     {
                         case BiaNumberEditorMode.Simple:
-                            ClipCursor(IntPtr.Zero);
+                            Win32Helper.ClipCursor(IntPtr.Zero);
                             break;
 
                         case BiaNumberEditorMode.WideRange:
                         {
                             var p = PointToScreen(_mouseDownPos);
-                            SetCursorPos((int) p.X, (int) p.Y);
+                            Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
                             GuiHelper.ShowCursor();
                             break;
                         }
@@ -850,7 +850,7 @@ namespace Biaui.Controls
             {
                 _isMouseDown = false;
                 ReleaseMouseCapture();
-                ClipCursor(IntPtr.Zero);
+                Win32Helper.ClipCursor(IntPtr.Zero);
                 GuiHelper.ShowCursor();
             }
 
@@ -1133,30 +1133,5 @@ namespace Biaui.Controls
             new Dictionary<(double X, double Y), TranslateTransform>();
 
         private static bool IsCtrl => (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
-
-        [DllImport("User32.dll")]
-        private static extern bool SetCursorPos(int X, int Y);
-
-        [DllImport("user32.dll")]
-        private static extern bool ClipCursor(ref Win32RECT lpWin32Rect);
-
-        [DllImport("user32.dll")]
-        private static extern bool ClipCursor(IntPtr ptr);
-
-        public struct Win32RECT
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-
-            public Win32RECT(int left, int top, int right, int bottom)
-            {
-                Left = left;
-                Top = top;
-                Right = right;
-                Bottom = bottom;
-            }
-        }
     }
 }
