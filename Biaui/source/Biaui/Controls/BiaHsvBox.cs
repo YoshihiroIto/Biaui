@@ -130,7 +130,7 @@ namespace Biaui.Controls
                 var p = Caches.GetBorderPen(BorderColor, 2 / WpfHelper.PixelsPerDip);
 
                 dc.DrawRectangle(_hueBrush, null, rect);
-                dc.DrawRectangle(_valueBrush, null, rect);
+                dc.DrawRectangle(_saturationBrush, null, rect);
 
                 var iv = 1 - Value;
                 iv = Math.Min(Math.Max(0, iv), 1);
@@ -239,7 +239,7 @@ namespace Biaui.Controls
         }
 
         private static readonly Brush _hueBrush;
-        private static readonly Brush _valueBrush;
+        private static readonly Brush _saturationBrush;
 
         static BiaHsvBox()
         {
@@ -271,7 +271,7 @@ namespace Biaui.Controls
             }
 
             {
-                var s0 = new GradientStop(Color.FromArgb(0x00, 0x00, 0x00, 0x00), 0.0);
+                var s0 = new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 0.0);
                 var s1 = new GradientStop(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), 1.0);
 
                 s0.Freeze();
@@ -283,8 +283,8 @@ namespace Biaui.Controls
                 };
                 c.Freeze();
 
-                _valueBrush = new LinearGradientBrush(c, 90);
-                _valueBrush.Freeze();
+                _saturationBrush = new LinearGradientBrush(c, 90);
+                _saturationBrush.Freeze();
             }
         }
     }
