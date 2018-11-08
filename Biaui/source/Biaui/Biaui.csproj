@@ -62,7 +62,7 @@
     <Page Include="Controls\BiaColorPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\BiaHueSaturationBox.xaml">
+    <Page Include="Controls\BiaHsvBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BiaColorBar.xaml">
@@ -146,7 +146,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\BiaColorPicker.cs" />
     <Compile Include="Controls\BiaColorBar.cs" />
-    <Compile Include="Controls\BiaHueSaturationBox.cs" />
+    <Compile Include="Controls\BiaHsvBox.cs" />
     <Compile Include="Controls\BiaWindow.cs" />
     <Page Include="ToolTip.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>

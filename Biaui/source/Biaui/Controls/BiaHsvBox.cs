@@ -6,7 +6,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls
 {
-    public class BiaHueSaturationBox : FrameworkElement
+    public class BiaHsvBox : FrameworkElement
     {
         #region BorderColor
 
@@ -23,12 +23,12 @@ namespace Biaui.Controls
         private Color _BorderColor = Colors.Red;
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaHueSaturationBox),
+            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaHsvBox),
                 new PropertyMetadata(
                     Boxes.ColorRed,
                     (s, e) =>
                     {
-                        var self = (BiaHueSaturationBox) s;
+                        var self = (BiaHsvBox) s;
                         self._BorderColor = (Color) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -51,12 +51,12 @@ namespace Biaui.Controls
         private double _Hue;
 
         public static readonly DependencyProperty HueProperty =
-            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHueSaturationBox),
+            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvBox),
                 new PropertyMetadata(
                     Boxes.Double0,
                     (s, e) =>
                     {
-                        var self = (BiaHueSaturationBox) s;
+                        var self = (BiaHsvBox) s;
                         self._Hue = (double) e.NewValue;
                         self.InvalidateVisual();
                     }));
@@ -79,18 +79,46 @@ namespace Biaui.Controls
         private double _Saturation;
 
         public static readonly DependencyProperty SaturationProperty =
-            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHueSaturationBox),
+            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvBox),
                 new PropertyMetadata(
                     Boxes.Double0,
                     (s, e) =>
                     {
-                        var self = (BiaHueSaturationBox) s;
+                        var self = (BiaHsvBox) s;
                         self._Saturation = (double) e.NewValue;
                         self.InvalidateVisual();
                     }));
 
         #endregion
 
+        #region Value
+        
+        public double Value
+        {
+            get => _Value;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _Value)
+                    SetValue(ValueProperty, value);
+            }
+        }
+        
+        private double _Value = default(double);
+        
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvBox),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaHsvBox) s;
+                        self._Value = (double)e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+        
+        #endregion
+        
         protected override void OnRender(DrawingContext dc)
         {
             var p = Caches.GetBorderPen(BorderColor, 1);
@@ -100,6 +128,15 @@ namespace Biaui.Controls
             dc.DrawRectangle(_hueBrush, p, r);
             dc.DrawRectangle(_valueBrush, p, r);
 
+
+            var iv = 1 - Value;
+            iv = Math.Min(Math.Max(0, iv), 1);
+
+            var vb = new SolidColorBrush(Color.FromArgb((byte)(iv * 0xFF), 0x00, 0x00, 0x00));
+            vb.Freeze();
+            dc.DrawRectangle(vb, p, r);
+
+            //
             var x = Hue * ActualWidth;
             var y = (1 - Saturation) * ActualHeight;
 
@@ -190,7 +227,7 @@ namespace Biaui.Controls
         private static readonly Brush _hueBrush;
         private static readonly Brush _valueBrush;
 
-        static BiaHueSaturationBox()
+        static BiaHsvBox()
         {
             {
                 var s0 = new GradientStop(Color.FromRgb(0xFF, 0x00, 0x00), 0.0 / 6);

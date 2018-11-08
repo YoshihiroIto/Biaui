@@ -14,9 +14,10 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <colorPicker:BiaHueSaturationBox Grid.Column="0"
-                                                         Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                         Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                        <colorPicker:BiaHsvBox Grid.Column="0"
+                                               Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                               Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                               Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                         <colorPicker:BiaColorBar Grid.Column="1"
                                                  Width="{x:Static biaui:Constants.BasicOneLineHeight}"
