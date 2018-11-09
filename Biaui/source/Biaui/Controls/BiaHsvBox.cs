@@ -120,6 +120,33 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsReadOnly
+
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set
+            {
+                if (value != _IsReadOnly)
+                    SetValue(IsReadOnlyProperty, value);
+            }
+        }
+
+        private bool _IsReadOnly = default(bool);
+
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBox),
+                new PropertyMetadata(
+                    Boxes.BoolFalse,
+                    (s, e) =>
+                    {
+                        var self = (BiaHsvBox) s;
+                        self._IsReadOnly = (bool) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
         protected override void OnRender(DrawingContext dc)
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -148,7 +175,7 @@ namespace Biaui.Controls
                 var c = new Point(x, y);
                 var s = 3.0;
                 dc.DrawEllipse(null, Caches.PointOut, c, s, s);
-                dc.DrawEllipse(null, Caches.PointIn, c, s, s);
+                dc.DrawEllipse(null, IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s, s);
             }
             dc.Pop();
         }
@@ -175,6 +202,9 @@ namespace Biaui.Controls
         {
             base.OnMouseLeftButtonDown(e);
 
+            if (IsReadOnly)
+                return;
+
             _isMouseDown = true;
             GuiHelper.HideCursor();
 
@@ -195,6 +225,9 @@ namespace Biaui.Controls
         {
             base.OnMouseMove(e);
 
+            if (IsReadOnly)
+                return;
+
             if (_isMouseDown == false)
                 return;
 
@@ -204,6 +237,9 @@ namespace Biaui.Controls
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
+
+            if (IsReadOnly)
+                return;
 
             _isMouseDown = false;
             GuiHelper.ShowCursor();

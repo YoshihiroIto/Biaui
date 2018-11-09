@@ -27,6 +27,7 @@
                                                Grid.ColumnSpan="2"
                                                Margin="0,0,32,0"
                                                Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                               IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
@@ -35,6 +36,7 @@
                                                  Width="{x:Static biaui:Constants.BasicOneLineHeight}"
                                                  HorizontalAlignment="Right"
                                                  IsInverseValue="True"
+                                                 IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                  Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                         <colorPicker:ClippingBorder Grid.Row="1"
@@ -65,16 +67,19 @@
 
                                 <colorPicker:BiaNumberEditor Grid.Row="0"
                                                              Caption="Red"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor Grid.Row="1"
                                                              Margin="0,1,0,0"
                                                              Caption="Green"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor Grid.Row="2"
                                                              Margin="0,1,0,0"
                                                              Caption="Blue"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                             </Grid>
                         </colorPicker:ClippingBorder>
@@ -107,16 +112,19 @@
 
                                 <colorPicker:BiaNumberEditor Grid.Row="0"
                                                              Caption="Hue"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor Grid.Row="1"
                                                              Margin="0,1,0,0"
                                                              Caption="Saturation"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor Grid.Row="2"
                                                              Margin="0,1,0,0"
                                                              Caption="Value"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                             </Grid>
                         </colorPicker:ClippingBorder>

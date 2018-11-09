@@ -209,6 +209,33 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsReadOnly
+        
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set
+            {
+                if (value != _IsReadOnly)
+                    SetValue(IsReadOnlyProperty, value);
+            }
+        }
+        
+        private bool _IsReadOnly = default(bool);
+        
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.BoolFalse,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._IsReadOnly = (bool)e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+        
+        #endregion
+
         static BiaColorPicker()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaColorPicker),

@@ -141,6 +141,34 @@ namespace Biaui.Controls
                     {
                         var self = (BiaColorBar) s;
                         self._IsInverseValue = (bool) e.NewValue;
+                        self.InvalidateVisual();
+                    }));
+
+        #endregion
+
+        #region IsReadOnly
+
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set
+            {
+                if (value != _IsReadOnly)
+                    SetValue(IsReadOnlyProperty, value);
+            }
+        }
+
+        private bool _IsReadOnly = default(bool);
+
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaColorBar),
+                new PropertyMetadata(
+                    Boxes.BoolFalse,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorBar) s;
+                        self._IsReadOnly = (bool) e.NewValue;
+                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -179,7 +207,7 @@ namespace Biaui.Controls
                 var r = new Rect(1, y - 2, rect.Width - 1, 4);
 
                 dc.DrawRectangle(null, Caches.PointOut, r);
-                dc.DrawRectangle(null, Caches.PointIn, r);
+                dc.DrawRectangle(null, IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, r);
             }
             dc.Pop();
         }
@@ -208,6 +236,9 @@ namespace Biaui.Controls
         {
             base.OnMouseLeftButtonDown(e);
 
+            if (IsReadOnly)
+                return;
+
             _isMouseDown = true;
             GuiHelper.HideCursor();
 
@@ -228,6 +259,9 @@ namespace Biaui.Controls
         {
             base.OnMouseMove(e);
 
+            if (IsReadOnly)
+                return;
+
             if (_isMouseDown == false)
                 return;
 
@@ -237,6 +271,9 @@ namespace Biaui.Controls
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
+
+            if (IsReadOnly)
+                return;
 
             _isMouseDown = false;
             Win32Helper.ClipCursor(IntPtr.Zero);

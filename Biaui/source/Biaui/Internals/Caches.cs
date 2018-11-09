@@ -7,6 +7,7 @@ namespace Biaui.Internals
     public static class Caches
     {
         public static readonly Pen PointIn;
+        public static readonly Pen PointInIsReadOnly;
         public static readonly Pen PointOut;
 
         public static Pen GetBorderPen(Color color, double thickness)
@@ -55,6 +56,9 @@ namespace Biaui.Internals
         {
             PointIn = new Pen(Brushes.White, 2 / WpfHelper.PixelsPerDip);
             PointIn.Freeze();
+
+            PointInIsReadOnly = new Pen(Brushes.Gray, 2 / WpfHelper.PixelsPerDip);
+            PointInIsReadOnly.Freeze();
 
             PointOut = new Pen(Brushes.Black, 5 / WpfHelper.PixelsPerDip);
             PointOut.Freeze();
