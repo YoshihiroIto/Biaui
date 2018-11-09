@@ -150,7 +150,11 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            base.OnRender(dc);
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            if (ActualWidth <= 1 ||
+                ActualHeight <= 1)
+                return;
+            // ReSharper restore CompareOfFloatsByEqualityOperator
 
             if (_isRequestUpdateBackgroundBrush)
             {

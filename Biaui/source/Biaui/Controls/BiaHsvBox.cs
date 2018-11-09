@@ -122,6 +122,12 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            if (ActualWidth <= 1 ||
+                ActualHeight <= 1)
+                return;
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+
             var borderWidth = 2.0;
             var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
 

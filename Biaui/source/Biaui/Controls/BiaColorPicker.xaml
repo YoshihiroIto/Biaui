@@ -2,7 +2,141 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:colorPicker="clr-namespace:Biaui.Controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="{x:Type colorPicker:BiaColorPicker}">
+        <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <colorPicker:BiaHsvBox Grid.Row="0"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Margin="0,0,32,0"
+                                               Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                               Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                               Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                        <colorPicker:BiaColorBar Grid.Row="0"
+                                                 Grid.Column="1"
+                                                 Width="{x:Static biaui:Constants.BasicOneLineHeight}"
+                                                 HorizontalAlignment="Right"
+                                                 IsInverseValue="True"
+                                                 Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                        <colorPicker:ClippingBorder Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Margin="0,8,4,0"
+                                                    Background="{DynamicResource TextBoxBorderBrushKey}"
+                                                    BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
+                                        <Setter Property="Minimum" Value="0" />
+                                        <Setter Property="Maximum" Value="1" />
+                                        <Setter Property="SliderMinimum" Value="0" />
+                                        <Setter Property="SliderMaximum" Value="1" />
+                                        <Setter Property="Increment" Value="0.1" />
+                                        <Setter Property="CornerRadius" Value="0" />
+                                        <Setter Property="IsVisibleBorder" Value="False" />
+                                    </Style>
+                                </Grid.Resources>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <colorPicker:BiaNumberEditor Grid.Row="0"
+                                                             Caption="Red"
+                                                             Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                                <colorPicker:BiaNumberEditor Grid.Row="1"
+                                                             Margin="0,1,0,0"
+                                                             Caption="Green"
+                                                             Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                                <colorPicker:BiaNumberEditor Grid.Row="2"
+                                                             Margin="0,1,0,0"
+                                                             Caption="Blue"
+                                                             Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                            </Grid>
+                        </colorPicker:ClippingBorder>
+
+                        <colorPicker:ClippingBorder Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Margin="4,8,0,0"
+                                                    Background="{DynamicResource TextBoxBorderBrushKey}"
+                                                    BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
+                                        <Setter Property="Minimum" Value="0" />
+                                        <Setter Property="Maximum" Value="1" />
+                                        <Setter Property="SliderMinimum" Value="0" />
+                                        <Setter Property="SliderMaximum" Value="1" />
+                                        <Setter Property="Increment" Value="0.1" />
+                                        <Setter Property="CornerRadius" Value="0" />
+                                        <Setter Property="IsVisibleBorder" Value="False" />
+                                    </Style>
+                                </Grid.Resources>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <colorPicker:BiaNumberEditor Grid.Row="0"
+                                                             Caption="Hue"
+                                                             Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                                <colorPicker:BiaNumberEditor Grid.Row="1"
+                                                             Margin="0,1,0,0"
+                                                             Caption="Saturation"
+                                                             Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                                <colorPicker:BiaNumberEditor Grid.Row="2"
+                                                             Margin="0,1,0,0"
+                                                             Caption="Value"
+                                                             Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                            </Grid>
+                        </colorPicker:ClippingBorder>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
+            </Trigger>
+
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderColor" Value="{DynamicResource InactiveBorderColorKey}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ColorPickerSimpleStyle" TargetType="{x:Type colorPicker:BiaColorPicker}">
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
 
         <Setter Property="Template">
@@ -40,4 +174,5 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
 </ResourceDictionary>
