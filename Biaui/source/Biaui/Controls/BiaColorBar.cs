@@ -193,6 +193,7 @@ namespace Biaui.Controls
             var pos = e.GetPosition(this);
 
             var y = pos.Y / (ActualHeight - borderSize);
+            y = Math.Min(Math.Max(y, 0), 1);
 
             Value = IsInverseValue ? 1 - y : y;
         }

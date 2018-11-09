@@ -129,21 +129,9 @@ namespace Biaui.Controls
             {
                 var p = Caches.GetBorderPen(BorderColor, 2 / WpfHelper.PixelsPerDip);
 
-                dc.DrawRectangle(_hueBrush, null, rect);
-                dc.DrawRectangle(_saturationBrush, null, rect);
-
-                var iv = 1 - Value;
-                iv = Math.Min(Math.Max(0, iv), 1);
-
-                var key = (byte) (iv * 0xFF);
-                if (_valueBrushCache.TryGetValue(key, out var vb) == false)
-                {
-                    vb = new SolidColorBrush(Color.FromArgb((byte)(iv * 0xFF), 0x00, 0x00, 0x00));
-                    vb.Freeze();
-                    _valueBrushCache.Add(key, vb);
-                }
-
-                dc.DrawRectangle(vb, p, rect);
+                var b = GetBackgroundBrush();
+                dc.DrawRectangle(b.Hue, null, rect);
+                dc.DrawRectangle(b.Saturation, p, rect);
 
                 //
                 var bw = (borderWidth + 2) / WpfHelper.PixelsPerDip;
@@ -158,8 +146,6 @@ namespace Biaui.Controls
             }
             dc.Pop();
         }
-
-        private static readonly Dictionary<byte, SolidColorBrush> _valueBrushCache = new Dictionary<byte, SolidColorBrush>();
 
         private void UpdateParams(MouseEventArgs e)
         {
@@ -238,19 +224,24 @@ namespace Biaui.Controls
             InvalidateVisual();
         }
 
-        private static readonly Brush _hueBrush;
-        private static readonly Brush _saturationBrush;
+        private static readonly Dictionary<double, (Brush Hue, Brush Saturation)> _brushCache =
+            new Dictionary<double, (Brush Hue, Brush Saturation)>();
 
-        static BiaHsvBox()
+        private (Brush Hue, Brush Saturation) GetBackgroundBrush()
         {
+            if (_brushCache.TryGetValue(Value, out var brush))
+                return brush;
+
+            var v = Value;
+
             {
-                var s0 = new GradientStop(Color.FromRgb(0xFF, 0x00, 0x00), 0.0 / 6);
-                var s1 = new GradientStop(Color.FromRgb(0xFF, 0xFF, 0x00), 1.0 / 6);
-                var s2 = new GradientStop(Color.FromRgb(0x00, 0xFF, 0x00), 2.0 / 6);
-                var s3 = new GradientStop(Color.FromRgb(0x00, 0xFF, 0xFF), 3.0 / 6);
-                var s4 = new GradientStop(Color.FromRgb(0x00, 0x00, 0xFF), 4.0 / 6);
-                var s5 = new GradientStop(Color.FromRgb(0xFF, 0x00, 0xFF), 5.0 / 6);
-                var s6 = new GradientStop(Color.FromRgb(0xFF, 0x00, 0x00), 6.0 / 6);
+                var s0 = new GradientStop(P(0xFF, 0x00, 0x00, v), 0.0 / 6);
+                var s1 = new GradientStop(P(0xFF, 0xFF, 0x00, v), 1.0 / 6);
+                var s2 = new GradientStop(P(0x00, 0xFF, 0x00, v), 2.0 / 6);
+                var s3 = new GradientStop(P(0x00, 0xFF, 0xFF, v), 3.0 / 6);
+                var s4 = new GradientStop(P(0x00, 0x00, 0xFF, v), 4.0 / 6);
+                var s5 = new GradientStop(P(0xFF, 0x00, 0xFF, v), 5.0 / 6);
+                var s6 = new GradientStop(P(0xFF, 0x00, 0x00, v), 6.0 / 6);
 
                 s0.Freeze();
                 s1.Freeze();
@@ -260,32 +251,37 @@ namespace Biaui.Controls
                 s5.Freeze();
                 s6.Freeze();
 
-                var c = new GradientStopCollection
-                {
-                    s0, s1, s2, s3, s4, s5, s6
-                };
+                var c = new GradientStopCollection {s0, s1, s2, s3, s4, s5, s6};
                 c.Freeze();
 
-                _hueBrush = new LinearGradientBrush(c, 0);
-                _hueBrush.Freeze();
+                brush.Hue = new LinearGradientBrush(c, 0);
+                brush.Hue.Freeze();
             }
 
             {
-                var s0 = new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 0.0);
-                var s1 = new GradientStop(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF), 1.0);
+                var s0 = new GradientStop(PA(0x00, 0xFF, 0xFF, 0xFF, v), 0.0);
+                var s1 = new GradientStop(P(0xFF, 0xFF, 0xFF, v), 1.0);
 
                 s0.Freeze();
                 s1.Freeze();
 
-                var c = new GradientStopCollection
-                {
-                    s0, s1,
-                };
+                var c = new GradientStopCollection {s0, s1,};
                 c.Freeze();
 
-                _saturationBrush = new LinearGradientBrush(c, 90);
-                _saturationBrush.Freeze();
+                brush.Saturation = new LinearGradientBrush(c, 90);
+                brush.Saturation.Freeze();
             }
+
+            _brushCache.Add(Value, brush);
+
+            return brush;
+
+            //////////////////////////////////////////////////////////////////
+            Color PA(byte a, byte r, byte g, byte b, double value)
+                => Color.FromArgb(a, (byte) (r * value), (byte) (g * value), (byte) (b * value));
+
+            Color P(byte r, byte g, byte b, double value)
+                => Color.FromRgb((byte) (r * value), (byte) (g * value), (byte) (b * value));
         }
     }
 }
