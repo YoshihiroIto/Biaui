@@ -128,7 +128,7 @@
                                Placement="Bottom"
                                PopupAnimation="None"
                                VerticalOffset="1">
-                            <controls:ClippingBorder x:Name="dropdown"
+                            <controls:BiaClippingBorder x:Name="dropdown"
                                                      MaxHeight="414"
                                                      Background="{DynamicResource SubmenuItemBackground}"
                                                      BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
@@ -137,7 +137,7 @@
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <ItemsPresenter />
                                 </ScrollViewer>
-                            </controls:ClippingBorder>
+                            </controls:BiaClippingBorder>
                         </Popup>
                     </Grid>
 

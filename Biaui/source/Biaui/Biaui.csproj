@@ -68,7 +68,7 @@
     <Page Include="Controls\BiaColorBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ClippingBorder.xaml">
+    <Page Include="Controls\BiaClippingBorder.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BiaNumberEditor.xaml">
@@ -160,7 +160,7 @@
   <ItemGroup>
     <Compile Include="Controls\BiaNumberEditor.cs" />
     <Compile Include="Internals\Boxes.cs" />
-    <Compile Include="Controls\ClippingBorder.cs" />
+    <Compile Include="Controls\BiaClippingBorder.cs" />
     <Compile Include="Internals\Caches.cs" />
     <Compile Include="Internals\ColorSpaceHelper.cs" />
     <Compile Include="Internals\DependencyObjectExtensions.cs" />

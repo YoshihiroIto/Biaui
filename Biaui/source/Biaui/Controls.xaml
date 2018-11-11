@@ -20,7 +20,7 @@
 
         <!-- Controls -->
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/ClippingBorder.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaClippingBorder.xaml" />
 
         <!-- Controls.ColorPicker -->
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />

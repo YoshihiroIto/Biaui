@@ -39,18 +39,18 @@
                                                  IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                  Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                        <colorPicker:ClippingBorder Grid.Row="1"
+                        <colorPicker:BiaClippingBorder Grid.Row="1"
                                                     Grid.Column="0"
                                                     Margin="0,4,2,0"
                                                     Background="{DynamicResource TextBoxBorderBrushKey}"
                                                     BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                                                     BorderThickness="1">
-                            <colorPicker:ClippingBorder.CornerRadius>
+                            <colorPicker:BiaClippingBorder.CornerRadius>
                                 <CornerRadius BottomLeft="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
                                               BottomRight="0"
                                               TopLeft="0"
                                               TopRight="0" />
-                            </colorPicker:ClippingBorder.CornerRadius>
+                            </colorPicker:BiaClippingBorder.CornerRadius>
                             <Grid>
                                 <Grid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
@@ -87,20 +87,20 @@
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                             </Grid>
-                        </colorPicker:ClippingBorder>
+                        </colorPicker:BiaClippingBorder>
 
-                        <colorPicker:ClippingBorder Grid.Row="1"
+                        <colorPicker:BiaClippingBorder Grid.Row="1"
                                                     Grid.Column="1"
                                                     Margin="2,4,0,0"
                                                     Background="{DynamicResource TextBoxBorderBrushKey}"
                                                     BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                                                     BorderThickness="1">
-                            <colorPicker:ClippingBorder.CornerRadius>
+                            <colorPicker:BiaClippingBorder.CornerRadius>
                                 <CornerRadius BottomLeft="0"
                                               BottomRight="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
                                               TopLeft="0"
                                               TopRight="0" />
-                            </colorPicker:ClippingBorder.CornerRadius>
+                            </colorPicker:BiaClippingBorder.CornerRadius>
 
                             <Grid>
                                 <Grid.Resources>
@@ -138,7 +138,7 @@
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                             </Grid>
-                        </colorPicker:ClippingBorder>
+                        </colorPicker:BiaClippingBorder>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:biaui="clr-namespace:Biaui">
-    <Style TargetType="{x:Type controls:ClippingBorder}">
+    <Style TargetType="{x:Type controls:BiaClippingBorder}">
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadius}" />
     </Style>
 </ResourceDictionary>

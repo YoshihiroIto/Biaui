@@ -24,7 +24,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TreeView">
-                    <controls:ClippingBorder x:Name="Bd"
+                    <controls:BiaClippingBorder x:Name="Bd"
                                              Background="{TemplateBinding Background}"
                                              BorderBrush="{TemplateBinding BorderBrush}"
                                              BorderThickness="{TemplateBinding BorderThickness}"
@@ -32,7 +32,7 @@
                         <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
                             <ItemsPresenter />
                         </ScrollViewer>
-                    </controls:ClippingBorder>
+                    </controls:BiaClippingBorder>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

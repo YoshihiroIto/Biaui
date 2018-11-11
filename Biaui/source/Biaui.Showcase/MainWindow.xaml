@@ -110,7 +110,7 @@
                 <ToggleButton Margin="0,4,0,0" Content="ハノイ" />
             </StackPanel>
 
-            <controls:ClippingBorder Margin="0,4,0,0">
+            <controls:BiaClippingBorder Margin="0,4,0,0">
                 <Grid>
                     <Grid.Resources>
                         <Style BasedOn="{StaticResource SharpToggleButtonStyle}" TargetType="{x:Type ToggleButton}" />
@@ -130,9 +130,9 @@
                                   Margin="1,0,0,0"
                                   Content="EU" />
                 </Grid>
-            </controls:ClippingBorder>
+            </controls:BiaClippingBorder>
 
-            <controls:ClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+            <controls:BiaClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                 <Grid>
                     <Grid.Resources>
                         <Style BasedOn="{StaticResource SharpToggleButtonStyle}" TargetType="{x:Type ToggleButton}" />
@@ -220,7 +220,7 @@
                                   Margin="1,1,0,0"
                                   Content="D3" />
                 </Grid>
-            </controls:ClippingBorder>
+            </controls:BiaClippingBorder>
 
             <ComboBox>
                 <ComboBoxItem>あいうえお</ComboBoxItem>
@@ -550,7 +550,7 @@
                                       IsReadOnly="True"
                                       Value="60" />
 
-            <controls:ClippingBorder Margin="0,4,0,0"
+            <controls:BiaClippingBorder Margin="0,4,0,0"
                                      Background="{DynamicResource TextBoxBorderBrushKey}"
                                      BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                                      BorderThickness="1"
@@ -587,7 +587,7 @@
                                               Caption="Position.Z"
                                               Value="-722.1977" />
                 </Grid>
-            </controls:ClippingBorder>
+            </controls:BiaClippingBorder>
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"

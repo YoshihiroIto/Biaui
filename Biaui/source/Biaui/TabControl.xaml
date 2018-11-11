@@ -33,7 +33,7 @@
                                   IsItemsHost="true"
                                   KeyboardNavigation.TabIndex="1" />
 
-                        <controls:ClippingBorder x:Name="contentPanel"
+                        <controls:BiaClippingBorder x:Name="contentPanel"
                                                  Grid.Row="1"
                                                  Grid.Column="0"
                                                  Padding="4,0"
@@ -47,7 +47,7 @@
                                               Margin="{TemplateBinding Padding}"
                                               ContentSource="SelectedContent"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </controls:ClippingBorder>
+                        </controls:BiaClippingBorder>
                     </Grid>
 
                     <ControlTemplate.Triggers>

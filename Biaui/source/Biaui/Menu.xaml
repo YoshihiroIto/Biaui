@@ -73,7 +73,7 @@
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True">
 
-                                        <controls:ClippingBorder Margin="0,0,8,8"
+                                        <controls:BiaClippingBorder Margin="0,0,8,8"
                                                                  Background="{DynamicResource SubmenuItemBackground}"
                                                                  BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
                                                                  BorderThickness="1"
@@ -86,7 +86,7 @@
                                             <Border.Effect>
                                                 <DropShadowEffect ShadowDepth="2" Color="Black" />
                                             </Border.Effect>
-                                        </controls:ClippingBorder>
+                                        </controls:BiaClippingBorder>
                                     </Popup>
                                 </Grid>
                             </Border>
