@@ -462,15 +462,18 @@
             <Slider Margin="0,4,0,0" IsEnabled="False" />
 
             <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
-                <Slider Height="120"
+                <Slider Height="80"
                         HorizontalAlignment="Left"
                         Orientation="Vertical" />
-                <Slider Height="120"
+                <Slider Height="80"
                         Margin="4,0,0,0"
                         HorizontalAlignment="Left"
                         IsEnabled="False"
                         Orientation="Vertical" />
+
             </StackPanel>
+
+            <controls:BiaColorPicker Height="160" Margin="0,4,0,0" />
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"

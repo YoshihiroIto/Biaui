@@ -19,10 +19,23 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
+        #region BiaColorPickerViewModel
+        
+        private BiaColorPickerViewModel _BiaColorPickerViewModel;
+        
+        public BiaColorPickerViewModel BiaColorPickerViewModel
+        {
+            get => _BiaColorPickerViewModel;
+            set => SetProperty(ref _BiaColorPickerViewModel, value);
+        }
+        
+        #endregion
+
         public MainWindowViewModel(Container dic, IDisposableChecker disposableChecker)
             : base(disposableChecker)
         {
             BiaNumberEditorViewModel = dic.GetInstance<BiaNumberEditorViewModel>().AddTo(Trashes);
+            BiaColorPickerViewModel = dic.GetInstance<BiaColorPickerViewModel>().AddTo(Trashes);
         }
     }
 }

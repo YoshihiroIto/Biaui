@@ -23,8 +23,7 @@
                         VerticalAlignment="Top"
                         Orientation="Vertical">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}"
-                           TargetType="{x:Type controls:BiaNumberEditor}">
+                    <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                         <Setter Property="UnitString" Value="% " />
                     </Style>
@@ -36,18 +35,21 @@
 
                 <controls:BiaNumberEditor Caption="MinMaxValue" Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
                 <controls:BiaNumberEditor Caption="SpinValue" Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
-                <controls:BiaNumberEditor Caption="TextInputValue"
-                                          Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
-                <controls:BiaNumberEditor Caption="SliderValueSimple"
-                                          Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
-                <controls:BiaNumberEditor Caption="SliderValueWideRange"
-                                          Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
+                <controls:BiaNumberEditor Caption="TextInputValue" Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
+                <controls:BiaNumberEditor Caption="SliderValueSimple" Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
+                <controls:BiaNumberEditor Caption="SliderValueWideRange" Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
             </StackPanel>
         </TabItem>
 
         <TabItem Header="BiaColorPicker">
             <Grid Margin="4,8">
-                <controls:BiaColorPicker />
+                <controls:BiaColorPicker Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
             </Grid>
         </TabItem>
     </TabControl>
