@@ -44,7 +44,17 @@ namespace Biaui.Controls
 
             if (_clipRectCache.TryGetValue(key, out var clipRect) == false)
             {
-                clipRect = MakeRoundRectangleGeometry(new Rect(Child.RenderSize), CornerRadius);
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                var isSame =
+                    CornerRadius.TopLeft == CornerRadius.TopRight &&
+                    CornerRadius.TopRight == CornerRadius.BottomRight &&
+                    CornerRadius.BottomRight == CornerRadius.BottomLeft &&
+                    CornerRadius.BottomLeft == CornerRadius.TopLeft;
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+
+                clipRect = isSame
+                    ? MakeRoundRectangleGeometrySameCorner(new Rect(Child.RenderSize), CornerRadius)
+                    : MakeRoundRectangleGeometry(new Rect(Child.RenderSize), CornerRadius);
 
                 _clipRectCache.Add(key, clipRect);
             }
@@ -56,6 +66,22 @@ namespace Biaui.Controls
 
         private static readonly Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry> _clipRectCache =
             new Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry>();
+
+        private Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius)
+        {
+            var radius = Math.Max(0.0, cornerRadius.TopLeft - BorderThickness.Left * 0.5);
+
+            var clipRect = new RectangleGeometry
+            {
+                RadiusX = radius,
+                RadiusY = radius,
+                Rect = baseRect
+            };
+
+            clipRect.Freeze();
+
+            return clipRect;
+        }
 
         // https://wpfspark.wordpress.com/2011/06/04/handling-the-cornerradius-for-a-roundedrectangle-geometry-in-wpf/
         private static Geometry MakeRoundRectangleGeometry(Rect baseRect, CornerRadius cornerRadius)
@@ -164,9 +190,9 @@ namespace Biaui.Controls
                     Math.Max(0.0, baseRect.Height - newHeight));
             }
 
-            var roundedRectGeometry = new StreamGeometry();
+            var clipRect = new StreamGeometry();
 
-            using (var context = roundedRectGeometry.Open())
+            using (var context = clipRect.Open())
             {
                 context.BeginFigure(topLeftRect.BottomLeft, true, true);
 
@@ -188,9 +214,9 @@ namespace Biaui.Controls
                 context.Close();
             }
 
-            roundedRectGeometry.Freeze();
+            clipRect.Freeze();
 
-            return roundedRectGeometry;
+            return clipRect;
         }
     }
 }
