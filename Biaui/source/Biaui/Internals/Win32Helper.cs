@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Biaui.Internals
 {
-    public static class Win32Helper
+    internal static class Win32Helper
     {
         [DllImport("User32.dll")]
         public static extern bool SetCursorPos(int X, int Y);

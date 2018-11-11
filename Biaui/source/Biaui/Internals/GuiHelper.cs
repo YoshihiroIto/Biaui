@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Biaui.Internals
 {
-    public static class GuiHelper
+    internal static class GuiHelper
     {
         public static void ShowCursor()
         {

@@ -2,7 +2,7 @@
 
 namespace Biaui.Internals
 {
-    public static class WpfHelper
+    internal static class WpfHelper
     {
         public static double PixelsPerDip
         {

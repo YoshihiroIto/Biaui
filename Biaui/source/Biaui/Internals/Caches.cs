@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace Biaui.Internals
 {
-    public static class Caches
+    internal static class Caches
     {
         public static readonly Pen PointIn;
         public static readonly Pen PointInIsReadOnly;
