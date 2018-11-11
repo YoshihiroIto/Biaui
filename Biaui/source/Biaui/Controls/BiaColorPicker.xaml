@@ -65,20 +65,20 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <colorPicker:BiaNumberEditor Grid.Row="0"
-                                                             Caption="Red"
+                                <colorPicker:BiaNumberEditor x:Name="RedEditor"
+                                                             Grid.Row="0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                                <colorPicker:BiaNumberEditor Grid.Row="1"
+                                <colorPicker:BiaNumberEditor x:Name="GreenEditor"
+                                                             Grid.Row="1"
                                                              Margin="0,1,0,0"
-                                                             Caption="Green"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                                <colorPicker:BiaNumberEditor Grid.Row="2"
+                                <colorPicker:BiaNumberEditor x:Name="BlueEditor"
+                                                             Grid.Row="2"
                                                              Margin="0,1,0,0"
-                                                             Caption="Blue"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                             </Grid>
@@ -110,20 +110,20 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <colorPicker:BiaNumberEditor Grid.Row="0"
-                                                             Caption="Hue"
+                                <colorPicker:BiaNumberEditor x:Name="HueEditor"
+                                                             Grid.Row="0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                                <colorPicker:BiaNumberEditor Grid.Row="1"
+                                <colorPicker:BiaNumberEditor x:Name="SaturationEditor"
+                                                             Grid.Row="1"
                                                              Margin="0,1,0,0"
-                                                             Caption="Saturation"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                                <colorPicker:BiaNumberEditor Grid.Row="2"
+                                <colorPicker:BiaNumberEditor x:Name="ValueEditor"
+                                                             Grid.Row="2"
                                                              Margin="0,1,0,0"
-                                                             Caption="Value"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                             </Grid>

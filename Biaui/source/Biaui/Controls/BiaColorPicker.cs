@@ -210,7 +210,7 @@ namespace Biaui.Controls
         #endregion
 
         #region IsReadOnly
-        
+
         public bool IsReadOnly
         {
             get => _IsReadOnly;
@@ -220,9 +220,9 @@ namespace Biaui.Controls
                     SetValue(IsReadOnlyProperty, value);
             }
         }
-        
+
         private bool _IsReadOnly = default(bool);
-        
+
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaColorPicker),
                 new PropertyMetadata(
@@ -230,10 +230,10 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaColorPicker) s;
-                        self._IsReadOnly = (bool)e.NewValue;
+                        self._IsReadOnly = (bool) e.NewValue;
                         self.InvalidateVisual();
                     }));
-        
+
         #endregion
 
         static BiaColorPicker()
@@ -241,6 +241,77 @@ namespace Biaui.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaColorPicker),
                 new FrameworkPropertyMetadata(typeof(BiaColorPicker)));
         }
+
+        public BiaColorPicker()
+        {
+            SizeChanged += (_, e) =>
+            {
+                if (_redEditor == null)
+                    return;
+
+                if (e.NewSize.Width > 300)
+                {
+                    _redEditor.Caption = "Red";
+                    _greenEditor.Caption = "Green";
+                    _blueEditor.Caption = "Blue";
+                    _hueEditor.Caption = "Hue";
+                    _saturationEditor.Caption = "Saturation";
+                    _valueEditor.Caption = "Value";
+                }
+                else
+                {
+                    _redEditor.Caption = "R";
+                    _greenEditor.Caption = "G";
+                    _blueEditor.Caption = "B";
+                    _hueEditor.Caption = "H";
+                    _saturationEditor.Caption = "S";
+                    _valueEditor.Caption = "V";
+                }
+            };
+        }
+
+        public override void OnApplyTemplate()
+        {
+            foreach (var e in this.Descendants<BiaNumberEditor>())
+            {
+                switch (e.Name)
+                {
+                    case "RedEditor":
+                        _redEditor = e;
+                        break;
+
+                    case "GreenEditor":
+                        _greenEditor = e;
+                        break;
+
+                    case "BlueEditor":
+                        _blueEditor = e;
+                        break;
+
+                    case "HueEditor":
+                        _hueEditor = e;
+                        break;
+
+                    case "SaturationEditor":
+                        _saturationEditor = e;
+                        break;
+
+                    case "ValueEditor":
+                        _valueEditor = e;
+                        break;
+
+                    default:
+                        throw new Exception();
+                }
+            }
+        }
+
+        private BiaNumberEditor _redEditor;
+        private BiaNumberEditor _greenEditor;
+        private BiaNumberEditor _blueEditor;
+        private BiaNumberEditor _hueEditor;
+        private BiaNumberEditor _saturationEditor;
+        private BiaNumberEditor _valueEditor;
 
         private bool _isConverting;
 
