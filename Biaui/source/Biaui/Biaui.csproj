@@ -162,7 +162,7 @@
     <Compile Include="Internals\Boxes.cs" />
     <Compile Include="Controls\ClippingBorder.cs" />
     <Compile Include="Internals\Caches.cs" />
-    <Compile Include="Internals\ColorHelper.cs" />
+    <Compile Include="Internals\ColorSpaceHelper.cs" />
     <Compile Include="Internals\DependencyObjectExtensions.cs" />
     <Compile Include="Internals\Evaluator.cs" />
     <Compile Include="Internals\GuiHelper.cs" />

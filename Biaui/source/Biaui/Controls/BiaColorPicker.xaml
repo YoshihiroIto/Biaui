@@ -25,7 +25,7 @@
                         <colorPicker:BiaHsvBox Grid.Row="0"
                                                Grid.Column="0"
                                                Grid.ColumnSpan="2"
-                                               Margin="0,0,32,0"
+                                               Margin="0,0,28,0"
                                                Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
@@ -41,11 +41,16 @@
 
                         <colorPicker:ClippingBorder Grid.Row="1"
                                                     Grid.Column="0"
-                                                    Margin="0,8,4,0"
+                                                    Margin="0,4,2,0"
                                                     Background="{DynamicResource TextBoxBorderBrushKey}"
                                                     BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                                    BorderThickness="1"
-                                                    CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                                    BorderThickness="1">
+                            <colorPicker:ClippingBorder.CornerRadius>
+                                <CornerRadius BottomLeft="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                              BottomRight="0"
+                                              TopLeft="0"
+                                              TopRight="0" />
+                            </colorPicker:ClippingBorder.CornerRadius>
                             <Grid>
                                 <Grid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
@@ -86,11 +91,17 @@
 
                         <colorPicker:ClippingBorder Grid.Row="1"
                                                     Grid.Column="1"
-                                                    Margin="4,8,0,0"
+                                                    Margin="2,4,0,0"
                                                     Background="{DynamicResource TextBoxBorderBrushKey}"
                                                     BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                                    BorderThickness="1"
-                                                    CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                                    BorderThickness="1">
+                            <colorPicker:ClippingBorder.CornerRadius>
+                                <CornerRadius BottomLeft="0"
+                                              BottomRight="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                              TopLeft="0"
+                                              TopRight="0" />
+                            </colorPicker:ClippingBorder.CornerRadius>
+
                             <Grid>
                                 <Grid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
