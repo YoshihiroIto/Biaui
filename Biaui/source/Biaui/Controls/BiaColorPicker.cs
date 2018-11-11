@@ -322,32 +322,7 @@ namespace Biaui.Controls
 
             _isConverting = true;
 
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-
-            var max = Math.Max(Math.Max(Red, Green), Blue);
-            var min = Math.Min(Math.Min(Red, Green), Blue);
-
-            var h = 0.0;
-            var s = 0.0;
-            var v = max;
-
-            if (max != min)
-            {
-                if (max == Red) h = 60.0 / 360 * (Green - Blue) / (max - min);
-                else if (max == Green) h = 60.0 / 360 * (Blue - Red) / (max - min) + 120.0 / 360;
-                else if (max == Blue) h = 60.0 / 360 * (Red - Green) / (max - min) + 240.0 / 360;
-
-                s = (max - min) / max;
-            }
-
-            if (h < 0)
-                h = h + 1;
-
-            Hue = h;
-            Saturation = s;
-            Value = v;
-
-            // ReSharper restore CompareOfFloatsByEqualityOperator
+            (Hue, Saturation, Value) = ColorSpaceHelper.RgbToHsv(Red, Green, Blue);
 
             _isConverting = false;
         }
@@ -359,66 +334,7 @@ namespace Biaui.Controls
 
             _isConverting = true;
 
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-
-            var h = Hue == 1 ? 0 : Hue;
-            var s = Saturation;
-            var v = Value;
-
-            if (s == 0)
-            {
-                Red = v;
-                Green = v;
-                Blue = v;
-            }
-            else
-            {
-                var dh = Math.Floor(h / (60.0 / 360));
-                var p = v * (1 - s);
-                var q = v * (1 - s * (h / (60.0 / 360) - dh));
-                var t = v * (1 - s * (1 - (h / (60.0 / 360) - dh)));
-
-                switch (dh)
-                {
-                    case 0:
-                        Red = v;
-                        Green = t;
-                        Blue = p;
-                        break;
-
-                    case 1:
-                        Red = q;
-                        Green = v;
-                        Blue = p;
-                        break;
-
-                    case 2:
-                        Red = p;
-                        Green = v;
-                        Blue = t;
-                        break;
-
-                    case 3:
-                        Red = p;
-                        Green = q;
-                        Blue = v;
-                        break;
-
-                    case 4:
-                        Red = t;
-                        Green = p;
-                        Blue = v;
-                        break;
-
-                    case 5:
-                        Red = v;
-                        Green = p;
-                        Blue = q;
-                        break;
-                }
-            }
-
-            // ReSharper restore CompareOfFloatsByEqualityOperator
+            (Red, Green, Blue) = ColorSpaceHelper.HsvToRgb(Hue, Saturation, Value) ;
 
             _isConverting = false;
         }
