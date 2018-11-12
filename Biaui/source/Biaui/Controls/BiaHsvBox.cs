@@ -250,6 +250,9 @@ namespace Biaui.Controls
             if (IsReadOnly)
                 return;
 
+            if (_isMouseDown == false)
+                return;
+
             // マウス位置を補正する
             {
                 var p = PointToScreen(CursorRenderPos);
