@@ -53,8 +53,8 @@ namespace Biaui.Controls
                 // ReSharper restore CompareOfFloatsByEqualityOperator
 
                 clipRect = isSame
-                    ? MakeRoundRectangleGeometrySameCorner(new Rect(Child.RenderSize), CornerRadius)
-                    : MakeRoundRectangleGeometry(new Rect(Child.RenderSize), CornerRadius);
+                    ? MakeRoundRectangleGeometrySameCorner(new Rect(Child.RenderSize), CornerRadius, BorderThickness)
+                    : MakeRoundRectangleGeometry(new Rect(Child.RenderSize), CornerRadius, BorderThickness);
 
                 _clipRectCache.Add(key, clipRect);
             }
@@ -67,9 +67,10 @@ namespace Biaui.Controls
         private static readonly Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry> _clipRectCache =
             new Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry>();
 
-        private Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius)
+        private Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius,
+            Thickness borderThickness)
         {
-            var radius = Math.Max(0.0, cornerRadius.TopLeft - BorderThickness.Left * 0.5);
+            var radius = Math.Max(0.0, cornerRadius.TopLeft - borderThickness.Left * 0.5);
 
             var clipRect = new RectangleGeometry
             {
@@ -83,8 +84,8 @@ namespace Biaui.Controls
             return clipRect;
         }
 
-        // https://wpfspark.wordpress.com/2011/06/04/handling-the-cornerradius-for-a-roundedrectangle-geometry-in-wpf/
-        private static Geometry MakeRoundRectangleGeometry(Rect baseRect, CornerRadius cornerRadius)
+        // https://wpfspark.wordpress.com/2011/06/08/clipborder-a-wpf-border-that-clips/
+        private Geometry MakeRoundRectangleGeometry(Rect baseRect, CornerRadius cornerRadius, Thickness borderThickness)
         {
             if (cornerRadius.TopLeft < double.Epsilon)
                 cornerRadius.TopLeft = 0.0;
@@ -98,29 +99,45 @@ namespace Biaui.Controls
             if (cornerRadius.BottomRight < double.Epsilon)
                 cornerRadius.BottomRight = 0.0;
 
+            var leftHalf = borderThickness.Left * 0.5;
+            if (leftHalf < double.Epsilon)
+                leftHalf = 0.0;
+
+            var topHalf = borderThickness.Top * 0.5;
+            if (topHalf < double.Epsilon)
+                topHalf = 0.0;
+
+            var rightHalf = borderThickness.Right * 0.5;
+            if (rightHalf < double.Epsilon)
+                rightHalf = 0.0;
+
+            var bottomHalf = borderThickness.Bottom * 0.5;
+            if (bottomHalf < double.Epsilon)
+                bottomHalf = 0.0;
+
             var topLeftRect = new Rect(
                 baseRect.Location.X,
                 baseRect.Location.Y,
-                cornerRadius.TopLeft,
-                cornerRadius.TopLeft);
+                Math.Max(0.0, cornerRadius.TopLeft - leftHalf),
+                Math.Max(0.0, cornerRadius.TopLeft - rightHalf));
 
             var topRightRect = new Rect(
-                baseRect.Location.X + baseRect.Width - cornerRadius.TopRight,
+                baseRect.Location.X + baseRect.Width - cornerRadius.TopRight + rightHalf,
                 baseRect.Location.Y,
-                cornerRadius.TopRight,
-                cornerRadius.TopRight);
+                Math.Max(0.0, cornerRadius.TopRight - rightHalf),
+                Math.Max(0.0, cornerRadius.TopRight - topHalf));
 
             var bottomRightRect = new Rect(
-                baseRect.Location.X + baseRect.Width - cornerRadius.BottomRight,
-                baseRect.Location.Y + baseRect.Height - cornerRadius.BottomRight,
-                cornerRadius.BottomRight,
-                cornerRadius.BottomRight);
+                baseRect.Location.X + baseRect.Width - cornerRadius.BottomRight + rightHalf,
+                baseRect.Location.Y + baseRect.Height - cornerRadius.BottomRight + bottomHalf,
+                Math.Max(0.0, cornerRadius.BottomRight - rightHalf),
+                Math.Max(0.0, cornerRadius.BottomRight - bottomHalf));
 
             var bottomLeftRect = new Rect(
                 baseRect.Location.X,
-                baseRect.Location.Y + baseRect.Height - cornerRadius.BottomLeft,
-                cornerRadius.BottomLeft,
-                cornerRadius.BottomLeft);
+                baseRect.Location.Y + baseRect.Height - cornerRadius.BottomLeft + bottomHalf,
+                Math.Max(0.0, cornerRadius.BottomLeft - leftHalf),
+                Math.Max(0.0, cornerRadius.BottomLeft - bottomHalf));
 
             if (topLeftRect.Right > topRightRect.Left)
             {
@@ -210,8 +227,6 @@ namespace Biaui.Controls
                 context.LineTo(bottomLeftRect.BottomRight, true, true);
                 context.ArcTo(bottomLeftRect.TopLeft, bottomLeftRect.Size, 0, false, SweepDirection.Clockwise,
                     true, true);
-
-                context.Close();
             }
 
             clipRect.Freeze();
