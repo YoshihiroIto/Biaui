@@ -535,9 +535,14 @@ namespace Biaui.Controls
             IsEnabledChanged += (_, __) => InvalidateVisual();
         }
 
+        private const double BorderWidth = 2.0;
+
         protected override void OnRender(DrawingContext dc)
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
+
+            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
+            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
 
             if (CornerRadius != 0)
                 dc.PushClip(ClipGeom);
@@ -557,6 +562,8 @@ namespace Biaui.Controls
             }
             if (CornerRadius != 0)
                 dc.Pop();
+
+            dc.Pop();
 
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -586,13 +593,13 @@ namespace Biaui.Controls
             if (CornerRadius == 0)
                 dc.DrawRectangle(
                     null,
-                    Caches.GetBorderPen(BorderColor, 1),
+                    Caches.GetBorderPen(BorderColor, BorderWidth),
                     ActualRectangle, null
                 );
             else
                 dc.DrawRoundedRectangle(
                     null,
-                    Caches.GetBorderPen(BorderColor, 2),
+                    Caches.GetBorderPen(BorderColor, BorderWidth),
                     ActualRectangle, null,
                     CornerRadius, null,
                     CornerRadius, null);
