@@ -136,7 +136,27 @@ namespace Biaui.Internals
             if (textWidth == 0.0)
                 return null;
 
-            var x = align == TextAlignment.Left ? 0.0 : maxWidth - textWidth;
+            double x;
+            {
+                switch (align)
+                {
+                    case TextAlignment.Left:
+                        x = 0.0f;
+                        break;
+
+                    case TextAlignment.Right:
+                        x = maxWidth - textWidth;
+                        break;
+
+                    case TextAlignment.Center:
+                        x = (maxWidth - textWidth) / 2;
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(align), align, null);
+                }
+            }
+
             var y = _glyphTypeface.Baseline * _fontSize;
 
             gr =
@@ -145,7 +165,7 @@ namespace Biaui.Internals
                     0,
                     false,
                     _fontSize,
-                    (float)WpfHelper.PixelsPerDip,
+                    (float) WpfHelper.PixelsPerDip,
                     glyphIndexes,
                     new Point(x, y),
                     advanceWidths,

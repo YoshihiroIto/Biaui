@@ -23,7 +23,8 @@
                         VerticalAlignment="Top"
                         Orientation="Vertical">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
+                    <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}"
+                           TargetType="{x:Type controls:BiaNumberEditor}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                         <Setter Property="UnitString" Value="% " />
                     </Style>
@@ -35,9 +36,12 @@
 
                 <controls:BiaNumberEditor Caption="MinMaxValue" Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
                 <controls:BiaNumberEditor Caption="SpinValue" Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
-                <controls:BiaNumberEditor Caption="TextInputValue" Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
-                <controls:BiaNumberEditor Caption="SliderValueSimple" Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
-                <controls:BiaNumberEditor Caption="SliderValueWideRange" Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
+                <controls:BiaNumberEditor Caption="TextInputValue"
+                                          Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
+                <controls:BiaNumberEditor Caption="SliderValueSimple"
+                                          Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
+                <controls:BiaNumberEditor Caption="SliderValueWideRange"
+                                          Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
             </StackPanel>
         </TabItem>
 
@@ -51,6 +55,31 @@
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
             </Grid>
+        </TabItem>
+
+
+        <TabItem Header="BiaButton">
+            <StackPanel Width="280"
+                        Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style BasedOn="{StaticResource {x:Type controls:BiaButton}}"
+                           TargetType="{x:Type controls:BiaButton}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+
+                    <Style BasedOn="{StaticResource {x:Type Button}}"
+                           TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <controls:BiaButton Caption="Asia" />
+                <controls:BiaButton Caption="ホーチミン" />
+                <controls:BiaButton Caption="Disabled" IsEnabled="False"/>
+            </StackPanel>
         </TabItem>
     </TabControl>
 </controls:BiaWindow>

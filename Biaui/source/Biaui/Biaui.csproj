@@ -59,6 +59,9 @@
     <Page Include="Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BiaButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BiaColorPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -147,6 +150,7 @@
     <Compile Include="Controls\BiaColorPicker.cs" />
     <Compile Include="Controls\BiaColorBar.cs" />
     <Compile Include="Controls\BiaHsvBox.cs" />
+    <Compile Include="Controls\BiaButton.cs" />
     <Compile Include="Controls\BiaWindow.cs" />
     <Page Include="ToolTip.xaml">
       <Generator>XamlIntelliSenseFileGenerator</Generator>

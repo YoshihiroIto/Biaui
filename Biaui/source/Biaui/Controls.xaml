@@ -26,5 +26,6 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

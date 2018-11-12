@@ -4,7 +4,7 @@
     <Style TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushKey}" />
-        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrushKey}" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
         <Setter Property="Padding" Value="10,3" />
         <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
@@ -40,7 +40,7 @@
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{DynamicResource ButtonInactiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
-                <Setter Property="Foreground" Value="{DynamicResource ButtonInactiveForegroundBrushKey}" />
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
         </Style.Triggers>
     </Style>
