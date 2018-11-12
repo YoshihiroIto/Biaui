@@ -155,10 +155,9 @@ namespace Biaui.Controls
                 return;
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var borderWidth = 2.0;
             var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
 
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, borderWidth));
+            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
             {
                 var p = Caches.GetBorderPen(BorderColor, 2 / WpfHelper.PixelsPerDip);
 
@@ -167,17 +166,27 @@ namespace Biaui.Controls
                 dc.DrawRectangle(b.Saturation, p, rect);
 
                 //
-                var bw = (borderWidth + 2) / WpfHelper.PixelsPerDip;
-
-                var x = Hue * (ActualWidth - bw * 2) + bw;
-                var y = (1 - Saturation) * (ActualHeight - bw * 2) + bw;
-
-                var c = new Point(x, y);
+                var c = CursorRenderPos;
                 var s = 3.0;
                 dc.DrawEllipse(null, Caches.PointOut, c, s, s);
                 dc.DrawEllipse(null, IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s, s);
             }
             dc.Pop();
+        }
+
+        private const double BorderWidth = 2.0;
+
+        private Point CursorRenderPos
+        {
+            get
+            {
+                var bw = (BorderWidth + 2) / WpfHelper.PixelsPerDip;
+
+                var x = Hue * (ActualWidth - bw * 2) + bw;
+                var y = (1 - Saturation) * (ActualHeight - bw * 2) + bw;
+
+                return new Point(x, y);
+            }
         }
 
         private void UpdateParams(MouseEventArgs e)
@@ -240,6 +249,12 @@ namespace Biaui.Controls
 
             if (IsReadOnly)
                 return;
+
+            // マウス位置を補正する
+            {
+                var p = PointToScreen(CursorRenderPos);
+                Win32Helper.SetCursorPos((int)p.X, (int)p.Y);
+            }
 
             _isMouseDown = false;
             GuiHelper.ShowCursor();

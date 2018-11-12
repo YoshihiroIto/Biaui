@@ -190,26 +190,35 @@ namespace Biaui.Controls
                 UpdateBackgroundBrush();
             }
 
-            var borderWidth = 2.0;
             var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
 
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, borderWidth));
+            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
             {
                 dc.DrawRectangle(_backgroundBrush,
-                    Caches.GetBorderPen(BorderColor, borderWidth / WpfHelper.PixelsPerDip), rect);
+                    Caches.GetBorderPen(BorderColor, BorderWidth / WpfHelper.PixelsPerDip), rect);
 
-                var bw = (borderWidth + 2) / WpfHelper.PixelsPerDip;
-                var y = Value * (ActualHeight - bw * 2) + bw;
-
-                if (IsInverseValue)
-                    y = ActualHeight - y;
-
-                var r = new Rect(1, y - 2, rect.Width - 1, 4);
+                var r = new Rect(1, CursorRenderPosY - 2, rect.Width - 1, 4);
 
                 dc.DrawRectangle(null, Caches.PointOut, r);
                 dc.DrawRectangle(null, IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, r);
             }
             dc.Pop();
+        }
+
+        private const double BorderWidth = 2.0;
+
+        private double CursorRenderPosY
+        {
+            get
+            {
+                var bw = (BorderWidth + 2) / WpfHelper.PixelsPerDip;
+                var y = Value * (ActualHeight - bw * 2) + bw;
+
+                if (IsInverseValue)
+                    y = ActualHeight - y;
+
+                return y;
+            }
         }
 
         private void UpdateBackgroundBrush()
@@ -274,6 +283,15 @@ namespace Biaui.Controls
 
             if (IsReadOnly)
                 return;
+
+            // マウス位置を補正する
+            {
+                var x = ActualWidth / 2;
+                var y = CursorRenderPosY;
+
+                var p = PointToScreen(new Point(x, y));
+                Win32Helper.SetCursorPos((int)p.X, (int)p.Y);
+            }
 
             _isMouseDown = false;
             Win32Helper.ClipCursor(IntPtr.Zero);
