@@ -5,7 +5,15 @@
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Padding" Value="10,3" />
+        <Setter Property="Padding">
+            <Setter.Value>
+                <Thickness Bottom="{x:Static biaui:Constants.ButtonPaddingY}"
+                           Left="{x:Static biaui:Constants.ButtonPaddingX}"
+                           Right="{x:Static biaui:Constants.ButtonPaddingX}"
+                           Top="{x:Static biaui:Constants.ButtonPaddingY}" />
+            </Setter.Value>
+        </Setter>
+
         <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
 

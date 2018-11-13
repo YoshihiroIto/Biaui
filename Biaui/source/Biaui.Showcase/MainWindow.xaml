@@ -13,11 +13,6 @@
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
     <controls:BiaWindow.Resources>
-        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="0,4,0,0" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-        </Style>
-
         <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -26,6 +21,11 @@
         <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type controls:BiaButton}}" TargetType="{x:Type controls:BiaButton}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
     </controls:BiaWindow.Resources>
 
@@ -90,30 +90,30 @@
                     VerticalAlignment="Top"
                     Orientation="Vertical">
 
-            <Label Content="ベトナム" ToolTip="ホーチミン" />
-            <Label Content="オランダ" ToolTip="アムステルダム" />
-            <Label Content="日本" ToolTip="東京" />
+            <TextBlock Text="ベトナム" ToolTip="ホーチミン" />
+            <TextBlock Text="オランダ" ToolTip="アムステルダム" />
+            <TextBlock Text="日本" ToolTip="東京" />
 
-            <Button Content="abc" />
-            <Button Content="1234" />
-
-            <Button Content="東京" IsEnabled="False" />
-            <Button Content="ベトナム" />
+            <controls:BiaButton Content="abc" />
+            <controls:BiaButton Content="1234" />
+            <controls:BiaButton Content="東京" IsEnabled="False" />
 
             <TextBox Text="あいうえお" />
             <TextBox IsEnabled="False" Text="将棋" />
             <TextBox IsReadOnly="True" Text="King Queen Jack" />
 
             <StackPanel Margin="0,4,0,0" HorizontalAlignment="Left">
-                <ToggleButton Content="ホーチミン" />
-                <ToggleButton Margin="0,4,0,0" Content="ダナン" />
-                <ToggleButton Margin="0,4,0,0" Content="ハノイ" />
+                <controls:BiaToggleButton Content="ホーチミン" />
+                <controls:BiaToggleButton Margin="0,4,0,0" Content="ダナン" />
+                <controls:BiaToggleButton Margin="0,4,0,0" Content="ハノイ" />
             </StackPanel>
 
             <controls:BiaClippingBorder Margin="0,4,0,0">
                 <Grid>
                     <Grid.Resources>
-                        <Style BasedOn="{StaticResource SharpToggleButtonStyle}" TargetType="{x:Type ToggleButton}" />
+                        <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                            <Setter Property="CornerRadius" Value="0" />
+                        </Style>
                     </Grid.Resources>
 
                     <Grid.ColumnDefinitions>
@@ -122,20 +122,22 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <ToggleButton Grid.Column="0" Content="Asia" />
-                    <ToggleButton Grid.Column="1"
-                                  Margin="1,0,0,0"
-                                  Content="USA" />
-                    <ToggleButton Grid.Column="2"
-                                  Margin="1,0,0,0"
-                                  Content="EU" />
+                    <controls:BiaToggleButton Grid.Column="0" Content="Asia" />
+                    <controls:BiaToggleButton Grid.Column="1"
+                                              Margin="1,0,0,0"
+                                              Content="USA" />
+                    <controls:BiaToggleButton Grid.Column="2"
+                                              Margin="1,0,0,0"
+                                              Content="EU" />
                 </Grid>
             </controls:BiaClippingBorder>
 
             <controls:BiaClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                 <Grid>
                     <Grid.Resources>
-                        <Style BasedOn="{StaticResource SharpToggleButtonStyle}" TargetType="{x:Type ToggleButton}" />
+                        <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                            <Setter Property="CornerRadius" Value="0" />
+                        </Style>
                     </Grid.Resources>
 
                     <Grid.ColumnDefinitions>
@@ -152,73 +154,73 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <ToggleButton Grid.Row="0"
-                                  Grid.Column="0"
-                                  Margin="0,0,0,0"
-                                  Content="A0" />
-                    <ToggleButton Grid.Row="0"
-                                  Grid.Column="1"
-                                  Margin="1,0,0,0"
-                                  Content="A1" />
-                    <ToggleButton Grid.Row="0"
-                                  Grid.Column="2"
-                                  Margin="1,0,0,0"
-                                  Content="A2" />
-                    <ToggleButton Grid.Row="0"
-                                  Grid.Column="3"
-                                  Margin="1,0,0,0"
-                                  Content="A3" />
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="0"
+                                              Margin="0,0,0,0"
+                                              Content="A0" />
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="1"
+                                              Margin="1,0,0,0"
+                                              Content="A1" />
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="2"
+                                              Margin="1,0,0,0"
+                                              Content="A2" />
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="3"
+                                              Margin="1,0,0,0"
+                                              Content="A3" />
 
-                    <ToggleButton Grid.Row="1"
-                                  Grid.Column="0"
-                                  Margin="0,1,0,0"
-                                  Content="B0" />
-                    <ToggleButton Grid.Row="1"
-                                  Grid.Column="1"
-                                  Margin="1,1,0,0"
-                                  Content="B1" />
-                    <ToggleButton Grid.Row="1"
-                                  Grid.Column="2"
-                                  Margin="1,1,0,0"
-                                  Content="B2" />
-                    <ToggleButton Grid.Row="1"
-                                  Grid.Column="3"
-                                  Margin="1,1,0,0"
-                                  Content="B3" />
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="0"
+                                              Margin="0,1,0,0"
+                                              Content="B0" />
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="1"
+                                              Margin="1,1,0,0"
+                                              Content="B1" />
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="2"
+                                              Margin="1,1,0,0"
+                                              Content="B2" />
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="3"
+                                              Margin="1,1,0,0"
+                                              Content="B3" />
 
-                    <ToggleButton Grid.Row="2"
-                                  Grid.Column="0"
-                                  Margin="0,1,0,0"
-                                  Content="C0" />
-                    <ToggleButton Grid.Row="2"
-                                  Grid.Column="1"
-                                  Margin="1,1,0,0"
-                                  Content="C1" />
-                    <ToggleButton Grid.Row="2"
-                                  Grid.Column="2"
-                                  Margin="1,1,0,0"
-                                  Content="C2" />
-                    <ToggleButton Grid.Row="2"
-                                  Grid.Column="3"
-                                  Margin="1,1,0,0"
-                                  Content="C3" />
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="0"
+                                              Margin="0,1,0,0"
+                                              Content="C0" />
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="1"
+                                              Margin="1,1,0,0"
+                                              Content="C1" />
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="2"
+                                              Margin="1,1,0,0"
+                                              Content="C2" />
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="3"
+                                              Margin="1,1,0,0"
+                                              Content="C3" />
 
-                    <ToggleButton Grid.Row="3"
-                                  Grid.Column="0"
-                                  Margin="0,1,0,0"
-                                  Content="D0" />
-                    <ToggleButton Grid.Row="3"
-                                  Grid.Column="1"
-                                  Margin="1,1,0,0"
-                                  Content="D1" />
-                    <ToggleButton Grid.Row="3"
-                                  Grid.Column="2"
-                                  Margin="1,1,0,0"
-                                  Content="D2" />
-                    <ToggleButton Grid.Row="3"
-                                  Grid.Column="3"
-                                  Margin="1,1,0,0"
-                                  Content="D3" />
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="0"
+                                              Margin="0,1,0,0"
+                                              Content="D0" />
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="1"
+                                              Margin="1,1,0,0"
+                                              Content="D1" />
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="2"
+                                              Margin="1,1,0,0"
+                                              Content="D2" />
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="3"
+                                              Margin="1,1,0,0"
+                                              Content="D3" />
                 </Grid>
             </controls:BiaClippingBorder>
 
@@ -551,10 +553,10 @@
                                       Value="60" />
 
             <controls:BiaClippingBorder Margin="0,4,0,0"
-                                     Background="{DynamicResource TextBoxBorderBrushKey}"
-                                     BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                     BorderThickness="1"
-                                     CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                        Background="{DynamicResource TextBoxBorderBrushKey}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                                        BorderThickness="1"
+                                        CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                 <Grid>
                     <Grid.Resources>
                         <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">

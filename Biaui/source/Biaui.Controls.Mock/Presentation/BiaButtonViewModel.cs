@@ -3,9 +3,9 @@ using Biaui.Controls.Mock.Foundation.Mvvm;
 
 namespace Biaui.Controls.Mock.Presentation
 {
-    public class BiaLightButtonViewModel : ViewModelBase
+    public class BiaButtonViewModel : ViewModelBase
     {
-        public BiaLightButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
+        public BiaButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
         }
     }

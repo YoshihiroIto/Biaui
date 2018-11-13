@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
@@ -11,28 +12,29 @@ namespace Biaui.Controls
             EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble,
                 typeof(RoutedEventHandler), typeof(BiaButton));
 
-        #region Caption
+        #region Content
 
-        public string Caption
+        public string Content
         {
-            get => _Caption;
+            get => _content;
             set
             {
-                if (value != _Caption)
-                    SetValue(CaptionProperty, value);
+                if (value != _content)
+                    SetValue(ContentProperty, value);
             }
         }
 
-        private string _Caption = default(string);
+        private string _content = default(string);
 
-        public static readonly DependencyProperty CaptionProperty =
-            DependencyProperty.Register(nameof(Caption), typeof(string), typeof(BiaButton),
+        public static readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register(nameof(Content), typeof(string), typeof(BiaButton),
                 new PropertyMetadata(
                     default(string),
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
-                        self._Caption = (string) e.NewValue;
+                        self._content = (string) e.NewValue;
+                        self.UpdateSize();
                         self.InvalidateVisual();
                     }));
 
@@ -226,6 +228,12 @@ namespace Biaui.Controls
 
         #endregion
 
+        static BiaButton()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaButton),
+                new FrameworkPropertyMetadata(typeof(BiaButton)));
+        }
+
         protected override void OnRender(DrawingContext dc)
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -256,7 +264,8 @@ namespace Biaui.Controls
 
                 // キャプション
                 var y = 4; // todo:正しく求める
-                TextRenderer.Default.Draw(Caption, 0, y, Foreground, dc, ActualWidth, TextAlignment.Center);
+
+                TextRenderer.Default.Draw(Content, 0, y, Foreground, dc, ActualWidth, TextAlignment.Center);
             }
             dc.Pop();
         }
@@ -292,11 +301,7 @@ namespace Biaui.Controls
             if (IsInMouse(e) == false)
                 return;
 
-            RaiseEvent(new RoutedEventArgs(ClickEvent, this));
-
-            if (Command != null &&
-                Command.CanExecute(CommandParameter) == false)
-                Command.Execute(CommandParameter);
+            Clicked();
         }
 
         private bool IsInMouse(MouseEventArgs e)
@@ -308,6 +313,42 @@ namespace Biaui.Controls
                 pos.X <= ActualWidth &&
                 pos.Y >= 0.0 &&
                 pos.Y <= ActualHeight;
+        }
+
+        protected virtual void Clicked()
+        {
+            RaiseEvent(new RoutedEventArgs(ClickEvent, this));
+
+            if (Command != null &&
+                Command.CanExecute(CommandParameter) == false)
+                Command.Execute(CommandParameter);
+        }
+
+        private double _textWidth;
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            var h = Height;
+            if (double.IsNaN(h))
+                h = Constants.BasicOneLineHeight;
+            else
+            if (double.IsInfinity(h))
+                h = Constants.BasicOneLineHeight;
+
+          return new Size(_textWidth, h);
+        }
+
+        private void UpdateSize()
+        {
+            var w = TextRenderer.Default.CalcWidth(Content);
+            var wp = Constants.ButtonPaddingX + w + Constants.ButtonPaddingX;
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (wp != _textWidth)
+            {
+                _textWidth = wp;
+                InvalidateMeasure();
+            }
         }
 
         private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));

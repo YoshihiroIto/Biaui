@@ -135,8 +135,9 @@
     <Compile Include="App.cs" />
     <Compile Include="AppConfig.cs" />
     <Compile Include="CommandLine.cs" />
+    <Compile Include="Presentation\BiaToggleButtonViewModel.cs" />
     <Compile Include="Presentation\BiaColorPickerViewModel.cs" />
-    <Compile Include="Presentation\BiaLightButtonViewModel.cs" />
+    <Compile Include="Presentation\BiaButtonViewModel.cs" />
     <Compile Include="Presentation\BiaNumberEditorViewModel.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Control\Behavior\WindowDisposeDataContextOnClosedBehavior.cs" />

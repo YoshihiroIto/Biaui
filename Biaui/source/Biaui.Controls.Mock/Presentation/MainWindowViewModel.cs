@@ -31,11 +31,37 @@ namespace Biaui.Controls.Mock.Presentation
         
         #endregion
 
+        #region BiaButtonViewModel
+        
+        private BiaButtonViewModel _BiaButtonViewModel;
+        
+        public BiaButtonViewModel BiaButtonViewModel
+        {
+            get => _BiaButtonViewModel;
+            set => SetProperty(ref _BiaButtonViewModel, value);
+        }
+        
+        #endregion
+
+        #region BiaToggleButtonViewModel
+        
+        private BiaToggleButtonViewModel _BiaToggleButtonViewModel;
+        
+        public BiaToggleButtonViewModel BiaToggleButtonViewModel
+        {
+            get => _BiaToggleButtonViewModel;
+            set => SetProperty(ref _BiaToggleButtonViewModel, value);
+        }
+        
+        #endregion
+
         public MainWindowViewModel(Container dic, IDisposableChecker disposableChecker)
             : base(disposableChecker)
         {
             BiaNumberEditorViewModel = dic.GetInstance<BiaNumberEditorViewModel>().AddTo(Trashes);
             BiaColorPickerViewModel = dic.GetInstance<BiaColorPickerViewModel>().AddTo(Trashes);
+            BiaButtonViewModel = dic.GetInstance<BiaButtonViewModel>().AddTo(Trashes);
+            BiaToggleButtonViewModel = dic.GetInstance<BiaToggleButtonViewModel>().AddTo(Trashes);
         }
     }
 }

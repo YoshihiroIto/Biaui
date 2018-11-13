@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -78,6 +79,21 @@ namespace Biaui.Internals
             dc.PushTransform(new TranslateTransform(x, y));
             dc.DrawGlyphRun(brush, gr);
             dc.Pop();
+        }
+
+        internal double CalcWidth(string text)
+        {
+            if (_fontSize == default(double))
+                return 0;
+
+            if (string.IsNullOrEmpty(text))
+                return 0;
+
+            var gr = MakeGlyphRun(text, double.PositiveInfinity, TextAlignment.Left);
+            if (gr == null)
+                return 0;
+
+            return gr.AdvanceWidths.Sum();
         }
 
         private GlyphRun MakeGlyphRun(
