@@ -540,6 +540,9 @@ namespace Biaui.Controls
         protected override void OnRender(DrawingContext dc)
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
+            if (ActualWidth <= 1 ||
+                ActualHeight <= 1)
+                return;
 
             var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
             dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
