@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Biaui.Internals
 {
@@ -12,25 +13,34 @@ namespace Biaui.Internals
                 if (_pixelsPerDip != default(double))
                     return _pixelsPerDip;
 
-                var mainWindow = Application.Current.MainWindow;
-                if (mainWindow == null)
+                var hwnd = GetDesktopWindow();
+                var hdc = GetWindowDC(hwnd);
+
+                try
                 {
-                    _pixelsPerDip = 1.0f;
-                    return _pixelsPerDip;
+                    _pixelsPerDip = (double) GetDeviceCaps(hdc, 90) / 96;
+                }
+                finally
+                {
+                    ReleaseDC(hwnd, hdc);
                 }
 
-                var v = PresentationSource.FromVisual(mainWindow);
-                if (v?.CompositionTarget == null)
-                {
-                    _pixelsPerDip = 1.0f;
-                    return _pixelsPerDip;
-                }
-
-                _pixelsPerDip = (float) v.CompositionTarget.TransformToDevice.M11;
                 return _pixelsPerDip;
             }
         }
 
         private static double _pixelsPerDip;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = false)]
+        private static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
+        private static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("gdi32.dll")]
+        private static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
     }
 }
