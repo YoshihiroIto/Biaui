@@ -92,7 +92,6 @@
 
         <TabItem Header="BiaToggleButton">
             <StackPanel Orientation="Horizontal">
-
                 <StackPanel Width="280"
                             Margin="4,0,0,0"
                             HorizontalAlignment="Left"
@@ -133,7 +132,7 @@
                                             CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                     <Grid>
                         <Grid.Resources>
-                            <Style TargetType="{x:Type controls:BiaToggleButton}" BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}">
+                            <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
                         </Grid.Resources>
@@ -223,5 +222,41 @@
                 </controls:BiaClippingBorder>
             </StackPanel>
         </TabItem>
+
+        <TabItem Header="BiaCheckBox">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Width="100"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaCheckBox Content="123" />
+                    <controls:BiaCheckBox Content="456" IsChecked="True" />
+                    <controls:BiaCheckBox Content="7890" IsEnabled="False" />
+                    <controls:BiaCheckBox Content="ABC"
+                                          IsChecked="True"
+                                          IsEnabled="False" />
+                    <controls:BiaCheckBox Content="XYZ" />
+                    <controls:BiaCheckBox Content="パソコン" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <CheckBox Content="123" />
+                    <CheckBox Content="456" IsChecked="True" />
+                    <CheckBox Content="7890" IsEnabled="False" />
+                    <CheckBox Content="ABC"
+                              IsChecked="True"
+                              IsEnabled="False" />
+                    <CheckBox Content="XYZ" />
+                    <CheckBox Content="パソコン" />
+                </StackPanel>
+
+            </StackPanel>
+        </TabItem>
+
     </TabControl>
 </controls:BiaWindow>

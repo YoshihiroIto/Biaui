@@ -10,7 +10,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="4,1,0,0" />
+        <Setter Property="Padding" Value="4,0,0,0" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
 
         <Setter Property="Template">
@@ -83,9 +83,9 @@
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="0" />
-                            <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource AccentBrushKey}" />
                             <Setter Property="Foreground" Value="{DynamicResource AccentBrushKey}" />
                         </Trigger>
                     </ControlTemplate.Triggers>

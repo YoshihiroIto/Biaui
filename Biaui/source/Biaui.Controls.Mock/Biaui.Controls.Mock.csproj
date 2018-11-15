@@ -135,6 +135,7 @@
     <Compile Include="App.cs" />
     <Compile Include="AppConfig.cs" />
     <Compile Include="CommandLine.cs" />
+    <Compile Include="Presentation\BiaCheckBoxViewModel.cs" />
     <Compile Include="Presentation\BiaToggleButtonViewModel.cs" />
     <Compile Include="Presentation\BiaColorPickerViewModel.cs" />
     <Compile Include="Presentation\BiaButtonViewModel.cs" />

@@ -1,5 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--<Color x:Key="ThemeColorKey">#FF2D2D30</Color>
     <SolidColorBrush x:Key="ThemeBrushKey" Color="#FF2D2D30" />-->
@@ -62,10 +61,12 @@
     <SolidColorBrush x:Key="ButtonActiveForegroundBrushKey" Color="#BABEC5" />
 
 
-    <SolidColorBrush x:Key="ButtonInactiveBackgroundBrushKey" Color="#3C424E" />
-    <SolidColorBrush x:Key="ButtonInactiveBorderBrushKey" Color="#191A1F" />
-    <SolidColorBrush x:Key="ButtonInactiveForegroundBrushKey" Color="#787878" />
-
+    <Color x:Key="ButtonInactiveBackgroundColorKey">#3C424E</Color>
+    <Color x:Key="ButtonInactiveBorderColorKey">#191A1F</Color>
+    <Color x:Key="ButtonInactiveForegroundColorKey">#787878</Color>
+    <SolidColorBrush x:Key="ButtonInactiveBackgroundBrushKey" Color="{StaticResource ButtonInactiveBackgroundColorKey}" />
+    <SolidColorBrush x:Key="ButtonInactiveBorderBrushKey" Color="{StaticResource ButtonInactiveBorderColorKey}" />
+    <SolidColorBrush x:Key="ButtonInactiveForegroundBrushKey" Color="{StaticResource ButtonInactiveForegroundColorKey}" />
 
     <Color x:Key="TextBoxBackgroundColorKey">#242424</Color>
     <Color x:Key="TextBoxBorderColorKey">#3F3F46</Color>

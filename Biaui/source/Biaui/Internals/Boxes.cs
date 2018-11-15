@@ -22,6 +22,7 @@ namespace Biaui.Internals
         internal static object ColorRed = Colors.Red;
         internal static object ColorWhite = Colors.White;
         internal static object ColorBlack = Colors.Black;
+        internal static object ColorTransparent = Colors.Transparent;
 
         internal static object BrushRed = Brushes.Red;
 

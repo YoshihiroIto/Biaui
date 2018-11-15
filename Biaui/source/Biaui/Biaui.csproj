@@ -59,6 +59,9 @@
     <Page Include="Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BiaCheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BiaToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,6 +153,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\BiaCheckBox.cs" />
     <Compile Include="Controls\BiaToggleButton.cs" />
     <Compile Include="Controls\BiaColorPicker.cs" />
     <Compile Include="Controls\BiaColorBar.cs" />
