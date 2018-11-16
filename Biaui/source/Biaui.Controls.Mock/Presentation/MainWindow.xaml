@@ -239,24 +239,44 @@
                     <controls:BiaCheckBox Content="XYZ" />
                     <controls:BiaCheckBox Content="パソコン" />
                 </StackPanel>
+            </StackPanel>
+        </TabItem>
 
+        <TabItem Header="BiaRadioButton">
+            <StackPanel Orientation="Horizontal">
                 <StackPanel Width="100"
                             Margin="4,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
-                    <CheckBox Content="123" />
-                    <CheckBox Content="456" IsChecked="True" />
-                    <CheckBox Content="7890" IsEnabled="False" />
-                    <CheckBox Content="ABC"
-                              IsChecked="True"
-                              IsEnabled="False" />
-                    <CheckBox Content="XYZ" />
-                    <CheckBox Content="パソコン" />
+                    <controls:BiaRadioButton Content="123" />
+                    <controls:BiaRadioButton Content="456" IsChecked="True" />
+                    <controls:BiaRadioButton Content="7890" IsEnabled="False" />
+                    <controls:BiaRadioButton Content="ABC"
+                                             IsChecked="True"
+                                             IsEnabled="False" />
+                    <controls:BiaRadioButton Content="XYZ" />
+                    <controls:BiaRadioButton Content="パソコン" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="40,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <RadioButton Content="123" />
+                    <RadioButton Content="456" IsChecked="True" />
+                    <RadioButton Content="7890" IsEnabled="False" />
+                    <RadioButton Content="ABC"
+                                             IsChecked="True"
+                                             IsEnabled="False" />
+                    <RadioButton Content="XYZ" />
+                    <RadioButton Content="パソコン" />
                 </StackPanel>
 
             </StackPanel>
-        </TabItem>
 
+
+        </TabItem>
     </TabControl>
 </controls:BiaWindow>

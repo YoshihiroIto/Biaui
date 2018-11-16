@@ -67,6 +67,18 @@ namespace Biaui.Controls.Mock.Presentation
         
         #endregion
 
+        #region BiaRadioButtonViewModel
+        
+        private BiaRadioButtonViewModel _BiaRadioButtonViewModel;
+        
+        public BiaRadioButtonViewModel BiaRadioButtonViewModel
+        {
+            get => _BiaRadioButtonViewModel;
+            set => SetProperty(ref _BiaRadioButtonViewModel, value);
+        }
+        
+        #endregion
+
         public MainWindowViewModel(Container dic, IDisposableChecker disposableChecker)
             : base(disposableChecker)
         {
@@ -75,6 +87,7 @@ namespace Biaui.Controls.Mock.Presentation
             BiaButtonViewModel = dic.GetInstance<BiaButtonViewModel>().AddTo(Trashes);
             BiaToggleButtonViewModel = dic.GetInstance<BiaToggleButtonViewModel>().AddTo(Trashes);
             BiaCheckBoxViewModel = dic.GetInstance<BiaCheckBoxViewModel>().AddTo(Trashes);
+            BiaRadioButtonViewModel = dic.GetInstance<BiaRadioButtonViewModel>().AddTo(Trashes);
         }
     }
 }

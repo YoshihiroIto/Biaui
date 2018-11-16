@@ -284,10 +284,10 @@
             </ComboBox>
 
             <StackPanel Margin="0,4,0,0">
-                <RadioButton Content="123" />
-                <RadioButton Content="7890" IsEnabled="False" />
-                <RadioButton Content="XYZ" IsChecked="True" />
-                <RadioButton Content="時計" />
+                <controls:BiaRadioButton Content="123" />
+                <controls:BiaRadioButton Content="7890" IsEnabled="False" />
+                <controls:BiaRadioButton Content="XYZ" IsChecked="True" />
+                <controls:BiaRadioButton Content="時計" />
             </StackPanel>
 
             <StackPanel Margin="0,4,0,0">
@@ -295,8 +295,8 @@
                 <controls:BiaCheckBox Content="456" IsChecked="True" />
                 <controls:BiaCheckBox Content="7890" IsEnabled="False" />
                 <controls:BiaCheckBox Content="ABC"
-                          IsChecked="True"
-                          IsEnabled="False" />
+                                      IsChecked="True"
+                                      IsEnabled="False" />
                 <controls:BiaCheckBox Content="XYZ" />
                 <controls:BiaCheckBox Content="パソコン" />
             </StackPanel>
