@@ -258,25 +258,7 @@
                     <controls:BiaRadioButton Content="XYZ" />
                     <controls:BiaRadioButton Content="パソコン" />
                 </StackPanel>
-
-                <StackPanel Width="100"
-                            Margin="40,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Orientation="Vertical">
-                    <RadioButton Content="123" />
-                    <RadioButton Content="456" IsChecked="True" />
-                    <RadioButton Content="7890" IsEnabled="False" />
-                    <RadioButton Content="ABC"
-                                             IsChecked="True"
-                                             IsEnabled="False" />
-                    <RadioButton Content="XYZ" />
-                    <RadioButton Content="パソコン" />
-                </StackPanel>
-
             </StackPanel>
-
-
         </TabItem>
     </TabControl>
 </controls:BiaWindow>
