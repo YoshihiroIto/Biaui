@@ -49,8 +49,33 @@ namespace Biaui.Internals
             return guidelines;
         }
 
+        public static Geometry GetClipGeom(double w, double h, double cornerRadius)
+        {
+            var key = (w, h, cornerRadius);
+            if (_clipGeoms.TryGetValue(key, out var c))
+                return c;
+
+            c = new RectangleGeometry
+            {
+                RadiusX = cornerRadius,
+                RadiusY = cornerRadius,
+                Rect = new Rect(0, 0, w, h)
+            };
+
+            c.Freeze();
+
+            _clipGeoms.Add(key, c);
+
+            return c;
+        }
+
+        private static readonly Dictionary<(double W, double H, double CorerRadius), RectangleGeometry> _clipGeoms =
+            new Dictionary<(double W, double H, double CorerRadius), RectangleGeometry>();
+
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
-        private static readonly Dictionary<(Rect, double), GuidelineSet> _guidelineSets = new Dictionary<(Rect, double), GuidelineSet>();
+
+        private static readonly Dictionary<(Rect, double), GuidelineSet> _guidelineSets =
+            new Dictionary<(Rect, double), GuidelineSet>();
 
         static Caches()
         {

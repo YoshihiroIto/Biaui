@@ -548,7 +548,7 @@ namespace Biaui.Controls
             dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
 
             if (CornerRadius != 0)
-                dc.PushClip(ClipGeom);
+                dc.PushClip(Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius));
             {
                 DrawBackground(dc);
 
@@ -1108,35 +1108,9 @@ namespace Biaui.Controls
             }
         }
 
-        private Geometry ClipGeom
-        {
-            get
-            {
-                var size = new Size(ActualWidth, ActualHeight);
-                if (_clipGeoms.TryGetValue(size, out var c))
-                    return c;
-
-                c = new RectangleGeometry
-                {
-                    RadiusX = CornerRadius,
-                    RadiusY = CornerRadius,
-                    Rect = new Rect(size)
-                };
-
-                c.Freeze();
-
-                _clipGeoms.Add(size, c);
-
-                return c;
-            }
-        }
-
         private static Geometry _DecSpinGeom;
         private static Geometry _IncSpinGeom;
         private static Brush _SpinBackground;
-
-        private static readonly Dictionary<Size, RectangleGeometry> _clipGeoms =
-            new Dictionary<Size, RectangleGeometry>();
 
         private static readonly Dictionary<(double X, double Y), TranslateTransform> _TranslateTransformCache =
             new Dictionary<(double X, double Y), TranslateTransform>();
