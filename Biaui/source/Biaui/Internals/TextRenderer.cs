@@ -217,7 +217,12 @@ namespace Biaui.Internals
 
             // 文字列に ... を加える文を考慮して削る文字数を求める
 
+#if false
             var dot3width = _dotAdvanceWidth * 3.0;
+#else
+            var dot3width = 0.0;
+#endif
+
             var removeCount = 1;
             var newTextWidth = textWidth;
             {
@@ -236,6 +241,7 @@ namespace Biaui.Internals
             if (newCount < 3)
                 return 0.0;
 
+#if false
             // 文字列に ... を追加する
             Array.Resize(ref glyphIndexes, newCount);
             Array.Resize(ref advanceWidths, newCount);
@@ -245,6 +251,7 @@ namespace Biaui.Internals
             advanceWidths[glyphIndexes.Length - 1 - 2] = _dotAdvanceWidth;
             advanceWidths[glyphIndexes.Length - 1 - 1] = _dotAdvanceWidth;
             advanceWidths[glyphIndexes.Length - 1 - 0] = _dotAdvanceWidth;
+#endif
 
             return newTextWidth + dot3width;
         }
