@@ -260,5 +260,29 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
+
+        <TabItem Header="BiaTextBox">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+
+                    <Style BasedOn="{StaticResource {x:Type controls:BiaTextBox}}" TargetType="{x:Type controls:BiaTextBox}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="100"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaTextBox Text="あいうえお" />
+                    <controls:BiaTextBox IsEnabled="False" Text="将棋" />
+                    <controls:BiaTextBox IsReadOnly="True" Text="King Queen Jack" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
     </TabControl>
 </controls:BiaWindow>

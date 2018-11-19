@@ -13,7 +13,7 @@
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
     <controls:BiaWindow.Resources>
-        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+        <Style BasedOn="{StaticResource {x:Type controls:BiaTextBox}}" TargetType="{x:Type controls:BiaTextBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
@@ -98,9 +98,9 @@
             <controls:BiaButton Content="1234" />
             <controls:BiaButton Content="東京" IsEnabled="False" />
 
-            <TextBox Text="あいうえお" />
-            <TextBox IsEnabled="False" Text="将棋" />
-            <TextBox IsReadOnly="True" Text="King Queen Jack" />
+            <controls:BiaTextBox Text="あいうえお" />
+            <controls:BiaTextBox IsEnabled="False" Text="将棋" />
+            <controls:BiaTextBox IsReadOnly="True" Text="King Queen Jack" />
 
             <StackPanel Margin="0,4,0,0" HorizontalAlignment="Left">
                 <controls:BiaToggleButton Content="ホーチミン" />

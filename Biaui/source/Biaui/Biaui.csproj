@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -57,6 +59,9 @@
       <DependentUpon>Controls.xaml</DependentUpon>
     </Page>
     <Page Include="Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BiaRadioButton.xaml">
@@ -156,6 +161,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Constants.cs" />
+    <Compile Include="Controls\BiaTextBox.cs" />
     <Compile Include="Controls\BiaRadioButton.cs" />
     <Compile Include="Controls\BiaCheckBox.cs" />
     <Compile Include="Controls\BiaToggleButton.cs" />
@@ -183,6 +189,7 @@
     <Compile Include="Internals\Evaluator.cs" />
     <Compile Include="Internals\GuiHelper.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />
+    <Compile Include="Internals\MouseSimulator.cs" />
     <Compile Include="Internals\SystemButton.cs" />
     <Compile Include="Internals\TextRenderer.cs" />
     <Compile Include="Internals\TreeViewHelper.cs" />

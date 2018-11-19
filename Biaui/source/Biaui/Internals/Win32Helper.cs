@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 
 namespace Biaui.Internals
 {
@@ -13,6 +16,21 @@ namespace Biaui.Internals
 
         [DllImport("user32.dll")]
         public static extern bool ClipCursor(IntPtr ptr);
+
+        [DllImport("User32.dll")]
+        public static extern IntPtr SetFocus(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = false)]
+        public static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("gdi32.dll")]
+        public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
         public struct RECT
         {
