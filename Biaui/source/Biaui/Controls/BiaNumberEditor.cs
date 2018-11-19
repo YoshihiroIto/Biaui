@@ -580,14 +580,14 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     null,
-                    ActualRectangle, null);
+                    ActualRectangle);
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     null,
-                    ActualRectangle, null,
-                    CornerRadius, null,
-                    CornerRadius, null);
+                    ActualRectangle,
+                    CornerRadius,
+                    CornerRadius);
         }
 
         private void DrawBorder(DrawingContext dc)
@@ -890,7 +890,8 @@ namespace Biaui.Controls
         private static readonly TextBox _textBox = new TextBox
         {
             IsTabStop = false,
-            IsUndoEnabled = false
+            IsUndoEnabled = false,
+            FocusVisualStyle = null
         };
 
         private static readonly Popup _popup = new Popup
