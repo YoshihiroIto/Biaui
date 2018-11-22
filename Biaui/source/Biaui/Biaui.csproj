@@ -70,6 +70,9 @@
     <Page Include="Controls\BiaCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BiaComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BiaToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -164,6 +167,7 @@
     <Compile Include="Controls\BiaTextBox.cs" />
     <Compile Include="Controls\BiaRadioButton.cs" />
     <Compile Include="Controls\BiaCheckBox.cs" />
+    <Compile Include="Controls\BiaComboBox.cs" />
     <Compile Include="Controls\BiaToggleButton.cs" />
     <Compile Include="Controls\BiaColorPicker.cs" />
     <Compile Include="Controls\BiaColorBar.cs" />

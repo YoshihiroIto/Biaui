@@ -24,6 +24,7 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaClippingBorder.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaRadioButton.xaml" />
