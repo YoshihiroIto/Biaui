@@ -280,10 +280,6 @@
         <TabItem Header="BiaComboBox">
             <StackPanel Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
-                        <Setter Property="Margin" Value="0,4,0,0" />
-                    </Style>
-
                     <Style BasedOn="{StaticResource {x:Type controls:BiaComboBox}}" TargetType="{x:Type controls:BiaComboBox}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
@@ -294,6 +290,16 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
                 </StackPanel>
             </StackPanel>
         </TabItem>

@@ -18,7 +18,7 @@
             <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
 
-        <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="{x:Type ComboBox}">
+        <Style BasedOn="{StaticResource {x:Type controls:BiaComboBox}}" TargetType="{x:Type controls:BiaComboBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
@@ -224,64 +224,8 @@
                 </Grid>
             </controls:BiaClippingBorder>
 
-            <ComboBox>
-                <ComboBoxItem>あいうえお</ComboBoxItem>
-                <ComboBoxItem>将棋</ComboBoxItem>
-                <ComboBoxItem>東京</ComboBoxItem>
-                <ComboBoxItem>大阪</ComboBoxItem>
-                <ComboBoxItem>カード</ComboBoxItem>
-                <ComboBoxItem>スピーカー</ComboBoxItem>
-            </ComboBox>
-
-            <ComboBox>
-                <ComboBoxItem>北海道</ComboBoxItem>
-                <ComboBoxItem>青森県</ComboBoxItem>
-                <ComboBoxItem>岩手県</ComboBoxItem>
-                <ComboBoxItem>宮城県</ComboBoxItem>
-                <ComboBoxItem>秋田県</ComboBoxItem>
-                <ComboBoxItem>山形県</ComboBoxItem>
-                <ComboBoxItem>福島県</ComboBoxItem>
-                <ComboBoxItem>茨城県</ComboBoxItem>
-                <ComboBoxItem>栃木県</ComboBoxItem>
-                <ComboBoxItem>群馬県</ComboBoxItem>
-                <ComboBoxItem>埼玉県</ComboBoxItem>
-                <ComboBoxItem>千葉県</ComboBoxItem>
-                <ComboBoxItem>東京都</ComboBoxItem>
-                <ComboBoxItem>神奈川県</ComboBoxItem>
-                <ComboBoxItem>新潟県</ComboBoxItem>
-                <ComboBoxItem>富山県</ComboBoxItem>
-                <ComboBoxItem>石川県</ComboBoxItem>
-                <ComboBoxItem>福井県</ComboBoxItem>
-                <ComboBoxItem>山梨県</ComboBoxItem>
-                <ComboBoxItem>長野県</ComboBoxItem>
-                <ComboBoxItem>岐阜県</ComboBoxItem>
-                <ComboBoxItem>静岡県</ComboBoxItem>
-                <ComboBoxItem>愛知県</ComboBoxItem>
-                <ComboBoxItem>三重県</ComboBoxItem>
-                <ComboBoxItem>滋賀県</ComboBoxItem>
-                <ComboBoxItem>京都府</ComboBoxItem>
-                <ComboBoxItem>大阪府</ComboBoxItem>
-                <ComboBoxItem>兵庫県</ComboBoxItem>
-                <ComboBoxItem>奈良県</ComboBoxItem>
-                <ComboBoxItem>和歌山県</ComboBoxItem>
-                <ComboBoxItem>鳥取県</ComboBoxItem>
-                <ComboBoxItem>島根県</ComboBoxItem>
-                <ComboBoxItem>岡山県</ComboBoxItem>
-                <ComboBoxItem>広島県</ComboBoxItem>
-                <ComboBoxItem>山口県</ComboBoxItem>
-                <ComboBoxItem>徳島県</ComboBoxItem>
-                <ComboBoxItem>香川県</ComboBoxItem>
-                <ComboBoxItem>愛媛県</ComboBoxItem>
-                <ComboBoxItem>高知県</ComboBoxItem>
-                <ComboBoxItem>福岡県</ComboBoxItem>
-                <ComboBoxItem>佐賀県</ComboBoxItem>
-                <ComboBoxItem>長崎県</ComboBoxItem>
-                <ComboBoxItem>熊本県</ComboBoxItem>
-                <ComboBoxItem>大分県</ComboBoxItem>
-                <ComboBoxItem>宮崎県</ComboBoxItem>
-                <ComboBoxItem>鹿児島県</ComboBoxItem>
-                <ComboBoxItem>沖縄県</ComboBoxItem>
-            </ComboBox>
+            <controls:BiaComboBox ItemsSource="{Binding ShortItems}" SelectedItem="{Binding SelectedShortItem}" />
+            <controls:BiaComboBox ItemsSource="{Binding LongItems}" SelectedItem="{Binding SelectedLongItem}" />
 
             <StackPanel Margin="0,4,0,0">
                 <controls:BiaRadioButton Content="123" />
