@@ -89,12 +89,12 @@ namespace Biaui.Controls.Test.ControlTests
 
             Assert.False(ctrl.IsEnabled);
         }
+    }
 
-        public class WPFBiaButton : WPFControlBase<BiaButton>
+    public class WPFBiaButton : WPFControlBase<BiaButton>
+    {
+        public WPFBiaButton(AppVar appVar) : base(appVar)
         {
-            public WPFBiaButton(AppVar appVar) : base(appVar)
-            {
-            }
         }
     }
 }
