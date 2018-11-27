@@ -51,38 +51,54 @@
         </TabItem>
 
         <TabItem Header="BiaButton">
-            <StackPanel Width="280"
-                        Margin="4,0,0,0"
+            <StackPanel Margin="4,4,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Orientation="Vertical">
+                        Orientation="Horizontal">
                 <StackPanel.Resources>
                     <Style BasedOn="{StaticResource {x:Type controls:BiaButton}}" TargetType="{x:Type controls:BiaButton}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
                 </StackPanel.Resources>
 
-                <controls:BiaButton Content="Asia" />
-                <controls:BiaButton Content="ホーチミン" />
-                <controls:BiaButton Content="Disabled" IsEnabled="False" />
+                <StackPanel Width="280"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
 
-                <controls:BiaButton HorizontalAlignment="Left" Content="Asia" />
-                <controls:BiaButton HorizontalAlignment="Left" Content="ホーチミン" />
-                <controls:BiaButton HorizontalAlignment="Left"
-                                    Content="Disabled"
-                                    IsEnabled="False" />
+                    <controls:BiaButton Content="Asia" />
+                    <controls:BiaButton Content="ホーチミン" />
+                    <controls:BiaButton Content="Disabled" IsEnabled="False" />
 
-                <controls:BiaButton HorizontalAlignment="Right" Content="Asia" />
-                <controls:BiaButton HorizontalAlignment="Right" Content="ホーチミン" />
-                <controls:BiaButton HorizontalAlignment="Right"
-                                    Content="Disabled"
-                                    IsEnabled="False" />
+                    <controls:BiaButton HorizontalAlignment="Left" Content="Asia" />
+                    <controls:BiaButton HorizontalAlignment="Left" Content="ホーチミン" />
+                    <controls:BiaButton HorizontalAlignment="Left"
+                                        Content="Disabled"
+                                        IsEnabled="False" />
 
-                <controls:BiaButton HorizontalAlignment="Center" Content="Asia" />
-                <controls:BiaButton HorizontalAlignment="Center" Content="ホーチミン" />
-                <controls:BiaButton HorizontalAlignment="Center"
-                                    Content="Disabled"
-                                    IsEnabled="False" />
+                    <controls:BiaButton HorizontalAlignment="Right" Content="Asia" />
+                    <controls:BiaButton HorizontalAlignment="Right" Content="ホーチミン" />
+                    <controls:BiaButton HorizontalAlignment="Right"
+                                        Content="Disabled"
+                                        IsEnabled="False" />
+
+                    <controls:BiaButton HorizontalAlignment="Center" Content="Asia" />
+                    <controls:BiaButton HorizontalAlignment="Center" Content="ホーチミン" />
+                    <controls:BiaButton HorizontalAlignment="Center"
+                                        Content="Disabled"
+                                        IsEnabled="False" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+
+                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandA, Mode=OneTime}" Content="CommandA" />
+                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandB, Mode=OneTime}" Content="CommandB" CommandParameter="ParamB"/>
+                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandC, Mode=OneTime}" Content="CommandC" />
+                </StackPanel>
             </StackPanel>
         </TabItem>
 

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
@@ -60,8 +61,20 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
+
+                        if (self._Command != null)
+                            self._Command.CanExecuteChanged -= self.CommandOnCanExecuteChanged;
+
                         self._Command = (ICommand) e.NewValue;
+
+                        if (self._Command != null)
+                            self._Command.CanExecuteChanged += self.CommandOnCanExecuteChanged;
                     }));
+
+        private void CommandOnCanExecuteChanged(object sender, EventArgs e)
+        {
+            IsEnabled = Command.CanExecute(CommandParameter);
+        }
 
         #endregion
 
@@ -235,6 +248,12 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
+            Unloaded += (_, __) =>
+            {
+                if (Command != null)
+                    Command.CanExecuteChanged -= CommandOnCanExecuteChanged;
+            };
+
             // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
@@ -319,7 +338,7 @@ namespace Biaui.Controls
             RaiseEvent(new RoutedEventArgs(ClickEvent, this));
 
             if (Command != null &&
-                Command.CanExecute(CommandParameter) == false)
+                Command.CanExecute(CommandParameter))
                 Command.Execute(CommandParameter);
         }
 
@@ -330,11 +349,10 @@ namespace Biaui.Controls
             var h = Height;
             if (double.IsNaN(h))
                 h = Constants.BasicOneLineHeight;
-            else
-            if (double.IsInfinity(h))
+            else if (double.IsInfinity(h))
                 h = Constants.BasicOneLineHeight;
 
-          return new Size(_textWidth, h);
+            return new Size(_textWidth, h);
         }
 
         private void UpdateSize()

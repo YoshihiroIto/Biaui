@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls;
 using Biaui.Controls.Test.Helper;
 using Codeer.Friendly;
 using Codeer.Friendly.Windows.KeyMouse;
@@ -15,6 +16,9 @@ namespace Biaui.Controls.Test.ControlTests
         public BiaColorPickerTest(MockAppFixture mockApp)
         {
             _mockApp = mockApp;
+
+            var tab = new WPFTabControl(_mockApp.MainWindow.LogicalTree().ByType<TabControl>().Single());
+            tab.EmulateChangeSelectedIndex(0);
         }
 
         public void Dispose()

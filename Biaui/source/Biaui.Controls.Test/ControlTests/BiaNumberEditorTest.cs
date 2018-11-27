@@ -17,6 +17,9 @@ namespace Biaui.Controls.Test.ControlTests
         public BiaNumberEditorTest(MockAppFixture mockApp)
         {
             _mockApp = mockApp;
+
+            var tab = new WPFTabControl(_mockApp.MainWindow.LogicalTree().ByType<System.Windows.Controls.TabControl>().Single());
+            tab.EmulateChangeSelectedIndex(0);
         }
 
         public void Dispose()
@@ -98,7 +101,6 @@ namespace Biaui.Controls.Test.ControlTests
             ctrl.Click(MouseButtonType.Left, decX, decY);
             Assert.Equal(42, ctrl.Value);
             ctrl.App.KeyUp(Keys.ControlKey);
-            
 
             // 最小値クランプ
             ctrl.Value = 1;
@@ -303,43 +305,43 @@ namespace Biaui.Controls.Test.ControlTests
 
         public double Value
         {
-            get => Getter<double>("Value");
+            get => Getter<double>(nameof(Value));
             set => InvokeStatic(EmulateChangeValue, value);
         }
 
         public double Maximum
         {
-            get => Getter<double>("Maximum");
+            get => Getter<double>(nameof(Maximum));
             set => InvokeStatic(EmulateChangeMaximum, value);
         }
 
         public double Minimum
         {
-            get => Getter<double>("Minimum");
+            get => Getter<double>(nameof(Minimum));
             set => InvokeStatic(EmulateChangeMinimum, value);
         }
 
         public double SliderMaximum
         {
-            get => Getter<double>("SliderMaximum");
+            get => Getter<double>(nameof(SliderMaximum));
             set => InvokeStatic(EmulateChangeSliderMaximum, value);
         }
 
         public double SliderMinimum
         {
-            get => Getter<double>("SliderMinimum");
+            get => Getter<double>(nameof(SliderMinimum));
             set => InvokeStatic(EmulateChangeSliderMinimum, value);
         }
 
         public bool IsReadOnly
         {
-            get => Getter<bool>("IsReadOnly");
+            get => Getter<bool>(nameof(IsReadOnly));
             set => InvokeStatic(EmulateChangeIsReadOnly, value);
         }
 
         public BiaNumberEditorMode Mode
         {
-            get => Getter<BiaNumberEditorMode>("Mode");
+            get => Getter<BiaNumberEditorMode>(nameof(Mode));
             set => InvokeStatic(EmulateChangeMode, value);
         }
 
