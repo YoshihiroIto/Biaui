@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls;
 
@@ -24,13 +23,11 @@ namespace Biaui.Internals
         internal static object ColorBlack = Colors.Black;
         internal static object ColorTransparent = Colors.Transparent;
 
-        internal static object BrushRed = Brushes.Red;
-
         internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
 
         internal static object ConstantsBasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
 
-        internal static object OrientationVertical = Orientation.Vertical;
-        internal static object OrientationHorizontal = Orientation.Horizontal;
+        internal static object Bool(bool i) => i ? BoolTrue : BoolFalse;
+
     }
 }

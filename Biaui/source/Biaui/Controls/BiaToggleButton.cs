@@ -13,7 +13,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsChecked)
-                    SetValue(IsCheckedProperty, value);
+                    SetValue(IsCheckedProperty, Boxes.Bool(value));
             }
         }
         

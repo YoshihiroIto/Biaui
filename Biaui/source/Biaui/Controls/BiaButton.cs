@@ -194,7 +194,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsPressed)
-                    SetValue(IsPressedProperty, value);
+                    SetValue(IsPressedProperty, Boxes.Bool(value));
             }
         }
 
@@ -221,7 +221,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _isPressedMouseOver)
-                    SetValue(IsPressedMouseOverProperty, value);
+                    SetValue(IsPressedMouseOverProperty, Boxes.Bool(value));
             }
         }
 

@@ -22,7 +22,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsReadOnly)
-                    SetValue(IsReadOnlyProperty, value);
+                    SetValue(IsReadOnlyProperty, Boxes.Bool(value));
             }
         }
 
@@ -244,7 +244,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsOpen)
-                    SetValue(IsOpenProperty, value);
+                    SetValue(IsOpenProperty, Boxes.Bool(value));
             }
         }
 

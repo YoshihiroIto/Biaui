@@ -46,7 +46,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsReadOnly)
-                    SetValue(IsReadOnlyProperty, value);
+                    SetValue(IsReadOnlyProperty, Boxes.Bool(value));
             }
         }
 
