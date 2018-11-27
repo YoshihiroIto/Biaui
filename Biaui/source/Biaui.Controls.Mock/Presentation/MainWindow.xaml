@@ -300,10 +300,11 @@
         <TabItem Header="BiaRadioButton">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Width="100"
-                            Margin="4,0,0,0"
+                            Margin="4,4,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
+
                     <controls:BiaRadioButton Content="123" />
                     <controls:BiaRadioButton Content="456" IsChecked="True" />
                     <controls:BiaRadioButton Content="7890" IsEnabled="False" />
@@ -312,6 +313,37 @@
                                              IsEnabled="False" />
                     <controls:BiaRadioButton Content="XYZ" />
                     <controls:BiaRadioButton Content="パソコン" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaRadioButton Content="GroupA_X" IsChecked="{Binding BiaRadioButtonViewModel.GroupA_X}" />
+                    <controls:BiaRadioButton Content="GroupA_Y" IsChecked="{Binding BiaRadioButtonViewModel.GroupA_Y}" />
+                    <controls:BiaRadioButton Content="GroupA_Z" IsChecked="{Binding BiaRadioButtonViewModel.GroupA_Z}" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaRadioButton Content="GroupB_X" IsChecked="{Binding BiaRadioButtonViewModel.GroupB_X}" />
+                    <controls:BiaRadioButton Content="GroupB_Y" IsChecked="{Binding BiaRadioButtonViewModel.GroupB_Y}" />
+                    <controls:BiaRadioButton Content="GroupB_Z" IsChecked="{Binding BiaRadioButtonViewModel.GroupB_Z}" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            IsEnabled="False"
+                            Orientation="Vertical">
+                    <controls:BiaRadioButton Content="GroupC_X" IsChecked="{Binding BiaRadioButtonViewModel.GroupC_X}" />
+                    <controls:BiaRadioButton Content="GroupC_Y" IsChecked="{Binding BiaRadioButtonViewModel.GroupC_Y}" />
+                    <controls:BiaRadioButton Content="GroupC_Z" IsChecked="{Binding BiaRadioButtonViewModel.GroupC_Z}" />
                 </StackPanel>
             </StackPanel>
         </TabItem>
