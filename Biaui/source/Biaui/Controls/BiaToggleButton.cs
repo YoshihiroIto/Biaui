@@ -21,14 +21,18 @@ namespace Biaui.Controls
         
         public static readonly DependencyProperty IsCheckedProperty =
             DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaToggleButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
                     (s, e) =>
                     {
                         var self = (BiaToggleButton) s;
                         self._IsChecked = (bool)e.NewValue;
                         self.InvalidateVisual();
-                    }));
+                    })
+                {
+                    BindsTwoWayByDefault = true,
+                }
+            );
         
         #endregion
         

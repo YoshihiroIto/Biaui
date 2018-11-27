@@ -90,22 +90,33 @@
                 </StackPanel>
 
                 <StackPanel Width="100"
-                            Margin="4,0,0,0"
+                            Margin="32,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
 
                     <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandA, Mode=OneTime}" Content="CommandA" />
-                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandB, Mode=OneTime}" Content="CommandB" CommandParameter="ParamB"/>
+                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandB, Mode=OneTime}"
+                                        CommandParameter="ParamB"
+                                        Content="CommandB" />
                     <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandC, Mode=OneTime}" Content="CommandC" />
                 </StackPanel>
             </StackPanel>
         </TabItem>
 
         <TabItem Header="BiaToggleButton">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+
                 <StackPanel Width="280"
-                            Margin="4,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
@@ -232,6 +243,24 @@
                                                   Content="D3" />
                     </Grid>
                 </controls:BiaClippingBorder>
+
+                <StackPanel Width="100"
+                            Margin="32,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+
+                    <controls:BiaToggleButton Command="{Binding BiaToggleButtonViewModel.CommandA, Mode=OneTime}" Content="CommandA" />
+                    <controls:BiaToggleButton Command="{Binding BiaToggleButtonViewModel.CommandB, Mode=OneTime}"
+                                              CommandParameter="ParamB"
+                                              Content="CommandB" />
+                    <controls:BiaToggleButton Command="{Binding BiaToggleButtonViewModel.CommandC, Mode=OneTime}" Content="CommandC" />
+
+                    <controls:BiaToggleButton Content="X" IsChecked="{Binding BiaToggleButtonViewModel.IsCheckedX}" />
+                    <controls:BiaToggleButton Content="Y"
+                                              IsChecked="{Binding BiaToggleButtonViewModel.IsCheckedY}"
+                                              IsEnabled="False" />
+                </StackPanel>
             </StackPanel>
         </TabItem>
 
