@@ -115,7 +115,6 @@
                     </Style>
                 </StackPanel.Resources>
 
-
                 <StackPanel Width="280"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
@@ -265,7 +264,11 @@
         </TabItem>
 
         <TabItem Header="BiaCheckBox">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+
                 <StackPanel Width="100"
                             Margin="4,0,0,0"
                             HorizontalAlignment="Left"
@@ -279,6 +282,17 @@
                                           IsEnabled="False" />
                     <controls:BiaCheckBox Content="XYZ" />
                     <controls:BiaCheckBox Content="パソコン" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="32,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaCheckBox Content="X" IsChecked="{Binding BiaCheckBoxViewModel.IsCheckedX}" />
+                    <controls:BiaCheckBox Content="Y"
+                                          IsChecked="{Binding BiaCheckBoxViewModel.IsCheckedY}"
+                                          IsEnabled="False" />
                 </StackPanel>
             </StackPanel>
         </TabItem>

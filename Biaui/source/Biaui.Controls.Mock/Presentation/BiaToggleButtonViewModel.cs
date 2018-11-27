@@ -79,27 +79,27 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
 
         #region IsCheckedX
-        
+
         private bool _IsCheckedX;
-        
+
         public bool IsCheckedX
         {
             get => _IsCheckedX;
             set => SetProperty(ref _IsCheckedX, value);
         }
-        
+
         #endregion
-        
+
         #region IsCheckedY
-        
+
         private bool _IsCheckedY;
-        
+
         public bool IsCheckedY
         {
             get => _IsCheckedY;
             set => SetProperty(ref _IsCheckedY, value);
         }
-        
+
         #endregion
 
         public BiaToggleButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
