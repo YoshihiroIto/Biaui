@@ -6,7 +6,7 @@ namespace Biaui.Controls
     public class BiaToggleButton : BiaButton
     {
         #region IsChecked
-        
+
         public bool IsChecked
         {
             get => _IsChecked;
@@ -16,9 +16,9 @@ namespace Biaui.Controls
                     SetValue(IsCheckedProperty, Boxes.Bool(value));
             }
         }
-        
+
         private bool _IsChecked = default(bool);
-        
+
         public static readonly DependencyProperty IsCheckedProperty =
             DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaToggleButton),
                 new FrameworkPropertyMetadata(
@@ -26,16 +26,16 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaToggleButton) s;
-                        self._IsChecked = (bool)e.NewValue;
+                        self._IsChecked = (bool) e.NewValue;
                         self.InvalidateVisual();
                     })
                 {
-                    BindsTwoWayByDefault = true,
+                    BindsTwoWayByDefault = true
                 }
             );
-        
+
         #endregion
-        
+
         static BiaToggleButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaToggleButton),

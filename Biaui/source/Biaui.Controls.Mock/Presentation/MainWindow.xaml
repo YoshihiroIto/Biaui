@@ -357,13 +357,23 @@
                 </StackPanel.Resources>
 
                 <StackPanel Width="100"
-                            Margin="4,0,0,0"
+                            Margin="4,4,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
                     <controls:BiaTextBox Text="あいうえお" />
                     <controls:BiaTextBox IsEnabled="False" Text="将棋" />
                     <controls:BiaTextBox IsReadOnly="True" Text="King Queen Jack" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaTextBox Text="{Binding BiaTextBoxViewModel.TextA}" />
+                    <controls:BiaTextBox IsEnabled="False" Text="{Binding BiaTextBoxViewModel.TextB}" />
+                    <controls:BiaTextBox IsReadOnly="True" Text="{Binding BiaTextBoxViewModel.TextC}" />
                 </StackPanel>
             </StackPanel>
         </TabItem>

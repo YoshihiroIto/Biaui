@@ -27,14 +27,18 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(BiaTextBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(string),
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
                         self._Text = (string) e.NewValue;
                         self.InvalidateVisual();
-                    }));
+                    })
+                {
+                    BindsTwoWayByDefault = true
+                }
+            );
 
         #endregion
 

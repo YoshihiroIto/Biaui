@@ -203,7 +203,7 @@ namespace Biaui.Controls
                         self.InvalidateVisual();
                     })
                 {
-                    BindsTwoWayByDefault = true,
+                    BindsTwoWayByDefault = true
                 }
             );
 
