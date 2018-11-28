@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -262,6 +263,62 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region ItemToStringConverter
+
+        public IValueConverter ItemToStringConverter
+        {
+            get => _ItemToStringConverter;
+            set
+            {
+                if (value != _ItemToStringConverter)
+                    SetValue(ItemToStringConverterProperty, value);
+            }
+        }
+
+        private IValueConverter _ItemToStringConverter = default(IValueConverter);
+
+        public static readonly DependencyProperty ItemToStringConverterProperty =
+            DependencyProperty.Register(nameof(ItemToStringConverter), typeof(IValueConverter), typeof(BiaComboBox),
+                new PropertyMetadata(
+                    default(IValueConverter),
+                    (s, e) =>
+                    {
+                        var self = (BiaComboBox) s;
+                        self._ItemToStringConverter = (IValueConverter) e.NewValue;
+                        self._isReqUpdateListBoxItemTemplate = true;
+                    }));
+
+        private bool _isReqUpdateListBoxItemTemplate = true;
+
+        #endregion
+
+        #region ItemToStringConverterParameter
+
+        public object ItemToStringConverterParameter
+        {
+            get => _ItemToStringConverterParameter;
+            set
+            {
+                if (value != _ItemToStringConverterParameter)
+                    SetValue(ItemToStringConverterParameterProperty, value);
+            }
+        }
+
+        private object _ItemToStringConverterParameter = default(object);
+
+        public static readonly DependencyProperty ItemToStringConverterParameterProperty =
+            DependencyProperty.Register(nameof(ItemToStringConverterParameter), typeof(object), typeof(BiaComboBox),
+                new PropertyMetadata(
+                    default(object),
+                    (s, e) =>
+                    {
+                        var self = (BiaComboBox) s;
+                        self._ItemToStringConverterParameter = e.NewValue;
+                        self._isReqUpdateListBoxItemTemplate = true;
+                    }));
+
+        #endregion
+
         static BiaComboBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaComboBox),
@@ -296,18 +353,22 @@ namespace Biaui.Controls
             {
                 DrawBackground(dc);
 
-                if (SelectedItem != null)
                 {
                     dc.PushClip(Caches.GetClipGeom(ActualWidth - 2, ActualHeight, CornerRadius));
                     {
-                        TextRenderer.Default.Draw(
-                            SelectedItem.ToString(),
-                            4.5, 3.5,
-                            Foreground,
-                            dc,
-                            ActualWidth,
-                            TextAlignment.Left
-                        );
+                        var displayItem = ItemToStringConverter?.Convert(SelectedItem, typeof(string),
+                                              ItemToStringConverterParameter, CultureInfo.CurrentUICulture)
+                                          ?? SelectedItem;
+
+                        if (displayItem != null)
+                            TextRenderer.Default.Draw(
+                                displayItem.ToString(),
+                                4.5, 3.5,
+                                Foreground,
+                                dc,
+                                ActualWidth,
+                                TextAlignment.Left
+                            );
                     }
                     dc.Pop();
                 }
@@ -428,6 +489,12 @@ namespace Biaui.Controls
                 _popup.Closed += PopupOnClosed;
             }
 
+            if (_isReqUpdateListBoxItemTemplate)
+            {
+                _isReqUpdateListBoxItemTemplate = false;
+                SetupListBoxItemTemplate();
+            }
+
             _listBox.Width = ActualWidth;
 
             Mouse.Capture(this, CaptureMode.SubTree);
@@ -459,6 +526,32 @@ namespace Biaui.Controls
                         sv.ScrollToVerticalOffset(offset);
                     }
                 }
+            }
+        }
+
+        private void SetupListBoxItemTemplate()
+        {
+            if (ItemToStringConverter == null)
+                _listBox.ItemTemplate = null;
+
+            else
+            {
+                var itemTemplate = new DataTemplate();
+                {
+                    var textBlock = new FrameworkElementFactory(typeof(TextBlock));
+
+                    textBlock.SetBinding(
+                        TextBlock.TextProperty,
+                        new Binding
+                        {
+                            Converter = ItemToStringConverter,
+                            ConverterParameter = ItemToStringConverterParameter,
+                            ConverterCulture = CultureInfo.CurrentUICulture,
+                        });
+
+                    itemTemplate.VisualTree = textBlock;
+                }
+                _listBox.ItemTemplate = itemTemplate;
             }
         }
 

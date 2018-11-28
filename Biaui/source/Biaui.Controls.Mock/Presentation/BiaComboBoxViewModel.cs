@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Data;
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
 
@@ -53,6 +57,20 @@ namespace Biaui.Controls.Mock.Presentation
         }
 
         #endregion
+
+        #region SelectedFruits
+
+        private Fruits _SelectedFruits;
+
+        public Fruits SelectedFruits
+        {
+            get => _SelectedFruits;
+            set => SetProperty(ref _SelectedFruits, value);
+        }
+
+        #endregion
+
+        public Fruits[] AllFruits => Enum.GetValues(typeof(Fruits)).Cast<Fruits>().ToArray();
 
         public BiaComboBoxViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
@@ -119,6 +137,48 @@ namespace Biaui.Controls.Mock.Presentation
 
             SelectedShortItem = ShortItems[0];
             SelectedLongItem = LongItems[0];
+
+            SelectedFruits = AllFruits[2];
+        }
+    }
+
+    public enum Fruits
+    {
+        Apple,
+        Banana,
+        Pine,
+        Lemon
+    };
+
+    public class FruitsToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (!(value is Fruits fruits))
+                return null;
+
+            switch (fruits)
+            {
+                case Fruits.Apple:
+                    return "りんご";
+
+                case Fruits.Banana:
+                    return "バナナ";
+
+                case Fruits.Pine:
+                    return "パイン";
+
+                case Fruits.Lemon:
+                    return "レモン";
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
