@@ -32,7 +32,6 @@ namespace Biaui.Controls
                         var self = (BiaColorPicker) s;
                         self._Red = (double) e.NewValue;
                         self.RgbToHsv();
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -61,7 +60,6 @@ namespace Biaui.Controls
                         var self = (BiaColorPicker) s;
                         self._Green = (double) e.NewValue;
                         self.RgbToHsv();
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -90,7 +88,6 @@ namespace Biaui.Controls
                         var self = (BiaColorPicker) s;
                         self._Blue = (double) e.NewValue;
                         self.RgbToHsv();
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -119,7 +116,6 @@ namespace Biaui.Controls
                         var self = (BiaColorPicker) s;
                         self._Hue = (double) e.NewValue;
                         self.HsvToRgb();
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -148,7 +144,6 @@ namespace Biaui.Controls
                         var self = (BiaColorPicker) s;
                         self._Saturation = (double) e.NewValue;
                         self.HsvToRgb();
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -177,7 +172,6 @@ namespace Biaui.Controls
                         var self = (BiaColorPicker) s;
                         self._Value = (double) e.NewValue;
                         self.HsvToRgb();
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -204,7 +198,6 @@ namespace Biaui.Controls
                     {
                         var self = (BiaColorPicker) s;
                         self._BorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -231,7 +224,6 @@ namespace Biaui.Controls
                     {
                         var self = (BiaColorPicker) s;
                         self._IsReadOnly = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
