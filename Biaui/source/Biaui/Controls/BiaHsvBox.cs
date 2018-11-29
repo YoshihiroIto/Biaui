@@ -169,7 +169,7 @@ namespace Biaui.Controls
                 var c = CursorRenderPos;
                 var s = 3.0;
                 dc.DrawEllipse(null, Caches.PointOut, c, s, s);
-                dc.DrawEllipse(null, IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s, s);
+                dc.DrawEllipse(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s, s);
             }
             dc.Pop();
         }

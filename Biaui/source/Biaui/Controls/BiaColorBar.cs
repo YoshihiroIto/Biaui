@@ -200,7 +200,7 @@ namespace Biaui.Controls
                 var r = new Rect(1, CursorRenderPosY - 2, rect.Width - 1, 4);
 
                 dc.DrawRectangle(null, Caches.PointOut, r);
-                dc.DrawRectangle(null, IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, r);
+                dc.DrawRectangle(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, r);
             }
             dc.Pop();
         }

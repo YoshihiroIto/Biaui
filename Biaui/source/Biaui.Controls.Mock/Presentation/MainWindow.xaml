@@ -41,10 +41,39 @@
 
         <TabItem Header="BiaColorPicker">
             <Grid Margin="4,8">
-                <controls:BiaColorPicker Blue="{Binding Blue, Mode=TwoWay}"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <controls:BiaColorPicker Grid.Column="0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
                                          Green="{Binding Green, Mode=TwoWay}"
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Column="2"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsReadOnly="True"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Column="4"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsEnabled="False"
                                          Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
