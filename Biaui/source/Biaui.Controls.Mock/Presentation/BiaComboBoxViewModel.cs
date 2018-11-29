@@ -72,6 +72,42 @@ namespace Biaui.Controls.Mock.Presentation
 
         public Fruits[] AllFruits => Enum.GetValues(typeof(Fruits)).Cast<Fruits>().ToArray();
 
+        #region SelectedA
+
+        private string _SelectedA;
+
+        public string SelectedA
+        {
+            get => _SelectedA;
+            set => SetProperty(ref _SelectedA, value);
+        }
+
+        #endregion
+
+        #region SelectedB
+
+        private string _SelectedB;
+
+        public string SelectedB
+        {
+            get => _SelectedB;
+            set => SetProperty(ref _SelectedB, value);
+        }
+
+        #endregion
+
+        #region SelectedC
+
+        private string _SelectedC;
+
+        public string SelectedC
+        {
+            get => _SelectedC;
+            set => SetProperty(ref _SelectedC, value);
+        }
+
+        #endregion
+
         public BiaComboBoxViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
             ShortItems = new ObservableCollection<string>
@@ -139,6 +175,10 @@ namespace Biaui.Controls.Mock.Presentation
             SelectedLongItem = LongItems[0];
 
             SelectedFruits = AllFruits[2];
+
+            SelectedA = LongItems[0];
+            SelectedB = LongItems[0];
+            SelectedC = LongItems[0];
         }
     }
 

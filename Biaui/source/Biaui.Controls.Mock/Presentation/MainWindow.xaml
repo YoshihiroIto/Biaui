@@ -416,6 +416,18 @@
                         </controls:BiaComboBox.ItemToStringConverter>
                     </controls:BiaComboBox>
                 </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedA}" />
+                    <controls:BiaComboBox IsEnabled="False"
+                                          ItemsSource="{Binding BiaComboBoxViewModel.LongItems}"
+                                          SelectedItem="{Binding BiaComboBoxViewModel.SelectedB}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedC}" />
+                </StackPanel>
             </StackPanel>
         </TabItem>
     </TabControl>

@@ -15,33 +15,6 @@ namespace Biaui.Controls
 {
     public class BiaComboBox : FrameworkElement
     {
-        #region IsReadOnly
-
-        public bool IsReadOnly
-        {
-            get => _IsReadOnly;
-            set
-            {
-                if (value != _IsReadOnly)
-                    SetValue(IsReadOnlyProperty, Boxes.Bool(value));
-            }
-        }
-
-        private bool _IsReadOnly = default(bool);
-
-        public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaComboBox),
-                new PropertyMetadata(
-                    Boxes.BoolFalse,
-                    (s, e) =>
-                    {
-                        var self = (BiaComboBox) s;
-                        self._IsReadOnly = (bool) e.NewValue;
-                        self.InvalidateVisual();
-                    }));
-
-        #endregion
-
         #region Background
 
         public Brush Background

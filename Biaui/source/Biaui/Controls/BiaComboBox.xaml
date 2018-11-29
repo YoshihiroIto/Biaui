@@ -16,10 +16,6 @@
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsReadOnly" Value="True">
-                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
-            </Trigger>
-
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
