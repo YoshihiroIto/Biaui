@@ -19,23 +19,47 @@
 
     <TabControl Margin="8">
         <TabItem Header="BiaNumberEditor">
-            <StackPanel Width="280"
-                        Margin="4,4,0,0"
+            <StackPanel Margin="4,4,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Orientation="Vertical">
+                        Orientation="Horizontal">
                 <StackPanel.Resources>
                     <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
                         <Setter Property="Margin" Value="0,4,0,0" />
-                        <Setter Property="UnitString" Value="% " />
                     </Style>
                 </StackPanel.Resources>
 
-                <controls:BiaNumberEditor Caption="MinMaxValue" Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
-                <controls:BiaNumberEditor Caption="SpinValue" Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
-                <controls:BiaNumberEditor Caption="TextInputValue" Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
-                <controls:BiaNumberEditor Caption="SliderValueSimple" Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
-                <controls:BiaNumberEditor Caption="SliderValueWideRange" Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
+                <StackPanel Width="280"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+
+                    <StackPanel.Resources>
+                        <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
+                            <Setter Property="UnitString" Value="% " />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <controls:BiaNumberEditor Caption="MinMaxValue" Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
+                    <controls:BiaNumberEditor Caption="SpinValue" Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
+                    <controls:BiaNumberEditor Caption="TextInputValue" Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
+                    <controls:BiaNumberEditor Caption="SliderValueSimple" Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
+                    <controls:BiaNumberEditor Caption="SliderValueWideRange" Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
+                </StackPanel>
+
+                <StackPanel Width="160"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaNumberEditor Caption="ParamA" Value="{Binding BiaNumberEditorViewModel.ParamA}" />
+                    <controls:BiaNumberEditor Caption="ParamB"
+                                              IsEnabled="False"
+                                              Value="{Binding BiaNumberEditorViewModel.ParamB}" />
+                    <controls:BiaNumberEditor Caption="ParamC"
+                                              IsReadOnly="True"
+                                              Value="{Binding BiaNumberEditorViewModel.ParamC}" />
+                </StackPanel>
             </StackPanel>
         </TabItem>
 
@@ -95,7 +119,6 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
-
                     <controls:BiaButton Content="Asia" />
                     <controls:BiaButton Content="ホーチミン" />
                     <controls:BiaButton Content="Disabled" IsEnabled="False" />
@@ -328,7 +351,7 @@
         </TabItem>
 
         <TabItem Header="BiaRadioButton">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="4,4,0,0" Orientation="Horizontal">
                 <StackPanel Width="100"
                             Margin="4,4,0,0"
                             HorizontalAlignment="Left"

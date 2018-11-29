@@ -65,6 +65,42 @@ namespace Biaui.Controls.Mock.Presentation
         
         #endregion
 
+        #region ParamA
+        
+        private double _ParamA;
+        
+        public double ParamA
+        {
+            get => _ParamA;
+            set => SetProperty(ref _ParamA, value);
+        }
+        
+        #endregion
+
+        #region ParamB
+        
+        private double _ParamB;
+        
+        public double ParamB
+        {
+            get => _ParamB;
+            set => SetProperty(ref _ParamB, value);
+        }
+        
+        #endregion
+
+        #region ParamC
+        
+        private double _ParamC;
+        
+        public double ParamC
+        {
+            get => _ParamC;
+            set => SetProperty(ref _ParamC, value);
+        }
+        
+        #endregion
+
         public BiaNumberEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
             MinMaxValue = 50.0;
@@ -72,6 +108,10 @@ namespace Biaui.Controls.Mock.Presentation
             TextInputValue = 50.0;
             SliderValueSimple = 50.0;
             SliderValueWideRange = 50.0;
+
+            ParamA = 50.0;
+            ParamB = 50.0;
+            ParamC = 50.0;
         }
     }
 }
