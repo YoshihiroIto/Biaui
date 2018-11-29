@@ -709,13 +709,14 @@ namespace Biaui.Controls
         {
             base.OnMouseLeftButtonDown(e);
 
+            _oldPos = e.GetPosition(this);
+            _mouseDownPos = _oldPos;
+
             if (IsReadOnly)
                 return;
 
             _isMouseDown = true;
             _isMouseMoved = false;
-            _oldPos = e.GetPosition(this);
-            _mouseDownPos = _oldPos;
             _mouseOverTypeOnMouseDown = MakeMouseOverType(e);
 
             if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
