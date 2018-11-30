@@ -755,7 +755,13 @@ namespace Biaui.Controls
         {
             base.OnMouseMove(e);
 
-            _mouseOverType = MakeMouseOverType(e);
+            var newMouseOverType = MakeMouseOverType(e);
+
+            if (_mouseOverType != newMouseOverType)
+            {
+                _mouseOverType = newMouseOverType;
+                InvalidateVisual();
+            }
 
             if (_isMouseDown == false)
                 return;
