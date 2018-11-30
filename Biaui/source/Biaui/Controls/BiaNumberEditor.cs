@@ -87,7 +87,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _SliderBrush;
+        private Brush _SliderBrush = Brushes.GreenYellow;
 
         public static readonly DependencyProperty SliderBrushProperty =
             DependencyProperty.Register(nameof(SliderBrush), typeof(Brush), typeof(BiaNumberEditor),
