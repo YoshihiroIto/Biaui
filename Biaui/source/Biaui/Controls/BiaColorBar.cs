@@ -182,6 +182,11 @@ namespace Biaui.Controls
         private Brush _backgroundBrush;
         private bool _isRequestUpdateBackgroundBrush = true;
 
+        public BiaColorBar()
+        {
+            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+        }
+
         protected override void OnRender(DrawingContext dc)
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
