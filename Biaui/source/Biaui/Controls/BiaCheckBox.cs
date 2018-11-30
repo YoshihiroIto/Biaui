@@ -76,7 +76,7 @@ namespace Biaui.Controls
                 return;
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutActualRectangle());
+            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutActualRectangle(false));
 
             // ボックス
             dc.DrawRoundedRectangle(

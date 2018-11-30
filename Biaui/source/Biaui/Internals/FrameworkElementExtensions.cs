@@ -5,7 +5,7 @@ namespace Biaui.Internals
 {
     internal static class FrameworkElementExtensions
     {
-        internal static double RoundLayoutActualWidth(this FrameworkElement self, bool isWithBorder = false)
+        internal static double RoundLayoutActualWidth(this FrameworkElement self, bool isWithBorder)
         {
             if (isWithBorder)
             {
@@ -18,7 +18,7 @@ namespace Biaui.Internals
         }
 
 
-        internal static double RoundLayoutActualHeight(this FrameworkElement self, bool isWithBorder = false)
+        internal static double RoundLayoutActualHeight(this FrameworkElement self, bool isWithBorder)
         {
             if (isWithBorder)
             {
@@ -30,20 +30,23 @@ namespace Biaui.Internals
             }
         }
 
-        internal static Rect RoundLayoutActualRectangle(this FrameworkElement self, bool isWithBorder = false)
+        internal static Rect RoundLayoutActualRectangle(this FrameworkElement self, bool isWithBorder)
         {
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (isWithBorder)
             {
                 return new Rect(
                     RoundLayoutBorderWidth,
                     RoundLayoutBorderWidth,
-                    self.RoundLayoutActualWidth() - RoundLayoutBorderWidth * 2,
-                    self.RoundLayoutActualHeight() - RoundLayoutBorderWidth * 2);
+                    self.RoundLayoutActualWidth(isWithBorder),
+                    self.RoundLayoutActualHeight(isWithBorder));
             }
             else
             {
-                return new Rect(0, 0, self.RoundLayoutActualWidth(), self.RoundLayoutActualHeight());
+                return new Rect(0, 0, self.RoundLayoutActualWidth(isWithBorder),
+                    self.RoundLayoutActualHeight(isWithBorder));
             }
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
         }
 
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
