@@ -25,13 +25,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BorderColorProperty =
             DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaHsvBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorRed,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBox) s;
                         self._BorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -53,13 +54,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty HueProperty =
             DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBox) s;
                         self._Hue = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -81,13 +83,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty SaturationProperty =
             DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBox) s;
                         self._Saturation = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -109,13 +112,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBox) s;
                         self._Value = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -136,13 +140,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBox) s;
                         self._IsReadOnly = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -169,7 +174,8 @@ namespace Biaui.Controls
                 var c = CursorRenderPos;
                 var s = 3.0;
                 dc.DrawEllipse(null, Caches.PointOut, c, s, s);
-                dc.DrawEllipse(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s, s);
+                dc.DrawEllipse(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s,
+                    s);
             }
             dc.Pop();
         }
@@ -256,19 +262,12 @@ namespace Biaui.Controls
             // マウス位置を補正する
             {
                 var p = PointToScreen(CursorRenderPos);
-                Win32Helper.SetCursorPos((int)p.X, (int)p.Y);
+                Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
             }
 
             _isMouseDown = false;
             GuiHelper.ShowCursor();
             Win32Helper.ClipCursor(IntPtr.Zero);
-        }
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            base.OnMouseEnter(e);
-
-            InvalidateVisual();
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -278,10 +277,9 @@ namespace Biaui.Controls
             if (_isMouseDown)
             {
                 _isMouseDown = false;
+                GuiHelper.ShowCursor();
                 Win32Helper.ClipCursor(IntPtr.Zero);
             }
-
-            InvalidateVisual();
         }
 
         private static readonly Dictionary<double, (Brush Hue, Brush Saturation)> _brushCache =

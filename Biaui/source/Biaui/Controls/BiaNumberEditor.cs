@@ -35,13 +35,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._IsReadOnly = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -62,13 +63,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BorderColorProperty =
             DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorRed,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._BorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -89,13 +91,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty SliderBrushProperty =
             DependencyProperty.Register(nameof(SliderBrush), typeof(Brush), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Brushes.GreenYellow,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._SliderBrush = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -117,15 +120,16 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         // 最小値・最大値でクランプして保存する
 
                         var self = (BiaNumberEditor) s;
                         self._Value = self.ClampValue((double) e.NewValue);
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -146,13 +150,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty CaptionProperty =
             DependencyProperty.Register(nameof(Caption), typeof(string), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(string),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._Caption = (string) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -174,13 +179,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty SliderMinimumProperty =
             DependencyProperty.Register(nameof(SliderMinimum), typeof(double), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._SliderMinimum = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -202,13 +208,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty SliderMaximumProperty =
             DependencyProperty.Register(nameof(SliderMaximum), typeof(double), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double100,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._SliderMaximum = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -230,8 +237,10 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty MinimumProperty =
             DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         // 変更後の最小値でValueをクランプする
@@ -240,8 +249,6 @@ namespace Biaui.Controls
                         self._Minimum = (double) e.NewValue;
 
                         self.Value = self.ClampValue(self.Value);
-
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -263,8 +270,10 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double100,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         // 変更後の最大値でValueをクランプする
@@ -273,8 +282,6 @@ namespace Biaui.Controls
                         self._Maximum = (double) e.NewValue;
 
                         self.Value = self.ClampValue(self.Value);
-
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -295,13 +302,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty DisplayFormatProperty =
             DependencyProperty.Register(nameof(DisplayFormat), typeof(string), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     "F3",
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._DisplayFormat = (string) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -322,13 +330,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty UnitStringProperty =
             DependencyProperty.Register(nameof(UnitString), typeof(string), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     "",
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._UnitString = (string) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -349,13 +358,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._Background = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -376,13 +386,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._Foreground = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -403,13 +414,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty PaddingProperty =
             DependencyProperty.Register(nameof(Padding), typeof(Thickness), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Thickness0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._Padding = (Thickness) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -430,13 +442,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ModeProperty =
             DependencyProperty.Register(nameof(Mode), typeof(BiaNumberEditorMode), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BiaNumberModeSimple,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._Mode = (BiaNumberEditorMode) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -458,8 +471,10 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IncrementProperty =
             DependencyProperty.Register(nameof(Increment), typeof(double), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double1,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
@@ -485,19 +500,20 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ConstantsBasicCornerRadiusPrim,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
                         self._CornerRadius = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
 
         #region IsVisibleBorder
-        
+
         public bool IsVisibleBorder
         {
             get => _IsVisibleBorder;
@@ -507,19 +523,21 @@ namespace Biaui.Controls
                     SetValue(IsVisibleBorderProperty, Boxes.Bool(value));
             }
         }
-        
+
         private bool _IsVisibleBorder = true;
-        
+
         public static readonly DependencyProperty IsVisibleBorderProperty =
             DependencyProperty.Register(nameof(IsVisibleBorder), typeof(bool), typeof(BiaNumberEditor),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolTrue,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._IsVisibleBorder = (bool)e.NewValue;
+                        self._IsVisibleBorder = (bool) e.NewValue;
                     }));
-        
+
         #endregion
 
         static BiaNumberEditor()
@@ -741,7 +759,6 @@ namespace Biaui.Controls
             base.OnMouseMove(e);
 
             _mouseOverType = MakeMouseOverType(e);
-            InvalidateVisual();
 
             if (_isMouseDown == false)
                 return;
@@ -841,15 +858,6 @@ namespace Biaui.Controls
             }
 
             _mouseOverType = MakeMouseOverType(e);
-
-            InvalidateVisual();
-        }
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            base.OnMouseEnter(e);
-
-            InvalidateVisual();
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -865,8 +873,6 @@ namespace Biaui.Controls
             }
 
             _mouseOverType = MouseOverType.None;
-
-            InvalidateVisual();
         }
 
         private MouseOverType MakeMouseOverType(MouseEventArgs e)
@@ -934,7 +940,6 @@ namespace Biaui.Controls
             _popupResult = PopupResult.Ok;
             _popup.IsOpen = true;
             _isInPopup = true;
-            InvalidateVisual();
 
             _textBox.Focus();
             _textBox.SelectAll();

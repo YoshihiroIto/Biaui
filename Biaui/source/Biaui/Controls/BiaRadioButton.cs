@@ -22,13 +22,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty MarkBorderColorProperty =
             DependencyProperty.Register(nameof(MarkBorderColor), typeof(Color), typeof(BiaRadioButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorTransparent,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaRadioButton) s;
                         self._markBorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -49,13 +50,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaRadioButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaRadioButton) s;
                         self._MarkBrush = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion

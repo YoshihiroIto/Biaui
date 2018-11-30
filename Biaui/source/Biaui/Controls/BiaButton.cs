@@ -28,14 +28,16 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register(nameof(Content), typeof(string), typeof(BiaButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(string),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.AffectsMeasure |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
                         self._content = (string) e.NewValue;
                         self.UpdateSize();
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -120,13 +122,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
                         self._Background = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -147,13 +150,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
                         self._Foreground = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -175,13 +179,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
                         self._CornerRadius = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -202,13 +207,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IsPressedProperty =
             DependencyProperty.Register(nameof(IsPressed), typeof(bool), typeof(BiaButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
                         self._IsPressed = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -229,13 +235,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IsPressedMouseOverProperty =
             DependencyProperty.Register(nameof(IsPressedMouseOver), typeof(bool), typeof(BiaButton),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
                         self._isPressedMouseOver = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -361,14 +368,8 @@ namespace Biaui.Controls
         private void UpdateSize()
         {
             var w = TextRenderer.Default.CalcWidth(Content);
-            var wp = Constants.ButtonPaddingX + w + Constants.ButtonPaddingX;
 
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (wp != _textWidth)
-            {
-                _textWidth = wp;
-                InvalidateMeasure();
-            }
+            _textWidth = Constants.ButtonPaddingX + w + Constants.ButtonPaddingX;
         }
 
         private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));

@@ -22,13 +22,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BoxBorderColorProperty =
             DependencyProperty.Register(nameof(BoxBorderColor), typeof(Color), typeof(BiaCheckBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorTransparent,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaCheckBox) s;
                         self._boxBorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -49,13 +50,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaCheckBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaCheckBox) s;
                         self._MarkBrush = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion

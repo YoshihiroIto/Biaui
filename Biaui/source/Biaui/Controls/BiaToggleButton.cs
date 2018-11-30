@@ -23,11 +23,13 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaToggleButton),
                 new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaToggleButton) s;
                         self._IsChecked = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     })
                 {
                     BindsTwoWayByDefault = true

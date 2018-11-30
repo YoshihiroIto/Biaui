@@ -31,13 +31,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaComboBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;
                         self._Background = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -58,13 +59,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaComboBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;
                         self._Foreground = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -85,13 +87,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BorderColorProperty =
             DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaComboBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorRed,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;
                         self._BorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -113,13 +116,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaComboBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;
                         self._CornerRadius = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -141,13 +145,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable), typeof(BiaComboBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(IEnumerable),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;
                         self._ItemsSource = (IEnumerable) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -170,16 +175,14 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(SelectedItem), typeof(object), typeof(BiaComboBox),
                 new FrameworkPropertyMetadata(
                     default(object),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;
                         self._SelectedItem = e.NewValue;
-                        self.InvalidateVisual();
-                    })
-                {
-                    BindsTwoWayByDefault = true
-                }
-            );
+                    }));
 
         #endregion
 
@@ -199,13 +202,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaComboBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;
                         self._MarkBrush = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -387,13 +391,11 @@ namespace Biaui.Controls
                 Mouse.Capture(null);
                 _popup.IsOpen = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
-                InvalidateVisual();
             }
             else
             {
                 Focus();
                 ShowListBox();
-                InvalidateVisual();
             }
         }
 
@@ -474,7 +476,6 @@ namespace Biaui.Controls
 
             _popup.IsOpen = true;
             IsOpen = true;
-            InvalidateVisual();
 
             if (_listBox.SelectedItem == null)
             {
@@ -569,7 +570,6 @@ namespace Biaui.Controls
         private void PopupOnClosed(object sender, EventArgs e)
         {
             IsOpen = false;
-            InvalidateVisual();
         }
 
         private void MoveSelectedItem(int dir)

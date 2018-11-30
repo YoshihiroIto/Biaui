@@ -29,16 +29,14 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(BiaTextBox),
                 new FrameworkPropertyMetadata(
                     default(string),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
                         self._Text = (string) e.NewValue;
-                        self.InvalidateVisual();
-                    })
-                {
-                    BindsTwoWayByDefault = true
-                }
-            );
+                    }));
 
         #endregion
 
@@ -58,13 +56,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaTextBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
                         self._IsReadOnly = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -85,13 +84,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaTextBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
                         self._Background = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -112,13 +112,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaTextBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
                         self._Foreground = (Brush) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -139,13 +140,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BorderColorProperty =
             DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaTextBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorRed,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
                         self._BorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -167,13 +169,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaTextBox),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
                         self._CornerRadius = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -186,6 +189,8 @@ namespace Biaui.Controls
 
         public BiaTextBox()
         {
+            IsEnabledChanged += (_, __) => InvalidateVisual();
+
             Unloaded += (_, __) =>
             {
                 if (_popup != null)
@@ -256,7 +261,6 @@ namespace Biaui.Controls
 
             Focus();
             ShowEditBox();
-            InvalidateVisual();
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) MouseSimulator.DownLeftMouseButton);
         }
@@ -320,7 +324,6 @@ namespace Biaui.Controls
 
             _popup.IsOpen = true;
             _isInPopup = true;
-            InvalidateVisual();
 
             Win32Helper.SetFocus(WpfHelper.GetHwnd(_popup));
             _textBox.Focus();

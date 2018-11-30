@@ -25,13 +25,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaColorBar),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
                         self._value = (double) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -52,14 +53,15 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty Color0Property =
             DependencyProperty.Register(nameof(Color0), typeof(Color), typeof(BiaColorBar),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorBlack,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
                         self._Color0 = (Color) e.NewValue;
                         self._isRequestUpdateBackgroundBrush = true;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -80,14 +82,15 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty Color1Property =
             DependencyProperty.Register(nameof(Color1), typeof(Color), typeof(BiaColorBar),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorWhite,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
                         self._Color1 = (Color) e.NewValue;
                         self._isRequestUpdateBackgroundBrush = true;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -108,13 +111,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty BorderColorProperty =
             DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaColorBar),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.ColorRed,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
                         self._BorderColor = (Color) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -135,13 +139,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IsInverseValueProperty =
             DependencyProperty.Register(nameof(IsInverseValue), typeof(bool), typeof(BiaColorBar),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
                         self._IsInverseValue = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -162,13 +167,14 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaColorBar),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
                         self._IsReadOnly = (bool) e.NewValue;
-                        self.InvalidateVisual();
                     }));
 
         #endregion
@@ -293,19 +299,12 @@ namespace Biaui.Controls
                 var y = CursorRenderPosY;
 
                 var p = PointToScreen(new Point(x, y));
-                Win32Helper.SetCursorPos((int)p.X, (int)p.Y);
+                Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
             }
 
             _isMouseDown = false;
             Win32Helper.ClipCursor(IntPtr.Zero);
             GuiHelper.ShowCursor();
-        }
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            base.OnMouseEnter(e);
-
-            InvalidateVisual();
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -318,8 +317,6 @@ namespace Biaui.Controls
                 ReleaseMouseCapture();
                 Win32Helper.ClipCursor(IntPtr.Zero);
             }
-
-            InvalidateVisual();
         }
     }
 }
