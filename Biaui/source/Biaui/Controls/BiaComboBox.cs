@@ -326,7 +326,7 @@ namespace Biaui.Controls
 
             if (CornerRadius != 0)
                 dc.PushClip(
-                    Caches.GetClipGeom(this.RoundLayoutActualWidth(), this.RoundLayoutActualHeight(), CornerRadius));
+                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
             {
                 var displayItem = ItemToStringConverter?.Convert(SelectedItem, typeof(string),
                                       ItemToStringConverterParameter, CultureInfo.CurrentUICulture)

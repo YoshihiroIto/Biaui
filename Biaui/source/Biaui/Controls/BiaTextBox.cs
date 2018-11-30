@@ -213,7 +213,7 @@ namespace Biaui.Controls
 
             if (CornerRadius != 0)
                 dc.PushClip(
-                    Caches.GetClipGeom(this.RoundLayoutActualWidth(), this.RoundLayoutActualHeight(), CornerRadius));
+                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
             {
                 TextRenderer.Default.Draw(
                     _isInPopup ? _textBox.Text : Text,

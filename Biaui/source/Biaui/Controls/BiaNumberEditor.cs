@@ -564,7 +564,7 @@ namespace Biaui.Controls
 
             if (CornerRadius != 0)
                 dc.PushClip(
-                    Caches.GetClipGeom(this.RoundLayoutActualWidth(), this.RoundLayoutActualHeight(), CornerRadius));
+                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
             {
                 if (Mode == BiaNumberEditorMode.Simple)
                     DrawSlider(dc);
@@ -592,12 +592,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle());
+                    this.RoundLayoutActualRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle(),
+                    this.RoundLayoutActualRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }
@@ -609,13 +609,13 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle()
+                    this.RoundLayoutActualRectangle(true)
                 );
             else
                 dc.DrawRoundedRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(),
+                    this.RoundLayoutActualRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }
@@ -625,10 +625,13 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var w = (UiValue - ActualSliderMinimum) * ActualWidth / SliderWidth;
+            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutActualWidth(true) / SliderWidth;
             var brush = _isInPopup ? _textBox.Background : SliderBrush;
 
-            dc.DrawRectangle(brush, null, new Rect(0, 0, w, ActualHeight));
+            var r = this.RoundLayoutActualRectangle(true);
+            r.Width = FrameworkElementHelper.RoundLayoutValue(w);
+
+            dc.DrawRectangle(brush, null, r);
         }
 
         private const double SpinWidth = 14.0;

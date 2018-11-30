@@ -28,18 +28,34 @@ namespace Biaui.Internals
             return p;
         }
 
-        public static Geometry GetClipGeom(double w, double h, double cornerRadius)
+        public static Geometry GetClipGeom(double w, double h, double cornerRadius, bool isWidthBorder)
         {
-            var key = (w, h, cornerRadius);
+            var key = (w, h, cornerRadius, isWidthBorder);
             if (_clipGeoms.TryGetValue(key, out var c))
                 return c;
 
-            c = new RectangleGeometry
+            if (isWidthBorder)
             {
-                RadiusX = cornerRadius,
-                RadiusY = cornerRadius,
-                Rect = new Rect(0, 0, w, h)
-            };
+                c = new RectangleGeometry
+                {
+                    RadiusX = cornerRadius,
+                    RadiusY = cornerRadius,
+                    Rect = FrameworkElementHelper.RoundLayoutRect(
+                        FrameworkElementExtensions.BorderWidth * 0.5, 
+                        FrameworkElementExtensions.BorderWidth * 0.5,
+                        w - FrameworkElementExtensions.BorderWidth,
+                        h - FrameworkElementExtensions.BorderWidth)
+                };
+            }
+            else
+            {
+                c = new RectangleGeometry
+                {
+                    RadiusX = cornerRadius,
+                    RadiusY = cornerRadius,
+                    Rect = FrameworkElementHelper.RoundLayoutRect(0, 0, w, h)
+                };
+            }
 
             c.Freeze();
 
@@ -48,8 +64,8 @@ namespace Biaui.Internals
             return c;
         }
 
-        private static readonly Dictionary<(double W, double H, double CorerRadius), RectangleGeometry> _clipGeoms =
-            new Dictionary<(double W, double H, double CorerRadius), RectangleGeometry>();
+        private static readonly Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry> _clipGeoms =
+            new Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry>();
 
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
 
