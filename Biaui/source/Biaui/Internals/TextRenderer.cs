@@ -76,10 +76,20 @@ namespace Biaui.Internals
             if (gr == null)
                 return;
 
-            dc.PushTransform(new TranslateTransform(x, y));
+            var key = (x, y);
+            if (_transCache.TryGetValue(key, out var t) == false)
+            {
+                t = new TranslateTransform(x, y);
+                _transCache.Add(key, t);
+            }
+
+            dc.PushTransform(t);
             dc.DrawGlyphRun(brush, gr);
             dc.Pop();
         }
+
+        private readonly Dictionary<(double X, double Y), TranslateTransform> _transCache =
+            new Dictionary<(double X, double Y), TranslateTransform>();
 
         internal double CalcWidth(string text)
         {
@@ -242,7 +252,7 @@ namespace Biaui.Internals
                 return 0.0;
 
 #if false
-            // 文字列に ... を追加する
+// 文字列に ... を追加する
             Array.Resize(ref glyphIndexes, newCount);
             Array.Resize(ref advanceWidths, newCount);
             glyphIndexes[glyphIndexes.Length - 1 - 2] = _dotGlyphIndex;
