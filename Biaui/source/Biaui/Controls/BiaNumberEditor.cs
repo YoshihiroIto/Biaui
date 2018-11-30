@@ -564,7 +564,7 @@ namespace Biaui.Controls
 
             if (CornerRadius != 0)
                 dc.PushClip(
-                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
+                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
             {
                 if (Mode == BiaNumberEditorMode.Simple)
                     DrawSlider(dc);
@@ -592,12 +592,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle(true));
+                    this.RoundLayoutActualRectangle(IsVisibleBorder));
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle(true),
+                    this.RoundLayoutActualRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
@@ -609,13 +609,13 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true)
+                    this.RoundLayoutActualRectangle(IsVisibleBorder)
                 );
             else
                 dc.DrawRoundedRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true),
+                    this.RoundLayoutActualRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
@@ -625,10 +625,10 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutActualWidth(true) / SliderWidth;
+            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutActualWidth(IsVisibleBorder) / SliderWidth;
             var brush = _isInPopup ? _textBox.Background : SliderBrush;
 
-            var r = this.RoundLayoutActualRectangle(true);
+            var r = this.RoundLayoutActualRectangle(IsVisibleBorder);
             r.Width = FrameworkElementHelper.RoundLayoutValue(w);
 
             dc.DrawRectangle(brush, null, r);

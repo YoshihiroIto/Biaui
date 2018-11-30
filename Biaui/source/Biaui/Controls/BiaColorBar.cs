@@ -198,11 +198,10 @@ namespace Biaui.Controls
                 UpdateBackgroundBrush();
             }
 
-            var rect = FrameworkElementHelper.RoundLayoutRect(0.5, 0.5, ActualWidth - 1.5, ActualHeight - 1.5);
+            var rect = this.RoundLayoutActualRectangle(true);
             dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
 
             var p = FrameworkElementHelper.RoundLayoutValue(1.5);
-
             var r = FrameworkElementHelper.RoundLayoutRect(rect.X + p, CursorRenderPosY - 3, rect.Width - p*2, 6);
 
             dc.DrawRectangle(null, Caches.PointOut, r);

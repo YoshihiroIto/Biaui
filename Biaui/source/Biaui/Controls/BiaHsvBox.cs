@@ -160,7 +160,7 @@ namespace Biaui.Controls
                 return;
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var rect = FrameworkElementHelper.RoundLayoutRect(0.5, 0.5, ActualWidth - 1.5, ActualHeight - 1.5);
+            var rect = this.RoundLayoutActualRectangle(true);
             var p = this.GetBorderPen(BorderColor);
             var b = GetBackgroundBrush();
 
