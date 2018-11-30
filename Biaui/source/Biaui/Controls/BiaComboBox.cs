@@ -315,51 +315,45 @@ namespace Biaui.Controls
             };
         }
 
-        private const double BorderWidth = 1.0;
-
         protected override void OnRender(DrawingContext dc)
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
-            // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
+            DrawBackground(dc);
+
+            if (CornerRadius != 0)
+                dc.PushClip(
+                    Caches.GetClipGeom(this.RoundLayoutActualWidth(), this.RoundLayoutActualHeight(), CornerRadius));
             {
-                DrawBackground(dc);
+                var displayItem = ItemToStringConverter?.Convert(SelectedItem, typeof(string),
+                                      ItemToStringConverterParameter, CultureInfo.CurrentUICulture)
+                                  ?? SelectedItem;
 
-                {
-                    dc.PushClip(Caches.GetClipGeom(ActualWidth - 2, ActualHeight, CornerRadius));
-                    {
-                        var displayItem = ItemToStringConverter?.Convert(SelectedItem, typeof(string),
-                                              ItemToStringConverterParameter, CultureInfo.CurrentUICulture)
-                                          ?? SelectedItem;
-
-                        if (displayItem != null)
-                            TextRenderer.Default.Draw(
-                                displayItem.ToString(),
-                                4.5, 3.5,
-                                Foreground,
-                                dc,
-                                ActualWidth,
-                                TextAlignment.Left
-                            );
-                    }
-                    dc.Pop();
-                }
-
-                // マーク
-                {
-                    var offset = new TranslateTransform(ActualWidth - SystemParameters.VerticalScrollBarWidth, 10.5);
-
-                    dc.PushTransform(offset);
-                    dc.DrawGeometry(MarkBrush, null, _markGeom);
-                    dc.Pop();
-                }
+                if (displayItem != null)
+                    TextRenderer.Default.Draw(
+                        displayItem.ToString(),
+                        4.5, 3.5,
+                        Foreground,
+                        dc,
+                        ActualWidth,
+                        TextAlignment.Left
+                    );
             }
-            dc.Pop();
+            if (CornerRadius != 0)
+                dc.Pop();
+
+            // マーク
+            {
+                var offset = new TranslateTransform(ActualWidth - SystemParameters.VerticalScrollBarWidth, 10.5);
+
+                dc.PushTransform(offset);
+                dc.DrawGeometry(MarkBrush, null, _markGeom);
+                dc.Pop();
+            }
+            // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
         private void DrawBackground(DrawingContext dc)
@@ -368,13 +362,13 @@ namespace Biaui.Controls
             if (CornerRadius == 0)
                 dc.DrawRectangle(
                     Background,
-                    Caches.GetBorderPen(BorderColor, BorderWidth),
-                    ActualRectangle);
+                    this.GetBorderPen(BorderColor),
+                    this.RoundLayoutActualRectangle());
             else
                 dc.DrawRoundedRectangle(
                     Background,
-                    Caches.GetBorderPen(BorderColor, BorderWidth),
-                    ActualRectangle,
+                    this.GetBorderPen(BorderColor),
+                    this.RoundLayoutActualRectangle(),
                     CornerRadius,
                     CornerRadius);
         }
@@ -598,8 +592,6 @@ namespace Biaui.Controls
                 SelectedItem = ia[i];
             }
         }
-
-        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
 
         private static readonly Geometry _markGeom = Geometry.Parse("M 0.0,0.0 L 3.5,4.0 7.0,0.0 z");
     }

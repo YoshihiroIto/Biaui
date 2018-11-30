@@ -208,30 +208,26 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
-            // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
+            DrawBackground(dc);
+
+            if (CornerRadius != 0)
+                dc.PushClip(
+                    Caches.GetClipGeom(this.RoundLayoutActualWidth(), this.RoundLayoutActualHeight(), CornerRadius));
             {
-                DrawBackground(dc);
-
-                dc.PushClip(Caches.GetClipGeom(ActualWidth - 2, ActualHeight, CornerRadius));
-                {
-                    TextRenderer.Default.Draw(
-                        _isInPopup ? _textBox.Text : Text,
-                        4.5, 3.5,
-                        Foreground,
-                        dc,
-                        ActualWidth,
-                        TextAlignment.Left
-                    );
-                }
-                dc.Pop();
+                TextRenderer.Default.Draw(
+                    _isInPopup ? _textBox.Text : Text,
+                    4.5, 3.5,
+                    Foreground,
+                    dc,
+                    ActualWidth,
+                    TextAlignment.Left
+                );
             }
-            dc.Pop();
+            if (CornerRadius != 0)
+                dc.Pop();
+            // ReSharper restore CompareOfFloatsByEqualityOperator
         }
-
-        private const double BorderWidth = 1.0;
 
         private void DrawBackground(DrawingContext dc)
         {
@@ -241,13 +237,13 @@ namespace Biaui.Controls
             if (CornerRadius == 0)
                 dc.DrawRectangle(
                     brush,
-                    Caches.GetBorderPen(BorderColor, BorderWidth),
-                    ActualRectangle);
+                    this.GetBorderPen(BorderColor),
+                    this.RoundLayoutActualRectangle());
             else
                 dc.DrawRoundedRectangle(
                     brush,
-                    Caches.GetBorderPen(BorderColor, BorderWidth),
-                    ActualRectangle,
+                    this.GetBorderPen(BorderColor),
+                    this.RoundLayoutActualRectangle(),
                     CornerRadius,
                     CornerRadius);
         }
@@ -373,7 +369,5 @@ namespace Biaui.Controls
                 this.MoveFocus(new TraversalRequest(dir));
             }
         }
-
-        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
     }
 }

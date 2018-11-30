@@ -553,8 +553,6 @@ namespace Biaui.Controls
             IsEnabledChanged += (_, __) => InvalidateVisual();
         }
 
-        private const double BorderWidth = 2.0;
-
         protected override void OnRender(DrawingContext dc)
         {
             // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -562,14 +560,12 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
+            DrawBackground(dc);
 
             if (CornerRadius != 0)
-                dc.PushClip(Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius));
+                dc.PushClip(
+                    Caches.GetClipGeom(this.RoundLayoutActualWidth(), this.RoundLayoutActualHeight(), CornerRadius));
             {
-                DrawBackground(dc);
-
                 if (Mode == BiaNumberEditorMode.Simple)
                     DrawSlider(dc);
 
@@ -577,14 +573,12 @@ namespace Biaui.Controls
 
                 if (IsReadOnly == false && IsEnabled && Increment != 0)
                     DrawSpin(dc);
-
-                if (IsVisibleBorder)
-                    DrawBorder(dc);
             }
             if (CornerRadius != 0)
                 dc.Pop();
 
-            dc.Pop();
+            if (IsVisibleBorder)
+                DrawBorder(dc);
 
             // ReSharper restore CompareOfFloatsByEqualityOperator
         }
@@ -598,12 +592,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     null,
-                    ActualRectangle);
+                    this.RoundLayoutActualRectangle());
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     null,
-                    ActualRectangle,
+                    this.RoundLayoutActualRectangle(),
                     CornerRadius,
                     CornerRadius);
         }
@@ -613,17 +607,17 @@ namespace Biaui.Controls
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (CornerRadius == 0)
                 dc.DrawRectangle(
-                    null,
-                    Caches.GetBorderPen(BorderColor, BorderWidth),
-                    ActualRectangle, null
+                    Brushes.Transparent,
+                    this.GetBorderPen(BorderColor),
+                    this.RoundLayoutActualRectangle()
                 );
             else
                 dc.DrawRoundedRectangle(
-                    null,
-                    Caches.GetBorderPen(BorderColor, BorderWidth),
-                    ActualRectangle, null,
-                    CornerRadius, null,
-                    CornerRadius, null);
+                    Brushes.Transparent,
+                    this.GetBorderPen(BorderColor),
+                    this.RoundLayoutActualRectangle(),
+                    CornerRadius,
+                    CornerRadius);
         }
 
         private void DrawSlider(DrawingContext dc)
@@ -1068,7 +1062,6 @@ namespace Biaui.Controls
         private double ClampValue(double v)
             => Math.Max(Math.Min(v, ActualMaximum), ActualMinimum);
 
-        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
         private string FormattedValueString => Value.ToString(DisplayFormat);
 
         private double SliderWidth => Math.Abs(SliderMaximum - SliderMinimum);

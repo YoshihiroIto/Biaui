@@ -14,7 +14,7 @@ namespace Biaui.Internals
         public static IEnumerable<DependencyObject> Children(this DependencyObject obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             var count = VisualTreeHelper.GetChildrenCount(obj);
             if (count == 0)
@@ -23,8 +23,7 @@ namespace Biaui.Internals
             for (int i = 0; i < count; i++)
             {
                 var child = VisualTreeHelper.GetChild(obj, i);
-                if (child != null)
-                    yield return child;
+                yield return child;
             }
         }
 
@@ -32,7 +31,7 @@ namespace Biaui.Internals
         public static IEnumerable<DependencyObject> Descendants(this DependencyObject obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
             foreach (var child in obj.Children())
             {

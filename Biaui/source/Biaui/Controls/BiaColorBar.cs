@@ -190,25 +190,23 @@ namespace Biaui.Controls
                 return;
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
+            VisualEdgeMode = EdgeMode.Unspecified;
+
             if (_isRequestUpdateBackgroundBrush)
             {
                 _isRequestUpdateBackgroundBrush = false;
                 UpdateBackgroundBrush();
             }
 
-            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
+            var rect = FrameworkElementHelper.RoundLayoutRect(0.5, 0.5, ActualWidth - 1.5, ActualHeight - 1.5);
+            dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
 
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
-            {
-                dc.DrawRectangle(_backgroundBrush,
-                    Caches.GetBorderPen(BorderColor, BorderWidth / WpfHelper.PixelsPerDip), rect);
+            var p = FrameworkElementHelper.RoundLayoutValue(1.5);
 
-                var r = new Rect(1, CursorRenderPosY - 2, rect.Width - 1, 4);
+            var r = FrameworkElementHelper.RoundLayoutRect(rect.X + p, CursorRenderPosY - 3, rect.Width - p*2, 6);
 
-                dc.DrawRectangle(null, Caches.PointOut, r);
-                dc.DrawRectangle(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, r);
-            }
-            dc.Pop();
+            dc.DrawRectangle(null, Caches.PointOut, r);
+            dc.DrawRectangle(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, r);
         }
 
         private const double BorderWidth = 2.0;
@@ -233,13 +231,12 @@ namespace Biaui.Controls
             _backgroundBrush.Freeze();
         }
 
-        private const double borderSize = 1.0;
-
         private void UpdateParams(MouseEventArgs e)
         {
             var pos = e.GetPosition(this);
 
-            var y = pos.Y / (ActualHeight - borderSize);
+            var s = FrameworkElementHelper.RoundLayoutValue(1);
+            var y = (pos.Y - s) / (ActualHeight - s * 2);
             y = Math.Min(Math.Max(y, 0), 1);
 
             Value = IsInverseValue ? 1 - y : y;
@@ -261,11 +258,12 @@ namespace Biaui.Controls
 
             // マウス可動域を設定
             {
-                var p0 = new Point(0, 0);
-                var p1 = new Point(ActualWidth, ActualHeight);
+                var p0 = new Point(0.25, 0.25);
+                var p1 = new Point(ActualWidth - 0.25, ActualHeight - 0.25);
                 var dp0 = PointToScreen(p0);
                 var dp1 = PointToScreen(p1);
-                var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+
+                var cr = new Win32Helper.RECT((int) dp0.X + 1, (int) dp0.Y + 1, (int) dp1.X - 1, (int) dp1.Y - 1);
                 Win32Helper.ClipCursor(ref cr);
             }
         }

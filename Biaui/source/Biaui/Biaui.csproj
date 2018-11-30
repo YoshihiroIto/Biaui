@@ -191,6 +191,7 @@
     <Compile Include="Internals\ColorSpaceHelper.cs" />
     <Compile Include="Internals\DependencyObjectExtensions.cs" />
     <Compile Include="Internals\Evaluator.cs" />
+    <Compile Include="Internals\FrameworkElementExtensions.cs" />
     <Compile Include="Internals\GuiHelper.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Internals\MouseSimulator.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Internals\TextRenderer.cs" />
     <Compile Include="Internals\TreeViewHelper.cs" />
     <Compile Include="Internals\TreeViewItemExtensions.cs" />
+    <Compile Include="Internals\FrameworkElementHelper.cs" />
     <Compile Include="Internals\Win32Helper.cs" />
     <Compile Include="Internals\WindowAction.cs" />
     <Compile Include="Internals\WpfHelper.cs" />

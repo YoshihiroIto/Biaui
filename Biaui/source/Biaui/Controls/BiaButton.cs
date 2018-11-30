@@ -270,32 +270,27 @@ namespace Biaui.Controls
                 return;
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, 0));
+            // 背景
             {
-                // 背景
-                {
-                    // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (CornerRadius == 0)
-                        dc.DrawRectangle(
-                            Background,
-                            null,
-                            ActualRectangle, null);
-                    else
-                        dc.DrawRoundedRectangle(
-                            Background,
-                            null,
-                            ActualRectangle, null,
-                            CornerRadius, null,
-                            CornerRadius, null);
-                }
-
-                // キャプション
-                var y = 4; // todo:正しく求める
-
-                TextRenderer.Default.Draw(Content, 0, y, Foreground, dc, ActualWidth, TextAlignment.Center);
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (CornerRadius == 0)
+                    dc.DrawRectangle(
+                        Background,
+                        null,
+                        this.RoundLayoutActualRectangle());
+                else
+                    dc.DrawRoundedRectangle(
+                        Background,
+                        null,
+                        this.RoundLayoutActualRectangle(),
+                        CornerRadius,
+                        CornerRadius);
             }
-            dc.Pop();
+
+            // キャプション
+            var y = 4; // todo:正しく求める
+
+            TextRenderer.Default.Draw(Content, 0, y, Foreground, dc, ActualWidth, TextAlignment.Center);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -371,7 +366,5 @@ namespace Biaui.Controls
 
             _textWidth = Constants.ButtonPaddingX + w + Constants.ButtonPaddingX;
         }
-
-        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
     }
 }

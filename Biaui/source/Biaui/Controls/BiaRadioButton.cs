@@ -76,47 +76,42 @@ namespace Biaui.Controls
                 return;
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            dc.DrawRectangle(Brushes.Transparent, null, ActualRectangle);
+            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutActualRectangle());
 
-            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, 0));
+            if (IsEnabled)
             {
-                if (IsEnabled)
-                {
-                    dc.DrawEllipse(
-                        IsPressed
-                            ? MarkBrush
-                            : Background,
-                        Caches.GetBorderPen(
-                            IsMouseOver
-                                ? MarkBorderColor
-                                : ((SolidColorBrush) Background).Color,
-                            2 / WpfHelper.PixelsPerDip),
-                        new Point(8, 10),
-                        7, 7);
-                }
-                else
-                {
-                    dc.DrawEllipse(
-                        null,
-                        Caches.GetBorderPen(MarkBorderColor, 2 / WpfHelper.PixelsPerDip),
-                        new Point(8, 10),
-                        7, 7);
-                }
-
-                if (IsChecked)
-                {
-                    dc.DrawEllipse(
-                        MarkBrush,
-                        null,
-                        new Point(8, 10),
-                        5, 5);
-                }
-
-                // キャプション
-                TextRenderer.Default.Draw(Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
+                dc.DrawEllipse(
+                    IsPressed
+                        ? MarkBrush
+                        : Background,
+                    this.GetBorderPen(
+                        IsMouseOver
+                            ? MarkBorderColor
+                            : ((SolidColorBrush) Background).Color
+                    ),
+                    new Point(8, 10),
+                    7, 7);
             }
-            dc.Pop();
+            else
+            {
+                dc.DrawEllipse(
+                    null,
+                    this.GetBorderPen(MarkBorderColor),
+                    new Point(8, 10),
+                    7, 7);
+            }
+
+            if (IsChecked)
+            {
+                dc.DrawEllipse(
+                    MarkBrush,
+                    null,
+                    new Point(8, 10),
+                    5, 5);
+            }
+
+            // キャプション
+            TextRenderer.Default.Draw(Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
 
         protected override void Clicked()
@@ -140,7 +135,5 @@ namespace Biaui.Controls
                     radioButton.IsChecked = false;
             }
         }
-
-        private Rect ActualRectangle => new Rect(new Size(ActualWidth, ActualHeight));
     }
 }

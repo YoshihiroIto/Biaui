@@ -160,24 +160,18 @@ namespace Biaui.Controls
                 return;
             // ReSharper restore CompareOfFloatsByEqualityOperator
 
-            var rect = new Rect(0.5, 0.5, ActualWidth - 1, ActualHeight - 1);
+            var rect = FrameworkElementHelper.RoundLayoutRect(0.5, 0.5, ActualWidth - 1.5, ActualHeight - 1.5);
+            var p = this.GetBorderPen(BorderColor);
+            var b = GetBackgroundBrush();
 
-            dc.PushGuidelineSet(Caches.GetGuidelineSet(rect, BorderWidth));
-            {
-                var p = Caches.GetBorderPen(BorderColor, 2 / WpfHelper.PixelsPerDip);
+            dc.DrawRectangle(b.Hue, null, rect);
+            dc.DrawRectangle(b.Saturation, p, rect);
 
-                var b = GetBackgroundBrush();
-                dc.DrawRectangle(b.Hue, null, rect);
-                dc.DrawRectangle(b.Saturation, p, rect);
-
-                //
-                var c = CursorRenderPos;
-                var s = 3.0;
-                dc.DrawEllipse(null, Caches.PointOut, c, s, s);
-                dc.DrawEllipse(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s,
-                    s);
-            }
-            dc.Pop();
+            //
+            var c = CursorRenderPos;
+            var s = FrameworkElementHelper.RoundLayoutValue(4);
+            dc.DrawEllipse(null, Caches.PointOut, c, s, s);
+            dc.DrawEllipse(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s, s);
         }
 
         private const double BorderWidth = 2.0;
@@ -199,8 +193,9 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            var x = pos.X / (ActualWidth - borderSize);
-            var y = pos.Y / (ActualHeight - borderSize);
+            var s = FrameworkElementHelper.RoundLayoutValue(1);
+            var x = (pos.X - s) / (ActualWidth - s*2);
+            var y = (pos.Y - s) / (ActualHeight - s*2);
 
             x = Math.Min(Math.Max(x, 0), 1);
             y = Math.Min(Math.Max(y, 0), 1);
@@ -208,8 +203,6 @@ namespace Biaui.Controls
             Hue = x;
             Saturation = 1 - y;
         }
-
-        private const double borderSize = 1.0;
 
         private bool _isMouseDown;
 
@@ -231,7 +224,8 @@ namespace Biaui.Controls
                 var p1 = new Point(ActualWidth, ActualHeight);
                 var dp0 = PointToScreen(p0);
                 var dp1 = PointToScreen(p1);
-                var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+
+                var cr = new Win32Helper.RECT((int) dp0.X + 1, (int) dp0.Y + 1, (int) dp1.X - 1, (int) dp1.Y - 1);
                 Win32Helper.ClipCursor(ref cr);
             }
         }
@@ -274,12 +268,14 @@ namespace Biaui.Controls
         {
             base.OnMouseLeave(e);
 
+            #if false
             if (_isMouseDown)
             {
                 _isMouseDown = false;
                 GuiHelper.ShowCursor();
                 Win32Helper.ClipCursor(IntPtr.Zero);
             }
+            #endif
         }
 
         private static readonly Dictionary<double, (Brush Hue, Brush Saturation)> _brushCache =
