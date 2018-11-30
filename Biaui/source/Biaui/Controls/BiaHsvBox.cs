@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -268,25 +267,27 @@ namespace Biaui.Controls
         {
             base.OnMouseLeave(e);
 
-            #if false
             if (_isMouseDown)
             {
                 _isMouseDown = false;
                 GuiHelper.ShowCursor();
                 Win32Helper.ClipCursor(IntPtr.Zero);
             }
-            #endif
         }
 
-        private static readonly Dictionary<double, (Brush Hue, Brush Saturation)> _brushCache =
-            new Dictionary<double, (Brush Hue, Brush Saturation)>();
+        private static readonly (Brush Hue, Brush Saturation)[] _brushCache = new (Brush Hue, Brush Saturation)[256];
 
         private (Brush Hue, Brush Saturation) GetBackgroundBrush()
         {
-            if (_brushCache.TryGetValue(Value, out var brush))
+            var key = (int) (Value * 255);
+            key = Math.Min(255, Math.Max(0, key));
+
+            var brush = _brushCache[key];
+
+            if (brush.Hue != null)
                 return brush;
 
-            var v = Value;
+            var v = key / 255.0;
 
             {
                 var s0 = new GradientStop(P(0xFF, 0x00, 0x00, v), 0.0 / 6);
@@ -326,7 +327,7 @@ namespace Biaui.Controls
                 brush.Saturation.Freeze();
             }
 
-            _brushCache.Add(Value, brush);
+            _brushCache[key] = brush;
 
             return brush;
 
