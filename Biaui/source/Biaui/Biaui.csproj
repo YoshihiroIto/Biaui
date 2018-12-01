@@ -194,6 +194,7 @@
     <Compile Include="Internals\FrameworkElementExtensions.cs" />
     <Compile Include="Internals\GuiHelper.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />
+    <Compile Include="Internals\LruCache.cs" />
     <Compile Include="Internals\MouseSimulator.cs" />
     <Compile Include="Internals\NumberHelper.cs" />
     <Compile Include="Internals\SystemButton.cs" />

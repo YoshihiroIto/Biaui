@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Jewelry.Collections;
 
 
 namespace Biaui.Internals
@@ -227,9 +228,10 @@ namespace Biaui.Internals
             return newTextWidth + dot3width;
         }
 
-        private readonly Dictionary<(string, double, double, double, TextAlignment), GlyphRun> _textCache =
-            new Dictionary<(string, double, double, double, TextAlignment), GlyphRun>();
+        private readonly LruCache<(string, double, double, double, TextAlignment), GlyphRun> _textCache =
+            new LruCache<(string, double, double, double, TextAlignment), GlyphRun>(10_0000, false);
 
+        // 最大65536エントリ
         private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache =
             new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
 
