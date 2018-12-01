@@ -38,13 +38,11 @@ namespace Biaui.Showcase
 
         protected override void OnTextChanged(EventArgs e)
         {
-            RaisePropertyChanged(nameof(Text));
+            PropertyChanged?.Invoke(this, _TextChanged);
+
             base.OnTextChanged(e);
         }
 
-        public void RaisePropertyChanged(string info)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
-        }
+        private static readonly PropertyChangedEventArgs _TextChanged = new PropertyChangedEventArgs(nameof(Text));
     }
 }

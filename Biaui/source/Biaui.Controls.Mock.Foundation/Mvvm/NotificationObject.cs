@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -22,7 +23,28 @@ namespace Biaui.Controls.Mock.Foundation.Mvvm
 
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            // ReSharper disable once InconsistentlySynchronizedField
+            var pc = (PropertyChangedEventArgs)_propChanged[propertyName];
+
+            if (pc == null)
+            {
+                // double-checked;
+                lock (_propChanged)
+                {
+                    pc = (PropertyChangedEventArgs)_propChanged[propertyName];
+
+                    if (pc == null)
+                    {
+                        pc = new PropertyChangedEventArgs(propertyName);
+                        _propChanged[propertyName] = pc;
+                    }
+                }
+            }
+
+            PropertyChanged?.Invoke(this, pc);
         }
+
+        // use Hashtable to get free lockless reading
+        private static readonly Hashtable _propChanged = new Hashtable();
     }
 }
