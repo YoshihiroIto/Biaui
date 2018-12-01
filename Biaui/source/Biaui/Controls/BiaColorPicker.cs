@@ -15,8 +15,7 @@ namespace Biaui.Controls
             get => _Red;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Red)
+                if (NumberHelper.AreClose(value, _Red) == false)
                     SetValue(RedProperty, value);
             }
         }
@@ -43,8 +42,7 @@ namespace Biaui.Controls
             get => _Green;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Green)
+                if (NumberHelper.AreClose(value, _Green) == false)
                     SetValue(GreenProperty, value);
             }
         }
@@ -71,8 +69,7 @@ namespace Biaui.Controls
             get => _Blue;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Blue)
+                if (NumberHelper.AreClose(value, _Blue) == false)
                     SetValue(BlueProperty, value);
             }
         }
@@ -99,8 +96,7 @@ namespace Biaui.Controls
             get => _Hue;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Hue)
+                if (NumberHelper.AreClose(value, _Hue) == false)
                     SetValue(HueProperty, value);
             }
         }
@@ -127,8 +123,7 @@ namespace Biaui.Controls
             get => _Saturation;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Saturation)
+                if (NumberHelper.AreClose(value, _Saturation) == false)
                     SetValue(SaturationProperty, value);
             }
         }
@@ -155,8 +150,7 @@ namespace Biaui.Controls
             get => _Value;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Value)
+                if (NumberHelper.AreClose(value, _Value) == false)
                     SetValue(ValueProperty, value);
             }
         }

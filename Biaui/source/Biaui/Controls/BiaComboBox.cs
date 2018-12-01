@@ -106,8 +106,7 @@ namespace Biaui.Controls
             get => _CornerRadius;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _CornerRadius)
+                if (NumberHelper.AreClose(value, _CornerRadius) == false)
                     SetValue(CornerRadiusProperty, value);
             }
         }
@@ -317,14 +316,15 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
 
             DrawBackground(dc);
 
-            if (CornerRadius != 0)
+            var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
+
+            if (isCornerRadiusZero == false)
                 dc.PushClip(
                     Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
             {
@@ -342,7 +342,7 @@ namespace Biaui.Controls
                         TextAlignment.Left
                     );
             }
-            if (CornerRadius != 0)
+            if (isCornerRadiusZero == false)
                 dc.Pop();
 
             // マーク
@@ -353,13 +353,11 @@ namespace Biaui.Controls
                 dc.DrawGeometry(MarkBrush, null, _markGeom);
                 dc.Pop();
             }
-            // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
         private void DrawBackground(DrawingContext dc)
         {
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (CornerRadius == 0)
+            if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     Background,
                     this.GetBorderPen(BorderColor),

@@ -110,8 +110,7 @@ namespace Biaui.Controls
             get => _Value;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Value)
+                if (NumberHelper.AreClose(value, _Value) == false)
                     SetValue(ValueProperty, value);
             }
         }
@@ -169,8 +168,7 @@ namespace Biaui.Controls
             get => _SliderMinimum;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _SliderMinimum)
+                if (NumberHelper.AreClose(value, _SliderMinimum) == false)
                     SetValue(SliderMinimumProperty, value);
             }
         }
@@ -198,8 +196,7 @@ namespace Biaui.Controls
             get => _SliderMaximum;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _SliderMaximum)
+                if (NumberHelper.AreClose(value, _SliderMaximum) == false)
                     SetValue(SliderMaximumProperty, value);
             }
         }
@@ -227,8 +224,7 @@ namespace Biaui.Controls
             get => _Minimum;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Minimum)
+                if (NumberHelper.AreClose(value, _Minimum) == false)
                     SetValue(MinimumProperty, value);
             }
         }
@@ -260,8 +256,7 @@ namespace Biaui.Controls
             get => _Maximum;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Maximum)
+                if (NumberHelper.AreClose(value, _Maximum) == false)
                     SetValue(MaximumProperty, value);
             }
         }
@@ -461,8 +456,7 @@ namespace Biaui.Controls
             get => _Increment;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Increment)
+                if (NumberHelper.AreClose(value, _Increment) == false)
                     SetValue(IncrementProperty, value);
             }
         }
@@ -490,8 +484,7 @@ namespace Biaui.Controls
             get => _CornerRadius;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _CornerRadius)
+                if (NumberHelper.AreClose(value, _CornerRadius) == false)
                     SetValue(CornerRadiusProperty, value);
             }
         }
@@ -555,14 +548,15 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
 
             DrawBackground(dc);
 
-            if (CornerRadius != 0)
+            var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
+
+            if (isCornerRadiusZero == false)
                 dc.PushClip(
                     Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
             {
@@ -571,24 +565,22 @@ namespace Biaui.Controls
 
                 DrawText(dc);
 
-                if (IsReadOnly == false && IsEnabled && Increment != 0)
+                if (IsReadOnly == false && IsEnabled && NumberHelper.AreCloseZero(Increment) == false)
                     DrawSpin(dc);
             }
-            if (CornerRadius != 0)
+            if (isCornerRadiusZero == false)
                 dc.Pop();
 
             if (IsVisibleBorder)
                 DrawBorder(dc);
 
-            // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
         private void DrawBackground(DrawingContext dc)
         {
             var brush = _isInPopup ? _textBox.Background : Background;
 
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (CornerRadius == 0)
+            if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     brush,
                     null,
@@ -604,8 +596,7 @@ namespace Biaui.Controls
 
         private void DrawBorder(DrawingContext dc)
         {
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (CornerRadius == 0)
+            if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),

@@ -43,8 +43,7 @@ namespace Biaui.Controls
             get => _Hue;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Hue)
+                if (NumberHelper.AreClose(value, _Hue) == false)
                     SetValue(HueProperty, value);
             }
         }
@@ -72,8 +71,7 @@ namespace Biaui.Controls
             get => _Saturation;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Saturation)
+                if (NumberHelper.AreClose(value, _Saturation) == false)
                     SetValue(SaturationProperty, value);
             }
         }
@@ -101,8 +99,7 @@ namespace Biaui.Controls
             get => _Value;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _Value)
+                if (NumberHelper.AreClose(value, _Value) == false)
                     SetValue(ValueProperty, value);
             }
         }
@@ -153,11 +150,9 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
-            // ReSharper restore CompareOfFloatsByEqualityOperator
 
             var rect = this.RoundLayoutActualRectangle(true);
             var p = this.GetBorderPen(BorderColor);

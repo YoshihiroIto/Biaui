@@ -70,11 +70,9 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
-            // ReSharper restore CompareOfFloatsByEqualityOperator
 
             dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutActualRectangle(false));
 

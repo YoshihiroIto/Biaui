@@ -169,8 +169,7 @@ namespace Biaui.Controls
             get => _CornerRadius;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _CornerRadius)
+                if (NumberHelper.AreClose(value, _CornerRadius) == false)
                     SetValue(CornerRadiusProperty, value);
             }
         }
@@ -264,16 +263,14 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
-            // ReSharper restore CompareOfFloatsByEqualityOperator
 
             // 背景
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (CornerRadius == 0)
+
+                if (NumberHelper.AreCloseZero(CornerRadius))
                     dc.DrawRectangle(
                         Background,
                         null,

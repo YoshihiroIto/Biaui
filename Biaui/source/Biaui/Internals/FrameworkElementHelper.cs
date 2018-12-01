@@ -20,13 +20,13 @@ namespace Biaui.Internals
         {
             double newValue;
 
-            if (AreClose(dpiScale, 1.0) == false)
+            if (NumberHelper.AreClose(dpiScale, 1.0) == false)
             {
                 newValue = Math.Round(value * dpiScale) / dpiScale;
 
                 if (IsNaN(newValue) ||
                     IsInfinity(newValue) ||
-                    AreClose(newValue, MaxValue))
+                    NumberHelper.AreClose(newValue, MaxValue))
                 {
                     newValue = value;
                 }
@@ -37,21 +37,6 @@ namespace Biaui.Internals
             }
 
             return newValue;
-
-            ///////////////////////////////////////////////////////////////////////////////////////////////
-            bool AreClose(double value1, double value2)
-            {
-                const double DBL_EPSILON = 2.2204460492503131e-016;
-
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value1 == value2)
-                    return true;
-
-                var eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0) * DBL_EPSILON;
-                var delta = value1 - value2;
-
-                return (-eps < delta) && (eps > delta);
-            }
         }
     }
 }

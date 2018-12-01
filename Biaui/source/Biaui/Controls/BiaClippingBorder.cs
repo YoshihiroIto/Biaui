@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Biaui.Internals;
 
 namespace Biaui.Controls
 {
@@ -44,13 +45,11 @@ namespace Biaui.Controls
 
             if (_clipRectCache.TryGetValue(key, out var clipRect) == false)
             {
-                // ReSharper disable CompareOfFloatsByEqualityOperator
                 var isSame =
-                    CornerRadius.TopLeft == CornerRadius.TopRight &&
-                    CornerRadius.TopRight == CornerRadius.BottomRight &&
-                    CornerRadius.BottomRight == CornerRadius.BottomLeft &&
-                    CornerRadius.BottomLeft == CornerRadius.TopLeft;
-                // ReSharper restore CompareOfFloatsByEqualityOperator
+                    NumberHelper.AreClose(CornerRadius.TopLeft, CornerRadius.TopRight) &&
+                    NumberHelper.AreClose(CornerRadius.TopRight, CornerRadius.BottomRight) &&
+                    NumberHelper.AreClose(CornerRadius.BottomRight, CornerRadius.BottomLeft) &&
+                    NumberHelper.AreClose(CornerRadius.BottomLeft, CornerRadius.TopLeft);
 
                 clipRect = isSame
                     ? MakeRoundRectangleGeometrySameCorner(new Rect(Child.RenderSize), CornerRadius, BorderThickness)

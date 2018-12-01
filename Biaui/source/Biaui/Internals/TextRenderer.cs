@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-// ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace Biaui.Internals
 {
@@ -66,7 +65,7 @@ namespace Biaui.Internals
             double maxWidth,
             TextAlignment align)
         {
-            if (_fontSize == default(double))
+            if (NumberHelper.AreCloseZero(_fontSize))
                 return;
 
             if (string.IsNullOrEmpty(text))
@@ -93,7 +92,7 @@ namespace Biaui.Internals
 
         internal double CalcWidth(string text)
         {
-            if (_fontSize == default(double))
+            if (NumberHelper.AreCloseZero(_fontSize))
                 return 0;
 
             if (string.IsNullOrEmpty(text))
@@ -159,7 +158,7 @@ namespace Biaui.Internals
                     textWidth = TrimGlyphRun(ref glyphIndexes, ref advanceWidths, textWidth, maxWidth);
             }
 
-            if (textWidth == 0.0)
+            if (NumberHelper.AreCloseZero(textWidth))
                 return null;
 
             double x;

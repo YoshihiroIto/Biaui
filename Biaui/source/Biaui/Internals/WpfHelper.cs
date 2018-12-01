@@ -11,8 +11,7 @@ namespace Biaui.Internals
         {
             get
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (_pixelsPerDip != default(double))
+                if (NumberHelper.AreCloseZero(_pixelsPerDip) == false)
                     return _pixelsPerDip;
 
                 var hwnd = Win32Helper.GetDesktopWindow();

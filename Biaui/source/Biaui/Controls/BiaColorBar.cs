@@ -12,16 +12,15 @@ namespace Biaui.Controls
 
         public double Value
         {
-            get => _value;
+            get => _Value;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _value)
+                if (NumberHelper.AreClose(value, _Value) == false)
                     SetValue(ValueProperty, value);
             }
         }
 
-        private double _value = default(double);
+        private double _Value = default(double);
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaColorBar),
@@ -32,7 +31,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
-                        self._value = (double) e.NewValue;
+                        self._Value = (double) e.NewValue;
                     }));
 
         #endregion
@@ -189,11 +188,9 @@ namespace Biaui.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            // ReSharper disable CompareOfFloatsByEqualityOperator
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
-            // ReSharper restore CompareOfFloatsByEqualityOperator
 
             VisualEdgeMode = EdgeMode.Unspecified;
 
