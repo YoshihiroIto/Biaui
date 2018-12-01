@@ -71,24 +71,12 @@ namespace Biaui.Internals
             if (string.IsNullOrEmpty(text))
                 return;
 
-            var gr = MakeGlyphRun(text, maxWidth, align);
+            var gr = MakeGlyphRun(text, x, y, maxWidth, align);
             if (gr == null)
                 return;
 
-            var key = (x, y);
-            if (_transCache.TryGetValue(key, out var t) == false)
-            {
-                t = new TranslateTransform(x, y);
-                _transCache.Add(key, t);
-            }
-
-            dc.PushTransform(t);
             dc.DrawGlyphRun(brush, gr);
-            dc.Pop();
         }
-
-        private readonly Dictionary<(double X, double Y), TranslateTransform> _transCache =
-            new Dictionary<(double X, double Y), TranslateTransform>();
 
         internal double CalcWidth(string text)
         {
@@ -98,7 +86,7 @@ namespace Biaui.Internals
             if (string.IsNullOrEmpty(text))
                 return 0;
 
-            var gr = MakeGlyphRun(text, double.PositiveInfinity, TextAlignment.Left);
+            var gr = MakeGlyphRun(text, 0, 0, double.PositiveInfinity, TextAlignment.Left);
             if (gr == null)
                 return 0;
 
@@ -107,20 +95,16 @@ namespace Biaui.Internals
 
         private GlyphRun MakeGlyphRun(
             string text,
+            double offsetX,
+            double offsetY,
             double maxWidth,
             TextAlignment align)
         {
             maxWidth = Math.Truncate(maxWidth);
 
-            var useFullText = false;
-            if (align == TextAlignment.Left)
-            {
-                if (_fullTextWidthCache.TryGetValue(text, out var w))
-                    useFullText = w < maxWidth;
-            }
+            var textKey = (text, offsetX, offsetY, maxWidth, align);
 
-            var trimmedTextKey = (text, useFullText ? FullTextWidthHashCode : maxWidth, align).GetHashCode();
-            if (_trimmedTextCache.TryGetValue(trimmedTextKey, out var gr))
+            if (_textCache.TryGetValue(textKey, out var gr))
                 return gr;
 
             var glyphIndexes = new ushort[text.Length];
@@ -161,28 +145,27 @@ namespace Biaui.Internals
             if (NumberHelper.AreCloseZero(textWidth))
                 return null;
 
-            double x;
+            var x = offsetX;
+            var y = offsetY + _glyphTypeface.Baseline * _fontSize;
+
             {
                 switch (align)
                 {
                     case TextAlignment.Left:
-                        x = 0.0f;
                         break;
 
                     case TextAlignment.Right:
-                        x = maxWidth - textWidth;
+                        x += maxWidth - textWidth;
                         break;
 
                     case TextAlignment.Center:
-                        x = (maxWidth - textWidth) / 2;
+                        x += (maxWidth - textWidth) / 2;
                         break;
 
                     default:
                         throw new ArgumentOutOfRangeException(nameof(align), align, null);
                 }
             }
-
-            var y = _glyphTypeface.Baseline * _fontSize;
 
             gr =
                 new GlyphRun(
@@ -194,23 +177,9 @@ namespace Biaui.Internals
                     glyphIndexes,
                     new Point(x, y),
                     advanceWidths,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
+                    null, null, null, null, null, null);
 
-            if (align == TextAlignment.Left)
-            {
-                if (isRequiredTrimming == false)
-                {
-                    _fullTextWidthCache.Add(text, textWidth);
-                    trimmedTextKey = (text, FullTextWidthHashCode, align).GetHashCode();
-                }
-            }
-
-            _trimmedTextCache.Add(trimmedTextKey, gr);
+            _textCache.Add(textKey, gr);
 
             return gr;
         }
@@ -225,12 +194,7 @@ namespace Biaui.Internals
             Debug.Assert(textWidth > maxWidth);
 
             // 文字列に ... を加える文を考慮して削る文字数を求める
-
-#if false
             var dot3width = _dotAdvanceWidth * 3.0;
-#else
-            var dot3width = 0.0;
-#endif
 
             var removeCount = 1;
             var newTextWidth = textWidth;
@@ -250,8 +214,7 @@ namespace Biaui.Internals
             if (newCount < 3)
                 return 0.0;
 
-#if false
-// 文字列に ... を追加する
+            // 文字列に ... を追加する
             Array.Resize(ref glyphIndexes, newCount);
             Array.Resize(ref advanceWidths, newCount);
             glyphIndexes[glyphIndexes.Length - 1 - 2] = _dotGlyphIndex;
@@ -260,13 +223,12 @@ namespace Biaui.Internals
             advanceWidths[glyphIndexes.Length - 1 - 2] = _dotAdvanceWidth;
             advanceWidths[glyphIndexes.Length - 1 - 1] = _dotAdvanceWidth;
             advanceWidths[glyphIndexes.Length - 1 - 0] = _dotAdvanceWidth;
-#endif
 
             return newTextWidth + dot3width;
         }
 
-        private readonly Dictionary<string, double> _fullTextWidthCache = new Dictionary<string, double>();
-        private readonly Dictionary<int, GlyphRun> _trimmedTextCache = new Dictionary<int, GlyphRun>();
+        private readonly Dictionary<(string, double, double, double, TextAlignment), GlyphRun> _textCache =
+            new Dictionary<(string, double, double, double, TextAlignment), GlyphRun>();
 
         private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache =
             new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
@@ -275,7 +237,5 @@ namespace Biaui.Internals
         private readonly ushort _dotGlyphIndex;
         private readonly double _dotAdvanceWidth;
         private readonly double _fontSize;
-
-        private const double FullTextWidthHashCode = double.MaxValue;
     }
 }
