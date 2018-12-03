@@ -92,39 +92,6 @@ namespace Biaui.Controls
 
         #endregion
 
-        #region Value
-
-        public double Value
-        {
-            get => _Value;
-            set
-            {
-                if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
-            }
-        }
-
-        private double _Value = default(double);
-
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvBoxCursor),
-                new FrameworkPropertyMetadata(
-                    Boxes.Double0,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxCursor) s;
-                        self._Value = (double) e.NewValue;
-
-#if false
-                        if (self._effect != null)
-                            self._effect.Value = (float) self._Value;
-#endif
-                    }));
-
-        #endregion
-
         #region IsReadOnly
 
         public bool IsReadOnly

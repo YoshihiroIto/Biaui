@@ -28,8 +28,6 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvBoxBackground),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBoxBackground) s;
@@ -56,40 +54,10 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvBoxBackground),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBoxBackground) s;
                         self._Saturation = (double) e.NewValue;
-                    }));
-
-        #endregion
-
-        #region IsReadOnly
-
-        public bool IsReadOnly
-        {
-            get => _IsReadOnly;
-            set
-            {
-                if (value != _IsReadOnly)
-                    SetValue(IsReadOnlyProperty, Boxes.Bool(value));
-            }
-        }
-
-        private bool _IsReadOnly = default(bool);
-
-        public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBoxBackground),
-                new FrameworkPropertyMetadata(
-                    Boxes.BoolFalse,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._IsReadOnly = (bool) e.NewValue;
                     }));
 
         #endregion
@@ -120,6 +88,34 @@ namespace Biaui.Controls
                         self._Value = (double) e.NewValue;
 
                         self._effect.Value = self._Value;
+                    }));
+
+        #endregion
+
+        #region IsReadOnly
+
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set
+            {
+                if (value != _IsReadOnly)
+                    SetValue(IsReadOnlyProperty, Boxes.Bool(value));
+            }
+        }
+
+        private bool _IsReadOnly = default(bool);
+
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBoxBackground),
+                new FrameworkPropertyMetadata(
+                    Boxes.BoolFalse,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaHsvBoxBackground) s;
+                        self._IsReadOnly = (bool) e.NewValue;
                     }));
 
         #endregion
