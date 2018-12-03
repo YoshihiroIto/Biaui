@@ -156,27 +156,21 @@ namespace Biaui.Controls
             }
 
             // Cursor
-            {
-                var c = CursorRenderPos;
-                var s = RoundLayoutValue(4);
-                dc.DrawEllipse(null, Caches.PointOut, c, s, s);
-                dc.DrawEllipse(null,
-                    IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, c, s, s);
-            }
+            RenderHelper.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
-
-        private const double BorderWidth = 2.0;
 
         private Point CursorRenderPos
         {
             get
             {
-                var bw = (BorderWidth + 2) / WpfHelper.PixelsPerDip;
+                var bw = RoundLayoutValue(FrameworkElementExtensions.BorderWidth * 2);
+                var w = RoundLayoutValue(ActualWidth - bw * 2);
+                var h = RoundLayoutValue(ActualHeight - bw * 2);
 
-                var x = Hue * (ActualWidth - bw * 2) + bw;
-                var y = (1 - Saturation) * (ActualHeight - bw * 2) + bw;
+                var x = Hue * w + bw;
+                var y = (1 - Saturation) * h + bw;
 
-                return new Point(x, y);
+                return new Point(RoundLayoutValue(x), RoundLayoutValue(y));
             }
         }
     }

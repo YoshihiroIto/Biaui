@@ -6,6 +6,8 @@ using Biaui.Internals;
 
 namespace Biaui.Controls
 {
+    using static FrameworkElementHelper;
+
     public class BiaColorBar : FrameworkElement
     {
         #region Value
@@ -203,26 +205,25 @@ namespace Biaui.Controls
             var rect = this.RoundLayoutActualRectangle(true);
             dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
 
-            var p = FrameworkElementHelper.RoundLayoutValue(1.5);
-            var r = FrameworkElementHelper.RoundLayoutRect(rect.X + p, CursorRenderPosY - 3, rect.Width - p*2, 6);
-
-            dc.DrawRectangle(null, Caches.PointOut, r);
-            dc.DrawRectangle(null, IsEnabled == false || IsReadOnly ? Caches.PointInIsReadOnly : Caches.PointIn, r);
+            // Cursor
+            RenderHelper.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
 
-        private const double BorderWidth = 2.0;
-
-        private double CursorRenderPosY
+        private Point CursorRenderPos
         {
             get
             {
-                var bw = (BorderWidth + 2) / WpfHelper.PixelsPerDip;
-                var y = Value * (ActualHeight - bw * 2) + bw;
+                var bw = RoundLayoutValue(FrameworkElementExtensions.BorderWidth * 2);
+
+                var h = RoundLayoutValue(ActualHeight - bw * 2);
+                var y = Value * h;
 
                 if (IsInverseValue)
-                    y = ActualHeight - y;
+                    y = h - y;
 
-                return y;
+                y += bw;
+
+                return new Point(RoundLayoutValue(ActualWidth / 2), RoundLayoutValue(y));
             }
         }
 
@@ -236,7 +237,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            var s = FrameworkElementHelper.RoundLayoutValue(1);
+            var s = RoundLayoutValue(1);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
             y = Math.Min(Math.Max(y, 0), 1);
 
@@ -294,10 +295,7 @@ namespace Biaui.Controls
 
             // マウス位置を補正する
             {
-                var x = ActualWidth / 2;
-                var y = CursorRenderPosY;
-
-                var p = PointToScreen(new Point(x, y));
+                var p = PointToScreen(CursorRenderPos);
                 Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
             }
 

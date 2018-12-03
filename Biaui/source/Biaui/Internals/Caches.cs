@@ -5,10 +5,6 @@ namespace Biaui.Internals
 {
     internal static class Caches
     {
-        public static readonly Pen PointIn;
-        public static readonly Pen PointInIsReadOnly;
-        public static readonly Pen PointOut;
-
         public static Pen GetBorderPen(Color color, double thickness)
         {
             var key = (color, thickness);
@@ -67,17 +63,5 @@ namespace Biaui.Internals
             new Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry>();
 
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
-
-        static Caches()
-        {
-            PointIn = new Pen(Brushes.White, FrameworkElementHelper.RoundLayoutValue(2));
-            PointIn.Freeze();
-
-            PointInIsReadOnly = new Pen(Brushes.Gray, FrameworkElementHelper.RoundLayoutValue(2));
-            PointInIsReadOnly.Freeze();
-
-            PointOut = new Pen(Brushes.Black, FrameworkElementHelper.RoundLayoutValue(4));
-            PointOut.Freeze();
-        }
     }
 }
