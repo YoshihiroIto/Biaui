@@ -82,7 +82,7 @@
     <Page Include="Controls\BiaColorPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\BiaHsvBox.xaml">
+    <Page Include="Controls\BiaHsvBoxCursor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BiaColorBar.xaml">
@@ -171,7 +171,7 @@
     <Compile Include="Controls\BiaToggleButton.cs" />
     <Compile Include="Controls\BiaColorPicker.cs" />
     <Compile Include="Controls\BiaColorBar.cs" />
-    <Compile Include="Controls\BiaHsvBox.cs" />
+    <Compile Include="Controls\BiaHsvBoxCursor.cs" />
     <Compile Include="Controls\BiaButton.cs" />
     <Compile Include="Controls\BiaWindow.cs" />
     <Page Include="ToolTip.xaml">
@@ -185,6 +185,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\BiaNumberEditor.cs" />
+    <Compile Include="Controls\Effects\HsvBoxBackgroundEffect.cs" />
+    <Compile Include="Controls\BiaHsvBoxBackground.cs" />
     <Compile Include="Internals\Boxes.cs" />
     <Compile Include="Controls\BiaClippingBorder.cs" />
     <Compile Include="Internals\Caches.cs" />
@@ -225,11 +227,15 @@
     </EmbeddedResource>
     <Resource Include="Assets\Fonts\RictyDiminished-Regular.ttf" />
     <Resource Include="Assets\Fonts\GenMuli.ttf" />
+    <Resource Include="Controls\Effects\HsvBoxBackgroundEffect.ps" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Settings.XamlStyler" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Controls\Effects\HsvBoxBackgroundEffect.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
