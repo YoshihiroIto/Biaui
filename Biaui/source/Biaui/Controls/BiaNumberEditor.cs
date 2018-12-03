@@ -565,7 +565,10 @@ namespace Biaui.Controls
 
                 DrawText(dc);
 
-                if (IsReadOnly == false && IsEnabled && NumberHelper.AreCloseZero(Increment) == false)
+                if (IsMouseOver &&
+                    IsEnabled &&
+                    IsReadOnly == false &&
+                    NumberHelper.AreCloseZero(Increment) == false)
                     DrawSpin(dc);
             }
             if (isCornerRadiusZero == false)
@@ -573,7 +576,6 @@ namespace Biaui.Controls
 
             if (IsVisibleBorder)
                 DrawBorder(dc);
-
         }
 
         private void DrawBackground(DrawingContext dc)
