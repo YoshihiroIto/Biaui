@@ -32,12 +32,12 @@ namespace Biaui.Controls.Effects
             }
         }
 
-        private double _Value = 1.0;
+        private double _Value;
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(HsvBoxBackgroundEffect),
                 new PropertyMetadata(
-                    Boxes.Double1,
+                    Boxes.Double0,
                     (s, e) =>
                     {
                         var self = (HsvBoxBackgroundEffect) s;
