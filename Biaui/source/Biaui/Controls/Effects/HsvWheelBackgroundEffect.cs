@@ -5,7 +5,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.Effects
 {
-    public class HsvWheelBackgroundEffect : ShaderEffect
+    internal class HsvWheelBackgroundEffect : ShaderEffect
     {
         internal HsvWheelBackgroundEffect()
         {
