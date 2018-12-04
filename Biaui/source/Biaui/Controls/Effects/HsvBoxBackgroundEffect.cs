@@ -7,7 +7,7 @@ namespace Biaui.Controls.Effects
 {
     internal class HsvBoxBackgroundEffect : ShaderEffect
     {
-        public HsvBoxBackgroundEffect()
+        internal HsvBoxBackgroundEffect()
         {
             var ps = new PixelShader
             {
