@@ -213,7 +213,7 @@ namespace Biaui.Controls
         {
             get
             {
-                var bw = RoundLayoutValue(FrameworkElementExtensions.BorderWidth * 2);
+                var bw = RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
                 var h = RoundLayoutValue(ActualHeight - bw * 2);
                 var y = Value * h;

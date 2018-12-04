@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using Biaui.Internals;
 
@@ -6,7 +7,7 @@ namespace Biaui.Controls
 {
     using static FrameworkElementHelper;
 
-    public class BiaHsvBoxCursor : FrameworkElement
+    public class BiaHsvWheelCursor : FrameworkElement
     {
         #region BorderColor
 
@@ -23,14 +24,14 @@ namespace Biaui.Controls
         private Color _BorderColor = Colors.Red;
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaHsvBoxCursor),
+            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaHsvWheelCursor),
                 new FrameworkPropertyMetadata(
                     Boxes.ColorRed,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxCursor) s;
+                        var self = (BiaHsvWheelCursor) s;
                         self._BorderColor = (Color) e.NewValue;
                     }));
 
@@ -51,14 +52,14 @@ namespace Biaui.Controls
         private double _Hue;
 
         public static readonly DependencyProperty HueProperty =
-            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvBoxCursor),
+            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvWheelCursor),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxCursor) s;
+                        var self = (BiaHsvWheelCursor) s;
                         self._Hue = (double) e.NewValue;
                     }));
 
@@ -79,14 +80,14 @@ namespace Biaui.Controls
         private double _Saturation;
 
         public static readonly DependencyProperty SaturationProperty =
-            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvBoxCursor),
+            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvWheelCursor),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxCursor) s;
+                        var self = (BiaHsvWheelCursor) s;
                         self._Saturation = (double) e.NewValue;
                     }));
 
@@ -107,20 +108,20 @@ namespace Biaui.Controls
         private bool _IsReadOnly = default(bool);
 
         public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBoxCursor),
+            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvWheelCursor),
                 new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxCursor) s;
+                        var self = (BiaHsvWheelCursor) s;
                         self._IsReadOnly = (bool) e.NewValue;
                     }));
 
         #endregion
 
-        public BiaHsvBoxCursor()
+        public BiaHsvWheelCursor()
         {
             IsHitTestVisible = false;
         }
@@ -135,24 +136,11 @@ namespace Biaui.Controls
             {
                 var p = this.GetBorderPen(BorderColor);
 
-                var w = RoundLayoutValue(ActualWidth - 0.5);
-                var h = RoundLayoutValue(ActualHeight - 0.5);
-                var z = RoundLayoutValue(0.5);
+                var (cx, cy) = MakeAspectRatioCorrection(ActualWidth, ActualHeight);
 
-                var p0 = new Point(z, z);
-                var p1 = new Point(w, z);
-                var p2 = new Point(z, h);
-                var p3 = new Point(w, h);
-
-                var p0a = new Point(z - 0.5, z);
-                var p1a = new Point(w + 0.5, z);
-                var p2a = new Point(z - 0.5, h);
-                var p3a = new Point(w + 0.5, h);
-
-                dc.DrawLine(p, p0a, p1a);
-                dc.DrawLine(p, p1, p3);
-                dc.DrawLine(p, p3a, p2a);
-                dc.DrawLine(p, p2, p0);
+                dc.DrawEllipse(null, p, new Point(ActualWidth / 2, ActualHeight / 2),
+                    ActualWidth / 2 / cx,
+                    ActualHeight / 2 / cy);
             }
 
             // Cursor
@@ -172,10 +160,19 @@ namespace Biaui.Controls
             var w = RoundLayoutValue(actualWidth - bw * 2);
             var h = RoundLayoutValue(actualHeight - bw * 2);
 
-            var x = hue * w + bw;
-            var y = (1 - saturation) * h + bw;
+            var r = hue * 2.0 * Math.PI;
+
+            var (cx, cy) = MakeAspectRatioCorrection(actualWidth, actualHeight);
+
+            var x = bw + Math.Cos(r) * saturation * (w / 2) / cx + w / 2;
+            var y = bw + Math.Sin(r) * saturation * (h / 2) / cy + h / 2;
 
             return new Point(RoundLayoutValue(x), RoundLayoutValue(y));
         }
+
+        internal static (double X, double Y) MakeAspectRatioCorrection(double actualWidth, double actualHeight)
+            => actualWidth > actualHeight
+                ? (actualWidth / actualHeight, 1.0)
+                : (1.0, actualHeight / actualWidth);
     }
 }

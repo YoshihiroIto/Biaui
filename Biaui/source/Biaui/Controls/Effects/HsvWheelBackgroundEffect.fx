@@ -1,11 +1,22 @@
 float Value : register(C0);
+float AspectRatioCorrectionX : register(C1);
+float AspectRatioCorrectionY : register(C2);
 
 float4 main(float2 uv : TEXCOORD) : COLOR
 {
-    float h = uv.x;
-    float s = uv.y;
+    float2 d = float2(
+            (uv.x - 0.5) * AspectRatioCorrectionX,
+            (uv.y - 0.5) * AspectRatioCorrectionY);
+    float i = dot(d, d);
+
+    if (i >= 0.5*0.5)
+        return float4(0,0,0,0);
+
+    float h = (atan2(-d.y, -d.x) + 3.14159265359) / (2.0*3.14159265359);
+    float s10 = sqrt(i) * 2;
 
     float3 color;
+
 
 #if 0
     if (h < 1.0/6)
@@ -89,7 +100,7 @@ float4 main(float2 uv : TEXCOORD) : COLOR
     }
 #endif
 
-    float3 c = lerp(color, float3(1, 1, 1), s);
+    float3 c = lerp(float3(1, 1, 1), color, s10);
 
     return float4(c * Value, 1);
 }

@@ -10,7 +10,7 @@
                     xmlns:presentation="clr-namespace:Biaui.Controls.Mock.Presentation"
                     Title="Biaui.Controls.Mock"
                     Width="1000"
-                    Height="450"
+                    Height="800"
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
     <i:Interaction.Behaviors>
@@ -72,8 +72,14 @@
                     <ColumnDefinition Width="16" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                <controls:BiaColorPicker Grid.Column="0"
+
+                <controls:BiaColorPicker Grid.Row="0"
+                                         Grid.Column="0"
                                          Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
                                          Green="{Binding Green, Mode=TwoWay}"
@@ -82,7 +88,8 @@
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
 
-                <controls:BiaColorPicker Grid.Column="2"
+                <controls:BiaColorPicker Grid.Row="0"
+                                         Grid.Column="2"
                                          Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
                                          Green="{Binding Green, Mode=TwoWay}"
@@ -92,7 +99,8 @@
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
 
-                <controls:BiaColorPicker Grid.Column="4"
+                <controls:BiaColorPicker Grid.Row="0"
+                                         Grid.Column="4"
                                          Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
                                          Green="{Binding Green, Mode=TwoWay}"
@@ -100,6 +108,44 @@
                                          IsEnabled="False"
                                          Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="1"
+                                         Grid.Column="0"
+                                         Margin="0,16,0,0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="1"
+                                         Grid.Column="2"
+                                         Margin="0,16,0,0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsReadOnly="True"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="1"
+                                         Grid.Column="4"
+                                         Margin="0,16,0,0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsEnabled="False"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Style="{StaticResource BiaColorPickerWheelType}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
             </Grid>
         </TabItem>

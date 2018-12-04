@@ -8,7 +8,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls
 {
-    internal class BiaHsvBoxBackground : Canvas
+    internal class BiaHsvWheelBackground : Canvas
     {
         #region Hue
 
@@ -25,12 +25,12 @@ namespace Biaui.Controls
         private double _Hue;
 
         public static readonly DependencyProperty HueProperty =
-            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvBoxBackground),
+            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvWheelBackground),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxBackground) s;
+                        var self = (BiaHsvWheelBackground) s;
                         self._Hue = (double) e.NewValue;
                     }));
 
@@ -51,12 +51,12 @@ namespace Biaui.Controls
         private double _Saturation;
 
         public static readonly DependencyProperty SaturationProperty =
-            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvBoxBackground),
+            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvWheelBackground),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxBackground) s;
+                        var self = (BiaHsvWheelBackground) s;
                         self._Saturation = (double) e.NewValue;
                     }));
 
@@ -77,14 +77,14 @@ namespace Biaui.Controls
         private double _Value = default(double);
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvBoxBackground),
+            DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvWheelBackground),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxBackground) s;
+                        var self = (BiaHsvWheelBackground) s;
                         self._Value = (double) e.NewValue;
 
                         self._effect.Value = self._Value;
@@ -107,26 +107,32 @@ namespace Biaui.Controls
         private bool _IsReadOnly = default(bool);
 
         public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBoxBackground),
+            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvWheelBackground),
                 new FrameworkPropertyMetadata(
                     Boxes.BoolFalse,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
-                        var self = (BiaHsvBoxBackground) s;
+                        var self = (BiaHsvWheelBackground) s;
                         self._IsReadOnly = (bool) e.NewValue;
                     }));
 
         #endregion
 
-        private readonly HsvBoxBackgroundEffect _effect = new HsvBoxBackgroundEffect();
+        private readonly HsvWheelBackgroundEffect _effect = new HsvWheelBackgroundEffect();
 
-        public BiaHsvBoxBackground()
+        public BiaHsvWheelBackground()
         {
             Effect = _effect;
 
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+
+            SizeChanged += (_, __) =>
+            {
+                (_effect.AspectRatioCorrectionX, _effect.AspectRatioCorrectionY) =
+                    BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
+            };
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -142,19 +148,37 @@ namespace Biaui.Controls
             dc.DrawRectangle(Brushes.Transparent, null, rect);
         }
 
-        private void UpdateParams(MouseEventArgs e)
+        /// <returns>マウスがホイール外を指しているか？</returns>
+        private bool UpdateParams(MouseEventArgs e)
         {
             var pos = e.GetPosition(this);
 
-            var s = FrameworkElementHelper.RoundLayoutValue(1);
-            var x = (pos.X - s) / (ActualWidth - s * 2);
-            var y = (pos.Y - s) / (ActualHeight - s * 2);
+            var bw = FrameworkElementHelper.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
-            x = Math.Min(Math.Max(x, 0), 1);
-            y = Math.Min(Math.Max(y, 0), 1);
+            var width = ActualWidth - bw * 2;
+            var height = ActualHeight - bw * 2;
 
-            Hue = x;
-            Saturation = 1 - y;
+            var x = (pos.X - bw) / width;
+            var y = (pos.Y - bw) / height;
+
+            var dx = x - 0.5;
+            var dy = y - 0.5;
+
+            var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
+            dx = dx * cx;
+            dy = dy * cy;
+
+            var h = (Math.Atan2(-dy, -dx) + Math.PI) / (2.0 * Math.PI);
+            var s = Math.Sqrt(dx * dx + dy * dy) * 2;
+            var ss = s;
+
+            h = Math.Min(Math.Max(h, 0), 1);
+            s = Math.Min(Math.Max(s, 0), 1);
+
+            Hue = h;
+            Saturation = s;
+
+            return ss > 1;
         }
 
         private bool _isMouseDown;
@@ -193,7 +217,16 @@ namespace Biaui.Controls
             if (_isMouseDown == false)
                 return;
 
-            UpdateParams(e);
+            var isOut = UpdateParams(e);
+
+            // マウス位置を補正する
+            if (isOut)
+            {
+                var pos = BiaHsvWheelCursor.MakeCursorRenderPos(ActualWidth, ActualHeight, Hue, Saturation);
+
+                var mousePos = PointToScreen(pos);
+                Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
+            }
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -205,14 +238,6 @@ namespace Biaui.Controls
 
             if (_isMouseDown == false)
                 return;
-
-            // マウス位置を補正する
-            {
-                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(ActualWidth, ActualHeight, Hue, Saturation);
-
-                var mousePos = PointToScreen(pos);
-                Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
-            }
 
             _isMouseDown = false;
             GuiHelper.ShowCursor();

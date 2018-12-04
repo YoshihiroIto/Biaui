@@ -9,7 +9,7 @@
                     xmlns:showcase="clr-namespace:Biaui.Showcase"
                     Title="Biaui Showcase"
                     Width="1500"
-                    Height="900"
+                    Height="1000"
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
     <controls:BiaWindow.Resources>
@@ -419,6 +419,9 @@
             </StackPanel>
 
             <controls:BiaColorPicker Height="160" Margin="0,4,0,0" />
+            <controls:BiaColorPicker Height="240"
+                                     Margin="0,16,0,0"
+                                     Style="{StaticResource BiaColorPickerWheelType}" />
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"
