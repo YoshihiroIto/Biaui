@@ -497,28 +497,22 @@ namespace Biaui.Controls
 
         private void SetupListBoxItemTemplate()
         {
-            if (ItemToStringConverter == null)
-                _listBox.ItemTemplate = null;
-
-            else
+            var itemTemplate = new DataTemplate();
             {
-                var itemTemplate = new DataTemplate();
-                {
-                    var textBlock = new FrameworkElementFactory(typeof(TextBlock));
+                var textBlock = new FrameworkElementFactory(typeof(BiaTextBlock));
 
-                    textBlock.SetBinding(
-                        TextBlock.TextProperty,
-                        new Binding
-                        {
-                            Converter = ItemToStringConverter,
-                            ConverterParameter = ItemToStringConverterParameter,
-                            ConverterCulture = CultureInfo.CurrentUICulture,
-                        });
+                textBlock.SetBinding(
+                    BiaTextBlock.TextProperty,
+                    new Binding
+                    {
+                        Converter = ItemToStringConverter,
+                        ConverterParameter = ItemToStringConverterParameter,
+                        ConverterCulture = CultureInfo.CurrentUICulture,
+                    });
 
-                    itemTemplate.VisualTree = textBlock;
-                }
-                _listBox.ItemTemplate = itemTemplate;
+                itemTemplate.VisualTree = textBlock;
             }
+            _listBox.ItemTemplate = itemTemplate;
         }
 
         private void ListBoxOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

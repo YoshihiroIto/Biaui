@@ -137,6 +137,7 @@
     <Compile Include="CommandLine.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DelegateCommandBase.cs" />
+    <Compile Include="Presentation\BiaTextBlockViewModel.cs" />
     <Compile Include="Presentation\BiaTextBoxViewModel.cs" />
     <Compile Include="Presentation\BiaRadioButtonViewModel.cs" />
     <Compile Include="Presentation\BiaCheckBoxViewModel.cs" />

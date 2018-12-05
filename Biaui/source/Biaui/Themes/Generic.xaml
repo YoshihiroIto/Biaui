@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:internals="clr-namespace:Biaui.Internals"
-                    xmlns:controls="clr-namespace:Biaui.Controls">
+                    xmlns:controls="clr-namespace:Biaui.Controls"
+                    xmlns:internals="clr-namespace:Biaui.Internals">
     <Style TargetType="{x:Type internals:SystemButton}">
         <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
         <Setter Property="Background" Value="Transparent" />
@@ -122,12 +122,12 @@
                                        StrokeThickness="1" />
 
                             <!--  Title  -->
-                            <Label Grid.Row="0"
-                                   Grid.RowSpan="2"
-                                   Margin="47,1,0,0"
-                                   Content="{TemplateBinding Title}"
-                                   FontSize="18"
-                                   Foreground="{DynamicResource AccentForegroundBrushKey}" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.RowSpan="2"
+                                       Margin="47,1,0,0"
+                                       FontSize="18"
+                                       Foreground="{DynamicResource AccentForegroundBrushKey}"
+                                       Text="{TemplateBinding Title}" />
 
                             <!--  Menu  -->
                             <ContentControl Grid.Row="1"

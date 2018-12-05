@@ -27,6 +27,18 @@
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
+
+        <DataTemplate x:Key="ListItemTemplateStyle">
+            <controls:BiaTextBlock Text="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemIndexTemplateStyle">
+            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+            <controls:BiaTextBlock Text="{Binding Index}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemNameTemplateStyle">
+            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+            <controls:BiaTextBlock Text="{Binding Name}" />
+        </DataTemplate>
     </controls:BiaWindow.Resources>
 
     <controls:BiaWindow.Menu>
@@ -90,9 +102,9 @@
                     VerticalAlignment="Top"
                     Orientation="Vertical">
 
-            <TextBlock Text="ベトナム" ToolTip="ホーチミン" />
-            <TextBlock Text="オランダ" ToolTip="アムステルダム" />
-            <TextBlock Text="日本" ToolTip="東京" />
+            <controls:BiaTextBlock Text="ベトナム" ToolTip="ホーチミン" />
+            <controls:BiaTextBlock Text="オランダ" ToolTip="アムステルダム" />
+            <controls:BiaTextBlock Text="日本" ToolTip="東京" />
 
             <controls:BiaButton Content="abc" />
             <controls:BiaButton Content="1234" />
@@ -254,112 +266,18 @@
                      Height="200"
                      Margin="0,4,0,0"
                      HorizontalAlignment="Left"
-                     VerticalAlignment="Top">
-                <ListBoxItem>北海道</ListBoxItem>
-                <ListBoxItem>青森県</ListBoxItem>
-                <ListBoxItem>岩手県</ListBoxItem>
-                <ListBoxItem>宮城県</ListBoxItem>
-                <ListBoxItem>秋田県</ListBoxItem>
-                <ListBoxItem>山形県</ListBoxItem>
-                <ListBoxItem>福島県</ListBoxItem>
-                <ListBoxItem>茨城県</ListBoxItem>
-                <ListBoxItem>栃木県</ListBoxItem>
-                <ListBoxItem>群馬県</ListBoxItem>
-                <ListBoxItem>埼玉県</ListBoxItem>
-                <ListBoxItem>千葉県</ListBoxItem>
-                <ListBoxItem>東京都</ListBoxItem>
-                <ListBoxItem>神奈川県</ListBoxItem>
-                <ListBoxItem>新潟県</ListBoxItem>
-                <ListBoxItem>富山県</ListBoxItem>
-                <ListBoxItem>石川県</ListBoxItem>
-                <ListBoxItem>福井県</ListBoxItem>
-                <ListBoxItem>山梨県</ListBoxItem>
-                <ListBoxItem>長野県</ListBoxItem>
-                <ListBoxItem>岐阜県</ListBoxItem>
-                <ListBoxItem>静岡県</ListBoxItem>
-                <ListBoxItem>愛知県</ListBoxItem>
-                <ListBoxItem>三重県</ListBoxItem>
-                <ListBoxItem>滋賀県</ListBoxItem>
-                <ListBoxItem>京都府</ListBoxItem>
-                <ListBoxItem>大阪府</ListBoxItem>
-                <ListBoxItem>兵庫県</ListBoxItem>
-                <ListBoxItem>奈良県</ListBoxItem>
-                <ListBoxItem>和歌山県</ListBoxItem>
-                <ListBoxItem>鳥取県</ListBoxItem>
-                <ListBoxItem>島根県</ListBoxItem>
-                <ListBoxItem>岡山県</ListBoxItem>
-                <ListBoxItem>広島県</ListBoxItem>
-                <ListBoxItem>山口県</ListBoxItem>
-                <ListBoxItem>徳島県</ListBoxItem>
-                <ListBoxItem>香川県</ListBoxItem>
-                <ListBoxItem>愛媛県</ListBoxItem>
-                <ListBoxItem>高知県</ListBoxItem>
-                <ListBoxItem>福岡県</ListBoxItem>
-                <ListBoxItem>佐賀県</ListBoxItem>
-                <ListBoxItem>長崎県</ListBoxItem>
-                <ListBoxItem>熊本県</ListBoxItem>
-                <ListBoxItem>大分県</ListBoxItem>
-                <ListBoxItem>宮崎県</ListBoxItem>
-                <ListBoxItem>鹿児島県</ListBoxItem>
-                <ListBoxItem>沖縄県</ListBoxItem>
-            </ListBox>
-
+                     VerticalAlignment="Top"
+                     ItemTemplate="{StaticResource ListItemTemplateStyle}"
+                     ItemsSource="{Binding LongItems}" />
 
             <ListBox Width="100"
                      Height="200"
                      Margin="0,4,0,0"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
-                     IsEnabled="False">
-                <ListBoxItem>北海道</ListBoxItem>
-                <ListBoxItem>青森県</ListBoxItem>
-                <ListBoxItem>岩手県</ListBoxItem>
-                <ListBoxItem>宮城県</ListBoxItem>
-                <ListBoxItem>秋田県</ListBoxItem>
-                <ListBoxItem>山形県</ListBoxItem>
-                <ListBoxItem>福島県</ListBoxItem>
-                <ListBoxItem>茨城県</ListBoxItem>
-                <ListBoxItem>栃木県</ListBoxItem>
-                <ListBoxItem>群馬県</ListBoxItem>
-                <ListBoxItem>埼玉県</ListBoxItem>
-                <ListBoxItem>千葉県</ListBoxItem>
-                <ListBoxItem>東京都</ListBoxItem>
-                <ListBoxItem>神奈川県</ListBoxItem>
-                <ListBoxItem>新潟県</ListBoxItem>
-                <ListBoxItem>富山県</ListBoxItem>
-                <ListBoxItem>石川県</ListBoxItem>
-                <ListBoxItem>福井県</ListBoxItem>
-                <ListBoxItem>山梨県</ListBoxItem>
-                <ListBoxItem>長野県</ListBoxItem>
-                <ListBoxItem>岐阜県</ListBoxItem>
-                <ListBoxItem>静岡県</ListBoxItem>
-                <ListBoxItem>愛知県</ListBoxItem>
-                <ListBoxItem>三重県</ListBoxItem>
-                <ListBoxItem>滋賀県</ListBoxItem>
-                <ListBoxItem>京都府</ListBoxItem>
-                <ListBoxItem>大阪府</ListBoxItem>
-                <ListBoxItem>兵庫県</ListBoxItem>
-                <ListBoxItem>奈良県</ListBoxItem>
-                <ListBoxItem>和歌山県</ListBoxItem>
-                <ListBoxItem>鳥取県</ListBoxItem>
-                <ListBoxItem>島根県</ListBoxItem>
-                <ListBoxItem>岡山県</ListBoxItem>
-                <ListBoxItem>広島県</ListBoxItem>
-                <ListBoxItem>山口県</ListBoxItem>
-                <ListBoxItem>徳島県</ListBoxItem>
-                <ListBoxItem>香川県</ListBoxItem>
-                <ListBoxItem>愛媛県</ListBoxItem>
-                <ListBoxItem>高知県</ListBoxItem>
-                <ListBoxItem>福岡県</ListBoxItem>
-                <ListBoxItem>佐賀県</ListBoxItem>
-                <ListBoxItem>長崎県</ListBoxItem>
-                <ListBoxItem>熊本県</ListBoxItem>
-                <ListBoxItem>大分県</ListBoxItem>
-                <ListBoxItem>宮崎県</ListBoxItem>
-                <ListBoxItem>鹿児島県</ListBoxItem>
-                <ListBoxItem>沖縄県</ListBoxItem>
-            </ListBox>
-
+                     IsEnabled="False"
+                     ItemTemplate="{StaticResource ListItemTemplateStyle}"
+                     ItemsSource="{Binding LongItems}" />
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"
@@ -375,10 +293,10 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Width="50"
-                                        DisplayMemberBinding="{Binding Index, Mode=OneTime}"
+                                        CellTemplate="{StaticResource ItemIndexTemplateStyle}"
                                         Header="番号" />
                         <GridViewColumn Width="120"
-                                        DisplayMemberBinding="{Binding Name, Mode=OneTime}"
+                                        CellTemplate="{StaticResource ItemNameTemplateStyle}"
                                         Header="名前" />
                     </GridView>
                 </ListView.View>
@@ -394,10 +312,10 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Width="50"
-                                        DisplayMemberBinding="{Binding Index, Mode=OneTime}"
+                                        CellTemplate="{StaticResource ItemIndexTemplateStyle}"
                                         Header="番号" />
                         <GridViewColumn Width="120"
-                                        DisplayMemberBinding="{Binding Name, Mode=OneTime}"
+                                        CellTemplate="{StaticResource ItemNameTemplateStyle}"
                                         Header="名前" />
                     </GridView>
                 </ListView.View>
@@ -418,9 +336,16 @@
 
             </StackPanel>
 
-            <controls:BiaColorPicker Height="160" Margin="0,4,0,0" />
+            <controls:BiaColorPicker Height="160"
+                                     Margin="0,4,0,0"
+                                     Blue="0.25"
+                                     Green="0.5"
+                                     Red="1" />
             <controls:BiaColorPicker Height="240"
                                      Margin="0,16,0,0"
+                                     Blue="0.125"
+                                     Green="0.25"
+                                     Red="0.5"
                                      Style="{StaticResource BiaColorPickerWheelType}" />
         </StackPanel>
 
@@ -442,7 +367,7 @@
 
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
-                        <TextBlock Text="{Binding Name}" />
+                        <controls:BiaTextBlock Text="{Binding Name}" />
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
@@ -464,7 +389,7 @@
 
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
-                        <TextBlock Text="{Binding Name}" />
+                        <controls:BiaTextBlock Text="{Binding Name}" />
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
@@ -549,13 +474,13 @@
                         VerticalAlignment="Top"
                         TabStripPlacement="Top">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
 
@@ -567,13 +492,13 @@
                         IsEnabled="False"
                         TabStripPlacement="Top">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
 
@@ -584,13 +509,13 @@
                         VerticalAlignment="Top"
                         TabStripPlacement="Bottom">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
 
@@ -602,13 +527,13 @@
                         IsEnabled="False"
                         TabStripPlacement="Bottom">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
 
@@ -620,13 +545,13 @@
                         VerticalAlignment="Top"
                         TabStripPlacement="Left">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
 
@@ -638,13 +563,13 @@
                         IsEnabled="False"
                         TabStripPlacement="Left">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
 
@@ -656,13 +581,13 @@
                         VerticalAlignment="Top"
                         TabStripPlacement="Right">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
 
@@ -674,17 +599,15 @@
                         IsEnabled="False"
                         TabStripPlacement="Right">
                 <TabItem Header="TabItem1">
-                    <TextBlock Text="TabItem1 Content" />
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
                 </TabItem>
                 <TabItem Header="TabItem2">
-                    <TextBlock Text="TabItem2 Content" />
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
                 </TabItem>
                 <TabItem Header="TabItem3">
-                    <TextBlock Text="TabItem3 Content" />
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
                 </TabItem>
             </TabControl>
-
-
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"

@@ -530,5 +530,35 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
+
+        <TabItem Header="BiaTextBlock">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style BasedOn="{StaticResource {x:Type controls:BiaTextBlock}}" TargetType="{x:Type controls:BiaTextBlock}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="200"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaTextBlock Text="あいうえお" />
+                    <controls:BiaTextBlock IsEnabled="False" Text="将棋" />
+                    <controls:BiaTextBlock Text="あいうえお" HorizontalAlignment="Left"/>
+                    <controls:BiaTextBlock IsEnabled="False" Text="将棋" HorizontalAlignment="Left"/>
+                    <controls:BiaTextBlock Text="あいうえお" HorizontalAlignment="Right"/>
+                    <controls:BiaTextBlock IsEnabled="False" Text="将棋" HorizontalAlignment="Right"/>
+                    <controls:BiaTextBlock Text="あいうえお" HorizontalAlignment="Center"/>
+                    <controls:BiaTextBlock IsEnabled="False" Text="将棋" HorizontalAlignment="Center"/>
+
+                    <controls:BiaTextBlock Text="Reimplementation. about x20-30 faster than standard WPF controls"/>
+
+                    <controls:BiaTextBlock Text="{Binding BiaTextBlockViewModel.TextA}" />
+                    <controls:BiaTextBlock IsEnabled="False" Text="{Binding BiaTextBlockViewModel.TextB}" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
     </TabControl>
 </controls:BiaWindow>

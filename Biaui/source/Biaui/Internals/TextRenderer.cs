@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Jewelry.Collections;
-
 
 namespace Biaui.Internals
 {
@@ -33,6 +31,8 @@ namespace Biaui.Internals
         {
             if (fontFamily == null)
                 return;
+
+            _fontLineSpacing = fontFamily.LineSpacing;
 
             var typeface = new Typeface(fontFamily, style, weight, stretch);
 
@@ -87,12 +87,28 @@ namespace Biaui.Internals
             if (string.IsNullOrEmpty(text))
                 return 0;
 
-            var gr = MakeGlyphRun(text, 0, 0, double.PositiveInfinity, TextAlignment.Left);
-            if (gr == null)
-                return 0;
+            var textWidth = 0.0;
 
-            return gr.AdvanceWidths.Sum();
+            for (var i = 0; i != text.Length; ++i)
+            {
+                if (_glyphDataCache.TryGetValue(text[i], out var data) == false)
+                {
+                    if (_glyphTypeface.CharacterToGlyphMap.TryGetValue(text[i], out data.GlyphIndex) == false)
+                        throw new Exception();
+
+                    data.AdvanceWidth = _glyphTypeface.AdvanceWidths[data.GlyphIndex] * _fontSize;
+
+                    _glyphDataCache.Add(text[i], data);
+                }
+
+                textWidth += data.AdvanceWidth;
+            }
+
+            return textWidth;
         }
+
+        internal double FontHeight =>
+            _fontLineSpacing * _fontSize;
 
         private GlyphRun MakeGlyphRun(
             string text,
@@ -101,8 +117,6 @@ namespace Biaui.Internals
             double maxWidth,
             TextAlignment align)
         {
-            maxWidth = Math.Truncate(maxWidth);
-
             var textKey = (text, offsetX, offsetY, maxWidth, align);
 
             if (_textCache.TryGetValue(textKey, out var gr))
@@ -239,5 +253,6 @@ namespace Biaui.Internals
         private readonly ushort _dotGlyphIndex;
         private readonly double _dotAdvanceWidth;
         private readonly double _fontSize;
+        private readonly double _fontLineSpacing;
     }
 }
