@@ -142,6 +142,7 @@
     <Compile Include="Presentation\BiaRadioButtonViewModel.cs" />
     <Compile Include="Presentation\BiaCheckBoxViewModel.cs" />
     <Compile Include="Presentation\BiaComboBoxViewModel.cs" />
+    <Compile Include="Presentation\BiaNodeEditorViewModel.cs" />
     <Compile Include="Presentation\BiaToggleButtonViewModel.cs" />
     <Compile Include="Presentation\BiaColorPickerViewModel.cs" />
     <Compile Include="Presentation\BiaButtonViewModel.cs" />

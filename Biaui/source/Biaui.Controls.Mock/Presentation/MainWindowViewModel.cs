@@ -115,6 +115,18 @@ namespace Biaui.Controls.Mock.Presentation
         
         #endregion
 
+        #region BiaNodeEditorViewModel
+        
+        private BiaNodeEditorViewModel _BiaNodeEditorViewModel;
+        
+        public BiaNodeEditorViewModel BiaNodeEditorViewModel
+        {
+            get => _BiaNodeEditorViewModel;
+            set => SetProperty(ref _BiaNodeEditorViewModel, value);
+        }
+        
+        #endregion
+
         public MainWindowViewModel(Container dic, IDisposableChecker disposableChecker)
             : base(disposableChecker)
         {
@@ -127,6 +139,7 @@ namespace Biaui.Controls.Mock.Presentation
             BiaTextBoxViewModel = dic.GetInstance<BiaTextBoxViewModel>().AddTo(Trashes);
             BiaComboBoxViewModel = dic.GetInstance<BiaComboBoxViewModel>().AddTo(Trashes);
             BiaTextBlockViewModel = dic.GetInstance<BiaTextBlockViewModel>().AddTo(Trashes);
+            BiaNodeEditorViewModel = dic.GetInstance<BiaNodeEditorViewModel>().AddTo(Trashes);
         }
     }
 }
