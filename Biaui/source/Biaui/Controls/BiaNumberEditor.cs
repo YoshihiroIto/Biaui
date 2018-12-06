@@ -121,6 +121,7 @@ namespace Biaui.Controls
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
                     Boxes.Double0,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
