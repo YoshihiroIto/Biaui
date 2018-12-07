@@ -5,15 +5,16 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using Biaui.Internals;
 using Biaui.NodeEditor;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodeEditor : Canvas
+    public class BiaNodeEditor : Border
     {
         #region NodesSource
 
@@ -45,59 +46,30 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        #region ScrollViewer
+        #region BorderColor
 
-        public ScrollViewer ScrollViewer
+        public Color BorderColor
         {
-            get => _ScrollViewer;
+            get => _BorderColor;
             set
             {
-                if (value != _ScrollViewer)
-                    SetValue(ScrollViewerProperty, value);
+                if (value != _BorderColor)
+                    SetValue(BorderColorProperty, value);
             }
         }
 
-        private ScrollViewer _ScrollViewer = default(ScrollViewer);
+        private Color _BorderColor = Colors.Red;
 
-        public static readonly DependencyProperty ScrollViewerProperty =
-            DependencyProperty.Register(nameof(ScrollViewer), typeof(ScrollViewer), typeof(BiaNodeEditor),
-                new PropertyMetadata(
-                    default(ScrollViewer),
+        public static readonly DependencyProperty BorderColorProperty =
+            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaNodeEditor),
+                new FrameworkPropertyMetadata(
+                    Boxes.ColorRed,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-
-                        var old = self._ScrollViewer;
-                        self._ScrollViewer = (ScrollViewer) e.NewValue;
-
-                        self.UpdateScrollViewer(old, self._ScrollViewer);
-                    }));
-
-        #endregion
-
-        #region Scale
-
-        public double Scale
-        {
-            get => _Scale;
-            set
-            {
-                if (NumberHelper.AreClose(value, _Scale) == false)
-                    SetValue(ScaleProperty, value);
-            }
-        }
-
-        private double _Scale = 1;
-
-        public static readonly DependencyProperty ScaleProperty =
-            DependencyProperty.Register(nameof(Scale), typeof(double), typeof(BiaNodeEditor),
-                new PropertyMetadata(
-                    Boxes.Double1,
-                    (s, e) =>
-                    {
-                        var self = (BiaNodeEditor) s;
-                        self._Scale = (double) e.NewValue;
-                        self.MakeChildren();
+                        self._BorderColor = (Color) e.NewValue;
                     }));
 
         #endregion
@@ -105,12 +77,41 @@ namespace Biaui.Controls.NodeEditor
         private readonly Dictionary<INodeItem, BiaNodePanel> _children = new Dictionary<INodeItem, BiaNodePanel>();
 
         private readonly LazyRunner _CullingChildrenRunner;
+        private readonly TranslateTransform _translate = new TranslateTransform();
+        private readonly ScaleTransform _scale = new ScaleTransform();
+
+        private readonly Canvas _childrenBag;
 
         public BiaNodeEditor()
         {
             _CullingChildrenRunner = new LazyRunner(CullingChildren);
             Unloaded += (_, __) => _CullingChildrenRunner.Dispose();
+
+            SizeChanged += (_, __) => MakeChildren();
+            ClipToBounds = true;
+
+            _childrenBag = new Canvas();
+
+            // ReSharper disable once VirtualMemberCallInConstructor
+            Child = _childrenBag;
+
+            var g = new TransformGroup();
+            g.Children.Add(_scale);
+            g.Children.Add(_translate);
+            _childrenBag.RenderTransform = g;
+
+            _translate.Changed += (_, __) => MakeChildren();
+            _scale.Changed += (_, __) => MakeChildren();
         }
+
+        private Rect MakeCurrentViewport() =>
+            new Rect(
+                -_translate.X / _scale.ScaleX,
+                -_translate.Y / _scale.ScaleY,
+                ActualWidth / _scale.ScaleX,
+                ActualHeight / _scale.ScaleY);
+
+        #region Children
 
         private void UpdateNodesSource(ObservableCollection<INodeItem> oldSource,
             ObservableCollection<INodeItem> newSource)
@@ -144,8 +145,8 @@ namespace Biaui.Controls.NodeEditor
             {
                 if (_children.TryGetValue(node, out var child))
                 {
-                    SetLeft(child, node.Pos.X);
-                    SetTop(child, node.Pos.Y);
+                    Canvas.SetLeft(child, node.Pos.X);
+                    Canvas.SetTop(child, node.Pos.Y);
                 }
             }
         }
@@ -166,8 +167,8 @@ namespace Biaui.Controls.NodeEditor
                         {
                             var child = new BiaNodePanel {DataContext = node};
 
-                            SetLeft(child, node.Pos.X);
-                            SetTop(child, node.Pos.Y);
+                            Canvas.SetLeft(child, node.Pos.X);
+                            Canvas.SetTop(child, node.Pos.Y);
                             child.Width = 80;
                             child.Height = 80;
 
@@ -178,7 +179,7 @@ namespace Biaui.Controls.NodeEditor
                             var childRect = new Rect(node.Pos.X, node.Pos.Y, child.Width, child.Height);
 
                             if (viewport.IntersectsWith(childRect))
-                                Children.Add(child);
+                                _childrenBag.Children.Add(child);
                         }
                     }
 
@@ -207,22 +208,8 @@ namespace Biaui.Controls.NodeEditor
 
         private void SetFrontmost(BiaNodePanel child)
         {
-            Children.Remove(child);
-            Children.Add(child);
-        }
-
-        private void UpdateScrollViewer(ScrollViewer oldScrollViewer, ScrollViewer newScrollViewer)
-        {
-            if (oldScrollViewer != null)
-                oldScrollViewer.ScrollChanged -= OnScrollChanged;
-
-            if (newScrollViewer != null)
-                newScrollViewer.ScrollChanged += OnScrollChanged;
-        }
-
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            MakeChildren();
+            _childrenBag.Children.Remove(child);
+            _childrenBag.Children.Add(child);
         }
 
         private void MakeChildren()
@@ -240,8 +227,8 @@ namespace Biaui.Controls.NodeEditor
                 var t = c.Value;
 
                 if (m.IntersectsWith(t.Width, t.Height, rect))
-                    if (Children.Contains(t) == false)
-                        Children.Add(t);
+                    if (_childrenBag.Children.Contains(t) == false)
+                        _childrenBag.Children.Add(t);
             }
         }
 
@@ -255,16 +242,96 @@ namespace Biaui.Controls.NodeEditor
                 var t = c.Value;
 
                 if (m.IntersectsWith(t.Width, t.Height, rect) == false)
-                    if (Children.Contains(t))
-                        Children.Remove(t);
+                    if (_childrenBag.Children.Contains(t))
+                        _childrenBag.Children.Remove(t);
             }
+
+            Debug.WriteLine($"CullingChildren() -- count:{_childrenBag.Children.Count}");
         }
 
-        private Rect MakeCurrentViewport() =>
-            new Rect(
-                ScrollViewer.HorizontalOffset / Scale,
-                ScrollViewer.VerticalOffset / Scale,
-                ScrollViewer.ViewportWidth / Scale,
-                ScrollViewer.ViewportHeight / Scale);
+        #endregion
+
+        #region Mouse
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            var s = _scale.ScaleX;
+
+            s *= e.Delta < 0 ? 1.25 : 1.0 / 1.25;
+
+            var p = e.GetPosition(this);
+            var d0 = ScenePosFromControlPos(p);
+
+            s = Math.Max(Math.Min(s, 3.0), 0.5);
+            _scale.ScaleX = s;
+            _scale.ScaleY = s;
+
+            var d1 = ScenePosFromControlPos(p);
+
+            var diff = d1 - d0;
+
+            _translate.X += diff.X * s;
+            _translate.Y += diff.Y * s;
+        }
+
+        private double _mouseDownScrollX;
+        private double _mouseDownScrollY;
+        private Point _mouseDownMousePos;
+        private bool _isScrolling;
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            _mouseDownScrollX = _translate.X;
+            _mouseDownScrollY = _translate.Y;
+            _mouseDownMousePos = e.GetPosition(this);
+
+            if ((Win32Helper.GetAsyncKeyState(Win32Helper.VK_SPACE) & 0x8000) == 0)
+                return;
+
+            _isScrolling = true;
+            CaptureMouse();
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+
+            _isScrolling = false;
+
+            if (IsMouseCaptured)
+                ReleaseMouseCapture();
+        }
+
+        protected override void OnPreviewMouseMove(MouseEventArgs e)
+        {
+            base.OnPreviewMouseMove(e);
+
+            if (e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            if ((Win32Helper.GetAsyncKeyState(Win32Helper.VK_SPACE) & 0x8000) == 0)
+                return;
+
+            if (_isScrolling == false)
+                return;
+
+            var pos = e.GetPosition(this);
+
+            var diff = pos - _mouseDownMousePos;
+
+            _translate.X = _mouseDownScrollX + diff.X;
+            _translate.Y = _mouseDownScrollY + diff.Y;
+        }
+
+        private Point ScenePosFromControlPos(Point pos)
+            => new Point(
+                (pos.X - _translate.X) / _scale.ScaleX,
+                (pos.Y - _translate.Y) / _scale.ScaleY);
+
+        #endregion
     }
 }

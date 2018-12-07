@@ -23,6 +23,8 @@ namespace Biaui.Internals
         internal static object ColorBlack = Colors.Black;
         internal static object ColorTransparent = Colors.Transparent;
 
+        internal static object Point00 = new Point(0, 0);
+
         internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
 
         internal static object ConstantsBasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;

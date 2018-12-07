@@ -44,5 +44,10 @@ namespace Biaui.Internals
                 Bottom = bottom;
             }
         }
+
+        [DllImport("user32.dll")]
+        public static extern short GetAsyncKeyState(int vKey);
+
+        public const int VK_SPACE = 0x20;
     }
 }

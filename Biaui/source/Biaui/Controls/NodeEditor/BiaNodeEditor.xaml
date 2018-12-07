@@ -2,5 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor">
     <Style TargetType="{x:Type nodeEditor:BiaNodeEditor}">
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
+        <Setter Property="BorderThickness" Value="1" />
     </Style>
 </ResourceDictionary>

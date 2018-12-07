@@ -568,35 +568,11 @@
         </TabItem>
 
         <TabItem Header="BiaNodeEditor">
-            <DockPanel>
-                <controls:BiaNumberEditor Width="200"
-                                          Margin="8,8,0,0"
-                                          HorizontalAlignment="Left"
-                                          Caption="Scale"
-                                          DockPanel.Dock="Top"
-                                          Increment="0.001"
-                                          Maximum="2.0"
-                                          Minimum="0.5"
-                                          SliderMaximum="2.0"
-                                          SliderMinimum="0.5"
-                                          Value="{Binding BiaNodeEditorViewModel.Scale}" />
-
-                <ScrollViewer x:Name="ScrollViewer"
-                              Margin="8"
-                              HorizontalScrollBarVisibility="Visible"
-                              VerticalScrollBarVisibility="Visible">
-                    <nodeEditor:BiaNodeEditor Width="10000"
-                                              Height="10000"
-                                              NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}"
-                                              Scale="{Binding BiaNodeEditorViewModel.Scale}"
-                                              ScrollViewer="{Binding ElementName=ScrollViewer}">
-
-                        <nodeEditor:BiaNodeEditor.LayoutTransform>
-                            <ScaleTransform ScaleX="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" ScaleY="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" />
-                        </nodeEditor:BiaNodeEditor.LayoutTransform>
-                    </nodeEditor:BiaNodeEditor>
-                </ScrollViewer>
-            </DockPanel>
+                <nodeEditor:BiaNodeEditor Margin="8" NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
+                    <nodeEditor:BiaNodeEditor.LayoutTransform>
+                        <ScaleTransform ScaleX="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" ScaleY="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" />
+                    </nodeEditor:BiaNodeEditor.LayoutTransform>
+                </nodeEditor:BiaNodeEditor>
         </TabItem>
     </TabControl>
 </controls:BiaWindow>
