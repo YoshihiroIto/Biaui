@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Biaui.Internals;
@@ -75,7 +76,7 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         #region Scale
-        
+
         public double Scale
         {
             get => _Scale;
@@ -85,9 +86,9 @@ namespace Biaui.Controls.NodeEditor
                     SetValue(ScaleProperty, value);
             }
         }
-        
+
         private double _Scale = 1;
-        
+
         public static readonly DependencyProperty ScaleProperty =
             DependencyProperty.Register(nameof(Scale), typeof(double), typeof(BiaNodeEditor),
                 new PropertyMetadata(
@@ -95,14 +96,21 @@ namespace Biaui.Controls.NodeEditor
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._Scale = (double)e.NewValue;
-                        self.CullingChildren(self.MakeCurrentViewport());
+                        self._Scale = (double) e.NewValue;
+                        self.MakeChildren();
                     }));
-        
+
         #endregion
 
-
         private readonly Dictionary<INodeItem, BiaNodePanel> _children = new Dictionary<INodeItem, BiaNodePanel>();
+
+        private readonly LazyRunner _CullingChildrenRunner;
+
+        public BiaNodeEditor()
+        {
+            _CullingChildrenRunner = new LazyRunner(CullingChildren);
+            Unloaded += (_, __) => _CullingChildrenRunner.Dispose();
+        }
 
         private void UpdateNodesSource(ObservableCollection<INodeItem> oldSource,
             ObservableCollection<INodeItem> newSource)
@@ -165,14 +173,13 @@ namespace Biaui.Controls.NodeEditor
 
                             child.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
 
-
                             _children.Add(node, child);
 
-                            var childRect = new Rect(GetLeft(child), GetTop(child), child.Width, child.Height);
+                            var childRect = new Rect(node.Pos.X, node.Pos.Y, child.Width, child.Height);
 
                             if (viewport.IntersectsWith(childRect))
                                 Children.Add(child);
-                        }   
+                        }
                     }
 
                     break;
@@ -200,10 +207,8 @@ namespace Biaui.Controls.NodeEditor
 
         private void SetFrontmost(BiaNodePanel child)
         {
-                        Children.Remove(child);
-                        Children.Add(child);
-            
-
+            Children.Remove(child);
+            Children.Add(child);
         }
 
         private void UpdateScrollViewer(ScrollViewer oldScrollViewer, ScrollViewer newScrollViewer)
@@ -217,30 +222,41 @@ namespace Biaui.Controls.NodeEditor
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            CullingChildren(MakeCurrentViewport());
+            MakeChildren();
         }
 
-        private void CullingChildren(Rect rect)
+        private void MakeChildren()
         {
-            CullingChildren(rect, _children.Values);
+            MakeChildren(MakeCurrentViewport());
+
+            _CullingChildrenRunner.Run();
         }
 
-        private void CullingChildren(Rect rect, IEnumerable<BiaNodePanel> targets)
+        private void MakeChildren(Rect rect)
         {
-            foreach (var t in targets)
+            foreach (var c in _children)
             {
-                var childRect = new Rect(GetLeft(t), GetTop(t), t.Width, t.Height);
+                var m = c.Key;
+                var t = c.Value;
 
-                if (rect.IntersectsWith(childRect))
-                {
+                if (m.IntersectsWith(t.Width, t.Height, rect))
                     if (Children.Contains(t) == false)
                         Children.Add(t);
-                }
-                else
-                {
+            }
+        }
+
+        private void CullingChildren()
+        {
+            var rect = MakeCurrentViewport();
+
+            foreach (var c in _children)
+            {
+                var m = c.Key;
+                var t = c.Value;
+
+                if (m.IntersectsWith(t.Width, t.Height, rect) == false)
                     if (Children.Contains(t))
                         Children.Remove(t);
-                }
             }
         }
 
