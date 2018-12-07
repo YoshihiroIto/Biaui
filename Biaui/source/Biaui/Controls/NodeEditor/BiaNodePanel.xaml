@@ -1,0 +1,131 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:biaui="clr-namespace:Biaui"
+                    xmlns:controls="clr-namespace:Biaui.Controls"
+                    xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor">
+
+    <Style TargetType="{x:Type nodeEditor:BiaNodePanel}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Background="{DynamicResource PanelBackgroundBrushKey}"
+                            BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                            BorderThickness="1"
+                            CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                        <StackPanel Margin="4">
+                            <controls:BiaColorPicker Height="160"
+                                                     Margin="0,4,0,0"
+                                                     Blue="0.25"
+                                                     Green="0.5"
+                                                     Red="1" />
+
+                            <controls:BiaClippingBorder Margin="0,8,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <controls:BiaToggleButton Grid.Row="0"
+                                                              Grid.Column="0"
+                                                              Margin="0,0,0,0"
+                                                              Content="A0"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="0"
+                                                              Grid.Column="1"
+                                                              Margin="1,0,0,0"
+                                                              Content="A1"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="0"
+                                                              Grid.Column="2"
+                                                              Margin="1,0,0,0"
+                                                              Content="A2"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="0"
+                                                              Grid.Column="3"
+                                                              Margin="1,0,0,0"
+                                                              Content="A3"
+                                                              CornerRadius="0" />
+
+                                    <controls:BiaToggleButton Grid.Row="1"
+                                                              Grid.Column="0"
+                                                              Margin="0,1,0,0"
+                                                              Content="B0"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="1"
+                                                              Grid.Column="1"
+                                                              Margin="1,1,0,0"
+                                                              Content="B1"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="1"
+                                                              Grid.Column="2"
+                                                              Margin="1,1,0,0"
+                                                              Content="B2"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="1"
+                                                              Grid.Column="3"
+                                                              Margin="1,1,0,0"
+                                                              Content="B3"
+                                                              CornerRadius="0" />
+
+                                    <controls:BiaToggleButton Grid.Row="2"
+                                                              Grid.Column="0"
+                                                              Margin="0,1,0,0"
+                                                              Content="C0"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="2"
+                                                              Grid.Column="1"
+                                                              Margin="1,1,0,0"
+                                                              Content="C1"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="2"
+                                                              Grid.Column="2"
+                                                              Margin="1,1,0,0"
+                                                              Content="C2"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="2"
+                                                              Grid.Column="3"
+                                                              Margin="1,1,0,0"
+                                                              Content="C3"
+                                                              CornerRadius="0" />
+
+                                    <controls:BiaToggleButton Grid.Row="3"
+                                                              Grid.Column="0"
+                                                              Margin="0,1,0,0"
+                                                              Content="D0"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="3"
+                                                              Grid.Column="1"
+                                                              Margin="1,1,0,0"
+                                                              Content="D1"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="3"
+                                                              Grid.Column="2"
+                                                              Margin="1,1,0,0"
+                                                              Content="D2"
+                                                              CornerRadius="0" />
+                                    <controls:BiaToggleButton Grid.Row="3"
+                                                              Grid.Column="3"
+                                                              Margin="1,1,0,0"
+                                                              Content="D3"
+                                                              CornerRadius="0" />
+                                </Grid>
+                            </controls:BiaClippingBorder>
+
+
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

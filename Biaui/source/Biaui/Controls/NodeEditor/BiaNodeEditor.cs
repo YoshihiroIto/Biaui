@@ -167,10 +167,12 @@ namespace Biaui.Controls.NodeEditor
                         {
                             var child = new BiaNodePanel {DataContext = node};
 
+                            var a = child.ApplyTemplate();
+
                             Canvas.SetLeft(child, node.Pos.X);
                             Canvas.SetTop(child, node.Pos.Y);
-                            child.Width = 80;
-                            child.Height = 80;
+                            child.Width = 200;
+                            child.Height = 300;
 
                             child.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
 
@@ -178,8 +180,8 @@ namespace Biaui.Controls.NodeEditor
 
                             var childRect = new Rect(node.Pos.X, node.Pos.Y, child.Width, child.Height);
 
-                            if (viewport.IntersectsWith(childRect))
-                                _childrenBag.Children.Add(child);
+                            //if (viewport.IntersectsWith(childRect))
+                            //    _childrenBag.Children.Add(child);
                         }
                     }
 
@@ -264,7 +266,7 @@ namespace Biaui.Controls.NodeEditor
             var p = e.GetPosition(this);
             var d0 = ScenePosFromControlPos(p);
 
-            s = Math.Max(Math.Min(s, 3.0), 0.5);
+            s = Math.Max(Math.Min(s, 3.0), 0.25);
             _scale.ScaleX = s;
             _scale.ScaleY = s;
 
@@ -306,9 +308,9 @@ namespace Biaui.Controls.NodeEditor
                 ReleaseMouseCapture();
         }
 
-        protected override void OnPreviewMouseMove(MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            base.OnPreviewMouseMove(e);
+            base.OnMouseMove(e);
 
             if (e.LeftButton != MouseButtonState.Pressed)
                 return;

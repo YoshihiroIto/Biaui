@@ -36,7 +36,7 @@ namespace Biaui.Controls.Mock.Presentation
         {
             for (var y = 0; y != 100; ++y)
             for (var x = 0; x != 100; ++x)
-                Nodes.Add(new Node {Pos = new Point(x * 100, y * 100)});
+                Nodes.Add(new Node {Pos = new Point(x * 800 + 16, y * 800 + 16)});
         }
     }
 
