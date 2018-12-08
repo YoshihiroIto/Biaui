@@ -99,9 +99,6 @@ namespace Biaui.Controls.NodeEditor
             g.Children.Add(_scale);
             g.Children.Add(_translate);
             _childrenBag.RenderTransform = g;
-
-            _translate.Changed += (_, __) => MakeChildren();
-            _scale.Changed += (_, __) => MakeChildren();
         }
 
         private Rect MakeCurrentViewport() =>
@@ -161,7 +158,7 @@ namespace Biaui.Controls.NodeEditor
                 case NotifyCollectionChangedAction.Add:
                     if (newItems != null)
                     {
-                        var viewport = MakeCurrentViewport();
+                        //var viewport = MakeCurrentViewport();
 
                         foreach (var node in newItems)
                         {
@@ -178,8 +175,7 @@ namespace Biaui.Controls.NodeEditor
 
                             _children.Add(node, child);
 
-                            var childRect = new Rect(node.Pos.X, node.Pos.Y, child.Width, child.Height);
-
+                            //var childRect = new Rect(node.Pos.X, node.Pos.Y, child.Width, child.Height);
                             //if (viewport.IntersectsWith(childRect))
                             //    _childrenBag.Children.Add(child);
                         }
@@ -276,6 +272,8 @@ namespace Biaui.Controls.NodeEditor
 
             _translate.X += diff.X * s;
             _translate.Y += diff.Y * s;
+
+            MakeChildren();
         }
 
         private double _mouseDownScrollX;
@@ -327,6 +325,7 @@ namespace Biaui.Controls.NodeEditor
 
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
+            MakeChildren();
         }
 
         private Point ScenePosFromControlPos(Point pos)
