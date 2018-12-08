@@ -425,6 +425,7 @@ namespace Biaui.Controls
 
         private ListBox _listBox;
         private Popup _popup;
+        private ScaleTransform _scale;
 
         private void ShowListBox()
         {
@@ -436,6 +437,8 @@ namespace Biaui.Controls
                     FocusVisualStyle = null,
                 };
 
+                _scale = new ScaleTransform();
+
                 _popup = new Popup
                 {
                     Child = _listBox,
@@ -443,6 +446,8 @@ namespace Biaui.Controls
                     VerticalOffset = 2,
                     StaysOpen = false,
                     Focusable = false,
+                    RenderTransform = _scale,
+                    PlacementTarget = this
                 };
 
                 _listBox.SetBinding(ItemsControl.ItemsSourceProperty,
@@ -452,7 +457,6 @@ namespace Biaui.Controls
                 _listBox.PreviewKeyDown += ListBoxOnPreviewKeyDown;
                 _listBox.PreviewMouseLeftButtonDown += ListBoxOnPreviewMouseLeftButtonDown;
 
-                _popup.PlacementTarget = this;
                 _popup.Closed += PopupOnClosed;
             }
 
@@ -465,6 +469,10 @@ namespace Biaui.Controls
             _listBox.Width = ActualWidth;
 
             Mouse.Capture(this, CaptureMode.SubTree);
+
+            var s = this.CalcCompositeRenderScale();
+            _scale.ScaleX = s;
+            _scale.ScaleY = s;
 
             _popup.IsOpen = true;
             IsOpen = true;

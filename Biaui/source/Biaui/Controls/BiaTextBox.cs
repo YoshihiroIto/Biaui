@@ -282,6 +282,7 @@ namespace Biaui.Controls
 
         private TextBox _textBox;
         private Popup _popup;
+        private ScaleTransform _scale;
         private bool _isInPopup;
 
         private void ShowEditBox()
@@ -295,11 +296,16 @@ namespace Biaui.Controls
                     FocusVisualStyle = null
                 };
 
+                _scale = new ScaleTransform();
+
                 _popup = new Popup
                 {
                     Child = _textBox,
                     AllowsTransparency = true,
+                    VerticalOffset = -ActualHeight,
                     StaysOpen = false,
+                    RenderTransform = _scale,
+                    PlacementTarget = this
                 };
 
                 _textBox.TextChanged += TextBoxOnTextChanged;
@@ -313,8 +319,9 @@ namespace Biaui.Controls
             _textBox.Text = Text;
             _textBox.SelectionLength = 0;
 
-            _popup.PlacementTarget = this;
-            _popup.VerticalOffset = -ActualHeight;
+            var s = this.CalcCompositeRenderScale();
+            _scale.ScaleX = s;
+            _scale.ScaleY = s;
 
             _popup.IsOpen = true;
             _isInPopup = true;

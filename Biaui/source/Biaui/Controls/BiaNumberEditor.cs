@@ -540,6 +540,8 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaNumberEditor)));
 
             SetupSpinGeom();
+
+            _popup.RenderTransform = _scale;
         }
 
         public BiaNumberEditor()
@@ -905,6 +907,8 @@ namespace Biaui.Controls
             StaysOpen = false,
         };
 
+        private static readonly ScaleTransform _scale = new ScaleTransform();
+
         private bool _isInPopup;
         private PopupResult _popupResult;
 
@@ -928,6 +932,10 @@ namespace Biaui.Controls
             _textBox.IsReadOnly = IsReadOnly;
             _textBox.Text = FormattedValueString;
             _textBox.TextChanged += TextBoxOnTextChanged;
+
+            var s = this.CalcCompositeRenderScale();
+            _scale.ScaleX = s;
+            _scale.ScaleY = s;
 
             _popup.PlacementTarget = this;
             _popup.VerticalOffset = -ActualHeight;

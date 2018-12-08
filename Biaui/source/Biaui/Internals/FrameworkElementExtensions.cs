@@ -49,6 +49,44 @@ namespace Biaui.Internals
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
         }
 
+        internal static double CalcCompositeRenderScale(this FrameworkElement self)
+        {
+            var scale = 1.0;
+
+            var p = self as DependencyObject;
+
+            do
+            {
+                if (p is FrameworkElement pp)
+                {
+                    switch (pp.RenderTransform)
+                    {
+                        case TransformGroup tg:
+                        {
+                            foreach (var c in tg.Children)
+                            {
+                                var sc = c as ScaleTransform;
+                                if (sc == null)
+                                    continue;
+
+                                scale *= sc.ScaleX;
+                            }
+
+                            break;
+                        }
+
+                        case ScaleTransform st:
+                            scale *= st.ScaleX;
+                            break;
+                    }
+                }
+
+                p = VisualTreeHelper.GetParent(p);
+            } while (p != null);
+
+            return scale;
+        }
+
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
             => Caches.GetBorderPen(color, FrameworkElementHelper.RoundLayoutValue(BorderWidth));
 
