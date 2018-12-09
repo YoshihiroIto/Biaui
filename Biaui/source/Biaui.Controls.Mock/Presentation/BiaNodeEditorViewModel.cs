@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
@@ -34,9 +35,17 @@ namespace Biaui.Controls.Mock.Presentation
 
         public BiaNodeEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
+            var r = new Random();
+
+
             for (var y = 0; y != 100; ++y)
             for (var x = 0; x != 100; ++x)
-                Nodes.Add(new Node {Pos = new Point(x * 800 + 16, y * 800 + 16)});
+            {
+                var rx = r.NextDouble() * 800;
+                var ry = r.NextDouble() * 800;
+
+                Nodes.Add(new Node {Pos = new Point(x * 800 + rx, y * 800 + ry)});
+            }
         }
     }
 
