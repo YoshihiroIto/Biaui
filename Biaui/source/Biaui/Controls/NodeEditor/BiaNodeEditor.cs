@@ -44,14 +44,14 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        private readonly Dictionary<INodeItem, BiaNodePanel> _children = new Dictionary<INodeItem, BiaNodePanel>();
+        private readonly Dictionary<INodeItem, BiaNodePanel> _childrenDict = new Dictionary<INodeItem, BiaNodePanel>();
         private readonly TranslateTransform _translate = new TranslateTransform();
         private readonly ScaleTransform _scale = new ScaleTransform();
         private readonly ChildrenBag _childrenBag = new ChildrenBag();
 
         public BiaNodeEditor()
         {
-            SizeChanged += (_, __) => MakeChildren();
+            SizeChanged += (_, __) => UpdateChildrenBag();
 
             ClipToBounds = true;
 
@@ -109,7 +109,7 @@ namespace Biaui.Controls.NodeEditor
 
             if (e.PropertyName == nameof(INodeItem.Pos))
             {
-                if (_children.TryGetValue(node, out var child))
+                if (_childrenDict.TryGetValue(node, out var child))
                 {
                     ChildrenBag.SetLocation(child, node.Pos);
                 }
@@ -124,6 +124,8 @@ namespace Biaui.Controls.NodeEditor
                     if (e.NewItems == null)
                         break;
 
+                    var viewport = MakeCurrentViewport();
+
                     foreach (INodeItem node in e.NewItems)
                     {
                         var child = new BiaNodePanel {DataContext = node};
@@ -135,10 +137,12 @@ namespace Biaui.Controls.NodeEditor
 
                         child.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
 
-                        _children.Add(node, child);
-                    }
+                        _childrenDict.Add(node, child);
 
-                    MakeChildren();
+                        //if (node.IntersectsWith(t.Width, t.Height, rect))
+                        if (node.IntersectsWith(200, 300, viewport))
+                            _childrenBag.AddChild(child);
+                    }
 
                     break;
 
@@ -165,35 +169,28 @@ namespace Biaui.Controls.NodeEditor
 
         private void SetFrontmost(BiaNodePanel child)
         {
-            _childrenBag.Children.Remove(child);
-            _childrenBag.Children.Add(child);
+            _childrenBag.ToLast(child);
         }
 
-        private void MakeChildren()
+        private void UpdateChildrenBag()
         {
-            MakeChildren(MakeCurrentViewport());
+            UpdateChildrenBag(MakeCurrentViewport());
 
             _childrenBag.InvalidateMeasure();
         }
 
-        private void MakeChildren(Rect rect)
+        private void UpdateChildrenBag(Rect rect)
         {
-            foreach (var c in _children)
+            foreach (var c in _childrenDict)
             {
                 var m = c.Key;
                 var t = c.Value;
 
                 //if (m.IntersectsWith(t.Width, t.Height, rect))
                 if (m.IntersectsWith(200, 300, rect))
-                {
-                    if (_childrenBag.Children.Contains(t) == false)
-                        _childrenBag.Children.Add(t);
-                }
+                    _childrenBag.AddChild(t);
                 else
-                {
-                    if (_childrenBag.Children.Contains(t))
-                        _childrenBag.Children.Remove(t);
-                }
+                    _childrenBag.RemoveChild(t);
             }
         }
 
@@ -223,7 +220,7 @@ namespace Biaui.Controls.NodeEditor
             _translate.X += diff.X * s;
             _translate.Y += diff.Y * s;
 
-            MakeChildren();
+            UpdateChildrenBag();
         }
 
         private double _mouseDownScrollX;
@@ -269,7 +266,7 @@ namespace Biaui.Controls.NodeEditor
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
 
-            MakeChildren();
+            UpdateChildrenBag();
         }
 
         private Point ScenePosFromControlPos(Point pos)
@@ -296,48 +293,53 @@ namespace Biaui.Controls.NodeEditor
             DependencyProperty.RegisterAttached("Location", typeof(Point), typeof(ChildrenBag),
                 new FrameworkPropertyMetadata(Boxes.Point00, FrameworkPropertyMetadataOptions.AffectsArrange));
 
-        internal ObservableCollection<UIElement> Children { get; }
-
-        internal ChildrenBag()
-        {
-            Children = new ObservableCollection<UIElement>();
-
-            Children.CollectionChanged += Children_CollectionChanged;
-        }
+        private readonly List<UIElement> _children  = new List<UIElement>();
+        private readonly HashSet<UIElement> _childrenForSearch  = new HashSet<UIElement>();
 
         private readonly List<UIElement> _changedElements = new List<UIElement>();
 
-        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        internal void AddChild(UIElement child)
         {
-            if (e.OldItems != null)
-            {
-                foreach (UIElement oldItem in e.OldItems)
-                {
-                    RemoveVisualChild(oldItem);
-                }
-            }
+            if (_childrenForSearch.Contains(child))
+                return;
 
-            if (e.NewItems != null)
-            {
-                foreach (UIElement newItem in e.NewItems)
-                {
-                    AddVisualChild(newItem);
+            _children.Add(child);
+            _childrenForSearch.Add(child);
 
-                    _changedElements.Add(newItem);
-                }
-            }
+            AddVisualChild(child);
+            _changedElements.Add(child);
         }
 
-        protected override int VisualChildrenCount => Children.Count;
+        internal void RemoveChild(UIElement child)
+        {
+            if (_childrenForSearch.Contains(child) == false)
+                return;
+
+            _children.Remove(child);
+            _childrenForSearch.Remove(child);
+
+            RemoveVisualChild(child);
+        }
+
+        internal void ToLast(UIElement child)
+        {
+            if (_childrenForSearch.Contains(child) == false)
+                return;
+
+            _children.Remove(child);
+            _children.Add(child);
+        }
+
+        protected override int VisualChildrenCount => _children.Count;
 
         protected override Visual GetVisualChild(int index)
         {
-            return Children[index];
+            return _children[index];
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            //foreach (var child in Children)
+            //foreach (var child in _children)
             foreach (var child in _changedElements)
             {
                 var location = GetLocation(child);
@@ -352,7 +354,7 @@ namespace Biaui.Controls.NodeEditor
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            //foreach (var child in Children)
+            //foreach (var child in _children)
             foreach (var child in _changedElements)
             {
                 if (child is FrameworkElement fe)
