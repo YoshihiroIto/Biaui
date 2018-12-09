@@ -120,8 +120,6 @@
                                                               CornerRadius="0" />
                                 </Grid>
                             </controls:BiaClippingBorder>
-
-
                         </StackPanel>
                     </Border>
                 </ControlTemplate>

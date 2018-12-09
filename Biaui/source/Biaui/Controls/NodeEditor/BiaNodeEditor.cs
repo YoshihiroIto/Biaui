@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -46,51 +44,19 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        #region BorderColor
-
-        public Color BorderColor
-        {
-            get => _BorderColor;
-            set
-            {
-                if (value != _BorderColor)
-                    SetValue(BorderColorProperty, value);
-            }
-        }
-
-        private Color _BorderColor = Colors.Red;
-
-        public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaNodeEditor),
-                new FrameworkPropertyMetadata(
-                    Boxes.ColorRed,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaNodeEditor) s;
-                        self._BorderColor = (Color) e.NewValue;
-                    }));
-
-        #endregion
-
         private readonly Dictionary<INodeItem, BiaNodePanel> _children = new Dictionary<INodeItem, BiaNodePanel>();
-
         private readonly LazyRunner _CullingChildrenRunner;
         private readonly TranslateTransform _translate = new TranslateTransform();
         private readonly ScaleTransform _scale = new ScaleTransform();
-
-        private readonly Canvas _childrenBag;
+        private readonly ChildrenBag _childrenBag = new ChildrenBag();
 
         public BiaNodeEditor()
         {
             _CullingChildrenRunner = new LazyRunner(CullingChildren);
             Unloaded += (_, __) => _CullingChildrenRunner.Dispose();
-
             SizeChanged += (_, __) => MakeChildren();
-            ClipToBounds = true;
 
-            _childrenBag = new Canvas();
+            ClipToBounds = true;
 
             // ReSharper disable once VirtualMemberCallInConstructor
             Child = _childrenBag;
@@ -101,16 +67,22 @@ namespace Biaui.Controls.NodeEditor
             _childrenBag.RenderTransform = g;
         }
 
-        private Rect MakeCurrentViewport() =>
-            new Rect(
-                -_translate.X / _scale.ScaleX,
-                -_translate.Y / _scale.ScaleY,
-                ActualWidth / _scale.ScaleX,
-                ActualHeight / _scale.ScaleY);
+        private Rect MakeCurrentViewport()
+        {
+            var sx = _scale.ScaleX;
+            var sy = _scale.ScaleY;
+
+            return new Rect(
+                -_translate.X / sx,
+                -_translate.Y / sy,
+                ActualWidth / sx,
+                ActualHeight / sy);
+        }
 
         #region Children
 
-        private void UpdateNodesSource(ObservableCollection<INodeItem> oldSource,
+        private void UpdateNodesSource(
+            ObservableCollection<INodeItem> oldSource,
             ObservableCollection<INodeItem> newSource)
         {
             if (oldSource != null)
@@ -142,44 +114,34 @@ namespace Biaui.Controls.NodeEditor
             {
                 if (_children.TryGetValue(node, out var child))
                 {
-                    Canvas.SetLeft(child, node.Pos.X);
-                    Canvas.SetTop(child, node.Pos.Y);
+                    ChildrenBag.SetLocation(child, node.Pos);
                 }
             }
         }
 
         private void NodesSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var oldItems = e.OldItems?.Cast<INodeItem>();
-            var newItems = e.NewItems?.Cast<INodeItem>();
-
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    if (newItems != null)
+                    if (e.NewItems == null)
+                        break;
+
+                    foreach (INodeItem node in e.NewItems)
                     {
-                        //var viewport = MakeCurrentViewport();
+                        var child = new BiaNodePanel {DataContext = node};
 
-                        foreach (var node in newItems)
-                        {
-                            var child = new BiaNodePanel {DataContext = node};
+                        ChildrenBag.SetLocation(child, node.Pos);
 
-                            var a = child.ApplyTemplate();
+                        child.Width = 200;
+                        child.Height = 300;
 
-                            Canvas.SetLeft(child, node.Pos.X);
-                            Canvas.SetTop(child, node.Pos.Y);
-                            child.Width = 200;
-                            child.Height = 300;
+                        child.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
 
-                            child.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
-
-                            _children.Add(node, child);
-
-                            //var childRect = new Rect(node.Pos.X, node.Pos.Y, child.Width, child.Height);
-                            //if (viewport.IntersectsWith(childRect))
-                            //    _childrenBag.Children.Add(child);
-                        }
+                        _children.Add(node, child);
                     }
+
+                    MakeChildren();
 
                     break;
 
@@ -215,6 +177,8 @@ namespace Biaui.Controls.NodeEditor
             MakeChildren(MakeCurrentViewport());
 
             _CullingChildrenRunner.Run();
+
+            _childrenBag.InvalidateMeasure();
         }
 
         private void MakeChildren(Rect rect)
@@ -224,7 +188,8 @@ namespace Biaui.Controls.NodeEditor
                 var m = c.Key;
                 var t = c.Value;
 
-                if (m.IntersectsWith(t.Width, t.Height, rect))
+                //if (m.IntersectsWith(t.Width, t.Height, rect))
+                if (m.IntersectsWith(200, 300, rect))
                     if (_childrenBag.Children.Contains(t) == false)
                         _childrenBag.Children.Add(t);
             }
@@ -239,12 +204,11 @@ namespace Biaui.Controls.NodeEditor
                 var m = c.Key;
                 var t = c.Value;
 
-                if (m.IntersectsWith(t.Width, t.Height, rect) == false)
+                //if (m.IntersectsWith(t.Width, t.Height, rect) == false)
+                if (m.IntersectsWith(200, 300, rect) == false)
                     if (_childrenBag.Children.Contains(t))
                         _childrenBag.Children.Remove(t);
             }
-
-            Debug.WriteLine($"CullingChildren() -- count:{_childrenBag.Children.Count}");
         }
 
         #endregion
@@ -285,12 +249,12 @@ namespace Biaui.Controls.NodeEditor
         {
             base.OnMouseLeftButtonDown(e);
 
+            if ((Win32Helper.GetAsyncKeyState(Win32Helper.VK_SPACE) & 0x8000) == 0)
+                return;
+
             _mouseDownScrollX = _translate.X;
             _mouseDownScrollY = _translate.Y;
             _mouseDownMousePos = e.GetPosition(this);
-
-            if ((Win32Helper.GetAsyncKeyState(Win32Helper.VK_SPACE) & 0x8000) == 0)
-                return;
 
             _isScrolling = true;
             CaptureMouse();
@@ -310,18 +274,15 @@ namespace Biaui.Controls.NodeEditor
         {
             base.OnMouseMove(e);
 
-            if (e.LeftButton != MouseButtonState.Pressed)
-                return;
-
             if (_isScrolling == false)
                 return;
 
             var pos = e.GetPosition(this);
-
             var diff = pos - _mouseDownMousePos;
 
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
+
             MakeChildren();
         }
 
@@ -331,5 +292,90 @@ namespace Biaui.Controls.NodeEditor
                 (pos.Y - _translate.Y) / _scale.ScaleY);
 
         #endregion
+    }
+
+    internal class ChildrenBag : FrameworkElement
+    {
+        internal static Point GetLocation(DependencyObject obj)
+        {
+            return (Point) obj.GetValue(LocationProperty);
+        }
+
+        internal static void SetLocation(DependencyObject obj, Point value)
+        {
+            obj.SetValue(LocationProperty, value);
+        }
+
+        internal static readonly DependencyProperty LocationProperty =
+            DependencyProperty.RegisterAttached("Location", typeof(Point), typeof(ChildrenBag),
+                new FrameworkPropertyMetadata(Boxes.Point00, FrameworkPropertyMetadataOptions.AffectsArrange));
+
+        internal ObservableCollection<UIElement> Children { get; }
+
+        internal ChildrenBag()
+        {
+            Children = new ObservableCollection<UIElement>();
+
+            Children.CollectionChanged += Children_CollectionChanged;
+        }
+
+        private readonly List<UIElement> _changedElements = new List<UIElement>();
+
+        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (UIElement oldItem in e.OldItems)
+                {
+                    RemoveVisualChild(oldItem);
+                }
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (UIElement newItem in e.NewItems)
+                {
+                    AddVisualChild(newItem);
+
+                    _changedElements.Add(newItem);
+                }
+            }
+        }
+
+        protected override int VisualChildrenCount => Children.Count;
+
+        protected override Visual GetVisualChild(int index)
+        {
+            return Children[index];
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            //foreach (var child in Children)
+            foreach (var child in _changedElements)
+            {
+                var location = GetLocation(child);
+
+                child.Arrange(new Rect(location, child.DesiredSize));
+            }
+
+            _changedElements.Clear();
+
+            return base.ArrangeOverride(finalSize);
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            //foreach (var child in Children)
+            foreach (var child in _changedElements)
+            {
+                if (child is FrameworkElement fe)
+                {
+                    child.Measure(new Size(fe.Width, fe.Height));
+                }
+            }
+
+            return base.MeasureOverride(availableSize);
+        }
     }
 }
