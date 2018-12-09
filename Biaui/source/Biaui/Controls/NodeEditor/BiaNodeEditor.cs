@@ -45,15 +45,12 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         private readonly Dictionary<INodeItem, BiaNodePanel> _children = new Dictionary<INodeItem, BiaNodePanel>();
-        private readonly LazyRunner _CullingChildrenRunner;
         private readonly TranslateTransform _translate = new TranslateTransform();
         private readonly ScaleTransform _scale = new ScaleTransform();
         private readonly ChildrenBag _childrenBag = new ChildrenBag();
 
         public BiaNodeEditor()
         {
-            _CullingChildrenRunner = new LazyRunner(CullingChildren);
-            Unloaded += (_, __) => _CullingChildrenRunner.Dispose();
             SizeChanged += (_, __) => MakeChildren();
 
             ClipToBounds = true;
@@ -176,8 +173,6 @@ namespace Biaui.Controls.NodeEditor
         {
             MakeChildren(MakeCurrentViewport());
 
-            _CullingChildrenRunner.Run();
-
             _childrenBag.InvalidateMeasure();
         }
 
@@ -190,24 +185,15 @@ namespace Biaui.Controls.NodeEditor
 
                 //if (m.IntersectsWith(t.Width, t.Height, rect))
                 if (m.IntersectsWith(200, 300, rect))
+                {
                     if (_childrenBag.Children.Contains(t) == false)
                         _childrenBag.Children.Add(t);
-            }
-        }
-
-        private void CullingChildren()
-        {
-            var rect = MakeCurrentViewport();
-
-            foreach (var c in _children)
-            {
-                var m = c.Key;
-                var t = c.Value;
-
-                //if (m.IntersectsWith(t.Width, t.Height, rect) == false)
-                if (m.IntersectsWith(200, 300, rect) == false)
+                }
+                else
+                {
                     if (_childrenBag.Children.Contains(t))
                         _childrenBag.Children.Remove(t);
+                }
             }
         }
 
