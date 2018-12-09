@@ -197,8 +197,8 @@ namespace Biaui.Controls
 
             // マウス可動域を設定
             {
-                var p0 = new Point(0, 0);
-                var p1 = new Point(ActualWidth, ActualHeight);
+                var p0 = new Point(0.25, 0.25);
+                var p1 = new Point(ActualWidth - 0.25, ActualHeight - 0.25);
                 var dp0 = PointToScreen(p0);
                 var dp1 = PointToScreen(p1);
 
