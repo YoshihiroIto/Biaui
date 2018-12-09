@@ -14,7 +14,6 @@
                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
                         <StackPanel Margin="4">
                             <controls:BiaColorPicker Height="160"
-                                                     Margin="0,4,0,0"
                                                      Blue="0.25"
                                                      Green="0.5"
                                                      Red="1" />
