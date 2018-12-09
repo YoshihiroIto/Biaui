@@ -747,6 +747,8 @@ namespace Biaui.Controls
             }
         }
 
+        private const double _clickPlayWidth = 4;
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -769,6 +771,10 @@ namespace Biaui.Controls
             var currentPos = e.GetPosition(this);
             if (currentPos == _oldPos)
                 return;
+
+            if (_isMouseMoved == false)
+                if (Math.Abs(currentPos.X - _mouseDownPos.X) <= _clickPlayWidth)
+                    return;
 
             if (_mouseOverTypeOnMouseDown != MouseOverType.Slider)
                 return;
@@ -842,7 +848,7 @@ namespace Biaui.Controls
             {
                 var p = e.GetPosition(this);
 
-                if (p == _mouseDownPos)
+                if (Math.Abs(p.X - _mouseDownPos.X) <= _clickPlayWidth)
                 {
                     // Ctrl押下中は５倍速い
                     var inc = IsCtrl ? Increment * 5 : Increment;
