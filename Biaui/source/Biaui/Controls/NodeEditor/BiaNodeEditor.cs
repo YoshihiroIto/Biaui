@@ -242,7 +242,7 @@ namespace Biaui.Controls.NodeEditor
 
             var s = _scale.ScaleX;
 
-            s *= e.Delta < 0 ? 1.25 : 1.0 / 1.25;
+            s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
 
             var p = e.GetPosition(this);
             var d0 = ScenePosFromControlPos(p);
