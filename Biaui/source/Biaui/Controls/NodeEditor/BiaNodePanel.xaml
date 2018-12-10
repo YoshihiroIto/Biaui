@@ -13,10 +13,11 @@
                             BorderThickness="1"
                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
                         <StackPanel Margin="4">
-                            <controls:BiaColorPicker Height="160"
+                            <controls:BiaColorPicker Height="42"
                                                      Blue="0.25"
                                                      Green="0.5"
-                                                     Red="1" />
+                                                     Red="1"
+                                                     Style="{DynamicResource BiaColorPickerLightweightType}" />
 
                             <StackPanel>
                                 <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
