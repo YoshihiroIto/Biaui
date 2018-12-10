@@ -125,19 +125,8 @@ namespace Biaui.Controls.NodeEditor
                     if (e.NewItems == null)
                         break;
 
-                    var viewport = MakeCurrentViewport();
-
                     foreach (INodeItem nodeItem in e.NewItems)
-                    {
-                        var nodePanel = new BiaNodePanel {DataContext = nodeItem};
-
-                        ChildrenBag.SetPos(nodePanel, nodeItem.Pos);
-                        ChildrenBag.SetSize(nodePanel, nodeItem.Size);
-
-                        nodePanel.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
-
-                        _childrenDict.Add(nodeItem, nodePanel);
-                    }
+                        _childrenDict.Add(nodeItem, null);
 
                     UpdateChildrenBag();
 
@@ -176,6 +165,8 @@ namespace Biaui.Controls.NodeEditor
             _childrenBag.InvalidateMeasure();
         }
 
+        private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag = new List<(INodeItem, BiaNodePanel)>();
+
         private void UpdateChildrenBag(Rect rect)
         {
             foreach (var c in _childrenDict)
@@ -184,15 +175,62 @@ namespace Biaui.Controls.NodeEditor
                 var t = c.Value;
 
                 if (m.IntersectsWith(rect))
+                {
+                    if (t == null)
+                    {
+                        t = GetNodePanel();
+
+                        t.DataContext = m;
+                        ChildrenBag.SetPos(t, m.Pos);
+                        ChildrenBag.SetSize(t, m.Size);
+
+                        t.Width = m.Size.Width;
+                        t.Height = m.Size.Height;
+
+                        _changedUpdateChildrenBag.Add((m, t));
+                    }
+
                     _childrenBag.AddChild(t);
+                }
                 else
-                    _childrenBag.RemoveChild(t);
+                {
+                    if (t != null)
+                    {
+                        ReturnNodePanel(t);
+
+                        _childrenBag.RemoveChild(t);
+
+                        _changedUpdateChildrenBag.Add((m, null));
+                    }
+                }
             }
+
+            foreach (var c in _changedUpdateChildrenBag)
+                _childrenDict[c.Item1] = c.Item2;
+
+            _changedUpdateChildrenBag.Clear();
         }
 
         #endregion
 
         #region ノードパネル管理
+
+        public readonly Stack<BiaNodePanel> _NodePanelPool = new Stack<BiaNodePanel>();
+
+        private BiaNodePanel GetNodePanel()
+        {
+            if (_NodePanelPool.Count != 0)
+                return _NodePanelPool.Pop();
+
+            var p = new BiaNodePanel();
+            p.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
+            return p;
+        }
+
+        private void ReturnNodePanel(BiaNodePanel p)
+        {
+            _NodePanelPool.Push(p);
+        }
 
         #endregion
 
@@ -315,7 +353,6 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(Boxes.Size11, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         #endregion
-
 
         private readonly List<UIElement> _children = new List<UIElement>();
         private readonly HashSet<UIElement> _childrenForSearch = new HashSet<UIElement>();
