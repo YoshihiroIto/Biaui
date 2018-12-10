@@ -8,7 +8,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="{DynamicResource PanelBackgroundBrushKey}"
+                    <Border Background="{DynamicResource PanelBackgroundBrushKey.Translucent}"
                             BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                             BorderThickness="1"
                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
