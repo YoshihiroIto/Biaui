@@ -3,7 +3,7 @@
                     xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor">
     <Style TargetType="{x:Type nodeEditor:BiaNodeEditor}">
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 </ResourceDictionary>

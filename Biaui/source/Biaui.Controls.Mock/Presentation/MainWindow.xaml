@@ -568,11 +568,16 @@
         </TabItem>
 
         <TabItem Header="BiaNodeEditor">
-                <nodeEditor:BiaNodeEditor Margin="8" NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
+            <Border Margin="8"
+                    Background="{x:Null}"
+                    BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                    BorderThickness="1">
+                <nodeEditor:BiaNodeEditor NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
                     <nodeEditor:BiaNodeEditor.LayoutTransform>
                         <ScaleTransform ScaleX="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" ScaleY="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" />
                     </nodeEditor:BiaNodeEditor.LayoutTransform>
                 </nodeEditor:BiaNodeEditor>
+            </Border>
         </TabItem>
     </TabControl>
 </controls:BiaWindow>
