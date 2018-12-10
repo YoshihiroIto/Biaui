@@ -171,6 +171,8 @@ namespace Biaui.Controls
 
             UpdateParams(e);
 
+            CaptureMouse();
+
             // マウス可動域を設定
             {
                 var p0 = new Point(0.25, 0.25);
@@ -217,6 +219,7 @@ namespace Biaui.Controls
             _isMouseDown = false;
             GuiHelper.ShowCursor();
             Win32Helper.ClipCursor(IntPtr.Zero);
+            ReleaseMouseCapture();
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -226,6 +229,7 @@ namespace Biaui.Controls
             if (_isMouseDown)
             {
                 _isMouseDown = false;
+                ReleaseMouseCapture();
                 GuiHelper.ShowCursor();
                 Win32Helper.ClipCursor(IntPtr.Zero);
             }
