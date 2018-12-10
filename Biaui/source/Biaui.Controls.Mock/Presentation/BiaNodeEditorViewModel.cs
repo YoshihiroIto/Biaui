@@ -48,7 +48,7 @@ namespace Biaui.Controls.Mock.Presentation
                     new Node
                     {
                         Pos = new Point(x * 800 + rx, y * 800 + ry),
-                        Size = new Size(200, 300)
+                        Size = new Size(200, 400)
                     });
             }
         }
