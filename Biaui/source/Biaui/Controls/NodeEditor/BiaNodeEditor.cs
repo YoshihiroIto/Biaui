@@ -223,7 +223,10 @@ namespace Biaui.Controls.NodeEditor
                 return _NodePanelPool.Pop();
 
             var p = new BiaNodePanel();
-            p.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
+
+            p.MouseEnter += OnMouseEnter;
+            p.MouseLeftButtonDown += OnMouseLeftButtonDown;
+                
             return p;
         }
 
@@ -231,6 +234,18 @@ namespace Biaui.Controls.NodeEditor
         {
             _NodePanelPool.Push(p);
         }
+
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            e.Handled = true;
+        }
+
+        private void OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            SetFrontmost((BiaNodePanel)sender);
+        }
+
 
         #endregion
 
@@ -334,7 +349,6 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(Boxes.Point00, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         #endregion
-
 
         #region Size
 

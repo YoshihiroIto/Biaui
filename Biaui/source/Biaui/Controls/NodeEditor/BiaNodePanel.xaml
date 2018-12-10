@@ -5,35 +5,40 @@
                     xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor">
 
     <Style TargetType="{x:Type nodeEditor:BiaNodePanel}">
+        <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey.Translucent}" />
+        <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
+        <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="{DynamicResource PanelBackgroundBrushKey.Translucent}"
-                            BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                            BorderThickness="1"
-                            CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
-                        <StackPanel Margin="4">
-                            <controls:BiaColorPicker Height="42"
-                                                     Blue="0.25"
-                                                     Green="0.5"
-                                                     Red="1"
-                                                     Style="{DynamicResource BiaColorPickerLightweightType}" />
+                    <StackPanel Margin="4">
+                        <controls:BiaColorPicker Height="42"
+                                                 Blue="0.25"
+                                                 Green="0.5"
+                                                 Red="1"
+                                                 Style="{DynamicResource BiaColorPickerLightweightType}" />
 
-                            <StackPanel>
-                                <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
-                                <controls:BiaTextBox Margin="0,4,0,0" Text="BBB" />
+                        <StackPanel>
+                            <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
+                            <controls:BiaTextBox Margin="0,4,0,0" Text="BBB" />
 
-                                <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamA" />
-                                <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamB" />
-                                <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamC" />
+                            <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamA" />
+                            <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamB" />
+                            <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamC" />
 
-                                <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox1" />
-                                <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox2" />
-                            </StackPanel>
+                            <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox1" />
+                            <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox2" />
                         </StackPanel>
-                    </Border>
+                    </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey.MouseOver.Translucent}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

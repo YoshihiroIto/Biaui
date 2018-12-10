@@ -79,6 +79,7 @@
     <SolidColorBrush x:Key="PanelBackgroundBrushKey.MouseOver" Color="#404048" />
 
     <SolidColorBrush x:Key="PanelBackgroundBrushKey.Translucent" Color="#F0333337" />
+    <SolidColorBrush x:Key="PanelBackgroundBrushKey.MouseOver.Translucent" Color="#D0383840" />
 
     <Color x:Key="ForegroundColorKey">#C8C8C8</Color>
     <SolidColorBrush x:Key="ForegroundBrushKey" Color="#C8C8C8" />
@@ -106,6 +107,7 @@
 
     <Color x:Key="ActiveBackgroundColorKey">#FF3F3F46</Color>
     <SolidColorBrush x:Key="ActiveBackgroundBrushKey" Color="#FF3F3F46" />
+    <SolidColorBrush x:Key="ActiveBackgroundBrushKey.Translucent" Color="#F03F3F46" />
 
     <Color x:Key="ActiveBorderColorKey">#FF3F3F46</Color>
     <SolidColorBrush x:Key="ActiveBorderBrushKey" Color="#FF3F3F46" />
