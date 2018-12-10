@@ -111,7 +111,7 @@ namespace Biaui.Controls.NodeEditor
             {
                 if (_childrenDict.TryGetValue(node, out var child))
                 {
-                    ChildrenBag.SetLocation(child, node.Pos);
+                    ChildrenBag.SetPos(child, node.Pos);
                     ChildrenBag.SetSize(child, node.Size);
                 }
             }
@@ -131,16 +131,15 @@ namespace Biaui.Controls.NodeEditor
                     {
                         var nodePanel = new BiaNodePanel {DataContext = nodeItem};
 
-                        ChildrenBag.SetLocation(nodePanel, nodeItem.Pos);
+                        ChildrenBag.SetPos(nodePanel, nodeItem.Pos);
                         ChildrenBag.SetSize(nodePanel, nodeItem.Size);
 
                         nodePanel.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
 
                         _childrenDict.Add(nodeItem, nodePanel);
-
-                        if (nodeItem.IntersectsWith(viewport))
-                            _childrenBag.AddChild(nodePanel);
                     }
+
+                    UpdateChildrenBag();
 
                     break;
 
@@ -280,20 +279,20 @@ namespace Biaui.Controls.NodeEditor
 
     internal class ChildrenBag : FrameworkElement
     {
-        #region Location
+        #region Pos
 
-        internal static Point GetLocation(DependencyObject obj)
+        internal static Point GetPos(DependencyObject obj)
         {
-            return (Point) obj.GetValue(LocationProperty);
+            return (Point) obj.GetValue(PosProperty);
         }
 
-        internal static void SetLocation(DependencyObject obj, Point value)
+        internal static void SetPos(DependencyObject obj, Point value)
         {
-            obj.SetValue(LocationProperty, value);
+            obj.SetValue(PosProperty, value);
         }
 
-        internal static readonly DependencyProperty LocationProperty =
-            DependencyProperty.RegisterAttached("Location", typeof(Point), typeof(ChildrenBag),
+        internal static readonly DependencyProperty PosProperty =
+            DependencyProperty.RegisterAttached("Pos", typeof(Point), typeof(ChildrenBag),
                 new FrameworkPropertyMetadata(Boxes.Point00, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         #endregion
@@ -367,9 +366,9 @@ namespace Biaui.Controls.NodeEditor
             //foreach (var child in _children)
             foreach (var child in _changedElements)
             {
-                var location = GetLocation(child);
+                var pos = GetPos(child);
 
-                child.Arrange(new Rect(location, child.DesiredSize));
+                child.Arrange(new Rect(pos, child.DesiredSize));
             }
 
             _changedElements.Clear();
