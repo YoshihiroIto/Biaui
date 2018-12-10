@@ -22,15 +22,15 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
 
         #region Scale
-        
+
         private double _Scale = 1;
-        
+
         public double Scale
         {
             get => _Scale;
             set => SetProperty(ref _Scale, value);
         }
-        
+
         #endregion
 
         public BiaNodeEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
@@ -44,7 +44,12 @@ namespace Biaui.Controls.Mock.Presentation
                 var rx = r.NextDouble() * 800;
                 var ry = r.NextDouble() * 800;
 
-                Nodes.Add(new Node {Pos = new Point(x * 800 + rx, y * 800 + ry)});
+                Nodes.Add(
+                    new Node
+                    {
+                        Pos = new Point(x * 800 + rx, y * 800 + ry),
+                        Size = new Size(200, 300)
+                    });
             }
         }
     }
@@ -59,6 +64,18 @@ namespace Biaui.Controls.Mock.Presentation
         {
             get => _Pos;
             set => SetProperty(ref _Pos, value);
+        }
+
+        #endregion
+
+        #region Size
+
+        private Size _Size;
+
+        public Size Size
+        {
+            get => _Size;
+            set => SetProperty(ref _Size, value);
         }
 
         #endregion

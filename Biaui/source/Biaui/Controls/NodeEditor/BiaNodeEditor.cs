@@ -112,6 +112,7 @@ namespace Biaui.Controls.NodeEditor
                 if (_childrenDict.TryGetValue(node, out var child))
                 {
                     ChildrenBag.SetLocation(child, node.Pos);
+                    ChildrenBag.SetSize(child, node.Size);
                 }
             }
         }
@@ -126,22 +127,19 @@ namespace Biaui.Controls.NodeEditor
 
                     var viewport = MakeCurrentViewport();
 
-                    foreach (INodeItem node in e.NewItems)
+                    foreach (INodeItem nodeItem in e.NewItems)
                     {
-                        var child = new BiaNodePanel {DataContext = node};
+                        var nodePanel = new BiaNodePanel {DataContext = nodeItem};
 
-                        ChildrenBag.SetLocation(child, node.Pos);
+                        ChildrenBag.SetLocation(nodePanel, nodeItem.Pos);
+                        ChildrenBag.SetSize(nodePanel, nodeItem.Size);
 
-                        child.Width = 200;
-                        child.Height = 300;
+                        nodePanel.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
 
-                        child.MouseEnter += (s, _) => SetFrontmost((BiaNodePanel) s);
+                        _childrenDict.Add(nodeItem, nodePanel);
 
-                        _childrenDict.Add(node, child);
-
-                        //if (node.IntersectsWith(t.Width, t.Height, rect))
-                        if (node.IntersectsWith(200, 300, viewport))
-                            _childrenBag.AddChild(child);
+                        if (nodeItem.IntersectsWith(viewport))
+                            _childrenBag.AddChild(nodePanel);
                     }
 
                     break;
@@ -186,13 +184,16 @@ namespace Biaui.Controls.NodeEditor
                 var m = c.Key;
                 var t = c.Value;
 
-                //if (m.IntersectsWith(t.Width, t.Height, rect))
-                if (m.IntersectsWith(200, 300, rect))
+                if (m.IntersectsWith(rect))
                     _childrenBag.AddChild(t);
                 else
                     _childrenBag.RemoveChild(t);
             }
         }
+
+        #endregion
+
+        #region ノードパネル管理
 
         #endregion
 
@@ -279,6 +280,8 @@ namespace Biaui.Controls.NodeEditor
 
     internal class ChildrenBag : FrameworkElement
     {
+        #region Location
+
         internal static Point GetLocation(DependencyObject obj)
         {
             return (Point) obj.GetValue(LocationProperty);
@@ -293,8 +296,30 @@ namespace Biaui.Controls.NodeEditor
             DependencyProperty.RegisterAttached("Location", typeof(Point), typeof(ChildrenBag),
                 new FrameworkPropertyMetadata(Boxes.Point00, FrameworkPropertyMetadataOptions.AffectsArrange));
 
-        private readonly List<UIElement> _children  = new List<UIElement>();
-        private readonly HashSet<UIElement> _childrenForSearch  = new HashSet<UIElement>();
+        #endregion
+
+
+        #region Size
+
+        internal static Size GetSize(DependencyObject obj)
+        {
+            return (Size) obj.GetValue(SizeProperty);
+        }
+
+        internal static void SetSize(DependencyObject obj, Size value)
+        {
+            obj.SetValue(SizeProperty, value);
+        }
+
+        internal static readonly DependencyProperty SizeProperty =
+            DependencyProperty.RegisterAttached("Size", typeof(Size), typeof(ChildrenBag),
+                new FrameworkPropertyMetadata(Boxes.Size11, FrameworkPropertyMetadataOptions.AffectsArrange));
+
+        #endregion
+
+
+        private readonly List<UIElement> _children = new List<UIElement>();
+        private readonly HashSet<UIElement> _childrenForSearch = new HashSet<UIElement>();
 
         private readonly List<UIElement> _changedElements = new List<UIElement>();
 
@@ -357,10 +382,9 @@ namespace Biaui.Controls.NodeEditor
             //foreach (var child in _children)
             foreach (var child in _changedElements)
             {
-                if (child is FrameworkElement fe)
-                {
-                    child.Measure(new Size(fe.Width, fe.Height));
-                }
+                var size = GetSize(child);
+
+                child.Measure(size);
             }
 
             return base.MeasureOverride(availableSize);

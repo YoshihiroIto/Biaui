@@ -24,6 +24,7 @@ namespace Biaui.Internals
         internal static object ColorTransparent = Colors.Transparent;
 
         internal static object Point00 = new Point(0, 0);
+        internal static object Size11 = new Size(1, 1);
 
         internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
 
