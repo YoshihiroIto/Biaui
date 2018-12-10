@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Biaui.NodeEditor
 {
     public interface INodeItem : INotifyPropertyChanged
     {
+        string Name { get; }
+
+        Color TitleColor { get; set; }
         Point Pos { get; set; }
         Size Size { get; set; }
     }

@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Internals;
+using Biaui.NodeEditor;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -101,6 +101,19 @@ namespace Biaui.Controls.NodeEditor
                 return;
 
             DrawBackground(dc);
+
+            var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
+
+            if (isCornerRadiusZero == false)
+                dc.PushClip(
+                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
+            {
+                DrawName(dc);
+            }
+            if (isCornerRadiusZero == false)
+                dc.Pop();
+
+            DrawBorder(dc);
         }
 
         private void DrawBackground(DrawingContext dc)
@@ -110,15 +123,51 @@ namespace Biaui.Controls.NodeEditor
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     brush,
-                    this.GetBorderPen(BorderColor),
+                    null,
                     this.RoundLayoutActualRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     brush,
+                    null,
+                    this.RoundLayoutActualRectangle(true),
+                    CornerRadius,
+                    CornerRadius);
+        }
+
+        private void DrawBorder(DrawingContext dc)
+        {
+            if (NumberHelper.AreCloseZero(CornerRadius))
+                dc.DrawRectangle(
+                    Brushes.Transparent,
+                    this.GetBorderPen(BorderColor),
+                    this.RoundLayoutActualRectangle(true)
+                );
+            else
+                dc.DrawRoundedRectangle(
+                    Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
                     this.RoundLayoutActualRectangle(true),
                     CornerRadius,
                     CornerRadius);
+        }
+
+        private void DrawName(DrawingContext dc)
+        {
+            var i = DataContext as INodeItem;
+
+            if (i == null)
+                return;
+
+            var b = Caches.GetSolidColorBrush(i.TitleColor);
+            var y = FrameworkElementHelper.RoundLayoutValue(32);
+
+            dc.DrawRectangle(b, null, new Rect(0, 0, this.RoundLayoutActualWidth(true), y));
+            dc.DrawLine(this.GetBorderPen(BorderColor), new Point(0, y), new Point(ActualWidth, y));
+
+            var name = i.Name;
+
+            if (string.IsNullOrEmpty(name) == false)
+                TextRenderer.Default.Draw(name, 0, 8, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Center);
         }
     }
 }

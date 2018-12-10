@@ -12,15 +12,25 @@ namespace Biaui.Internals
             if (_borderPens.TryGetValue(key, out var p))
                 return p;
 
-            var b = new SolidColorBrush(color);
-            b.Freeze();
-
-            p = new Pen(b, thickness);
+            p = new Pen(GetSolidColorBrush(color), thickness);
             p.Freeze();
 
             _borderPens.Add(key, p);
 
             return p;
+        }
+
+        public static SolidColorBrush GetSolidColorBrush(Color color)
+        {
+            if (_solidColorBrushes.TryGetValue(color, out var b))
+                return b;
+
+            b = new SolidColorBrush(color);
+            b.Freeze();
+
+            _solidColorBrushes.Add(color, b);
+
+            return b;
         }
 
         public static Geometry GetClipGeom(double w, double h, double cornerRadius, bool isWidthBorder)
@@ -63,5 +73,6 @@ namespace Biaui.Internals
             new Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry>();
 
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
+        private static readonly Dictionary<Color, SolidColorBrush> _solidColorBrushes = new Dictionary<Color, SolidColorBrush>();
     }
 }

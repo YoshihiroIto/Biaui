@@ -12,24 +12,24 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <StackPanel Margin="4">
-                        <controls:BiaColorPicker Height="42"
+                    <StackPanel Margin="4,32,4,4">
+                        <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
+                        <controls:BiaTextBox Margin="0,4,0,0" Text="BBB" />
+
+                        <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamA" />
+                        <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamB" />
+                        <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamC" />
+
+                        <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox1" />
+                        <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox2" />
+
+                        <controls:BiaColorPicker Height="160"
+                                                 Margin="0,4,0,0"
                                                  Blue="0.25"
                                                  Green="0.5"
-                                                 Red="1"
-                                                 Style="{DynamicResource BiaColorPickerLightweightType}" />
+                                                 Red="1" />
 
-                        <StackPanel>
-                            <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
-                            <controls:BiaTextBox Margin="0,4,0,0" Text="BBB" />
-
-                            <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamA" />
-                            <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamB" />
-                            <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamC" />
-
-                            <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox1" />
-                            <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox2" />
-                        </StackPanel>
+                        <!--  Style="{DynamicResource BiaColorPickerLightweightType}"  -->
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>

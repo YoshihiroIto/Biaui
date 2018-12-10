@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media;
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
 using Biaui.NodeEditor;
@@ -37,6 +38,16 @@ namespace Biaui.Controls.Mock.Presentation
         {
             var r = new Random();
 
+            var i = 0;
+
+            var titleColors = new[]
+            {
+                Colors.Purple,
+                Colors.SeaGreen,
+                Colors.Firebrick,
+                Colors.DarkSlateGray,
+                Colors.DeepPink
+            };
 
             for (var y = 0; y != 100; ++y)
             for (var x = 0; x != 100; ++x)
@@ -47,6 +58,8 @@ namespace Biaui.Controls.Mock.Presentation
                 Nodes.Add(
                     new Node
                     {
+                        Name = $"Name:{i++}",
+                        TitleColor = titleColors[x % titleColors.Length],
                         Pos = new Point(x * 800 + rx, y * 800 + ry),
                         Size = new Size(200, 400)
                     });
@@ -56,6 +69,30 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class Node : ModelBase, INodeItem
     {
+        #region Name
+        
+        private string _Name;
+        
+        public string Name
+        {
+            get => _Name;
+            set => SetProperty(ref _Name, value);
+        }
+        
+        #endregion
+
+        #region TitleColor
+        
+        private Color _TitleColor;
+        
+        public Color TitleColor
+        {
+            get => _TitleColor;
+            set => SetProperty(ref _TitleColor, value);
+        }
+        
+        #endregion
+
         #region Pos
 
         private Point _Pos;
