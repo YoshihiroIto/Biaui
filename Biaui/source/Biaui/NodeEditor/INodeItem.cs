@@ -8,6 +8,9 @@ namespace Biaui.NodeEditor
     {
         string Name { get; }
 
+        bool IsSelected { get; set; }
+        bool IsPreSelected { get; set; }
+
         Color TitleColor { get; set; }
         Point Pos { get; set; }
         Size Size { get; set; }

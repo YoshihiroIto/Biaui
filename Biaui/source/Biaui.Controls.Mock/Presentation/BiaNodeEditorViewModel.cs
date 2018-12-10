@@ -81,6 +81,30 @@ namespace Biaui.Controls.Mock.Presentation
         
         #endregion
 
+        #region IsSelected
+
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
+
+        #endregion
+
+        #region IsPreSelected
+
+        private bool _IsPreSelected;
+
+        public bool IsPreSelected
+        {
+            get => _IsPreSelected;
+            set => SetProperty(ref _IsPreSelected, value);
+        }
+
+        #endregion
+
         #region TitleColor
         
         private Color _TitleColor;
