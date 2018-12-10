@@ -7,8 +7,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type colorPicker:BiaColorPicker}">
-        <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -152,21 +150,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
-            </Trigger>
-
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderColor" Value="{DynamicResource InactiveBorderColorKey}" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <Style x:Key="BiaColorPickerWheelType" TargetType="{x:Type colorPicker:BiaColorPicker}">
-        <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -310,15 +296,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
-            </Trigger>
-
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderColor" Value="{DynamicResource InactiveBorderColorKey}" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
 </ResourceDictionary>

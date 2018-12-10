@@ -170,32 +170,6 @@ namespace Biaui.Controls
 
         #endregion
 
-        #region BorderColor
-
-        public Color BorderColor
-        {
-            get => _BorderColor;
-            set
-            {
-                if (value != _BorderColor)
-                    SetValue(BorderColorProperty, value);
-            }
-        }
-
-        private Color _BorderColor = Colors.Red;
-
-        public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaColorPicker),
-                new PropertyMetadata(
-                    Boxes.ColorRed,
-                    (s, e) =>
-                    {
-                        var self = (BiaColorPicker) s;
-                        self._BorderColor = (Color) e.NewValue;
-                    }));
-
-        #endregion
-
         #region IsReadOnly
 
         public bool IsReadOnly
