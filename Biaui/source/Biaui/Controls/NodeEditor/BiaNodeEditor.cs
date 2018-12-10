@@ -351,7 +351,10 @@ namespace Biaui.Controls.NodeEditor
                 return;
 
             _children.Remove(child);
+            RemoveVisualChild(child);
+
             _children.Add(child);
+            AddVisualChild(child);
         }
 
         protected override int VisualChildrenCount => _children.Count;
