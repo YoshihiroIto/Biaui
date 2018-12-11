@@ -8,13 +8,24 @@ namespace Biaui.Controls.NodeEditor
 {
     internal class MouseOperator
     {
+        internal (Point P0, Point P1) SelectionRect
+        {
+            get
+            {
+                var left = Math.Min(_mouseDownPos.X, _mouseMovePos.X);
+                var right = Math.Max(_mouseDownPos.X, _mouseMovePos.X);
+                var top = Math.Min(_mouseDownPos.Y, _mouseMovePos.Y);
+                var bottom = Math.Max(_mouseDownPos.Y, _mouseMovePos.Y);
+
+                return (new Point(left, top), new Point(right, bottom));
+            }
+        }
+
+        private Point _mouseDownPos;
+        private Point _mouseMovePos;
+
         private double _mouseDownScrollX;
         private double _mouseDownScrollY;
-        private Point _mouseDownMousePos;
-
-        private Point _oldMouseDownMousePos;
-
-
         private readonly BiaNodeEditor _target;
         private readonly TranslateTransform _translate;
         private readonly ScaleTransform _scale;
@@ -22,14 +33,17 @@ namespace Biaui.Controls.NodeEditor
         private enum OpType
         {
             None,
+
             //
             EditorScroll,
+            BoxSelect,
             PanelMove
         }
 
         private OpType _opType = OpType.None;
 
         internal bool IsOperating => _opType != OpType.None;
+        internal bool IsBoxSelect => _opType == OpType.BoxSelect;
 
         internal MouseOperator(BiaNodeEditor target, TranslateTransform translate, ScaleTransform scale)
         {
@@ -48,19 +62,33 @@ namespace Biaui.Controls.NodeEditor
         {
             _mouseDownScrollX = _translate.X;
             _mouseDownScrollY = _translate.Y;
-            _mouseDownMousePos = e.GetPosition(_target);
-            _oldMouseDownMousePos = _mouseDownMousePos;
+            _mouseDownPos = e.GetPosition(_target);
+            _mouseMovePos = _mouseDownPos;
 
             _target.CaptureMouse();
 
             // OpType
             {
                 _opType = OpType.None;
-                if (KeyboardHelper.IsPressSpace)
-                    _opType = OpType.EditorScroll;
 
-                else if (targetType == TargetType.NodePanel)
-                    _opType = OpType.PanelMove;
+                switch (targetType)
+                {
+                    case TargetType.NodeEditor:
+                        if (KeyboardHelper.IsPressSpace)
+                            _opType = OpType.EditorScroll;
+                        else
+                            _opType = OpType.BoxSelect;
+
+                        break;
+
+                    case TargetType.NodePanel:
+                        _opType = OpType.PanelMove;
+
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(targetType), targetType, null);
+                }
             }
         }
 
@@ -83,6 +111,10 @@ namespace Biaui.Controls.NodeEditor
                     DoEditorScroll(e);
                     break;
 
+                case OpType.BoxSelect:
+                    DoBoxSelect(e);
+                    break;
+
                 case OpType.PanelMove:
                     DoPanelMove(e);
                     break;
@@ -91,16 +123,20 @@ namespace Biaui.Controls.NodeEditor
                     throw new ArgumentOutOfRangeException();
             }
 
-            _oldMouseDownMousePos = e.GetPosition(_target);
+            _mouseMovePos = e.GetPosition(_target);
         }
 
         private void DoEditorScroll(MouseEventArgs e)
         {
             var pos = e.GetPosition(_target);
-            var diff = pos - _mouseDownMousePos;
+            var diff = pos - _mouseDownPos;
 
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
+        }
+
+        private void DoBoxSelect(MouseEventArgs mouseEventArgs)
+        {
         }
 
         internal class PanelMovingEventArgs : EventArgs
@@ -111,11 +147,12 @@ namespace Biaui.Controls.NodeEditor
         internal event EventHandler<PanelMovingEventArgs> PanelMoving;
 
         private readonly PanelMovingEventArgs _PanelMovingEventArgs = new PanelMovingEventArgs();
+
         private void DoPanelMove(MouseEventArgs e)
         {
             var pos = e.GetPosition(_target);
 
-            _PanelMovingEventArgs.Diff = (pos - _oldMouseDownMousePos) / _scale.ScaleX;
+            _PanelMovingEventArgs.Diff = (pos - _mouseMovePos) / _scale.ScaleX;
 
             PanelMoving?.Invoke(this, _PanelMovingEventArgs);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -113,26 +114,44 @@ namespace Biaui.Controls.NodeEditor
         {
             var node = (INodeItem) sender;
 
-            if (e.PropertyName == nameof(INodeItem.Pos))
+            switch (e.PropertyName)
             {
-                if (_childrenDict.TryGetValue(node, out var child))
+                case nameof(INodeItem.Pos):
                 {
-                    if (child != null)
+                    if (_childrenDict.TryGetValue(node, out var child))
                     {
-                        ChildrenBag.SetPos(child, node.Pos);
-                        _childrenBag.ChangeElement(child);
+                        if (child != null)
+                        {
+                            ChildrenBag.SetPos(child, node.Pos);
+                            _childrenBag.ChangeElement(child);
+                        }
                     }
+
+                    break;
                 }
-            }
-            else if (e.PropertyName == nameof(INodeItem.Size))
-            {
-                if (_childrenDict.TryGetValue(node, out var child))
+
+                case nameof(INodeItem.Size):
                 {
-                    if (child != null)
+                    if (_childrenDict.TryGetValue(node, out var child))
                     {
-                        ChildrenBag.SetSize(child, node.Size);
-                        _childrenBag.ChangeElement(child);
+                        if (child != null)
+                        {
+                            ChildrenBag.SetSize(child, node.Size);
+                            _childrenBag.ChangeElement(child);
+                        }
                     }
+
+                    break;
+                }
+
+                case nameof(INodeItem.IsSelected):
+                {
+                    if (node.IsSelected)
+                        _selectedNodes.Add(node);
+                    else
+                        _selectedNodes.Remove(node);
+
+                    break;
                 }
             }
         }
@@ -185,7 +204,8 @@ namespace Biaui.Controls.NodeEditor
             _childrenBag.InvalidateMeasure();
         }
 
-        private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag = new List<(INodeItem, BiaNodePanel)>();
+        private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
+            new List<(INodeItem, BiaNodePanel)>();
 
         private void UpdateChildrenBag(Rect rect)
         {
@@ -250,7 +270,7 @@ namespace Biaui.Controls.NodeEditor
             p.MouseLeftButtonDown += NodePanel_OnMouseLeftButtonDown;
             p.MouseLeftButtonUp += NodePanel_OnMouseLeftButtonUp;
             p.MouseMove += NodePanel_OnMouseMove;
-                
+
             return p;
         }
 
@@ -261,7 +281,9 @@ namespace Biaui.Controls.NodeEditor
 
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            SetFrontmost((BiaNodePanel)sender);
+            SetFrontmost((BiaNodePanel) sender);
+
+            e.Handled = true;
         }
 
         private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -269,29 +291,46 @@ namespace Biaui.Controls.NodeEditor
             e.Handled = true;
 
             var p = (BiaNodePanel) sender;
+            var i = (INodeItem) p.DataContext;
 
-            // [Ctrl]押下で追加する
-            if (KeyboardHelper.IsPressControl == false)
-                _selectedNodes.Clear();
-            _selectedNodes.Add((INodeItem)p.DataContext);
+            if (i.IsSelected == false)
+            {
+                // [Ctrl]押下で追加する
+                if (KeyboardHelper.IsPressControl == false)
+                    ClearSelectedNode();
+
+                i.IsSelected = true;
+            }
 
             _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodePanel);
+
+            e.Handled = true;
         }
 
         private void NodePanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _mouseOperator.OnMouseLeftButtonUp(e);
+
+            e.Handled = true;
         }
 
         private void NodePanel_OnMouseMove(object sender, MouseEventArgs e)
         {
             _mouseOperator.OnMouseMove(e);
+
+            e.Handled = true;
         }
 
         private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
         {
             foreach (var n in _selectedNodes)
                 n.Pos += e.Diff;
+        }
+
+        private void ClearSelectedNode()
+        {
+            foreach (var n in _selectedNodes.ToArray())
+                n.IsSelected = false;
         }
 
         #endregion
@@ -305,6 +344,8 @@ namespace Biaui.Controls.NodeEditor
             _mouseOperator.OnMouseWheel(e);
 
             UpdateChildrenBag();
+
+            e.Handled = true;
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -312,13 +353,25 @@ namespace Biaui.Controls.NodeEditor
             base.OnMouseLeftButtonDown(e);
 
             _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodeEditor);
-        }
 
+            if (_mouseOperator.IsBoxSelect)
+                AddBoxSelector();
+
+            e.Handled = true;
+        }
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
 
+            if (_mouseOperator.IsBoxSelect)
+            {
+                SelectNodes(_boxSelector.Rect);
+                RemoveBoxSelector();
+            }
+
             _mouseOperator.OnMouseLeftButtonUp(e);
+
+            e.Handled = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -329,6 +382,66 @@ namespace Biaui.Controls.NodeEditor
 
             if (_mouseOperator.IsOperating)
                 UpdateChildrenBag();
+
+            if (_mouseOperator.IsBoxSelect)
+                UpdateBoxSelector();
+
+            e.Handled = true;
+        }
+
+        private void SelectNodes(Rect rect)
+        {
+            // [Ctrl]押下で追加する
+            if (KeyboardHelper.IsPressControl == false)
+                ClearSelectedNode();
+
+            if (NodesSource == null)
+                return;
+
+            foreach (var node in NodesSource)
+            {
+                var nr = new Rect(node.Pos, node.Size);
+
+                if (rect.IntersectsWith(nr))
+                    node.IsSelected = true;
+            }
+        }
+
+        #endregion
+
+
+        #region BoxSelect
+
+        private readonly BoxSelector _boxSelector = new BoxSelector();
+
+        private void AddBoxSelector()
+        {
+            _boxSelector.Rect = Rect.Empty;
+
+            _childrenBag.AddChild(_boxSelector);
+            UpdateChildrenBag();
+        }
+
+        private void RemoveBoxSelector()
+        {
+            _childrenBag.RemoveChild(_boxSelector);
+            UpdateChildrenBag();
+        }
+
+        private void UpdateBoxSelector()
+        {
+            var s = _scale.ScaleX;
+            var tx = _translate.X;
+            var ty = _translate.Y;
+
+            var sr = _mouseOperator.SelectionRect;
+
+            var p0 = (Point) ((sr.P0 - new Point(tx, ty)) / s);
+            var p1 = (Point) ((sr.P1 - new Point(tx, ty)) / s);
+
+            _boxSelector.Rect = new Rect(p0, p1);
+            _childrenBag.ChangeElement(_boxSelector);
+            UpdateChildrenBag();
         }
 
         #endregion
@@ -426,7 +539,6 @@ namespace Biaui.Controls.NodeEditor
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            //foreach (var child in _children)
             foreach (var child in _changedElements)
             {
                 var pos = GetPos(child);
@@ -441,7 +553,6 @@ namespace Biaui.Controls.NodeEditor
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            //foreach (var child in _children)
             foreach (var child in _changedElements)
             {
                 var size = GetSize(child);

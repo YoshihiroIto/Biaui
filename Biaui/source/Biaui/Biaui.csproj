@@ -205,6 +205,7 @@
     <Compile Include="Controls\Effects\HsvBoxBackgroundEffect.cs" />
     <Compile Include="Controls\BiaHsvBoxBackground.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePanel.cs" />
+    <Compile Include="Controls\NodeEditor\BoxSelector.cs" />
     <Compile Include="Controls\NodeEditor\MouseOperator.cs" />
     <Compile Include="Internals\Boxes.cs" />
     <Compile Include="Controls\BiaClippingBorder.cs" />
