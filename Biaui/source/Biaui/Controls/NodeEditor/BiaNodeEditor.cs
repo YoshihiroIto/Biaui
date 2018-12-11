@@ -119,13 +119,11 @@ namespace Biaui.Controls.NodeEditor
                 case nameof(INodeItem.Pos):
                 {
                     if (_childrenDict.TryGetValue(node, out var child))
-                    {
                         if (child != null)
                         {
                             ChildrenBag.SetPos(child, node.Pos);
                             _childrenBag.ChangeElement(child);
                         }
-                    }
 
                     break;
                 }
@@ -133,13 +131,11 @@ namespace Biaui.Controls.NodeEditor
                 case nameof(INodeItem.Size):
                 {
                     if (_childrenDict.TryGetValue(node, out var child))
-                    {
                         if (child != null)
                         {
                             ChildrenBag.SetSize(child, node.Size);
                             _childrenBag.ChangeElement(child);
                         }
-                    }
 
                     break;
                 }
@@ -150,6 +146,10 @@ namespace Biaui.Controls.NodeEditor
                         _selectedNodes.Add(node);
                     else
                         _selectedNodes.Remove(node);
+
+                    if (_childrenDict.TryGetValue(node, out var child))
+                        if (child != null)
+                            _childrenBag.ChangeElement(child);
 
                     break;
                 }
@@ -359,6 +359,7 @@ namespace Biaui.Controls.NodeEditor
 
             e.Handled = true;
         }
+
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);

@@ -39,6 +39,10 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey.MouseOver.Translucent}" />
             </Trigger>
+
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="BorderColor" Value="White" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 </ResourceDictionary>
