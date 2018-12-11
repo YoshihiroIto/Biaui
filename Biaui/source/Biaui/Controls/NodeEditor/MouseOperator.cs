@@ -134,6 +134,8 @@ namespace Biaui.Controls.NodeEditor
 
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
+
+            _target.InvalidateVisual();
         }
 
         private void DoBoxSelect(MouseEventArgs mouseEventArgs)
@@ -165,23 +167,20 @@ namespace Biaui.Controls.NodeEditor
             s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
 
             var p = e.GetPosition(_target);
-            var d0 = ScenePosFromControlPos(p);
+            var d0 = _target.ScenePosFromControlPos(p.X, p.Y);
 
             s = Math.Max(Math.Min(s, 3.0), 0.25);
             _scale.ScaleX = s;
             _scale.ScaleY = s;
 
-            var d1 = ScenePosFromControlPos(p);
+            var d1 = _target.ScenePosFromControlPos(p.X, p.Y);
 
             var diff = d1 - d0;
 
             _translate.X += diff.X * s;
             _translate.Y += diff.Y * s;
-        }
 
-        private Point ScenePosFromControlPos(Point pos)
-            => new Point(
-                (pos.X - _translate.X) / _scale.ScaleX,
-                (pos.Y - _translate.Y) / _scale.ScaleY);
+            _target.InvalidateVisual();
+        }
     }
 }

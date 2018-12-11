@@ -71,6 +71,76 @@ namespace Biaui.Controls.NodeEditor
             _mouseOperator.PanelMoving += OnPanelMoving;
         }
 
+        internal Point ScenePosFromControlPos(double x, double y)
+            => new Point(
+                (x - _translate.X) / _scale.ScaleX,
+                (y - _translate.Y) / _scale.ScaleY);
+
+        protected override void OnRender(DrawingContext dc)
+        {
+            base.OnRender(dc);
+
+            const double unit = 1024;
+
+            var p = this.GetBorderPen(Color.FromRgb(0x37, 0x37, 0x40));
+
+            var s = _scale.ScaleX;
+            var tx = _translate.X;
+            var ty = _translate.Y;
+
+            var bx = FrameworkElementHelper.RoundLayoutValue(ActualWidth);
+            var by = FrameworkElementHelper.RoundLayoutValue(ActualHeight);
+
+            for (var h = 0;; ++h)
+            {
+                var x = (h * unit) * s + tx;
+
+                x = FrameworkElementHelper.RoundLayoutValue(x);
+
+                if (x < 0) continue;
+                if (x > ActualWidth) break;
+
+                dc.DrawLine(p, new Point(x, 0), new Point(x, by));
+            }
+
+            for (var h = 0;; --h)
+            {
+                var x = (h * unit) * s + tx;
+
+                x = FrameworkElementHelper.RoundLayoutValue(x);
+
+                if (x > ActualWidth) continue;
+                if (x < 0) break;
+
+                dc.DrawLine(p, new Point(x, 0), new Point(x, by));
+            }
+
+            for (var v = 0;; ++v)
+            {
+                var y = (v * unit) * s + ty;
+
+                y = FrameworkElementHelper.RoundLayoutValue(y);
+
+                if (y < 0) continue;
+                if (y > ActualHeight) break;
+
+                dc.DrawLine(p, new Point(0, y), new Point(bx, y));
+            }
+
+
+            for (var v = 0;; --v)
+            {
+                var y = (v * unit) * s + ty;
+
+                y = FrameworkElementHelper.RoundLayoutValue(y);
+
+                if (y > ActualHeight) continue;
+                if (y < 0) break;
+
+                dc.DrawLine(p, new Point(0, y), new Point(bx, y));
+            }
+        }
+
         private Rect MakeCurrentViewport()
         {
             var sx = _scale.ScaleX;
