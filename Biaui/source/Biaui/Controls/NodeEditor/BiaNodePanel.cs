@@ -159,7 +159,7 @@ namespace Biaui.Controls.NodeEditor
                 return;
 
             var b = Caches.GetSolidColorBrush(i.TitleColor);
-            var y = FrameworkElementHelper.RoundLayoutValue(32);
+            var y = FrameworkElementHelper.RoundLayoutValue(36);
 
             dc.DrawRectangle(b, null, new Rect(0, 0, this.RoundLayoutActualWidth(true), y));
             dc.DrawLine(this.GetBorderPen(BorderColor), new Point(0, y), new Point(ActualWidth, y));
@@ -167,7 +167,7 @@ namespace Biaui.Controls.NodeEditor
             var name = i.Name;
 
             if (string.IsNullOrEmpty(name) == false)
-                TextRenderer.Default.Draw(name, 0, 8, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Center);
+                TextRenderer.Default.Draw(name, 0, 10, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Center);
         }
     }
 }
