@@ -135,7 +135,7 @@ namespace Biaui.Controls.NodeEditor
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
 
-            _target.InvalidateVisual();
+            //_target.InvalidateVisual();
         }
 
         private void DoBoxSelect(MouseEventArgs mouseEventArgs)
@@ -180,7 +180,7 @@ namespace Biaui.Controls.NodeEditor
             _translate.X += diff.X * s;
             _translate.Y += diff.Y * s;
 
-            _target.InvalidateVisual();
+            //_target.InvalidateVisual();
         }
     }
 }
