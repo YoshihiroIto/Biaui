@@ -297,6 +297,8 @@ namespace Biaui.Controls
             IsPressed = IsInMouse(e);
 
             CaptureMouse();
+
+            e.Handled = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -304,6 +306,8 @@ namespace Biaui.Controls
             base.OnMouseMove(e);
 
             IsPressedMouseOver = IsInMouse(e);
+
+            e.Handled = true;
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -322,6 +326,8 @@ namespace Biaui.Controls
                 return;
 
             Clicked();
+
+            e.Handled = true;
         }
 
         private bool IsInMouse(MouseEventArgs e)

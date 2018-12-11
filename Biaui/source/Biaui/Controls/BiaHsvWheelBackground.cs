@@ -207,6 +207,8 @@ namespace Biaui.Controls
                 var cr = new Win32Helper.RECT((int) dp0.X + 1, (int) dp0.Y + 1, (int) dp1.X - 1, (int) dp1.Y - 1);
                 Win32Helper.ClipCursor(ref cr);
             }
+
+            e.Handled = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -229,6 +231,8 @@ namespace Biaui.Controls
                 var mousePos = PointToScreen(pos);
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
             }
+
+            e.Handled = true;
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -245,6 +249,8 @@ namespace Biaui.Controls
             GuiHelper.ShowCursor();
             Win32Helper.ClipCursor(IntPtr.Zero);
             ReleaseMouseCapture();
+
+            e.Handled = true;
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -258,6 +264,8 @@ namespace Biaui.Controls
                 GuiHelper.ShowCursor();
                 Win32Helper.ClipCursor(IntPtr.Zero);
             }
+
+            e.Handled = true;
         }
     }
 }

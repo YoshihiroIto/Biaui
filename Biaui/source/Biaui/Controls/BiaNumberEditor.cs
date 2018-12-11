@@ -745,6 +745,8 @@ namespace Biaui.Controls
                     Win32Helper.ClipCursor(ref cr);
                 }
             }
+
+            e.Handled = true;
         }
 
         private const double _clickPlayWidth = 4;
@@ -813,6 +815,8 @@ namespace Biaui.Controls
             _mouseOverType = MouseOverType.Slider;
             _isMouseMoved = true;
             _oldPos = currentPos;
+
+            e.Handled = true;
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -863,6 +867,8 @@ namespace Biaui.Controls
             }
 
             _mouseOverType = MakeMouseOverType(e);
+
+            e.Handled = true;
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -878,6 +884,8 @@ namespace Biaui.Controls
             }
 
             _mouseOverType = MouseOverType.None;
+
+            e.Handled = true;
         }
 
         private MouseOverType MakeMouseOverType(MouseEventArgs e)
