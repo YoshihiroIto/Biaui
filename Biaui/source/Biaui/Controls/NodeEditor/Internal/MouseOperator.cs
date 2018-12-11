@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
 
-namespace Biaui.Controls.NodeEditor
+namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class MouseOperator
     {
