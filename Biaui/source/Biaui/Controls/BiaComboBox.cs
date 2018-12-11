@@ -389,6 +389,8 @@ namespace Biaui.Controls
                 Focus();
                 ShowListBox();
             }
+
+            e.Handled = true;
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)

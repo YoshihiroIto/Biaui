@@ -257,6 +257,8 @@ namespace Biaui.Controls
             ShowEditBox();
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) MouseSimulator.DownLeftMouseButton);
+
+            e.Handled = true;
         }
 
 #if false
