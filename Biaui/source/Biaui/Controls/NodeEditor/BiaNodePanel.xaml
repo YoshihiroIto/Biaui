@@ -36,12 +36,11 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey.MouseOver.Translucent}" />
-            </Trigger>
-
             <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                <Setter Property="BorderColor" Value="White" />
+                <Setter Property="BorderColor" Value="DarkOrange" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsPreSelected}" Value="True">
+                <Setter Property="BorderColor" Value="Gray" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

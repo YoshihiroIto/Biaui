@@ -153,6 +153,20 @@ namespace Biaui.Controls.NodeEditor
 
                     break;
                 }
+
+                case nameof(INodeItem.IsPreSelected):
+                {
+                    if (node.IsPreSelected)
+                        _preSelectedNodes.Add(node);
+                    else
+                        _preSelectedNodes.Remove(node);
+
+                    if (_childrenDict.TryGetValue(node, out var child))
+                        if (child != null)
+                            _childrenBag.ChangeElement(child);
+
+                    break;
+                }
             }
         }
 
@@ -258,6 +272,7 @@ namespace Biaui.Controls.NodeEditor
         private readonly Stack<BiaNodePanel> _nodePanelPool = new Stack<BiaNodePanel>();
 
         private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
+        private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
         private BiaNodePanel GetNodePanel()
         {
@@ -295,11 +310,17 @@ namespace Biaui.Controls.NodeEditor
 
             if (i.IsSelected == false)
             {
+                var isPressControl = KeyboardHelper.IsPressControl;
+
                 // [Ctrl]押下で追加する
-                if (KeyboardHelper.IsPressControl == false)
+                if (isPressControl == false)
+                {
                     ClearSelectedNode();
 
-                i.IsSelected = true;
+                    i.IsSelected = true;
+                }
+                else
+                    i.IsSelected = !i.IsSelected;
             }
 
             _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodePanel);
@@ -331,6 +352,12 @@ namespace Biaui.Controls.NodeEditor
         {
             foreach (var n in _selectedNodes.ToArray())
                 n.IsSelected = false;
+        }
+
+        private void ClearPreSelectedNode()
+        {
+            foreach (var n in _preSelectedNodes.ToArray())
+                n.IsPreSelected = false;
         }
 
         #endregion
@@ -367,6 +394,8 @@ namespace Biaui.Controls.NodeEditor
             if (_mouseOperator.IsBoxSelect)
             {
                 SelectNodes(_boxSelector.Rect);
+                ClearPreSelectedNode();
+
                 RemoveBoxSelector();
             }
 
@@ -385,15 +414,20 @@ namespace Biaui.Controls.NodeEditor
                 UpdateChildrenBag();
 
             if (_mouseOperator.IsBoxSelect)
+            {
                 UpdateBoxSelector();
+                PreSelectNodes(_boxSelector.Rect);
+            }
 
             e.Handled = true;
         }
 
         private void SelectNodes(Rect rect)
         {
+            var isPressControl = KeyboardHelper.IsPressControl;
+
             // [Ctrl]押下で追加する
-            if (KeyboardHelper.IsPressControl == false)
+            if (isPressControl == false)
                 ClearSelectedNode();
 
             if (NodesSource == null)
@@ -404,12 +438,29 @@ namespace Biaui.Controls.NodeEditor
                 var nr = new Rect(node.Pos, node.Size);
 
                 if (rect.IntersectsWith(nr))
-                    node.IsSelected = true;
+                {
+                    if (isPressControl)
+                        node.IsSelected = !node.IsSelected;
+                    else
+                        node.IsSelected = true;
+                }
+            }
+        }
+
+        private void PreSelectNodes(Rect rect)
+        {
+            ClearPreSelectedNode();
+
+            foreach (var node in NodesSource)
+            {
+                var nr = new Rect(node.Pos, node.Size);
+
+                if (rect.IntersectsWith(nr))
+                    node.IsPreSelected = true;
             }
         }
 
         #endregion
-
 
         #region BoxSelect
 
