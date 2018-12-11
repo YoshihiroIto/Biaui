@@ -399,6 +399,18 @@ namespace Biaui.Controls.NodeEditor
                 RemoveBoxSelector();
             }
 
+            if (_mouseOperator.IsPanelMove)
+            {
+                foreach (var n in _selectedNodes)
+                {
+                    n.Pos = new Point(
+                        Math.Round(n.Pos.X / 32) * 32,
+                        Math.Round(n.Pos.Y / 32) * 32);
+                }
+
+                UpdateChildrenBag();
+            }
+
             _mouseOperator.OnMouseLeftButtonUp(e);
 
             e.Handled = true;

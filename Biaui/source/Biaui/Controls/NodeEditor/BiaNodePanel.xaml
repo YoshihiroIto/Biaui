@@ -7,7 +7,7 @@
     <Style TargetType="{x:Type nodeEditor:BiaNodePanel}">
         <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey.Translucent}" />
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
-        <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
+        <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.GroupCornerRadiusPrim}" />
 
         <Setter Property="Template">
             <Setter.Value>

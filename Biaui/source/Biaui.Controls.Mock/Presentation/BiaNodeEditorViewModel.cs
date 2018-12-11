@@ -61,7 +61,7 @@ namespace Biaui.Controls.Mock.Presentation
                         Name = $"Name:{i++}",
                         TitleColor = titleColors[x % titleColors.Length],
                         Pos = new Point(x * 800 + rx, y * 800 + ry),
-                        Size = new Size(200, 400)
+                        Size = new Size(32*8, 32*13)
                     });
             }
         }

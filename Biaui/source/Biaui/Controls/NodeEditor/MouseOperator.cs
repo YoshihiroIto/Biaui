@@ -44,6 +44,7 @@ namespace Biaui.Controls.NodeEditor
 
         internal bool IsOperating => _opType != OpType.None;
         internal bool IsBoxSelect => _opType == OpType.BoxSelect;
+        internal bool IsPanelMove => _opType == OpType.PanelMove;
 
         internal MouseOperator(BiaNodeEditor target, TranslateTransform translate, ScaleTransform scale)
         {
