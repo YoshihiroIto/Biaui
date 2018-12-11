@@ -45,15 +45,20 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         private readonly Dictionary<INodeItem, BiaNodePanel> _childrenDict = new Dictionary<INodeItem, BiaNodePanel>();
+        private readonly ChildrenBag _childrenBag = new ChildrenBag();
+
         private readonly TranslateTransform _translate = new TranslateTransform();
         private readonly ScaleTransform _scale = new ScaleTransform();
-        private readonly ChildrenBag _childrenBag = new ChildrenBag();
+
+        private readonly MouseOperator _mouseOperator;
 
         public BiaNodeEditor()
         {
             SizeChanged += (_, __) => UpdateChildrenBag();
 
             ClipToBounds = true;
+
+            _mouseOperator = new MouseOperator(this, _translate, _scale);
 
             // ReSharper disable once VirtualMemberCallInConstructor
             Child = _childrenBag;
@@ -224,8 +229,8 @@ namespace Biaui.Controls.NodeEditor
 
             var p = new BiaNodePanel();
 
-            p.MouseEnter += OnMouseEnter;
-            p.MouseLeftButtonDown += OnMouseLeftButtonDown;
+            p.MouseEnter += NodePanel_OnMouseEnter;
+            p.MouseLeftButtonDown += NodePanel_OnMouseLeftButtonDown;
                 
             return p;
         }
@@ -235,17 +240,15 @@ namespace Biaui.Controls.NodeEditor
             _NodePanelPool.Push(p);
         }
 
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
             e.Handled = true;
         }
 
-        private void OnMouseEnter(object sender, MouseEventArgs e)
+        private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
             SetFrontmost((BiaNodePanel)sender);
         }
-
 
         #endregion
 
@@ -255,77 +258,34 @@ namespace Biaui.Controls.NodeEditor
         {
             base.OnMouseWheel(e);
 
-            var s = _scale.ScaleX;
-
-            s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
-
-            var p = e.GetPosition(this);
-            var d0 = ScenePosFromControlPos(p);
-
-            s = Math.Max(Math.Min(s, 3.0), 0.25);
-            _scale.ScaleX = s;
-            _scale.ScaleY = s;
-
-            var d1 = ScenePosFromControlPos(p);
-
-            var diff = d1 - d0;
-
-            _translate.X += diff.X * s;
-            _translate.Y += diff.Y * s;
+            _mouseOperator.OnMouseWheel(e);
 
             UpdateChildrenBag();
         }
-
-        private double _mouseDownScrollX;
-        private double _mouseDownScrollY;
-        private Point _mouseDownMousePos;
-        private bool _isScrolling;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
 
-            if ((Win32Helper.GetAsyncKeyState(Win32Helper.VK_SPACE) & 0x8000) == 0)
-                return;
-
-            _mouseDownScrollX = _translate.X;
-            _mouseDownScrollY = _translate.Y;
-            _mouseDownMousePos = e.GetPosition(this);
-
-            _isScrolling = true;
-            CaptureMouse();
+            _mouseOperator.OnMouseLeftButtonDown(e);
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
 
-            _isScrolling = false;
-
-            if (IsMouseCaptured)
-                ReleaseMouseCapture();
+            _mouseOperator.OnMouseLeftButtonUp(e);
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
-            if (_isScrolling == false)
-                return;
+            _mouseOperator.OnMouseMove(e);
 
-            var pos = e.GetPosition(this);
-            var diff = pos - _mouseDownMousePos;
-
-            _translate.X = _mouseDownScrollX + diff.X;
-            _translate.Y = _mouseDownScrollY + diff.Y;
-
-            UpdateChildrenBag();
+            if (_mouseOperator.IsScrolling)
+                UpdateChildrenBag();
         }
-
-        private Point ScenePosFromControlPos(Point pos)
-            => new Point(
-                (pos.X - _translate.X) / _scale.ScaleX,
-                (pos.Y - _translate.Y) / _scale.ScaleY);
 
         #endregion
     }
