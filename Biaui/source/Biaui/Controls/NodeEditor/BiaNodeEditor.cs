@@ -58,8 +58,6 @@ namespace Biaui.Controls.NodeEditor
 
             ClipToBounds = true;
 
-            _mouseOperator = new MouseOperator(this, _translate, _scale);
-
             // ReSharper disable once VirtualMemberCallInConstructor
             Child = _childrenBag;
 
@@ -67,6 +65,9 @@ namespace Biaui.Controls.NodeEditor
             g.Children.Add(_scale);
             g.Children.Add(_translate);
             _childrenBag.RenderTransform = g;
+
+            _mouseOperator = new MouseOperator(this, _translate, _scale);
+            _mouseOperator.PanelMoving += OnPanelMoving;
         }
 
         private Rect MakeCurrentViewport()
@@ -116,8 +117,22 @@ namespace Biaui.Controls.NodeEditor
             {
                 if (_childrenDict.TryGetValue(node, out var child))
                 {
-                    ChildrenBag.SetPos(child, node.Pos);
-                    ChildrenBag.SetSize(child, node.Size);
+                    if (child != null)
+                    {
+                        ChildrenBag.SetPos(child, node.Pos);
+                        _childrenBag.ChangeElement(child);
+                    }
+                }
+            }
+            else if (e.PropertyName == nameof(INodeItem.Size))
+            {
+                if (_childrenDict.TryGetValue(node, out var child))
+                {
+                    if (child != null)
+                    {
+                        ChildrenBag.SetSize(child, node.Size);
+                        _childrenBag.ChangeElement(child);
+                    }
                 }
             }
         }
@@ -220,34 +235,63 @@ namespace Biaui.Controls.NodeEditor
 
         #region ノードパネル管理
 
-        public readonly Stack<BiaNodePanel> _NodePanelPool = new Stack<BiaNodePanel>();
+        private readonly Stack<BiaNodePanel> _nodePanelPool = new Stack<BiaNodePanel>();
+
+        private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
 
         private BiaNodePanel GetNodePanel()
         {
-            if (_NodePanelPool.Count != 0)
-                return _NodePanelPool.Pop();
+            if (_nodePanelPool.Count != 0)
+                return _nodePanelPool.Pop();
 
             var p = new BiaNodePanel();
 
             p.MouseEnter += NodePanel_OnMouseEnter;
             p.MouseLeftButtonDown += NodePanel_OnMouseLeftButtonDown;
+            p.MouseLeftButtonUp += NodePanel_OnMouseLeftButtonUp;
+            p.MouseMove += NodePanel_OnMouseMove;
                 
             return p;
         }
 
         private void ReturnNodePanel(BiaNodePanel p)
         {
-            _NodePanelPool.Push(p);
-        }
-
-        private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
+            _nodePanelPool.Push(p);
         }
 
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
             SetFrontmost((BiaNodePanel)sender);
+        }
+
+        private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+
+            var p = (BiaNodePanel) sender;
+
+            // [Ctrl]押下で追加する
+            if (KeyboardHelper.IsPressControl == false)
+                _selectedNodes.Clear();
+            _selectedNodes.Add((INodeItem)p.DataContext);
+
+            _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodePanel);
+        }
+
+        private void NodePanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _mouseOperator.OnMouseLeftButtonUp(e);
+        }
+
+        private void NodePanel_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            _mouseOperator.OnMouseMove(e);
+        }
+
+        private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
+        {
+            foreach (var n in _selectedNodes)
+                n.Pos += e.Diff;
         }
 
         #endregion
@@ -267,7 +311,7 @@ namespace Biaui.Controls.NodeEditor
         {
             base.OnMouseLeftButtonDown(e);
 
-            _mouseOperator.OnMouseLeftButtonDown(e);
+            _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodeEditor);
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -283,7 +327,7 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator.OnMouseMove(e);
 
-            if (_mouseOperator.IsScrolling)
+            if (_mouseOperator.IsOperating)
                 UpdateChildrenBag();
         }
 
@@ -342,7 +386,7 @@ namespace Biaui.Controls.NodeEditor
             _childrenForSearch.Add(child);
 
             AddVisualChild(child);
-            _changedElements.Add(child);
+            ChangeElement(child);
         }
 
         internal void RemoveChild(UIElement child)
@@ -366,6 +410,11 @@ namespace Biaui.Controls.NodeEditor
 
             _children.Add(child);
             AddVisualChild(child);
+        }
+
+        internal void ChangeElement(UIElement child)
+        {
+            _changedElements.Add(child);
         }
 
         protected override int VisualChildrenCount => _children.Count;

@@ -214,6 +214,7 @@
     <Compile Include="Internals\Evaluator.cs" />
     <Compile Include="Internals\FrameworkElementExtensions.cs" />
     <Compile Include="Internals\GuiHelper.cs" />
+    <Compile Include="Internals\KeyboardHelper.cs" />
     <Compile Include="Internals\LazyRunner.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Internals\LruCache.cs" />

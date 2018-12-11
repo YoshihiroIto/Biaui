@@ -8,15 +8,28 @@ namespace Biaui.Controls.NodeEditor
 {
     internal class MouseOperator
     {
-        internal bool IsScrolling { get; private set; }
-
         private double _mouseDownScrollX;
         private double _mouseDownScrollY;
         private Point _mouseDownMousePos;
 
+        private Point _oldMouseDownMousePos;
+
+
         private readonly BiaNodeEditor _target;
         private readonly TranslateTransform _translate;
         private readonly ScaleTransform _scale;
+
+        private enum OpType
+        {
+            None,
+            //
+            EditorScroll,
+            PanelMove
+        }
+
+        private OpType _opType = OpType.None;
+
+        internal bool IsOperating => _opType != OpType.None;
 
         internal MouseOperator(BiaNodeEditor target, TranslateTransform translate, ScaleTransform scale)
         {
@@ -25,20 +38,35 @@ namespace Biaui.Controls.NodeEditor
             _scale = scale;
         }
 
-        internal void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        internal enum TargetType
+        {
+            NodeEditor,
+            NodePanel,
+        }
+
+        internal void OnMouseLeftButtonDown(MouseButtonEventArgs e, TargetType targetType)
         {
             _mouseDownScrollX = _translate.X;
             _mouseDownScrollY = _translate.Y;
             _mouseDownMousePos = e.GetPosition(_target);
-
-            IsScrolling = (Win32Helper.GetAsyncKeyState(Win32Helper.VK_SPACE) & 0x8000) != 0;
+            _oldMouseDownMousePos = _mouseDownMousePos;
 
             _target.CaptureMouse();
+
+            // OpType
+            {
+                _opType = OpType.None;
+                if (KeyboardHelper.IsPressSpace)
+                    _opType = OpType.EditorScroll;
+
+                else if (targetType == TargetType.NodePanel)
+                    _opType = OpType.PanelMove;
+            }
         }
 
         internal void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            IsScrolling = false;
+            _opType = OpType.None;
 
             if (_target.IsMouseCaptured)
                 _target.ReleaseMouseCapture();
@@ -46,14 +74,50 @@ namespace Biaui.Controls.NodeEditor
 
         internal void OnMouseMove(MouseEventArgs e)
         {
-            if (IsScrolling == false)
-                return;
+            switch (_opType)
+            {
+                case OpType.None:
+                    break;
 
+                case OpType.EditorScroll:
+                    DoEditorScroll(e);
+                    break;
+
+                case OpType.PanelMove:
+                    DoPanelMove(e);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            _oldMouseDownMousePos = e.GetPosition(_target);
+        }
+
+        private void DoEditorScroll(MouseEventArgs e)
+        {
             var pos = e.GetPosition(_target);
             var diff = pos - _mouseDownMousePos;
 
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
+        }
+
+        internal class PanelMovingEventArgs : EventArgs
+        {
+            internal Vector Diff { get; set; }
+        }
+
+        internal event EventHandler<PanelMovingEventArgs> PanelMoving;
+
+        private readonly PanelMovingEventArgs _PanelMovingEventArgs = new PanelMovingEventArgs();
+        private void DoPanelMove(MouseEventArgs e)
+        {
+            var pos = e.GetPosition(_target);
+
+            _PanelMovingEventArgs.Diff = (pos - _oldMouseDownMousePos) / _scale.ScaleX;
+
+            PanelMoving?.Invoke(this, _PanelMovingEventArgs);
         }
 
         internal void OnMouseWheel(MouseWheelEventArgs e)
