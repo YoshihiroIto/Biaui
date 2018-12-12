@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Converters;
+using System.Windows.Threading;
 using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Internals;
 using Biaui.NodeEditor;
@@ -54,10 +54,12 @@ namespace Biaui.Controls.NodeEditor
         private readonly ScaleTransform _scale = new ScaleTransform();
 
         private readonly MouseOperator _mouseOperator;
+        private readonly DispatcherTimer _removeNodePanelTimer;
 
         public BiaNodeEditor()
         {
-            SizeChanged += (_, __) => UpdateChildrenBag();
+            SizeChanged += (_, __) => UpdateChildrenBag(true);
+            Unloaded += (_, __) => _removeNodePanelTimer.Stop();
 
             ClipToBounds = true;
 
@@ -72,6 +74,14 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator = new MouseOperator(this, _translate, _scale);
             _mouseOperator.PanelMoving += OnPanelMoving;
+
+            _removeNodePanelTimer = new DispatcherTimer(
+                TimeSpan.FromMilliseconds(100),
+                DispatcherPriority.ApplicationIdle,
+                (_, __) => DoRemoverNodePanel(),
+                Dispatcher.CurrentDispatcher);
+
+            _removeNodePanelTimer.Stop();
         }
 
         internal Point ScenePosFromControlPos(double x, double y)
@@ -189,7 +199,7 @@ namespace Biaui.Controls.NodeEditor
                     foreach (INodeItem nodeItem in e.NewItems)
                         _childrenDict.Add(nodeItem, null);
 
-                    UpdateChildrenBag();
+                    UpdateChildrenBag(true);
 
                     break;
 
@@ -219,9 +229,9 @@ namespace Biaui.Controls.NodeEditor
             _childrenBag.ToLast(child);
         }
 
-        private void UpdateChildrenBag()
+        private void UpdateChildrenBag(bool isPushRemove)
         {
-            UpdateChildrenBag(MakeCurrentViewport());
+            UpdateChildrenBag(MakeCurrentViewport(), isPushRemove);
 
             _childrenBag.InvalidateMeasure();
         }
@@ -229,7 +239,7 @@ namespace Biaui.Controls.NodeEditor
         private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
             new List<(INodeItem, BiaNodePanel)>();
 
-        private void UpdateChildrenBag(Rect rect)
+        private void UpdateChildrenBag(Rect rect, bool isPushRemove)
         {
             foreach (var c in _childrenDict)
             {
@@ -256,13 +266,14 @@ namespace Biaui.Controls.NodeEditor
                 }
                 else
                 {
-                    if (t != null)
+                    if (isPushRemove)
                     {
-                        ReturnNodePanel(t);
+                        if (t != null)
+                        {
+                            PushRemoveChild(t);
 
-                        _childrenBag.RemoveChild(t);
-
-                        _changedUpdateChildrenBag.Add((m, null));
+                            _changedUpdateChildrenBag.Add((m, null));
+                        }
                     }
                 }
             }
@@ -273,19 +284,46 @@ namespace Biaui.Controls.NodeEditor
             _changedUpdateChildrenBag.Clear();
         }
 
+        private void PushRemoveChild(BiaNodePanel panel)
+        {
+            _removeNodePanelPool.Push(panel);
+
+            _removeNodePanelTimer.Start();
+        }
+
+        private void DoRemoverNodePanel()
+        {
+            for (var i = 0; i != 5; ++i)
+            {
+                if (_removeNodePanelPool.Count == 0)
+                    break;
+
+                var p = _removeNodePanelPool.Pop();
+
+                ReturnNodePanel(p);
+                _childrenBag.RemoveChild(p);
+            }
+
+            if (_removeNodePanelPool.Count == 0)
+                _removeNodePanelTimer.Stop();
+
+            //Debug.WriteLine($"DispatcherTimer>>>>>>>>>>{_removeNodePanelPool.Count}");
+        }
+
         #endregion
 
         #region ノードパネル管理
 
-        private readonly Stack<BiaNodePanel> _nodePanelPool = new Stack<BiaNodePanel>();
+        private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
+        private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
 
         private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
         private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
         private BiaNodePanel GetNodePanel()
         {
-            if (_nodePanelPool.Count != 0)
-                return _nodePanelPool.Pop();
+            if (_recycleNodePanelPool.Count != 0)
+                return _recycleNodePanelPool.Pop();
 
             var p = new BiaNodePanel();
 
@@ -299,7 +337,7 @@ namespace Biaui.Controls.NodeEditor
 
         private void ReturnNodePanel(BiaNodePanel p)
         {
-            _nodePanelPool.Push(p);
+            _recycleNodePanelPool.Push(p);
         }
 
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
@@ -378,7 +416,7 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator.OnMouseWheel(e);
 
-            UpdateChildrenBag();
+            UpdateChildrenBag(true);
 
             e.Handled = true;
         }
@@ -415,9 +453,9 @@ namespace Biaui.Controls.NodeEditor
                         Math.Round(n.Pos.X / 32) * 32,
                         Math.Round(n.Pos.Y / 32) * 32);
                 }
-
-                UpdateChildrenBag();
             }
+
+            UpdateChildrenBag(true);
 
             _mouseOperator.OnMouseLeftButtonUp(e);
 
@@ -431,7 +469,7 @@ namespace Biaui.Controls.NodeEditor
             _mouseOperator.OnMouseMove(e);
 
             if (_mouseOperator.IsOperating)
-                UpdateChildrenBag();
+                UpdateChildrenBag(false);
 
             if (_mouseOperator.IsBoxSelect)
             {
@@ -491,13 +529,13 @@ namespace Biaui.Controls.NodeEditor
             _boxSelector.Rect = Rect.Empty;
 
             _childrenBag.AddChild(_boxSelector);
-            UpdateChildrenBag();
+            UpdateChildrenBag(true);
         }
 
         private void RemoveBoxSelector()
         {
             _childrenBag.RemoveChild(_boxSelector);
-            UpdateChildrenBag();
+            UpdateChildrenBag(true);
         }
 
         private void UpdateBoxSelector()
@@ -513,7 +551,7 @@ namespace Biaui.Controls.NodeEditor
 
             _boxSelector.Rect = new Rect(p0, p1);
             _childrenBag.ChangeElement(_boxSelector);
-            UpdateChildrenBag();
+            UpdateChildrenBag(true);
         }
 
         #endregion
@@ -583,6 +621,8 @@ namespace Biaui.Controls.NodeEditor
             _childrenForSearch.Remove(child);
 
             RemoveVisualChild(child);
+
+            //Debug.WriteLine($"RemoveChild>>>>>>>>>>>>>>{_children.Count}");
         }
 
         internal void ToLast(UIElement child)
