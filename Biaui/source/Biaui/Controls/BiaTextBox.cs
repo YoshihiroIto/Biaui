@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -23,7 +22,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Text = default(string);
+        private string _Text;
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(BiaTextBox),
@@ -189,16 +188,6 @@ namespace Biaui.Controls
         public BiaTextBox()
         {
             IsEnabledChanged += (_, __) => InvalidateVisual();
-
-            Unloaded += (_, __) =>
-            {
-                if (_popup != null)
-                {
-                    _popup.Closed -= PopupOnClosed;
-                    _popup.PreviewKeyDown -= PopupOnPreviewKeyDown;
-                    _textBox.TextChanged -= TextBoxOnTextChanged;
-                }
-            };
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -216,7 +205,7 @@ namespace Biaui.Controls
                     Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
             {
                 TextRenderer.Default.Draw(
-                    _isInPopup ? _textBox.Text : Text,
+                    _isEditing ? _textBox.Text : Text,
                     4.5, 3.5,
                     Foreground,
                     dc,
@@ -230,7 +219,7 @@ namespace Biaui.Controls
 
         private void DrawBackground(DrawingContext dc)
         {
-            var brush = _isInPopup ? _textBox.Background : Background;
+            var brush = Background;
 
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
@@ -256,20 +245,8 @@ namespace Biaui.Controls
             Focus();
             ShowEditBox();
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) MouseSimulator.DownLeftMouseButton);
-
             e.Handled = true;
         }
-
-#if false
-// todo:ポップアップが閉じない問題を修正
-        protected override void OnGotFocus(RoutedEventArgs e)
-        {
-            base.OnGotFocus(e);
-
-            ShowEditBox();
-        }
-#endif
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -279,13 +256,14 @@ namespace Biaui.Controls
                 return;
 
             if (e.Key == Key.Return)
+            {
                 ShowEditBox();
+                e.Handled = true;
+            }
         }
 
         private TextBox _textBox;
-        private Popup _popup;
-        private ScaleTransform _scale;
-        private bool _isInPopup;
+        private bool _isEditing;
 
         private void ShowEditBox()
         {
@@ -295,86 +273,122 @@ namespace Biaui.Controls
                 {
                     IsTabStop = false,
                     IsUndoEnabled = false,
-                    FocusVisualStyle = null
+                    FocusVisualStyle = null,
+                    SelectionLength = 0
                 };
 
-                _scale = new ScaleTransform();
-
-                _popup = new Popup
-                {
-                    Child = _textBox,
-                    AllowsTransparency = true,
-                    VerticalOffset = -ActualHeight,
-                    StaysOpen = false,
-                    RenderTransform = _scale,
-                    PlacementTarget = this
-                };
-
-                _textBox.TextChanged += TextBoxOnTextChanged;
-                _popup.Closed += PopupOnClosed;
-                _popup.PreviewKeyDown += PopupOnPreviewKeyDown;
+                _textBox.TextChanged += TextBox_OnTextChanged;
+                _textBox.LostFocus += TextBox_OnLostFocus;
+                _textBox.PreviewKeyDown += TextBox_OnPreviewKeyDown;
             }
 
             _textBox.Width = ActualWidth;
             _textBox.Height = ActualHeight;
             _textBox.IsReadOnly = IsReadOnly;
             _textBox.Text = Text;
-            _textBox.SelectionLength = 0;
 
-            var s = this.CalcCompositeRenderScale();
-            _scale.ScaleX = s;
-            _scale.ScaleY = s;
+            AddVisualChild(_textBox);
+            InvalidateMeasure();
 
-            _popup.IsOpen = true;
-            _isInPopup = true;
-
-            Win32Helper.SetFocus(WpfHelper.GetHwnd(_popup));
+            _textBox.SelectAll();
             _textBox.Focus();
+
+            _isEditing = true;
         }
 
-        private void PopupOnClosed(object sender, EventArgs e)
-        {
-            Text = _textBox.Text;
-
-            _isInPopup = false;
-            InvalidateVisual();
-        }
-
-        private void TextBoxOnTextChanged(object sender, TextChangedEventArgs e)
+        private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             InvalidateVisual();
         }
 
-        private void PopupOnPreviewKeyDown(object sender, KeyEventArgs e)
+        private void TextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (_isEditing)
+                FinishEditing(true);
+        }
+
+        private static TraversalRequest _PreviousTraversalRequest;
+        private static TraversalRequest _NextTraversalRequest;
+
+        private void TextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.Tab:
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) MoveFocus);
+                {
+                    FinishEditing(true);
+
+                    if (_PreviousTraversalRequest == null)
+                    {
+                        _PreviousTraversalRequest = new TraversalRequest(FocusNavigationDirection.Previous);
+                        _NextTraversalRequest = new TraversalRequest(FocusNavigationDirection.Next);
+                    }
+
+                    var t = Keyboard.Modifiers == ModifierKeys.Shift
+                        ? _PreviousTraversalRequest
+                        : _NextTraversalRequest;
+
+                    MoveFocus(t);
+
+                    e.Handled = true;
+
                     break;
+                }
 
                 case Key.Return:
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
+                {
+                    FinishEditing(true);
+
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+
+                    e.Handled = true;
+
                     break;
-            }
+                }
 
-            void ClosePopup()
-            {
+                case Key.Escape:
+                {
+                    FinishEditing(false);
+
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+
+                    e.Handled = true;
+
+                    break;
+                }
+            }
+        }
+
+        private void FinishEditing(bool isEdit)
+        {
+            if (isEdit)
                 Text = _textBox.Text;
-                ((Popup) sender).IsOpen = false;
-            }
 
-            void MoveFocus()
-            {
-                Text = _textBox.Text;
-                ((Popup) sender).IsOpen = false;
+            RemoveVisualChild(_textBox);
+            _isEditing = false;
+            InvalidateVisual();
+        }
 
-                var dir = Keyboard.Modifiers == ModifierKeys.Shift
-                    ? FocusNavigationDirection.Previous
-                    : FocusNavigationDirection.Next;
+        protected override int VisualChildrenCount
+            => _isEditing ? 1 : 0;
 
-                this.MoveFocus(new TraversalRequest(dir));
-            }
+        protected override Visual GetVisualChild(int index)
+            => _textBox;
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (_isEditing)
+                _textBox.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
+
+            return base.ArrangeOverride(finalSize);
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (_isEditing)
+                _textBox.Measure(new Size(ActualWidth, ActualHeight));
+
+            return base.MeasureOverride(availableSize);
         }
     }
 }

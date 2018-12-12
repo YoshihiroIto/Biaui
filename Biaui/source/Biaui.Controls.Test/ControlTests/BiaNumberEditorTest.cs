@@ -178,14 +178,6 @@ namespace Biaui.Controls.Test.ControlTests
             Thread.Sleep(50);
             Assert.Equal(23, ctrl.Value);
 
-            // フォーカス外しで確定
-            ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("34");
-            ctrl.MouseMove(-5, -5);
-            ctrl.Click(MouseButtonType.Left, -5, -5);
-            Thread.Sleep(50);
-            Assert.Equal(34, ctrl.Value);
-
             // ESC押下での確定
             ctrl.Value = 99;
             ctrl.Click(MouseButtonType.Left, x, y);

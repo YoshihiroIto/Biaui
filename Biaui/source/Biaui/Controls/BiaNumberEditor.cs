@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -540,8 +538,6 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaNumberEditor)));
 
             SetupSpinGeom();
-
-            _popup.RenderTransform = _scale;
         }
 
         public BiaNumberEditor()
@@ -583,7 +579,7 @@ namespace Biaui.Controls
 
         private void DrawBackground(DrawingContext dc)
         {
-            var brush = _isInPopup ? _textBox.Background : Background;
+            var brush = _isEditing ? _textBox.Background : Background;
 
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
@@ -622,7 +618,7 @@ namespace Biaui.Controls
                 return;
 
             var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutActualWidth(IsVisibleBorder) / SliderWidth;
-            var brush = _isInPopup ? _textBox.Background : SliderBrush;
+            var brush = _isEditing ? _textBox.Background : SliderBrush;
 
             var r = this.RoundLayoutActualRectangle(IsVisibleBorder);
             r.Width = FrameworkElementHelper.RoundLayoutValue(w);
@@ -898,30 +894,8 @@ namespace Biaui.Controls
             return MouseOverType.Slider;
         }
 
-        private static readonly TextBox _textBox = new TextBox
-        {
-            IsTabStop = false,
-            IsUndoEnabled = false,
-            FocusVisualStyle = null
-        };
-
-        private static readonly Popup _popup = new Popup
-        {
-            Child = _textBox,
-            AllowsTransparency = true,
-            StaysOpen = false,
-        };
-
-        private static readonly ScaleTransform _scale = new ScaleTransform();
-
-        private bool _isInPopup;
-        private PopupResult _popupResult;
-
-        private enum PopupResult
-        {
-            Ok,
-            Cancel
-        }
+        private TextBox _textBox;
+        private bool _isEditing;
 
         private void AddValue(double i)
         {
@@ -932,76 +906,103 @@ namespace Biaui.Controls
 
         private void ShowEditBox()
         {
+            if (_textBox == null)
+            {
+                _textBox = new TextBox
+                {
+                    IsTabStop = false,
+                    IsUndoEnabled = false,
+                    FocusVisualStyle = null,
+                    SelectionLength = 0
+                };
+
+                _textBox.TextChanged += TextBox_OnTextChanged;
+                _textBox.LostFocus += TextBox_OnLostFocus;
+                _textBox.PreviewKeyDown += TextBox_OnPreviewKeyDown;
+            }
+
             _textBox.Width = ActualWidth;
             _textBox.Height = ActualHeight;
             _textBox.IsReadOnly = IsReadOnly;
             _textBox.Text = FormattedValueString;
-            _textBox.TextChanged += TextBoxOnTextChanged;
 
-            var s = this.CalcCompositeRenderScale();
-            _scale.ScaleX = s;
-            _scale.ScaleY = s;
+            AddVisualChild(_textBox);
+            InvalidateMeasure();
 
-            _popup.PlacementTarget = this;
-            _popup.VerticalOffset = -ActualHeight;
-            _popup.Closed += PopupOnClosed;
-            _popup.PreviewKeyDown += PopupOnPreviewKeyDown;
-
-            _popupResult = PopupResult.Ok;
-            _popup.IsOpen = true;
-            _isInPopup = true;
-
-            _textBox.Focus();
             _textBox.SelectAll();
+            _textBox.Focus();
+
+            _isEditing = true;
         }
 
-        private void PopupOnClosed(object sender, EventArgs e)
-        {
-            if (_popupResult == PopupResult.Ok)
-                ConfirmValue();
-
-            _popup.Closed -= PopupOnClosed;
-            _popup.PreviewKeyDown -= PopupOnPreviewKeyDown;
-            _textBox.TextChanged -= TextBoxOnTextChanged;
-
-            _isInPopup = false;
-            InvalidateVisual();
-
-            void ConfirmValue()
-            {
-                var v = MakeValueFromString(_textBox.Text);
-                if (v.Result == MakeValueResult.Ok ||
-                    v.Result == MakeValueResult.Continue)
-                    Value = v.Value;
-            }
-        }
-
-        private void TextBoxOnTextChanged(object sender, TextChangedEventArgs e)
+        private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             InvalidateVisual();
         }
 
-        private void PopupOnPreviewKeyDown(object sender, KeyEventArgs e)
+        private void TextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (_isEditing)
+                FinishEditing(true);
+        }
+
+        private void TextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.Return:
                 case Key.Tab:
                     var v = MakeValueFromString(_textBox.Text);
+
                     if (v.Result == MakeValueResult.Continue)
                         _textBox.Text = v.Value.ToString(DisplayFormat);
                     else
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
+                        FinishEditing(v.Result == MakeValueResult.Ok);
+
                     break;
 
                 case Key.Escape:
-                    _popupResult = PopupResult.Cancel;
                     _textBox.Text = FormattedValueString;
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) ClosePopup);
+                    FinishEditing(false);
                     break;
             }
+        }
 
-            void ClosePopup() => ((Popup) sender).IsOpen = false;
+        private void FinishEditing(bool isEdit)
+        {
+            if (isEdit)
+            {
+                var v = MakeValueFromString(_textBox.Text);
+                if (v.Result == MakeValueResult.Ok ||
+                    v.Result == MakeValueResult.Continue)
+                    Value = v.Value;
+            }
+
+            RemoveVisualChild(_textBox);
+            _isEditing = false;
+            InvalidateVisual();
+        }
+
+        protected override int VisualChildrenCount
+            => _isEditing ? 1 : 0;
+
+        protected override Visual GetVisualChild(int index)
+            => _textBox;
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (_isEditing)
+                _textBox.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
+
+            return base.ArrangeOverride(finalSize);
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (_isEditing)
+                _textBox.Measure(new Size(ActualWidth, ActualHeight));
+
+            return base.MeasureOverride(availableSize);
         }
 
         private enum MakeValueResult
@@ -1029,7 +1030,7 @@ namespace Biaui.Controls
             if (double.TryParse(Evaluator.Eval(rs), out v))
                 return (MakeValueResult.Continue, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
 
-            return (MakeValueResult.Cancel, default(double));
+            return (MakeValueResult.Cancel, default);
         }
 
         private static void SetupSpinGeom()
@@ -1091,7 +1092,7 @@ namespace Biaui.Controls
         {
             get
             {
-                if (_isInPopup == false)
+                if (_isEditing == false)
                     return Concat(FormattedValueString, UnitString);
 
                 var v = MakeValueFromString(_textBox.Text);
@@ -1112,7 +1113,7 @@ namespace Biaui.Controls
         {
             get
             {
-                if (_isInPopup == false)
+                if (_isEditing == false)
                     return Value;
 
                 var v = MakeValueFromString(_textBox.Text);
