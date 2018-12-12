@@ -89,12 +89,12 @@ namespace Biaui.Controls.NodeEditor
                 (x - _translate.X) / _scale.ScaleX,
                 (y - _translate.Y) / _scale.ScaleY);
 
-        private Rect MakeCurrentViewport()
+        private ImmutableRect MakeCurrentViewport()
         {
             var sx = _scale.ScaleX;
             var sy = _scale.ScaleY;
 
-            return new Rect(
+            return new ImmutableRect(
                 -_translate.X / sx,
                 -_translate.Y / sy,
                 ActualWidth / sx,
@@ -239,7 +239,7 @@ namespace Biaui.Controls.NodeEditor
         private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
             new List<(INodeItem, BiaNodePanel)>();
 
-        private void UpdateChildrenBag(Rect rect, bool isPushRemove)
+        private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
             foreach (var c in _childrenDict)
             {
@@ -480,7 +480,7 @@ namespace Biaui.Controls.NodeEditor
             e.Handled = true;
         }
 
-        private void SelectNodes(Rect rect)
+        private void SelectNodes(in ImmutableRect rect)
         {
             var isPressControl = KeyboardHelper.IsPressControl;
 
@@ -493,7 +493,7 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var node in NodesSource)
             {
-                var nr = new Rect(node.Pos, node.Size);
+                var nr = new ImmutableRect(node.Pos, node.Size);
 
                 if (rect.IntersectsWith(nr))
                 {
@@ -505,13 +505,13 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private void PreSelectNodes(Rect rect)
+        private void PreSelectNodes(in ImmutableRect rect)
         {
             ClearPreSelectedNode();
 
             foreach (var node in NodesSource)
             {
-                var nr = new Rect(node.Pos, node.Size);
+                var nr = new ImmutableRect(node.Pos, node.Size);
 
                 if (rect.IntersectsWith(nr))
                     node.IsPreSelected = true;
@@ -526,7 +526,7 @@ namespace Biaui.Controls.NodeEditor
 
         private void AddBoxSelector()
         {
-            _boxSelector.Rect = Rect.Empty;
+            _boxSelector.Rect = new ImmutableRect(0,0,0,0);
 
             _childrenBag.AddChild(_boxSelector);
             UpdateChildrenBag(true);
@@ -549,7 +549,7 @@ namespace Biaui.Controls.NodeEditor
             var p0 = (Point) ((sr.P0 - new Point(tx, ty)) / s);
             var p1 = (Point) ((sr.P1 - new Point(tx, ty)) / s);
 
-            _boxSelector.Rect = new Rect(p0, p1);
+            _boxSelector.Rect = new ImmutableRect(p0, new Size(p1.X - p0.X, p1.Y - p0.Y));
             _childrenBag.ChangeElement(_boxSelector);
             UpdateChildrenBag(true);
         }

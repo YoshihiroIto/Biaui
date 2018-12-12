@@ -26,6 +26,7 @@ namespace Biaui.Internals
         internal static object Point00 = new Point(0, 0);
         internal static object Size11 = new Size(1, 1);
         internal static object Rect0 = new Rect(0,0,0,0);
+        internal static object ImmutableRect0 = new ImmutableRect(0,0,0,0);
 
         internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
 

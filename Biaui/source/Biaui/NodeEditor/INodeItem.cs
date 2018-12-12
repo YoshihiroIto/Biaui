@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
+using Biaui.Internals;
 
 namespace Biaui.NodeEditor
 {
@@ -16,16 +17,14 @@ namespace Biaui.NodeEditor
         Size Size { get; set; }
     }
 
-    public static class NodeItemExtensions
+    internal static class NodeItemExtensions
     {
-        public static bool IntersectsWith(this INodeItem self, Rect rect)
+        internal static bool IntersectsWith(this INodeItem self, in ImmutableRect rect)
         {
             var pos = self.Pos;
             var size = self.Size;
 
-            var childRect = new Rect(pos.X, pos.Y, size.Width, size.Height);
-
-            return rect.IntersectsWith(childRect);
+            return rect.IntersectsWith(pos.X, pos.Y, pos.X + size.Width, pos.Y + size.Height);
         }
     }
 }

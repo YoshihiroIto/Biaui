@@ -8,7 +8,7 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         #region Rect
         
-        public Rect Rect
+        public ImmutableRect Rect
         {
             get => _Rect;
             set
@@ -18,18 +18,18 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
         
-        private Rect _Rect = default(Rect);
+        private ImmutableRect _Rect;
         
         public static readonly DependencyProperty RectProperty =
-            DependencyProperty.Register(nameof(Rect), typeof(Rect), typeof(BoxSelector),
+            DependencyProperty.Register(nameof(Rect), typeof(ImmutableRect), typeof(BoxSelector),
                 new FrameworkPropertyMetadata(
-                    Boxes.Rect0,
+                    Boxes.ImmutableRect0,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BoxSelector) s;
-                        self._Rect = (Rect)e.NewValue;
+                        self._Rect = (ImmutableRect)e.NewValue;
                     }));
         
         #endregion
