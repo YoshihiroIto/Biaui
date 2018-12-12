@@ -734,16 +734,7 @@ namespace Biaui.Controls
             {
                 CaptureMouse();
 
-                // マウス可動域を設定
-                if (Mode == BiaNumberEditorMode.Simple)
-                {
-                    var p0 = new Point(0.0, 0.0);
-                    var p1 = new Point(ActualWidth + 1, ActualHeight + 1);
-                    var dp0 = PointToScreen(p0);
-                    var dp1 = PointToScreen(p1);
-                    var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
-                    Win32Helper.ClipCursor(ref cr);
-                }
+                this.SetMouseClipping();
             }
 
             e.Handled = true;
@@ -832,7 +823,7 @@ namespace Biaui.Controls
                     switch (Mode)
                     {
                         case BiaNumberEditorMode.Simple:
-                            Win32Helper.ClipCursor(IntPtr.Zero);
+                            this.ResetMouseClipping();
                             break;
 
                         case BiaNumberEditorMode.WideRange:
@@ -879,7 +870,7 @@ namespace Biaui.Controls
             {
                 _isMouseDown = false;
                 ReleaseMouseCapture();
-                Win32Helper.ClipCursor(IntPtr.Zero);
+                this.ResetMouseClipping();
                 GuiHelper.ShowCursor();
             }
 

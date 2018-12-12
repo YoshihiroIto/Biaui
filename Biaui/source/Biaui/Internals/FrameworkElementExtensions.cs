@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Biaui.Internals
@@ -90,7 +91,22 @@ namespace Biaui.Internals
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
             => Caches.GetBorderPen(color, FrameworkElementHelper.RoundLayoutValue(BorderWidth));
 
-        public const double BorderWidth = 1.0;
+        internal static void SetMouseClipping(this FrameworkElement self)
+        {
+            var p0 = new Point(0, 0);
+            var p1 = new Point(self.ActualWidth + 1, self.ActualHeight + 1);
+            var dp0 = self.PointToScreen(p0);
+            var dp1 = self.PointToScreen(p1);
+            var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+            Win32Helper.ClipCursor(ref cr);
+        }
+
+        internal static void ResetMouseClipping(this FrameworkElement self)
+        {
+            Win32Helper.ClipCursor(IntPtr.Zero);
+        }
+
+        internal const double BorderWidth = 1.0;
 
         private static readonly double RoundLayoutBorderWidth =
             FrameworkElementHelper.RoundLayoutValue(BorderWidth * 0.5);

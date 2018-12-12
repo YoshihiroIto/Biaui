@@ -173,16 +173,7 @@ namespace Biaui.Controls
 
             CaptureMouse();
 
-            // マウス可動域を設定
-            {
-                var p0 = new Point(0.25, 0.25);
-                var p1 = new Point(ActualWidth - 0.25, ActualHeight - 0.25);
-                var dp0 = PointToScreen(p0);
-                var dp1 = PointToScreen(p1);
-
-                var cr = new Win32Helper.RECT((int) dp0.X + 1, (int) dp0.Y + 1, (int) dp1.X - 1, (int) dp1.Y - 1);
-                Win32Helper.ClipCursor(ref cr);
-            }
+            this.SetMouseClipping();
 
             e.Handled = true;
         }
@@ -222,7 +213,7 @@ namespace Biaui.Controls
 
             _isMouseDown = false;
             GuiHelper.ShowCursor();
-            Win32Helper.ClipCursor(IntPtr.Zero);
+            this.ResetMouseClipping();
             ReleaseMouseCapture();
 
             e.Handled = true;
@@ -237,7 +228,7 @@ namespace Biaui.Controls
                 _isMouseDown = false;
                 ReleaseMouseCapture();
                 GuiHelper.ShowCursor();
-                Win32Helper.ClipCursor(IntPtr.Zero);
+                this.ResetMouseClipping();
             }
 
             e.Handled = true;
