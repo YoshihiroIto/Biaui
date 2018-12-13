@@ -301,19 +301,6 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaComboBox)));
         }
 
-        public BiaComboBox()
-        {
-            Unloaded += (_, __) =>
-            {
-                if (_popup != null)
-                {
-                    _listBox.PreviewKeyDown -= ListBoxOnPreviewKeyDown;
-                    _listBox.PreviewMouseLeftButtonDown -= ListBoxOnPreviewMouseLeftButtonDown;
-                    _popup.Closed -= PopupOnClosed;
-                }
-            };
-        }
-
         protected override void OnRender(DrawingContext dc)
         {
             if (ActualWidth <= 1 ||

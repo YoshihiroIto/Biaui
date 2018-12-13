@@ -252,15 +252,6 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaButton)));
         }
 
-        public BiaButton()
-        {
-            Unloaded += (_, __) =>
-            {
-                if (Command != null)
-                    Command.CanExecuteChanged -= CommandOnCanExecuteChanged;
-            };
-        }
-
         protected override void OnRender(DrawingContext dc)
         {
             if (ActualWidth <= 1 ||
