@@ -10,12 +10,17 @@
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey}" />
+        <Setter Property="Focusable" Value="True" />
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
                 <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey.IsMouseOver}" />
+            </Trigger>
+
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
             </Trigger>
 
             <Trigger Property="IsReadOnly" Value="True">

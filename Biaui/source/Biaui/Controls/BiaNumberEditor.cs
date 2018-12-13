@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -849,7 +850,10 @@ namespace Biaui.Controls
                     else if (p.X >= ActualWidth - SpinWidth && IsReadOnly == false)
                         AddValue(inc);
                     else
+                    {
+                        //Focus();
                         ShowEditBox();
+                    }
                 }
             }
 
@@ -904,6 +908,20 @@ namespace Biaui.Controls
             Value = Math.Min(ActualMaximum, Math.Max(ActualMinimum, v));
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (IsEnabled == false)
+                return;
+
+            if (e.Key == Key.Return)
+            {
+                ShowEditBox();
+                e.Handled = true;
+            }
+        }
+
         private void ShowEditBox()
         {
             if (_textBox == null)
@@ -950,8 +968,8 @@ namespace Biaui.Controls
         {
             switch (e.Key)
             {
-                case Key.Return:
                 case Key.Tab:
+                {
                     var v = MakeValueFromString(_textBox.Text);
 
                     if (v.Result == MakeValueResult.Continue)
@@ -959,12 +977,40 @@ namespace Biaui.Controls
                     else
                         FinishEditing(v.Result == MakeValueResult.Ok);
 
+                    var t = Keyboard.Modifiers == ModifierKeys.Shift
+                        ? Caches.PreviousTraversalRequest
+                        : Caches.NextTraversalRequest;
+                    MoveFocus(t);
+
+                    e.Handled = true;
                     break;
+                }
+
+                case Key.Return:
+                {
+                    var v = MakeValueFromString(_textBox.Text);
+
+                    if (v.Result == MakeValueResult.Continue)
+                        _textBox.Text = v.Value.ToString(DisplayFormat);
+                    else
+                        FinishEditing(v.Result == MakeValueResult.Ok);
+
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+
+                    e.Handled = true;
+                    break;
+                }
 
                 case Key.Escape:
+                {
                     _textBox.Text = FormattedValueString;
                     FinishEditing(false);
+
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+
+                    e.Handled = true;
                     break;
+                }
             }
         }
 
