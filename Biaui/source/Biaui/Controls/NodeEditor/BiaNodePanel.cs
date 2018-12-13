@@ -48,7 +48,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private double _CornerRadius = default(double);
+        private double _CornerRadius;
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaNodePanel),
@@ -76,7 +76,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
         
-        private Brush _Background = default(Brush);
+        private Brush _Background;
         
         public new static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaNodePanel),

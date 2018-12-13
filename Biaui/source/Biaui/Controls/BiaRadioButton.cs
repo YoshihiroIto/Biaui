@@ -18,7 +18,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _markBorderColor = default(Color);
+        private Color _markBorderColor;
 
         public static readonly DependencyProperty MarkBorderColorProperty =
             DependencyProperty.Register(nameof(MarkBorderColor), typeof(Color), typeof(BiaRadioButton),
@@ -46,7 +46,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _MarkBrush = default(Brush);
+        private Brush _MarkBrush;
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaRadioButton),

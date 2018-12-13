@@ -29,7 +29,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private ObservableCollection<INodeItem> _NodesSource = default(ObservableCollection<INodeItem>);
+        private ObservableCollection<INodeItem> _NodesSource;
 
         public static readonly DependencyProperty NodesSourceProperty =
             DependencyProperty.Register(nameof(NodesSource), typeof(ObservableCollection<INodeItem>),

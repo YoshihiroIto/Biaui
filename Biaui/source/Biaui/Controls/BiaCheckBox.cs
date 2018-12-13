@@ -46,7 +46,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _MarkBrush = default(Brush);
+        private Brush _MarkBrush;
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaCheckBox),

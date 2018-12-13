@@ -17,7 +17,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsChecked = default(bool);
+        private bool _IsChecked;
 
         public static readonly DependencyProperty IsCheckedProperty =
             DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaToggleButton),

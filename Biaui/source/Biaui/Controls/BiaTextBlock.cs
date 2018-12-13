@@ -19,7 +19,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Text = default(string);
+        private string _Text;
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(BiaTextBlock),
@@ -48,7 +48,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground = default(Brush);
+        private Brush _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaTextBlock),

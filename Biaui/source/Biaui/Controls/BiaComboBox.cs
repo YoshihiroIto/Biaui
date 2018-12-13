@@ -27,7 +27,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background = default(Brush);
+        private Brush _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaComboBox),
@@ -55,7 +55,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground = default(Brush);
+        private Brush _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaComboBox),
@@ -111,7 +111,7 @@ namespace Biaui.Controls
             }
         }
 
-        private double _CornerRadius = default(double);
+        private double _CornerRadius;
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaComboBox),
@@ -140,7 +140,7 @@ namespace Biaui.Controls
             }
         }
 
-        private IEnumerable _ItemsSource = default(IEnumerable);
+        private IEnumerable _ItemsSource;
 
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable), typeof(BiaComboBox),
@@ -168,12 +168,12 @@ namespace Biaui.Controls
             }
         }
 
-        private object _SelectedItem = default(object);
+        private object _SelectedItem;
 
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(nameof(SelectedItem), typeof(object), typeof(BiaComboBox),
                 new FrameworkPropertyMetadata(
-                    default(object),
+                    default,
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
@@ -197,7 +197,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _MarkBrush = default(Brush);
+        private Brush _MarkBrush;
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaComboBox),
@@ -225,7 +225,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsOpen = default(bool);
+        private bool _IsOpen;
 
         public static readonly DependencyProperty IsOpenProperty =
             DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(BiaComboBox),
@@ -251,7 +251,7 @@ namespace Biaui.Controls
             }
         }
 
-        private IValueConverter _ItemToStringConverter = default(IValueConverter);
+        private IValueConverter _ItemToStringConverter;
 
         public static readonly DependencyProperty ItemToStringConverterProperty =
             DependencyProperty.Register(nameof(ItemToStringConverter), typeof(IValueConverter), typeof(BiaComboBox),
@@ -280,12 +280,12 @@ namespace Biaui.Controls
             }
         }
 
-        private object _ItemToStringConverterParameter = default(object);
+        private object _ItemToStringConverterParameter;
 
         public static readonly DependencyProperty ItemToStringConverterParameterProperty =
             DependencyProperty.Register(nameof(ItemToStringConverterParameter), typeof(object), typeof(BiaComboBox),
                 new PropertyMetadata(
-                    default(object),
+                    default,
                     (s, e) =>
                     {
                         var self = (BiaComboBox) s;

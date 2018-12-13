@@ -75,10 +75,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 switch (targetType)
                 {
                     case TargetType.NodeEditor:
-                        if (KeyboardHelper.IsPressSpace)
-                            _opType = OpType.EditorScroll;
-                        else
-                            _opType = OpType.BoxSelect;
+                        _opType = KeyboardHelper.IsPressSpace ? OpType.EditorScroll : OpType.BoxSelect;
 
                         break;
 
@@ -113,7 +110,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                     break;
 
                 case OpType.BoxSelect:
-                    DoBoxSelect(e);
                     break;
 
                 case OpType.PanelMove:
@@ -134,12 +130,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             _translate.X = _mouseDownScrollX + diff.X;
             _translate.Y = _mouseDownScrollY + diff.Y;
-
-            //_target.InvalidateVisual();
-        }
-
-        private void DoBoxSelect(MouseEventArgs mouseEventArgs)
-        {
         }
 
         internal class PanelMovingEventArgs : EventArgs

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -182,7 +181,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsReadOnly = default(bool);
+        private bool _IsReadOnly;
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaColorPicker),

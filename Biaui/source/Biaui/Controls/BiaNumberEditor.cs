@@ -30,7 +30,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsReadOnly = default(bool);
+        private bool _IsReadOnly;
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaNumberEditor),
@@ -114,7 +114,7 @@ namespace Biaui.Controls
             }
         }
 
-        private double _Value = default(double);
+        private double _Value;
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaNumberEditor),
@@ -145,7 +145,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Caption = default(string);
+        private string _Caption;
 
         public static readonly DependencyProperty CaptionProperty =
             DependencyProperty.Register(nameof(Caption), typeof(string), typeof(BiaNumberEditor),
@@ -173,7 +173,7 @@ namespace Biaui.Controls
             }
         }
 
-        private double _SliderMinimum = default(double);
+        private double _SliderMinimum;
 
         public static readonly DependencyProperty SliderMinimumProperty =
             DependencyProperty.Register(nameof(SliderMinimum), typeof(double), typeof(BiaNumberEditor),
@@ -229,7 +229,7 @@ namespace Biaui.Controls
             }
         }
 
-        private double _Minimum = default(double);
+        private double _Minimum;
 
         public static readonly DependencyProperty MinimumProperty =
             DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(BiaNumberEditor),
@@ -349,7 +349,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background = default(Brush);
+        private Brush _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaNumberEditor),
@@ -377,7 +377,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground = default(Brush);
+        private Brush _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaNumberEditor),
@@ -405,7 +405,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Thickness _Padding = default(Thickness);
+        private Thickness _Padding;
 
         public static readonly DependencyProperty PaddingProperty =
             DependencyProperty.Register(nameof(Padding), typeof(Thickness), typeof(BiaNumberEditor),

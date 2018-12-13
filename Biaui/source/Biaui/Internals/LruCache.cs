@@ -167,7 +167,7 @@ namespace Jewelry.Collections
                 return true;
             }
 
-            value = default(TValue);
+            value = default;
             return false;
         }
 
@@ -181,7 +181,7 @@ namespace Jewelry.Collections
                 return listNode.Value.Value;
             }
 
-            return default(TValue);
+            return default;
         }
 
         private TValue GetOrAddInternal(TKey key, Func<TKey, TValue> valueFactory)

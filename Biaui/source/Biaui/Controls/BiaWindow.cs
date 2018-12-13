@@ -18,7 +18,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Menu _Menu = default(Menu);
+        private Menu _Menu;
 
         public static readonly DependencyProperty MenuProperty =
             DependencyProperty.Register(nameof(Menu), typeof(Menu), typeof(BiaWindow),

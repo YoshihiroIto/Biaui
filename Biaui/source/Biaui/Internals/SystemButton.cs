@@ -18,7 +18,7 @@ namespace Biaui.Internals
             }
         }
 
-        private WindowAction _WindowAction = default(WindowAction);
+        private WindowAction _WindowAction;
 
         public static readonly DependencyProperty WindowActionProperty =
             DependencyProperty.Register(nameof(WindowAction), typeof(WindowAction), typeof(SystemButton),

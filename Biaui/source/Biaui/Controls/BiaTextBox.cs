@@ -51,7 +51,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsReadOnly = default(bool);
+        private bool _IsReadOnly;
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaTextBox),
@@ -79,7 +79,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background = default(Brush);
+        private Brush _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaTextBox),
@@ -107,7 +107,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground = default(Brush);
+        private Brush _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaTextBox),
@@ -163,7 +163,7 @@ namespace Biaui.Controls
             }
         }
 
-        private double _CornerRadius = default(double);
+        private double _CornerRadius;
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaTextBox),

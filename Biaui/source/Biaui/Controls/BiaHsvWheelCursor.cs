@@ -105,7 +105,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsReadOnly = default(bool);
+        private bool _IsReadOnly;
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvWheelCursor),

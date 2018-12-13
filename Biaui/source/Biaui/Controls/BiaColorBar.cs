@@ -22,7 +22,7 @@ namespace Biaui.Controls
             }
         }
 
-        private double _Value = default(double);
+        private double _Value;
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaColorBar),
@@ -136,7 +136,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsInverseValue = default(bool);
+        private bool _IsInverseValue;
 
         public static readonly DependencyProperty IsInverseValueProperty =
             DependencyProperty.Register(nameof(IsInverseValue), typeof(bool), typeof(BiaColorBar),
@@ -164,7 +164,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsReadOnly = default(bool);
+        private bool _IsReadOnly;
 
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaColorBar),

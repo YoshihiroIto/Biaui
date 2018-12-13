@@ -24,7 +24,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _content = default(string);
+        private string _content;
 
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register(nameof(Content), typeof(string), typeof(BiaButton),
@@ -54,7 +54,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _Command = default(ICommand);
+        private ICommand _Command;
 
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(BiaButton),
@@ -92,12 +92,12 @@ namespace Biaui.Controls
             }
         }
 
-        private object _CommandParameter = default(object);
+        private object _CommandParameter;
 
         public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(BiaButton),
                 new PropertyMetadata(
-                    default(object),
+                    default,
                     (s, e) =>
                     {
                         var self = (BiaButton) s;
@@ -118,7 +118,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background = default(Brush);
+        private Brush _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaButton),
@@ -146,7 +146,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground = default(Brush);
+        private Brush _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaButton),
@@ -174,7 +174,7 @@ namespace Biaui.Controls
             }
         }
 
-        private double _CornerRadius = default(double);
+        private double _CornerRadius;
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaButton),
@@ -202,7 +202,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _IsPressed = default(bool);
+        private bool _IsPressed;
 
         public static readonly DependencyProperty IsPressedProperty =
             DependencyProperty.Register(nameof(IsPressed), typeof(bool), typeof(BiaButton),
@@ -230,7 +230,7 @@ namespace Biaui.Controls
             }
         }
 
-        private bool _isPressedMouseOver = default(bool);
+        private bool _isPressedMouseOver;
 
         public static readonly DependencyProperty IsPressedMouseOverProperty =
             DependencyProperty.Register(nameof(IsPressedMouseOver), typeof(bool), typeof(BiaButton),
