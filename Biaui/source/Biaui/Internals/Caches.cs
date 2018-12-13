@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Biaui.Internals
 {
     internal static class Caches
     {
-        public static Pen GetBorderPen(Color color, double thickness)
+        internal static Pen GetBorderPen(Color color, double thickness)
         {
             var key = (color, thickness);
 
@@ -20,7 +21,7 @@ namespace Biaui.Internals
             return p;
         }
 
-        public static SolidColorBrush GetSolidColorBrush(Color color)
+        internal static SolidColorBrush GetSolidColorBrush(Color color)
         {
             if (_solidColorBrushes.TryGetValue(color, out var b))
                 return b;
@@ -33,7 +34,7 @@ namespace Biaui.Internals
             return b;
         }
 
-        public static Geometry GetClipGeom(double w, double h, double cornerRadius, bool isWidthBorder)
+        internal static Geometry GetClipGeom(double w, double h, double cornerRadius, bool isWidthBorder)
         {
             var key = (w, h, cornerRadius, isWidthBorder);
             if (_clipGeoms.TryGetValue(key, out var c))
@@ -46,7 +47,7 @@ namespace Biaui.Internals
                     RadiusX = cornerRadius,
                     RadiusY = cornerRadius,
                     Rect = FrameworkElementHelper.RoundLayoutRect(
-                        FrameworkElementExtensions.BorderWidth * 0.5, 
+                        FrameworkElementExtensions.BorderWidth * 0.5,
                         FrameworkElementExtensions.BorderWidth * 0.5,
                         w - FrameworkElementExtensions.BorderWidth,
                         h - FrameworkElementExtensions.BorderWidth)
@@ -69,10 +70,25 @@ namespace Biaui.Internals
             return c;
         }
 
-        private static readonly Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry> _clipGeoms =
-            new Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry>();
+        private static readonly
+            Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry> _clipGeoms =
+                new Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry>();
 
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
-        private static readonly Dictionary<Color, SolidColorBrush> _solidColorBrushes = new Dictionary<Color, SolidColorBrush>();
+
+        private static readonly Dictionary<Color, SolidColorBrush> _solidColorBrushes =
+            new Dictionary<Color, SolidColorBrush>();
+
+
+        internal static TraversalRequest PreviousTraversalRequest
+            => _PreviousTraversalRequest ??
+               (_PreviousTraversalRequest = new TraversalRequest(FocusNavigationDirection.Previous));
+
+        internal static TraversalRequest NextTraversalRequest
+            => _NextTraversalRequest ??
+               (_NextTraversalRequest = new TraversalRequest(FocusNavigationDirection.Next));
+
+        private static TraversalRequest _PreviousTraversalRequest;
+        private static TraversalRequest _NextTraversalRequest;
     }
 }

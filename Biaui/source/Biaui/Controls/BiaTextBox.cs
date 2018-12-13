@@ -307,9 +307,6 @@ namespace Biaui.Controls
                 FinishEditing(true);
         }
 
-        private static TraversalRequest _PreviousTraversalRequest;
-        private static TraversalRequest _NextTraversalRequest;
-
         private void TextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
@@ -318,16 +315,9 @@ namespace Biaui.Controls
                 {
                     FinishEditing(true);
 
-                    if (_PreviousTraversalRequest == null)
-                    {
-                        _PreviousTraversalRequest = new TraversalRequest(FocusNavigationDirection.Previous);
-                        _NextTraversalRequest = new TraversalRequest(FocusNavigationDirection.Next);
-                    }
-
                     var t = Keyboard.Modifiers == ModifierKeys.Shift
-                        ? _PreviousTraversalRequest
-                        : _NextTraversalRequest;
-
+                        ? Caches.PreviousTraversalRequest
+                        : Caches.NextTraversalRequest;
                     MoveFocus(t);
 
                     e.Handled = true;
@@ -342,7 +332,6 @@ namespace Biaui.Controls
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
-
                     break;
                 }
 
@@ -353,7 +342,6 @@ namespace Biaui.Controls
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
-
                     break;
                 }
             }
