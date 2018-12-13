@@ -785,7 +785,7 @@ namespace Biaui.Controls
                         GuiHelper.HideCursor();
 
                     // Ctrl押下中は５倍速い
-                    var s = IsCtrl ? 5.0 : 1.0;
+                    var s = KeyboardHelper.IsPressControl ? 5.0 : 1.0;
                     var w = currentPos.X - _oldPos.X;
                     var v = Value + s * w * Increment;
 
@@ -843,7 +843,7 @@ namespace Biaui.Controls
                 if (Math.Abs(p.X - _mouseDownPos.X) <= _clickPlayWidth)
                 {
                     // Ctrl押下中は５倍速い
-                    var inc = IsCtrl ? Increment * 5 : Increment;
+                    var inc = KeyboardHelper.IsPressControl ? Increment * 5 : Increment;
 
                     if (p.X <= SpinWidth && IsReadOnly == false)
                         AddValue(-inc);
@@ -1175,7 +1175,5 @@ namespace Biaui.Controls
 
         private static readonly Dictionary<(double X, double Y), TranslateTransform> _TranslateTransformCache =
             new Dictionary<(double X, double Y), TranslateTransform>();
-
-        private static bool IsCtrl => (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
     }
 }
