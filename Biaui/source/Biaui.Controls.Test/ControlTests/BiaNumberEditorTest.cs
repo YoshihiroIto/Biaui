@@ -166,58 +166,46 @@ namespace Biaui.Controls.Test.ControlTests
 
             // Enter押下での確定
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("12");
-            ctrl.SendKey(Keys.Enter);
-            Thread.Sleep(50);
+            SendKeys.SendWait("12{ENTER}");
+            Thread.Sleep(200);
             Assert.Equal(12, ctrl.Value);
 
             // Tab押下での確定
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("23");
-            ctrl.SendKey(Keys.Tab);
-            Thread.Sleep(50);
+            SendKeys.SendWait("23{TAB}");
+            Thread.Sleep(200);
             Assert.Equal(23, ctrl.Value);
 
             // ESC押下での確定
             ctrl.Value = 99;
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("99");
-            ctrl.SendKey(Keys.Escape);
-            Thread.Sleep(50);
+            SendKeys.SendWait("99{ESCAPE}");
+            Thread.Sleep(200);
             Assert.Equal(99, ctrl.Value);
 
             // 式を受け付ける
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("{(}1{+}2{)}{*}6");
-            ctrl.SendKey(Keys.Enter);
-            ctrl.SendKey(Keys.Enter);
-            Thread.Sleep(50);
+            SendKeys.SendWait("{(}1{+}2{)}{*}6{ENTER}{ENTER}");
+            Thread.Sleep(200);
             Assert.Equal(18, ctrl.Value);
 
             // 式を評価後のキャンセル
             ctrl.Value = 99;
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("{(}1{+}2{)}{*}6");
-
-            ctrl.SendKey(Keys.Enter);
-            ctrl.SendKey(Keys.Escape);
-            Thread.Sleep(50);
+            SendKeys.SendWait("{(}1{+}2{)}{*}6{ENTER}{ESCAPE}");
+            Thread.Sleep(200);
             Assert.Equal(99, ctrl.Value);
 
             // 関数を受け付ける
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("pow{(}2,3{)}");
-            ctrl.SendKey(Keys.Enter);
-            ctrl.SendKey(Keys.Enter);
-            Thread.Sleep(50);
+            SendKeys.SendWait("pow{(}2,3{)}{ENTER}{ENTER}");
+            Thread.Sleep(200);
             Assert.Equal(8, ctrl.Value);
 
             // 定数を受け付ける
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("PI");
-            ctrl.SendKey(Keys.Enter);
-            ctrl.SendKey(Keys.Enter);
-            Thread.Sleep(50);
+            SendKeys.SendWait("PI{ENTER}{ENTER}");
+            Thread.Sleep(200);
             Assert.Equal(3.142, ctrl.Value);
 
             // リードオンリーで編集できない
@@ -225,9 +213,8 @@ namespace Biaui.Controls.Test.ControlTests
             ctrl.IsReadOnly = true;
 
             ctrl.Click(MouseButtonType.Left, x, y);
-            ctrl.SendKeys("12");
-            ctrl.SendKey(Keys.Enter);
-            Thread.Sleep(50);
+            SendKeys.SendWait("12{ENTER}");
+            Thread.Sleep(200);
             Assert.Equal(70, ctrl.Value);
         }
 
