@@ -850,10 +850,7 @@ namespace Biaui.Controls
                     else if (p.X >= ActualWidth - SpinWidth && IsReadOnly == false)
                         AddValue(inc);
                     else
-                    {
-                        //Focus();
                         ShowEditBox();
-                    }
                 }
             }
 
@@ -993,9 +990,10 @@ namespace Biaui.Controls
                     if (v.Result == MakeValueResult.Continue)
                         _textBox.Text = v.Value.ToString(DisplayFormat);
                     else
+                    {
                         FinishEditing(v.Result == MakeValueResult.Ok);
-
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                    }
 
                     e.Handled = true;
                     break;

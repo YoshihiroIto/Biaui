@@ -186,14 +186,14 @@ namespace Biaui.Controls.Test.ControlTests
             // 式を受け付ける
             ctrl.Click(MouseButtonType.Left, x, y);
             SendKeys.SendWait("{(}1{+}2{)}{*}6{ENTER}{ENTER}");
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             Assert.Equal(18, ctrl.Value);
 
             // 式を評価後のキャンセル
             ctrl.Value = 99;
             ctrl.Click(MouseButtonType.Left, x, y);
             SendKeys.SendWait("{(}1{+}2{)}{*}6{ENTER}{ESCAPE}");
-            Thread.Sleep(200);
+            Thread.Sleep(500);
             Assert.Equal(99, ctrl.Value);
 
             // 関数を受け付ける
