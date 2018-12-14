@@ -239,38 +239,46 @@ namespace Biaui.Controls.NodeEditor
         private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
             new List<(INodeItem, BiaNodePanel)>();
 
+        public static readonly Size _maxSize = new Size(10000000, 10000000);
+
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
-            var actualSize = new Size(ActualWidth, ActualHeight); 
-
             foreach (var c in _childrenDict)
             {
                 var item = c.Key;
                 var nodePanel = c.Value;
 
-                if (item.IntersectsWith(rect))
+                var isTempSize = false;
+                // 対象アイテムが一度も表示されていない場合は、大きさを適当に設定してしのぐ
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                if (item.Size.Width == 0/* || item.Size.Height == 0*/)
+                {
+                    item.Size = new Size(256, 512);
+                    isTempSize = true;
+                }
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+
+                if ( item.IntersectsWith(rect))
                 {
                     if (nodePanel == null)
                     {
                         nodePanel = GetNodePanel();
-
                         nodePanel.Style = FindResource(item.GetType()) as Style;
-                        //nodePanel.ApplyTemplate();
 
-                        nodePanel.Measure(actualSize);
+                        nodePanel.Measure(_maxSize);
                         item.Size = nodePanel.DesiredSize;
-                        nodePanel.Width = item.Size.Width;
-                        nodePanel.Height = item.Size.Height;
 
-                        nodePanel.DataContext = item;
+                        if (isTempSize == false || item.IntersectsWith(rect))
+                        {
+                            nodePanel.DataContext = item;
 
-                        // ※._childrenDictに登録前で変更通知が届かないため、このタイミングで直接設定する
-                        ChildrenBag.SetPos(nodePanel, item.Pos);
-                        ChildrenBag.SetSize(nodePanel, item.Size);
+                            // ※._childrenDictに登録前で変更通知が届かないため、このタイミングで直接設定する
+                            ChildrenBag.SetPos(nodePanel, item.Pos);
+                            ChildrenBag.SetSize(nodePanel, item.Size);
 
-                        _changedUpdateChildrenBag.Add((item, nodePanel));　
-
-                        _childrenBag.AddChild(nodePanel);
+                            _changedUpdateChildrenBag.Add((item, nodePanel));
+                            _childrenBag.AddChild(nodePanel);
+                        }
                     }
                 }
                 else
@@ -535,7 +543,7 @@ namespace Biaui.Controls.NodeEditor
 
         private void AddBoxSelector()
         {
-            _boxSelector.Rect = new ImmutableRect(0,0,0,0);
+            _boxSelector.Rect = new ImmutableRect(0, 0, 0, 0);
 
             _childrenBag.AddChild(_boxSelector);
             UpdateChildrenBag(true);
@@ -675,11 +683,7 @@ namespace Biaui.Controls.NodeEditor
         protected override Size MeasureOverride(Size availableSize)
         {
             foreach (var child in _changedElements)
-            {
-                var size = GetSize(child);
-
-                child.Measure(size);
-            }
+                child.Measure(availableSize);
 
             return base.MeasureOverride(availableSize);
         }

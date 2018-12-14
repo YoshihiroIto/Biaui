@@ -28,13 +28,13 @@ namespace Biaui.Controls.Mock.Presentation
 
             var i = 0;
 
-            var titleColors = new[]
+            var titleBackgrounds = new[]
             {
-                Colors.Purple,
-                Colors.SeaGreen,
-                Colors.Firebrick,
-                Colors.DarkSlateGray,
-                Colors.DeepPink
+                Brushes.Purple,
+                Brushes.SeaGreen,
+                Brushes.Firebrick,
+                Brushes.DarkSlateGray,
+                Brushes.DeepPink
             };
 
             for (var y = 0; y != 100; ++y)
@@ -46,20 +46,20 @@ namespace Biaui.Controls.Mock.Presentation
                 if ((x & 1) == 0)
                 {
                     Nodes.Add(
-                        new Node
+                        new BasicNode
                         {
-                            Name = $"Name:{i++}",
-                            TitleColor = titleColors[x % titleColors.Length],
+                            Title = $"Title:{i++}",
+                            TitleBackground = titleBackgrounds[x % titleBackgrounds.Length],
                             Pos = new Point(x * 800 + rx, y * 800 + ry),
                         });
                 }
                 else
                 {
                     Nodes.Add(
-                        new BasicNode
+                        new ColorNode
                         {
-                            Name = $"Name:{i++}",
-                            TitleColor = titleColors[x % titleColors.Length],
+                            Title = $"Color:{i++}",
+                            TitleBackground = titleBackgrounds[x % titleBackgrounds.Length],
                             Pos = new Point(x * 800 + rx, y * 800 + ry),
                         });
                 }
@@ -67,13 +67,13 @@ namespace Biaui.Controls.Mock.Presentation
         }
     }
 
-    public class Node : ModelBase, INodeItem
+    public class NodeBase : ModelBase, INodeItem
     {
-        #region Name
+        #region Title
 
         private string _Name;
 
-        public string Name
+        public string Title
         {
             get => _Name;
             set => SetProperty(ref _Name, value);
@@ -105,14 +105,14 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region TitleColor
+        #region TitleBackground
 
-        private Color _TitleColor;
+        private Brush _TitleBackground;
 
-        public Color TitleColor
+        public Brush TitleBackground
         {
-            get => _TitleColor;
-            set => SetProperty(ref _TitleColor, value);
+            get => _TitleBackground;
+            set => SetProperty(ref _TitleBackground, value);
         }
 
         #endregion
@@ -142,7 +142,46 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
     }
 
-    public class BasicNode : Node
+    public class BasicNode : NodeBase
     {
+    }
+
+    public class ColorNode : NodeBase
+    {
+        #region Red
+        
+        private double _Red;
+        
+        public double Red
+        {
+            get => _Red;
+            set => SetProperty(ref _Red, value);
+        }
+        
+        #endregion
+        
+        #region Green
+        
+        private double _Green;
+        
+        public double Green
+        {
+            get => _Green;
+            set => SetProperty(ref _Green, value);
+        }
+        
+        #endregion
+        
+        #region Blue
+        
+        private double _Blue;
+        
+        public double Blue
+        {
+            get => _Blue;
+            set => SetProperty(ref _Blue, value);
+        }
+        
+        #endregion
     }
 }

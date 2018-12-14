@@ -1,18 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Media;
 using Biaui.Internals;
 
 namespace Biaui.NodeEditor
 {
     public interface INodeItem : INotifyPropertyChanged
     {
-        string Name { get; }
-
         bool IsSelected { get; set; }
         bool IsPreSelected { get; set; }
 
-        Color TitleColor { get; set; }
         Point Pos { get; set; }
         Size Size { get; set; }
     }
