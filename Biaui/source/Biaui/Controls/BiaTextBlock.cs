@@ -26,6 +26,7 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(
                     default(string),
                     FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.AffectsMeasure |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
