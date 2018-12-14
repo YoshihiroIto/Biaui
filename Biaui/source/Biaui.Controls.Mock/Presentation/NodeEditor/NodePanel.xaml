@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor;assembly=Biaui"
+                    xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui">
+
+    <Style TargetType="{x:Type nodeEditor:BiaNodePanel}" BasedOn="{StaticResource {x:Type nodeEditor:BiaNodePanel}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel Margin="4,36,4,4">
+                        <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
+                        <controls:BiaTextBox Margin="0,4,0,0" Text="BBB" />
+
+                        <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamA" />
+                        <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamB" />
+                        <controls:BiaNumberEditor Margin="0,4,0,0" Caption="ParamC" />
+
+                        <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox1" />
+                        <controls:BiaCheckBox Margin="0,4,0,0" Content="CheckBox2" />
+
+                        <controls:BiaColorPicker Height="160"
+                                                 Margin="0,4,0,0"
+                                                 Blue="0.25"
+                                                 Green="0.5"
+                                                 Red="1" />
+
+                        <!--  Style="{DynamicResource BiaColorPickerLightweightType}"  -->
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

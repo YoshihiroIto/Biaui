@@ -573,6 +573,13 @@
                     BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                     BorderThickness="1">
                 <nodeEditor:BiaNodeEditor NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
+                    <nodeEditor:BiaNodeEditor.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="NodeEditor/NodePanel.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </nodeEditor:BiaNodeEditor.Resources>
                 </nodeEditor:BiaNodeEditor>
             </Border>
         </TabItem>
