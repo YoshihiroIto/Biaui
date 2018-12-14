@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -137,7 +138,7 @@ namespace Biaui.Controls.NodeEditor
                 case nameof(INodeItem.Pos):
                 case nameof(INodeItem.Size):
                 {
-                    ChangeElement();
+                    ChangeElement(true);
                     break;
                 }
 
@@ -148,7 +149,7 @@ namespace Biaui.Controls.NodeEditor
                     else
                         _selectedNodes.Remove(node);
 
-                    ChangeElement();
+                    ChangeElement(false);
                     break;
                 }
 
@@ -159,16 +160,23 @@ namespace Biaui.Controls.NodeEditor
                     else
                         _preSelectedNodes.Remove(node);
 
-                    ChangeElement();
+                    ChangeElement(false);
                     break;
                 }
             }
 
-            void ChangeElement()
+            //////////////////////////////////////////////////////////////////////////////////////
+            void ChangeElement(bool isPushRemove)
             {
-                if (_childrenDict.TryGetValue(node, out var child))
-                    if (child != null)
-                        _childrenBag.ChangeElement(child);
+                if (_childrenDict.TryGetValue(node, out var child) == false)
+                    return;
+
+                if (child != null)
+                {
+                    _childrenBag.ChangeElement(child);
+
+                    UpdateChildrenBag(isPushRemove);
+                }
             }
         }
 
@@ -220,6 +228,8 @@ namespace Biaui.Controls.NodeEditor
             _childrenBag.InvalidateMeasure();
         }
 
+        private int _isEnableUpdateChildrenBagDepth;
+
         private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
             new List<(INodeItem, BiaNodePanel)>();
 
@@ -227,22 +237,43 @@ namespace Biaui.Controls.NodeEditor
 
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
+            if (_isEnableUpdateChildrenBagDepth > 0)
+                return;
+
+            // メモ：
+            // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
+            // 対象のitemはまだ_childrenDictに登録されていないので問題ない(再入しない)。
+
             foreach (var c in _childrenDict)
             {
                 var item = c.Key;
                 var nodePanel = c.Value;
 
                 var isTempSize = false;
-                // 対象アイテムが一度も表示されていない場合は、大きさを適当に設定してしのぐ
-                // ReSharper disable CompareOfFloatsByEqualityOperator
-                if (item.Size.Width == 0 /* || item.Size.Height == 0*/)
+                ImmutableRect itemRect;
                 {
-                    item.Size = new Size(256, 512);
-                    isTempSize = true;
-                }
-                // ReSharper restore CompareOfFloatsByEqualityOperator
+                    // 対象アイテムが一度も表示されていない場合は、大きさを適当に設定してしのぐ
+                    // ReSharper disable CompareOfFloatsByEqualityOperator
+                    if (item.Size.Width == 0 /* || item.Size.Height == 0*/)
+                        // ReSharper restore CompareOfFloatsByEqualityOperator
+                    {
+                        const double tempWidth = 256.0;
+                        const double tempHeight = 512.0;
 
-                if (item.IntersectsWith(rect))
+                        isTempSize = true;
+
+                        var pos = item.Pos;
+                        itemRect = new ImmutableRect(pos.X, pos.Y, pos.X + tempWidth, pos.Y + tempHeight);
+                    }
+                    else
+                    {
+                        var pos = item.Pos;
+                        var size = item.Size;
+                        itemRect = new ImmutableRect(pos.X, pos.Y, pos.X + size.Width, pos.Y + size.Height);
+                    }
+                }
+
+                if (rect.IntersectsWith(itemRect))
                 {
                     if (nodePanel == null)
                     {
@@ -387,8 +418,13 @@ namespace Biaui.Controls.NodeEditor
 
         private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
         {
-            foreach (var n in _selectedNodes)
-                n.Pos += e.Diff;
+            ++_isEnableUpdateChildrenBagDepth;
+            {
+                foreach (var n in _selectedNodes)
+                    n.Pos += e.Diff;
+            }
+            --_isEnableUpdateChildrenBagDepth;
+            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
         }
 
         private void ClearSelectedNode()
@@ -444,12 +480,17 @@ namespace Biaui.Controls.NodeEditor
 
             if (_mouseOperator.IsPanelMove)
             {
-                foreach (var n in _selectedNodes)
+                ++_isEnableUpdateChildrenBagDepth;
                 {
-                    n.Pos = new Point(
-                        Math.Round(n.Pos.X / 32) * 32,
-                        Math.Round(n.Pos.Y / 32) * 32);
+                    foreach (var n in _selectedNodes)
+                    {
+                        n.Pos = new Point(
+                            Math.Round(n.Pos.X / 32) * 32,
+                            Math.Round(n.Pos.Y / 32) * 32);
+                    }
                 }
+                --_isEnableUpdateChildrenBagDepth;
+                Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
             }
 
             UpdateChildrenBag(true);
