@@ -43,12 +43,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         #endregion
 
-        private readonly List<UIElement> _children = new List<UIElement>();
-        private readonly HashSet<UIElement> _childrenForSearch = new HashSet<UIElement>();
+        private readonly List<FrameworkElement> _children = new List<FrameworkElement>();
+        private readonly HashSet<FrameworkElement> _childrenForSearch = new HashSet<FrameworkElement>();
+        private readonly List<FrameworkElement> _changedElements = new List<FrameworkElement>();
 
-        private readonly List<UIElement> _changedElements = new List<UIElement>();
-
-        internal void AddChild(UIElement child)
+        internal void AddChild(FrameworkElement child)
         {
             if (_childrenForSearch.Contains(child))
                 return;
@@ -60,7 +59,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             ChangeElement(child);
         }
 
-        internal void RemoveChild(UIElement child)
+        internal void RemoveChild(FrameworkElement child)
         {
             if (_childrenForSearch.Contains(child) == false)
                 return;
@@ -73,7 +72,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             //Debug.WriteLine($"RemoveChild>>>>>>>>>>>>>>{_children.Count}");
         }
 
-        internal void ToLast(UIElement child)
+        internal void ToLast(FrameworkElement child)
         {
             if (_childrenForSearch.Contains(child) == false)
                 return;
@@ -85,7 +84,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             AddVisualChild(child);
         }
 
-        internal void ChangeElement(UIElement child)
+        internal void ChangeElement(FrameworkElement child)
         {
             _changedElements.Add(child);
         }
