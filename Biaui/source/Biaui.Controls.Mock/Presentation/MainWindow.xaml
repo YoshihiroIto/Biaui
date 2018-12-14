@@ -573,9 +573,6 @@
                     BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                     BorderThickness="1">
                 <nodeEditor:BiaNodeEditor NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
-                    <nodeEditor:BiaNodeEditor.LayoutTransform>
-                        <ScaleTransform ScaleX="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" ScaleY="{Binding BiaNodeEditorViewModel.Scale, Mode=OneWay}" />
-                    </nodeEditor:BiaNodeEditor.LayoutTransform>
                 </nodeEditor:BiaNodeEditor>
             </Border>
         </TabItem>

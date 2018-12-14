@@ -22,18 +22,6 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region Scale
-
-        private double _Scale = 1;
-
-        public double Scale
-        {
-            get => _Scale;
-            set => SetProperty(ref _Scale, value);
-        }
-
-        #endregion
-
         public BiaNodeEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
             var r = new Random();
