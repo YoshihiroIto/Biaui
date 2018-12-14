@@ -43,14 +43,28 @@ namespace Biaui.Controls.Mock.Presentation
                 var rx = r.NextDouble() * 1024;
                 var ry = r.NextDouble() * 1024;
 
-                Nodes.Add(
-                    new Node
-                    {
-                        Name = $"Name:{i++}",
-                        TitleColor = titleColors[x % titleColors.Length],
-                        Pos = new Point(x * 800 + rx, y * 800 + ry),
-                        Size = new Size(32*8, 32*13)
-                    });
+                if ((x & 1) == 0)
+                {
+                    Nodes.Add(
+                        new Node
+                        {
+                            Name = $"Name:{i++}",
+                            TitleColor = titleColors[x % titleColors.Length],
+                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            Size = new Size(32 * 8, 32 * 13)
+                        });
+                }
+                else
+                {
+                    Nodes.Add(
+                        new BasicNode
+                        {
+                            Name = $"Name:{i++}",
+                            TitleColor = titleColors[x % titleColors.Length],
+                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            Size = new Size(32 * 8, 32 * 13)
+                        });
+                }
             }
         }
     }
@@ -58,15 +72,15 @@ namespace Biaui.Controls.Mock.Presentation
     public class Node : ModelBase, INodeItem
     {
         #region Name
-        
+
         private string _Name;
-        
+
         public string Name
         {
             get => _Name;
             set => SetProperty(ref _Name, value);
         }
-        
+
         #endregion
 
         #region IsSelected
@@ -94,15 +108,15 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
 
         #region TitleColor
-        
+
         private Color _TitleColor;
-        
+
         public Color TitleColor
         {
             get => _TitleColor;
             set => SetProperty(ref _TitleColor, value);
         }
-        
+
         #endregion
 
         #region Pos
@@ -128,5 +142,9 @@ namespace Biaui.Controls.Mock.Presentation
         }
 
         #endregion
+    }
+
+    public class BasicNode : Node
+    {
     }
 }

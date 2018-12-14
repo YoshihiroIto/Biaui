@@ -239,40 +239,61 @@ namespace Biaui.Controls.NodeEditor
         private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
             new List<(INodeItem, BiaNodePanel)>();
 
+
+
+
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
+            var actualSize = new Size(ActualWidth, ActualHeight); 
+
+
             foreach (var c in _childrenDict)
             {
-                var m = c.Key;
-                var t = c.Value;
+                var item = c.Key;
+                var nodePanel = c.Value;
 
-                if (m.IntersectsWith(rect))
+                if (item.IntersectsWith(rect))
                 {
-                    if (t == null)
+                    if (nodePanel == null)
                     {
-                        t = GetNodePanel();
+                        nodePanel = GetNodePanel();
 
-                        t.DataContext = m;
-                        ChildrenBag.SetPos(t, m.Pos);
-                        ChildrenBag.SetSize(t, m.Size);
+                        nodePanel.DataContext = item;
 
-                        t.Width = m.Size.Width;
-                        t.Height = m.Size.Height;
+#if true
+                        ChildrenBag.SetPos(nodePanel, item.Pos);
+                        ChildrenBag.SetSize(nodePanel, item.Size);
+#endif
 
-                        _changedUpdateChildrenBag.Add((m, t));
+                        nodePanel.Style = FindResource(item.GetType()) as Style;
+
+#if false
+                        nodePanel.ApplyTemplate();
+
+                        nodePanel.Measure(actualSize);
+                        item.Size = nodePanel.DesiredSize;
+
+                        nodePanel.Width = item.Size.Width;
+                        nodePanel.Height = item.Size.Height;
+
+                        ChildrenBag.SetPos(nodePanel, item.Pos);
+                        ChildrenBag.SetSize(nodePanel, item.Size);
+#endif
+
+                        _changedUpdateChildrenBag.Add((item, nodePanel));
                     }
 
-                    _childrenBag.AddChild(t);
+                    _childrenBag.AddChild(nodePanel);
                 }
                 else
                 {
                     if (isPushRemove)
                     {
-                        if (t != null)
+                        if (nodePanel != null)
                         {
-                            PushRemoveChild(t);
+                            PushRemoveChild(nodePanel);
 
-                            _changedUpdateChildrenBag.Add((m, null));
+                            _changedUpdateChildrenBag.Add((item, null));
                         }
                     }
                 }
