@@ -12,7 +12,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <StackPanel Margin="4,36,4,4">
+                    <StackPanel Margin="12,44,12,12">
                         <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
                         <controls:BiaTextBox Margin="0,4,0,0" Text="BBB" />
 
@@ -35,7 +35,6 @@
         </Setter>
     </Style>
 
-
     <Style x:Key="{x:Type presentation:Node}"
            BasedOn="{StaticResource {x:Type nodeEditor:BiaNodePanel}}"
            TargetType="{x:Type nodeEditor:BiaNodePanel}">
@@ -44,7 +43,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <StackPanel Margin="4,36,4,4">
+                    <StackPanel Margin="12,44,12,12">
                         <controls:BiaTextBox Margin="0,4,0,0" Text="AAA" />
                         <controls:BiaTextBox Margin="0,4,0,0" Text="BBB" />
 
