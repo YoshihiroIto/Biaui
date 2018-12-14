@@ -1,48 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using Biaui.Internals;
+using Biaui.NodeEditor;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class ChildrenBag : FrameworkElement
     {
-        #region Pos
-
-        internal static Point GetPos(DependencyObject obj)
-        {
-            return (Point) obj.GetValue(PosProperty);
-        }
-
-        internal static void SetPos(DependencyObject obj, Point value)
-        {
-            obj.SetValue(PosProperty, value);
-        }
-
-        internal static readonly DependencyProperty PosProperty =
-            DependencyProperty.RegisterAttached("Pos", typeof(Point), typeof(ChildrenBag),
-                new FrameworkPropertyMetadata(Boxes.Point00, FrameworkPropertyMetadataOptions.AffectsArrange));
-
-        #endregion
-
-        #region Size
-
-        internal static Size GetSize(DependencyObject obj)
-        {
-            return (Size) obj.GetValue(SizeProperty);
-        }
-
-        internal static void SetSize(DependencyObject obj, Size value)
-        {
-            obj.SetValue(SizeProperty, value);
-        }
-
-        internal static readonly DependencyProperty SizeProperty =
-            DependencyProperty.RegisterAttached("Size", typeof(Size), typeof(ChildrenBag),
-                new FrameworkPropertyMetadata(Boxes.Size11, FrameworkPropertyMetadataOptions.AffectsArrange));
-
-        #endregion
-
         private readonly List<FrameworkElement> _children = new List<FrameworkElement>();
         private readonly HashSet<FrameworkElement> _childrenForSearch = new HashSet<FrameworkElement>();
         private readonly List<FrameworkElement> _changedElements = new List<FrameworkElement>();
@@ -100,7 +65,14 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             foreach (var child in _changedElements)
             {
-                var pos = GetPos(child);
+                Point pos;
+
+                if (child.DataContext is INodeItem vm)
+                    pos = vm.Pos;
+                else if (child is BoxSelector)
+                    pos = new Point(0, 0);
+                else
+                    throw new NotSupportedException();
 
                 child.Arrange(new Rect(pos, child.DesiredSize));
             }

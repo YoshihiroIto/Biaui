@@ -138,10 +138,7 @@ namespace Biaui.Controls.NodeEditor
                 {
                     if (_childrenDict.TryGetValue(node, out var child))
                         if (child != null)
-                        {
-                            ChildrenBag.SetPos(child, node.Pos);
                             _childrenBag.ChangeElement(child);
-                        }
 
                     break;
                 }
@@ -150,10 +147,7 @@ namespace Biaui.Controls.NodeEditor
                 {
                     if (_childrenDict.TryGetValue(node, out var child))
                         if (child != null)
-                        {
-                            ChildrenBag.SetSize(child, node.Size);
                             _childrenBag.ChangeElement(child);
-                        }
 
                     break;
                 }
@@ -271,10 +265,6 @@ namespace Biaui.Controls.NodeEditor
                         if (isTempSize == false || item.IntersectsWith(rect))
                         {
                             nodePanel.DataContext = item;
-
-                            // ※._childrenDictに登録前で変更通知が届かないため、このタイミングで直接設定する
-                            ChildrenBag.SetPos(nodePanel, item.Pos);
-                            ChildrenBag.SetSize(nodePanel, item.Size);
 
                             _changedUpdateChildrenBag.Add((item, nodePanel));
                             _childrenBag.AddChild(nodePanel);
