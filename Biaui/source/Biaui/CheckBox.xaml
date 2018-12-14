@@ -3,7 +3,7 @@
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
-        <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
         <Setter Property="BorderThickness" Value="1" />

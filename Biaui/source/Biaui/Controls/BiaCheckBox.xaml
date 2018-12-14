@@ -6,7 +6,7 @@
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
         <Setter Property="Height" Value="20" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
-        <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
 
         <Style.Triggers>
             <MultiTrigger>
