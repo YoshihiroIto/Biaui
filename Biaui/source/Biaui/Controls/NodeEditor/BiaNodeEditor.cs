@@ -135,20 +135,9 @@ namespace Biaui.Controls.NodeEditor
             switch (e.PropertyName)
             {
                 case nameof(INodeItem.Pos):
-                {
-                    if (_childrenDict.TryGetValue(node, out var child))
-                        if (child != null)
-                            _childrenBag.ChangeElement(child);
-
-                    break;
-                }
-
                 case nameof(INodeItem.Size):
                 {
-                    if (_childrenDict.TryGetValue(node, out var child))
-                        if (child != null)
-                            _childrenBag.ChangeElement(child);
-
+                    ChangeElement();
                     break;
                 }
 
@@ -159,10 +148,7 @@ namespace Biaui.Controls.NodeEditor
                     else
                         _selectedNodes.Remove(node);
 
-                    if (_childrenDict.TryGetValue(node, out var child))
-                        if (child != null)
-                            _childrenBag.ChangeElement(child);
-
+                    ChangeElement();
                     break;
                 }
 
@@ -173,12 +159,16 @@ namespace Biaui.Controls.NodeEditor
                     else
                         _preSelectedNodes.Remove(node);
 
-                    if (_childrenDict.TryGetValue(node, out var child))
-                        if (child != null)
-                            _childrenBag.ChangeElement(child);
-
+                    ChangeElement();
                     break;
                 }
+            }
+
+            void ChangeElement()
+            {
+                if (_childrenDict.TryGetValue(node, out var child))
+                    if (child != null)
+                        _childrenBag.ChangeElement(child);
             }
         }
 
@@ -245,14 +235,14 @@ namespace Biaui.Controls.NodeEditor
                 var isTempSize = false;
                 // 対象アイテムが一度も表示されていない場合は、大きさを適当に設定してしのぐ
                 // ReSharper disable CompareOfFloatsByEqualityOperator
-                if (item.Size.Width == 0/* || item.Size.Height == 0*/)
+                if (item.Size.Width == 0 /* || item.Size.Height == 0*/)
                 {
                     item.Size = new Size(256, 512);
                     isTempSize = true;
                 }
                 // ReSharper restore CompareOfFloatsByEqualityOperator
 
-                if ( item.IntersectsWith(rect))
+                if (item.IntersectsWith(rect))
                 {
                     if (nodePanel == null)
                     {
