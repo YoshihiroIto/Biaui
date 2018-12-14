@@ -239,13 +239,9 @@ namespace Biaui.Controls.NodeEditor
         private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
             new List<(INodeItem, BiaNodePanel)>();
 
-
-
-
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
             var actualSize = new Size(ActualWidth, ActualHeight); 
-
 
             foreach (var c in _childrenDict)
             {
@@ -258,32 +254,24 @@ namespace Biaui.Controls.NodeEditor
                     {
                         nodePanel = GetNodePanel();
 
-                        nodePanel.DataContext = item;
-
-#if true
-                        ChildrenBag.SetPos(nodePanel, item.Pos);
-                        ChildrenBag.SetSize(nodePanel, item.Size);
-#endif
-
                         nodePanel.Style = FindResource(item.GetType()) as Style;
-
-#if false
-                        nodePanel.ApplyTemplate();
+                        //nodePanel.ApplyTemplate();
 
                         nodePanel.Measure(actualSize);
                         item.Size = nodePanel.DesiredSize;
-
                         nodePanel.Width = item.Size.Width;
                         nodePanel.Height = item.Size.Height;
 
+                        nodePanel.DataContext = item;
+
+                        // ※._childrenDictに登録前で変更通知が届かないため、このタイミングで直接設定する
                         ChildrenBag.SetPos(nodePanel, item.Pos);
                         ChildrenBag.SetSize(nodePanel, item.Size);
-#endif
 
-                        _changedUpdateChildrenBag.Add((item, nodePanel));
+                        _changedUpdateChildrenBag.Add((item, nodePanel));　
+
+                        _childrenBag.AddChild(nodePanel);
                     }
-
-                    _childrenBag.AddChild(nodePanel);
                 }
                 else
                 {
