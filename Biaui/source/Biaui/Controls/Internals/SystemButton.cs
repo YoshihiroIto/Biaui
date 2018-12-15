@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Biaui.Internals;
 
-namespace Biaui.Internals
+namespace Biaui.Controls.Internals
 {
     internal class SystemButton : Button
     {

@@ -66,6 +66,12 @@
     <Page Include="Controls\BiaColorPickerStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BiaWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Internals\SystemButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\NodeEditor\BiaNodeEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +186,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\BiaHsvWheelBackground.cs" />
     <Compile Include="Controls\BiaHsvWheelCursor.cs" />
+    <Compile Include="Controls\Internals\SystemButton.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodeEditor.cs" />
     <Compile Include="Controls\BiaTextBox.cs" />
     <Compile Include="Controls\BiaRadioButton.cs" />
@@ -227,7 +234,6 @@
     <Compile Include="Internals\MouseSimulator.cs" />
     <Compile Include="Internals\NumberHelper.cs" />
     <Compile Include="Internals\RenderHelper.cs" />
-    <Compile Include="Internals\SystemButton.cs" />
     <Compile Include="Internals\TextRenderer.cs" />
     <Compile Include="Internals\TreeViewHelper.cs" />
     <Compile Include="Internals\TreeViewItemExtensions.cs" />
