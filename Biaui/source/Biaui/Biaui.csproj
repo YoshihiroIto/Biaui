@@ -52,15 +52,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AccessText.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\AccessText.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CheckBox.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\ComboBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BiaColorPickerStyle.xaml">
@@ -114,70 +118,44 @@
     <Page Include="Controls\BiaNumberEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Decorator.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\Decorator.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Font.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ListBox.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ListView.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Menu.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RadioButton.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ScrollViewer.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Slider.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\Slider.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Button.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\TabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ComboBox.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\TextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Include="Label.xaml">
-      <DependentUpon>Controls.xaml</DependentUpon>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Include="TabControl.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
-    </Page>
-    <Page Include="TextBlock.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
-    </Page>
-    <Page Include="TextBox.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
-    </Page>
-    <Page Include="ToggleButton.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -199,13 +177,14 @@
     <Compile Include="Controls\BiaHsvBoxCursor.cs" />
     <Compile Include="Controls\BiaButton.cs" />
     <Compile Include="Controls\BiaWindow.cs" />
-    <Page Include="ToolTip.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\ToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TreeView.xaml">
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-      <DependentUpon>Controls.xaml</DependentUpon>
+    <Page Include="StandardControls\ToolTip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\TreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
