@@ -122,6 +122,12 @@ namespace Biaui.Controls
 
         private readonly HsvBoxBackgroundEffect _effect = new HsvBoxBackgroundEffect();
 
+        static BiaHsvBoxBackground()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvBoxBackground),
+                new FrameworkPropertyMetadata(typeof(BiaHsvBoxBackground)));
+        }
+
         public BiaHsvBoxBackground()
         {
             Effect = _effect;

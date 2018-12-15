@@ -33,6 +33,12 @@ namespace Biaui.Controls.NodeEditor.Internal
                     }));
         
         #endregion
+
+        static BoxSelector()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BoxSelector),
+                new FrameworkPropertyMetadata(typeof(BoxSelector)));
+        }
         
         protected override void OnRender(DrawingContext dc)
         {

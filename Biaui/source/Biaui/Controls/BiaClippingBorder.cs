@@ -33,6 +33,12 @@ namespace Biaui.Controls
             }
         }
 
+        static BiaClippingBorder()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaClippingBorder),
+                new FrameworkPropertyMetadata(typeof(BiaClippingBorder)));
+        }
+
         protected virtual void OnApplyChildClip()
         {
             var child = Child;

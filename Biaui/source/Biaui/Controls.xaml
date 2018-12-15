@@ -4,6 +4,7 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Button.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Decorator.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Label.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/ListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/ListView.xaml" />
@@ -17,21 +18,5 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/ToggleButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/ToolTip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/TreeView.xaml" />
-
-        <!-- Controls -->
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaButton.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaCheckBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaClippingBorder.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvWheelCursor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaRadioButton.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBlock.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaToggleButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

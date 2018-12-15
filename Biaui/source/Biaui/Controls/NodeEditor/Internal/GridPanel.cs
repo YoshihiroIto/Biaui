@@ -10,6 +10,12 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly TranslateTransform _translate;
         private readonly ScaleTransform _scale;
 
+        static GridPanel()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(GridPanel),
+                new FrameworkPropertyMetadata(typeof(GridPanel)));
+        }
+
         internal GridPanel(TranslateTransform translate, ScaleTransform scale)
         {
             _translate = translate;

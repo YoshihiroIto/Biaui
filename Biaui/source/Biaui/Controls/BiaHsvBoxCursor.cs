@@ -120,6 +120,12 @@ namespace Biaui.Controls
 
         #endregion
 
+        static BiaHsvBoxCursor()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvBoxCursor),
+                new FrameworkPropertyMetadata(typeof(BiaHsvBoxCursor)));
+        }
+
         public BiaHsvBoxCursor()
         {
             IsHitTestVisible = false;

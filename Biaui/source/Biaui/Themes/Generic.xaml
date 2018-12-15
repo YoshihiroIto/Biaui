@@ -2,6 +2,23 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:internals="clr-namespace:Biaui.Internals">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaCheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaClippingBorder.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvWheelCursor.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaRadioButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaToggleButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="{x:Type internals:SystemButton}">
         <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
         <Setter Property="Background" Value="Transparent" />

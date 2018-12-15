@@ -13,17 +13,17 @@
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
     <controls:BiaWindow.Resources>
-        <Style BasedOn="{StaticResource {x:Type controls:BiaTextBox}}" TargetType="{x:Type controls:BiaTextBox}">
+        <Style TargetType="{x:Type controls:BiaTextBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
 
-        <Style BasedOn="{StaticResource {x:Type controls:BiaComboBox}}" TargetType="{x:Type controls:BiaComboBox}">
+        <Style TargetType="{x:Type controls:BiaComboBox}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
 
-        <Style BasedOn="{StaticResource {x:Type controls:BiaButton}}" TargetType="{x:Type controls:BiaButton}">
+        <Style TargetType="{x:Type controls:BiaButton}">
             <Setter Property="Margin" Value="0,4,0,0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
@@ -123,7 +123,7 @@
             <controls:BiaClippingBorder Margin="0,4,0,0">
                 <Grid>
                     <Grid.Resources>
-                        <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                        <Style TargetType="{x:Type controls:BiaToggleButton}">
                             <Setter Property="CornerRadius" Value="0" />
                         </Style>
                     </Grid.Resources>
@@ -147,7 +147,7 @@
             <controls:BiaClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                 <Grid>
                     <Grid.Resources>
-                        <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                        <Style TargetType="{x:Type controls:BiaToggleButton}">
                             <Setter Property="CornerRadius" Value="0" />
                         </Style>
                     </Grid.Resources>
@@ -430,7 +430,7 @@
                                         CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                 <Grid>
                     <Grid.Resources>
-                        <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
+                        <Style TargetType="{x:Type controls:BiaNumberEditor}">
                             <Setter Property="SliderMinimum" Value="-1000" />
                             <Setter Property="SliderMaximum" Value="1000" />
                             <Setter Property="Minimum" Value="-1000" />

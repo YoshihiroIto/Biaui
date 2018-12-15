@@ -57,6 +57,12 @@ namespace Biaui.Controls.NodeEditor
         private readonly MouseOperator _mouseOperator;
         private readonly DispatcherTimer _removeNodePanelTimer;
 
+        static BiaNodeEditor()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodeEditor),
+                new FrameworkPropertyMetadata(typeof(BiaNodeEditor)));
+        }
+
         public BiaNodeEditor()
         {
             SizeChanged += (_, __) => UpdateChildrenBag(true);

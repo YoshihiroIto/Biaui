@@ -121,6 +121,12 @@ namespace Biaui.Controls
 
         #endregion
 
+        static BiaHsvWheelCursor()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvWheelCursor),
+                new FrameworkPropertyMetadata(typeof(BiaHsvWheelCursor)));
+        }
+
         public BiaHsvWheelCursor()
         {
             IsHitTestVisible = false;

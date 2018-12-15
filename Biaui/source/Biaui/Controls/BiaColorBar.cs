@@ -183,6 +183,12 @@ namespace Biaui.Controls
         private Brush _backgroundBrush;
         private bool _isRequestUpdateBackgroundBrush = true;
 
+        static BiaColorBar()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaColorBar),
+                new FrameworkPropertyMetadata(typeof(BiaColorBar)));
+        }
+
         public BiaColorBar()
         {
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);

@@ -25,7 +25,7 @@
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
+                    <Style TargetType="{x:Type controls:BiaNumberEditor}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
                 </StackPanel.Resources>
@@ -36,8 +36,9 @@
                             Orientation="Vertical">
 
                     <StackPanel.Resources>
-                        <Style BasedOn="{StaticResource {x:Type controls:BiaNumberEditor}}" TargetType="{x:Type controls:BiaNumberEditor}">
-                            <Setter Property="UnitString" Value="% " />
+                        <Style TargetType="{x:Type controls:BiaNumberEditor}">
+                            <Setter Property="Margin" Value="0,4,0,0" />
+                            <Setter Property="UnitString" Value=" %" />
                         </Style>
                     </StackPanel.Resources>
 
@@ -156,7 +157,7 @@
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaButton}}" TargetType="{x:Type controls:BiaButton}">
+                    <Style TargetType="{x:Type controls:BiaButton}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
                 </StackPanel.Resources>
@@ -209,7 +210,7 @@
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                    <Style TargetType="{x:Type controls:BiaToggleButton}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
                 </StackPanel.Resources>
@@ -219,7 +220,7 @@
                             VerticalAlignment="Top"
                             Orientation="Vertical">
                     <StackPanel.Resources>
-                        <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                        <Style TargetType="{x:Type controls:BiaToggleButton}">
                             <Setter Property="Margin" Value="0,4,0,0" />
                         </Style>
                     </StackPanel.Resources>
@@ -253,7 +254,7 @@
                                             CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                     <Grid>
                         <Grid.Resources>
-                            <Style BasedOn="{StaticResource {x:Type controls:BiaToggleButton}}" TargetType="{x:Type controls:BiaToggleButton}">
+                            <Style TargetType="{x:Type controls:BiaToggleButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
                         </Grid.Resources>
@@ -450,7 +451,7 @@
         <TabItem Header="BiaTextBox">
             <StackPanel Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaTextBox}}" TargetType="{x:Type controls:BiaTextBox}">
+                    <Style TargetType="{x:Type controls:BiaTextBox}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
                 </StackPanel.Resources>
@@ -483,7 +484,7 @@
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaComboBox}}" TargetType="{x:Type controls:BiaComboBox}">
+                    <Style TargetType="{x:Type controls:BiaComboBox}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
                 </StackPanel.Resources>
@@ -534,7 +535,7 @@
         <TabItem Header="BiaTextBlock">
             <StackPanel Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type controls:BiaTextBlock}}" TargetType="{x:Type controls:BiaTextBlock}">
+                    <Style TargetType="{x:Type controls:BiaTextBlock}">
                         <Setter Property="Margin" Value="0,4,0,0" />
                     </Style>
                 </StackPanel.Resources>
@@ -573,7 +574,7 @@
                             DockPanel.Dock="Top"
                             Orientation="Horizontal">
                     <StackPanel.Resources>
-                        <Style TargetType="{x:Type controls:BiaButton}" BasedOn="{StaticResource {x:Type controls:BiaButton}}">
+                        <Style TargetType="{x:Type controls:BiaButton}">
                             <Setter Property="Margin" Value="0,0,4,0" />
                         </Style>
                     </StackPanel.Resources>

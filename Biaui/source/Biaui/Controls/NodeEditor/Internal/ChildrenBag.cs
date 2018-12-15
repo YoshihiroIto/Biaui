@@ -12,6 +12,12 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly HashSet<FrameworkElement> _childrenForSearch = new HashSet<FrameworkElement>();
         private readonly List<FrameworkElement> _changedElements = new List<FrameworkElement>();
 
+        static ChildrenBag()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChildrenBag),
+                new FrameworkPropertyMetadata(typeof(ChildrenBag)));
+        }
+
         internal void AddChild(FrameworkElement child)
         {
             if (_childrenForSearch.Contains(child))

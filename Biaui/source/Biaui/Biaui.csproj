@@ -63,6 +63,9 @@
     <Page Include="Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BiaColorPickerStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\NodeEditor\BiaNodeEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

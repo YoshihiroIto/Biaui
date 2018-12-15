@@ -3,5 +3,7 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Font.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Colors.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls.xaml" />
+
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

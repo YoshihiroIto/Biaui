@@ -122,6 +122,12 @@ namespace Biaui.Controls
 
         private readonly HsvWheelBackgroundEffect _effect = new HsvWheelBackgroundEffect();
 
+        static BiaHsvWheelBackground()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvWheelBackground),
+                new FrameworkPropertyMetadata(typeof(BiaHsvWheelBackground)));
+        }
+
         public BiaHsvWheelBackground()
         {
             Effect = _effect;
