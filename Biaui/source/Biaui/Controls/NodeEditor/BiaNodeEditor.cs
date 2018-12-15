@@ -252,18 +252,18 @@ namespace Biaui.Controls.NodeEditor
 
         private void CleanAll()
         {
-                    foreach (var i in _nodeDict)
-                    {
-                        var nodeItem = i.Key;
-                        var panel = i.Value;
+            foreach (var i in _nodeDict)
+            {
+                var nodeItem = i.Key;
+                var panel = i.Value;
 
-                        nodeItem.PropertyChanged -= NodeItemPropertyChanged;
+                nodeItem.PropertyChanged -= NodeItemPropertyChanged;
 
-                        if (panel != null)
-                            RemoveNodePanel(panel);
-                    }
+                if (panel != null)
+                    RemoveNodePanel(panel);
+            }
 
-                    _nodeDict.Clear();
+            _nodeDict.Clear();
         }
 
         private void SetFrontmost(BiaNodePanel child)
