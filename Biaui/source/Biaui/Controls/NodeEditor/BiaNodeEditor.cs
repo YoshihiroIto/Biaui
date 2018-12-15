@@ -48,7 +48,7 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        private readonly Dictionary<INodeItem, BiaNodePanel> _childrenDict = new Dictionary<INodeItem, BiaNodePanel>();
+        private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
         private readonly ChildrenBag _childrenBag = new ChildrenBag();
 
         private readonly TranslateTransform _translate = new TranslateTransform();
@@ -110,17 +110,13 @@ namespace Biaui.Controls.NodeEditor
         {
             if (oldSource != null)
             {
-                foreach (var i in oldSource)
-                    i.PropertyChanged -= NodeItemPropertyChanged;
+                CleanAll();
 
                 oldSource.CollectionChanged -= NodesSourceOnCollectionChanged;
             }
 
             if (newSource != null)
             {
-                foreach (var i in newSource)
-                    i.PropertyChanged += NodeItemPropertyChanged;
-
                 newSource.CollectionChanged += NodesSourceOnCollectionChanged;
 
                 // 最初は全部追加として扱う
@@ -168,12 +164,12 @@ namespace Biaui.Controls.NodeEditor
             //////////////////////////////////////////////////////////////////////////////////////
             void ChangeElement(bool isPushRemove)
             {
-                if (_childrenDict.TryGetValue(node, out var child) == false)
+                if (_nodeDict.TryGetValue(node, out var panel) == false)
                     return;
 
-                if (child != null)
+                if (panel != null)
                 {
-                    _childrenBag.ChangeElement(child);
+                    _childrenBag.ChangeElement(panel);
 
                     UpdateChildrenBag(isPushRemove);
                 }
@@ -189,31 +185,85 @@ namespace Biaui.Controls.NodeEditor
                         break;
 
                     foreach (INodeItem nodeItem in e.NewItems)
-                        _childrenDict.Add(nodeItem, null);
+                    {
+                        nodeItem.PropertyChanged += NodeItemPropertyChanged;
+                        _nodeDict.Add(nodeItem, null);
+                    }
 
                     UpdateChildrenBag(true);
-
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    throw new NotImplementedException();
-                    break;
+                    if (e.OldItems == null)
+                        break;
 
-                case NotifyCollectionChangedAction.Replace:
-                    throw new NotImplementedException();
-                    break;
+                    foreach (INodeItem nodeItem in e.OldItems)
+                    {
+                        nodeItem.PropertyChanged -= NodeItemPropertyChanged;
 
-                case NotifyCollectionChangedAction.Move:
-                    throw new NotImplementedException();
+                        if (_nodeDict.TryGetValue(nodeItem, out var panel))
+                            RemoveNodePanel(panel);
+
+                        _nodeDict.Remove(nodeItem);
+                    }
+
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
-                    throw new NotImplementedException();
+                    CleanAll();
                     break;
+
+                case NotifyCollectionChangedAction.Replace:
+                {
+                    var oldItems = e.OldItems.Cast<INodeItem>().ToArray();
+                    var newItems = e.NewItems.Cast<INodeItem>().ToArray();
+
+                    if (oldItems.Length != newItems.Length)
+                        throw new NotSupportedException();
+
+                    for (var i = 0; i != oldItems.Length; ++i)
+                    {
+                        var oldItem = oldItems[i];
+                        var newItem = newItems[i];
+
+                        var panel = _nodeDict[oldItem];
+
+                        oldItem.PropertyChanged -= NodeItemPropertyChanged;
+                        _nodeDict.Remove(oldItem);
+
+                        newItem.PropertyChanged += NodeItemPropertyChanged;
+                        _nodeDict.Add(newItem, null);
+
+                        if (panel != null)
+                            RemoveNodePanel(panel);
+                    }
+
+                    UpdateChildrenBag(true);
+                    break;
+                }
+
+                case NotifyCollectionChangedAction.Move:
+                    throw new NotImplementedException();
 
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void CleanAll()
+        {
+                    foreach (var i in _nodeDict)
+                    {
+                        var nodeItem = i.Key;
+                        var panel = i.Value;
+
+                        nodeItem.PropertyChanged -= NodeItemPropertyChanged;
+
+                        if (panel != null)
+                            RemoveNodePanel(panel);
+                    }
+
+                    _nodeDict.Clear();
         }
 
         private void SetFrontmost(BiaNodePanel child)
@@ -244,7 +294,7 @@ namespace Biaui.Controls.NodeEditor
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
             // 対象のitemはまだ_childrenDictに登録されていないので問題ない(再入しない)。
 
-            foreach (var c in _childrenDict)
+            foreach (var c in _nodeDict)
             {
                 var item = c.Key;
                 var nodePanel = c.Value;
@@ -298,7 +348,7 @@ namespace Biaui.Controls.NodeEditor
                     {
                         if (nodePanel != null)
                         {
-                            PushRemoveChild(nodePanel);
+                            RequestRemoveNodePanel(nodePanel);
 
                             _changedUpdateChildrenBag.Add((item, null));
                         }
@@ -307,12 +357,21 @@ namespace Biaui.Controls.NodeEditor
             }
 
             foreach (var c in _changedUpdateChildrenBag)
-                _childrenDict[c.Item1] = c.Item2;
+                _nodeDict[c.Item1] = c.Item2;
 
             _changedUpdateChildrenBag.Clear();
         }
 
-        private void PushRemoveChild(BiaNodePanel panel)
+        private void RemoveNodePanel(BiaNodePanel panel)
+        {
+            if (panel == null)
+                throw new ArgumentNullException(nameof(panel));
+
+            ReturnNodePanel(panel);
+            _childrenBag.RemoveChild(panel);
+        }
+
+        private void RequestRemoveNodePanel(BiaNodePanel panel)
         {
             _removeNodePanelPool.Push(panel);
 
@@ -328,8 +387,7 @@ namespace Biaui.Controls.NodeEditor
 
                 var p = _removeNodePanelPool.Pop();
 
-                ReturnNodePanel(p);
-                _childrenBag.RemoveChild(p);
+                RemoveNodePanel(p);
             }
 
             if (_removeNodePanelPool.Count == 0)
@@ -363,9 +421,12 @@ namespace Biaui.Controls.NodeEditor
             return p;
         }
 
-        private void ReturnNodePanel(BiaNodePanel p)
+        private void ReturnNodePanel(BiaNodePanel panel)
         {
-            _recycleNodePanelPool.Push(p);
+            if (panel == null)
+                throw new ArgumentNullException(nameof(panel));
+
+            _recycleNodePanelPool.Push(panel);
         }
 
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)

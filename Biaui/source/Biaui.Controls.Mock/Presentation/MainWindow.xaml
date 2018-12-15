@@ -568,20 +568,38 @@
         </TabItem>
 
         <TabItem Header="BiaNodeEditor">
-            <Border Margin="8"
-                    Background="{x:Null}"
-                    BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                    BorderThickness="1">
-                <nodeEditor:BiaNodeEditor NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
-                    <nodeEditor:BiaNodeEditor.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="NodeEditor/NodePanel.xaml" />
-                            </ResourceDictionary.MergedDictionaries>
-                        </ResourceDictionary>
-                    </nodeEditor:BiaNodeEditor.Resources>
-                </nodeEditor:BiaNodeEditor>
-            </Border>
+            <DockPanel>
+                <StackPanel Margin="8,8,8,0"
+                            DockPanel.Dock="Top"
+                            Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type controls:BiaButton}" BasedOn="{StaticResource {x:Type controls:BiaButton}}">
+                            <Setter Property="Margin" Value="0,0,4,0" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.AddNodeCommand, Mode=OneWay}" Content="Add Node" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.RemoveSelectedNodesCommand, Mode=OneWay}" Content="Remove Selected Nodes" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ClearNodesCommand, Mode=OneWay}" Content="Clear Nodes" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceLastNodeCommand, Mode=OneWay}" Content="Replace Last Node" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceNodesSourceCommand, Mode=OneWay}" Content="Replace Nodes Source" />
+                </StackPanel>
+
+                <Border Margin="8"
+                        Background="{x:Null}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                        BorderThickness="1">
+                    <nodeEditor:BiaNodeEditor NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
+                        <nodeEditor:BiaNodeEditor.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="NodeEditor/NodePanel.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </nodeEditor:BiaNodeEditor.Resources>
+                    </nodeEditor:BiaNodeEditor>
+                </Border>
+            </DockPanel>
         </TabItem>
     </TabControl>
 </controls:BiaWindow>

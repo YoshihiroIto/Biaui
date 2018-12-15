@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
@@ -22,12 +24,125 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
+        #region AddNodeCommand
+
+        private ICommand _addNodeCommand;
+
+        public ICommand AddNodeCommand
+        {
+            get => _addNodeCommand;
+            set => SetProperty(ref _addNodeCommand, value);
+        }
+
+        #endregion
+
+        #region RemoveSelectedNodesCommand
+
+        private ICommand _RemoveSelectedNodesCommand;
+
+        public ICommand RemoveSelectedNodesCommand
+        {
+            get => _RemoveSelectedNodesCommand;
+            set => SetProperty(ref _RemoveSelectedNodesCommand, value);
+        }
+
+        #endregion
+
+        #region ClearNodesCommand
+
+        private ICommand _ClearNodesCommand;
+
+        public ICommand ClearNodesCommand
+        {
+            get => _ClearNodesCommand;
+            set => SetProperty(ref _ClearNodesCommand, value);
+        }
+
+        #endregion
+
+        #region ReplaceLastNodeCommand
+
+        private ICommand _ReplaceLastNodeCommand;
+
+        public ICommand ReplaceLastNodeCommand
+        {
+            get => _ReplaceLastNodeCommand;
+            set => SetProperty(ref _ReplaceLastNodeCommand, value);
+        }
+
+        #endregion
+
+        #region ReplaceNodesSourceCommand
+
+        private ICommand _replaceNodesSourceCommand;
+
+        public ICommand ReplaceNodesSourceCommand
+        {
+            get => _replaceNodesSourceCommand;
+            set => SetProperty(ref _replaceNodesSourceCommand, value);
+        }
+
+        #endregion
+
         public BiaNodeEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
-            var r = new Random();
+            var addCount = 0;
 
-            var i = 0;
+            AddNodeCommand = new DelegateCommand().Setup(() =>
+            {
+                Nodes.Add(
+                    new BasicNode
+                    {
+                        Title = $"Add:{addCount++}",
+                        TitleBackground = Brushes.RoyalBlue,
+                        Pos = new Point(0, 0),
+                    });
+            });
 
+            RemoveSelectedNodesCommand = new DelegateCommand().Setup(() =>
+            {
+                foreach (var node in Nodes.Where(x => x.IsSelected).ToArray())
+                    Nodes.Remove(node);
+            });
+
+            ClearNodesCommand = new DelegateCommand().Setup(() => { Nodes.Clear(); });
+
+            var replaceCount = 0;
+
+            ReplaceLastNodeCommand = new DelegateCommand().Setup(() =>
+            {
+                if (Nodes.Count == 0)
+                    return;
+
+                Nodes[Nodes.Count - 1] =
+                    (replaceCount & 1) == 0
+                        ? new ColorNode
+                        {
+                            Title = $"Replace:{replaceCount++}",
+                            TitleBackground = Brushes.MediumVioletRed,
+                            Pos = new Point(0, 0),
+                        }
+                        : (NodeBase) new BasicNode
+                        {
+                            Title = $"Replace:{replaceCount++}",
+                            TitleBackground = Brushes.DarkGreen,
+                            Pos = new Point(0, 0),
+                        };
+            });
+
+            ReplaceNodesSourceCommand = new DelegateCommand().Setup(() =>
+            {
+                var nodes = new ObservableCollection<INodeItem>();
+                MakeNodes(nodes);
+
+                Nodes = nodes;
+            });
+
+            MakeNodes(Nodes);
+        }
+
+        private static void MakeNodes(ObservableCollection<INodeItem> nodes)
+        {
             var titleBackgrounds = new[]
             {
                 Brushes.Purple,
@@ -37,6 +152,9 @@ namespace Biaui.Controls.Mock.Presentation
                 Brushes.DeepPink
             };
 
+            var r = new Random();
+            var i = 0;
+
             for (var y = 0; y != 100; ++y)
             for (var x = 0; x != 100; ++x)
             {
@@ -45,7 +163,7 @@ namespace Biaui.Controls.Mock.Presentation
 
                 if ((x & 1) == 0)
                 {
-                    Nodes.Add(
+                    nodes.Add(
                         new BasicNode
                         {
                             Title = $"Title:{i++}",
@@ -55,7 +173,7 @@ namespace Biaui.Controls.Mock.Presentation
                 }
                 else
                 {
-                    Nodes.Add(
+                    nodes.Add(
                         new ColorNode
                         {
                             Title = $"Color:{i++}",
@@ -81,6 +199,18 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
+        #region TitleBackground
+
+        private Brush _TitleBackground;
+
+        public Brush TitleBackground
+        {
+            get => _TitleBackground;
+            set => SetProperty(ref _TitleBackground, value);
+        }
+
+        #endregion
+
         #region IsSelected
 
         private bool _isSelected;
@@ -101,18 +231,6 @@ namespace Biaui.Controls.Mock.Presentation
         {
             get => _IsPreSelected;
             set => SetProperty(ref _IsPreSelected, value);
-        }
-
-        #endregion
-
-        #region TitleBackground
-
-        private Brush _TitleBackground;
-
-        public Brush TitleBackground
-        {
-            get => _TitleBackground;
-            set => SetProperty(ref _TitleBackground, value);
         }
 
         #endregion
@@ -149,39 +267,39 @@ namespace Biaui.Controls.Mock.Presentation
     public class ColorNode : NodeBase
     {
         #region Red
-        
+
         private double _Red;
-        
+
         public double Red
         {
             get => _Red;
             set => SetProperty(ref _Red, value);
         }
-        
+
         #endregion
-        
+
         #region Green
-        
+
         private double _Green;
-        
+
         public double Green
         {
             get => _Green;
             set => SetProperty(ref _Green, value);
         }
-        
+
         #endregion
-        
+
         #region Blue
-        
+
         private double _Blue;
-        
+
         public double Blue
         {
             get => _Blue;
             set => SetProperty(ref _Blue, value);
         }
-        
+
         #endregion
     }
 }
