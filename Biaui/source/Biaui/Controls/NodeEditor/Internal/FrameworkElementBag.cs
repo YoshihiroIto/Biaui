@@ -20,6 +20,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(FrameworkElementBag<T>)));
         }
 
+        internal FrameworkElementBag(ScaleTransform _scale, TranslateTransform _translate)
+        {
+            var g = new TransformGroup();
+            g.Children.Add(_scale);
+            g.Children.Add(_translate);
+            RenderTransform = g;
+        }
+
         internal void AddChild(T child)
         {
             if (_childrenForSearch.Contains(child))

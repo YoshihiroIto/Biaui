@@ -157,13 +157,13 @@ namespace Biaui.Controls.NodeEditor.Internal
             s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
 
             var p = e.GetPosition(_target);
-            var d0 = _target.ScenePosFromControlPos(p.X, p.Y);
+            var d0 = _target.MakeScenePosFromControlPos(p.X, p.Y);
 
             s = Math.Max(Math.Min(s, 3.0), 0.25);
             _scale.ScaleX = s;
             _scale.ScaleY = s;
 
-            var d1 = _target.ScenePosFromControlPos(p.X, p.Y);
+            var d1 = _target.MakeScenePosFromControlPos(p.X, p.Y);
 
             var diff = d1 - d0;
 

@@ -34,7 +34,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         #endregion
 
-        public ImmutableRect CalcTransformRect(double translateX, double translateY, double scale)
+        public ImmutableRect CalcTransformRect(double scale, double translateX, double translateY)
             => new ImmutableRect(
                 (_Rect.X - translateX) / scale,
                 (_Rect.Y - translateY) / scale,

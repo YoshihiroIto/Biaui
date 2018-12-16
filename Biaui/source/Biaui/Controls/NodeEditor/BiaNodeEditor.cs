@@ -49,13 +49,20 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
-        private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag = new FrameworkElementBag<BiaNodePanel>();
 
-        private readonly TranslateTransform _translate = new TranslateTransform();
+        private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
+        private readonly BoxSelector _boxSelector = new BoxSelector();
+
         private readonly ScaleTransform _scale = new ScaleTransform();
+        private readonly TranslateTransform _translate = new TranslateTransform();
 
         private readonly MouseOperator _mouseOperator;
         private readonly DispatcherTimer _removeNodePanelTimer;
+
+        private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
+        private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
+        private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
+        private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
         static BiaNodeEditor()
         {
@@ -71,13 +78,8 @@ namespace Biaui.Controls.NodeEditor
             ClipToBounds = true;
 
             Children.Add(new GridPanel(_translate, _scale));
-            Children.Add(_nodePanelBag);
+            Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(_scale, _translate));
             Children.Add(_boxSelector);
-
-            var g = new TransformGroup();
-            g.Children.Add(_scale);
-            g.Children.Add(_translate);
-            _nodePanelBag.RenderTransform = g;
 
             _mouseOperator = new MouseOperator(this, _translate, _scale);
             _mouseOperator.PanelMoving += OnPanelMoving;
@@ -284,11 +286,9 @@ namespace Biaui.Controls.NodeEditor
         }
 
         private int _isEnableUpdateChildrenBagDepth;
+        private readonly List<(INodeItem, BiaNodePanel)> _changedUpdate = new List<(INodeItem, BiaNodePanel)>();
 
-        private readonly List<(INodeItem, BiaNodePanel)> _changedUpdateChildrenBag =
-            new List<(INodeItem, BiaNodePanel)>();
-
-        public static readonly Size _maxSize = new Size(10000000, 10000000);
+        private static readonly Size _maxSize = new Size(10000000, 10000000);
 
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
@@ -342,7 +342,7 @@ namespace Biaui.Controls.NodeEditor
                         {
                             nodePanel.DataContext = item;
 
-                            _changedUpdateChildrenBag.Add((item, nodePanel));
+                            _changedUpdate.Add((item, nodePanel));
                             _nodePanelBag.AddChild(nodePanel);
                         }
                     }
@@ -355,16 +355,16 @@ namespace Biaui.Controls.NodeEditor
                         {
                             RequestRemoveNodePanel(nodePanel);
 
-                            _changedUpdateChildrenBag.Add((item, null));
+                            _changedUpdate.Add((item, null));
                         }
                     }
                 }
             }
 
-            foreach (var c in _changedUpdateChildrenBag)
+            foreach (var c in _changedUpdate)
                 _nodeDict[c.Item1] = c.Item2;
 
-            _changedUpdateChildrenBag.Clear();
+            _changedUpdate.Clear();
         }
 
         private void RemoveNodePanel(BiaNodePanel panel)
@@ -397,19 +397,11 @@ namespace Biaui.Controls.NodeEditor
 
             if (_removeNodePanelPool.Count == 0)
                 _removeNodePanelTimer.Stop();
-
-            //Debug.WriteLine($"DispatcherTimer>>>>>>>>>>{_removeNodePanelPool.Count}");
         }
 
         #endregion
 
         #region ノードパネル管理
-
-        private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
-        private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
-
-        private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
-        private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
         private BiaNodePanel GetNodePanel()
         {
@@ -540,7 +532,7 @@ namespace Biaui.Controls.NodeEditor
             {
                 EndBoxSelector();
 
-                SelectNodes(_boxSelector.CalcTransformRect(_translate.X, _translate.Y, _scale.ScaleX));
+                SelectNodes(_boxSelector.CalcTransformRect(_scale.ScaleX, _translate.X, _translate.Y));
                 ClearPreSelectedNode();
             }
 
@@ -578,7 +570,7 @@ namespace Biaui.Controls.NodeEditor
             if (_mouseOperator.IsBoxSelect)
             {
                 UpdateBoxSelector();
-                PreSelectNodes(_boxSelector.CalcTransformRect(_translate.X, _translate.Y, _scale.ScaleX));
+                PreSelectNodes(_boxSelector.CalcTransformRect(_scale.ScaleX, _translate.X, _translate.Y));
             }
 
             e.Handled = true;
@@ -667,8 +659,6 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         #region BoxSelect
-
-        private readonly BoxSelector _boxSelector = new BoxSelector();
 
         private void BeginBoxSelector()
         {
