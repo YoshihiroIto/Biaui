@@ -99,5 +99,34 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-</ResourceDictionary>
 
+    <Style x:Key="{x:Type presentation:CircleNode}" TargetType="{x:Type nodeEditor:BiaNodePanel}">
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrushKey}" />
+        <Setter Property="Width" Value="128" />
+        <Setter Property="Height" Value="128" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Ellipse Fill="{Binding TitleBackground, Mode=OneWay}" Stroke="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}" />
+
+                        <controls:BiaTextBlock Margin="8"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Title, Mode=OneTime}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="BorderBrush" Value="DarkOrange" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsPreSelected}" Value="True">
+                <Setter Property="BorderBrush" Value="Gray" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -11,6 +11,8 @@ namespace Biaui.NodeEditor
 
         Point Pos { get; set; }
         Size Size { get; set; }
+
+        bool IsRequireVisualTest { get; }
     }
 
     internal static class NodeItemExtensions

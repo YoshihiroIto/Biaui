@@ -122,7 +122,7 @@ namespace Biaui.Controls.Mock.Presentation
                             TitleBackground = Brushes.MediumVioletRed,
                             Pos = new Point(0, 0),
                         }
-                        : (NodeBase) new BasicNode
+                        : (INodeItem) new BasicNode
                         {
                             Title = $"Replace:{replaceCount++}",
                             TitleBackground = Brushes.DarkGreen,
@@ -161,31 +161,43 @@ namespace Biaui.Controls.Mock.Presentation
                 var rx = r.NextDouble() * 1024;
                 var ry = r.NextDouble() * 1024;
 
-                if ((x & 1) == 0)
+                switch (i % 3)
                 {
-                    nodes.Add(
-                        new BasicNode
-                        {
-                            Title = $"Title:{i++}",
-                            TitleBackground = titleBackgrounds[x % titleBackgrounds.Length],
-                            Pos = new Point(x * 800 + rx, y * 800 + ry),
-                        });
-                }
-                else
-                {
-                    nodes.Add(
-                        new ColorNode
-                        {
-                            Title = $"Color:{i++}",
-                            TitleBackground = titleBackgrounds[x % titleBackgrounds.Length],
-                            Pos = new Point(x * 800 + rx, y * 800 + ry),
-                        });
+                    case 0:
+                        nodes.Add(
+                            new BasicNode
+                            {
+                                Title = $"Title:{i++}",
+                                TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
+                                Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            });
+                        break;
+
+                    case 1:
+                        nodes.Add(
+                            new ColorNode
+                            {
+                                Title = $"Color:{i++}",
+                                TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
+                                Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            });
+                        break;
+
+                    case 2:
+                        nodes.Add(
+                            new CircleNode
+                            {
+                                Title = $"Circle:{i++}",
+                                TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
+                                Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            });
+                        break;
                 }
             }
         }
     }
 
-    public class NodeBase : ModelBase, INodeItem
+    public class NodeBase : ModelBase
     {
         #region Title
 
@@ -257,15 +269,19 @@ namespace Biaui.Controls.Mock.Presentation
             set => SetProperty(ref _Size, value);
         }
 
+
         #endregion
     }
 
-    public class BasicNode : NodeBase
+    public class BasicNode : NodeBase, INodeItem
     {
+        public bool IsRequireVisualTest => false;
     }
 
-    public class ColorNode : NodeBase
+    public class ColorNode : NodeBase, INodeItem
     {
+        public bool IsRequireVisualTest => false;
+
         #region Red
 
         private double _Red;
@@ -301,5 +317,10 @@ namespace Biaui.Controls.Mock.Presentation
         }
 
         #endregion
+    }
+
+    public class CircleNode : NodeBase, INodeItem
+    {
+        public bool IsRequireVisualTest => true;
     }
 }

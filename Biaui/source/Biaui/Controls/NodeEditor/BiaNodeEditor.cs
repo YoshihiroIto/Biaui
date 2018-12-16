@@ -249,7 +249,7 @@ namespace Biaui.Controls.NodeEditor
                 }
 
                 case NotifyCollectionChangedAction.Move:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -600,27 +600,75 @@ namespace Biaui.Controls.NodeEditor
             {
                 var nr = new ImmutableRect(node.Pos, node.Size);
 
-                if (rect.IntersectsWith(nr))
+                if (rect.IntersectsWith(nr) == false)
+                    continue;
+
+                if (node.IsRequireVisualTest)
                 {
-                    if (isPressControl)
-                        node.IsSelected = !node.IsSelected;
-                    else
-                        node.IsSelected = true;
+                    if (_nodeDict.TryGetValue(node, out var panel) == false)
+                        continue;
+
+                    if (IsHitVisual(rect, node, panel) == false)
+                        continue;
                 }
+
+                if (isPressControl)
+                    node.IsSelected = !node.IsSelected;
+                else
+                    node.IsSelected = true;
             }
         }
+
+        private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();
 
         private void PreSelectNodes(in ImmutableRect rect)
         {
             ClearPreSelectedNode();
 
+            if (NodesSource == null)
+                return;
+
             foreach (var node in NodesSource)
             {
                 var nr = new ImmutableRect(node.Pos, node.Size);
 
-                if (rect.IntersectsWith(nr))
-                    node.IsPreSelected = true;
+                if (rect.IntersectsWith(nr) == false)
+                    continue;
+
+                if (node.IsRequireVisualTest)
+                {
+                    if (_nodeDict.TryGetValue(node, out var panel) == false)
+                        continue;
+
+                    if (IsHitVisual(rect, node, panel) == false)
+                        continue;
+                }
+
+                node.IsPreSelected = true;
             }
+        }
+
+        private static bool IsHitVisual(in ImmutableRect rect, INodeItem node, Visual panel)
+        {
+            _rectGeom.Rect = new Rect(
+                rect.X - node.Pos.X,
+                rect.Y - node.Pos.Y,
+                rect.Width,
+                rect.Height);
+
+            var isHit = false;
+
+            VisualTreeHelper.HitTest(
+                panel,
+                null,
+                r =>
+                {
+                    isHit = true;
+                    return HitTestResultBehavior.Stop;
+                },
+                new GeometryHitTestParameters(_rectGeom));
+
+            return isHit;
         }
 
         #endregion
