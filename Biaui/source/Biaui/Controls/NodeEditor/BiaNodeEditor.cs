@@ -539,10 +539,10 @@ namespace Biaui.Controls.NodeEditor
 
             if (_mouseOperator.IsBoxSelect)
             {
+                RemoveBoxSelector();
+
                 SelectNodes(_boxSelector.Rect);
                 ClearPreSelectedNode();
-
-                RemoveBoxSelector();
             }
 
             if (_mouseOperator.IsPanelMove)
@@ -593,11 +593,12 @@ namespace Biaui.Controls.NodeEditor
             if (isPressControl == false)
                 ClearSelectedNode();
 
-            if (NodesSource == null)
-                return;
-
-            foreach (var node in NodesSource)
+            foreach (var c in _childrenBag.Children)
             {
+                var node = c.DataContext as INodeItem;
+                if (node == null)
+                    continue;
+
                 var nr = new ImmutableRect(node.Pos, node.Size);
 
                 if (rect.IntersectsWith(nr) == false)
@@ -619,17 +620,16 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();
-
         private void PreSelectNodes(in ImmutableRect rect)
         {
             ClearPreSelectedNode();
 
-            if (NodesSource == null)
-                return;
-
-            foreach (var node in NodesSource)
+            foreach (var c in _childrenBag.Children)
             {
+                var node = c.DataContext as INodeItem;
+                if (node == null)
+                    continue;
+
                 var nr = new ImmutableRect(node.Pos, node.Size);
 
                 if (rect.IntersectsWith(nr) == false)
@@ -648,6 +648,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
+        private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();
         private static bool IsHitVisual(in ImmutableRect rect, INodeItem node, Visual panel)
         {
             _rectGeom.Rect = new Rect(

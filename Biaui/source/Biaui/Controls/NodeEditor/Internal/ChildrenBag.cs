@@ -12,6 +12,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly HashSet<FrameworkElement> _childrenForSearch = new HashSet<FrameworkElement>();
         private readonly List<FrameworkElement> _changedElements = new List<FrameworkElement>();
 
+        public IReadOnlyList<FrameworkElement> Children => _children;
+
         static ChildrenBag()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ChildrenBag),
