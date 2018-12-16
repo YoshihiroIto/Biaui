@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using Biaui.NodeEditor;
+using Biaui.Interfaces;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal class ChildrenBag : FrameworkElement
+    internal class FrameworkElementBag<T> : FrameworkElement
+        where T : FrameworkElement
     {
-        private readonly List<FrameworkElement> _children = new List<FrameworkElement>();
-        private readonly HashSet<FrameworkElement> _childrenForSearch = new HashSet<FrameworkElement>();
-        private readonly List<FrameworkElement> _changedElements = new List<FrameworkElement>();
+        private readonly List<T> _children = new List<T>();
+        private readonly HashSet<T> _childrenForSearch = new HashSet<T>();
+        private readonly List<T> _changedElements = new List<T>();
 
-        public IReadOnlyList<FrameworkElement> Children => _children;
+        public IReadOnlyList<T> Children => _children;
 
-        static ChildrenBag()
+        static FrameworkElementBag()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ChildrenBag),
-                new FrameworkPropertyMetadata(typeof(ChildrenBag)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(FrameworkElementBag<T>),
+                new FrameworkPropertyMetadata(typeof(FrameworkElementBag<T>)));
         }
 
-        internal void AddChild(FrameworkElement child)
+        internal void AddChild(T child)
         {
             if (_childrenForSearch.Contains(child))
                 return;
@@ -32,7 +32,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             ChangeElement(child);
         }
 
-        internal void RemoveChild(FrameworkElement child)
+        internal void RemoveChild(T child)
         {
             if (_childrenForSearch.Contains(child) == false)
                 return;
@@ -41,11 +41,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             _childrenForSearch.Remove(child);
 
             RemoveVisualChild(child);
-
-            //Debug.WriteLine($"RemoveChild>>>>>>>>>>>>>>{_children.Count}");
         }
 
-        internal void ToLast(FrameworkElement child)
+        internal void ToLast(T child)
         {
             if (_childrenForSearch.Contains(child) == false)
                 return;
@@ -57,7 +55,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             AddVisualChild(child);
         }
 
-        internal void ChangeElement(FrameworkElement child)
+        internal void ChangeElement(T child)
         {
             _changedElements.Add(child);
         }
@@ -73,14 +71,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             foreach (var child in _changedElements)
             {
-                Point pos;
-
-                if (child.DataContext is INodeItem vm)
-                    pos = vm.Pos;
-                else if (child is BoxSelector)
-                    pos = new Point(0, 0);
-                else
-                    throw new NotSupportedException();
+                var pos = ((IHasPos) child.DataContext).Pos;
 
                 child.Arrange(new Rect(pos, child.DesiredSize));
             }

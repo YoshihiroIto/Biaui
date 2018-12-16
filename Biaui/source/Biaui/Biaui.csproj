@@ -194,9 +194,10 @@
     <Compile Include="Controls\BiaHsvBoxBackground.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePanel.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BoxSelector.cs" />
-    <Compile Include="Controls\NodeEditor\Internal\ChildrenBag.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\FrameworkElementBag.cs" />
     <Compile Include="Controls\NodeEditor\Internal\GridPanel.cs" />
     <Compile Include="Controls\NodeEditor\Internal\MouseOperator.cs" />
+    <Compile Include="Interfaces\IHasPos.cs" />
     <Compile Include="Internals\Boxes.cs" />
     <Compile Include="Controls\BiaClippingBorder.cs" />
     <Compile Include="Internals\Caches.cs" />
@@ -220,7 +221,7 @@
     <Compile Include="Internals\Win32Helper.cs" />
     <Compile Include="Internals\WindowAction.cs" />
     <Compile Include="Internals\WpfHelper.cs" />
-    <Compile Include="NodeEditor\INodeItem.cs" />
+    <Compile Include="Interfaces\INodeItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

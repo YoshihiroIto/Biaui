@@ -11,8 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Biaui.Controls.NodeEditor.Internal;
+using Biaui.Interfaces;
 using Biaui.Internals;
-using Biaui.NodeEditor;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -49,7 +49,7 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
-        private readonly ChildrenBag _childrenBag = new ChildrenBag();
+        private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag = new FrameworkElementBag<BiaNodePanel>();
 
         private readonly TranslateTransform _translate = new TranslateTransform();
         private readonly ScaleTransform _scale = new ScaleTransform();
@@ -70,15 +70,14 @@ namespace Biaui.Controls.NodeEditor
 
             ClipToBounds = true;
 
-            // ReSharper disable once VirtualMemberCallInConstructor
             Children.Add(new GridPanel(_translate, _scale));
-            Children.Add(_childrenBag);
+            Children.Add(_nodePanelBag);
             Children.Add(_boxSelector);
 
             var g = new TransformGroup();
             g.Children.Add(_scale);
             g.Children.Add(_translate);
-            _childrenBag.RenderTransform = g;
+            _nodePanelBag.RenderTransform = g;
 
             _mouseOperator = new MouseOperator(this, _translate, _scale);
             _mouseOperator.PanelMoving += OnPanelMoving;
@@ -92,7 +91,7 @@ namespace Biaui.Controls.NodeEditor
             _removeNodePanelTimer.Stop();
         }
 
-        internal Point ScenePosFromControlPos(double x, double y)
+        internal Point MakeScenePosFromControlPos(double x, double y)
             => new Point(
                 (x - _translate.X) / _scale.ScaleX,
                 (y - _translate.Y) / _scale.ScaleY);
@@ -176,8 +175,7 @@ namespace Biaui.Controls.NodeEditor
 
                 if (panel != null)
                 {
-                    _childrenBag.ChangeElement(panel);
-
+                    _nodePanelBag.ChangeElement(panel);
                     UpdateChildrenBag(isPushRemove);
                 }
             }
@@ -275,14 +273,14 @@ namespace Biaui.Controls.NodeEditor
 
         private void SetFrontmost(BiaNodePanel child)
         {
-            _childrenBag.ToLast(child);
+            _nodePanelBag.ToLast(child);
         }
 
         private void UpdateChildrenBag(bool isPushRemove)
         {
             UpdateChildrenBag(MakeCurrentViewport(), isPushRemove);
 
-            _childrenBag.InvalidateMeasure();
+            _nodePanelBag.InvalidateMeasure();
         }
 
         private int _isEnableUpdateChildrenBagDepth;
@@ -345,7 +343,7 @@ namespace Biaui.Controls.NodeEditor
                             nodePanel.DataContext = item;
 
                             _changedUpdateChildrenBag.Add((item, nodePanel));
-                            _childrenBag.AddChild(nodePanel);
+                            _nodePanelBag.AddChild(nodePanel);
                         }
                     }
                 }
@@ -375,7 +373,7 @@ namespace Biaui.Controls.NodeEditor
                 throw new ArgumentNullException(nameof(panel));
 
             ReturnNodePanel(panel);
-            _childrenBag.RemoveChild(panel);
+            _nodePanelBag.RemoveChild(panel);
         }
 
         private void RequestRemoveNodePanel(BiaNodePanel panel)
@@ -594,14 +592,11 @@ namespace Biaui.Controls.NodeEditor
             if (isPressControl == false)
                 ClearSelectedNode();
 
-            foreach (var c in _childrenBag.Children)
+            foreach (var c in _nodePanelBag.Children)
             {
-                if (!(c.DataContext is INodeItem node))
-                    continue;
+                var node = (INodeItem) c.DataContext;
 
-                var nr = new ImmutableRect(node.Pos, node.Size);
-
-                if (rect.IntersectsWith(nr) == false)
+                if (rect.IntersectsWith(node.MakeRect()) == false)
                     continue;
 
                 if (node.IsRequireVisualTest)
@@ -624,14 +619,11 @@ namespace Biaui.Controls.NodeEditor
         {
             ClearPreSelectedNode();
 
-            foreach (var c in _childrenBag.Children)
+            foreach (var c in _nodePanelBag.Children)
             {
-                if (!(c.DataContext is INodeItem node))
-                    continue;
+                var node = (INodeItem) c.DataContext;
 
-                var nr = new ImmutableRect(node.Pos, node.Size);
-
-                if (rect.IntersectsWith(nr) == false)
+                if (rect.IntersectsWith(node.MakeRect()) == false)
                     continue;
 
                 if (node.IsRequireVisualTest)
@@ -648,6 +640,7 @@ namespace Biaui.Controls.NodeEditor
         }
 
         private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();
+
         private static bool IsHitVisual(in ImmutableRect rect, INodeItem node, Visual panel)
         {
             _rectGeom.Rect = new Rect(
@@ -679,7 +672,7 @@ namespace Biaui.Controls.NodeEditor
 
         private void BeginBoxSelector()
         {
-            _boxSelector.Rect = new ImmutableRect(0,0,0,0);
+            _boxSelector.Rect = new ImmutableRect(0, 0, 0, 0);
         }
 
         private void EndBoxSelector()
@@ -691,7 +684,8 @@ namespace Biaui.Controls.NodeEditor
         {
             var (leftTop, rightBottom) = _mouseOperator.SelectionRect;
 
-            _boxSelector.Rect = new ImmutableRect(leftTop, new Size(rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y));
+            _boxSelector.Rect =
+                new ImmutableRect(leftTop, new Size(rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y));
 
             if (_boxSelector.Visibility != Visibility.Visible)
                 _boxSelector.Visibility = Visibility.Visible;

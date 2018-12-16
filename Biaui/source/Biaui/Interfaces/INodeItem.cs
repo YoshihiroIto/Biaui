@@ -2,14 +2,13 @@
 using System.Windows;
 using Biaui.Internals;
 
-namespace Biaui.NodeEditor
+namespace Biaui.Interfaces
 {
-    public interface INodeItem : INotifyPropertyChanged
+    public interface INodeItem : IHasPos, INotifyPropertyChanged
     {
         bool IsSelected { get; set; }
         bool IsPreSelected { get; set; }
 
-        Point Pos { get; set; }
         Size Size { get; set; }
 
         bool IsRequireVisualTest { get; }
@@ -24,5 +23,8 @@ namespace Biaui.NodeEditor
 
             return rect.IntersectsWith(pos.X, pos.Y, pos.X + size.Width, pos.Y + size.Height);
         }
+
+        internal static ImmutableRect MakeRect(this INodeItem self)
+            => new ImmutableRect(self.Pos, self.Size);
     }
 }

@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
-using Biaui.NodeEditor;
+using Biaui.Interfaces;
 
 namespace Biaui.Controls.Mock.Presentation
 {
