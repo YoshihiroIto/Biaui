@@ -7,7 +7,7 @@ namespace Biaui.Controls.NodeEditor.Internal
     internal class BoxSelector : FrameworkElement
     {
         #region Rect
-        
+
         public ImmutableRect Rect
         {
             get => _Rect;
@@ -17,9 +17,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                     SetValue(RectProperty, value);
             }
         }
-        
+
         private ImmutableRect _Rect;
-        
+
         public static readonly DependencyProperty RectProperty =
             DependencyProperty.Register(nameof(Rect), typeof(ImmutableRect), typeof(BoxSelector),
                 new FrameworkPropertyMetadata(
@@ -29,17 +29,25 @@ namespace Biaui.Controls.NodeEditor.Internal
                     (s, e) =>
                     {
                         var self = (BoxSelector) s;
-                        self._Rect = (ImmutableRect)e.NewValue;
+                        self._Rect = (ImmutableRect) e.NewValue;
                     }));
-        
+
         #endregion
+
+        public ImmutableRect CalcTransformRect(double translateX, double translateY, double scale)
+            => new ImmutableRect(
+                (_Rect.X - translateX) / scale,
+                (_Rect.Y - translateY) / scale,
+                _Rect.Width / scale,
+                _Rect.Height / scale
+            );
 
         static BoxSelector()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BoxSelector),
                 new FrameworkPropertyMetadata(typeof(BoxSelector)));
         }
-        
+
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);

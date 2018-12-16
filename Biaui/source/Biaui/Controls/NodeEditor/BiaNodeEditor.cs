@@ -73,6 +73,7 @@ namespace Biaui.Controls.NodeEditor
             // ReSharper disable once VirtualMemberCallInConstructor
             Children.Add(new GridPanel(_translate, _scale));
             Children.Add(_childrenBag);
+            Children.Add(_boxSelector);
 
             var g = new TransformGroup();
             g.Children.Add(_scale);
@@ -528,7 +529,7 @@ namespace Biaui.Controls.NodeEditor
             _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodeEditor);
 
             if (_mouseOperator.IsBoxSelect)
-                AddBoxSelector();
+                BeginBoxSelector();
 
             e.Handled = true;
         }
@@ -539,9 +540,9 @@ namespace Biaui.Controls.NodeEditor
 
             if (_mouseOperator.IsBoxSelect)
             {
-                RemoveBoxSelector();
+                EndBoxSelector();
 
-                SelectNodes(_boxSelector.Rect);
+                SelectNodes(_boxSelector.CalcTransformRect(_translate.X, _translate.Y, _scale.ScaleX));
                 ClearPreSelectedNode();
             }
 
@@ -579,7 +580,7 @@ namespace Biaui.Controls.NodeEditor
             if (_mouseOperator.IsBoxSelect)
             {
                 UpdateBoxSelector();
-                PreSelectNodes(_boxSelector.Rect);
+                PreSelectNodes(_boxSelector.CalcTransformRect(_translate.X, _translate.Y, _scale.ScaleX));
             }
 
             e.Handled = true;
@@ -595,8 +596,7 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var c in _childrenBag.Children)
             {
-                var node = c.DataContext as INodeItem;
-                if (node == null)
+                if (!(c.DataContext is INodeItem node))
                     continue;
 
                 var nr = new ImmutableRect(node.Pos, node.Size);
@@ -626,8 +626,7 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var c in _childrenBag.Children)
             {
-                var node = c.DataContext as INodeItem;
-                if (node == null)
+                if (!(c.DataContext is INodeItem node))
                     continue;
 
                 var nr = new ImmutableRect(node.Pos, node.Size);
@@ -678,34 +677,24 @@ namespace Biaui.Controls.NodeEditor
 
         private readonly BoxSelector _boxSelector = new BoxSelector();
 
-        private void AddBoxSelector()
+        private void BeginBoxSelector()
         {
-            _boxSelector.Rect = new ImmutableRect(0, 0, 0, 0);
-
-            _childrenBag.AddChild(_boxSelector);
-            UpdateChildrenBag(true);
+            _boxSelector.Rect = new ImmutableRect(0,0,0,0);
         }
 
-        private void RemoveBoxSelector()
+        private void EndBoxSelector()
         {
-            _childrenBag.RemoveChild(_boxSelector);
-            UpdateChildrenBag(true);
+            _boxSelector.Visibility = Visibility.Collapsed;
         }
 
         private void UpdateBoxSelector()
         {
-            var s = _scale.ScaleX;
-            var tx = _translate.X;
-            var ty = _translate.Y;
+            var (leftTop, rightBottom) = _mouseOperator.SelectionRect;
 
-            var sr = _mouseOperator.SelectionRect;
+            _boxSelector.Rect = new ImmutableRect(leftTop, new Size(rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y));
 
-            var p0 = (Point) ((sr.P0 - new Point(tx, ty)) / s);
-            var p1 = (Point) ((sr.P1 - new Point(tx, ty)) / s);
-
-            _boxSelector.Rect = new ImmutableRect(p0, new Size(p1.X - p0.X, p1.Y - p0.Y));
-            _childrenBag.ChangeElement(_boxSelector);
-            UpdateChildrenBag(true);
+            if (_boxSelector.Visibility != Visibility.Visible)
+                _boxSelector.Visibility = Visibility.Visible;
         }
 
         #endregion

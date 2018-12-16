@@ -8,7 +8,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class MouseOperator
     {
-        internal (Point P0, Point P1) SelectionRect
+        internal (Point LeftTop, Point RightBottom) SelectionRect
         {
             get
             {
