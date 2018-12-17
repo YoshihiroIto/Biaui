@@ -158,8 +158,12 @@ namespace Biaui.Controls.Mock.Presentation
             for (var y = 0; y != 100; ++y)
             for (var x = 0; x != 100; ++x)
             {
-                var rx = r.NextDouble() * 1024;
-                var ry = r.NextDouble() * 1024;
+                //var rx = r.NextDouble() * 1024;
+                //var ry = r.NextDouble() * 1024;
+
+                var rx = 0.0;
+                var ry = 0.0;
+
 
                 switch (i % 3)
                 {
