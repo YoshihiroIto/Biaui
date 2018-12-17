@@ -288,8 +288,6 @@ namespace Biaui.Controls.NodeEditor
         private int _isEnableUpdateChildrenBagDepth;
         private readonly List<(INodeItem, BiaNodePanel)> _changedUpdate = new List<(INodeItem, BiaNodePanel)>();
 
-        private static readonly Size _maxSize = new Size(10000000, 10000000);
-
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
             if (_isEnableUpdateChildrenBagDepth > 0)
@@ -297,14 +295,13 @@ namespace Biaui.Controls.NodeEditor
 
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
-            // 対象のitemはまだ_childrenDictに登録されていないので問題ない(再入しない)。
+            // 対象のitemはまだ_nodeDictに登録されていないので問題ない(再入しない)。
 
             foreach (var c in _nodeDict)
             {
                 var item = c.Key;
                 var nodePanel = c.Value;
 
-                var isTempSize = false;
                 ImmutableRect itemRect;
                 {
                     // 対象アイテムが一度も表示されていない場合は、大きさを適当に設定してしのぐ
@@ -314,8 +311,6 @@ namespace Biaui.Controls.NodeEditor
                     {
                         const double tempWidth = 256.0;
                         const double tempHeight = 512.0;
-
-                        isTempSize = true;
 
                         var pos = item.Pos;
                         itemRect = new ImmutableRect(pos.X, pos.Y, tempWidth, tempHeight);
@@ -333,18 +328,14 @@ namespace Biaui.Controls.NodeEditor
                     if (nodePanel == null)
                     {
                         nodePanel = GetNodePanel();
+
                         nodePanel.Style = FindResource(item.GetType()) as Style;
+                        nodePanel.DataContext = item;
 
-                        nodePanel.Measure(_maxSize);
-                        item.Size = nodePanel.DesiredSize;
+                        //item.Size = new Size(256, 512);
 
-                        if (isTempSize == false || item.IntersectsWith(rect))
-                        {
-                            nodePanel.DataContext = item;
-
-                            _changedUpdate.Add((item, nodePanel));
-                            _nodePanelBag.AddChild(nodePanel);
-                        }
+                        _changedUpdate.Add((item, nodePanel));
+                        _nodePanelBag.AddChild(nodePanel);
                     }
                 }
                 else
@@ -415,7 +406,20 @@ namespace Biaui.Controls.NodeEditor
             p.MouseLeftButtonUp += NodePanel_OnMouseLeftButtonUp;
             p.MouseMove += NodePanel_OnMouseMove;
 
+            p.SizeChanged += NodePanel_OnSizeChanged;
+
+
             return p;
+        }
+
+        private void NodePanel_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var panel = (BiaNodePanel)sender;
+
+            if (!(panel.DataContext is INodeItem item))
+                return;
+
+            item.Size = new Size(panel.ActualWidth, panel.ActualHeight);
         }
 
         private void ReturnNodePanel(BiaNodePanel panel)
