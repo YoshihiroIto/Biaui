@@ -85,7 +85,7 @@ namespace Biaui.Controls.NodeEditor
             _mouseOperator.PanelMoving += OnPanelMoving;
 
             _removeNodePanelTimer = new DispatcherTimer(
-                TimeSpan.FromMilliseconds(100),
+                TimeSpan.FromMilliseconds(1000),
                 DispatcherPriority.ApplicationIdle,
                 (_, __) => DoRemoverNodePanel(),
                 Dispatcher.CurrentDispatcher);
@@ -327,15 +327,18 @@ namespace Biaui.Controls.NodeEditor
                 {
                     if (nodePanel == null)
                     {
-                        nodePanel = GetNodePanel();
+                        bool isAdded;
+                        (nodePanel, isAdded) = FindOrCreateNodePanel();
 
                         nodePanel.Style = FindResource(item.GetType()) as Style;
                         nodePanel.DataContext = item;
 
-                        //item.Size = new Size(256, 512);
-
                         _changedUpdate.Add((item, nodePanel));
-                        _nodePanelBag.AddChild(nodePanel);
+
+                        if (isAdded)
+                            _nodePanelBag.ChangeElement(nodePanel);
+                        else
+                            _nodePanelBag.AddChild(nodePanel);
                     }
                 }
                 else
@@ -394,10 +397,16 @@ namespace Biaui.Controls.NodeEditor
 
         #region ノードパネル管理
 
-        private BiaNodePanel GetNodePanel()
+        private (BiaNodePanel Panel, bool IsAdded) FindOrCreateNodePanel()
         {
+            // 削除候補から見つかれば、それを優先して返す。
+            // 返却候補はまだ、追加済み。
+
+            if (_removeNodePanelPool.Count != 0)
+                return (_removeNodePanelPool.Pop(), true);
+
             if (_recycleNodePanelPool.Count != 0)
-                return _recycleNodePanelPool.Pop();
+                return (_recycleNodePanelPool.Pop(), false);
 
             var p = new BiaNodePanel();
 
@@ -405,11 +414,9 @@ namespace Biaui.Controls.NodeEditor
             p.MouseLeftButtonDown += NodePanel_OnMouseLeftButtonDown;
             p.MouseLeftButtonUp += NodePanel_OnMouseLeftButtonUp;
             p.MouseMove += NodePanel_OnMouseMove;
-
             p.SizeChanged += NodePanel_OnSizeChanged;
 
-
-            return p;
+            return (p, false);
         }
 
         private void NodePanel_OnSizeChanged(object sender, SizeChangedEventArgs e)
