@@ -318,13 +318,13 @@ namespace Biaui.Controls.NodeEditor
                         isTempSize = true;
 
                         var pos = item.Pos;
-                        itemRect = new ImmutableRect(pos.X, pos.Y, pos.X + tempWidth, pos.Y + tempHeight);
+                        itemRect = new ImmutableRect(pos.X, pos.Y, tempWidth, tempHeight);
                     }
                     else
                     {
                         var pos = item.Pos;
                         var size = item.Size;
-                        itemRect = new ImmutableRect(pos.X, pos.Y, pos.X + size.Width, pos.Y + size.Height);
+                        itemRect = new ImmutableRect(pos.X, pos.Y, size.Width, size.Height);
                     }
                 }
 
