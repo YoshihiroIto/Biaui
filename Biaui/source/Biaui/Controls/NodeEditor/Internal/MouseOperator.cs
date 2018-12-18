@@ -152,6 +152,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void OnMouseWheel(MouseWheelEventArgs e)
         {
+            if (IsOperating)
+                return;
+
             var s = _scale.ScaleX;
 
             s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
