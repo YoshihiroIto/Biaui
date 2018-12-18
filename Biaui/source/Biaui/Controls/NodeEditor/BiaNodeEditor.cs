@@ -16,7 +16,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodeEditor : Grid
+    public class BiaNodeEditor : BiaClippingBorder
     {
         #region NodesSource
 
@@ -51,6 +51,7 @@ namespace Biaui.Controls.NodeEditor
         private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
 
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
+
         private readonly BoxSelector _boxSelector = new BoxSelector();
 
         private readonly ScaleTransform _scale = new ScaleTransform();
@@ -75,11 +76,11 @@ namespace Biaui.Controls.NodeEditor
             SizeChanged += (_, __) => UpdateChildrenBag(true);
             Unloaded += (_, __) => _removeNodePanelTimer.Stop();
 
-            ClipToBounds = true;
-
-            Children.Add(new GridPanel(_translate, _scale));
-            Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(_scale, _translate));
-            Children.Add(_boxSelector);
+            var grid = new Grid();
+            grid.Children.Add(new GridPanel(_translate, _scale));
+            grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(_scale, _translate));
+            grid.Children.Add(_boxSelector);
+            base.Child = grid;
 
             _mouseOperator = new MouseOperator(this, _translate, _scale);
             _mouseOperator.PanelMoving += OnPanelMoving;
