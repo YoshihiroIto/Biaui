@@ -48,11 +48,11 @@
         </Setter>
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                <Setter Property="BorderBrush" Value="DarkOrange" />
-            </DataTrigger>
             <DataTrigger Binding="{Binding IsPreSelected}" Value="True">
                 <Setter Property="BorderBrush" Value="Gray" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="BorderBrush" Value="DarkOrange" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -91,11 +91,11 @@
         </Setter>
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                <Setter Property="BorderBrush" Value="DarkOrange" />
-            </DataTrigger>
             <DataTrigger Binding="{Binding IsPreSelected}" Value="True">
                 <Setter Property="BorderBrush" Value="Gray" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="BorderBrush" Value="DarkOrange" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -121,11 +121,11 @@
         </Setter>
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                <Setter Property="BorderBrush" Value="DarkOrange" />
-            </DataTrigger>
             <DataTrigger Binding="{Binding IsPreSelected}" Value="True">
                 <Setter Property="BorderBrush" Value="Gray" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="BorderBrush" Value="DarkOrange" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
