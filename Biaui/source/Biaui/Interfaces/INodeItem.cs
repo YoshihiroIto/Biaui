@@ -8,10 +8,9 @@ namespace Biaui.Interfaces
     {
         bool IsSelected { get; set; }
         bool IsPreSelected { get; set; }
+        bool IsRequireVisualTest { get; }
 
         Size Size { get; set; }
-
-        bool IsRequireVisualTest { get; }
     }
 
     internal static class NodeItemExtensions

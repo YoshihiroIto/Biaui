@@ -19,6 +19,28 @@ namespace Biaui.Controls.Mock.Foundation.Mvvm
             return true;
         }
 
+        protected bool SetFlagProperty(ref uint storage, uint flag, bool value, [CallerMemberName] string propertyName = "")
+        {
+            if (value)
+            {
+                if ((storage & flag) != 0)
+                    return false;
+
+                storage |= flag;
+            }
+            else
+            {
+                if ((storage & flag) == 0)
+                    return false;
+
+                storage &= ~flag;
+            }
+
+            RaisePropertyChanged(propertyName);
+
+            return true;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = "")

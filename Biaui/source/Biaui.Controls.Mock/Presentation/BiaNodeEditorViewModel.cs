@@ -205,6 +205,18 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class NodeBase : ModelBase
     {
+        public bool IsSelected
+        {
+            get => (_flags & Flag_IsSelected) != 0;
+            set => SetFlagProperty(ref _flags, Flag_IsSelected, value);
+        }
+
+        public bool IsPreSelected
+        {
+            get => (_flags & Flag_IsPreSelected) != 0;
+            set => SetFlagProperty(ref _flags, Flag_IsPreSelected, value);
+        }
+
         #region Title
 
         private string _Name;
@@ -225,30 +237,6 @@ namespace Biaui.Controls.Mock.Presentation
         {
             get => _TitleBackground;
             set => SetProperty(ref _TitleBackground, value);
-        }
-
-        #endregion
-
-        #region IsSelected
-
-        private bool _isSelected;
-
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set => SetProperty(ref _isSelected, value);
-        }
-
-        #endregion
-
-        #region IsPreSelected
-
-        private bool _IsPreSelected;
-
-        public bool IsPreSelected
-        {
-            get => _IsPreSelected;
-            set => SetProperty(ref _IsPreSelected, value);
         }
 
         #endregion
@@ -275,8 +263,11 @@ namespace Biaui.Controls.Mock.Presentation
             set => SetProperty(ref _Size, value);
         }
 
-
         #endregion
+
+        private uint _flags;
+        private const uint Flag_IsSelected = 1 << 0;
+        private const uint Flag_IsPreSelected = 1 << 1;
     }
 
     public class BasicNode : NodeBase, INodeItem
