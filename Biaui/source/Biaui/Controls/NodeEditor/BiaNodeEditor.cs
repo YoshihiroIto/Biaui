@@ -134,6 +134,19 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
+        private void UpdateSelectedNode(INodeItem node)
+        {
+            if (node.IsSelected)
+                _selectedNodes.Add(node);
+            else
+                _selectedNodes.Remove(node);
+
+            if (node.IsPreSelected)
+                _preSelectedNodes.Add(node);
+            else
+                _preSelectedNodes.Remove(node);
+        }
+
         private void NodeItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var node = (INodeItem) sender;
@@ -144,27 +157,14 @@ namespace Biaui.Controls.NodeEditor
                 case nameof(INodeItem.Size):
                 {
                     ChangeElement(true);
+                    _nodeLinkPanel.InvalidateVisual();
                     break;
                 }
 
                 case nameof(INodeItem.IsSelected):
-                {
-                    if (node.IsSelected)
-                        _selectedNodes.Add(node);
-                    else
-                        _selectedNodes.Remove(node);
-
-                    ChangeElement(false);
-                    break;
-                }
-
                 case nameof(INodeItem.IsPreSelected):
                 {
-                    if (node.IsPreSelected)
-                        _preSelectedNodes.Add(node);
-                    else
-                        _preSelectedNodes.Remove(node);
-
+                    UpdateSelectedNode(node);
                     ChangeElement(false);
                     break;
                 }
@@ -196,6 +196,7 @@ namespace Biaui.Controls.NodeEditor
                     {
                         nodeItem.PropertyChanged += NodeItemPropertyChanged;
                         _nodeDict.Add(nodeItem, null);
+                        UpdateSelectedNode(nodeItem);
                     }
 
                     UpdateChildrenBag(true);
@@ -213,6 +214,8 @@ namespace Biaui.Controls.NodeEditor
                             RemoveNodePanel(panel);
 
                         _nodeDict.Remove(nodeItem);
+                        _selectedNodes.Remove(nodeItem);
+                        _preSelectedNodes.Remove(nodeItem);
                     }
 
                     break;
@@ -238,9 +241,12 @@ namespace Biaui.Controls.NodeEditor
 
                         oldItem.PropertyChanged -= NodeItemPropertyChanged;
                         _nodeDict.Remove(oldItem);
+                        _selectedNodes.Remove(oldItem);
+                        _preSelectedNodes.Remove(oldItem);
 
                         newItem.PropertyChanged += NodeItemPropertyChanged;
                         _nodeDict.Add(newItem, null);
+                        UpdateSelectedNode(newItem);
 
                         if (panel != null)
                             RemoveNodePanel(panel);
@@ -272,6 +278,8 @@ namespace Biaui.Controls.NodeEditor
             }
 
             _nodeDict.Clear();
+            _selectedNodes.Clear();
+            _preSelectedNodes.Clear();
         }
 
         private void SetFrontmost(BiaNodePanel child)
