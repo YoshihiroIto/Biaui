@@ -423,19 +423,8 @@ namespace Biaui.Controls.NodeEditor
             p.MouseLeftButtonDown += NodePanel_OnMouseLeftButtonDown;
             p.MouseLeftButtonUp += NodePanel_OnMouseLeftButtonUp;
             p.MouseMove += NodePanel_OnMouseMove;
-            p.SizeChanged += NodePanel_OnSizeChanged;
 
             return (p, false);
-        }
-
-        private void NodePanel_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var panel = (BiaNodePanel)sender;
-
-            if (!(panel.DataContext is INodeItem item))
-                return;
-
-            item.Size = new Size(panel.ActualWidth, panel.ActualHeight);
         }
 
         private void ReturnNodePanel(BiaNodePanel panel)

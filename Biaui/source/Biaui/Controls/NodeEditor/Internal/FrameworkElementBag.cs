@@ -91,8 +91,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            foreach (var child in _changedElements)
+            foreach (var child in _changedElements.ToArray())
+            {
                 child.Measure(availableSize);
+
+                if (child.DataContext is INodeItem nodeItem)
+                    nodeItem.Size = child.DesiredSize;
+            }
 
             return base.MeasureOverride(availableSize);
         }
