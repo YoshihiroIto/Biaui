@@ -40,5 +40,13 @@ namespace Biaui.Internals
             => v0 < v1
                 ? (v0, v1)
                 : (v1, v0);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Min(double v0, double v1)
+            => v0 < v1 ? v0 : v1;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Max(double v0, double v1)
+            => v0 > v1 ? v0 : v1;
     }
 }

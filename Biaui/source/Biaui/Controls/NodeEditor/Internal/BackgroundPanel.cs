@@ -151,25 +151,23 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var penO = Caches.GetBorderPen(Colors.Black, FrameworkElementHelper.RoundLayoutValue(8));
                 var penI = Caches.GetBorderPen(Colors.LimeGreen, FrameworkElementHelper.RoundLayoutValue(6));
 
+                var pv = new Point[4];
+
                 foreach (var link in LinksSource)
                 {
                     var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
                     var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
 
-                    var pos01 = MakeControlPoint(dir0, pos0);
-                    var pos10 = MakeControlPoint(dir1, pos1);
+                    pv[0] = pos0;
+                    pv[1] = MakeControlPoint(dir0, pos0);
+                    pv[2] = MakeControlPoint(dir1, pos1);
+                    pv[3] = pos1;
 
-                    if (HitTestBezier(new[]
-                    {
-                        (Vector) pos0,
-                        (Vector) pos01,
-                        (Vector) pos10,
-                        (Vector) pos1
-                    }, viewport) == false)
+                    if (HitTestBezier(pv, viewport) == false)
                         continue;
 
                     var pf = new PathFigure { StartPoint = pos0 };
-                    var bs = new BezierSegment(pos01, pos10, pos1, true);
+                    var bs = new BezierSegment(pv[1], pv[2], pos1, true);
 
                     pf.Segments.Add(bs);
 
@@ -208,50 +206,39 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         // http://proprogrammer.hatenadiary.jp/entry/2014/12/16/001014
-        private static bool HitTestBezier(Vector[] v, in ImmutableRect rect)
+        private static bool HitTestBezier(Point[] p, in ImmutableRect rect)
         {
-            var p0 = new Point(v[0].X, v[0].Y);
-            var p3 = new Point(v[3].X, v[3].Y);
-            // 始点か終点を含んでいれば、Hitしている。
-            if (rect.Contains(p0) || rect.Contains(p3))
+            if (rect.Contains(p[0]) || rect.Contains(p[3]))
                 return true;
 
-            var area = new Rect(p0, p3);
-            area.Union(new ImmutableRect(new Point(v[1].X, v[1].Y), new Point(v[2].X, v[2].Y)));
+            var area = new ImmutableRect(p);
 
-            // ここらへんで小細工の余地はあります。幅や高さが1未満だったら直線と大差ないとか、いろいろ。
+            if (rect.IntersectsWith(area) == false)
+                return false;
 
-            // 交差している可能性があるケースを判定
-            if (rect.IntersectsWith(area))
-            {
-                var v01 = (v[0] + v[1]) / 2;
-                var v12 = (v[1] + v[2]) / 2;
-                var v23 = (v[2] + v[3]) / 2;
+            var v01 = new Point((p[0].X + p[1].X) * 0.5, (p[0].Y + p[1].Y) * 0.5);
+            var v12 = new Point((p[1].X + p[2].X) * 0.5, (p[1].Y + p[2].Y) * 0.5);
+            var v23 = new Point((p[2].X + p[3].X) * 0.5, (p[2].Y + p[3].Y) * 0.5);
 
-                var v0112 = (v01 + v12) / 2;
-                var v1223 = (v12 + v23) / 2;
+            var v0112 = new Point((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);
+            var v1223 = new Point((v12.X + v23.X) * 0.5, (v12.Y + v23.Y) * 0.5);
 
-                var c = (v0112 + v1223) / 2;
+            var c = new Point((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
 
-                // 2分割してさらに探査
-                return HitTestBezier(new[]
-                       {
-                           v[0],
-                           v01,
-                           v0112,
-                           c
-                       }, rect)
-                       || HitTestBezier(new[]
-                       {
-                           c,
-                           v1223,
-                           v23,
-                           v[3]
-                       }, in rect);
-            }
-
-            // 可能性が無い
-            return false;
+            return HitTestBezier(new[]
+                   {
+                       p[0],
+                       v01,
+                       v0112,
+                       c
+                   }, rect)
+                   || HitTestBezier(new[]
+                   {
+                       c,
+                       v1223,
+                       v23,
+                       p[3]
+                   }, in rect);
         }
     }
 }

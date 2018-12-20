@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace Biaui.Internals
@@ -22,6 +23,30 @@ namespace Biaui.Internals
         {
             var (minX, maxX) = NumberHelper.MinMax(pos0.X, pos1.X);
             var (minY, maxY) = NumberHelper.MinMax(pos0.Y, pos1.Y);
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
+        public ImmutableRect(Point[] poss)
+        {
+            var minX = poss[0].X;
+            var minY = poss[0].Y;
+            var maxX = poss[0].X;
+            var maxY = poss[0].Y;
+
+            for (var i = 1; i < poss.Length; ++i)
+            {
+                minX = NumberHelper.Min(minX, poss[i].X);
+                maxX = NumberHelper.Max(maxX, poss[i].X);
+
+                minY = NumberHelper.Min(minY, poss[i].Y);
+                maxY = NumberHelper.Max(maxY, poss[i].Y);
+            }
 
             (X, Y, Width, Height) = (
                 minX,
