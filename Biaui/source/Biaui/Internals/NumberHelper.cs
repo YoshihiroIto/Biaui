@@ -48,5 +48,14 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Max(double v0, double v1)
             => v0 > v1 ? v0 : v1;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Min(int v0, int v1)
+            => v0 < v1 ? v0 : v1;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Max(int v0, int v1)
+            => v0 > v1 ? v0 : v1;
+
     }
 }

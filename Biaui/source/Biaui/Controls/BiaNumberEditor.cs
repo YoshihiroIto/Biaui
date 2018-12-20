@@ -774,7 +774,7 @@ namespace Biaui.Controls
                 case BiaNumberEditorMode.Simple:
                 {
                     // 0から1
-                    var xr = Math.Min(Math.Max(0, currentPos.X), ActualWidth) / ActualWidth;
+                    var xr = NumberHelper.Min(NumberHelper.Max(0, currentPos.X), ActualWidth) / ActualWidth;
                     Value = SliderWidth * xr + ActualSliderMinimum;
                     break;
                 }
@@ -789,7 +789,7 @@ namespace Biaui.Controls
                     var w = currentPos.X - _oldPos.X;
                     var v = Value + s * w * Increment;
 
-                    Value = Math.Min(ActualSliderMaximum, Math.Max(ActualSliderMinimum, v));
+                    Value = NumberHelper.Min(ActualSliderMaximum, NumberHelper.Max(ActualSliderMinimum, v));
 
                     // 移動量だけ取れれば良いので、現在位置をスタート位置に戻す
                     var p = PointToScreen(_mouseDownPos);
@@ -902,7 +902,7 @@ namespace Biaui.Controls
         {
             var v = Value + i;
 
-            Value = Math.Min(ActualMaximum, Math.Max(ActualMinimum, v));
+            Value = NumberHelper.Min(ActualMaximum, NumberHelper.Max(ActualMinimum, v));
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -1061,10 +1061,10 @@ namespace Biaui.Controls
         private (MakeValueResult Result, double Value) MakeValueFromString(string src)
         {
             if (double.TryParse(src, out var v))
-                return (MakeValueResult.Ok, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
+                return (MakeValueResult.Ok, NumberHelper.Min(ActualMaximum, NumberHelper.Max(ActualMinimum, v)));
 
             if (double.TryParse(Evaluator.Eval(src), out v))
-                return (MakeValueResult.Continue, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
+                return (MakeValueResult.Continue, NumberHelper.Min(ActualMaximum, NumberHelper.Max(ActualMinimum, v)));
 
             // Math.を補間
             if (_evalRegex == null)
@@ -1072,7 +1072,7 @@ namespace Biaui.Controls
 
             var rs = _evalRegex.Replace(src, "Math.$0");
             if (double.TryParse(Evaluator.Eval(rs), out v))
-                return (MakeValueResult.Continue, Math.Min(ActualMaximum, Math.Max(ActualMinimum, v)));
+                return (MakeValueResult.Continue, NumberHelper.Min(ActualMaximum, NumberHelper.Max(ActualMinimum, v)));
 
             return (MakeValueResult.Cancel, default);
         }
@@ -1121,16 +1121,16 @@ namespace Biaui.Controls
         }
 
         private double ClampValue(double v)
-            => Math.Max(Math.Min(v, ActualMaximum), ActualMinimum);
+            => NumberHelper.Max(NumberHelper.Min(v, ActualMaximum), ActualMinimum);
 
         private string FormattedValueString => Value.ToString(DisplayFormat);
 
         private double SliderWidth => Math.Abs(SliderMaximum - SliderMinimum);
 
-        private double ActualSliderMinimum => Math.Min(SliderMinimum, SliderMaximum);
-        private double ActualSliderMaximum => Math.Max(SliderMinimum, SliderMaximum);
-        private double ActualMinimum => Math.Min(Minimum, Maximum);
-        private double ActualMaximum => Math.Max(Minimum, Maximum);
+        private double ActualSliderMinimum => NumberHelper.Min(SliderMinimum, SliderMaximum);
+        private double ActualSliderMaximum => NumberHelper.Max(SliderMinimum, SliderMaximum);
+        private double ActualMinimum => NumberHelper.Min(Minimum, Maximum);
+        private double ActualMaximum => NumberHelper.Max(Minimum, Maximum);
 
         private string UiValueString
         {

@@ -245,7 +245,7 @@ namespace Biaui.Controls
 
             var s = RoundLayoutValue(1);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
-            y = Math.Min(Math.Max(y, 0), 1);
+            y = NumberHelper.Min(NumberHelper.Max(y, 0), 1);
 
             Value = IsInverseValue ? 1 - y : y;
         }

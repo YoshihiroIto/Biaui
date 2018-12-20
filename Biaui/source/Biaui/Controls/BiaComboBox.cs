@@ -576,7 +576,7 @@ namespace Biaui.Controls
             else
             {
                 i = i + dir;
-                i = Math.Max(0, Math.Min(i, ia.Length - 1));
+                i = NumberHelper.Max(0, NumberHelper.Min(i, ia.Length - 1));
 
                 SelectedItem = ia[i];
             }

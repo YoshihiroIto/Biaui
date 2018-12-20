@@ -160,7 +160,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var p = e.GetPosition(_target);
             var d0 = _target.MakeScenePosFromControlPos(p.X, p.Y);
 
-            s = Math.Max(Math.Min(s, 3.0), 0.25);
+            s = NumberHelper.Max(NumberHelper.Min(s, 3.0), 0.25);
             _scale.ScaleX = s;
             _scale.ScaleY = s;
 
