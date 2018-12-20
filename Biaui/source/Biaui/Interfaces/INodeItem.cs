@@ -24,7 +24,7 @@ namespace Biaui.Interfaces
         public static ImmutableRect MakeRect(this INodeItem self)
             => new ImmutableRect(self.Pos, self.Size);
 
-        public static Point MakePortPos(this INodeItem nodeItem, object portId)
+        public static (Point, BiaNodePortDir) MakePortPos(this INodeItem nodeItem, object portId)
         {
             var (port, dir) = nodeItem.Layout.FindPort(portId);
 
@@ -41,9 +41,11 @@ namespace Biaui.Interfaces
                 centerPos,
                 endPos);
 
-            return new Point(
-                nodeItem.Pos.X + pos.X,
-                nodeItem.Pos.Y + pos.Y);
+            return (
+                new Point(
+                    nodeItem.Pos.X + pos.X,
+                    nodeItem.Pos.Y + pos.Y),
+                dir);
         }
     }
 

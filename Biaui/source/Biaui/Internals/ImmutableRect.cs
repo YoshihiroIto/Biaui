@@ -49,13 +49,12 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IntersectsWith(double targetLeft, double targetTop, double targetRight, double targetBottom)
-        {
-            var right = X + Width;
-            var bottom = Y + Height;
-
-            return targetLeft <= right && targetRight >= X && targetTop <= bottom && targetBottom >= Y;
-        }
+        public bool Contains(Point p)
+            =>
+                p.X >= X &&
+                p.X < X + Width &&
+                p.Y >= Y &&
+                p.Y < Y + Height;
 
         // ReSharper disable CompareOfFloatsByEqualityOperator
         public static bool operator ==(in ImmutableRect source1, in ImmutableRect source2)
