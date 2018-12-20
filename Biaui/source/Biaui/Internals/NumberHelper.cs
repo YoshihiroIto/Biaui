@@ -34,5 +34,11 @@ namespace Biaui.Internals
 
             return (-eps < delta) && (eps > delta);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static (double Min, double Max) MinMax(double v0, double v1)
+            => v0 < v1
+                ? (v0, v1)
+                : (v1, v0);
     }
 }

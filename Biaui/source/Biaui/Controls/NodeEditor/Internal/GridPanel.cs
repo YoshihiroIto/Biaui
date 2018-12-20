@@ -7,8 +7,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class GridPanel : Canvas
     {
-        private readonly TranslateTransform _translate;
         private readonly ScaleTransform _scale;
+        private readonly TranslateTransform _translate;
 
         static GridPanel()
         {
@@ -16,13 +16,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(GridPanel)));
         }
 
-        internal GridPanel(TranslateTransform translate, ScaleTransform scale)
+        internal GridPanel(ScaleTransform scale, TranslateTransform translate)
         {
-            _translate = translate;
             _scale = scale;
+            _translate = translate;
 
-            _translate.Changed += (_, __) => InvalidateVisual();
             _scale.Changed += (_, __) => InvalidateVisual();
+            _translate.Changed += (_, __) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)

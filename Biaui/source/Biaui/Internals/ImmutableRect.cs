@@ -15,8 +15,21 @@ namespace Biaui.Internals
         public ImmutableRect(double x, double y, double width, double height)
             => (X, Y, Width, Height) = (x, y, width, height);
 
-        public ImmutableRect(Point p, Size s)
-            => (X, Y, Width, Height) = (p.X, p.Y, s.Width, s.Height);
+        public ImmutableRect(Point pos, Size size)
+            => (X, Y, Width, Height) = (pos.X, pos.Y, size.Width, size.Height);
+
+        public ImmutableRect(Point pos0, Point pos1)
+        {
+            var (minX, maxX) = NumberHelper.MinMax(pos0.X, pos1.X);
+            var (minY, maxY) = NumberHelper.MinMax(pos0.Y, pos1.Y);
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
 
         public static implicit operator ImmutableRect(Rect source)
             => new ImmutableRect(source.X, source.Y, source.Width, source.Height);

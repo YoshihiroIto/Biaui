@@ -12,37 +12,41 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <controls:BiaClippingBorder Background="#E03B3E4A"
-                                                BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
-                                                BorderThickness="1"
-                                                CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                        <StackPanel Margin="0,0,0,12">
-                            <Border Margin="0,0,0,8"
-                                    Background="{Binding TitleBackground, Mode=OneWay}"
-                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
-                                    BorderThickness="0,0,0,1">
-                                <controls:BiaTextBlock Margin="8"
-                                                       HorizontalAlignment="Center"
-                                                       Text="{Binding Title, Mode=OneWay}" />
-                            </Border>
+                    <Grid>
+                        <controls:BiaClippingBorder Background="#E03B3E4A"
+                                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                            <StackPanel Margin="0,0,0,12">
+                                <Border Margin="0,0,0,8"
+                                        Background="{Binding TitleBackground, Mode=OneWay}"
+                                        BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
+                                        BorderThickness="0,0,0,1">
+                                    <controls:BiaTextBlock Margin="8"
+                                                           HorizontalAlignment="Center"
+                                                           Text="{Binding Title, Mode=OneWay}" />
+                                </Border>
 
-                            <controls:BiaTextBox Margin="12,4,12,0" Text="AAA" />
-                            <controls:BiaTextBox Margin="12,4,12,0" Text="BBB" />
+                                <controls:BiaTextBox Margin="12,4,12,0" Text="AAA" />
+                                <controls:BiaTextBox Margin="12,4,12,0" Text="BBB" />
 
-                            <controls:BiaNumberEditor Margin="12,4,12,0" Caption="ParamA" />
-                            <controls:BiaNumberEditor Margin="12,4,12,0" Caption="ParamB" />
-                            <controls:BiaNumberEditor Margin="12,4,12,0" Caption="ParamC" />
+                                <controls:BiaNumberEditor Margin="12,4,12,0" Caption="ParamA" />
+                                <controls:BiaNumberEditor Margin="12,4,12,0" Caption="ParamB" />
+                                <controls:BiaNumberEditor Margin="12,4,12,0" Caption="ParamC" />
 
-                            <controls:BiaCheckBox Margin="12,4,12,0" Content="CheckBox1" />
-                            <controls:BiaCheckBox Margin="12,4,12,0" Content="CheckBox2" />
+                                <controls:BiaCheckBox Margin="12,4,12,0" Content="CheckBox1" />
+                                <controls:BiaCheckBox Margin="12,4,12,0" Content="CheckBox2" />
 
-                            <controls:BiaColorPicker Height="160"
-                                                     Margin="12,4,12,0"
-                                                     Blue="0.25"
-                                                     Green="0.5"
-                                                     Red="1" />
-                        </StackPanel>
-                    </controls:BiaClippingBorder>
+                                <controls:BiaColorPicker Height="160"
+                                                         Margin="12,4,12,0"
+                                                         Blue="0.25"
+                                                         Green="0.5"
+                                                         Red="1" />
+                            </StackPanel>
+                        </controls:BiaClippingBorder>
+
+                        <nodeEditor:NodePanelPorts />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -64,28 +68,33 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <controls:BiaClippingBorder Background="#E03B3E4A"
-                                                BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
-                                                BorderThickness="1"
-                                                CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                        <StackPanel Margin="0,0,0,12">
-                            <Border Margin="0,0,0,8"
-                                    Background="{Binding TitleBackground, Mode=OneWay}"
-                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
-                                    BorderThickness="0,0,0,1">
-                                <controls:BiaTextBlock Margin="8"
-                                                       HorizontalAlignment="Center"
-                                                       Text="{Binding Title, Mode=OneWay}" />
-                            </Border>
+                    <Grid>
 
-                            <controls:BiaColorPicker Height="280"
-                                                     Margin="12,4,12,0"
-                                                     Blue="0.25"
-                                                     Green="0.5"
-                                                     Red="1"
-                                                     Style="{StaticResource BiaColorPickerWheelType}" />
-                        </StackPanel>
-                    </controls:BiaClippingBorder>
+                        <controls:BiaClippingBorder Background="#E03B3E4A"
+                                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                            <StackPanel Margin="0,0,0,12">
+                                <Border Margin="0,0,0,8"
+                                        Background="{Binding TitleBackground, Mode=OneWay}"
+                                        BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodePanel}}}"
+                                        BorderThickness="0,0,0,1">
+                                    <controls:BiaTextBlock Margin="8"
+                                                           HorizontalAlignment="Center"
+                                                           Text="{Binding Title, Mode=OneWay}" />
+                                </Border>
+
+                                <controls:BiaColorPicker Height="280"
+                                                         Margin="12,4,12,0"
+                                                         Blue="0.25"
+                                                         Green="0.5"
+                                                         Red="1"
+                                                         Style="{StaticResource BiaColorPickerWheelType}" />
+                            </StackPanel>
+                        </controls:BiaClippingBorder>
+
+                        <nodeEditor:NodePanelPorts />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -115,6 +124,7 @@
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                Text="{Binding Title, Mode=OneTime}" />
+                        <nodeEditor:NodePanelPorts />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -590,6 +590,7 @@
                                           BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                                           BorderThickness="1"
                                           CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}"
+                                          LinksSource="{Binding BiaNodeEditorViewModel.Links, Mode=OneWay}"
                                           NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
                     <nodeEditor:BiaNodeEditor.Resources>
                         <ResourceDictionary>

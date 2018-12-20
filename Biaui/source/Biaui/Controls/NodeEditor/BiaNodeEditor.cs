@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -48,10 +49,39 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        #region LinksSource
+
+        public ObservableCollection<ILinkItem> LinksSource
+        {
+            get => _LinksSource;
+            set
+            {
+                if (value != _LinksSource)
+                    SetValue(LinksSourceProperty, value);
+            }
+        }
+
+        private ObservableCollection<ILinkItem> _LinksSource;
+
+        public static readonly DependencyProperty LinksSourceProperty =
+            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<ILinkItem>),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    default(ObservableCollection<ILinkItem>),
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+
+                        var old = self._LinksSource;
+                        self._LinksSource = (ObservableCollection<ILinkItem>) e.NewValue;
+                        self.UpdateLinksSource(old, self._LinksSource);
+                    }));
+
+        #endregion
+
         private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
 
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
-
         private readonly BoxSelector _boxSelector = new BoxSelector();
 
         private readonly ScaleTransform _scale = new ScaleTransform();
@@ -65,6 +95,8 @@ namespace Biaui.Controls.NodeEditor
         private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
         private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
+        private readonly NodeLinkPanel _nodeLinkPanel;
+
         static BiaNodeEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodeEditor),
@@ -77,10 +109,22 @@ namespace Biaui.Controls.NodeEditor
             Unloaded += (_, __) => _removeNodePanelTimer.Stop();
 
             var grid = new Grid();
-            grid.Children.Add(new GridPanel(_translate, _scale));
+            grid.Children.Add(new GridPanel(_scale, _translate));
+            grid.Children.Add(_nodeLinkPanel = new NodeLinkPanel(this, _scale, _translate));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(_scale, _translate));
             grid.Children.Add(_boxSelector);
             base.Child = grid;
+
+            _nodeLinkPanel.SetBinding(NodeLinkPanel.NodesSourceProperty, new Binding(nameof(NodesSource))
+            {
+                Source = this,
+                Mode = BindingMode.OneWay
+            });
+            _nodeLinkPanel.SetBinding(NodeLinkPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
+            {
+                Source = this,
+                Mode = BindingMode.OneWay
+            });
 
             _mouseOperator = new MouseOperator(this, _translate, _scale);
             _mouseOperator.PanelMoving += OnPanelMoving;
@@ -95,23 +139,26 @@ namespace Biaui.Controls.NodeEditor
         }
 
         internal Point MakeScenePosFromControlPos(double x, double y)
-            => new Point(
-                (x - _translate.X) / _scale.ScaleX,
-                (y - _translate.Y) / _scale.ScaleY);
-
-        private ImmutableRect MakeCurrentViewport()
         {
-            var sx = _scale.ScaleX;
-            var sy = _scale.ScaleY;
+            var s = _scale.ScaleX;
 
-            return new ImmutableRect(
-                -_translate.X / sx,
-                -_translate.Y / sy,
-                ActualWidth / sx,
-                ActualHeight / sy);
+            return new Point(
+                (x - _translate.X) / s,
+                (y - _translate.Y) / s);
         }
 
-        #region Children
+        internal ImmutableRect MakeCurrentViewport()
+        {
+            var s = _scale.ScaleX;
+
+            return new ImmutableRect(
+                -_translate.X / s,
+                -_translate.Y / s,
+                ActualWidth / s,
+                ActualHeight / s);
+        }
+
+        #region Nodes
 
         private void UpdateNodesSource(
             ObservableCollection<INodeItem> oldSource,
@@ -400,6 +447,16 @@ namespace Biaui.Controls.NodeEditor
 
             if (_removeNodePanelPool.Count == 0)
                 _removeNodePanelTimer.Stop();
+        }
+
+        #endregion
+
+        #region Links
+
+        private void UpdateLinksSource(
+            ObservableCollection<ILinkItem> oldSource,
+            ObservableCollection<ILinkItem> newSource)
+        {
         }
 
         #endregion

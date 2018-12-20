@@ -12,10 +12,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             get
             {
-                var left = Math.Min(_mouseDownPos.X, _mouseMovePos.X);
-                var right = Math.Max(_mouseDownPos.X, _mouseMovePos.X);
-                var top = Math.Min(_mouseDownPos.Y, _mouseMovePos.Y);
-                var bottom = Math.Max(_mouseDownPos.Y, _mouseMovePos.Y);
+                var (left, right) = NumberHelper.MinMax(_mouseDownPos.X, _mouseMovePos.X);
+                var (top, bottom) = NumberHelper.MinMax(_mouseDownPos.Y, _mouseMovePos.Y);
 
                 return (new Point(left, top), new Point(right, bottom));
             }

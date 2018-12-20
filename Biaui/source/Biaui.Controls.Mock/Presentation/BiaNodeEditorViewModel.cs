@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
+using Biaui.Controls.NodeEditor;
 using Biaui.Interfaces;
 
 namespace Biaui.Controls.Mock.Presentation
@@ -20,6 +21,18 @@ namespace Biaui.Controls.Mock.Presentation
         {
             get => _Nodes;
             set => SetProperty(ref _Nodes, value);
+        }
+
+        #endregion
+
+        #region Links
+
+        private ObservableCollection<ILinkItem> _Links = new ObservableCollection<ILinkItem>();
+
+        public ObservableCollection<ILinkItem> Links
+        {
+            get => _Links;
+            set => SetProperty(ref _Links, value);
         }
 
         #endregion
@@ -132,13 +145,19 @@ namespace Biaui.Controls.Mock.Presentation
 
             ReplaceNodesSourceCommand = new DelegateCommand().Setup(() =>
             {
+                //
                 var nodes = new ObservableCollection<INodeItem>();
                 MakeNodes(nodes);
-
                 Nodes = nodes;
+
+                //
+                var links = new ObservableCollection<ILinkItem>();
+                MakeLinks(links, Nodes);
+                Links = links;
             });
 
             MakeNodes(Nodes);
+            MakeLinks(Links, Nodes);
         }
 
         private static void MakeNodes(ObservableCollection<INodeItem> nodes)
@@ -166,44 +185,64 @@ namespace Biaui.Controls.Mock.Presentation
                 var ry = 0.0;
 #endif
 
+                INodeItem nodeItem = null;
 
                 switch (i % 3)
                 {
                     case 0:
-                        nodes.Add(
-                            new BasicNode
-                            {
-                                Title = $"Title:{i++}",
-                                TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
-                                Pos = new Point(x * 800 + rx, y * 800 + ry),
-                            });
+                        nodeItem = new BasicNode
+                        {
+                            Title = $"Title:{i++}",
+                            TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
+                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                        };
                         break;
 
                     case 1:
-                        nodes.Add(
-                            new ColorNode
-                            {
-                                Title = $"Color:{i++}",
-                                TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
-                                Pos = new Point(x * 800 + rx, y * 800 + ry),
-                            });
+                        nodeItem = new ColorNode
+                        {
+                            Title = $"Color:{i++}",
+                            TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
+                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                        };
                         break;
 
                     case 2:
-                        nodes.Add(
-                            new CircleNode
-                            {
-                                Title = $"Circle:{i++}",
-                                TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
-                                Pos = new Point(x * 800 + rx, y * 800 + ry),
-                            });
+                        nodeItem = new CircleNode
+                        {
+                            Title = $"Circle:{i++}",
+                            TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
+                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                        };
                         break;
                 }
+
+                nodes.Add(nodeItem);
+            }
+        }
+
+        private static void MakeLinks(ObservableCollection<ILinkItem> links, ObservableCollection<INodeItem> nodes)
+        {
+            if (nodes.Count == 0)
+                return;
+
+            for (var i = 1; i != nodes.Count; ++i)
+            {
+                links.Add(
+                    new Link
+                    {
+                        Item0 = nodes[i - 1],
+                        Item0PortId = "OutputA",
+
+                        Item1 = nodes[i],
+                        Item1PortId = "InputA"
+                    }
+                );
             }
         }
     }
 
-    public class NodeBase : ModelBase
+    public abstract class NodeBase : ModelBase, INodeItem
     {
         public bool IsSelected
         {
@@ -268,56 +307,176 @@ namespace Biaui.Controls.Mock.Presentation
         private uint _flags;
         private const uint Flag_IsSelected = 1 << 0;
         private const uint Flag_IsPreSelected = 1 << 1;
+
+        public abstract bool IsRequireVisualTest { get; }
+
+        public abstract BiaNodePortLayout Layout { get; }
     }
 
-    public class BasicNode : NodeBase, INodeItem
+    public class BasicNode : NodeBase
     {
-        public bool IsRequireVisualTest => false;
-    }
+        public override bool IsRequireVisualTest => false;
 
-    public class ColorNode : NodeBase, INodeItem
-    {
-        public bool IsRequireVisualTest => false;
+        public override BiaNodePortLayout Layout => _Layout;
 
-        #region Red
-
-        private double _Red;
-
-        public double Red
+        private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
         {
-            get => _Red;
-            set => SetProperty(ref _Red, value);
+            TopPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "InputA",
+                    Align = BiaNodePortAlign.Center
+                }
+            },
+            BottomPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "OutputA",
+                    Align = BiaNodePortAlign.Center
+                }
+            },
+        };
+    }
+
+    public class ColorNode : NodeBase
+    {
+        public override bool IsRequireVisualTest => false;
+
+        public override BiaNodePortLayout Layout => _Layout;
+
+        private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
+        {
+            LeftPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "InputA",
+                    Align = BiaNodePortAlign.Center
+                }
+            },
+            RightPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "OutputA",
+                    Offset = new Point(0, -Constants.BasicOneLineHeight * 4),
+                    Align = BiaNodePortAlign.End
+                },
+                new BiaNodePort
+                {
+                    Id = "OutputB",
+                    Offset = new Point(0, -Constants.BasicOneLineHeight * 3),
+                    Align = BiaNodePortAlign.End
+                },
+                new BiaNodePort
+                {
+                    Id = "OutputC",
+                    Offset = new Point(0, -Constants.BasicOneLineHeight * 2),
+                    Align = BiaNodePortAlign.End
+                },
+                new BiaNodePort
+                {
+                    Id = "OutputD",
+                    Offset = new Point(0, -Constants.BasicOneLineHeight * 1),
+                    Align = BiaNodePortAlign.End
+                },
+            },
+        };
+    }
+
+    public class CircleNode : NodeBase
+    {
+        public override bool IsRequireVisualTest => true;
+
+        public override BiaNodePortLayout Layout => _Layout;
+
+        private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
+        {
+            LeftPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "InputA",
+                    Align = BiaNodePortAlign.Center
+                }
+            },
+            TopPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "Top",
+                    Align = BiaNodePortAlign.Center
+                }
+            },
+            RightPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "OutputA",
+                    Align = BiaNodePortAlign.Center
+                }
+            },
+            BottomPorts = new[]
+            {
+                new BiaNodePort
+                {
+                    Id = "Bottom",
+                    Align = BiaNodePortAlign.Center
+                }
+            },
+        };
+    }
+
+    public class Link : ModelBase, ILinkItem
+    {
+        #region Item0
+
+        private INodeItem _Item0;
+
+        public INodeItem Item0
+        {
+            get => _Item0;
+            set => SetProperty(ref _Item0, value);
         }
 
         #endregion
 
-        #region Green
+        #region Item0PortId
 
-        private double _Green;
+        private object _Item0PortId;
 
-        public double Green
+        public object Item0PortId
         {
-            get => _Green;
-            set => SetProperty(ref _Green, value);
+            get => _Item0PortId;
+            set => SetProperty(ref _Item0PortId, value);
         }
 
         #endregion
 
-        #region Blue
+        #region Item1
 
-        private double _Blue;
+        private INodeItem _Item1;
 
-        public double Blue
+        public INodeItem Item1
         {
-            get => _Blue;
-            set => SetProperty(ref _Blue, value);
+            get => _Item1;
+            set => SetProperty(ref _Item1, value);
         }
 
         #endregion
-    }
 
-    public class CircleNode : NodeBase, INodeItem
-    {
-        public bool IsRequireVisualTest => true;
+        #region Item1PortId
+
+        private object _Item1PortId;
+
+        public object Item1PortId
+        {
+            get => _Item1PortId;
+            set => SetProperty(ref _Item1PortId, value);
+        }
+
+        #endregion
     }
 }
