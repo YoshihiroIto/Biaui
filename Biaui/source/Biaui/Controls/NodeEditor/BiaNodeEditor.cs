@@ -95,7 +95,7 @@ namespace Biaui.Controls.NodeEditor
         private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
         private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
-        private readonly NodeLinkPanel _nodeLinkPanel;
+        private readonly BackgroundPanel _backgroundPanel;
 
         static BiaNodeEditor()
         {
@@ -109,18 +109,12 @@ namespace Biaui.Controls.NodeEditor
             Unloaded += (_, __) => _removeNodePanelTimer.Stop();
 
             var grid = new Grid();
-            grid.Children.Add(new GridPanel(_scale, _translate));
-            grid.Children.Add(_nodeLinkPanel = new NodeLinkPanel(this, _scale, _translate));
+            grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, _scale, _translate));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(_scale, _translate));
             grid.Children.Add(_boxSelector);
             base.Child = grid;
 
-            _nodeLinkPanel.SetBinding(NodeLinkPanel.NodesSourceProperty, new Binding(nameof(NodesSource))
-            {
-                Source = this,
-                Mode = BindingMode.OneWay
-            });
-            _nodeLinkPanel.SetBinding(NodeLinkPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
+            _backgroundPanel.SetBinding(BackgroundPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
             {
                 Source = this,
                 Mode = BindingMode.OneWay
@@ -204,7 +198,7 @@ namespace Biaui.Controls.NodeEditor
                 case nameof(INodeItem.Size):
                 {
                     ChangeElement(true);
-                    _nodeLinkPanel.InvalidateVisual();
+                    _backgroundPanel.InvalidateVisual();
                     break;
                 }
 
