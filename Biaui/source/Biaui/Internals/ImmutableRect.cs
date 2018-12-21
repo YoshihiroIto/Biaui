@@ -20,8 +20,8 @@ namespace Biaui.Internals
 
         public ImmutableRect(Point pos0, Point pos1)
         {
-            var (minX, maxX) = NumberHelper.MinMax(pos0.X, pos1.X);
-            var (minY, maxY) = NumberHelper.MinMax(pos0.Y, pos1.Y);
+            var (minX, maxX) = (pos0.X, pos1.X).MinMax();
+            var (minY, maxY) = (pos0.Y, pos1.Y).MinMax();
 
             (X, Y, Width, Height) = (
                 minX,
@@ -40,11 +40,11 @@ namespace Biaui.Internals
 
             for (var i = 1; i < poss.Length; ++i)
             {
-                minX = NumberHelper.Min(minX, poss[i].X);
-                maxX = NumberHelper.Max(maxX, poss[i].X);
+                minX = (minX, poss[i].X).Min();
+                maxX = (maxX, poss[i].X).Max();
 
-                minY = NumberHelper.Min(minY, poss[i].Y);
-                maxY = NumberHelper.Max(maxY, poss[i].Y);
+                minY = (minY, poss[i].Y).Min();
+                maxY = (maxY, poss[i].Y).Max();
             }
 
             (X, Y, Width, Height) = (

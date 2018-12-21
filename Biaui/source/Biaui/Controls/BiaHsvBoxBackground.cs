@@ -156,8 +156,8 @@ namespace Biaui.Controls
             var x = (pos.X - s) / (ActualWidth - s * 2);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
 
-            x = NumberHelper.Min(NumberHelper.Max(x, 0), 1);
-            y = NumberHelper.Min(NumberHelper.Max(y, 0), 1);
+            x = NumberHelper.Clamp01(x);
+            y = NumberHelper.Clamp01(y);
 
             Hue = x;
             Saturation = 1 - y;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -75,7 +74,7 @@ namespace Biaui.Controls
         private Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius,
             Thickness borderThickness)
         {
-            var radius = NumberHelper.Max(0.0, cornerRadius.TopLeft - borderThickness.Left * 0.5);
+            var radius = (0.0, cornerRadius.TopLeft - borderThickness.Left * 0.5).Max();
 
             var clipRect = new RectangleGeometry
             {
@@ -123,26 +122,26 @@ namespace Biaui.Controls
             var topLeftRect = new Rect(
                 baseRect.Location.X,
                 baseRect.Location.Y,
-                NumberHelper.Max(0.0, cornerRadius.TopLeft - leftHalf),
-                NumberHelper.Max(0.0, cornerRadius.TopLeft - rightHalf));
+                (0.0, cornerRadius.TopLeft - leftHalf).Max(),
+                (0.0, cornerRadius.TopLeft - rightHalf).Max());
 
             var topRightRect = new Rect(
                 baseRect.Location.X + baseRect.Width - cornerRadius.TopRight + rightHalf,
                 baseRect.Location.Y,
-                NumberHelper.Max(0.0, cornerRadius.TopRight - rightHalf),
-                NumberHelper.Max(0.0, cornerRadius.TopRight - topHalf));
+                (0.0, cornerRadius.TopRight - rightHalf).Max(),
+                (0.0, cornerRadius.TopRight - topHalf).Max());
 
             var bottomRightRect = new Rect(
                 baseRect.Location.X + baseRect.Width - cornerRadius.BottomRight + rightHalf,
                 baseRect.Location.Y + baseRect.Height - cornerRadius.BottomRight + bottomHalf,
-                NumberHelper.Max(0.0, cornerRadius.BottomRight - rightHalf),
-                NumberHelper.Max(0.0, cornerRadius.BottomRight - bottomHalf));
+                (0.0, cornerRadius.BottomRight - rightHalf).Max(),
+                (0.0, cornerRadius.BottomRight - bottomHalf).Max());
 
             var bottomLeftRect = new Rect(
                 baseRect.Location.X,
                 baseRect.Location.Y + baseRect.Height - cornerRadius.BottomLeft + bottomHalf,
-                NumberHelper.Max(0.0, cornerRadius.BottomLeft - leftHalf),
-                NumberHelper.Max(0.0, cornerRadius.BottomLeft - bottomHalf));
+                (0.0, cornerRadius.BottomLeft - leftHalf).Max(),
+                (0.0, cornerRadius.BottomLeft - bottomHalf).Max());
 
             if (topLeftRect.Right > topRightRect.Left)
             {
@@ -157,7 +156,7 @@ namespace Biaui.Controls
                 topRightRect = new Rect(
                     baseRect.Left + newWidth,
                     topRightRect.Location.Y,
-                    NumberHelper.Max(0.0, baseRect.Width - newWidth),
+                    (0.0, baseRect.Width - newWidth).Max(),
                     topRightRect.Height);
             }
 
@@ -175,7 +174,7 @@ namespace Biaui.Controls
                     bottomRightRect.Location.X,
                     baseRect.Top + newHeight,
                     bottomRightRect.Width,
-                    NumberHelper.Max(0.0, baseRect.Height - newHeight));
+                    (0.0, baseRect.Height - newHeight).Max());
             }
 
             if (bottomRightRect.Left < bottomLeftRect.Right)
@@ -191,7 +190,7 @@ namespace Biaui.Controls
                 bottomRightRect = new Rect(
                     baseRect.Left + newWidth,
                     bottomRightRect.Location.Y,
-                    NumberHelper.Max(0.0, baseRect.Width - newWidth),
+                    (0.0, baseRect.Width - newWidth).Max(),
                     bottomRightRect.Height);
             }
 
@@ -209,7 +208,7 @@ namespace Biaui.Controls
                     bottomLeftRect.Location.X,
                     baseRect.Top + newHeight,
                     bottomLeftRect.Width,
-                    NumberHelper.Max(0.0, baseRect.Height - newHeight));
+                    (0.0, baseRect.Height - newHeight).Max());
             }
 
             var clipRect = new StreamGeometry();

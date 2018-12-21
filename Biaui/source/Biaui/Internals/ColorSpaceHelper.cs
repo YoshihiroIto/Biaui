@@ -6,8 +6,8 @@ namespace Biaui.Internals
     {
         internal static (double Hue, double Saturation, double Value) RgbToHsv(double red, double green, double blue)
         {
-            var max = NumberHelper.Max(NumberHelper.Max(red, green), blue);
-            var min = NumberHelper.Min(NumberHelper.Min(red, green), blue);
+            var max = (red, green, blue).Max();
+            var min = (red, green, blue).Min();
 
             var h = 0.0;
             var s = 0.0;

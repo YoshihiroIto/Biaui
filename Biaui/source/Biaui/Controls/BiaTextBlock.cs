@@ -89,7 +89,7 @@ namespace Biaui.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            return new Size(NumberHelper.Min(constraint.Width, _textWidth), TextRenderer.Default.FontHeight);
+            return new Size((constraint.Width, _textWidth).Min(), TextRenderer.Default.FontHeight);
         }
 
         private void UpdateSize()

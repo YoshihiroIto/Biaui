@@ -12,8 +12,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             get
             {
-                var (left, right) = NumberHelper.MinMax(_mouseDownPos.X, _mouseMovePos.X);
-                var (top, bottom) = NumberHelper.MinMax(_mouseDownPos.Y, _mouseMovePos.Y);
+                var (left, right) = (_mouseDownPos.X, _mouseMovePos.X).MinMax();
+                var (top, bottom) = (_mouseDownPos.Y, _mouseMovePos.Y).MinMax();
 
                 return (new Point(left, top), new Point(right, bottom));
             }
@@ -160,7 +160,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var p = e.GetPosition(_target);
             var d0 = _target.MakeScenePosFromControlPos(p.X, p.Y);
 
-            s = NumberHelper.Max(NumberHelper.Min(s, 3.0), 0.25);
+            s = (s, 0.25, 3.0).Clamp();
             _scale.ScaleX = s;
             _scale.ScaleY = s;
 

@@ -178,8 +178,8 @@ namespace Biaui.Controls
             var s = Math.Sqrt(dx * dx + dy * dy) * 2;
             var ss = s;
 
-            h = NumberHelper.Min(NumberHelper.Max(h, 0), 1);
-            s = NumberHelper.Min(NumberHelper.Max(s, 0), 1);
+            h = NumberHelper.Clamp01(h);
+            s = NumberHelper.Clamp01(s);
 
             Hue = h;
             Saturation = s;

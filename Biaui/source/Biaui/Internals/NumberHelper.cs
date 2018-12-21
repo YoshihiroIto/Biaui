@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Biaui.Internals
@@ -36,26 +37,98 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static (double Min, double Max) MinMax(double v0, double v1)
-            => v0 < v1
-                ? (v0, v1)
-                : (v1, v0);
+        internal static double Clamp01(double value)
+        {
+            if (value < 0.0)
+                return 0.0;
+
+            if (value > 1.0)
+                return 1.0;
+
+            return value;
+        }
+
+        /// <summary>
+        /// value, min, max
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Clamp(in this ValueTuple<double, double, double> value)
+        {
+            Debug.Assert(value.Item2 <= value.Item3);
+
+            if (value.Item1 < value.Item2)
+                return value.Item2;
+
+            if (value.Item1 > value.Item3)
+                return value.Item3;
+
+            return value.Item1;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static double Min(double v0, double v1)
-            => v0 < v1 ? v0 : v1;
+        internal static (double Min, double Max) MinMax(in this ValueTuple<double, double> value)
+            => value.Item1 < value.Item2
+                ? (value.Item1, value.Item2)
+                : (value.Item2, value.Item1);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static double Max(double v0, double v1)
-            => v0 > v1 ? v0 : v1;
+        internal static double Max(in this ValueTuple<double, double> value)
+            => value.Item1 > value.Item2
+                ? value.Item1
+                : value.Item2;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Min(int v0, int v1)
-            => v0 < v1 ? v0 : v1;
+        internal static double Min(in this ValueTuple<double, double> value)
+            => value.Item1 < value.Item2
+                ? value.Item1
+                : value.Item2;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Max(int v0, int v1)
-            => v0 > v1 ? v0 : v1;
+        internal static double Max(in this ValueTuple<double, double, double> value)
+             => ((value.Item1, value.Item2).Max(), value.Item2).Max();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Min(in this ValueTuple<double, double, double> value)
+             => ((value.Item1, value.Item2).Min(), value.Item2).Min();
+
+
+        /// <summary>
+        /// value, min, max
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Clamp(in this ValueTuple<int, int, int> value)
+        {
+            Debug.Assert(value.Item2 <= value.Item3);
+
+            if (value.Item1 < value.Item2)
+                return value.Item2;
+
+            if (value.Item1 > value.Item3)
+                return value.Item3;
+
+            return value.Item1;
+        }
+
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Max(in this ValueTuple<int, int> value)
+            => value.Item1 > value.Item2
+                ? value.Item1
+                : value.Item2;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Min(in this ValueTuple<int, int> value)
+            => value.Item1 < value.Item2
+                ? value.Item1
+                : value.Item2;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Max(in this ValueTuple<int, int, int> value)
+             => ((value.Item1, value.Item2).Max(), value.Item2).Max();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Min(in this ValueTuple<int, int, int> value)
+             => ((value.Item1, value.Item2).Min(), value.Item2).Min();
     }
 }
