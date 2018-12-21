@@ -197,7 +197,7 @@
     <Compile Include="Controls\NodeEditor\Internal\BoxSelector.cs" />
     <Compile Include="Controls\NodeEditor\Internal\FrameworkElementBag.cs" />
     <Compile Include="Controls\NodeEditor\NodeEditorHelper.cs" />
-    <Compile Include="Controls\NodeEditor\NodePanelPorts.cs" />
+    <Compile Include="Controls\NodeEditor\BiaNodePanelPorts.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BackgroundPanel.cs" />
     <Compile Include="Controls\NodeEditor\Internal\MouseOperator.cs" />
     <Compile Include="Interfaces\IHasPos.cs" />

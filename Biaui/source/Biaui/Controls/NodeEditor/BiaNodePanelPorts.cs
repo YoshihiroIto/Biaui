@@ -7,12 +7,12 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class NodePanelPorts : Border
+    public class BiaNodePanelPorts : Border
     {
-        static NodePanelPorts()
+        static BiaNodePanelPorts()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NodePanelPorts),
-                new FrameworkPropertyMetadata(typeof(NodePanelPorts)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodePanelPorts),
+                new FrameworkPropertyMetadata(typeof(BiaNodePanelPorts)));
         }
 
         protected override void OnRender(DrawingContext dc)
