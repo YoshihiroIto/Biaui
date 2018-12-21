@@ -115,11 +115,25 @@ namespace Biaui.Controls.Mock.Presentation
 
             RemoveSelectedNodesCommand = new DelegateCommand().Setup(() =>
             {
-                foreach (var node in Nodes.Where(x => x.IsSelected).ToArray())
+                var selectedNodes = new HashSet<INodeItem>(Nodes.Where(x => x.IsSelected));
+
+                var linksWithSelectedNode = Links
+                    .Where(x => selectedNodes.Contains(x.Item0) ||
+                                selectedNodes.Contains(x.Item1))
+                    .ToArray();
+
+                foreach (var node in selectedNodes)
                     Nodes.Remove(node);
+
+                foreach (var link in linksWithSelectedNode)
+                    Links.Remove(link);
             });
 
-            ClearNodesCommand = new DelegateCommand().Setup(() => { Nodes.Clear(); });
+            ClearNodesCommand = new DelegateCommand().Setup(() =>
+            {
+                Nodes.Clear();
+                Links.Clear();
+            });
 
             var replaceCount = 0;
 
@@ -127,6 +141,8 @@ namespace Biaui.Controls.Mock.Presentation
             {
                 if (Nodes.Count == 0)
                     return;
+
+                var removedNode = Nodes[Nodes.Count - 1];
 
                 Nodes[Nodes.Count - 1] =
                     (replaceCount & 1) == 0
@@ -142,6 +158,14 @@ namespace Biaui.Controls.Mock.Presentation
                             TitleBackground = Brushes.DarkGreen,
                             Pos = new Point(0, 0),
                         };
+
+                var linksWithSelectedNode = Links
+                    .Where(x => removedNode == x.Item0 ||
+                                removedNode == x.Item1)
+                    .ToArray();
+
+                foreach (var link in linksWithSelectedNode)
+                    Links.Remove(link);
             });
 
             ReplaceNodesSourceCommand = new DelegateCommand().Setup(() =>

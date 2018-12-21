@@ -259,6 +259,8 @@ namespace Biaui.Controls.NodeEditor
                         _preSelectedNodes.Remove(nodeItem);
                     }
 
+                    _backgroundPanel.InvalidateVisual();
+
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
@@ -294,6 +296,9 @@ namespace Biaui.Controls.NodeEditor
                     }
 
                     UpdateChildrenBag(true);
+
+                    _backgroundPanel.InvalidateVisual();
+
                     break;
                 }
 
@@ -321,6 +326,8 @@ namespace Biaui.Controls.NodeEditor
             _nodeDict.Clear();
             _selectedNodes.Clear();
             _preSelectedNodes.Clear();
+
+            _backgroundPanel.InvalidateVisual();
         }
 
         private void SetFrontmost(BiaNodePanel child)
