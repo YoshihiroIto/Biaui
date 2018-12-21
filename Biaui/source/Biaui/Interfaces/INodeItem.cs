@@ -31,20 +31,12 @@ namespace Biaui.Interfaces
             if (port == null)
                 throw new NotSupportedException();
 
-            var (startPos, centerPos, endPos) =
-                NodeEditorHelper.MakeAlignPos(dir, nodeItem.Size.Width, nodeItem.Size.Height);
-
-            var pos = NodeEditorHelper.MakePortMarkPoint(
-                port.Offset,
-                port.Align,
-                startPos,
-                centerPos,
-                endPos);
+            var alignPos = NodeEditorHelper.MakeAlignPos(dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
 
             return (
                 new Point(
-                    nodeItem.Pos.X + pos.X,
-                    nodeItem.Pos.Y + pos.Y),
+                    nodeItem.Pos.X + port.Offset.X + alignPos.X,
+                    nodeItem.Pos.Y + port.Offset.Y + alignPos.Y),
                 dir);
         }
     }

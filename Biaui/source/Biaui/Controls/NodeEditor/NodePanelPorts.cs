@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Interfaces;
@@ -26,58 +27,87 @@ namespace Biaui.Controls.NodeEditor
 
             if (layout.LeftPorts != null)
             {
-                var (startPos, centerPos, endPos) =
-                    NodeEditorHelper.MakeAlignPos(BiaNodePortDir.Left, ActualWidth, ActualHeight);
+                var startPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Left, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
+                var centerPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Left, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
+                var endPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Left, BiaNodePortAlign.End, ActualWidth, ActualHeight);
 
                 DrawPortMarks(dc, layout.LeftPorts, startPos, centerPos, endPos);
             }
 
             if (layout.TopPorts != null)
             {
-                var (startPos, centerPos, endPos) =
-                    NodeEditorHelper.MakeAlignPos(BiaNodePortDir.Top, ActualWidth, ActualHeight);
+                var startPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Top, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
+                var centerPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Top, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
+                var endPos = NodeEditorHelper.MakeAlignPos( BiaNodePortDir.Top, BiaNodePortAlign.End, ActualWidth,
+                    ActualHeight);
 
                 DrawPortMarks(dc, layout.TopPorts, startPos, centerPos, endPos);
             }
 
             if (layout.RightPorts != null)
             {
-                var (startPos, centerPos, endPos) =
-                    NodeEditorHelper.MakeAlignPos(BiaNodePortDir.Right, ActualWidth, ActualHeight);
+                var startPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Right, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
+                var centerPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Right, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
+                var endPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Right, BiaNodePortAlign.End, ActualWidth, ActualHeight);
 
                 DrawPortMarks(dc, layout.RightPorts, startPos, centerPos, endPos);
             }
 
             if (layout.BottomPorts != null)
             {
-                var (startPos, centerPos, endPos) =
-                    NodeEditorHelper.MakeAlignPos(BiaNodePortDir.Bottom, ActualWidth, ActualHeight);
+                var startPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Bottom, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
+                var centerPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Bottom, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
+                var endPos = NodeEditorHelper.MakeAlignPos(
+                    BiaNodePortDir.Bottom, BiaNodePortAlign.End, ActualWidth, ActualHeight);
 
                 DrawPortMarks(dc, layout.BottomPorts, startPos, centerPos, endPos);
             }
         }
 
-        private void DrawPortMarks(
-            DrawingContext dc, BiaNodePort[] ports, Point startPos, Point centerPos, Point endPos)
-        {
-            foreach (var port in ports)
-            {
-                var pos = NodeEditorHelper.MakePortMarkPoint(port.Offset, port.Align, startPos, centerPos, endPos);
-
-                DrawPortMark(dc, pos);
-            }
-        }
-
-        private void DrawPortMark(DrawingContext dc, Point pos)
+        private void DrawPortMarks(DrawingContext dc, BiaNodePort[] ports, Point startPos, Point centerPos,
+            Point endPos)
         {
             var pen = Caches.GetBorderPen(Colors.Black, 2);
 
-            dc.DrawEllipse(
-                Brushes.White,
-                pen,
-                pos,
-                8,
-                8);
+            foreach (var port in ports)
+            {
+                Point pos;
+
+                switch (port.Align)
+                {
+                    case BiaNodePortAlign.Start:
+                        pos = new Point(port.Offset.X + startPos.X, port.Offset.Y + startPos.Y);
+                        break;
+
+                    case BiaNodePortAlign.Center:
+                        pos = new Point(port.Offset.X + centerPos.X, port.Offset.Y + centerPos.Y);
+                        break;
+
+                    case BiaNodePortAlign.End:
+                        pos = new Point(port.Offset.X + endPos.X, port.Offset.Y + endPos.Y);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                dc.DrawEllipse(
+                    Brushes.White,
+                    pen,
+                    pos,
+                    8,
+                    8);
+            }
         }
     }
 }
