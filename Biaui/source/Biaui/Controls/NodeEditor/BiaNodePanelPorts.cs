@@ -21,56 +21,44 @@ namespace Biaui.Controls.NodeEditor
                 ActualHeight <= 1)
                 return;
 
+            var pen = Caches.GetBorderPen(Colors.Black, 2);
+
             var nodeItem = (INodeItem) DataContext;
 
-            var layout = nodeItem.Layout;
-
-            if (layout.LeftPorts != null)
+            foreach (var port in nodeItem.Layout.Ports.Values)
             {
-                var startPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Left, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
-                var centerPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Left, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
-                var endPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Left, BiaNodePortAlign.End, ActualWidth, ActualHeight);
+                Point pos;
 
-                DrawPortMarks(dc, layout.LeftPorts, startPos, centerPos, endPos);
-            }
+                switch (port.Align)
+                {
+                    case BiaNodePortAlign.Start:
+                        var startPos = NodeEditorHelper.MakeAlignPos(
+                            port.Dir, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
+                        pos = new Point(port.Offset.X + startPos.X, port.Offset.Y + startPos.Y);
+                        break;
 
-            if (layout.TopPorts != null)
-            {
-                var startPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Top, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
-                var centerPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Top, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
-                var endPos = NodeEditorHelper.MakeAlignPos( BiaNodePortDir.Top, BiaNodePortAlign.End, ActualWidth,
-                    ActualHeight);
+                    case BiaNodePortAlign.Center:
+                        var centerPos = NodeEditorHelper.MakeAlignPos(
+                            port.Dir, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
+                        pos = new Point(port.Offset.X + centerPos.X, port.Offset.Y + centerPos.Y);
+                        break;
 
-                DrawPortMarks(dc, layout.TopPorts, startPos, centerPos, endPos);
-            }
+                    case BiaNodePortAlign.End:
+                        var endPos = NodeEditorHelper.MakeAlignPos(
+                            port.Dir, BiaNodePortAlign.End, ActualWidth, ActualHeight);
+                        pos = new Point(port.Offset.X + endPos.X, port.Offset.Y + endPos.Y);
+                        break;
 
-            if (layout.RightPorts != null)
-            {
-                var startPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Right, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
-                var centerPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Right, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
-                var endPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Right, BiaNodePortAlign.End, ActualWidth, ActualHeight);
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
-                DrawPortMarks(dc, layout.RightPorts, startPos, centerPos, endPos);
-            }
-
-            if (layout.BottomPorts != null)
-            {
-                var startPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Bottom, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
-                var centerPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Bottom, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
-                var endPos = NodeEditorHelper.MakeAlignPos(
-                    BiaNodePortDir.Bottom, BiaNodePortAlign.End, ActualWidth, ActualHeight);
-
-                DrawPortMarks(dc, layout.BottomPorts, startPos, centerPos, endPos);
+                dc.DrawEllipse(
+                    Brushes.White,
+                    pen,
+                    pos,
+                    8,
+                    8);
             }
         }
 

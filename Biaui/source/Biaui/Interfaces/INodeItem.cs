@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using Biaui.Controls.NodeEditor;
@@ -24,56 +25,36 @@ namespace Biaui.Interfaces
         public static ImmutableRect MakeRect(this INodeItem self)
             => new ImmutableRect(self.Pos, self.Size);
 
-        public static (Point, BiaNodePortDir) MakePortPos(this INodeItem nodeItem, object portId)
+        public static (Point, BiaNodePortDir) MakePortPos(this INodeItem nodeItem, string portId)
         {
-            var (port, dir) = nodeItem.Layout.FindPort(portId);
+            var port = nodeItem.Layout.FindPort(portId);
 
             if (port == null)
                 throw new NotSupportedException();
 
-            var alignPos = NodeEditorHelper.MakeAlignPos(dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
+            var alignPos = NodeEditorHelper.MakeAlignPos(port.Dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
 
             return (
                 new Point(
                     nodeItem.Pos.X + port.Offset.X + alignPos.X,
                     nodeItem.Pos.Y + port.Offset.Y + alignPos.Y),
-                dir);
+                port.Dir);
         }
     }
 
     public class BiaNodePortLayout
     {
-        public BiaNodePort[] LeftPorts { get; set; }
+        public Dictionary<string, BiaNodePort> Ports { get; set; }
 
-        public BiaNodePort[] TopPorts { get; set; }
-
-        public BiaNodePort[] RightPorts { get; set; }
-
-        public BiaNodePort[] BottomPorts { get; set; }
-
-        public (BiaNodePort, BiaNodePortDir) FindPort(object portId)
+        public BiaNodePort FindPort(string portId)
         {
-            if (LeftPorts != null)
-                foreach (var p in LeftPorts)
-                    if (p.Id == portId)
-                        return (p, BiaNodePortDir.Left);
+            if (Ports == null)
+                return null;
 
-            if (TopPorts != null)
-                foreach (var p in TopPorts)
-                    if (p.Id == portId)
-                        return (p, BiaNodePortDir.Top);
+            if (Ports.TryGetValue(portId, out var port))
+                return port;
 
-            if (RightPorts != null)
-                foreach (var p in RightPorts)
-                    if (p.Id == portId)
-                        return (p, BiaNodePortDir.Right);
-
-            if (BottomPorts != null)
-                foreach (var p in BottomPorts)
-                    if (p.Id == portId)
-                        return (p, BiaNodePortDir.Bottom);
-
-            return (null, BiaNodePortDir.None);
+            return null;
         }
     }
 
@@ -92,10 +73,10 @@ namespace Biaui.Interfaces
     {
         INodeItem Item0 { get; }
 
-        object Item0PortId { get; }
+        string Item0PortId { get; }
 
         INodeItem Item1 { get; }
 
-        object Item1PortId { get; }
+        string Item1PortId { get; }
     }
 }

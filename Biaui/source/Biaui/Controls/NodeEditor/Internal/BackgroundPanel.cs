@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Interfaces;
 using Biaui.Internals;
-using Jewelry.Collections;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
