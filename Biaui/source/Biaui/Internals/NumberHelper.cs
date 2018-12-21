@@ -85,11 +85,11 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Max(in this ValueTuple<double, double, double> value)
-             => ((value.Item1, value.Item2).Max(), value.Item2).Max();
+             => ((value.Item1, value.Item2).Max(), value.Item3).Max();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Min(in this ValueTuple<double, double, double> value)
-             => ((value.Item1, value.Item2).Min(), value.Item2).Min();
+             => ((value.Item1, value.Item2).Min(), value.Item3).Min();
 
 
         /// <summary>
@@ -125,10 +125,10 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Max(in this ValueTuple<int, int, int> value)
-             => ((value.Item1, value.Item2).Max(), value.Item2).Max();
+             => ((value.Item1, value.Item2).Max(), value.Item3).Max();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Min(in this ValueTuple<int, int, int> value)
-             => ((value.Item1, value.Item2).Min(), value.Item2).Min();
+             => ((value.Item1, value.Item2).Min(), value.Item3).Min();
     }
 }
