@@ -172,16 +172,20 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (rect.Contains(bezierPoints[0]) || rect.Contains(bezierPoints[3]))
                     return true;
 
-                var area = new ImmutableRect(bezierPoints);
+                // ReSharper disable once RedundantCast
+                var area = new ImmutableRect(bezierPoints, (ImmutableRect.CtorPoint4) 0);
 
                 if (rect.IntersectsWith(area) == false)
                     return false;
 
-                var v01 = new Point((bezierPoints[0].X + bezierPoints[1].X) * 0.5,
+                var v01 = new Point(
+                    (bezierPoints[0].X + bezierPoints[1].X) * 0.5,
                     (bezierPoints[0].Y + bezierPoints[1].Y) * 0.5);
-                var v12 = new Point((bezierPoints[1].X + bezierPoints[2].X) * 0.5,
+                var v12 = new Point(
+                    (bezierPoints[1].X + bezierPoints[2].X) * 0.5,
                     (bezierPoints[1].Y + bezierPoints[2].Y) * 0.5);
-                var v23 = new Point((bezierPoints[2].X + bezierPoints[3].X) * 0.5,
+                var v23 = new Point(
+                    (bezierPoints[2].X + bezierPoints[3].X) * 0.5,
                     (bezierPoints[2].Y + bezierPoints[3].Y) * 0.5);
 
                 var v0112 = new Point((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);

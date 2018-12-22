@@ -55,6 +55,24 @@ namespace Biaui.Internals
             );
         }
 
+        public enum CtorPoint4 { };
+
+        // ReSharper disable once UnusedParameter.Local
+        public ImmutableRect(Point[] poss, CtorPoint4 _)
+        {
+            var minX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Min();
+            var maxX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Max();
+            var minY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Min();
+            var maxY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Max();
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
         public static implicit operator ImmutableRect(Rect source)
             => new ImmutableRect(source.X, source.Y, source.Width, source.Height);
 

@@ -101,6 +101,14 @@ namespace Biaui.Internals
         internal static double Min(in this ValueTuple<double, double, double> value)
              => ((value.Item1, value.Item2).Min(), value.Item3).Min();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Max(in this ValueTuple<double, double, double, double> value)
+             => (((value.Item1, value.Item2).Max(), value.Item3).Max(), value.Item4).Max();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Min(in this ValueTuple<double, double, double, double> value)
+             => (((value.Item1, value.Item2).Min(), value.Item3).Min(), value.Item4).Min();
+
 
         /// <summary>
         /// value, min, max
