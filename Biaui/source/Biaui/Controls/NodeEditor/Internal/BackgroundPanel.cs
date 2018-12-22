@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -142,6 +141,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawGeometry(null, p, geom);
         }
 
+        private readonly Point[] _bezierPoints = new Point[4];
+
         private void DrawNodeLink(DrawingContext dc)
         {
             if (LinksSource == null)
@@ -152,7 +153,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 var pen = Caches.GetBorderPen(Colors.DeepPink, FrameworkElementHelper.RoundLayoutValue(6));
                 var viewport = _transform.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
-                var pv = new Point[4];
 
 #if false
                 // 接続ごとに色を変える場合は一本ずつ書く
@@ -161,19 +161,19 @@ namespace Biaui.Controls.NodeEditor.Internal
                     var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
                     var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
 
-                    pv[0] = pos0;
-                    pv[1] = MakeControlPoint(dir0, pos0);
-                    pv[2] = MakeControlPoint(dir1, pos1);
-                    pv[3] = pos1;
+                    _bezierPoints[0] = pos0;
+                    _bezierPoints[1] = MakeControlPoint(dir0, pos0);
+                    _bezierPoints[2] = MakeControlPoint(dir1, pos1);
+                    _bezierPoints[3] = pos1;
 
-                    if (HitTestBezier(pv, viewport) == false)
+                    if (HitTestBezier(_bezierPoints, viewport) == false)
                         continue;
 
                     var pf = new PathFigure
                     {
                         StartPoint = pos0
                     };
-                    var bs = new BezierSegment(pv[1], pv[2], pos1, true);
+                    var bs = new BezierSegment(_bezierPoints[1], _bezierPoints[2], pos1, true);
 
                     pf.Segments.Add(bs);
 
@@ -193,16 +193,16 @@ namespace Biaui.Controls.NodeEditor.Internal
                         var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
                         var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
 
-                        pv[0] = pos0;
-                        pv[1] = MakeControlPoint(dir0, pos0);
-                        pv[2] = MakeControlPoint(dir1, pos1);
-                        pv[3] = pos1;
+                        _bezierPoints[0] = pos0;
+                        _bezierPoints[1] = NodeEditorHelper.MakeControlPoint(pos0, dir0);
+                        _bezierPoints[2] = NodeEditorHelper.MakeControlPoint(pos1, dir1);
+                        _bezierPoints[3] = pos1;
 
-                        if (HitTestBezier(pv, viewport) == false)
+                        if (NodeEditorHelper.HitTestBezier(_bezierPoints, viewport) == false)
                             continue;
 
                         sgc.BeginFigure(pos0, false, false);
-                        sgc.BezierTo(pv[1], pv[2], pos1, true, true);
+                        sgc.BezierTo(_bezierPoints[1], _bezierPoints[2], pos1, true, true);
                     }
 
                     sgc.Close();
@@ -212,70 +212,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
             dc.Pop();
             dc.Pop();
-        }
-
-        private const double ControlPointLength = 128;
-
-        private static Point MakeControlPoint(BiaNodePortDir dir, Point src)
-        {
-            switch (dir)
-            {
-                case BiaNodePortDir.Left:
-                    return new Point(src.X - ControlPointLength, src.Y);
-
-                case BiaNodePortDir.Top:
-                    return new Point(src.X, src.Y - ControlPointLength);
-
-                case BiaNodePortDir.Right:
-                    return new Point(src.X + ControlPointLength, src.Y);
-
-                case BiaNodePortDir.Bottom:
-                    return new Point(src.X, src.Y + ControlPointLength);
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private static bool HitTestBezier(Point[] p, in ImmutableRect rect)
-        {
-            while (true)
-            {
-                if (rect.Contains(p[0]) || rect.Contains(p[3]))
-                    return true;
-
-                var area = new ImmutableRect(p);
-
-                if (rect.IntersectsWith(area) == false)
-                    return false;
-
-                var v01 = new Point((p[0].X + p[1].X) * 0.5, (p[0].Y + p[1].Y) * 0.5);
-                var v12 = new Point((p[1].X + p[2].X) * 0.5, (p[1].Y + p[2].Y) * 0.5);
-                var v23 = new Point((p[2].X + p[3].X) * 0.5, (p[2].Y + p[3].Y) * 0.5);
-
-                var v0112 = new Point((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);
-                var v1223 = new Point((v12.X + v23.X) * 0.5, (v12.Y + v23.Y) * 0.5);
-
-                var c = new Point((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
-
-                var cl = new[]
-                {
-                    p[0],
-                    v01,
-                    v0112,
-                    c
-                };
-
-                if (HitTestBezier(cl, rect))
-                    return true;
-
-                cl[0] = c;
-                cl[1] = v1223;
-                cl[2] = v23;
-                cl[3] = p[3];
-
-                p = cl;
-            }
         }
     }
 }

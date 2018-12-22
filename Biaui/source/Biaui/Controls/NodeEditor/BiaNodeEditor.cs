@@ -133,8 +133,7 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator = new MouseOperator(this, this);
             _mouseOperator.PanelMoving += OnPanelMoving;
-            _mouseOperator.LinkMoving += (s, e) =>
-                _linkOperator.OnLinkMoving(s, e);
+            _mouseOperator.LinkMoving += (s, e) => _linkOperator.OnLinkMoving(s, e);
 
             _removeNodePanelTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(1000),

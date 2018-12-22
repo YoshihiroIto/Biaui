@@ -45,6 +45,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             _renderTarget.InvalidateVisual();
         }
 
+        private readonly Point[] _bezierPoints = new Point[4];
+
         public void Render(DrawingContext dc)
         {
             if (IsDragging == false)
@@ -52,8 +54,24 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var (pos, dir) = _nodeItem.MakePortPos(_port);
 
-            dc.DrawLine(Caches.GetBorderPen(Colors.Black, 8), pos, _mousePos );
-            dc.DrawLine(Caches.GetBorderPen(Colors.AliceBlue, 6), pos, _mousePos );
+            _bezierPoints[0] = pos;
+            _bezierPoints[1] = NodeEditorHelper.MakeControlPoint(pos, dir);
+            _bezierPoints[2] = _mousePos;
+            _bezierPoints[3] = _mousePos;
+
+            // 接続線
+            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.Black, 8));
+            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 6));
+
+            // ポートの丸
+            var portPen = Caches.GetBorderPen(Colors.Black, 2);
+            var radius = Biaui.Internals.Constants.NodePanelPortMarkRadius * 1.25;
+            dc.DrawEllipse(
+                Brushes.WhiteSmoke,
+                portPen,
+                pos,
+                radius, 
+                radius);
         }
     }
 }

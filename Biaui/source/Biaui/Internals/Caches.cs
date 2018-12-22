@@ -21,6 +21,25 @@ namespace Biaui.Internals
             return p;
         }
 
+        internal static Pen GetCapPen(Color color, double thickness)
+        {
+            var key = (color, thickness);
+
+            if (_capPens.TryGetValue(key, out var p))
+                return p;
+
+            p = new Pen(GetSolidColorBrush(color), thickness)
+            {
+                StartLineCap = PenLineCap.Round,
+                EndLineCap = PenLineCap.Round
+            };
+            p.Freeze();
+
+            _capPens.Add(key, p);
+
+            return p;
+        }
+
         internal static SolidColorBrush GetSolidColorBrush(Color color)
         {
             if (_solidColorBrushes.TryGetValue(color, out var b))
@@ -75,6 +94,7 @@ namespace Biaui.Internals
                 new Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry>();
 
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
+        private static readonly Dictionary<(Color, double), Pen> _capPens = new Dictionary<(Color, double), Pen>();
 
         private static readonly Dictionary<Color, SolidColorBrush> _solidColorBrushes =
             new Dictionary<Color, SolidColorBrush>();

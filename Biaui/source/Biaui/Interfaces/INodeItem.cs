@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using Biaui.Controls.NodeEditor;
+using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Internals;
 
 namespace Biaui.Interfaces
@@ -53,7 +54,8 @@ namespace Biaui.Interfaces
 
             foreach (var port in nodeItem.Layout.Ports.Values)
             {
-                var portPos = NodeEditorHelper.MakeAlignPos(port.Dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
+                var portAlignPos = NodeEditorHelper.MakeAlignPos(port.Dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
+                var portPos = new Point(portAlignPos.X + port.Offset.X, portAlignPos.Y + port.Offset.Y);
 
                 var d = (portPos, pos).DistanceSq();
                 if (d <= Internals.Constants.NodePanelPortMarkRadiusSq)
@@ -62,8 +64,6 @@ namespace Biaui.Interfaces
 
             return null;
         }
-
-
     }
 
     public class BiaNodePortLayout

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Interfaces;
 using Biaui.Internals;
 
@@ -54,7 +55,7 @@ namespace Biaui.Controls.NodeEditor
                 }
 
                 dc.DrawEllipse(
-                    Brushes.White,
+                    Brushes.WhiteSmoke,
                     pen,
                     pos,
                     Biaui.Internals.Constants.NodePanelPortMarkRadius,
