@@ -104,5 +104,7 @@ namespace Biaui.Interfaces
         INodeItem Item1 { get; }
 
         string Item1PortId { get; }
+
+        object InternalData { get; set; }
     }
 }

@@ -531,5 +531,7 @@ namespace Biaui.Controls.Mock.Presentation
         }
 
         #endregion
+
+        public object InternalData { get; set; }
     }
 }

@@ -162,8 +162,24 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var link in LinksSource)
             {
-                var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
-                var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
+                (BiaNodePort Port0, BiaNodePort Port1) portPair;
+
+                if (link.InternalData == null)
+                {
+                    var port0 = link.Item0.Layout.FindPort(link.Item0PortId);
+                    var port1 = link.Item0.Layout.FindPort(link.Item1PortId);
+
+                    portPair = (port0, port1);
+
+                    link.InternalData = portPair;
+                }
+                else
+                {
+                    portPair = ((BiaNodePort, BiaNodePort))link.InternalData;
+                }
+
+                var (pos0, dir0) = link.Item0.MakePortPos(portPair.Port0);
+                var (pos1, dir1) = link.Item1.MakePortPos(portPair.Port1);
 
                 _bezierPoints[0] = pos0;
                 _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(pos0, dir0);
@@ -196,7 +212,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     var pen = Caches.GetBorderPen(c.Key, 8);
 
-                    //c.Value.Ctx.Close();
                     (c.Value.Ctx as IDisposable).Dispose();
                     dc.DrawGeometry(null, pen, c.Value.Geom);
                 }
