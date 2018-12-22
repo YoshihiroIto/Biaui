@@ -200,40 +200,45 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        // http://proprogrammer.hatenadiary.jp/entry/2014/12/16/001014
         private static bool HitTestBezier(Point[] p, in ImmutableRect rect)
         {
-            if (rect.Contains(p[0]) || rect.Contains(p[3]))
-                return true;
+            while (true)
+            {
+                if (rect.Contains(p[0]) || rect.Contains(p[3]))
+                    return true;
 
-            var area = new ImmutableRect(p);
+                var area = new ImmutableRect(p);
 
-            if (rect.IntersectsWith(area) == false)
-                return false;
+                if (rect.IntersectsWith(area) == false)
+                    return false;
 
-            var v01 = new Point((p[0].X + p[1].X) * 0.5, (p[0].Y + p[1].Y) * 0.5);
-            var v12 = new Point((p[1].X + p[2].X) * 0.5, (p[1].Y + p[2].Y) * 0.5);
-            var v23 = new Point((p[2].X + p[3].X) * 0.5, (p[2].Y + p[3].Y) * 0.5);
+                var v01 = new Point((p[0].X + p[1].X) * 0.5, (p[0].Y + p[1].Y) * 0.5);
+                var v12 = new Point((p[1].X + p[2].X) * 0.5, (p[1].Y + p[2].Y) * 0.5);
+                var v23 = new Point((p[2].X + p[3].X) * 0.5, (p[2].Y + p[3].Y) * 0.5);
 
-            var v0112 = new Point((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);
-            var v1223 = new Point((v12.X + v23.X) * 0.5, (v12.Y + v23.Y) * 0.5);
+                var v0112 = new Point((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);
+                var v1223 = new Point((v12.X + v23.X) * 0.5, (v12.Y + v23.Y) * 0.5);
 
-            var c = new Point((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
+                var c = new Point((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
 
-            return HitTestBezier(new[]
-                   {
-                       p[0],
-                       v01,
-                       v0112,
-                       c
-                   }, rect)
-                   || HitTestBezier(new[]
-                   {
-                       c,
-                       v1223,
-                       v23,
-                       p[3]
-                   }, in rect);
+                var cl = new[]
+                {
+                    p[0],
+                    v01,
+                    v0112,
+                    c
+                };
+
+                if (HitTestBezier(cl, rect))
+                    return true;
+
+                cl[0] = c;
+                cl[1] = v1223;
+                cl[2] = v23;
+                cl[3] = p[3];
+
+                p = cl;
+            }
         }
     }
 }
