@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -80,57 +79,67 @@ namespace Biaui.Controls.NodeEditor.Internal
             var bx = FrameworkElementHelper.RoundLayoutValue(ActualWidth);
             var by = FrameworkElementHelper.RoundLayoutValue(ActualHeight);
 
-            for (var h = 0;; ++h)
+            var geom = new StreamGeometry();
+            var sgc = geom.Open();
             {
-                var x = (h * unit) * s + tx;
+                for (var h = 0;; ++h)
+                {
+                    var x = (h * unit) * s + tx;
 
-                x = FrameworkElementHelper.RoundLayoutValue(x);
+                    x = FrameworkElementHelper.RoundLayoutValue(x);
 
-                if (x < 0) continue;
+                    if (x < 0) continue;
 
-                if (x > ActualWidth) break;
+                    if (x > ActualWidth) break;
 
-                dc.DrawLine(p, new Point(x, 0), new Point(x, by));
+                    sgc.BeginFigure(new Point(x, 0), false, false);
+                    sgc.LineTo(new Point(x, by), true, false);
+                }
+
+                for (var h = 0;; --h)
+                {
+                    var x = (h * unit) * s + tx;
+
+                    x = FrameworkElementHelper.RoundLayoutValue(x);
+
+                    if (x > ActualWidth) continue;
+
+                    if (x < 0) break;
+
+                    sgc.BeginFigure(new Point(x, 0), false, false);
+                    sgc.LineTo(new Point(x, by), true, false);
+                }
+
+                for (var v = 0;; ++v)
+                {
+                    var y = (v * unit) * s + ty;
+
+                    y = FrameworkElementHelper.RoundLayoutValue(y);
+
+                    if (y < 0) continue;
+
+                    if (y > ActualHeight) break;
+
+                    sgc.BeginFigure(new Point(0, y), false, false);
+                    sgc.LineTo(new Point(bx, y), true, false);
+                }
+
+                for (var v = 0;; --v)
+                {
+                    var y = (v * unit) * s + ty;
+
+                    y = FrameworkElementHelper.RoundLayoutValue(y);
+
+                    if (y > ActualHeight) continue;
+
+                    if (y < 0) break;
+
+                    sgc.BeginFigure(new Point(0, y), false, false);
+                    sgc.LineTo(new Point(bx, y), true, false);
+                }
             }
-
-            for (var h = 0;; --h)
-            {
-                var x = (h * unit) * s + tx;
-
-                x = FrameworkElementHelper.RoundLayoutValue(x);
-
-                if (x > ActualWidth) continue;
-
-                if (x < 0) break;
-
-                dc.DrawLine(p, new Point(x, 0), new Point(x, by));
-            }
-
-            for (var v = 0;; ++v)
-            {
-                var y = (v * unit) * s + ty;
-
-                y = FrameworkElementHelper.RoundLayoutValue(y);
-
-                if (y < 0) continue;
-
-                if (y > ActualHeight) break;
-
-                dc.DrawLine(p, new Point(0, y), new Point(bx, y));
-            }
-
-            for (var v = 0;; --v)
-            {
-                var y = (v * unit) * s + ty;
-
-                y = FrameworkElementHelper.RoundLayoutValue(y);
-
-                if (y > ActualHeight) continue;
-
-                if (y < 0) break;
-
-                dc.DrawLine(p, new Point(0, y), new Point(bx, y));
-            }
+            sgc.Close();
+            dc.DrawGeometry(null, p, geom);
         }
 
         private void DrawNodeLink(DrawingContext dc)
@@ -161,7 +170,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                     if (HitTestBezier(pv, viewport) == false)
                         continue;
 
-                    var pf = new PathFigure { StartPoint = pos0 };
+                    var pf = new PathFigure
+                    {
+                        StartPoint = pos0
+                    };
                     var bs = new BezierSegment(pv[1], pv[2], pos1, true);
 
                     pf.Segments.Add(bs);
