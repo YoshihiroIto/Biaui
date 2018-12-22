@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -147,77 +149,62 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         private readonly Point[] _bezierPoints = new Point[4];
-        private readonly StreamGeometry _bezierGeom = new StreamGeometry();
+
+        private readonly Dictionary<Color, (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves =
+            new Dictionary<Color, (StreamGeometry, StreamGeometryContext)>();
 
         private void DrawNodeLink(DrawingContext dc)
         {
             if (LinksSource == null)
                 return;
 
+            var viewport = _transform.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
+
+            foreach (var link in LinksSource)
+            {
+                var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
+                var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
+
+                _bezierPoints[0] = pos0;
+                _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(pos0, dir0);
+                _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
+                _bezierPoints[3] = pos1;
+
+                if (NodeEditorHelper.HitTestBezier(_bezierPoints, viewport) == false)
+                    continue;
+
+                // todo;接続ごとの色を指定する
+                var color = Colors.DeepPink;
+
+                if (_curves.TryGetValue(color, out var curve) == false)
+                {
+                    var geom = new StreamGeometry();
+                    var ctx = geom.Open();
+
+                    curve = (geom, ctx);
+                    _curves.Add(color, curve);
+                }
+
+                curve.Ctx.BeginFigure(pos0, false, false);
+                curve.Ctx.BezierTo(_bezierPoints[1], _bezierPoints[2], pos1, true, true);
+            }
+
             dc.PushTransform(_transform.Translate);
             dc.PushTransform(_transform.Scale);
             {
-                var pen = Caches.GetBorderPen(Colors.DeepPink, FrameworkElementHelper.RoundLayoutValue(6));
-                var viewport = _transform.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
-
-#if false
-                // 接続ごとに色を変える場合は一本ずつ書く
-                foreach (var link in LinksSource)
+                foreach (var c in _curves)
                 {
-                    var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
-                    var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
+                    var pen = Caches.GetBorderPen(c.Key, 8);
 
-                    _bezierPoints[0] = pos0;
-                    _bezierPoints[1] = MakeBezierControlPoint(dir0, pos0);
-                    _bezierPoints[2] = MakeBezierControlPoint(dir1, pos1);
-                    _bezierPoints[3] = pos1;
-
-                    if (HitTestBezier(_bezierPoints, viewport) == false)
-                        continue;
-
-                    var pf = new PathFigure
-                    {
-                        StartPoint = pos0
-                    };
-                    var bs = new BezierSegment(_bezierPoints[1], _bezierPoints[2], pos1, true);
-
-                    pf.Segments.Add(bs);
-
-                    var curve = new PathGeometry();
-                    curve.Figures.Add(pf);
-
-                    dc.DrawGeometry(null, pen, curve);
+                    //c.Value.Ctx.Close();
+                    (c.Value.Ctx as IDisposable).Dispose();
+                    dc.DrawGeometry(null, pen, c.Value.Geom);
                 }
-#else
-                // すべて同じ色の場合はまとめて書く
-                {
-                    _bezierGeom.Clear();
-                    var sgc = _bezierGeom.Open();
-
-                    foreach (var link in LinksSource)
-                    {
-                        var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
-                        var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
-
-                        _bezierPoints[0] = pos0;
-                        _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(pos0, dir0);
-                        _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
-                        _bezierPoints[3] = pos1;
-
-                        if (NodeEditorHelper.HitTestBezier(_bezierPoints, viewport) == false)
-                            continue;
-
-                        sgc.BeginFigure(pos0, false, false);
-                        sgc.BezierTo(_bezierPoints[1], _bezierPoints[2], pos1, true, true);
-                    }
-
-                    sgc.Close();
-                    dc.DrawGeometry(null, pen, _bezierGeom);
-                }
-#endif
             }
             dc.Pop();
             dc.Pop();
+
+            _curves.Clear();
         }
     }
 }
