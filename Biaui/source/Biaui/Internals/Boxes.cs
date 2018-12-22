@@ -30,7 +30,7 @@ namespace Biaui.Internals
 
         internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
 
-        internal static object ConstantsBasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
+        internal static object ConstantsBasicCornerRadiusPrim = Biaui.Constants.BasicCornerRadiusPrim;
 
         internal static object Bool(bool i) => i ? BoolTrue : BoolFalse;
 

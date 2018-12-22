@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -39,9 +40,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         #endregion
 
-        private readonly BiaNodeEditor _parent;
-        private readonly ScaleTransform _scale;
-        private readonly TranslateTransform _translate;
+        private readonly IHasTransform _transform;
 
         static BackgroundPanel()
         {
@@ -49,14 +48,12 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(BackgroundPanel)));
         }
 
-        internal BackgroundPanel(BiaNodeEditor parent, ScaleTransform scale, TranslateTransform translate)
+        internal BackgroundPanel(IHasTransform transform)
         {
-            _parent = parent;
-            _scale = scale;
-            _translate = translate;
+            _transform = transform;
 
-            _scale.Changed += (_, __) => InvalidateVisual();
-            _translate.Changed += (_, __) => InvalidateVisual();
+            _transform.Translate.Changed += (_, __) => InvalidateVisual();
+            _transform.Scale.Changed += (_, __) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -76,9 +73,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var p = this.GetBorderPen(Color.FromRgb(0x37, 0x37, 0x40));
 
-            var s = _scale.ScaleX;
-            var tx = _translate.X;
-            var ty = _translate.Y;
+            var s = _transform.Scale.ScaleX;
+            var tx = _transform.Translate.X;
+            var ty = _transform.Translate.Y;
 
             var bx = FrameworkElementHelper.RoundLayoutValue(ActualWidth);
             var by = FrameworkElementHelper.RoundLayoutValue(ActualHeight);
@@ -141,10 +138,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (LinksSource == null)
                 return;
 
-            dc.PushTransform(_translate);
-            dc.PushTransform(_scale);
+            dc.PushTransform(_transform.Translate);
+            dc.PushTransform(_transform.Scale);
             {
-                var viewport = _parent.MakeCurrentViewport();
+                var viewport = _transform.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
 
                 var penO = Caches.GetBorderPen(Colors.Black, FrameworkElementHelper.RoundLayoutValue(8));
                 var penI = Caches.GetBorderPen(Colors.LimeGreen, FrameworkElementHelper.RoundLayoutValue(6));

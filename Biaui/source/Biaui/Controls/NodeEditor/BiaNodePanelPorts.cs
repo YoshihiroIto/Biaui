@@ -57,44 +57,8 @@ namespace Biaui.Controls.NodeEditor
                     Brushes.White,
                     pen,
                     pos,
-                    8,
-                    8);
-            }
-        }
-
-        private void DrawPortMarks(DrawingContext dc, BiaNodePort[] ports, Point startPos, Point centerPos,
-            Point endPos)
-        {
-            var pen = Caches.GetBorderPen(Colors.Black, 2);
-
-            foreach (var port in ports)
-            {
-                Point pos;
-
-                switch (port.Align)
-                {
-                    case BiaNodePortAlign.Start:
-                        pos = new Point(port.Offset.X + startPos.X, port.Offset.Y + startPos.Y);
-                        break;
-
-                    case BiaNodePortAlign.Center:
-                        pos = new Point(port.Offset.X + centerPos.X, port.Offset.Y + centerPos.Y);
-                        break;
-
-                    case BiaNodePortAlign.End:
-                        pos = new Point(port.Offset.X + endPos.X, port.Offset.Y + endPos.Y);
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                dc.DrawEllipse(
-                    Brushes.White,
-                    pen,
-                    pos,
-                    8,
-                    8);
+                    Biaui.Internals.Constants.NodePanelPortMarkRadius,
+                    Biaui.Internals.Constants.NodePanelPortMarkRadius);
             }
         }
     }

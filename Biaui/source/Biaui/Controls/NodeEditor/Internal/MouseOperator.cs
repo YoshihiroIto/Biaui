@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
+using Biaui.Interfaces;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
@@ -24,9 +24,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private double _mouseDownScrollX;
         private double _mouseDownScrollY;
-        private readonly BiaNodeEditor _target;
-        private readonly TranslateTransform _translate;
-        private readonly ScaleTransform _scale;
+        private readonly UIElement _target;
+        private readonly IHasTransform _transformTarget;
 
         private enum OpType
         {
@@ -35,7 +34,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             //
             EditorScroll,
             BoxSelect,
-            PanelMove
+            PanelMove,
+            LinkMove,
         }
 
         private OpType _opType = OpType.None;
@@ -43,24 +43,25 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal bool IsOperating => _opType != OpType.None;
         internal bool IsBoxSelect => _opType == OpType.BoxSelect;
         internal bool IsPanelMove => _opType == OpType.PanelMove;
+        internal bool IsLinkMove => _opType == OpType.LinkMove;
 
-        internal MouseOperator(BiaNodeEditor target, TranslateTransform translate, ScaleTransform scale)
+        internal MouseOperator(UIElement target, IHasTransform transformTarget)
         {
             _target = target;
-            _translate = translate;
-            _scale = scale;
+            _transformTarget = transformTarget;
         }
 
         internal enum TargetType
         {
             NodeEditor,
             NodePanel,
+            NodeLink
         }
 
         internal void OnMouseLeftButtonDown(MouseButtonEventArgs e, TargetType targetType)
         {
-            _mouseDownScrollX = _translate.X;
-            _mouseDownScrollY = _translate.Y;
+            _mouseDownScrollX = _transformTarget.Translate.X;
+            _mouseDownScrollY = _transformTarget.Translate.Y;
             _mouseDownPos = e.GetPosition(_target);
             _mouseMovePos = _mouseDownPos;
 
@@ -74,12 +75,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     case TargetType.NodeEditor:
                         _opType = KeyboardHelper.IsPressSpace ? OpType.EditorScroll : OpType.BoxSelect;
-
                         break;
 
                     case TargetType.NodePanel:
                         _opType = OpType.PanelMove;
+                        break;
 
+                    case TargetType.NodeLink:
+                        _opType = OpType.LinkMove;
                         break;
 
                     default:
@@ -114,6 +117,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                     DoPanelMove(e);
                     break;
 
+                case OpType.LinkMove:
+                    DoLinkMove(e);
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -126,8 +133,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             var pos = e.GetPosition(_target);
             var diff = pos - _mouseDownPos;
 
-            _translate.X = _mouseDownScrollX + diff.X;
-            _translate.Y = _mouseDownScrollY + diff.Y;
+            _transformTarget.Translate.X = _mouseDownScrollX + diff.X;
+            _transformTarget.Translate.Y = _mouseDownScrollY + diff.Y;
         }
 
         internal class PanelMovingEventArgs : EventArgs
@@ -135,17 +142,29 @@ namespace Biaui.Controls.NodeEditor.Internal
             internal Vector Diff { get; set; }
         }
 
+        internal class LinkMovingEventArgs : EventArgs
+        {
+            public Point MousePos { get; set; }
+        }
+
         internal event EventHandler<PanelMovingEventArgs> PanelMoving;
+        internal event EventHandler<LinkMovingEventArgs> LinkMoving;
 
         private readonly PanelMovingEventArgs _PanelMovingEventArgs = new PanelMovingEventArgs();
+        private readonly LinkMovingEventArgs _LinkMovingEventArgs = new LinkMovingEventArgs();
 
         private void DoPanelMove(MouseEventArgs e)
         {
             var pos = e.GetPosition(_target);
 
-            _PanelMovingEventArgs.Diff = (pos - _mouseMovePos) / _scale.ScaleX;
-
+            _PanelMovingEventArgs.Diff = (pos - _mouseMovePos) / _transformTarget.Scale.ScaleX;
             PanelMoving?.Invoke(this, _PanelMovingEventArgs);
+        }
+
+        private void DoLinkMove(MouseEventArgs e)
+        {
+            _LinkMovingEventArgs.MousePos = e.GetPosition(_target);
+            LinkMoving?.Invoke(this, _LinkMovingEventArgs);
         }
 
         internal void OnMouseWheel(MouseWheelEventArgs e)
@@ -153,25 +172,23 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (IsOperating)
                 return;
 
-            var s = _scale.ScaleX;
+            var s = _transformTarget.Scale.ScaleX;
 
             s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
 
             var p = e.GetPosition(_target);
-            var d0 = _target.MakeScenePosFromControlPos(p.X, p.Y);
+            var d0 = _transformTarget.MakeScenePosFromControlPos(p.X, p.Y);
 
             s = (s, 0.25, 3.0).Clamp();
-            _scale.ScaleX = s;
-            _scale.ScaleY = s;
+            _transformTarget.Scale.ScaleX = s;
+            _transformTarget.Scale.ScaleY = s;
 
-            var d1 = _target.MakeScenePosFromControlPos(p.X, p.Y);
+            var d1 = _transformTarget.MakeScenePosFromControlPos(p.X, p.Y);
 
             var diff = d1 - d0;
 
-            _translate.X += diff.X * s;
-            _translate.Y += diff.Y * s;
-
-            //_target.InvalidateVisual();
+            _transformTarget.Translate.X += diff.X * s;
+            _transformTarget.Translate.Y += diff.Y * s;
         }
     }
 }

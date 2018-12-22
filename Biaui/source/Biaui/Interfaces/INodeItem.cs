@@ -25,13 +25,18 @@ namespace Biaui.Interfaces
         public static ImmutableRect MakeRect(this INodeItem self)
             => new ImmutableRect(self.Pos, self.Size);
 
-        public static (Point, BiaNodePortDir) MakePortPos(this INodeItem nodeItem, string portId)
+        public static (Point Pos, BiaNodePortDir Dir) MakePortPos(this INodeItem nodeItem, string portId)
         {
             var port = nodeItem.Layout.FindPort(portId);
 
             if (port == null)
                 throw new NotSupportedException();
 
+            return MakePortPos(nodeItem, port);
+        }
+
+        public static (Point Pos, BiaNodePortDir Dir) MakePortPos(this INodeItem nodeItem, BiaNodePort port)
+        {
             var alignPos = NodeEditorHelper.MakeAlignPos(port.Dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
 
             return (
@@ -40,6 +45,25 @@ namespace Biaui.Interfaces
                     nodeItem.Pos.Y + port.Offset.Y + alignPos.Y),
                 port.Dir);
         }
+
+        public static BiaNodePort FindNodePort(this INodeItem nodeItem, Point pos)
+        {
+            if (nodeItem.Layout.Ports == null)
+                return null;
+
+            foreach (var port in nodeItem.Layout.Ports.Values)
+            {
+                var portPos = NodeEditorHelper.MakeAlignPos(port.Dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
+
+                var d = (portPos, pos).DistanceSq();
+                if (d <= Internals.Constants.NodePanelPortMarkRadiusSq)
+                    return port;
+            }
+
+            return null;
+        }
+
+
     }
 
     public class BiaNodePortLayout

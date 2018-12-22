@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace Biaui.Internals
 {
     public static class NumberHelper
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double DistanceSq(in this ValueTuple<Point, Point> pos)
+        {
+            var w = pos.Item1.X - pos.Item2.X;
+            var h = pos.Item1.Y - pos.Item2.Y;
+
+            return w * w + h * h;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool AreClose(double value1, double value2)
         {

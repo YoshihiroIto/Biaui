@@ -17,7 +17,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodeEditor : BiaClippingBorder
+    public class BiaNodeEditor : BiaClippingBorder, IHasTransform
     {
         #region NodesSource
 
@@ -79,15 +79,18 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        public ScaleTransform Scale { get; }
+        public TranslateTransform Translate { get; }
+
         private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
 
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
         private readonly BoxSelector _boxSelector = new BoxSelector();
 
-        private readonly ScaleTransform _scale = new ScaleTransform();
-        private readonly TranslateTransform _translate = new TranslateTransform();
 
         private readonly MouseOperator _mouseOperator;
+        private readonly LinkOperator _linkOperator;
+
         private readonly DispatcherTimer _removeNodePanelTimer;
 
         private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
@@ -96,6 +99,7 @@ namespace Biaui.Controls.NodeEditor
         private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
         private readonly BackgroundPanel _backgroundPanel;
+        private readonly FrontPanel _frontPanel;
 
         static BiaNodeEditor()
         {
@@ -108,20 +112,29 @@ namespace Biaui.Controls.NodeEditor
             SizeChanged += (_, __) => UpdateChildrenBag(true);
             Unloaded += (_, __) => _removeNodePanelTimer.Stop();
 
+            Scale = new ScaleTransform();
+            Translate = new TranslateTransform();
+
             var grid = new Grid();
-            grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, _scale, _translate));
-            grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(_scale, _translate));
+            grid.Children.Add(_backgroundPanel = new BackgroundPanel(this));
+            grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
             grid.Children.Add(_boxSelector);
+            grid.Children.Add(_frontPanel = new FrontPanel(this));
             base.Child = grid;
+
+            _linkOperator = new LinkOperator(_frontPanel, this);
 
             _backgroundPanel.SetBinding(BackgroundPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
             {
                 Source = this,
                 Mode = BindingMode.OneWay
             });
+            _frontPanel.PostRender += (_, e) => _linkOperator.Render(e.DrawingContext);
 
-            _mouseOperator = new MouseOperator(this, _translate, _scale);
+            _mouseOperator = new MouseOperator(this, this);
             _mouseOperator.PanelMoving += OnPanelMoving;
+            _mouseOperator.LinkMoving += (s, e) =>
+                _linkOperator.OnLinkMoving(s, e);
 
             _removeNodePanelTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(1000),
@@ -132,25 +145,8 @@ namespace Biaui.Controls.NodeEditor
             _removeNodePanelTimer.Stop();
         }
 
-        internal Point MakeScenePosFromControlPos(double x, double y)
-        {
-            var s = _scale.ScaleX;
-
-            return new Point(
-                (x - _translate.X) / s,
-                (y - _translate.Y) / s);
-        }
-
-        internal ImmutableRect MakeCurrentViewport()
-        {
-            var s = _scale.ScaleX;
-
-            return new ImmutableRect(
-                -_translate.X / s,
-                -_translate.Y / s,
-                ActualWidth / s,
-                ActualHeight / s);
-        }
+        private ImmutableRect MakeCurrentViewport()
+            => this.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
 
         #region Nodes
 
@@ -479,7 +475,6 @@ namespace Biaui.Controls.NodeEditor
 
             p.MouseEnter += NodePanel_OnMouseEnter;
             p.MouseLeftButtonDown += NodePanel_OnMouseLeftButtonDown;
-            p.MouseLeftButtonUp += NodePanel_OnMouseLeftButtonUp;
             p.MouseMove += NodePanel_OnMouseMove;
 
             return (p, false);
@@ -504,32 +499,32 @@ namespace Biaui.Controls.NodeEditor
         {
             e.Handled = true;
 
-            var p = (BiaNodePanel) sender;
-            var i = (INodeItem) p.DataContext;
+            var panel = (BiaNodePanel) sender;
+            var nodeItem = (INodeItem) panel.DataContext;
 
-            if (i.IsSelected == false)
+            if (nodeItem.IsSelected == false)
             {
-                var isPressControl = KeyboardHelper.IsPressControl;
-
                 // [Ctrl]押下で追加する
-                if (isPressControl == false)
+                if (KeyboardHelper.IsPressControl == false)
                 {
                     ClearSelectedNode();
 
-                    i.IsSelected = true;
+                    nodeItem.IsSelected = true;
                 }
                 else
-                    i.IsSelected = !i.IsSelected;
+                    nodeItem.IsSelected = !nodeItem.IsSelected;
             }
 
-            _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodePanel);
+            var port = nodeItem.FindNodePort(e.GetPosition(panel));
 
-            e.Handled = true;
-        }
+            _mouseOperator.OnMouseLeftButtonDown(
+                e,
+                port == null
+                    ? MouseOperator.TargetType.NodePanel
+                    : MouseOperator.TargetType.NodeLink);
 
-        private void NodePanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            _mouseOperator.OnMouseLeftButtonUp(e);
+            if (_mouseOperator.IsLinkMove)
+                _linkOperator.BeginDrag(nodeItem, port);
 
             e.Handled = true;
         }
@@ -599,7 +594,7 @@ namespace Biaui.Controls.NodeEditor
             {
                 EndBoxSelector();
 
-                SelectNodes(_boxSelector.CalcTransformRect(_scale.ScaleX, _translate.X, _translate.Y));
+                SelectNodes(_boxSelector.CalcTransformRect(Scale.ScaleX, Translate.X, Translate.Y));
                 ClearPreSelectedNode();
             }
 
@@ -621,6 +616,7 @@ namespace Biaui.Controls.NodeEditor
             UpdateChildrenBag(true);
 
             _mouseOperator.OnMouseLeftButtonUp(e);
+            _linkOperator.EndDrag();
 
             e.Handled = true;
         }
@@ -637,7 +633,7 @@ namespace Biaui.Controls.NodeEditor
             if (_mouseOperator.IsBoxSelect)
             {
                 UpdateBoxSelector();
-                PreSelectNodes(_boxSelector.CalcTransformRect(_scale.ScaleX, _translate.X, _translate.Y));
+                PreSelectNodes(_boxSelector.CalcTransformRect(Scale.ScaleX, Translate.X, Translate.Y));
             }
 
             e.Handled = true;
@@ -645,10 +641,8 @@ namespace Biaui.Controls.NodeEditor
 
         private void SelectNodes(in ImmutableRect rect)
         {
-            var isPressControl = KeyboardHelper.IsPressControl;
-
             // [Ctrl]押下で追加する
-            if (isPressControl == false)
+            if (KeyboardHelper.IsPressControl == false)
                 ClearSelectedNode();
 
             foreach (var c in _nodePanelBag.Children)
@@ -667,7 +661,7 @@ namespace Biaui.Controls.NodeEditor
                         continue;
                 }
 
-                if (isPressControl)
+                if (KeyboardHelper.IsPressControl)
                     node.IsSelected = !node.IsSelected;
                 else
                     node.IsSelected = true;
