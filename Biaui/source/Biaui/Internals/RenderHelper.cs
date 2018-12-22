@@ -3,9 +3,9 @@ using System.Windows.Media;
 
 namespace Biaui.Internals
 {
-    public static class RenderHelper
+    internal static class RenderHelper
     {
-        public static void DrawPointCursor(DrawingContext dc, Point pos, bool isEnabled, bool isReadOnly)
+        internal static void DrawPointCursor(DrawingContext dc, Point pos, bool isEnabled, bool isReadOnly)
         {
             var s = FrameworkElementHelper.RoundLayoutValue(1);
 

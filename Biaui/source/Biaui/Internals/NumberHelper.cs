@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Biaui.Internals
 {
-    public static class NumberHelper
+    internal static class NumberHelper
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double DistanceSq(in this ValueTuple<Point, Point> pos)

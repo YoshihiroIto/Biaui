@@ -6,7 +6,7 @@ namespace Biaui.Internals
 {
     internal static class TreeViewItemExtensions
     {
-        public static int GetDepth(this TreeViewItem item)
+        internal static int GetDepth(this TreeViewItem item)
         {
             TreeViewItem parent;
             while ((parent = GetParent(item)) != null)

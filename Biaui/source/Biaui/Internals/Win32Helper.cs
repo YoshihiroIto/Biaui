@@ -6,30 +6,30 @@ namespace Biaui.Internals
     internal static class Win32Helper
     {
         [DllImport("User32.dll")]
-        public static extern bool SetCursorPos(int X, int Y);
+        internal static extern bool SetCursorPos(int X, int Y);
 
         [DllImport("user32.dll")]
-        public static extern bool ClipCursor(ref RECT lpRect);
+        internal static extern bool ClipCursor(ref RECT lpRect);
 
         [DllImport("user32.dll")]
-        public static extern bool ClipCursor(IntPtr ptr);
+        internal static extern bool ClipCursor(IntPtr ptr);
 
         [DllImport("User32.dll")]
-        public static extern IntPtr SetFocus(IntPtr hWnd);
+        internal static extern IntPtr SetFocus(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        public static extern IntPtr GetWindowDC(IntPtr hWnd);
+        internal static extern IntPtr GetWindowDC(IntPtr hWnd);
 
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern IntPtr GetDesktopWindow();
+        internal static extern IntPtr GetDesktopWindow();
 
         [DllImport("user32.dll")]
-        public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        internal static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("gdi32.dll")]
-        public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+        internal static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
-        public struct RECT
+        internal struct RECT
         {
             public int Left;
             public int Top;
@@ -46,9 +46,9 @@ namespace Biaui.Internals
         }
 
         [DllImport("user32.dll")]
-        public static extern short GetAsyncKeyState(int vKey);
+        internal static extern short GetAsyncKeyState(int vKey);
 
-        public const int VK_CONTROL = 0x11;
-        public const int VK_SPACE = 0x20;
+        internal const int VK_CONTROL = 0x11;
+        internal const int VK_SPACE = 0x20;
     }
 }

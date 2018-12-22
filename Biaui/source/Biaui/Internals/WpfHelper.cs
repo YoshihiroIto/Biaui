@@ -1,13 +1,8 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Interop;
-
-namespace Biaui.Internals
+﻿namespace Biaui.Internals
 {
     internal static class WpfHelper
     {
-        public static double PixelsPerDip
+        internal static double PixelsPerDip
         {
             get
             {
@@ -31,12 +26,5 @@ namespace Biaui.Internals
         }
 
         private static double _pixelsPerDip;
-
-        public static IntPtr GetHwnd(Popup popup)
-        {
-            var source = (HwndSource) PresentationSource.FromVisual(popup.Child);
-
-            return source?.Handle ?? IntPtr.Zero;
-        }
     }
 }
