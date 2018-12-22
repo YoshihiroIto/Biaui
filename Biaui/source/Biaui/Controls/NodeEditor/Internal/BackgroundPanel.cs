@@ -150,13 +150,12 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.PushTransform(_transform.Translate);
             dc.PushTransform(_transform.Scale);
             {
+                var pen = Caches.GetBorderPen(Colors.DeepPink, FrameworkElementHelper.RoundLayoutValue(6));
                 var viewport = _transform.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
-
-                var penO = Caches.GetBorderPen(Colors.Black, FrameworkElementHelper.RoundLayoutValue(8));
-                var penI = Caches.GetBorderPen(Colors.LimeGreen, FrameworkElementHelper.RoundLayoutValue(6));
-
                 var pv = new Point[4];
 
+#if false
+                // 接続ごとに色を変える場合は一本ずつ書く
                 foreach (var link in LinksSource)
                 {
                     var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
@@ -181,9 +180,35 @@ namespace Biaui.Controls.NodeEditor.Internal
                     var curve = new PathGeometry();
                     curve.Figures.Add(pf);
 
-                    dc.DrawGeometry(null, penO, curve);
-                    dc.DrawGeometry(null, penI, curve);
+                    dc.DrawGeometry(null, pen, curve);
                 }
+#else
+                // すべて同じ色の場合はまとめて書く
+                {
+                    var geom = new StreamGeometry();
+                    var sgc = geom.Open();
+
+                    foreach (var link in LinksSource)
+                    {
+                        var (pos0, dir0) = link.Item0.MakePortPos(link.Item0PortId);
+                        var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
+
+                        pv[0] = pos0;
+                        pv[1] = MakeControlPoint(dir0, pos0);
+                        pv[2] = MakeControlPoint(dir1, pos1);
+                        pv[3] = pos1;
+
+                        if (HitTestBezier(pv, viewport) == false)
+                            continue;
+
+                        sgc.BeginFigure(pos0, false, false);
+                        sgc.BezierTo(pv[1], pv[2], pos1, true, true);
+                    }
+
+                    sgc.Close();
+                    dc.DrawGeometry(null, pen, geom);
+                }
+#endif
             }
             dc.Pop();
             dc.Pop();
