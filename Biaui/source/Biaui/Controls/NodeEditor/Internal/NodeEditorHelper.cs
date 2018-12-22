@@ -73,9 +73,37 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private const double ControlPointLength = 128;
+        internal static Point MakeNodePortLocalPos(BiaNodePort port, double width, double height)
+        {
+            switch (port.Align)
+            {
+                case BiaNodePortAlign.Start:
+                    var startPos = MakeAlignPos(port.Dir, BiaNodePortAlign.Start, width, height);
+                    return new Point(port.Offset.X + startPos.X, port.Offset.Y + startPos.Y);
 
-        internal static Point MakeControlPoint(Point src, BiaNodePortDir dir)
+                case BiaNodePortAlign.Center:
+                    var centerPos = MakeAlignPos(port.Dir, BiaNodePortAlign.Center, width, height);
+                    return new Point(port.Offset.X + centerPos.X, port.Offset.Y + centerPos.Y);
+
+                case BiaNodePortAlign.End:
+                    var endPos = MakeAlignPos(port.Dir, BiaNodePortAlign.End, width, height);
+                    return new Point(port.Offset.X + endPos.X, port.Offset.Y + endPos.Y);
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        internal static Point MakeNodePortPos(INodeItem nodeItem, BiaNodePort port)
+        {
+            var portLocalPos = MakeNodePortLocalPos(port, nodeItem.Size.Width, nodeItem.Size.Height);
+
+            return new Point(portLocalPos.X + nodeItem.Pos.X, portLocalPos.Y + nodeItem.Pos.Y);
+        }
+
+        private const double ControlPointLength = 200;
+
+        internal static Point MakeBezierControlPoint(Point src, BiaNodePortDir dir)
         {
             switch (dir)
             {

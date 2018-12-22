@@ -281,6 +281,12 @@ namespace Biaui.Controls.Mock.Presentation
             set => SetFlagProperty(ref _flags, Flag_IsPreSelected, value);
         }
 
+        public bool IsMouseOver
+        {
+            get => (_flags & Flag_IsMouseOver) != 0;
+            set => SetFlagProperty(ref _flags, Flag_IsMouseOver, value);
+        }
+
         #region Title
 
         private string _Name;
@@ -332,6 +338,7 @@ namespace Biaui.Controls.Mock.Presentation
         private uint _flags;
         private const uint Flag_IsSelected = 1 << 0;
         private const uint Flag_IsPreSelected = 1 << 1;
+        private const uint Flag_IsMouseOver = 1 << 2;
 
         public abstract bool IsRequireVisualTest { get; }
 

@@ -48,6 +48,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal BackgroundPanel(IHasTransform transform)
         {
+            IsHitTestVisible = false;
+
             _transform = transform;
 
             _transform.Translate.Changed += (_, __) => InvalidateVisual();
@@ -166,8 +168,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                     var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
 
                     _bezierPoints[0] = pos0;
-                    _bezierPoints[1] = MakeControlPoint(dir0, pos0);
-                    _bezierPoints[2] = MakeControlPoint(dir1, pos1);
+                    _bezierPoints[1] = MakeBezierControlPoint(dir0, pos0);
+                    _bezierPoints[2] = MakeBezierControlPoint(dir1, pos1);
                     _bezierPoints[3] = pos1;
 
                     if (HitTestBezier(_bezierPoints, viewport) == false)
@@ -198,8 +200,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                         var (pos1, dir1) = link.Item1.MakePortPos(link.Item1PortId);
 
                         _bezierPoints[0] = pos0;
-                        _bezierPoints[1] = NodeEditorHelper.MakeControlPoint(pos0, dir0);
-                        _bezierPoints[2] = NodeEditorHelper.MakeControlPoint(pos1, dir1);
+                        _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(pos0, dir0);
+                        _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
                         _bezierPoints[3] = pos1;
 
                         if (NodeEditorHelper.HitTestBezier(_bezierPoints, viewport) == false)

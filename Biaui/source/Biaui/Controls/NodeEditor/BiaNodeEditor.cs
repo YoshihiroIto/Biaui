@@ -98,8 +98,9 @@ namespace Biaui.Controls.NodeEditor
         private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
         private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
 
-        private readonly BackgroundPanel _backgroundPanel;
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly FrontPanel _frontPanel;
+        private readonly BackgroundPanel _backgroundPanel;
 
         static BiaNodeEditor()
         {
@@ -133,7 +134,7 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator = new MouseOperator(this, this);
             _mouseOperator.PanelMoving += OnPanelMoving;
-            _mouseOperator.LinkMoving += (s, e) => _linkOperator.OnLinkMoving(s, e);
+            _mouseOperator.LinkMoving += (s, e) => _linkOperator.OnLinkMoving(s, e, NodesSource);
 
             _removeNodePanelTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(1000),
@@ -473,6 +474,7 @@ namespace Biaui.Controls.NodeEditor
             var p = new BiaNodePanel();
 
             p.MouseEnter += NodePanel_OnMouseEnter;
+            p.MouseLeave += NodePanel_OnMouseLeave;
             p.MouseLeftButtonDown += NodePanel_OnMouseLeftButtonDown;
             p.MouseMove += NodePanel_OnMouseMove;
 
@@ -489,15 +491,37 @@ namespace Biaui.Controls.NodeEditor
 
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            SetFrontmost((BiaNodePanel) sender);
+            Debug.WriteLine("Enter");
+
+
+            var panel = (BiaNodePanel) sender;
+            var nodeItem = (INodeItem) panel.DataContext;
+
+            SetFrontmost(panel);
+
+            nodeItem.IsMouseOver = true;
+
+            e.Handled = true;
+        }
+
+        private void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            Debug.WriteLine("Leave");
+
+
+
+            var panel = (BiaNodePanel) sender;
+            var nodeItem = (INodeItem) panel.DataContext;
+
+            nodeItem.IsMouseOver = false;
+                    
+            panel.InvalidatePorts();
 
             e.Handled = true;
         }
 
         private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
-
             var panel = (BiaNodePanel) sender;
             var nodeItem = (INodeItem) panel.DataContext;
 
@@ -532,7 +556,7 @@ namespace Biaui.Controls.NodeEditor
         {
             _mouseOperator.OnMouseMove(e);
 
-            e.Handled = true;
+            //e.Handled = true;
         }
 
         private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
@@ -635,7 +659,7 @@ namespace Biaui.Controls.NodeEditor
                 PreSelectNodes(_boxSelector.CalcTransformRect(Scale.ScaleX, Translate.X, Translate.Y));
             }
 
-            e.Handled = true;
+            //e.Handled = true;
         }
 
         private void SelectNodes(in ImmutableRect rect)

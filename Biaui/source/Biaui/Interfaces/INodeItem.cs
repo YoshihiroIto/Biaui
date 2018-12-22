@@ -14,6 +14,8 @@ namespace Biaui.Interfaces
 
         bool IsPreSelected { get; set; }
 
+        bool IsMouseOver { get; set; }
+
         bool IsRequireVisualTest { get; }
 
         Size Size { get; set; }

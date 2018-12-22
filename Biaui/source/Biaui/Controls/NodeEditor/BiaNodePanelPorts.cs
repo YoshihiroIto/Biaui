@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.NodeEditor.Internal;
@@ -16,6 +15,13 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(typeof(BiaNodePanelPorts)));
         }
 
+        private Point _mousePoint;
+
+        internal void UpdateMousePos(Point point)
+        {
+            _mousePoint = point;
+        }
+
         protected override void OnRender(DrawingContext dc)
         {
             if (ActualWidth <= 1 ||
@@ -26,40 +32,28 @@ namespace Biaui.Controls.NodeEditor
 
             var nodeItem = (INodeItem) DataContext;
 
+            var isMouseOverNode = nodeItem.IsMouseOver;
+
             foreach (var port in nodeItem.Layout.Ports.Values)
             {
-                Point pos;
+                var portPos = NodeEditorHelper.MakeNodePortLocalPos(port, ActualWidth, ActualHeight);
 
-                switch (port.Align)
+                var r = Biaui.Internals.Constants.NodePanelPortMarkRadius;
+
+                // パネルがマウスオーバー時は、ポート自体のマウス位置見て半径を作る
+                if (isMouseOverNode)
                 {
-                    case BiaNodePortAlign.Start:
-                        var startPos = NodeEditorHelper.MakeAlignPos(
-                            port.Dir, BiaNodePortAlign.Start, ActualWidth, ActualHeight);
-                        pos = new Point(port.Offset.X + startPos.X, port.Offset.Y + startPos.Y);
-                        break;
-
-                    case BiaNodePortAlign.Center:
-                        var centerPos = NodeEditorHelper.MakeAlignPos(
-                            port.Dir, BiaNodePortAlign.Center, ActualWidth, ActualHeight);
-                        pos = new Point(port.Offset.X + centerPos.X, port.Offset.Y + centerPos.Y);
-                        break;
-
-                    case BiaNodePortAlign.End:
-                        var endPos = NodeEditorHelper.MakeAlignPos(
-                            port.Dir, BiaNodePortAlign.End, ActualWidth, ActualHeight);
-                        pos = new Point(port.Offset.X + endPos.X, port.Offset.Y + endPos.Y);
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    if ((portPos, _mousePoint).DistanceSq() <=
+                        Biaui.Internals.Constants.NodePanelPortMarkRadiusSq)
+                        r = Biaui.Internals.Constants.NodePanelPortMarkRadius_Highlight;
                 }
 
                 dc.DrawEllipse(
                     Brushes.WhiteSmoke,
                     pen,
-                    pos,
-                    Biaui.Internals.Constants.NodePanelPortMarkRadius,
-                    Biaui.Internals.Constants.NodePanelPortMarkRadius);
+                    portPos,
+                    r, 
+                    r);
             }
         }
     }

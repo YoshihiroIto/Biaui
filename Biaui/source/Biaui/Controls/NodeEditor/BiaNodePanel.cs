@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -9,6 +12,23 @@ namespace Biaui.Controls.NodeEditor
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodePanel),
                 new FrameworkPropertyMetadata(typeof(BiaNodePanel)));
+        }
+
+        public void InvalidatePorts()
+        {
+            var ports = this.Descendants<BiaNodePanelPorts>().FirstOrDefault();
+
+            ports?.InvalidateVisual();
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            var ports = this.Descendants<BiaNodePanelPorts>().FirstOrDefault();
+
+            ports?.UpdateMousePos(e.GetPosition(this));
+            ports?.InvalidateVisual();
         }
     }
 }
