@@ -40,12 +40,15 @@ namespace Biaui.Interfaces
 
         public static (Point Pos, BiaNodePortDir Dir) MakePortPos(this INodeItem nodeItem, BiaNodePort port)
         {
-            var alignPos = NodeEditorHelper.MakeAlignPos(port.Dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
+            var itemSize = nodeItem.Size;
+            var itemPos = nodeItem.Pos;
+
+            var alignPos = NodeEditorHelper.MakeAlignPos(port);
 
             return (
                 new Point(
-                    nodeItem.Pos.X + port.Offset.X + alignPos.X,
-                    nodeItem.Pos.Y + port.Offset.Y + alignPos.Y),
+                    itemPos.X + port.Offset.X + alignPos.X * itemSize.Width,
+                    itemPos.Y + port.Offset.Y + alignPos.Y * itemSize.Height),
                 port.Dir);
         }
 
@@ -56,8 +59,9 @@ namespace Biaui.Interfaces
 
             foreach (var port in nodeItem.Layout.Ports.Values)
             {
-                var portAlignPos = NodeEditorHelper.MakeAlignPos(port.Dir, port.Align, nodeItem.Size.Width, nodeItem.Size.Height);
-                var portPos = new Point(portAlignPos.X + port.Offset.X, portAlignPos.Y + port.Offset.Y);
+                var size = nodeItem.Size;
+                var portAlignPos = NodeEditorHelper.MakeAlignPos(port);
+                var portPos = new Point(portAlignPos.X *size.Width + port.Offset.X, portAlignPos.Y * size.Height+ port.Offset.Y);
 
                 var d = (portPos, pos).DistanceSq();
                 if (d <= Internals.Constants.NodePanelPortMarkRadiusSq)

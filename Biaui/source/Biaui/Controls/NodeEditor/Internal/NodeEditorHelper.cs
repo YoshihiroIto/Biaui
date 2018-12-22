@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using Biaui.Interfaces;
@@ -8,8 +9,47 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal static class NodeEditorHelper
     {
+        private static readonly double[] _alignPosTable =
+        {
+            //
+            0.0, 0.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            0.0, 1.0,
+            //
+            0.0, 0.5,
+            0.5, 0.0,
+            1.0, 0.5,
+            0.5, 1.0,
+            //
+            0.0, 1.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            1.0, 1.0
+        };
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static Point MakeAlignPos(BiaNodePort port)
+        {
+            var i = ((int) port.Align << 2) | (int) port.Dir;
+
+            var x = _alignPosTable[i * 2 + 0];
+            var y = _alignPosTable[i * 2 + 1];
+
+            return new Point(x, y);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static Point MakeAlignPos(BiaNodePortDir dir, BiaNodePortAlign align, double width, double height)
         {
+#if true
+            var i = ((int) align << 2) | (int) dir;
+
+            var x = _alignPosTable[i * 2 + 0] * width;
+            var y = _alignPosTable[i * 2 + 1] * height;
+
+            return new Point(x, y);
+#else
             switch (dir)
             {
                 case BiaNodePortDir.Left:
@@ -71,6 +111,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 default:
                     throw new ArgumentOutOfRangeException(nameof(dir), dir, null);
             }
+#endif
         }
 
         internal static Point MakeNodePortLocalPos(BiaNodePort port, double width, double height)
