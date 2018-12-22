@@ -80,6 +80,7 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         public ScaleTransform Scale { get; }
+
         public TranslateTransform Translate { get; }
 
         private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
@@ -507,7 +508,7 @@ namespace Biaui.Controls.NodeEditor
             var nodeItem = (INodeItem) panel.DataContext;
 
             nodeItem.IsMouseOver = false;
-                    
+
             panel.InvalidatePorts();
 
             e.Handled = true;
@@ -616,17 +617,15 @@ namespace Biaui.Controls.NodeEditor
 
             if (_mouseOperator.IsPanelMove)
             {
-                ++_isEnableUpdateChildrenBagDepth;
+                if (_mouseOperator.IsMoved)
                 {
-                    foreach (var n in _selectedNodes)
-                    {
-                        n.Pos = new Point(
-                            Math.Round(n.Pos.X / 32) * 32,
-                            Math.Round(n.Pos.Y / 32) * 32);
-                    }
+                    ++_isEnableUpdateChildrenBagDepth;
+
+                    AlignNodes(_selectedNodes);
+
+                    --_isEnableUpdateChildrenBagDepth;
+                    Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
                 }
-                --_isEnableUpdateChildrenBagDepth;
-                Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
             }
 
             UpdateChildrenBag(true);
@@ -636,6 +635,7 @@ namespace Biaui.Controls.NodeEditor
 
             e.Handled = true;
         }
+
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -653,6 +653,16 @@ namespace Biaui.Controls.NodeEditor
             }
 
             //e.Handled = true;
+        }
+
+        private void AlignNodes(IEnumerable<INodeItem> targets)
+        {
+            foreach (var n in targets)
+            {
+                n.Pos = new Point(
+                    Math.Round(n.Pos.X / 32) * 32,
+                    Math.Round(n.Pos.Y / 32) * 32);
+            }
         }
 
         private void SelectNodes(in ImmutableRect rect)

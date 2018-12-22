@@ -45,6 +45,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal bool IsPanelMove => _opType == OpType.PanelMove;
         internal bool IsLinkMove => _opType == OpType.LinkMove;
 
+        internal bool IsMoved { get; private set; }
+
         internal MouseOperator(UIElement target, IHasTransform transformTarget)
         {
             _target = target;
@@ -64,6 +66,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             _mouseDownScrollY = _transformTarget.Translate.Y;
             _mouseDownPos = e.GetPosition(_target);
             _mouseMovePos = _mouseDownPos;
+
+            IsMoved = false;
 
             _target.CaptureMouse();
 
@@ -102,6 +106,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void OnMouseMove(MouseEventArgs e)
         {
+            if (_opType != OpType.None)
+                IsMoved = true;
+
             switch (_opType)
             {
                 case OpType.None:
