@@ -1,11 +1,12 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace Biaui.Internals
 {
     // http://proprogrammer.hatenadiary.jp/entry/2018/08/18/172739
 
-    public readonly struct ImmutableRect
+    public readonly struct ImmutableRect: IEquatable<ImmutableRect>
     {
         public readonly double X;
         public readonly double Y;

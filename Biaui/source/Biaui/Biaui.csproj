@@ -220,6 +220,7 @@
     <Compile Include="Internals\LruCache.cs" />
     <Compile Include="Internals\MouseSimulator.cs" />
     <Compile Include="Internals\NumberHelper.cs" />
+    <Compile Include="Internals\ImmutablePoint.cs" />
     <Compile Include="Internals\RenderHelper.cs" />
     <Compile Include="Internals\TextRenderer.cs" />
     <Compile Include="Internals\TreeViewHelper.cs" />

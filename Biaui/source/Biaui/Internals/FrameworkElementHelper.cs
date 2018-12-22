@@ -9,8 +9,8 @@ namespace Biaui.Internals
         internal static double RoundLayoutValue(double value)
             => RoundLayoutValue(value, WpfHelper.PixelsPerDip);
 
-        internal static Rect RoundLayoutRect(Rect rect)
-            => new Rect(
+        internal static ImmutableRect RoundLayoutRect(in ImmutableRect rect)
+            => new ImmutableRect(
                 RoundLayoutValue(rect.X, WpfHelper.PixelsPerDip),
                 RoundLayoutValue(rect.Y, WpfHelper.PixelsPerDip),
                 RoundLayoutValue(rect.Width, WpfHelper.PixelsPerDip),
