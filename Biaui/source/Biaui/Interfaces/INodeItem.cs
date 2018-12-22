@@ -97,13 +97,13 @@ namespace Biaui.Interfaces
 
     public interface ILinkItem : INotifyPropertyChanged
     {
-        INodeItem Item0 { get; }
-
-        string Item0PortId { get; }
-
         INodeItem Item1 { get; }
 
         string Item1PortId { get; }
+
+        INodeItem Item2 { get; }
+
+        string Item2PortId { get; }
 
         object InternalData { get; set; }
     }

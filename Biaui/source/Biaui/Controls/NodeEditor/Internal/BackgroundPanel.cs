@@ -162,14 +162,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var link in LinksSource)
             {
-                (BiaNodePort Port0, BiaNodePort Port1) portPair;
+                (BiaNodePort Port1, BiaNodePort Port2) portPair;
 
                 if (link.InternalData == null)
                 {
-                    var port0 = link.Item0.Layout.FindPort(link.Item0PortId);
-                    var port1 = link.Item0.Layout.FindPort(link.Item1PortId);
+                    var port1 = link.Item1.Layout.FindPort(link.Item1PortId);
+                    var port2 = link.Item2.Layout.FindPort(link.Item2PortId);
 
-                    portPair = (port0, port1);
+                    portPair = (port1, port2);
 
                     link.InternalData = portPair;
                 }
@@ -178,13 +178,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                     portPair = ((BiaNodePort, BiaNodePort))link.InternalData;
                 }
 
-                var (pos0, dir0) = link.Item0.MakePortPos(portPair.Port0);
                 var (pos1, dir1) = link.Item1.MakePortPos(portPair.Port1);
+                var (pos2, dir2) = link.Item2.MakePortPos(portPair.Port2);
 
-                _bezierPoints[0] = pos0;
-                _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(pos0, dir0);
-                _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
-                _bezierPoints[3] = pos1;
+                _bezierPoints[0] = pos1;
+                _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
+                _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(pos2, dir2);
+                _bezierPoints[3] = pos2;
 
                 if (NodeEditorHelper.HitTestBezier(_bezierPoints, viewport) == false)
                     continue;
@@ -201,8 +201,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                     _curves.Add(color, curve);
                 }
 
-                curve.Ctx.BeginFigure(pos0, false, false);
-                curve.Ctx.BezierTo(_bezierPoints[1], _bezierPoints[2], pos1, true, true);
+                curve.Ctx.BeginFigure(pos1, false, false);
+                curve.Ctx.BezierTo(_bezierPoints[1], _bezierPoints[2], pos2, true, true);
             }
 
             dc.PushTransform(_transform.Translate);

@@ -118,8 +118,8 @@ namespace Biaui.Controls.Mock.Presentation
                 var selectedNodes = new HashSet<INodeItem>(Nodes.Where(x => x.IsSelected));
 
                 var linksWithSelectedNode = Links
-                    .Where(x => selectedNodes.Contains(x.Item0) ||
-                                selectedNodes.Contains(x.Item1))
+                    .Where(x => selectedNodes.Contains(x.Item1) ||
+                                selectedNodes.Contains(x.Item2))
                     .ToArray();
 
                 foreach (var node in selectedNodes)
@@ -160,8 +160,8 @@ namespace Biaui.Controls.Mock.Presentation
                         };
 
                 var linksWithSelectedNode = Links
-                    .Where(x => removedNode == x.Item0 ||
-                                removedNode == x.Item1)
+                    .Where(x => removedNode == x.Item1 ||
+                                removedNode == x.Item2)
                     .ToArray();
 
                 foreach (var link in linksWithSelectedNode)
@@ -256,11 +256,11 @@ namespace Biaui.Controls.Mock.Presentation
                 links.Add(
                     new Link
                     {
-                        Item0 = nodes[i - 1],
-                        Item0PortId = "OutputA",
+                        Item1 = nodes[i - 1],
+                        Item1PortId = "OutputA",
 
-                        Item1 = nodes[i],
-                        Item1PortId = "InputA"
+                        Item2 = nodes[i],
+                        Item2PortId = "InputA"
                     }
                 );
             }
@@ -484,11 +484,11 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class Link : ModelBase, ILinkItem
     {
-        #region Item0
+        #region Item1
 
         private INodeItem _Item0;
 
-        public INodeItem Item0
+        public INodeItem Item1
         {
             get => _Item0;
             set => SetProperty(ref _Item0, value);
@@ -496,11 +496,11 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region Item0PortId
+        #region Item1PortId
 
         private string _Item0PortId;
 
-        public string Item0PortId
+        public string Item1PortId
         {
             get => _Item0PortId;
             set => SetProperty(ref _Item0PortId, value);
@@ -508,11 +508,11 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region Item1
+        #region Item2
 
         private INodeItem _Item1;
 
-        public INodeItem Item1
+        public INodeItem Item2
         {
             get => _Item1;
             set => SetProperty(ref _Item1, value);
@@ -520,11 +520,11 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region Item1PortId
+        #region Item2PortId
 
         private string _Item1PortId;
 
-        public string Item1PortId
+        public string Item2PortId
         {
             get => _Item1PortId;
             set => SetProperty(ref _Item1PortId, value);
