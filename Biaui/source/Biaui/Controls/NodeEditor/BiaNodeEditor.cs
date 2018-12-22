@@ -491,9 +491,6 @@ namespace Biaui.Controls.NodeEditor
 
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            Debug.WriteLine("Enter");
-
-
             var panel = (BiaNodePanel) sender;
             var nodeItem = (INodeItem) panel.DataContext;
 
@@ -506,10 +503,6 @@ namespace Biaui.Controls.NodeEditor
 
         private void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            Debug.WriteLine("Leave");
-
-
-
             var panel = (BiaNodePanel) sender;
             var nodeItem = (INodeItem) panel.DataContext;
 
