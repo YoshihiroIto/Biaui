@@ -65,6 +65,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             DrawNodeLink(dc);
         }
 
+        private readonly StreamGeometry _gridGeom = new StreamGeometry();
+
         private void DrawGrid(DrawingContext dc)
         {
             const double unit = 1024;
@@ -78,8 +80,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             var bx = FrameworkElementHelper.RoundLayoutValue(ActualWidth);
             var by = FrameworkElementHelper.RoundLayoutValue(ActualHeight);
 
-            var geom = new StreamGeometry();
-            var sgc = geom.Open();
+            _gridGeom.Clear();
+
+            var sgc = _gridGeom.Open();
             {
                 for (var h = 0;; ++h)
                 {
@@ -138,10 +141,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
             }
             sgc.Close();
-            dc.DrawGeometry(null, p, geom);
+            dc.DrawGeometry(null, p, _gridGeom);
         }
 
         private readonly Point[] _bezierPoints = new Point[4];
+        private readonly StreamGeometry _bezierGeom = new StreamGeometry();
 
         private void DrawNodeLink(DrawingContext dc)
         {
@@ -185,8 +189,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 #else
                 // すべて同じ色の場合はまとめて書く
                 {
-                    var geom = new StreamGeometry();
-                    var sgc = geom.Open();
+                    _bezierGeom.Clear();
+                    var sgc = _bezierGeom.Open();
 
                     foreach (var link in LinksSource)
                     {
@@ -206,7 +210,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     }
 
                     sgc.Close();
-                    dc.DrawGeometry(null, pen, geom);
+                    dc.DrawGeometry(null, pen, _bezierGeom);
                 }
 #endif
             }
