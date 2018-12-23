@@ -74,11 +74,8 @@ namespace Biaui.Internals
             );
         }
 
-        public static implicit operator ImmutableRect(Rect source)
-            => new ImmutableRect(source.X, source.Y, source.Width, source.Height);
-
-        public static implicit operator Rect(in ImmutableRect source)
-            => new Rect(source.X, source.Y, source.Width, source.Height);
+        public Rect ToRect()
+            => new Rect(X, Y, Width, Height);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IntersectsWith(in ImmutableRect target)
