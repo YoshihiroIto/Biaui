@@ -13,10 +13,10 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly Panel _renderTarget;
         private readonly IHasTransform _transformTarget;
 
-        private INodeItem _srcNodeItem;
+        private IBiaNodeItem _srcNodeItem;
         private BiaNodePort _srcPort;
 
-        private INodeItem _targetNodeItem;
+        private IBiaNodeItem _targetNodeItem;
         private BiaNodePort _targetPort;
 
         private bool IsDragging => _srcNodeItem != null;
@@ -27,7 +27,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             _transformTarget = transformTarget;
         }
 
-        internal void BeginDrag(INodeItem nodeItem, BiaNodePort port)
+        internal void BeginDrag(IBiaNodeItem nodeItem, BiaNodePort port)
         {
             _srcNodeItem = nodeItem;
             _srcPort = port;
@@ -49,7 +49,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private Point _mousePos;
 
-        public void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e, IEnumerable<INodeItem> nodeItems)
+        public void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e, IEnumerable<IBiaNodeItem> nodeItems)
         {
             _mousePos = _transformTarget.MakeScenePosFromControlPos(e.MousePos);
 
@@ -68,7 +68,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var srcPos = _srcNodeItem.MakePortPos(_srcPort);
 
             _bezierPoints[0] = srcPos;
-            _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(srcPos, _srcPort.Dir);
+            _bezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _srcPort.Dir);
 
             if (_targetPort == null)
             {
@@ -79,7 +79,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 var targetPortPos = _targetNodeItem.MakePortPos(_targetPort);
 
-                _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(targetPortPos, _targetPort.Dir);
+                _bezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetPortPos, _targetPort.Dir);
                 _bezierPoints[3] = targetPortPos;
             }
 
@@ -108,7 +108,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        protected void UpdateLinkTarget(Point mousePos, IEnumerable<INodeItem> nodeItems)
+        protected void UpdateLinkTarget(Point mousePos, IEnumerable<IBiaNodeItem> nodeItems)
         {
             if (nodeItems == null)
             {

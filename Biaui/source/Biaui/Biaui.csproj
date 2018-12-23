@@ -213,14 +213,14 @@
     <Compile Include="Controls\NodeEditor\Internal\BoxSelector.cs" />
     <Compile Include="Controls\Internals\FrameworkElementBag.cs" />
     <Compile Include="Controls\NodeEditor\Internal\LinkOperator.cs" />
-    <Compile Include="Controls\NodeEditor\Internal\NodeEditorHelper.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePanelPorts.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BackgroundPanel.cs" />
     <Compile Include="Controls\NodeEditor\Internal\MouseOperator.cs" />
-    <Compile Include="Controls\NodeEditor\Internal\NodeItemExtensions.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodeItemExtensions.cs" />
     <Compile Include="Interfaces\IHasPos.cs" />
     <Compile Include="Controls\Internals\IHasTransform.cs" />
-    <Compile Include="Interfaces\INodeLink.cs" />
+    <Compile Include="Interfaces\IBiaNodeLink.cs" />
     <Compile Include="Internals\Boxes.cs" />
     <Compile Include="Controls\BiaClippingBorder.cs" />
     <Compile Include="Internals\Caches.cs" />
@@ -247,7 +247,7 @@
     <Compile Include="Internals\Win32Helper.cs" />
     <Compile Include="Internals\WindowAction.cs" />
     <Compile Include="Internals\WpfHelper.cs" />
-    <Compile Include="Interfaces\INodeItem.cs" />
+    <Compile Include="Interfaces\IBiaNodeItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

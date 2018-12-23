@@ -15,7 +15,7 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         #region LinksSource
 
-        public ObservableCollection<INodeLink> LinksSource
+        public ObservableCollection<IBiaNodeLink> LinksSource
         {
             get => _LinksSource;
             set
@@ -25,19 +25,19 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private ObservableCollection<INodeLink> _LinksSource;
+        private ObservableCollection<IBiaNodeLink> _LinksSource;
 
         public static readonly DependencyProperty LinksSourceProperty =
-            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<INodeLink>),
+            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<IBiaNodeLink>),
                 typeof(BackgroundPanel),
                 new FrameworkPropertyMetadata(
-                    default(ObservableCollection<INodeLink>),
+                    default(ObservableCollection<IBiaNodeLink>),
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BackgroundPanel) s;
-                        self._LinksSource = (ObservableCollection<INodeLink>) e.NewValue;
+                        self._LinksSource = (ObservableCollection<IBiaNodeLink>) e.NewValue;
                     }));
 
         #endregion
@@ -184,8 +184,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var pos1 = link.Item1.MakePortPos(portPair.Port1);
                 var pos2 = link.Item2.MakePortPos(portPair.Port2);
 
-                var pos12 = NodeEditorHelper.MakeBezierControlPoint(pos1, portPair.Port1.Dir);
-                var pos21 = NodeEditorHelper.MakeBezierControlPoint(pos2, portPair.Port2.Dir);
+                var pos12 = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, portPair.Port1.Dir);
+                var pos21 = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, portPair.Port2.Dir);
 
                 // ※.HitTestBezier を呼ぶと_bezierPointsは書き変わる
                 bezierPoints[0] = pos1;
@@ -193,7 +193,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 bezierPoints[2] = pos21;
                 bezierPoints[3] = pos2;
 
-                if (NodeEditorHelper.HitTestBezier(hitTestWork, viewport) == false)
+                if (BiaNodeEditorHelper.HitTestBezier(hitTestWork, viewport) == false)
                     continue;
 
                 // todo;接続ごとの色を指定する

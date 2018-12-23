@@ -16,9 +16,9 @@ namespace Biaui.Controls.Mock.Presentation
     {
         #region Nodes
 
-        private ObservableCollection<INodeItem> _Nodes = new ObservableCollection<INodeItem>();
+        private ObservableCollection<IBiaNodeItem> _Nodes = new ObservableCollection<IBiaNodeItem>();
 
-        public ObservableCollection<INodeItem> Nodes
+        public ObservableCollection<IBiaNodeItem> Nodes
         {
             get => _Nodes;
             set => SetProperty(ref _Nodes, value);
@@ -28,9 +28,9 @@ namespace Biaui.Controls.Mock.Presentation
 
         #region Links
 
-        private ObservableCollection<INodeLink> _Links = new ObservableCollection<INodeLink>();
+        private ObservableCollection<IBiaNodeLink> _Links = new ObservableCollection<IBiaNodeLink>();
 
-        public ObservableCollection<INodeLink> Links
+        public ObservableCollection<IBiaNodeLink> Links
         {
             get => _Links;
             set => SetProperty(ref _Links, value);
@@ -115,7 +115,7 @@ namespace Biaui.Controls.Mock.Presentation
 
             RemoveSelectedNodesCommand = new DelegateCommand().Setup(() =>
             {
-                var selectedNodes = new HashSet<INodeItem>(Nodes.Where(x => x.IsSelected));
+                var selectedNodes = new HashSet<IBiaNodeItem>(Nodes.Where(x => x.IsSelected));
 
                 var linksWithSelectedNode = Links
                     .Where(x => selectedNodes.Contains(x.Item1) ||
@@ -152,7 +152,7 @@ namespace Biaui.Controls.Mock.Presentation
                             TitleBackground = Brushes.MediumVioletRed,
                             Pos = new Point(0, 0),
                         }
-                        : (INodeItem) new BasicNode
+                        : (IBiaNodeItem) new BasicNode
                         {
                             Title = $"Replace:{replaceCount++}",
                             TitleBackground = Brushes.DarkGreen,
@@ -171,12 +171,12 @@ namespace Biaui.Controls.Mock.Presentation
             ReplaceNodesSourceCommand = new DelegateCommand().Setup(() =>
             {
                 //
-                var nodes = new ObservableCollection<INodeItem>();
+                var nodes = new ObservableCollection<IBiaNodeItem>();
                 MakeNodes(nodes);
                 Nodes = nodes;
 
                 //
-                var links = new ObservableCollection<INodeLink>();
+                var links = new ObservableCollection<IBiaNodeLink>();
                 MakeLinks(links, Nodes);
                 Links = links;
             });
@@ -185,7 +185,7 @@ namespace Biaui.Controls.Mock.Presentation
             MakeLinks(Links, Nodes);
         }
 
-        private static void MakeNodes(ObservableCollection<INodeItem> nodes)
+        private static void MakeNodes(ObservableCollection<IBiaNodeItem> nodes)
         {
             var titleBackgrounds = new[]
             {
@@ -210,7 +210,7 @@ namespace Biaui.Controls.Mock.Presentation
                 var ry = 0.0;
 #endif
 
-                INodeItem nodeItem = null;
+                IBiaNodeItem nodeItem = null;
 
                 switch (i % 3)
                 {
@@ -246,7 +246,7 @@ namespace Biaui.Controls.Mock.Presentation
             }
         }
 
-        private static void MakeLinks(ObservableCollection<INodeLink> links, ObservableCollection<INodeItem> nodes)
+        private static void MakeLinks(ObservableCollection<IBiaNodeLink> links, ObservableCollection<IBiaNodeItem> nodes)
         {
             if (nodes.Count == 0)
                 return;
@@ -267,7 +267,7 @@ namespace Biaui.Controls.Mock.Presentation
         }
     }
 
-    public abstract class NodeBase : ModelBase, INodeItem
+    public abstract class NodeBase : ModelBase, IBiaNodeItem
     {
         public bool IsSelected
         {
@@ -482,13 +482,13 @@ namespace Biaui.Controls.Mock.Presentation
         };
     }
 
-    public class NodeLink : ModelBase, INodeLink
+    public class NodeLink : ModelBase, IBiaNodeLink
     {
         #region Item1
 
-        private INodeItem _Item0;
+        private IBiaNodeItem _Item0;
 
-        public INodeItem Item1
+        public IBiaNodeItem Item1
         {
             get => _Item0;
             set => SetProperty(ref _Item0, value);
@@ -510,9 +510,9 @@ namespace Biaui.Controls.Mock.Presentation
 
         #region Item2
 
-        private INodeItem _Item1;
+        private IBiaNodeItem _Item1;
 
-        public INodeItem Item2
+        public IBiaNodeItem Item2
         {
             get => _Item1;
             set => SetProperty(ref _Item1, value);

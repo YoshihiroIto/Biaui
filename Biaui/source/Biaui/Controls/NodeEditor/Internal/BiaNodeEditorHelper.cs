@@ -4,7 +4,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal static class NodeEditorHelper
+    internal static class BiaNodeEditorHelper
     {
         private const double ControlPointLength = 200;
 

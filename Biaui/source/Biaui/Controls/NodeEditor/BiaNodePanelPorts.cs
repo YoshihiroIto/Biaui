@@ -30,7 +30,7 @@ namespace Biaui.Controls.NodeEditor
 
             var pen = Caches.GetBorderPen(Colors.Black, 2);
 
-            var nodeItem = (INodeItem) DataContext;
+            var nodeItem = (IBiaNodeItem) DataContext;
 
             var isMouseOverNode = nodeItem.IsMouseOver;
 

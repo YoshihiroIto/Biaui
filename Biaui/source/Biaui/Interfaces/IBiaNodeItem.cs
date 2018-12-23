@@ -4,7 +4,7 @@ using Biaui.Controls.NodeEditor;
 
 namespace Biaui.Interfaces
 {
-    public interface INodeItem : IHasPos, INotifyPropertyChanged
+    public interface IBiaNodeItem : IHasPos, INotifyPropertyChanged
     {
         bool IsSelected { get; set; }
 

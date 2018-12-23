@@ -22,7 +22,7 @@ namespace Biaui.Controls.NodeEditor
     {
         #region NodesSource
 
-        public ObservableCollection<INodeItem> NodesSource
+        public ObservableCollection<IBiaNodeItem> NodesSource
         {
             get => _NodesSource;
             set
@@ -32,19 +32,19 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private ObservableCollection<INodeItem> _NodesSource;
+        private ObservableCollection<IBiaNodeItem> _NodesSource;
 
         public static readonly DependencyProperty NodesSourceProperty =
-            DependencyProperty.Register(nameof(NodesSource), typeof(ObservableCollection<INodeItem>),
+            DependencyProperty.Register(nameof(NodesSource), typeof(ObservableCollection<IBiaNodeItem>),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(ObservableCollection<INodeItem>),
+                    default(ObservableCollection<IBiaNodeItem>),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
 
                         var old = self._NodesSource;
-                        self._NodesSource = (ObservableCollection<INodeItem>) e.NewValue;
+                        self._NodesSource = (ObservableCollection<IBiaNodeItem>) e.NewValue;
                         self.UpdateNodesSource(old, self._NodesSource);
                     }));
 
@@ -52,7 +52,7 @@ namespace Biaui.Controls.NodeEditor
 
         #region LinksSource
 
-        public ObservableCollection<INodeLink> LinksSource
+        public ObservableCollection<IBiaNodeLink> LinksSource
         {
             get => _LinksSource;
             set
@@ -62,19 +62,19 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private ObservableCollection<INodeLink> _LinksSource;
+        private ObservableCollection<IBiaNodeLink> _LinksSource;
 
         public static readonly DependencyProperty LinksSourceProperty =
-            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<INodeLink>),
+            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<IBiaNodeLink>),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(ObservableCollection<INodeLink>),
+                    default(ObservableCollection<IBiaNodeLink>),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
 
                         var old = self._LinksSource;
-                        self._LinksSource = (ObservableCollection<INodeLink>) e.NewValue;
+                        self._LinksSource = (ObservableCollection<IBiaNodeLink>) e.NewValue;
                         self.UpdateLinksSource(old, self._LinksSource);
                     }));
 
@@ -83,7 +83,7 @@ namespace Biaui.Controls.NodeEditor
         public ScaleTransform Scale { get; }
         public TranslateTransform Translate { get; }
 
-        private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
+        private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
 
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
         private readonly BoxSelector _boxSelector = new BoxSelector();
@@ -95,8 +95,8 @@ namespace Biaui.Controls.NodeEditor
 
         private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
         private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
-        private readonly HashSet<INodeItem> _selectedNodes = new HashSet<INodeItem>();
-        private readonly HashSet<INodeItem> _preSelectedNodes = new HashSet<INodeItem>();
+        private readonly HashSet<IBiaNodeItem> _selectedNodes = new HashSet<IBiaNodeItem>();
+        private readonly HashSet<IBiaNodeItem> _preSelectedNodes = new HashSet<IBiaNodeItem>();
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly FrontPanel _frontPanel;
@@ -151,8 +151,8 @@ namespace Biaui.Controls.NodeEditor
         #region Nodes
 
         private void UpdateNodesSource(
-            ObservableCollection<INodeItem> oldSource,
-            ObservableCollection<INodeItem> newSource)
+            ObservableCollection<IBiaNodeItem> oldSource,
+            ObservableCollection<IBiaNodeItem> newSource)
         {
             if (oldSource != null)
             {
@@ -171,7 +171,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private void UpdateSelectedNode(INodeItem node)
+        private void UpdateSelectedNode(IBiaNodeItem node)
         {
             if (node.IsSelected)
                 _selectedNodes.Add(node);
@@ -186,20 +186,20 @@ namespace Biaui.Controls.NodeEditor
 
         private void NodeItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var node = (INodeItem) sender;
+            var node = (IBiaNodeItem) sender;
 
             switch (e.PropertyName)
             {
-                case nameof(INodeItem.Pos):
-                case nameof(INodeItem.Size):
+                case nameof(IBiaNodeItem.Pos):
+                case nameof(IBiaNodeItem.Size):
                 {
                     ChangeElement(true);
                     _backgroundPanel.InvalidateVisual();
                     break;
                 }
 
-                case nameof(INodeItem.IsSelected):
-                case nameof(INodeItem.IsPreSelected):
+                case nameof(IBiaNodeItem.IsSelected):
+                case nameof(IBiaNodeItem.IsPreSelected):
                 {
                     UpdateSelectedNode(node);
                     ChangeElement(false);
@@ -229,7 +229,7 @@ namespace Biaui.Controls.NodeEditor
                     if (e.NewItems == null)
                         break;
 
-                    foreach (INodeItem nodeItem in e.NewItems)
+                    foreach (IBiaNodeItem nodeItem in e.NewItems)
                     {
                         nodeItem.PropertyChanged += NodeItemPropertyChanged;
                         _nodeDict.Add(nodeItem, null);
@@ -243,7 +243,7 @@ namespace Biaui.Controls.NodeEditor
                     if (e.OldItems == null)
                         break;
 
-                    foreach (INodeItem nodeItem in e.OldItems)
+                    foreach (IBiaNodeItem nodeItem in e.OldItems)
                     {
                         nodeItem.PropertyChanged -= NodeItemPropertyChanged;
 
@@ -265,8 +265,8 @@ namespace Biaui.Controls.NodeEditor
 
                 case NotifyCollectionChangedAction.Replace:
                 {
-                    var oldItems = e.OldItems.Cast<INodeItem>().ToArray();
-                    var newItems = e.NewItems.Cast<INodeItem>().ToArray();
+                    var oldItems = e.OldItems.Cast<IBiaNodeItem>().ToArray();
+                    var newItems = e.NewItems.Cast<IBiaNodeItem>().ToArray();
 
                     if (oldItems.Length != newItems.Length)
                         throw new NotSupportedException();
@@ -339,7 +339,7 @@ namespace Biaui.Controls.NodeEditor
         }
 
         private int _isEnableUpdateChildrenBagDepth;
-        private readonly List<(INodeItem, BiaNodePanel)> _changedUpdate = new List<(INodeItem, BiaNodePanel)>();
+        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate = new List<(IBiaNodeItem, BiaNodePanel)>();
 
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
@@ -451,8 +451,8 @@ namespace Biaui.Controls.NodeEditor
         #region Links
 
         private void UpdateLinksSource(
-            ObservableCollection<INodeLink> oldSource,
-            ObservableCollection<INodeLink> newSource)
+            ObservableCollection<IBiaNodeLink> oldSource,
+            ObservableCollection<IBiaNodeLink> newSource)
         {
         }
 
@@ -492,7 +492,7 @@ namespace Biaui.Controls.NodeEditor
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
-            var nodeItem = (INodeItem) panel.DataContext;
+            var nodeItem = (IBiaNodeItem) panel.DataContext;
 
             SetFrontmost(panel);
 
@@ -504,7 +504,7 @@ namespace Biaui.Controls.NodeEditor
         private void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
-            var nodeItem = (INodeItem) panel.DataContext;
+            var nodeItem = (IBiaNodeItem) panel.DataContext;
 
             nodeItem.IsMouseOver = false;
 
@@ -516,7 +516,7 @@ namespace Biaui.Controls.NodeEditor
         private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
-            var nodeItem = (INodeItem) panel.DataContext;
+            var nodeItem = (IBiaNodeItem) panel.DataContext;
 
             if (nodeItem.IsSelected == false)
             {
@@ -654,7 +654,7 @@ namespace Biaui.Controls.NodeEditor
             //e.Handled = true;
         }
 
-        private void AlignNodes(IEnumerable<INodeItem> targets)
+        private void AlignNodes(IEnumerable<IBiaNodeItem> targets)
         {
             foreach (var n in targets)
             {
@@ -672,7 +672,7 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var c in _nodePanelBag.Children)
             {
-                var node = (INodeItem) c.DataContext;
+                var node = (IBiaNodeItem) c.DataContext;
 
                 if (rect.IntersectsWith(node.MakeRect()) == false)
                     continue;
@@ -699,7 +699,7 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var c in _nodePanelBag.Children)
             {
-                var node = (INodeItem) c.DataContext;
+                var node = (IBiaNodeItem) c.DataContext;
 
                 if (rect.IntersectsWith(node.MakeRect()) == false)
                     continue;
@@ -719,7 +719,7 @@ namespace Biaui.Controls.NodeEditor
 
         private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();
 
-        private static bool IsHitVisual(in ImmutableRect rect, INodeItem node, Visual panel)
+        private static bool IsHitVisual(in ImmutableRect rect, IBiaNodeItem node, Visual panel)
         {
             _rectGeom.Rect = new Rect(
                 rect.X - node.Pos.X,

@@ -2,13 +2,13 @@
 
 namespace Biaui.Interfaces
 {
-    public interface INodeLink : INotifyPropertyChanged
+    public interface IBiaNodeLink : INotifyPropertyChanged
     {
-        INodeItem Item1 { get; }
+        IBiaNodeItem Item1 { get; }
 
         string Item1PortId { get; }
 
-        INodeItem Item2 { get; }
+        IBiaNodeItem Item2 { get; }
 
         string Item2PortId { get; }
 

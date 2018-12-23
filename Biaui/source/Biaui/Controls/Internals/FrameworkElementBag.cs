@@ -95,7 +95,7 @@ namespace Biaui.Controls.Internals
             {
                 child.Measure(availableSize);
 
-                if (child.DataContext is INodeItem nodeItem)
+                if (child.DataContext is IBiaNodeItem nodeItem)
                     nodeItem.Size = child.DesiredSize;
             }
 

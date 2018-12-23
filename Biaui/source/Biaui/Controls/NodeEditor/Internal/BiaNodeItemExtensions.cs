@@ -4,12 +4,12 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal static class NodeItemExtensions
+    internal static class BiaNodeItemExtensions
     {
-        internal static ImmutableRect MakeRect(this INodeItem self)
+        internal static ImmutableRect MakeRect(this IBiaNodeItem self)
             => new ImmutableRect(self.Pos, self.Size);
 
-        internal static Point MakePortPos(this INodeItem nodeItem, BiaNodePort port)
+        internal static Point MakePortPos(this IBiaNodeItem nodeItem, BiaNodePort port)
         {
             var itemSize = nodeItem.Size;
             var itemPos = nodeItem.Pos;
@@ -19,7 +19,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return new Point(itemPos.X + portLocalPos.X, itemPos.Y + portLocalPos.Y);
         }
 
-        internal static BiaNodePort FindPortFromPos(this INodeItem nodeItem, Point pos)
+        internal static BiaNodePort FindPortFromPos(this IBiaNodeItem nodeItem, Point pos)
         {
             if (nodeItem.Layout.Ports == null)
                 return null;
@@ -38,7 +38,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return null;
         }
 
-        internal static BiaNodePort FindPortFromId(this INodeItem nodeItem, string portId)
+        internal static BiaNodePort FindPortFromId(this IBiaNodeItem nodeItem, string portId)
         {
             if (nodeItem.Layout.Ports == null)
                 return null;
