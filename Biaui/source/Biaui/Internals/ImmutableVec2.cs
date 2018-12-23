@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace Biaui.Internals
 {
@@ -9,6 +10,9 @@ namespace Biaui.Internals
 
         public ImmutableVec2(double x, double y)
             => (X, Y) = (x, y);
+
+        public ImmutableVec2(Point p)
+            => (X, Y) = (p.X, p.Y);
 
         // ReSharper disable CompareOfFloatsByEqualityOperator
         public static bool operator ==(in ImmutableVec2 source1, in ImmutableVec2 source2)
@@ -33,5 +37,8 @@ namespace Biaui.Internals
         public override int GetHashCode()
             => X.GetHashCode() ^
                Y.GetHashCode();
+
+        public Point ToPoint()
+            => new Point(X, Y);
     }
 }

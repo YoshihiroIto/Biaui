@@ -214,13 +214,13 @@
     <Compile Include="Internals\FrameworkElementExtensions.cs" />
     <Compile Include="Internals\GuiHelper.cs" />
     <Compile Include="Internals\ImmutableRect.cs" />
+    <Compile Include="Internals\ImmutableVec2.cs" />
     <Compile Include="Internals\KeyboardHelper.cs" />
     <Compile Include="Internals\LazyRunner.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Internals\LruCache.cs" />
     <Compile Include="Internals\MouseSimulator.cs" />
     <Compile Include="Internals\NumberHelper.cs" />
-    <Compile Include="Internals\ImmutablePoint.cs" />
     <Compile Include="Internals\RenderHelper.cs" />
     <Compile Include="Internals\TextRenderer.cs" />
     <Compile Include="Internals\TreeViewHelper.cs" />
