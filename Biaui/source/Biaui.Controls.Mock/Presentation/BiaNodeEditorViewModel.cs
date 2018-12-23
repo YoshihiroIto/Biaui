@@ -28,9 +28,9 @@ namespace Biaui.Controls.Mock.Presentation
 
         #region Links
 
-        private ObservableCollection<ILinkItem> _Links = new ObservableCollection<ILinkItem>();
+        private ObservableCollection<INodeLink> _Links = new ObservableCollection<INodeLink>();
 
-        public ObservableCollection<ILinkItem> Links
+        public ObservableCollection<INodeLink> Links
         {
             get => _Links;
             set => SetProperty(ref _Links, value);
@@ -176,7 +176,7 @@ namespace Biaui.Controls.Mock.Presentation
                 Nodes = nodes;
 
                 //
-                var links = new ObservableCollection<ILinkItem>();
+                var links = new ObservableCollection<INodeLink>();
                 MakeLinks(links, Nodes);
                 Links = links;
             });
@@ -246,7 +246,7 @@ namespace Biaui.Controls.Mock.Presentation
             }
         }
 
-        private static void MakeLinks(ObservableCollection<ILinkItem> links, ObservableCollection<INodeItem> nodes)
+        private static void MakeLinks(ObservableCollection<INodeLink> links, ObservableCollection<INodeItem> nodes)
         {
             if (nodes.Count == 0)
                 return;
@@ -254,7 +254,7 @@ namespace Biaui.Controls.Mock.Presentation
             for (var i = 1; i != nodes.Count; ++i)
             {
                 links.Add(
-                    new Link
+                    new NodeLink
                     {
                         Item1 = nodes[i - 1],
                         Item1PortId = "OutputA",
@@ -482,7 +482,7 @@ namespace Biaui.Controls.Mock.Presentation
         };
     }
 
-    public class Link : ModelBase, ILinkItem
+    public class NodeLink : ModelBase, INodeLink
     {
         #region Item1
 

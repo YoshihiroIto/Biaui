@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Interfaces;
 using Biaui.Internals;
@@ -51,7 +52,7 @@ namespace Biaui.Controls.NodeEditor
 
         #region LinksSource
 
-        public ObservableCollection<ILinkItem> LinksSource
+        public ObservableCollection<INodeLink> LinksSource
         {
             get => _LinksSource;
             set
@@ -61,33 +62,31 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private ObservableCollection<ILinkItem> _LinksSource;
+        private ObservableCollection<INodeLink> _LinksSource;
 
         public static readonly DependencyProperty LinksSourceProperty =
-            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<ILinkItem>),
+            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<INodeLink>),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(ObservableCollection<ILinkItem>),
+                    default(ObservableCollection<INodeLink>),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
 
                         var old = self._LinksSource;
-                        self._LinksSource = (ObservableCollection<ILinkItem>) e.NewValue;
+                        self._LinksSource = (ObservableCollection<INodeLink>) e.NewValue;
                         self.UpdateLinksSource(old, self._LinksSource);
                     }));
 
         #endregion
 
         public ScaleTransform Scale { get; }
-
         public TranslateTransform Translate { get; }
 
         private readonly Dictionary<INodeItem, BiaNodePanel> _nodeDict = new Dictionary<INodeItem, BiaNodePanel>();
 
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
         private readonly BoxSelector _boxSelector = new BoxSelector();
-
 
         private readonly MouseOperator _mouseOperator;
         private readonly LinkOperator _linkOperator;
@@ -452,8 +451,8 @@ namespace Biaui.Controls.NodeEditor
         #region Links
 
         private void UpdateLinksSource(
-            ObservableCollection<ILinkItem> oldSource,
-            ObservableCollection<ILinkItem> newSource)
+            ObservableCollection<INodeLink> oldSource,
+            ObservableCollection<INodeLink> newSource)
         {
         }
 
@@ -532,7 +531,7 @@ namespace Biaui.Controls.NodeEditor
                     nodeItem.IsSelected = !nodeItem.IsSelected;
             }
 
-            var port = nodeItem.FindNodePort(e.GetPosition(panel));
+            var port = nodeItem.FindPortFromPos(e.GetPosition(panel));
 
             _mouseOperator.OnMouseLeftButtonDown(
                 e,

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Biaui.Interfaces;
+using Biaui.Controls.Internals;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Biaui.Interfaces;
+using Biaui.Controls.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {

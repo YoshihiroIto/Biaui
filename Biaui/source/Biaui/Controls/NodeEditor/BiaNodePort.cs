@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Biaui.Interfaces;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -19,5 +18,13 @@ namespace Biaui.Controls.NodeEditor
         Start,
         Center,
         End
+    }
+
+    public enum BiaNodePortDir
+    {
+        Left,
+        Top,
+        Right,
+        Bottom
     }
 }

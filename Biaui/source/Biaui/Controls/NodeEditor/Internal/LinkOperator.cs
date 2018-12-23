@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Biaui.Controls.Internals;
 using Biaui.Interfaces;
 using Biaui.Internals;
 
@@ -64,10 +65,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (IsDragging == false)
                 return;
 
-            var (srcPos, srcDir) = _srcNodeItem.MakePortPos(_srcPort);
+            var srcPos = _srcNodeItem.MakePortPos(_srcPort);
 
             _bezierPoints[0] = srcPos;
-            _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(srcPos, srcDir);
+            _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(srcPos, _srcPort.Dir);
 
             if (_targetPort == null)
             {
@@ -76,7 +77,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
             else
             {
-                var targetPortPos = NodeEditorHelper.MakeNodePortPos(_targetNodeItem, _targetPort);
+                var targetPortPos = _targetNodeItem.MakePortPos(_targetPort);
 
                 _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(targetPortPos, _targetPort.Dir);
                 _bezierPoints[3] = targetPortPos;
@@ -92,8 +93,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 Brushes.WhiteSmoke,
                 portPen,
                 srcPos,
-                Biaui.Internals.Constants.NodePanelPortMarkRadius_Highlight,
-                Biaui.Internals.Constants.NodePanelPortMarkRadius_Highlight);
+                Biaui.Internals.Constants.PortMarkRadius_Highlight,
+                Biaui.Internals.Constants.PortMarkRadius_Highlight);
 
             // 接続先ポートの丸
             if (_targetPort != null)
@@ -102,8 +103,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                     Brushes.WhiteSmoke,
                     portPen,
                     _bezierPoints[3],
-                    Biaui.Internals.Constants.NodePanelPortMarkRadius_Highlight,
-                    Biaui.Internals.Constants.NodePanelPortMarkRadius_Highlight);
+                    Biaui.Internals.Constants.PortMarkRadius_Highlight,
+                    Biaui.Internals.Constants.PortMarkRadius_Highlight);
             }
         }
 
@@ -119,7 +120,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             _targetNodeItem = null;
             _targetPort = null;
 
-            const double PortRadius = Biaui.Internals.Constants.NodePanelPortMarkRadius;
+            const double PortRadius = Biaui.Internals.Constants.PortMarkRadius;
 
             foreach (var nodeItem in nodeItems)
             {
@@ -138,9 +139,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                     if (port == _srcPort && _targetNodeItem == _srcNodeItem)
                         continue;
 
-                    var portPos = NodeEditorHelper.MakeNodePortPos(_targetNodeItem, port);
+                    var portPos = _targetNodeItem.MakePortPos(port);
 
-                    if ((portPos, mousePos).DistanceSq() > Biaui.Internals.Constants.NodePanelPortMarkRadiusSq)
+                    if ((portPos, mousePos).DistanceSq() > Biaui.Internals.Constants.PortMarkRadiusSq)
                         continue;
 
                     _targetPort = port;

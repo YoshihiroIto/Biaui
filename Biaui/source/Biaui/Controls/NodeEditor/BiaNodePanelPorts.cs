@@ -36,23 +36,20 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var port in nodeItem.Layout.Ports.Values)
             {
-                var portPos = NodeEditorHelper.MakeNodePortLocalPos(port, ActualWidth, ActualHeight);
+                var portPos = port.MakePos(ActualWidth, ActualHeight);
 
-                var r = Biaui.Internals.Constants.NodePanelPortMarkRadius;
+                var r = Biaui.Internals.Constants.PortMarkRadius;
 
                 // パネルがマウスオーバー時は、ポート自体のマウス位置見て半径を作る
                 if (isMouseOverNode)
-                {
-                    if ((portPos, _mousePoint).DistanceSq() <=
-                        Biaui.Internals.Constants.NodePanelPortMarkRadiusSq)
-                        r = Biaui.Internals.Constants.NodePanelPortMarkRadius_Highlight;
-                }
+                    if ((portPos, _mousePoint).DistanceSq() <= Biaui.Internals.Constants.PortMarkRadiusSq)
+                        r = Biaui.Internals.Constants.PortMarkRadius_Highlight;
 
                 dc.DrawEllipse(
                     Brushes.WhiteSmoke,
                     pen,
                     portPos,
-                    r, 
+                    r,
                     r);
             }
         }

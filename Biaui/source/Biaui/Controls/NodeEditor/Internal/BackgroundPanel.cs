@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Biaui.Controls.Internals;
 using Biaui.Interfaces;
 using Biaui.Internals;
 
@@ -14,7 +15,7 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         #region LinksSource
 
-        public ObservableCollection<ILinkItem> LinksSource
+        public ObservableCollection<INodeLink> LinksSource
         {
             get => _LinksSource;
             set
@@ -24,19 +25,19 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private ObservableCollection<ILinkItem> _LinksSource;
+        private ObservableCollection<INodeLink> _LinksSource;
 
         public static readonly DependencyProperty LinksSourceProperty =
-            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<ILinkItem>),
+            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<INodeLink>),
                 typeof(BackgroundPanel),
                 new FrameworkPropertyMetadata(
-                    default(ObservableCollection<ILinkItem>),
+                    default(ObservableCollection<INodeLink>),
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BackgroundPanel) s;
-                        self._LinksSource = (ObservableCollection<ILinkItem>) e.NewValue;
+                        self._LinksSource = (ObservableCollection<INodeLink>) e.NewValue;
                     }));
 
         #endregion
@@ -87,7 +88,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             _gridGeom.Clear();
 
-            var sgc = _gridGeom.Open();
+            var geomCtx = _gridGeom.Open();
             {
                 for (var h = 0;; ++h)
                 {
@@ -99,8 +100,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     if (x > ActualWidth) break;
 
-                    sgc.BeginFigure(new Point(x, 0), false, false);
-                    sgc.LineTo(new Point(x, by), true, false);
+                    geomCtx.BeginFigure(new Point(x, 0), false, false);
+                    geomCtx.LineTo(new Point(x, by), true, false);
                 }
 
                 for (var h = 0;; --h)
@@ -113,8 +114,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     if (x < 0) break;
 
-                    sgc.BeginFigure(new Point(x, 0), false, false);
-                    sgc.LineTo(new Point(x, by), true, false);
+                    geomCtx.BeginFigure(new Point(x, 0), false, false);
+                    geomCtx.LineTo(new Point(x, by), true, false);
                 }
 
                 for (var v = 0;; ++v)
@@ -127,8 +128,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     if (y > ActualHeight) break;
 
-                    sgc.BeginFigure(new Point(0, y), false, false);
-                    sgc.LineTo(new Point(bx, y), true, false);
+                    geomCtx.BeginFigure(new Point(0, y), false, false);
+                    geomCtx.LineTo(new Point(bx, y), true, false);
                 }
 
                 for (var v = 0;; --v)
@@ -141,11 +142,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     if (y < 0) break;
 
-                    sgc.BeginFigure(new Point(0, y), false, false);
-                    sgc.LineTo(new Point(bx, y), true, false);
+                    geomCtx.BeginFigure(new Point(0, y), false, false);
+                    geomCtx.LineTo(new Point(bx, y), true, false);
                 }
             }
-            sgc.Close();
+            ((IDisposable) geomCtx).Dispose();
             dc.DrawGeometry(null, p, _gridGeom);
         }
 
@@ -168,8 +169,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 if (link.InternalData == null)
                 {
-                    var port1 = link.Item1.Layout.FindPort(link.Item1PortId);
-                    var port2 = link.Item2.Layout.FindPort(link.Item2PortId);
+                    var port1 = link.Item1.FindPortFromId(link.Item1PortId);
+                    var port2 = link.Item2.FindPortFromId(link.Item2PortId);
 
                     portPair = (port1, port2);
 
@@ -180,11 +181,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                     portPair = ((BiaNodePort, BiaNodePort))link.InternalData;
                 }
 
-                var (pos1, dir1) = link.Item1.MakePortPos(portPair.Port1);
-                var (pos2, dir2) = link.Item2.MakePortPos(portPair.Port2);
+                var pos1 = link.Item1.MakePortPos(portPair.Port1);
+                var pos2 = link.Item2.MakePortPos(portPair.Port2);
 
-                var pos12 = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
-                var pos21 = NodeEditorHelper.MakeBezierControlPoint(pos2, dir2);
+                var pos12 = NodeEditorHelper.MakeBezierControlPoint(pos1, portPair.Port1.Dir);
+                var pos21 = NodeEditorHelper.MakeBezierControlPoint(pos2, portPair.Port2.Dir);
 
                 // ※.HitTestBezier を呼ぶと_bezierPointsは書き変わる
                 bezierPoints[0] = pos1;
@@ -218,7 +219,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     var pen = Caches.GetBorderPen(c.Key, 8);
 
-                    (c.Value.Ctx as IDisposable).Dispose();
+                    ((IDisposable) c.Value.Ctx).Dispose();
                     dc.DrawGeometry(null, pen, c.Value.Geom);
                 }
             }

@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using Biaui.Internals;
 
-namespace Biaui.Interfaces
+namespace Biaui.Controls.Internals
 {
     internal interface IHasTransform
     {

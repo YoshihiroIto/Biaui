@@ -2,9 +2,9 @@
 {
     internal static class Constants
     {
-        internal const double NodePanelPortMarkRadius = 8.0;
-        internal const double NodePanelPortMarkRadiusSq = NodePanelPortMarkRadius * NodePanelPortMarkRadius;
+        internal const double PortMarkRadius = 8.0;
+        internal const double PortMarkRadiusSq = PortMarkRadius * PortMarkRadius;
 
-        internal const double NodePanelPortMarkRadius_Highlight = NodePanelPortMarkRadius * 1.25;
+        internal const double PortMarkRadius_Highlight = PortMarkRadius * 1.25;
     }
 }

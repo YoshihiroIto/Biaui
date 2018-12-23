@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using Biaui.Interfaces;
 
-namespace Biaui.Controls.NodeEditor.Internal
+namespace Biaui.Controls.Internals
 {
     internal class FrameworkElementBag<T> : FrameworkElement
         where T : FrameworkElement
