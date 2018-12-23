@@ -74,6 +74,38 @@ namespace Biaui.Internals
             );
         }
 
+        // ReSharper disable once UnusedParameter.Local
+        public ImmutableRect(ReadOnlySpan<Point> poss, CtorPoint4 _)
+        {
+            var minX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Min();
+            var maxX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Max();
+            var minY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Min();
+            var maxY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Max();
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
+        // ReSharper disable once UnusedParameter.Local
+        public ImmutableRect(ReadOnlySpan<ImmutableVec2> poss, CtorPoint4 _)
+        {
+            var minX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Min();
+            var maxX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Max();
+            var minY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Min();
+            var maxY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Max();
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
         public Rect ToRect()
             => new Rect(X, Y, Width, Height);
 
@@ -90,6 +122,14 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(Point p)
+            =>
+                p.X >= X &&
+                p.X < X + Width &&
+                p.Y >= Y &&
+                p.Y < Y + Height;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Contains(in ImmutableVec2 p)
             =>
                 p.X >= X &&
                 p.X < X + Width &&

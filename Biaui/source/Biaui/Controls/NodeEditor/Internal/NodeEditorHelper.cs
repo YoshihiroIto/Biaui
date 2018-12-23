@@ -165,7 +165,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        internal static bool HitTestBezier(Point[] bezierPoints, in ImmutableRect rect)
+        internal static bool HitTestBezier(Span<ImmutableVec2> bezierPoints, in ImmutableRect rect)
         {
             while (true)
             {
@@ -178,22 +178,22 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (rect.IntersectsWith(area) == false)
                     return false;
 
-                var v01 = new Point(
+                var v01 = new ImmutableVec2(
                     (bezierPoints[0].X + bezierPoints[1].X) * 0.5,
                     (bezierPoints[0].Y + bezierPoints[1].Y) * 0.5);
-                var v12 = new Point(
+                var v12 = new ImmutableVec2(
                     (bezierPoints[1].X + bezierPoints[2].X) * 0.5,
                     (bezierPoints[1].Y + bezierPoints[2].Y) * 0.5);
-                var v23 = new Point(
+                var v23 = new ImmutableVec2(
                     (bezierPoints[2].X + bezierPoints[3].X) * 0.5,
                     (bezierPoints[2].Y + bezierPoints[3].Y) * 0.5);
 
-                var v0112 = new Point((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);
-                var v1223 = new Point((v12.X + v23.X) * 0.5, (v12.Y + v23.Y) * 0.5);
+                var v0112 = new ImmutableVec2((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);
+                var v1223 = new ImmutableVec2((v12.X + v23.X) * 0.5, (v12.Y + v23.Y) * 0.5);
 
-                var c = new Point((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
+                var c = new ImmutableVec2((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
 
-                var cl = new[]
+                Span<ImmutableVec2> cl = stackalloc ImmutableVec2[]
                 {
                     bezierPoints[0],
                     v01,
@@ -204,12 +204,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (HitTestBezier(cl, rect))
                     return true;
 
-                cl[0] = c;
-                cl[1] = v1223;
-                cl[2] = v23;
-                cl[3] = bezierPoints[3];
-
-                bezierPoints = cl;
+                bezierPoints[0] = c;
+                bezierPoints[1] = v1223;
+                bezierPoints[2] = v23;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -148,8 +149,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawGeometry(null, p, _gridGeom);
         }
 
-        private readonly Point[] _bezierPoints = new Point[4];
-
         private readonly Dictionary<Color, (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves =
             new Dictionary<Color, (StreamGeometry, StreamGeometryContext)>();
 
@@ -157,6 +156,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             if (LinksSource == null)
                 return;
+
+            Span<Point> bezierPoints = stackalloc Point[4];
+            var hitTestWork = MemoryMarshal.Cast<Point, ImmutableVec2>(bezierPoints);
 
             var viewport = _transform.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
 
@@ -181,12 +183,16 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var (pos1, dir1) = link.Item1.MakePortPos(portPair.Port1);
                 var (pos2, dir2) = link.Item2.MakePortPos(portPair.Port2);
 
-                _bezierPoints[0] = pos1;
-                _bezierPoints[1] = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
-                _bezierPoints[2] = NodeEditorHelper.MakeBezierControlPoint(pos2, dir2);
-                _bezierPoints[3] = pos2;
+                var pos12 = NodeEditorHelper.MakeBezierControlPoint(pos1, dir1);
+                var pos21 = NodeEditorHelper.MakeBezierControlPoint(pos2, dir2);
 
-                if (NodeEditorHelper.HitTestBezier(_bezierPoints, viewport) == false)
+                // ※.HitTestBezier を呼ぶと_bezierPointsは書き変わる
+                bezierPoints[0] = pos1;
+                bezierPoints[1] = pos12;
+                bezierPoints[2] = pos21;
+                bezierPoints[3] = pos2;
+
+                if (NodeEditorHelper.HitTestBezier(hitTestWork, viewport) == false)
                     continue;
 
                 // todo;接続ごとの色を指定する
@@ -202,7 +208,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
 
                 curve.Ctx.BeginFigure(pos1, false, false);
-                curve.Ctx.BezierTo(_bezierPoints[1], _bezierPoints[2], pos2, true, true);
+                curve.Ctx.BezierTo(pos12, pos21, pos2, true, true);
             }
 
             dc.PushTransform(_transform.Translate);

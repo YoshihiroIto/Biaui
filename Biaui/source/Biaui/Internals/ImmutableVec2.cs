@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 
 namespace Biaui.Internals
 {
+    [DebuggerDisplay("X:{X}, Y:{Y}")]
     public readonly struct ImmutableVec2 : IEquatable<ImmutableVec2>
     {
         public readonly double X;
