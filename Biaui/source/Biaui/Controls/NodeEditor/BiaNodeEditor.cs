@@ -81,9 +81,11 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         public ScaleTransform Scale { get; }
+
         public TranslateTransform Translate { get; }
 
-        private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
+        private readonly Dictionary<IBiaNodeItem, BiaNodePanel>
+            _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
 
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
         private readonly BoxSelector _boxSelector = new BoxSelector();
@@ -331,21 +333,21 @@ namespace Biaui.Controls.NodeEditor
             _nodePanelBag.ToLast(child);
         }
 
+        private int _isEnableUpdateChildrenBagDepth;
+        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate = new List<(IBiaNodeItem, BiaNodePanel)>();
+
         private void UpdateChildrenBag(bool isPushRemove)
         {
+            if (_isEnableUpdateChildrenBagDepth > 0)
+                return;
+
             UpdateChildrenBag(MakeCurrentViewport(), isPushRemove);
 
             _nodePanelBag.InvalidateMeasure();
         }
 
-        private int _isEnableUpdateChildrenBagDepth;
-        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate = new List<(IBiaNodeItem, BiaNodePanel)>();
-
         private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
         {
-            if (_isEnableUpdateChildrenBagDepth > 0)
-                return;
-
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
             // 対象のitemはまだ_nodeDictに登録されていないので問題ない(再入しない)。
@@ -666,55 +668,65 @@ namespace Biaui.Controls.NodeEditor
 
         private void SelectNodes(in ImmutableRect rect)
         {
-            // [Ctrl]押下で追加する
-            if (KeyboardHelper.IsPressControl == false)
-                ClearSelectedNode();
-
-            foreach (var c in _nodePanelBag.Children)
+            ++_isEnableUpdateChildrenBagDepth;
             {
-                var node = (IBiaNodeItem) c.DataContext;
+                // [Ctrl]押下で追加する
+                if (KeyboardHelper.IsPressControl == false)
+                    ClearSelectedNode();
 
-                if (rect.IntersectsWith(node.MakeRect()) == false)
-                    continue;
-
-                if (node.IsRequireVisualTest)
+                foreach (var c in _nodePanelBag.Children)
                 {
-                    if (_nodeDict.TryGetValue(node, out var panel) == false)
+                    var node = (IBiaNodeItem) c.DataContext;
+
+                    if (rect.IntersectsWith(node.MakeRect()) == false)
                         continue;
 
-                    if (IsHitVisual(rect, node, panel) == false)
-                        continue;
+                    if (node.IsRequireVisualTest)
+                    {
+                        if (_nodeDict.TryGetValue(node, out var panel) == false)
+                            continue;
+
+                        if (IsHitVisual(rect, node, panel) == false)
+                            continue;
+                    }
+
+                    if (KeyboardHelper.IsPressControl)
+                        node.IsSelected = !node.IsSelected;
+                    else
+                        node.IsSelected = true;
                 }
-
-                if (KeyboardHelper.IsPressControl)
-                    node.IsSelected = !node.IsSelected;
-                else
-                    node.IsSelected = true;
             }
+            --_isEnableUpdateChildrenBagDepth;
+            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
         }
 
         private void PreSelectNodes(in ImmutableRect rect)
         {
-            ClearPreSelectedNode();
-
-            foreach (var c in _nodePanelBag.Children)
+            ++_isEnableUpdateChildrenBagDepth;
             {
-                var node = (IBiaNodeItem) c.DataContext;
+                ClearPreSelectedNode();
 
-                if (rect.IntersectsWith(node.MakeRect()) == false)
-                    continue;
-
-                if (node.IsRequireVisualTest)
+                foreach (var c in _nodePanelBag.Children)
                 {
-                    if (_nodeDict.TryGetValue(node, out var panel) == false)
+                    var node = (IBiaNodeItem) c.DataContext;
+
+                    if (rect.IntersectsWith(node.MakeRect()) == false)
                         continue;
 
-                    if (IsHitVisual(rect, node, panel) == false)
-                        continue;
+                    if (node.IsRequireVisualTest)
+                    {
+                        if (_nodeDict.TryGetValue(node, out var panel) == false)
+                            continue;
+
+                        if (IsHitVisual(rect, node, panel) == false)
+                            continue;
+                    }
+
+                    node.IsPreSelected = true;
                 }
-
-                node.IsPreSelected = true;
             }
+            --_isEnableUpdateChildrenBagDepth;
+            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
         }
 
         private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();
