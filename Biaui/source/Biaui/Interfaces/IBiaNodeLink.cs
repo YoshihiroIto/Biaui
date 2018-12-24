@@ -6,11 +6,11 @@ namespace Biaui.Interfaces
     {
         IBiaNodeItem Item1 { get; }
 
-        string Item1PortId { get; }
+        int Item1PortId { get; }
 
         IBiaNodeItem Item2 { get; }
 
-        string Item2PortId { get; }
+        int Item2PortId { get; }
 
         object InternalData { get; set; }
     }

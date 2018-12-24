@@ -257,10 +257,10 @@ namespace Biaui.Controls.Mock.Presentation
                     new NodeLink
                     {
                         Item1 = nodes[i - 1],
-                        Item1PortId = "OutputA",
+                        Item1PortId = NodePortId.Make("OutputA"),
 
                         Item2 = nodes[i],
-                        Item2PortId = "InputA"
+                        Item2PortId = NodePortId.Make("InputA")
                     }
                 );
             }
@@ -354,20 +354,21 @@ namespace Biaui.Controls.Mock.Presentation
         private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
         {
             Ports =
-                new Dictionary<string, BiaNodePort>
+                new Dictionary<int, BiaNodePort>
                 {
                     {
-                        "InputA", new BiaNodePort
+                        NodePortId.Make("InputA"),
+                        new BiaNodePort
                         {
-                            Id = "InputA",
+                            Id = NodePortId.Make("InputA"),
                             Dir = BiaNodePortDir.Top,
                             Align = BiaNodePortAlign.Center
                         }
                     },
                     {
-                        "OutputA", new BiaNodePort
+                        NodePortId.Make("OutputA"), new BiaNodePort
                         {
-                            Id = "OutputA",
+                            Id = NodePortId.Make("OutputA"),
                             Dir = BiaNodePortDir.Bottom,
                             Align = BiaNodePortAlign.Center
                         }
@@ -385,47 +386,52 @@ namespace Biaui.Controls.Mock.Presentation
         private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
         {
             Ports =
-                new Dictionary<string, BiaNodePort>
+                new Dictionary<int, BiaNodePort>
                 {
                     {
-                        "InputA", new BiaNodePort
+                        NodePortId.Make("InputA"),
+                        new BiaNodePort
                         {
-                            Id = "InputA",
+                            Id = NodePortId.Make("InputA"),
                             Dir = BiaNodePortDir.Left,
                             Align = BiaNodePortAlign.Center
                         }
                     },
                     {
-                        "OutputA", new BiaNodePort
+                        NodePortId.Make("OutputA"),
+                        new BiaNodePort
                         {
-                            Id = "OutputA",
+                            Id = NodePortId.Make("OutputA"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 4),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End
                         }
                     },
                     {
-                        "OutputB", new BiaNodePort
+                        NodePortId.Make("OutputB"),
+                        new BiaNodePort
                         {
-                            Id = "OutputB",
+                            Id = NodePortId.Make("OutputB"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 3),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End
                         }
                     },
                     {
-                        "OutputC", new BiaNodePort
+                        NodePortId.Make("OutputC"),
+                        new BiaNodePort
                         {
-                            Id = "OutputC",
+                            Id = NodePortId.Make("OutputC"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 2),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End
                         }
                     },
                     {
-                        "OutputD", new BiaNodePort
+                        NodePortId.Make("OutputD"),
+                        new BiaNodePort
                         {
-                            Id = "OutputD",
+                            Id = NodePortId.Make("OutputD"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 1),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End
@@ -444,36 +450,40 @@ namespace Biaui.Controls.Mock.Presentation
         private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
         {
             Ports =
-                new Dictionary<string, BiaNodePort>
+                new Dictionary<int, BiaNodePort>
                 {
                     {
-                        "InputA", new BiaNodePort
+                        NodePortId.Make("InputA"),
+                        new BiaNodePort
                         {
-                            Id = "InputA",
+                            Id = NodePortId.Make("InputA"),
                             Dir = BiaNodePortDir.Left,
                             Align = BiaNodePortAlign.Center
                         }
                     },
                     {
-                        "Top", new BiaNodePort
+                        NodePortId.Make("Top"),
+                        new BiaNodePort
                         {
-                            Id = "Top",
+                            Id = NodePortId.Make("Top"),
                             Dir = BiaNodePortDir.Top,
                             Align = BiaNodePortAlign.Center
                         }
                     },
                     {
-                        "OutputA", new BiaNodePort
+                        NodePortId.Make("OutputA"),
+                        new BiaNodePort
                         {
-                            Id = "OutputA",
+                            Id = NodePortId.Make("OutputA"),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.Center
                         }
                     },
                     {
-                        "Bottom", new BiaNodePort
+                        NodePortId.Make("Bottom"),
+                        new BiaNodePort
                         {
-                            Id = "Bottom",
+                            Id = NodePortId.Make("Bottom"),
                             Dir = BiaNodePortDir.Bottom,
                             Align = BiaNodePortAlign.Center
                         }
@@ -498,9 +508,9 @@ namespace Biaui.Controls.Mock.Presentation
 
         #region Item1PortId
 
-        private string _Item0PortId;
+        private int _Item0PortId;
 
-        public string Item1PortId
+        public int Item1PortId
         {
             get => _Item0PortId;
             set => SetProperty(ref _Item0PortId, value);
@@ -522,9 +532,9 @@ namespace Biaui.Controls.Mock.Presentation
 
         #region Item2PortId
 
-        private string _Item1PortId;
+        private int _Item1PortId;
 
-        public string Item2PortId
+        public int Item2PortId
         {
             get => _Item1PortId;
             set => SetProperty(ref _Item1PortId, value);

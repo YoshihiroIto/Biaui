@@ -38,7 +38,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return null;
         }
 
-        internal static BiaNodePort FindPortFromId(this IBiaNodeItem nodeItem, string portId)
+        internal static BiaNodePort FindPortFromId(this IBiaNodeItem nodeItem, int portId)
         {
             if (nodeItem.Layout.Ports == null)
                 return null;

@@ -181,6 +181,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                     portPair = ((BiaNodePort, BiaNodePort))link.InternalData;
                 }
 
+                if (portPair.Port1 == null || portPair.Port2 == null)
+                    continue;
+
                 var pos1 = link.Item1.MakePortPos(portPair.Port1);
                 var pos2 = link.Item2.MakePortPos(portPair.Port2);
 

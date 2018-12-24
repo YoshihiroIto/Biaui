@@ -4,7 +4,7 @@ namespace Biaui.Controls.NodeEditor
 {
     public class BiaNodePort
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public Point Offset { get; set; }
 

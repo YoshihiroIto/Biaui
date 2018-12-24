@@ -11,9 +11,9 @@ namespace Biaui.Controls.NodeEditor
         public bool IsCancel { get; set; }
 
         public IBiaNodeItem SourceNodeItem { get; }
-        public string SourcePortId { get; }
+        public int SourcePortId { get; }
 
-        internal NodeLinkStartingEventArgs(IBiaNodeItem sourceNodeItem, string sourcePortId)
+        internal NodeLinkStartingEventArgs(IBiaNodeItem sourceNodeItem, int sourcePortId)
         {
             SourceNodeItem = sourceNodeItem;
             SourcePortId = sourcePortId;
@@ -28,14 +28,14 @@ namespace Biaui.Controls.NodeEditor
         public bool CanConnect { get; set; }
 
         public IBiaNodeItem SourceNodeItem { get; }
-        public string SourcePortId { get; }
+        public int SourcePortId { get; }
 
         public IBiaNodeItem TargetNodeItem { get; }
-        public string TargetPortId { get; }
+        public int TargetPortId { get; }
 
         internal NodeLinkConnectingEventArgs(
-            IBiaNodeItem sourceNodeItem, string sourcePortId,
-            IBiaNodeItem targetNodeItem, string targetPortId)
+            IBiaNodeItem sourceNodeItem, int sourcePortId,
+            IBiaNodeItem targetNodeItem, int targetPortId)
         {
             CanConnect = true;
 
@@ -52,14 +52,14 @@ namespace Biaui.Controls.NodeEditor
     public class NodeLinkCompletedEventArgs : EventArgs
     {
         public IBiaNodeItem SourceNodeItem { get; }
-        public string SourcePortId { get; }
+        public int SourcePortId { get; }
 
         public IBiaNodeItem TargetNodeItem { get; }
-        public string TargetPortId { get; }
+        public int TargetPortId { get; }
 
         internal NodeLinkCompletedEventArgs(
-            IBiaNodeItem sourceNodeItem, string sourcePortId,
-            IBiaNodeItem targetNodeItem, string targetPortId)
+            IBiaNodeItem sourceNodeItem, int sourcePortId,
+            IBiaNodeItem targetNodeItem, int targetPortId)
         {
             SourceNodeItem = sourceNodeItem;
             SourcePortId = sourcePortId;
