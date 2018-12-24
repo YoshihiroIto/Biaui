@@ -51,7 +51,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         public void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e, IEnumerable<IBiaNodeItem> nodeItems)
         {
-            _mousePos = _transformTarget.MakeScenePosFromControlPos(e.MousePos);
+            _mousePos = _transformTarget.TransformPos(e.MousePos.X, e.MousePos.Y);
 
             UpdateLinkTarget(_mousePos, nodeItems);
 

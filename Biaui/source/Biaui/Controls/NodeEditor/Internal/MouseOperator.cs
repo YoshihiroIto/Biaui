@@ -185,13 +185,13 @@ namespace Biaui.Controls.NodeEditor.Internal
             s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
 
             var p = e.GetPosition(_target);
-            var d0 = _transformTarget.MakeScenePosFromControlPos(p.X, p.Y);
+            var d0 = _transformTarget.TransformPos(p.X, p.Y);
 
             s = (s, 0.25, 3.0).Clamp();
             _transformTarget.Scale.ScaleX = s;
             _transformTarget.Scale.ScaleY = s;
 
-            var d1 = _transformTarget.MakeScenePosFromControlPos(p.X, p.Y);
+            var d1 = _transformTarget.TransformPos(p.X, p.Y);
 
             var diff = d1 - d0;
 

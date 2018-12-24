@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using Biaui.Controls.Internals;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
@@ -34,13 +35,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         #endregion
 
-        public ImmutableRect CalcTransformRect(double scale, double translateX, double translateY)
-            => new ImmutableRect(
-                (_Rect.X - translateX) / scale,
-                (_Rect.Y - translateY) / scale,
-                _Rect.Width / scale,
-                _Rect.Height / scale
-            );
+        internal ImmutableRect TransformRect(IHasTransform transform)
+            => transform.TransformRect(Rect);
 
         static BoxSelector()
         {

@@ -104,6 +104,9 @@ namespace Biaui.Controls.NodeEditor
         private readonly FrontPanel _frontPanel;
         private readonly BackgroundPanel _backgroundPanel;
 
+        public ScaleTransform Scale { get; }
+        public TranslateTransform Translate { get; }
+
         static BiaNodeEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodeEditor),
@@ -148,7 +151,7 @@ namespace Biaui.Controls.NodeEditor
         }
 
         private ImmutableRect MakeCurrentViewport()
-            => this.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
+            => this.TransformRect(ActualWidth, ActualHeight);
 
         #region Nodes
 
@@ -612,7 +615,7 @@ namespace Biaui.Controls.NodeEditor
             {
                 EndBoxSelector();
 
-                SelectNodes(_boxSelector.CalcTransformRect(Scale.ScaleX, Translate.X, Translate.Y));
+                SelectNodes(_boxSelector.TransformRect(this));
                 ClearPreSelectedNode();
             }
 
@@ -650,7 +653,7 @@ namespace Biaui.Controls.NodeEditor
             if (_mouseOperator.IsBoxSelect)
             {
                 UpdateBoxSelector();
-                PreSelectNodes(_boxSelector.CalcTransformRect(Scale.ScaleX, Translate.X, Translate.Y));
+                PreSelectNodes(_boxSelector.TransformRect(this));
             }
 
             //e.Handled = true;

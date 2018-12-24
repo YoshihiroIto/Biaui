@@ -161,7 +161,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             Span<Point> bezierPoints = stackalloc Point[4];
             var hitTestWork = MemoryMarshal.Cast<Point, ImmutableVec2>(bezierPoints);
 
-            var viewport = _transform.MakeSceneRectFromControlPos(ActualWidth, ActualHeight);
+            var viewport = _transform.TransformRect(ActualWidth, ActualHeight);
 
             foreach (var link in LinksSource)
             {
