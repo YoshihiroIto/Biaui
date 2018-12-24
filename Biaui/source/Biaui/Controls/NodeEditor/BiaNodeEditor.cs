@@ -80,9 +80,9 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        public ScaleTransform Scale { get; }
-
-        public TranslateTransform Translate { get; }
+        public event EventHandler<NodeLinkStartingEventArgs> LinkStarting;
+        public event EventHandler<NodeLinkConnectingEventArgs> LinkConnecting;
+        public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel>
             _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
@@ -639,7 +639,6 @@ namespace Biaui.Controls.NodeEditor
 
             e.Handled = true;
         }
-
 
         protected override void OnMouseMove(MouseEventArgs e)
         {

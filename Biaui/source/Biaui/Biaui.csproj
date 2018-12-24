@@ -219,6 +219,7 @@
     <Compile Include="Controls\NodeEditor\Internal\BackgroundPanel.cs" />
     <Compile Include="Controls\NodeEditor\Internal\MouseOperator.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeItemExtensions.cs" />
+    <Compile Include="Controls\NodeEditor\NodeLinkEventArgs.cs" />
     <Compile Include="Interfaces\IHasPos.cs" />
     <Compile Include="Controls\Internals\IHasTransform.cs" />
     <Compile Include="Interfaces\IBiaNodeLink.cs" />
