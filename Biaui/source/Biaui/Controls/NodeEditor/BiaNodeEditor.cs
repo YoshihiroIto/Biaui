@@ -81,7 +81,9 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         public event EventHandler<NodeLinkStartingEventArgs> LinkStarting;
+
         public event EventHandler<NodeLinkConnectingEventArgs> LinkConnecting;
+
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel>
@@ -105,6 +107,7 @@ namespace Biaui.Controls.NodeEditor
         private readonly BackgroundPanel _backgroundPanel;
 
         public ScaleTransform Scale { get; }
+
         public TranslateTransform Translate { get; }
 
         static BiaNodeEditor()
@@ -139,7 +142,16 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator = new MouseOperator(this, this);
             _mouseOperator.PanelMoving += OnPanelMoving;
-            _mouseOperator.LinkMoving += (s, e) => _linkOperator.OnLinkMoving(s, e, NodesSource);
+            _mouseOperator.LinkMoving += (s, e) =>
+            {
+                _linkOperator.OnLinkMoving(s, e, NodesSource);
+
+                LinkConnecting?.Invoke(this, new NodeLinkConnectingEventArgs(
+                    _linkOperator.SourceNodeItem,
+                    _linkOperator.SourcePort.Id,
+                    _linkOperator.TargetNodeItem,
+                    _linkOperator.TargetPort.Id));
+            };
 
             _removeNodePanelTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(1000),
@@ -545,7 +557,16 @@ namespace Biaui.Controls.NodeEditor
                     : MouseOperator.TargetType.NodeLink);
 
             if (_mouseOperator.IsLinkMove)
-                _linkOperator.BeginDrag(nodeItem, port);
+            {
+                if (port == null)
+                    throw new NotSupportedException();
+
+                var args = new NodeLinkStartingEventArgs(nodeItem, port.Id);
+                LinkStarting?.Invoke(this, args);
+
+                if (args.IsCancel == false)
+                    _linkOperator.BeginDrag(nodeItem, port);
+            }
 
             e.Handled = true;
         }
@@ -635,6 +656,13 @@ namespace Biaui.Controls.NodeEditor
             UpdateChildrenBag(true);
 
             _mouseOperator.OnMouseLeftButtonUp(e);
+
+            NodeLinkCompleted?.Invoke(this, new NodeLinkCompletedEventArgs(
+                _linkOperator.SourceNodeItem,
+                _linkOperator.SourcePort.Id,
+                _linkOperator.TargetNodeItem,
+                _linkOperator.TargetPort.Id));
+
             _linkOperator.EndDrag();
 
             e.Handled = true;

@@ -13,13 +13,13 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly Panel _renderTarget;
         private readonly IHasTransform _transformTarget;
 
-        private IBiaNodeItem _srcNodeItem;
-        private BiaNodePort _srcPort;
+        public IBiaNodeItem SourceNodeItem { get; private set; }
+        public BiaNodePort SourcePort { get; private set; }
 
-        private IBiaNodeItem _targetNodeItem;
-        private BiaNodePort _targetPort;
+        public IBiaNodeItem TargetNodeItem { get; private set; }
+        public BiaNodePort TargetPort { get; private set; }
 
-        private bool IsDragging => _srcNodeItem != null;
+        private bool IsDragging => SourceNodeItem != null;
 
         public LinkOperator(Panel renderTarget, IHasTransform transformTarget)
         {
@@ -29,27 +29,28 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void BeginDrag(IBiaNodeItem nodeItem, BiaNodePort port)
         {
-            _srcNodeItem = nodeItem;
-            _srcPort = port;
+            SourceNodeItem = nodeItem;
+            SourcePort = port;
 
-            _targetNodeItem = null;
-            _targetPort = null;
+            TargetNodeItem = null;
+            TargetPort = null;
         }
 
         internal void EndDrag()
         {
-            _srcNodeItem = null;
-            _srcPort = null;
+            SourceNodeItem = null;
+            SourcePort = null;
 
-            _targetNodeItem = null;
-            _targetPort = null;
+            TargetNodeItem = null;
+            TargetPort = null;
 
             _renderTarget.InvalidateVisual();
         }
 
         private Point _mousePos;
 
-        public void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e, IEnumerable<IBiaNodeItem> nodeItems)
+        public void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e,
+            IEnumerable<IBiaNodeItem> nodeItems)
         {
             _mousePos = _transformTarget.TransformPos(e.MousePos.X, e.MousePos.Y);
 
@@ -65,21 +66,21 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (IsDragging == false)
                 return;
 
-            var srcPos = _srcNodeItem.MakePortPos(_srcPort);
+            var srcPos = SourceNodeItem.MakePortPos(SourcePort);
 
             _bezierPoints[0] = srcPos;
-            _bezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _srcPort.Dir);
+            _bezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, SourcePort.Dir);
 
-            if (_targetPort == null)
+            if (TargetPort == null)
             {
                 _bezierPoints[2] = _mousePos;
                 _bezierPoints[3] = _mousePos;
             }
             else
             {
-                var targetPortPos = _targetNodeItem.MakePortPos(_targetPort);
+                var targetPortPos = TargetNodeItem.MakePortPos(TargetPort);
 
-                _bezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetPortPos, _targetPort.Dir);
+                _bezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetPortPos, TargetPort.Dir);
                 _bezierPoints[3] = targetPortPos;
             }
 
@@ -97,7 +98,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 Biaui.Internals.Constants.PortMarkRadius_Highlight);
 
             // 接続先ポートの丸
-            if (_targetPort != null)
+            if (TargetPort != null)
             {
                 dc.DrawEllipse(
                     Brushes.WhiteSmoke,
@@ -112,13 +113,13 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             if (nodeItems == null)
             {
-                _targetNodeItem = null;
-                _targetPort = null;
+                TargetNodeItem = null;
+                TargetPort = null;
                 return;
             }
 
-            _targetNodeItem = null;
-            _targetPort = null;
+            TargetNodeItem = null;
+            TargetPort = null;
 
             const double PortRadius = Biaui.Internals.Constants.PortMarkRadius;
 
@@ -132,24 +133,24 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (mousePos.X > nodePos.X + nodeSize.Width + PortRadius) continue;
                 if (mousePos.Y > nodePos.Y + nodeSize.Height + PortRadius) continue;
 
-                _targetNodeItem = nodeItem;
+                TargetNodeItem = nodeItem;
 
                 foreach (var port in nodeItem.Layout.Ports.Values)
                 {
-                    if (port == _srcPort && _targetNodeItem == _srcNodeItem)
+                    if (port == SourcePort && TargetNodeItem == SourceNodeItem)
                         continue;
 
-                    var portPos = _targetNodeItem.MakePortPos(port);
+                    var portPos = TargetNodeItem.MakePortPos(port);
 
                     if ((portPos, mousePos).DistanceSq() > Biaui.Internals.Constants.PortMarkRadiusSq)
                         continue;
 
-                    _targetPort = port;
+                    TargetPort = port;
 
                     break;
                 }
 
-                if (_targetPort != null)
+                if (TargetPort != null)
                     break;
             }
         }
