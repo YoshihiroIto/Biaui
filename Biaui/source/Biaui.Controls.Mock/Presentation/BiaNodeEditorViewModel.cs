@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -98,6 +99,42 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
+        #region NodeLinkStartingCommand
+
+        private ICommand _NodeLinkStartingCommand;
+
+        public ICommand NodeLinkStartingCommand
+        {
+            get => _NodeLinkStartingCommand;
+            set => SetProperty(ref _NodeLinkStartingCommand, value);
+        }
+
+        #endregion
+
+        #region NodeLinkConnectingCommand
+
+        private ICommand _NodeLinkConnectingCommand;
+
+        public ICommand NodeLinkConnectingCommand
+        {
+            get => _NodeLinkConnectingCommand;
+            set => SetProperty(ref _NodeLinkConnectingCommand, value);
+        }
+
+        #endregion
+
+        #region NodeLinkCompletedCommand
+
+        private ICommand _NodeLinkCompletedCommand;
+
+        public ICommand NodeLinkCompletedCommand
+        {
+            get => _NodeLinkCompletedCommand;
+            set => SetProperty(ref _NodeLinkCompletedCommand, value);
+        }
+
+        #endregion
+
         public BiaNodeEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
             var addCount = 0;
@@ -181,8 +218,72 @@ namespace Biaui.Controls.Mock.Presentation
                 Links = links;
             });
 
+            NodeLinkStartingCommand = new DelegateCommand<NodeLinkStartingEventArgs>().Setup(e =>
+            {
+                Debug.WriteLine($"NodeLinkStartingCommand: {NodePortId.ToString(e.SourcePortId)}");
+            });
+
+            NodeLinkConnectingCommand = new DelegateCommand<NodeLinkConnectingEventArgs>().Setup(e =>
+            {
+                Debug.WriteLine(
+                    $"NodeLinkConnectingCommand: {NodePortId.ToString(e.SourcePortId)}, {NodePortId.ToString(e.TargetPortId)}");
+            });
+
+            NodeLinkCompletedCommand = new DelegateCommand<NodeLinkCompletedEventArgs>().Setup(e =>
+            {
+                Debug.WriteLine(
+                    $"NodeLinkCompletedCommand: {NodePortId.ToString(e.SourcePortId)}, {NodePortId.ToString(e.TargetPortId)}");
+
+                var l = FindNodeLink(Links,
+                    e.SourceNodeItem,
+                    e.SourcePortId,
+                    e.TargetNodeItem,
+                    e.TargetPortId
+                );
+
+                if (l == null)
+                {
+                    Links.Add(new NodeLink
+                    {
+                        Item1 = e.SourceNodeItem,
+                        Item1PortId = e.SourcePortId,
+                        Item2 = e.TargetNodeItem,
+                        Item2PortId = e.TargetPortId
+                    });
+                }
+                else
+                {
+                    Links.Remove(l);
+                }
+            });
+
             MakeNodes(Nodes);
             MakeLinks(Links, Nodes);
+        }
+
+        private static IBiaNodeLink FindNodeLink(IEnumerable<IBiaNodeLink> links,
+            IBiaNodeItem sourceNodeItem,
+            int sourcePortId,
+            IBiaNodeItem targetNodeItem,
+            int targetPortId
+        )
+        {
+            return links?.AsParallel().FirstOrDefault(l =>
+            {
+                if (l.Item1 == sourceNodeItem &&
+                    l.Item1PortId == sourcePortId &&
+                    l.Item2 == targetNodeItem &&
+                    l.Item2PortId == targetPortId)
+                    return true;
+
+                if (l.Item2 == sourceNodeItem &&
+                    l.Item2PortId == sourcePortId &&
+                    l.Item1 == targetNodeItem &&
+                    l.Item1PortId == targetPortId)
+                    return true;
+
+                return false;
+            });
         }
 
         private static void MakeNodes(ObservableCollection<IBiaNodeItem> nodes)
@@ -246,7 +347,8 @@ namespace Biaui.Controls.Mock.Presentation
             }
         }
 
-        private static void MakeLinks(ObservableCollection<IBiaNodeLink> links, ObservableCollection<IBiaNodeItem> nodes)
+        private static void MakeLinks(ObservableCollection<IBiaNodeLink> links,
+            ObservableCollection<IBiaNodeItem> nodes)
         {
             if (nodes.Count == 0)
                 return;
@@ -357,8 +459,7 @@ namespace Biaui.Controls.Mock.Presentation
                 new Dictionary<int, BiaNodePort>
                 {
                     {
-                        NodePortId.Make("InputA"),
-                        new BiaNodePort
+                        NodePortId.Make("InputA"), new BiaNodePort
                         {
                             Id = NodePortId.Make("InputA"),
                             Dir = BiaNodePortDir.Top,
@@ -389,8 +490,7 @@ namespace Biaui.Controls.Mock.Presentation
                 new Dictionary<int, BiaNodePort>
                 {
                     {
-                        NodePortId.Make("InputA"),
-                        new BiaNodePort
+                        NodePortId.Make("InputA"), new BiaNodePort
                         {
                             Id = NodePortId.Make("InputA"),
                             Dir = BiaNodePortDir.Left,
@@ -398,8 +498,7 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
-                        NodePortId.Make("OutputA"),
-                        new BiaNodePort
+                        NodePortId.Make("OutputA"), new BiaNodePort
                         {
                             Id = NodePortId.Make("OutputA"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 4),
@@ -408,8 +507,7 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
-                        NodePortId.Make("OutputB"),
-                        new BiaNodePort
+                        NodePortId.Make("OutputB"), new BiaNodePort
                         {
                             Id = NodePortId.Make("OutputB"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 3),
@@ -418,8 +516,7 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
-                        NodePortId.Make("OutputC"),
-                        new BiaNodePort
+                        NodePortId.Make("OutputC"), new BiaNodePort
                         {
                             Id = NodePortId.Make("OutputC"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 2),
@@ -428,8 +525,7 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
-                        NodePortId.Make("OutputD"),
-                        new BiaNodePort
+                        NodePortId.Make("OutputD"), new BiaNodePort
                         {
                             Id = NodePortId.Make("OutputD"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 1),
@@ -453,8 +549,7 @@ namespace Biaui.Controls.Mock.Presentation
                 new Dictionary<int, BiaNodePort>
                 {
                     {
-                        NodePortId.Make("InputA"),
-                        new BiaNodePort
+                        NodePortId.Make("InputA"), new BiaNodePort
                         {
                             Id = NodePortId.Make("InputA"),
                             Dir = BiaNodePortDir.Left,
@@ -462,8 +557,7 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
-                        NodePortId.Make("Top"),
-                        new BiaNodePort
+                        NodePortId.Make("Top"), new BiaNodePort
                         {
                             Id = NodePortId.Make("Top"),
                             Dir = BiaNodePortDir.Top,
@@ -471,8 +565,7 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
-                        NodePortId.Make("OutputA"),
-                        new BiaNodePort
+                        NodePortId.Make("OutputA"), new BiaNodePort
                         {
                             Id = NodePortId.Make("OutputA"),
                             Dir = BiaNodePortDir.Right,
@@ -480,8 +573,7 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
-                        NodePortId.Make("Bottom"),
-                        new BiaNodePort
+                        NodePortId.Make("Bottom"), new BiaNodePort
                         {
                             Id = NodePortId.Make("Bottom"),
                             Dir = BiaNodePortDir.Bottom,
@@ -496,33 +588,9 @@ namespace Biaui.Controls.Mock.Presentation
     {
         #region Item1
 
-        private IBiaNodeItem _Item0;
-
-        public IBiaNodeItem Item1
-        {
-            get => _Item0;
-            set => SetProperty(ref _Item0, value);
-        }
-
-        #endregion
-
-        #region Item1PortId
-
-        private int _Item0PortId;
-
-        public int Item1PortId
-        {
-            get => _Item0PortId;
-            set => SetProperty(ref _Item0PortId, value);
-        }
-
-        #endregion
-
-        #region Item2
-
         private IBiaNodeItem _Item1;
 
-        public IBiaNodeItem Item2
+        public IBiaNodeItem Item1
         {
             get => _Item1;
             set => SetProperty(ref _Item1, value);
@@ -530,14 +598,38 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region Item2PortId
+        #region Item1PortId
 
         private int _Item1PortId;
 
-        public int Item2PortId
+        public int Item1PortId
         {
             get => _Item1PortId;
             set => SetProperty(ref _Item1PortId, value);
+        }
+
+        #endregion
+
+        #region Item2
+
+        private IBiaNodeItem _Item2;
+
+        public IBiaNodeItem Item2
+        {
+            get => _Item2;
+            set => SetProperty(ref _Item2, value);
+        }
+
+        #endregion
+
+        #region Item2PortId
+
+        private int _Item2PortId;
+
+        public int Item2PortId
+        {
+            get => _Item2PortId;
+            set => SetProperty(ref _Item2PortId, value);
         }
 
         #endregion

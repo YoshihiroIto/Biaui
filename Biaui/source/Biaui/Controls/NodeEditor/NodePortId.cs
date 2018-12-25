@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 
 namespace Biaui.Controls.NodeEditor
@@ -18,7 +19,7 @@ namespace Biaui.Controls.NodeEditor
         public static string ToString(int id)
         {
             if (IdToStringDic.TryGetValue(id, out var s) == false)
-                throw new DirectoryNotFoundException();
+                throw new Exception();
 
             return s;
         }

@@ -80,9 +80,9 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        public event EventHandler<NodeLinkStartingEventArgs> LinkStarting;
+        public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
 
-        public event EventHandler<NodeLinkConnectingEventArgs> LinkConnecting;
+        public event EventHandler<NodeLinkConnectingEventArgs> NodeLinkConnecting;
 
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
@@ -144,13 +144,22 @@ namespace Biaui.Controls.NodeEditor
             _mouseOperator.PanelMoving += OnPanelMoving;
             _mouseOperator.LinkMoving += (s, e) =>
             {
-                _linkOperator.OnLinkMoving(s, e, NodesSource);
+                var changed = _linkOperator.OnLinkMoving(s, e, NodesSource);
 
-                LinkConnecting?.Invoke(this, new NodeLinkConnectingEventArgs(
-                    _linkOperator.SourceNodeItem,
-                    _linkOperator.SourcePort.Id,
-                    _linkOperator.TargetNodeItem,
-                    _linkOperator.TargetPort.Id));
+                if (changed && _linkOperator.IsDragging)
+                {
+                    if (_linkOperator.TargetItem != null &&
+                        _linkOperator.TargetPort != null)
+                    {
+                        NodeLinkConnecting?.Invoke(
+                            this,
+                            new NodeLinkConnectingEventArgs(
+                                _linkOperator.SourceItem,
+                                _linkOperator.SourcePort.Id,
+                                _linkOperator.TargetItem,
+                                _linkOperator.TargetPort.Id));
+                    }
+                }
             };
 
             _removeNodePanelTimer = new DispatcherTimer(
@@ -471,6 +480,17 @@ namespace Biaui.Controls.NodeEditor
             ObservableCollection<IBiaNodeLink> oldSource,
             ObservableCollection<IBiaNodeLink> newSource)
         {
+            if (oldSource != null)
+                oldSource.CollectionChanged -= LinksSourceOnCollectionChanged;
+
+            if (newSource != null)
+                newSource.CollectionChanged += LinksSourceOnCollectionChanged;
+
+            //////////////////////////////////////////////////////////////////////////////
+            void LinksSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                _backgroundPanel.InvalidateVisual();
+            }
         }
 
         #endregion
@@ -562,7 +582,7 @@ namespace Biaui.Controls.NodeEditor
                     throw new NotSupportedException();
 
                 var args = new NodeLinkStartingEventArgs(nodeItem, port.Id);
-                LinkStarting?.Invoke(this, args);
+                NodeLinkStarting?.Invoke(this, args);
 
                 if (args.IsCancel == false)
                     _linkOperator.BeginDrag(nodeItem, port);
@@ -657,11 +677,20 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator.OnMouseLeftButtonUp(e);
 
-            NodeLinkCompleted?.Invoke(this, new NodeLinkCompletedEventArgs(
-                _linkOperator.SourceNodeItem,
-                _linkOperator.SourcePort.Id,
-                _linkOperator.TargetNodeItem,
-                _linkOperator.TargetPort.Id));
+            if (_linkOperator.IsDragging)
+            {
+                if (_linkOperator.TargetItem != null &&
+                    _linkOperator.TargetPort != null)
+                {
+                    NodeLinkCompleted?.Invoke(
+                        this,
+                        new NodeLinkCompletedEventArgs(
+                            _linkOperator.SourceItem,
+                            _linkOperator.SourcePort.Id,
+                            _linkOperator.TargetItem,
+                            _linkOperator.TargetPort.Id));
+                }
+            }
 
             _linkOperator.EndDrag();
 
