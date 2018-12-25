@@ -52,8 +52,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal BackgroundPanel(IHasTransform transform)
         {
-            IsHitTestVisible = false;
-
             _transform = transform;
 
             _transform.Translate.Changed += (_, __) => InvalidateVisual();
