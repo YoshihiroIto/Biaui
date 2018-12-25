@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,13 +14,15 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly Panel _renderTarget;
         private readonly IHasTransform _transformTarget;
 
-        public IBiaNodeItem SourceNodeItem { get; private set; }
+        public IBiaNodeItem SourceItem { get; private set; }
+
         public BiaNodePort SourcePort { get; private set; }
 
-        public IBiaNodeItem TargetNodeItem { get; private set; }
+        public IBiaNodeItem TargetItem { get; private set; }
+
         public BiaNodePort TargetPort { get; private set; }
 
-        private bool IsDragging => SourceNodeItem != null;
+        public bool IsDragging => SourceItem != null;
 
         public LinkOperator(Panel renderTarget, IHasTransform transformTarget)
         {
@@ -29,19 +32,19 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void BeginDrag(IBiaNodeItem nodeItem, BiaNodePort port)
         {
-            SourceNodeItem = nodeItem;
-            SourcePort = port;
+            SourceItem = nodeItem ?? throw new ArgumentNullException(nameof(nodeItem));
+            SourcePort = port ?? throw new ArgumentNullException(nameof(port));
 
-            TargetNodeItem = null;
+            TargetItem = null;
             TargetPort = null;
         }
 
         internal void EndDrag()
         {
-            SourceNodeItem = null;
+            SourceItem = null;
             SourcePort = null;
 
-            TargetNodeItem = null;
+            TargetItem = null;
             TargetPort = null;
 
             _renderTarget.InvalidateVisual();
@@ -49,14 +52,16 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private Point _mousePos;
 
-        public void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e,
+        public bool OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e,
             IEnumerable<IBiaNodeItem> nodeItems)
         {
             _mousePos = _transformTarget.TransformPos(e.MousePos.X, e.MousePos.Y);
 
-            UpdateLinkTarget(_mousePos, nodeItems);
+            var changed = UpdateLinkTarget(_mousePos, nodeItems);
 
             _renderTarget.InvalidateVisual();
+
+            return changed;
         }
 
         private readonly Point[] _bezierPoints = new Point[4];
@@ -66,7 +71,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (IsDragging == false)
                 return;
 
-            var srcPos = SourceNodeItem.MakePortPos(SourcePort);
+            var srcPos = SourceItem.MakePortPos(SourcePort);
 
             _bezierPoints[0] = srcPos;
             _bezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, SourcePort.Dir);
@@ -78,7 +83,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
             else
             {
-                var targetPortPos = TargetNodeItem.MakePortPos(TargetPort);
+                var targetPortPos = TargetItem.MakePortPos(TargetPort);
 
                 _bezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetPortPos, TargetPort.Dir);
                 _bezierPoints[3] = targetPortPos;
@@ -109,50 +114,55 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        protected void UpdateLinkTarget(Point mousePos, IEnumerable<IBiaNodeItem> nodeItems)
+        protected bool UpdateLinkTarget(Point mousePos, IEnumerable<IBiaNodeItem> nodeItems)
         {
-            if (nodeItems == null)
-            {
-                TargetNodeItem = null;
-                TargetPort = null;
-                return;
-            }
+            var oldTargetItem = TargetItem;
+            var oldTargetPort = TargetPort;
 
-            TargetNodeItem = null;
+            TargetItem = null;
             TargetPort = null;
 
-            const double PortRadius = Biaui.Internals.Constants.PortMarkRadius;
-
-            foreach (var nodeItem in nodeItems)
+            if (nodeItems != null)
             {
-                var nodePos = nodeItem.Pos;
-                if (mousePos.X < nodePos.X - PortRadius) continue;
-                if (mousePos.Y < nodePos.Y - PortRadius) continue;
+                TargetItem = null;
+                TargetPort = null;
 
-                var nodeSize = nodeItem.Size;
-                if (mousePos.X > nodePos.X + nodeSize.Width + PortRadius) continue;
-                if (mousePos.Y > nodePos.Y + nodeSize.Height + PortRadius) continue;
+                const double PortRadius = Biaui.Internals.Constants.PortMarkRadius;
 
-                TargetNodeItem = nodeItem;
-
-                foreach (var port in nodeItem.Layout.Ports.Values)
+                foreach (var nodeItem in nodeItems)
                 {
-                    if (port == SourcePort && TargetNodeItem == SourceNodeItem)
-                        continue;
+                    var nodePos = nodeItem.Pos;
+                    if (mousePos.X < nodePos.X - PortRadius) continue;
+                    if (mousePos.Y < nodePos.Y - PortRadius) continue;
 
-                    var portPos = TargetNodeItem.MakePortPos(port);
+                    var nodeSize = nodeItem.Size;
+                    if (mousePos.X > nodePos.X + nodeSize.Width + PortRadius) continue;
+                    if (mousePos.Y > nodePos.Y + nodeSize.Height + PortRadius) continue;
 
-                    if ((portPos, mousePos).DistanceSq() > Biaui.Internals.Constants.PortMarkRadiusSq)
-                        continue;
+                    TargetItem = nodeItem;
 
-                    TargetPort = port;
+                    foreach (var port in nodeItem.Layout.Ports.Values)
+                    {
+                        if (port == SourcePort && TargetItem == SourceItem)
+                            continue;
 
-                    break;
+                        var portPos = TargetItem.MakePortPos(port);
+
+                        if ((portPos, mousePos).DistanceSq() > Biaui.Internals.Constants.PortMarkRadiusSq)
+                            continue;
+
+                        TargetPort = port;
+
+                        break;
+                    }
+
+                    if (TargetPort != null)
+                        break;
                 }
-
-                if (TargetPort != null)
-                    break;
             }
+
+            return oldTargetItem != TargetItem ||
+                   oldTargetPort != TargetPort;
         }
     }
 }
