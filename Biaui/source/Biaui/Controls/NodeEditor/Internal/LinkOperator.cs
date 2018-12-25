@@ -90,8 +90,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
 
             // 接続線
-            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.Black, 8));
-            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 6));
+            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.Black, 5));
+            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 3));
 
             // 接続元ポートの丸
             var portPen = Caches.GetPen(Colors.Black, 2);
