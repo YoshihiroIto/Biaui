@@ -25,7 +25,9 @@ namespace Biaui.Interfaces
     public enum BiaNodeLinkStyle
     {
         None,
+
         //
-        DashedLine
+        DashedLine = 1 << 0,
+        Arrow = 1 << 1
     }
 }

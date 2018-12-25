@@ -253,8 +253,8 @@ namespace Biaui.Controls.Mock.Presentation
                         Item2PortId = e.TargetPortId,
                         Color = Colors.LimeGreen,
                         Style = (connectedCount & 1) == 0
-                            ? BiaNodeLinkStyle.None
-                            : BiaNodeLinkStyle.DashedLine
+                            ? BiaNodeLinkStyle.None | BiaNodeLinkStyle.Arrow
+                            : BiaNodeLinkStyle.DashedLine | BiaNodeLinkStyle.Arrow
                     });
 
                     ++connectedCount;
@@ -372,7 +372,10 @@ namespace Biaui.Controls.Mock.Presentation
                         Item2 = nodes[i],
                         Item2PortId = NodePortId.Make("InputA"),
 
-                        Color = Colors.LightSkyBlue
+                        Color = Colors.LightSkyBlue,
+                        Style = (i & 1) == 0
+                            ? BiaNodeLinkStyle.Arrow
+                            : BiaNodeLinkStyle.None
                     }
                 );
             }

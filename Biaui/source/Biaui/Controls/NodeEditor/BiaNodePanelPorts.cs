@@ -51,14 +51,17 @@ namespace Biaui.Controls.NodeEditor
 
                 if (_ellipses.TryGetValue(color, out var curve) == false)
                 {
-                    var geom = new StreamGeometry();
+                    var geom = new StreamGeometry
+                    {
+                        FillRule = FillRule.Nonzero
+                    };
                     var ctx = geom.Open();
 
                     curve = (geom, ctx);
                     _ellipses.Add(color, curve);
                 }
 
-                curve.Ctx.DrawEllipse(portPos, r, r);
+                curve.Ctx.DrawEllipse(portPos, r, r, true);
             }
 
             var pen = Caches.GetPen(Colors.Black, 2);

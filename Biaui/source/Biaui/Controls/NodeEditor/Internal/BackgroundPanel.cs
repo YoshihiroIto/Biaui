@@ -198,11 +198,16 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (BiaNodeEditorHelper.HitTestBezier(hitTestWork, viewport) == false)
                     continue;
 
-                var key = (link.Color, link.Style);
+                var color = link.Color;
+                var key = (color, link.Style);
 
+                // 線
                 if (_curves.TryGetValue(key, out var curve) == false)
                 {
-                    var geom = new StreamGeometry();
+                    var geom = new StreamGeometry
+                    {
+                        FillRule = FillRule.Nonzero
+                    };
                     var ctx = geom.Open();
 
                     curve = (geom, ctx);
@@ -211,6 +216,23 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 curve.Ctx.BeginFigure(pos1, false, false);
                 curve.Ctx.BezierTo(pos12, pos21, pos2, true, true);
+
+                // 矢印
+                if (link.Style.HasFlag(BiaNodeLinkStyle.Arrow))
+                {
+                    var p1 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.50);
+                    var p2 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.45);
+
+                    const double size = 20;
+                    var pv = ImmutableVec2.SetSize(p1 - p2, size);
+                    var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
+
+                    var t1 = p1 + pv;
+                    var t2 = p1 + sv;
+                    var t3 = p1 - sv;
+
+                    curve.Ctx.DrawTriangle(t1.ToPoint(), t2.ToPoint(), t3.ToPoint(), false, false);
+                }
             }
 
             dc.PushTransform(_transform.Translate);
@@ -220,11 +242,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     var pen =
                         c.Key.Style.HasFlag(BiaNodeLinkStyle.DashedLine)
-                            ? Caches.GetDashedPen(c.Key.Color, 8)
-                            : Caches.GetPen(c.Key.Color, 8);
+                            ? Caches.GetDashedPen(c.Key.Color, 3)
+                            : Caches.GetPen(c.Key.Color, 3);
 
                     ((IDisposable) c.Value.Ctx).Dispose();
-                    dc.DrawGeometry(null, pen, c.Value.Geom);
+                    dc.DrawGeometry(Caches.GetSolidColorBrush(c.Key.Color), pen, c.Value.Geom);
                 }
             }
             dc.Pop();

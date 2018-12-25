@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Biaui.Internals;
 
@@ -72,6 +73,25 @@ namespace Biaui.Controls.NodeEditor.Internal
                 bezierPoints[1] = v1223;
                 bezierPoints[2] = v23;
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ImmutableVec2 InterpolationBezier(Point p1, Point p2, Point p3, Point p4, double t)
+        {
+            return new ImmutableVec2(
+                Bezier(p1.X, p2.X, p3.X, p4.X, t),
+                Bezier(p1.Y, p2.Y, p3.Y, p4.Y, t));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double Bezier(double x1, double x2, double x3, double x4, double t)
+        {
+            var mt2 = (1 - t) * (1 - t);
+            var mt3 = mt2 * (1 - t);
+            var pt2 = t * t;
+            var pt3 = pt2 * t;
+
+            return mt3 * x1 + 3 * mt2 * t * x2 + 3 * (1 - t) * pt2 * x3 + pt3 * x4;
         }
     }
 }

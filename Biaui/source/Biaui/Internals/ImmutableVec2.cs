@@ -42,5 +42,18 @@ namespace Biaui.Internals
 
         public Point ToPoint()
             => new Point(X, Y);
+
+        public static ImmutableVec2 SetSize(in ImmutableVec2 v, double size)
+        {
+            var n = Math.Sqrt(v.X * v.X + v.Y * v.Y);
+
+            return new ImmutableVec2(size * v.X / n, size * v.Y / n);
+        }
+
+        public static ImmutableVec2 operator +(in ImmutableVec2 v1, in ImmutableVec2 v2)
+            => new ImmutableVec2(v1.X + v2.X, v1.Y + v2.Y);
+
+        public static ImmutableVec2 operator -(in ImmutableVec2 v1, in ImmutableVec2 v2)
+            => new ImmutableVec2(v1.X - v2.X, v1.Y - v2.Y);
     }
 }
