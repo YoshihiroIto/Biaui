@@ -218,7 +218,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 curve.Ctx.BezierTo(pos12, pos21, pos2, true, true);
 
                 // 矢印
-                if (link.Style.HasFlag(BiaNodeLinkStyle.Arrow))
+                if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
                 {
                     var p1 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.50);
                     var p2 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.45);
@@ -241,7 +241,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 foreach (var c in _curves)
                 {
                     var pen =
-                        c.Key.Style.HasFlag(BiaNodeLinkStyle.DashedLine)
+                        (c.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
                             ? Caches.GetDashedPen(c.Key.Color, 3)
                             : Caches.GetPen(c.Key.Color, 3);
 
