@@ -199,8 +199,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (BiaNodeEditorHelper.HitTestBezier(hitTestWork, viewport) == false)
                     continue;
 
-                // todo;接続ごとの色を指定する
-                var color = Colors.DeepPink;
+                var color = link.Color;
 
                 if (_curves.TryGetValue(color, out var curve) == false)
                 {

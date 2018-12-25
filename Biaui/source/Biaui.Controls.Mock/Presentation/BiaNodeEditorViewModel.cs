@@ -248,7 +248,8 @@ namespace Biaui.Controls.Mock.Presentation
                         Item1 = e.SourceNodeItem,
                         Item1PortId = e.SourcePortId,
                         Item2 = e.TargetNodeItem,
-                        Item2PortId = e.TargetPortId
+                        Item2PortId = e.TargetPortId,
+                        Color = Colors.LimeGreen
                     });
                 }
                 else
@@ -362,7 +363,9 @@ namespace Biaui.Controls.Mock.Presentation
                         Item1PortId = NodePortId.Make("OutputA"),
 
                         Item2 = nodes[i],
-                        Item2PortId = NodePortId.Make("InputA")
+                        Item2PortId = NodePortId.Make("InputA"),
+
+                        Color = Colors.LightSkyBlue
                     }
                 );
             }
@@ -632,6 +635,18 @@ namespace Biaui.Controls.Mock.Presentation
             set => SetProperty(ref _Item2PortId, value);
         }
 
+        #endregion
+
+        #region Color
+        
+        private Color _Color;
+        
+        public Color Color
+        {
+            get => _Color;
+            set => SetProperty(ref _Color, value);
+        }
+        
         #endregion
 
         public object InternalData { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Media;
 
 namespace Biaui.Interfaces
 {
@@ -11,6 +12,8 @@ namespace Biaui.Interfaces
         IBiaNodeItem Item2 { get; }
 
         int Item2PortId { get; }
+
+        Color Color { get; set; }
 
         object InternalData { get; set; }
     }
