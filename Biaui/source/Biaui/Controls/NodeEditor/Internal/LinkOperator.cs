@@ -96,7 +96,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             // 接続元ポートの丸
             var portPen = Caches.GetBorderPen(Colors.Black, 2);
             dc.DrawEllipse(
-                Brushes.WhiteSmoke,
+                Caches.GetSolidColorBrush(SourcePort.Color),
                 portPen,
                 srcPos,
                 Biaui.Internals.Constants.PortMarkRadius_Highlight,
@@ -106,7 +106,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (TargetPort != null)
             {
                 dc.DrawEllipse(
-                    Brushes.WhiteSmoke,
+                    Caches.GetSolidColorBrush(TargetPort.Color),
                     portPen,
                     _bezierPoints[3],
                     Biaui.Internals.Constants.PortMarkRadius_Highlight,

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.NodeEditor.Internal;
@@ -22,16 +24,16 @@ namespace Biaui.Controls.NodeEditor
             _mousePoint = point;
         }
 
+        private static readonly Dictionary<Color, (StreamGeometry Geom, StreamGeometryContext Ctx)> _ellipses =
+            new Dictionary<Color, (StreamGeometry, StreamGeometryContext)>();
+
         protected override void OnRender(DrawingContext dc)
         {
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
 
-            var pen = Caches.GetBorderPen(Colors.Black, 2);
-
             var nodeItem = (IBiaNodeItem) DataContext;
-
             var isMouseOverNode = nodeItem.IsMouseOver;
 
             foreach (var port in nodeItem.Layout.Ports.Values)
@@ -45,13 +47,31 @@ namespace Biaui.Controls.NodeEditor
                     if ((portPos, _mousePoint).DistanceSq() <= Biaui.Internals.Constants.PortMarkRadiusSq)
                         r = Biaui.Internals.Constants.PortMarkRadius_Highlight;
 
-                dc.DrawEllipse(
-                    Brushes.WhiteSmoke,
-                    pen,
-                    portPos,
-                    r,
-                    r);
+                var color = port.Color;
+
+                if (_ellipses.TryGetValue(color, out var curve) == false)
+                {
+                    var geom = new StreamGeometry();
+                    var ctx = geom.Open();
+
+                    curve = (geom, ctx);
+                    _ellipses.Add(color, curve);
+                }
+
+                curve.Ctx.DrawEllipse(portPos, r, r);
             }
+
+            var pen = Caches.GetBorderPen(Colors.Black, 2);
+
+            foreach (var c in _ellipses)
+            {
+                var brush = Caches.GetSolidColorBrush(c.Key);
+
+                ((IDisposable)c.Value.Ctx).Dispose();
+                dc.DrawGeometry(brush, pen, c.Value.Geom);
+            }
+
+            _ellipses.Clear();
         }
     }
 }

@@ -501,36 +501,39 @@ namespace Biaui.Controls.Mock.Presentation
                         }
                     },
                     {
+                        NodePortId.Make("Red"), new BiaNodePort
+                        {
+                            Id = NodePortId.Make("Red"),
+                            Offset = new Point(0, -Constants.BasicOneLineHeight * 4),
+                            Dir = BiaNodePortDir.Right,
+                            Align = BiaNodePortAlign.End,
+                            Color = Colors.Red
+                        }
+                    },
+                    {
+                        NodePortId.Make("Green"), new BiaNodePort
+                        {
+                            Id = NodePortId.Make("Green"),
+                            Offset = new Point(0, -Constants.BasicOneLineHeight * 3),
+                            Dir = BiaNodePortDir.Right,
+                            Align = BiaNodePortAlign.End,
+                            Color = Colors.LimeGreen
+                        }
+                    },
+                    {
+                        NodePortId.Make("Blue"), new BiaNodePort
+                        {
+                            Id = NodePortId.Make("Blue"),
+                            Offset = new Point(0, -Constants.BasicOneLineHeight * 2),
+                            Dir = BiaNodePortDir.Right,
+                            Align = BiaNodePortAlign.End,
+                            Color = Colors.DodgerBlue
+                        }
+                    },
+                    {
                         NodePortId.Make("OutputA"), new BiaNodePort
                         {
                             Id = NodePortId.Make("OutputA"),
-                            Offset = new Point(0, -Constants.BasicOneLineHeight * 4),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.End
-                        }
-                    },
-                    {
-                        NodePortId.Make("OutputB"), new BiaNodePort
-                        {
-                            Id = NodePortId.Make("OutputB"),
-                            Offset = new Point(0, -Constants.BasicOneLineHeight * 3),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.End
-                        }
-                    },
-                    {
-                        NodePortId.Make("OutputC"), new BiaNodePort
-                        {
-                            Id = NodePortId.Make("OutputC"),
-                            Offset = new Point(0, -Constants.BasicOneLineHeight * 2),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.End
-                        }
-                    },
-                    {
-                        NodePortId.Make("OutputD"), new BiaNodePort
-                        {
-                            Id = NodePortId.Make("OutputD"),
                             Offset = new Point(0, -Constants.BasicOneLineHeight * 1),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End

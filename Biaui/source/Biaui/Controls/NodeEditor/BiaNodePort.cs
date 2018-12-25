@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -11,6 +12,8 @@ namespace Biaui.Controls.NodeEditor
         public BiaNodePortDir Dir { get; set; }
 
         public BiaNodePortAlign Align { get; set; }
+
+        public Color Color { get; set; } = Colors.White;
     }
 
     public enum BiaNodePortAlign

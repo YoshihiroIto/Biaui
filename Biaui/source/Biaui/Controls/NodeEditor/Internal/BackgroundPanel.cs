@@ -150,7 +150,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawGeometry(null, p, _gridGeom);
         }
 
-        private readonly Dictionary<Color, (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves =
+        private static readonly Dictionary<Color, (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves =
             new Dictionary<Color, (StreamGeometry, StreamGeometryContext)>();
 
         private void DrawNodeLink(DrawingContext dc)
