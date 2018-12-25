@@ -89,7 +89,7 @@ namespace Biaui.Internals
         }
 
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
-            => Caches.GetBorderPen(color, FrameworkElementHelper.RoundLayoutValue(BorderWidth));
+            => Caches.GetPen(color, FrameworkElementHelper.RoundLayoutValue(BorderWidth));
 
         internal static void SetMouseClipping(this FrameworkElement self)
         {

@@ -94,7 +94,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 6));
 
             // 接続元ポートの丸
-            var portPen = Caches.GetBorderPen(Colors.Black, 2);
+            var portPen = Caches.GetPen(Colors.Black, 2);
             dc.DrawEllipse(
                 Caches.GetSolidColorBrush(SourcePort.Color),
                 portPen,

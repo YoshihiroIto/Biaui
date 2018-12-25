@@ -6,7 +6,7 @@ namespace Biaui.Internals
 {
     internal static class Caches
     {
-        internal static Pen GetBorderPen(Color color, double thickness)
+        internal static Pen GetPen(Color color, double thickness)
         {
             var key = (color, thickness);
 
@@ -36,6 +36,24 @@ namespace Biaui.Internals
             p.Freeze();
 
             _capPens.Add(key, p);
+
+            return p;
+        }
+
+        internal static Pen GetDashedPen(Color color, double thickness)
+        {
+            var key = (color, thickness);
+
+            if (_dashedPens.TryGetValue(key, out var p))
+                return p;
+
+            p = new Pen(GetSolidColorBrush(color), thickness)
+            {
+                DashStyle = DashStyles.Dash
+            };
+            p.Freeze();
+
+            _dashedPens.Add(key, p);
 
             return p;
         }
@@ -95,6 +113,7 @@ namespace Biaui.Internals
 
         private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
         private static readonly Dictionary<(Color, double), Pen> _capPens = new Dictionary<(Color, double), Pen>();
+        private static readonly Dictionary<(Color, double), Pen> _dashedPens = new Dictionary<(Color, double), Pen>();
 
         private static readonly Dictionary<Color, SolidColorBrush> _solidColorBrushes =
             new Dictionary<Color, SolidColorBrush>();

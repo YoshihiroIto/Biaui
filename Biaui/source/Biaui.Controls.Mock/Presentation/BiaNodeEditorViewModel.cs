@@ -229,6 +229,8 @@ namespace Biaui.Controls.Mock.Presentation
                     $"NodeLinkConnectingCommand: {NodePortId.ToString(e.SourcePortId)}, {NodePortId.ToString(e.TargetPortId)}");
             });
 
+
+            var connectedCount = 0;
             NodeLinkCompletedCommand = new DelegateCommand<NodeLinkCompletedEventArgs>().Setup(e =>
             {
                 Debug.WriteLine(
@@ -249,8 +251,13 @@ namespace Biaui.Controls.Mock.Presentation
                         Item1PortId = e.SourcePortId,
                         Item2 = e.TargetNodeItem,
                         Item2PortId = e.TargetPortId,
-                        Color = Colors.LimeGreen
+                        Color = Colors.LimeGreen,
+                        Style = (connectedCount & 1) == 0
+                            ? BiaNodeLinkStyle.None
+                            : BiaNodeLinkStyle.DashedLine
                     });
+
+                    ++connectedCount;
                 }
                 else
                 {
@@ -641,15 +648,27 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
 
         #region Color
-        
+
         private Color _Color;
-        
+
         public Color Color
         {
             get => _Color;
             set => SetProperty(ref _Color, value);
         }
-        
+
+        #endregion
+
+        #region Style
+
+        private BiaNodeLinkStyle _Style;
+
+        public BiaNodeLinkStyle Style
+        {
+            get => _Style;
+            set => SetProperty(ref _Style, value);
+        }
+
         #endregion
 
         public object InternalData { get; set; }

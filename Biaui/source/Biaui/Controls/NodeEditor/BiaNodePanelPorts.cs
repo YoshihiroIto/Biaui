@@ -61,7 +61,7 @@ namespace Biaui.Controls.NodeEditor
                 curve.Ctx.DrawEllipse(portPos, r, r);
             }
 
-            var pen = Caches.GetBorderPen(Colors.Black, 2);
+            var pen = Caches.GetPen(Colors.Black, 2);
 
             foreach (var c in _ellipses)
             {

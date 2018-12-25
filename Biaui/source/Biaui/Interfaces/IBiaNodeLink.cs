@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Media;
 
 namespace Biaui.Interfaces
@@ -15,6 +16,16 @@ namespace Biaui.Interfaces
 
         Color Color { get; set; }
 
+        BiaNodeLinkStyle Style { get; set; }
+
         object InternalData { get; set; }
+    }
+
+    [Flags]
+    public enum BiaNodeLinkStyle
+    {
+        None,
+        //
+        DashedLine
     }
 }

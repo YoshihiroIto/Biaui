@@ -148,8 +148,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawGeometry(null, p, _gridGeom);
         }
 
-        private static readonly Dictionary<Color, (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves =
-            new Dictionary<Color, (StreamGeometry, StreamGeometryContext)>();
+        private static readonly
+            Dictionary<(Color Color, BiaNodeLinkStyle Style), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
+                = new Dictionary<(Color, BiaNodeLinkStyle), (StreamGeometry, StreamGeometryContext)>();
 
         private void DrawNodeLink(DrawingContext dc)
         {
@@ -176,7 +177,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
                 else
                 {
-                    portPair = ((BiaNodePort, BiaNodePort))link.InternalData;
+                    portPair = ((BiaNodePort, BiaNodePort)) link.InternalData;
                 }
 
                 if (portPair.Port1 == null || portPair.Port2 == null)
@@ -197,15 +198,15 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (BiaNodeEditorHelper.HitTestBezier(hitTestWork, viewport) == false)
                     continue;
 
-                var color = link.Color;
+                var key = (link.Color, link.Style);
 
-                if (_curves.TryGetValue(color, out var curve) == false)
+                if (_curves.TryGetValue(key, out var curve) == false)
                 {
                     var geom = new StreamGeometry();
                     var ctx = geom.Open();
 
                     curve = (geom, ctx);
-                    _curves.Add(color, curve);
+                    _curves.Add(key, curve);
                 }
 
                 curve.Ctx.BeginFigure(pos1, false, false);
@@ -217,7 +218,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 foreach (var c in _curves)
                 {
-                    var pen = Caches.GetBorderPen(c.Key, 8);
+                    var pen =
+                        c.Key.Style.HasFlag(BiaNodeLinkStyle.DashedLine)
+                            ? Caches.GetDashedPen(c.Key.Color, 8)
+                            : Caches.GetPen(c.Key.Color, 8);
 
                     ((IDisposable) c.Value.Ctx).Dispose();
                     dc.DrawGeometry(null, pen, c.Value.Geom);
