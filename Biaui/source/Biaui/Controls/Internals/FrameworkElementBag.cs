@@ -61,6 +61,8 @@ namespace Biaui.Controls.Internals
 
             _children.Add(child);
             AddVisualChild(child);
+
+            ChangeElement(child);
         }
 
         internal void ChangeElement(T child)
