@@ -32,6 +32,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal static bool HitTestBezier(Span<ImmutableVec2> bezierPoints, in ImmutableRect rect)
         {
+            if (NumberHelper.AreCloseZero(rect.Width) ||
+                NumberHelper.AreCloseZero(rect.Height))
+                return false;
+
             while (true)
             {
                 if (rect.Contains(bezierPoints[0]) || rect.Contains(bezierPoints[3]))

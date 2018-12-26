@@ -64,41 +64,47 @@ namespace Biaui.Controls.NodeEditor.Internal
             return changed;
         }
 
-        private readonly Point[] _bezierPoints = new Point[4];
+        internal void UpdateBezierPoints()
+        {
+            var srcPos = SourceItem.MakePortPos(SourcePort);
+
+            BezierPoints[0] = srcPos;
+            BezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, SourcePort.Dir);
+
+            if (TargetPort == null)
+            {
+                BezierPoints[2] = _mousePos;
+                BezierPoints[3] = _mousePos;
+            }
+            else
+            {
+                var targetPortPos = TargetItem.MakePortPos(TargetPort);
+
+                BezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetPortPos, TargetPort.Dir);
+                BezierPoints[3] = targetPortPos;
+            }
+
+        }
+
+        internal readonly Point[] BezierPoints = new Point[4];
 
         internal void Render(DrawingContext dc)
         {
             if (IsDragging == false)
                 return;
 
-            var srcPos = SourceItem.MakePortPos(SourcePort);
-
-            _bezierPoints[0] = srcPos;
-            _bezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, SourcePort.Dir);
-
-            if (TargetPort == null)
-            {
-                _bezierPoints[2] = _mousePos;
-                _bezierPoints[3] = _mousePos;
-            }
-            else
-            {
-                var targetPortPos = TargetItem.MakePortPos(TargetPort);
-
-                _bezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetPortPos, TargetPort.Dir);
-                _bezierPoints[3] = targetPortPos;
-            }
+            UpdateBezierPoints();
 
             // 接続線
-            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.Black, 5));
-            dc.DrawBezier(_bezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 3));
+            dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.Black, 5));
+            dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 3));
 
             // 接続元ポートの丸
             var portPen = Caches.GetPen(Colors.Black, 2);
             dc.DrawEllipse(
                 Caches.GetSolidColorBrush(SourcePort.Color),
                 portPen,
-                srcPos,
+                BezierPoints[0],
                 Biaui.Internals.Constants.PortMarkRadius_Highlight,
                 Biaui.Internals.Constants.PortMarkRadius_Highlight);
 
@@ -108,7 +114,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 dc.DrawEllipse(
                     Caches.GetSolidColorBrush(TargetPort.Color),
                     portPen,
-                    _bezierPoints[3],
+                    BezierPoints[3],
                     Biaui.Internals.Constants.PortMarkRadius_Highlight,
                     Biaui.Internals.Constants.PortMarkRadius_Highlight);
             }

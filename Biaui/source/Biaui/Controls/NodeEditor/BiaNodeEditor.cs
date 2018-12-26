@@ -94,6 +94,7 @@ namespace Biaui.Controls.NodeEditor
 
         private readonly MouseOperator _mouseOperator;
         private readonly LinkOperator _linkOperator;
+        private readonly LinkConnector _linkConnector;
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
@@ -129,16 +130,18 @@ namespace Biaui.Controls.NodeEditor
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
             grid.Children.Add(_boxSelector);
             grid.Children.Add(_frontPanel = new FrontPanel(this));
-            base.Child = grid;
 
             _linkOperator = new LinkOperator(_frontPanel, this);
+
+            grid.Children.Add(_linkConnector = new LinkConnector(_linkOperator, this));
+            base.Child = grid;
 
             _backgroundPanel.SetBinding(BackgroundPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
             {
                 Source = this,
                 Mode = BindingMode.OneWay
             });
-            _frontPanel.PostRender += (_, e) => _linkOperator.Render(e.DrawingContext);
+//            _frontPanel.PostRender += (_, e) => _linkOperator.Render(e.DrawingContext);
 
             _mouseOperator = new MouseOperator(this, this);
             _mouseOperator.PanelMoving += OnPanelMoving;
@@ -159,7 +162,10 @@ namespace Biaui.Controls.NodeEditor
                                 _linkOperator.TargetItem,
                                 _linkOperator.TargetPort.Id));
                     }
+
                 }
+
+                _linkConnector.Invalidate();
             };
 
             _removeNodePanelTimer = new DispatcherTimer(
