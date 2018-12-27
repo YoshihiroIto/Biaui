@@ -63,6 +63,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var c = new ImmutableVec2((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
 
                 Span<ImmutableVec2> cl = new[]
+                //Span<ImmutableVec2> cl = stackalloc []
                 {
                     bezierPoints[0],
                     v01,

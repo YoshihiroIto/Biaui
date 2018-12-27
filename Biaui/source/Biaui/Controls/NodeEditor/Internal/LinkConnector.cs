@@ -273,7 +273,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             var rect = _parent.Transform(new ImmutableRect(0, 0, ActualWidth, ActualHeight));
             rect = new ImmutableRect(rect.X + Pos.X / scale, rect.Y + Pos.Y / scale, rect.Width, rect.Height);
 
-            Span<Point> bezierPoints = stackalloc Point[4];
+            //Span<Point> bezierPoints = stackalloc Point[4];
+            Span<Point> bezierPoints = new Point[4];
             var hitTestWork = MemoryMarshal.Cast<Point, ImmutableVec2>(bezierPoints);
 
             bezierPoints[0] = _parent.BezierPoints[0];
@@ -281,33 +282,26 @@ namespace Biaui.Controls.NodeEditor.Internal
             bezierPoints[2] = _parent.BezierPoints[2];
             bezierPoints[3] = _parent.BezierPoints[3];
 
-            try
-            {
-                var isHit = BiaNodeEditorHelper.HitTestBezier(hitTestWork, rect);
+            var isHit = BiaNodeEditorHelper.HitTestBezier(hitTestWork, rect);
 
-                if (isHit)
+            if (isHit)
+            {
+                dc.PushTransform(new TranslateTransform(-Pos.X + Margin, -Pos.Y + Margin));
                 {
-                    dc.PushTransform(new TranslateTransform(-Pos.X + Margin, -Pos.Y + Margin));
+                    dc.PushTransform(_parent.Translate);
+                    dc.PushTransform(_parent.Scale);
                     {
-                        dc.PushTransform(_parent.Translate);
-                        dc.PushTransform(_parent.Scale);
-                        {
-                            _parent.Render(dc, rect, scale);
-                        }
-                        dc.Pop();
-                        dc.Pop();
+                        _parent.Render(dc, rect, scale);
                     }
                     dc.Pop();
-
-                    dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutActualRectangle(false));
+                    dc.Pop();
                 }
+                dc.Pop();
 
-                //TextRenderer.Default.Draw(isHit.ToString(), 0, 0, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Left);
+                //dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutActualRectangle(false));
             }
-            catch (StackOverflowException e)
-            {
-                Console.WriteLine(e);
-            }
+
+            //TextRenderer.Default.Draw(isHit.ToString(), 0, 0, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Left);
         }
     }
 }
