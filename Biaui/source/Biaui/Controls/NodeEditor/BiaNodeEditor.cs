@@ -89,12 +89,12 @@ namespace Biaui.Controls.NodeEditor
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel>
             _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
 
+        private readonly BackgroundPanel _backgroundPanel;
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
-        private readonly BoxSelector _boxSelector = new BoxSelector();
+        private readonly BoxSelector _boxSelector;
+        private readonly LinkConnector _linkConnector;
 
         private readonly MouseOperator _mouseOperator;
-        private readonly LinkOperator _linkOperator;
-        private readonly LinkConnector _linkConnector;
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
@@ -102,10 +102,6 @@ namespace Biaui.Controls.NodeEditor
         private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
         private readonly HashSet<IBiaNodeItem> _selectedNodes = new HashSet<IBiaNodeItem>();
         private readonly HashSet<IBiaNodeItem> _preSelectedNodes = new HashSet<IBiaNodeItem>();
-
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        private readonly FrontPanel _frontPanel;
-        private readonly BackgroundPanel _backgroundPanel;
 
         public ScaleTransform Scale { get; }
 
@@ -128,12 +124,8 @@ namespace Biaui.Controls.NodeEditor
             var grid = new Grid();
             grid.Children.Add(_backgroundPanel = new BackgroundPanel(this));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
-            grid.Children.Add(_boxSelector);
-            grid.Children.Add(_frontPanel = new FrontPanel(this));
-
-            _linkOperator = new LinkOperator(_frontPanel, this);
-
-            grid.Children.Add(_linkConnector = new LinkConnector(_linkOperator, this));
+            grid.Children.Add(_boxSelector = new BoxSelector());
+            grid.Children.Add(_linkConnector = new LinkConnector(this));
             base.Child = grid;
 
             _backgroundPanel.SetBinding(BackgroundPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
@@ -141,31 +133,27 @@ namespace Biaui.Controls.NodeEditor
                 Source = this,
                 Mode = BindingMode.OneWay
             });
-//            _frontPanel.PostRender += (_, e) => _linkOperator.Render(e.DrawingContext);
 
             _mouseOperator = new MouseOperator(this, this);
             _mouseOperator.PanelMoving += OnPanelMoving;
             _mouseOperator.LinkMoving += (s, e) =>
             {
-                var changed = _linkOperator.OnLinkMoving(s, e, NodesSource);
+                var changed = _linkConnector.OnLinkMoving(s, e, NodesSource);
 
-                if (changed && _linkOperator.IsDragging)
+                if (changed && _linkConnector.IsDragging)
                 {
-                    if (_linkOperator.TargetItem != null &&
-                        _linkOperator.TargetPort != null)
+                    if (_linkConnector.TargetItem != null &&
+                        _linkConnector.TargetPort != null)
                     {
                         NodeLinkConnecting?.Invoke(
                             this,
                             new NodeLinkConnectingEventArgs(
-                                _linkOperator.SourceItem,
-                                _linkOperator.SourcePort.Id,
-                                _linkOperator.TargetItem,
-                                _linkOperator.TargetPort.Id));
+                                _linkConnector.SourceItem,
+                                _linkConnector.SourcePort.Id,
+                                _linkConnector.TargetItem,
+                                _linkConnector.TargetPort.Id));
                     }
-
                 }
-
-                _linkConnector.Invalidate();
             };
 
             _removeNodePanelTimer = new DispatcherTimer(
@@ -591,7 +579,7 @@ namespace Biaui.Controls.NodeEditor
                 NodeLinkStarting?.Invoke(this, args);
 
                 if (args.IsCancel == false)
-                    _linkOperator.BeginDrag(nodeItem, port);
+                    _linkConnector.BeginDrag(nodeItem, port);
             }
 
             e.Handled = true;
@@ -683,24 +671,22 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator.OnMouseLeftButtonUp(e);
 
-            if (_linkOperator.IsDragging)
+            if (_linkConnector.IsDragging)
             {
-                if (_linkOperator.TargetItem != null &&
-                    _linkOperator.TargetPort != null)
+                if (_linkConnector.TargetItem != null &&
+                    _linkConnector.TargetPort != null)
                 {
                     NodeLinkCompleted?.Invoke(
                         this,
                         new NodeLinkCompletedEventArgs(
-                            _linkOperator.SourceItem,
-                            _linkOperator.SourcePort.Id,
-                            _linkOperator.TargetItem,
-                            _linkOperator.TargetPort.Id));
+                            _linkConnector.SourceItem,
+                            _linkConnector.SourcePort.Id,
+                            _linkConnector.TargetItem,
+                            _linkConnector.TargetPort.Id));
                 }
             }
 
-            _linkOperator.EndDrag();
-
-            _linkConnector.Invalidate();
+            _linkConnector.EndDrag();
 
             e.Handled = true;
         }
