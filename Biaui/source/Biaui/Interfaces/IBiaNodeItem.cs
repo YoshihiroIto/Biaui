@@ -12,10 +12,17 @@ namespace Biaui.Interfaces
 
         bool IsMouseOver { get; set; }
 
-        bool IsRequireVisualTest { get; }
+        BiaNodePanelHitType HitType { get; }
 
         Size Size { get; set; }
 
         BiaNodePortLayout Layout { get; }
+    }
+
+    public enum BiaNodePanelHitType
+    {
+        Rectangle,
+        Circle,
+        Visual
     }
 }

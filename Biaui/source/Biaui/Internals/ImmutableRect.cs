@@ -120,6 +120,46 @@ namespace Biaui.Internals
             return target.X <= right && targetRight >= X && target.Y <= bottom && targetBottom >= Y;
         }
 
+        public bool IntersectsWith(in ImmutableCircle target)
+        {
+            var right = X + Width;
+            var bottom = Y + Height;
+
+            if (target.CenterX > X &&
+                target.CenterX < right &&
+                target.CenterY > Y - target.Radius &&
+                target.CenterY < bottom + target.Radius)
+                return true;
+
+            if (target.CenterX > X - target.Radius&&
+                target.CenterX < right + target.Radius &&
+                target.CenterY > Y &&
+                target.CenterY < bottom)
+                return true;
+
+            var rr = target.Radius * target.Radius;
+
+            var xx1 = (X - target.CenterX) * (X - target.CenterX);
+            var yy1 = (Y - target.CenterY) * (Y - target.CenterY);
+
+            var xx2 = (right - target.CenterX) * (right - target.CenterX);
+            var yy2 = (bottom - target.CenterY) * (bottom - target.CenterY);
+
+            if (xx1 + yy1 < rr)
+                return true;
+
+            if (xx2 + yy1 < rr)
+                return true;
+
+            if (xx1 + yy2 < rr)
+                return true;
+
+            if (xx2 + yy2 < rr)
+                return true;
+
+            return false;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(Point p)
             =>

@@ -731,17 +731,8 @@ namespace Biaui.Controls.NodeEditor
                 {
                     var node = (IBiaNodeItem) c.DataContext;
 
-                    if (rect.IntersectsWith(node.MakeRect()) == false)
+                    if (HitTest(node, rect) == false)
                         continue;
-
-                    if (node.IsRequireVisualTest)
-                    {
-                        if (_nodeDict.TryGetValue(node, out var panel) == false)
-                            continue;
-
-                        if (IsHitVisual(rect, node, panel) == false)
-                            continue;
-                    }
 
                     if (KeyboardHelper.IsPressControl)
                         node.IsSelected = !node.IsSelected;
@@ -763,23 +754,50 @@ namespace Biaui.Controls.NodeEditor
                 {
                     var node = (IBiaNodeItem) c.DataContext;
 
-                    if (rect.IntersectsWith(node.MakeRect()) == false)
+                    if (HitTest(node, rect) == false)
                         continue;
-
-                    if (node.IsRequireVisualTest)
-                    {
-                        if (_nodeDict.TryGetValue(node, out var panel) == false)
-                            continue;
-
-                        if (IsHitVisual(rect, node, panel) == false)
-                            continue;
-                    }
 
                     node.IsPreSelected = true;
                 }
             }
             --_isEnableUpdateChildrenBagDepth;
             Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
+        }
+
+        private bool HitTest(IBiaNodeItem node, in ImmutableRect rect)
+        {
+            switch (node.HitType)
+            {
+                case BiaNodePanelHitType.Rectangle:
+                    if (rect.IntersectsWith(node.MakeRect()) == false)
+                        return false;
+
+                    break;
+
+                case BiaNodePanelHitType.Circle:
+                    if (rect.IntersectsWith(node.MakeCircle()) == false)
+                        return false;
+
+                    break;
+
+                case BiaNodePanelHitType.Visual:
+                    // まずは矩形で判断する
+                    if (rect.IntersectsWith(node.MakeRect()) == false)
+                        return false;
+
+                    if (_nodeDict.TryGetValue(node, out var panel) == false)
+                        return false;
+
+                    if (IsHitVisual(rect, node, panel) == false)
+                        return false;
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return true;
         }
 
         private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();

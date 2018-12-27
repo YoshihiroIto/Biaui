@@ -455,14 +455,14 @@ namespace Biaui.Controls.Mock.Presentation
         private const uint Flag_IsPreSelected = 1 << 1;
         private const uint Flag_IsMouseOver = 1 << 2;
 
-        public abstract bool IsRequireVisualTest { get; }
+        public abstract BiaNodePanelHitType HitType { get; }
 
         public abstract BiaNodePortLayout Layout { get; }
     }
 
     public class BasicNode : NodeBase
     {
-        public override bool IsRequireVisualTest => false;
+        public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
         public override BiaNodePortLayout Layout => _Layout;
 
@@ -493,7 +493,7 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class ColorNode : NodeBase
     {
-        public override bool IsRequireVisualTest => false;
+        public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
         public override BiaNodePortLayout Layout => _Layout;
 
@@ -555,7 +555,7 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class CircleNode : NodeBase
     {
-        public override bool IsRequireVisualTest => true;
+        public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Circle;
 
         public override BiaNodePortLayout Layout => _Layout;
 

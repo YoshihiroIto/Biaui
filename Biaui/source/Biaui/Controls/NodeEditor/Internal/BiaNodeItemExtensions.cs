@@ -9,6 +9,12 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal static ImmutableRect MakeRect(this IBiaNodeItem self)
             => new ImmutableRect(self.Pos, self.Size);
 
+        internal static ImmutableCircle MakeCircle(this IBiaNodeItem self)
+        {
+            var size = self.Size;
+            return new ImmutableCircle(self.Pos.X + size.Width * 0.5, self.Pos.Y + size.Height * 0.5, size.Width * 0.5);
+        }
+
         internal static Point MakePortPos(this IBiaNodeItem nodeItem, BiaNodePort port)
         {
             var itemSize = nodeItem.Size;
