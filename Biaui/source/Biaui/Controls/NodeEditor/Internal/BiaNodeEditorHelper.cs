@@ -30,7 +30,17 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool HitTestBezier(Span<ImmutableVec2> bezierPoints, in ImmutableRect rect)
+        {
+            if (NumberHelper.AreCloseZero(rect.Width) ||
+                NumberHelper.AreCloseZero(rect.Height))
+                return false;
+
+            return HitTestBezierInternal(bezierPoints, rect);
+        }
+
+        private static bool HitTestBezierInternal(Span<ImmutableVec2> bezierPoints, in ImmutableRect rect)
         {
             while (true)
             {
@@ -66,7 +76,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     c
                 };
 
-                if (HitTestBezier(cl, rect))
+                if (HitTestBezierInternal(cl, rect))
                     return true;
 
                 bezierPoints[0] = c;
