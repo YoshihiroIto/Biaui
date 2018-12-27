@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,81 +26,65 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal ScaleTransform Scale => _transform.Scale;
 
-        public LinkConnector(LinkOperator linkOperator, IHasTransform transform)
+        internal LinkConnector(LinkOperator linkOperator, IHasTransform transform)
         {
             _linkOperator = linkOperator;
             _transform = transform;
 
-            {
-                var i = 0;
-
-                for (var y = 0; y != RowCount; ++y)
-                for (var x = 0; x != ColumnCount; ++x, ++i)
-                {
-                    Children.Add(
-                        new LinkConnectorCell(this)
-                        {
-                            Width = 100,
-                            Height = 100,
-                            Index = i
-                        }
-                    );
-                }
-            }
+            for (var i = 0; i != RowCount * ColumnCount; ++i)
+                Children.Add(new LinkConnectorCell(this));
 
             SizeChanged += (_, e) =>
             {
-                var cellWidth = e.NewSize.Width / ColumnCount;
-                var cellHeight = e.NewSize.Height / RowCount;
-
-                var i = 0;
-
-                for (var y = 0; y != RowCount; ++y)
-                for (var x = 0; x != ColumnCount; ++x, ++i)
-                {
-                    var c = (LinkConnectorCell) Children[i];
-                    c.Width = cellWidth;
-                    c.Height = cellHeight;
-
-                    SetLeft(c, cellWidth * x);
-                    SetTop(c, cellHeight * y);
-
-                    c.Pos = new Point(cellWidth * x, cellHeight * y); 
-                }
-
+                UpdateChildren(e.NewSize.Width, e.NewSize.Height);
                 InvalidateMeasure();
             };
         }
 
-        internal void Invalidate()
+        private void UpdateChildren(double width, double height)
         {
-            //InvalidateMeasure();
+            var cellWidth = width / ColumnCount;
+            var cellHeight = height / RowCount;
+            var margin = Biaui.Internals.Constants.PortMarkRadius_Highlight * _transform.Scale.ScaleX;
 
-            foreach (var child in Children)
-                ((FrameworkElement)child).InvalidateVisual();
+            var i = 0;
 
-            Debug.WriteLine($"{c++}");
+            for (var y = 0; y != RowCount; ++y)
+            for (var x = 0; x != ColumnCount; ++x, ++i)
+            {
+                var child = (LinkConnectorCell) Children[i];
+                child.Width = cellWidth + margin * 2;
+                child.Height = cellHeight + margin * 2;
+
+                SetLeft(child, cellWidth * x - margin);
+                SetTop(child, cellHeight * y - margin);
+
+                child.Pos = new Point(cellWidth * x, cellHeight * y);
+                child.Margin = margin;
+            }
         }
 
-        private int c;
+        internal void Invalidate()
+        {
+            if (IsDragging)
+                _linkOperator.UpdateBezierPoints();
+
+            UpdateChildren(ActualWidth, ActualHeight);
+
+            foreach (var child in Children)
+                ((FrameworkElement) child).InvalidateVisual();
+        }
 
         internal void Render(DrawingContext dc)
         {
             _linkOperator.Render(dc);
         }
 
-        internal Point[] BezierPoints
-        {
-            get
-            {
-                _linkOperator.UpdateBezierPoints();
-                return _linkOperator.BezierPoints;
-            }
-        }
+        internal Point[] BezierPoints => _linkOperator.BezierPoints;
 
-        public bool IsDragging => _linkOperator.IsDragging;
+        internal bool IsDragging => _linkOperator.IsDragging;
 
-        public ImmutableRect Transform(in ImmutableRect rect)
+        internal ImmutableRect Transform(in ImmutableRect rect)
         {
             return _transform.TransformRect(rect);
         }
@@ -111,11 +94,11 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         private readonly LinkConnector _parent;
 
-        public int Index { get; set; }
+        internal Point Pos { get; set; }
 
-        public Point Pos { get; set; }
+        internal new double Margin { get; set; }
 
-        public LinkConnectorCell(LinkConnector parent)
+        internal LinkConnectorCell(LinkConnector parent)
         {
             IsHitTestVisible = false;
             _parent = parent;
@@ -148,7 +131,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (isHit)
             {
-                dc.PushTransform(new TranslateTransform(-Pos.X, -Pos.Y));
+                dc.PushTransform(new TranslateTransform(-Pos.X + Margin, -Pos.Y + Margin));
                 {
                     dc.PushTransform(_parent.Translate);
                     dc.PushTransform(_parent.Scale);
@@ -160,7 +143,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
                 dc.Pop();
 
-            //    dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutActualRectangle(false));
+                //dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutActualRectangle(false));
             }
 
             //TextRenderer.Default.Draw(isHit.ToString(), 0, 0, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Left);

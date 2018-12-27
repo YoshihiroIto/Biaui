@@ -700,6 +700,8 @@ namespace Biaui.Controls.NodeEditor
 
             _linkOperator.EndDrag();
 
+            _linkConnector.Invalidate();
+
             e.Handled = true;
         }
 
