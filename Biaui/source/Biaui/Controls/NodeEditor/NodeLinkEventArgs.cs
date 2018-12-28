@@ -8,8 +8,6 @@ namespace Biaui.Controls.NodeEditor
     /// </summary>
     public class NodeLinkStartingEventArgs : EventArgs
     {
-        public bool IsCancel { get; set; }
-
         public IBiaNodeItem SourceNodeItem { get; }
         public int SourcePortId { get; }
 
@@ -25,8 +23,6 @@ namespace Biaui.Controls.NodeEditor
     /// </summary>
     public class NodeLinkConnectingEventArgs : EventArgs
     {
-        public bool CanConnect { get; set; }
-
         public IBiaNodeItem SourceNodeItem { get; }
         public int SourcePortId { get; }
 
@@ -37,8 +33,6 @@ namespace Biaui.Controls.NodeEditor
             IBiaNodeItem sourceNodeItem, int sourcePortId,
             IBiaNodeItem targetNodeItem, int targetPortId)
         {
-            CanConnect = true;
-
             SourceNodeItem = sourceNodeItem;
             SourcePortId = sourcePortId;
             TargetNodeItem = targetNodeItem;

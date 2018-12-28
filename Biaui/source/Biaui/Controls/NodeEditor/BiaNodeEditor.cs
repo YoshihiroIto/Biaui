@@ -608,8 +608,7 @@ namespace Biaui.Controls.NodeEditor
                 var args = new NodeLinkStartingEventArgs(nodeItem, port.Id);
                 NodeLinkStarting?.Invoke(this, args);
 
-                if (args.IsCancel == false)
-                    _linkConnector.BeginDrag(nodeItem, port);
+                _linkConnector.BeginDrag(nodeItem, port);
 
                 UpdateNodePortEnabled(true);
             }
