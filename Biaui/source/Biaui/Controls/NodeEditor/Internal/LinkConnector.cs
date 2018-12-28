@@ -273,8 +273,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var rect = _parent.Transform(new ImmutableRect(0, 0, ActualWidth, ActualHeight));
             rect = new ImmutableRect(rect.X + Pos.X / scale, rect.Y + Pos.Y / scale, rect.Width, rect.Height);
 
-            //Span<Point> bezierPoints = stackalloc Point[4];
-            Span<Point> bezierPoints = new Point[4];
+            Span<Point> bezierPoints = stackalloc Point[4];
             var hitTestWork = MemoryMarshal.Cast<Point, ImmutableVec2>(bezierPoints);
 
             bezierPoints[0] = _parent.BezierPoints[0];
