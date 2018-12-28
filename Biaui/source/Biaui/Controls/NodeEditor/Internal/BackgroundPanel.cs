@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -232,7 +233,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                     var t2 = p1 + sv;
                     var t3 = p1 - sv;
 
-                    curve.Ctx.DrawTriangle(t1.ToPoint(), t2.ToPoint(), t3.ToPoint(), false, false);
+                    curve.Ctx.DrawTriangle(
+                        Unsafe.As<ImmutableVec2, Point>(ref t1),
+                        Unsafe.As<ImmutableVec2, Point>(ref t2),
+                        Unsafe.As<ImmutableVec2, Point>(ref t3),
+                        false, false);
                 }
             }
 

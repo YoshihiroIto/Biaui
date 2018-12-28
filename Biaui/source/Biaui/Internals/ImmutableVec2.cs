@@ -40,9 +40,6 @@ namespace Biaui.Internals
             => X.GetHashCode() ^
                Y.GetHashCode();
 
-        public Point ToPoint()
-            => new Point(X, Y);
-
         public static ImmutableVec2 SetSize(in ImmutableVec2 v, double size)
         {
             var n = Math.Sqrt(v.X * v.X + v.Y * v.Y);
