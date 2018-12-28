@@ -384,7 +384,7 @@ namespace Biaui.Controls.Mock.Presentation
                         Item2 = nodes[i],
                         Item2PortId = NodePortId.Make("InputA"),
 
-                        Color = Colors.LightSkyBlue,
+                        Color = Colors.DeepPink,
                         Style = (i & 1) == 0
                             ? BiaNodeLinkStyle.Arrow
                             : BiaNodeLinkStyle.None

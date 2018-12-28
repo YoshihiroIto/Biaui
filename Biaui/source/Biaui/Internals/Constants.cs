@@ -8,7 +8,6 @@
         internal const double PortMarkRadius_Highlight = PortMarkRadius * 1.25;
         internal const double PortMarkRadius_Highlight2 = PortMarkRadius_Highlight * 1.1;
 
-
         // ポートマークの半径で一番大きいもの
         internal const double PortMarkRadius_Max = PortMarkRadius_Highlight2;
     }
