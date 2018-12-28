@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Biaui.Internals
@@ -20,6 +21,26 @@ namespace Biaui.Internals
             curve.Figures.Add(pf);
 
             dc.DrawGeometry(null, pen, curve);
+        }
+
+        internal static void DrawCircle(this DrawingContext dc, Brush brush, Pen pen, Point pos, double radius)
+        {
+            var geom = new StreamGeometry
+            {
+                FillRule = FillRule.Nonzero
+            };
+
+            var ctx = geom.Open();
+            {
+                ctx.DrawEllipse(
+                    pos,
+                    radius,
+                    radius,
+                    true);
+            }
+            ((IDisposable) ctx).Dispose();
+
+            dc.DrawGeometry(brush, pen, geom);
         }
     }
 }

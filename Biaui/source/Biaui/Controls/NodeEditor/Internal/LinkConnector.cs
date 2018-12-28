@@ -117,7 +117,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (IsDragging == false)
                 return;
 
-            var radius = Biaui.Internals.Constants.PortMarkRadius_Highlight * scale;
+            var radius = Biaui.Internals.Constants.PortMarkRadius_Highlight2 * scale;
 
             // 接続線
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.Black, 5));
@@ -131,12 +131,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (rect.IntersectsWith(srcRect))
             {
-                dc.DrawEllipse(
+                dc.DrawCircle(
                     Caches.GetSolidColorBrush(SourcePort.Color),
                     portPen,
                     BezierPoints[0],
-                    Biaui.Internals.Constants.PortMarkRadius_Highlight,
-                    Biaui.Internals.Constants.PortMarkRadius_Highlight);
+                    Biaui.Internals.Constants.PortMarkRadius_Highlight2);
             }
 
             // 接続先ポートの丸
@@ -147,12 +146,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 if (rect.IntersectsWith(targetRect))
                 {
-                    dc.DrawEllipse(
+                    dc.DrawCircle(
                         Caches.GetSolidColorBrush(TargetPort.Color),
                         portPen,
                         BezierPoints[3],
-                        Biaui.Internals.Constants.PortMarkRadius_Highlight,
-                        Biaui.Internals.Constants.PortMarkRadius_Highlight);
+                        Biaui.Internals.Constants.PortMarkRadius_Highlight2);
                 }
             }
         }
@@ -224,7 +222,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             var cellWidth = width / ColumnCount;
             var cellHeight = height / RowCount;
-            var margin = Biaui.Internals.Constants.PortMarkRadius_Highlight * _transform.Scale.ScaleX;
+            var margin = Biaui.Internals.Constants.PortMarkRadius_Max * _transform.Scale.ScaleX;
 
             var i = 0;
 
