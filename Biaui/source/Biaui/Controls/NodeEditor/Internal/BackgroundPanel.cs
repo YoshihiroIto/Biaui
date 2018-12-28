@@ -44,6 +44,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         #endregion
 
         private readonly IHasTransform _transform;
+        private readonly IHasIsDragging _hasIsDragging;
 
         static BackgroundPanel()
         {
@@ -51,9 +52,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(BackgroundPanel)));
         }
 
-        internal BackgroundPanel(IHasTransform transform)
+        internal BackgroundPanel(IHasTransform transform, IHasIsDragging hasIsDragging)
         {
             _transform = transform;
+            _hasIsDragging = hasIsDragging;
 
             _transform.Translate.Changed += (_, __) => InvalidateVisual();
             _transform.Scale.Changed += (_, __) => InvalidateVisual();
@@ -163,6 +165,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var viewport = _transform.TransformRect(ActualWidth, ActualHeight);
 
+            var colorRes = TryFindResource("TextBoxBackgroundColorKey");
+            var backgroundColor = (Color?) colorRes ?? Colors.Black;
+
+            var alpha = _hasIsDragging.IsDragging ? 0.2 : 1.0;
+
             foreach (var link in LinksSource)
             {
                 InternalBiaNodeLinkData internalData;
@@ -200,7 +207,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (BiaNodeEditorHelper.HitTestBezier(hitTestWork, viewport) == false)
                     continue;
 
-                var color = link.Color;
+                var color = ColorHelper.Lerp(alpha, backgroundColor, link.Color);
                 var key = (color, link.Style);
 
                 // 線

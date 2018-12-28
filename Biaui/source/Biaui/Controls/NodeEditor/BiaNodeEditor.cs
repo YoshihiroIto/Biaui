@@ -18,7 +18,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodeEditor : BiaClippingBorder, IHasTransform
+    public class BiaNodeEditor : BiaClippingBorder, IHasTransform, IHasIsDragging
     {
         #region NodesSource
 
@@ -137,6 +137,8 @@ namespace Biaui.Controls.NodeEditor
 
         public TranslateTransform Translate { get; }
 
+        public bool IsDragging => _linkConnector.IsDragging;
+
         static BiaNodeEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodeEditor),
@@ -152,7 +154,7 @@ namespace Biaui.Controls.NodeEditor
             Translate = new TranslateTransform();
 
             var grid = new Grid();
-            grid.Children.Add(_backgroundPanel = new BackgroundPanel(this));
+            grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, this));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
             grid.Children.Add(_boxSelector = new BoxSelector());
             grid.Children.Add(_linkConnector = new LinkConnector(this));
@@ -613,6 +615,8 @@ namespace Biaui.Controls.NodeEditor
                 UpdateNodePortEnabled(true);
             }
 
+            _backgroundPanel.InvalidateVisual();
+
             e.Handled = true;
         }
 
@@ -720,6 +724,8 @@ namespace Biaui.Controls.NodeEditor
             }
 
             _linkConnector.EndDrag();
+
+            _backgroundPanel.InvalidateVisual();
 
             e.Handled = true;
         }

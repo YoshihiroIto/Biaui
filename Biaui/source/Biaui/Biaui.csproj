@@ -178,6 +178,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\BiaHsvWheelBackground.cs" />
     <Compile Include="Controls\BiaHsvWheelCursor.cs" />
+    <Compile Include="Controls\Internals\IHasIsDragging.cs" />
     <Compile Include="Controls\Internals\SystemButton.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodeEditor.cs" />
     <Compile Include="Controls\BiaTextBox.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Internals\Boxes.cs" />
     <Compile Include="Controls\BiaClippingBorder.cs" />
     <Compile Include="Internals\Caches.cs" />
+    <Compile Include="Internals\ColorHelper.cs" />
     <Compile Include="Internals\ColorSpaceHelper.cs" />
     <Compile Include="Internals\Constants.cs" />
     <Compile Include="Internals\DependencyObjectExtensions.cs" />

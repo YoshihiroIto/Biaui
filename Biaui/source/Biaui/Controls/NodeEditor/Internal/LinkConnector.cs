@@ -10,7 +10,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal class LinkConnector : Canvas
+    internal class LinkConnector : Canvas, IHasIsDragging
     {
         static LinkConnector()
         {
@@ -30,7 +30,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal ScaleTransform Scale => _transform.Scale;
 
-        internal bool IsDragging => SourceItem != null;
+        public bool IsDragging => SourceItem != null;
 
         internal readonly Point[] BezierPoints = new Point[4];
 
