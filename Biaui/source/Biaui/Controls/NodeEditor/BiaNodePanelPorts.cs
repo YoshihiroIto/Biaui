@@ -34,15 +34,10 @@ namespace Biaui.Controls.NodeEditor
                 return;
 
             var nodeItem = (IBiaNodeItem) DataContext;
-            var internalData = nodeItem.InternalData as InternalBiaNodeItemData;
             var isMouseOverNode = nodeItem.IsMouseOver;
 
-            foreach (var port in nodeItem.Layout.Ports.Values)
+            foreach (var port in nodeItem.EnabledPorts())
             {
-                if (internalData != null)
-                    if (internalData.EnablePorts.Contains(port.Id) == false)
-                        continue;
-
                 var portPos = port.MakePos(ActualWidth, ActualHeight);
 
                 var r = Biaui.Internals.Constants.PortMarkRadius;

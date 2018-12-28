@@ -184,7 +184,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     TargetItem = nodeItem;
 
-                    foreach (var port in nodeItem.Layout.Ports.Values)
+                    foreach (var port in nodeItem.EnabledPorts())
                     {
                         if (port == SourcePort && TargetItem == SourceItem)
                             continue;

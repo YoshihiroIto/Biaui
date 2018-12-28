@@ -923,8 +923,13 @@ namespace Biaui.Controls.NodeEditor
 
             internalData.EnablePorts.Clear();
 
-            foreach (var enabledPort in NodePortEnabledChecker.Check(target, args))
-                internalData.EnablePorts.Add(enabledPort);
+            foreach (var enabledPortId in NodePortEnabledChecker.Check(target, args))
+            {
+                Debug.Assert(target.Layout.Ports.ContainsKey(enabledPortId));
+
+                var port = target.Layout.Ports[enabledPortId];
+                internalData.EnablePorts.Add(port);
+            }
         }
     }
 }

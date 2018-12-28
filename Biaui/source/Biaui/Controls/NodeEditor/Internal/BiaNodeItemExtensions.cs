@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using Biaui.Interfaces;
 using Biaui.Internals;
 
@@ -32,7 +33,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var itemSize = nodeItem.Size;
 
-            foreach (var port in nodeItem.Layout.Ports.Values)
+            foreach (var port in nodeItem.EnabledPorts())
             {
                 var portLocalPos = port.MakePos(itemSize.Width, itemSize.Height);
 
@@ -53,6 +54,15 @@ namespace Biaui.Controls.NodeEditor.Internal
                 return port;
 
             return null;
+        }
+
+        internal static IEnumerable<BiaNodePort> EnabledPorts(this IBiaNodeItem nodeItem)
+        {
+            var internalData = (InternalBiaNodeItemData)nodeItem.InternalData;
+
+            return internalData != null
+                ? internalData.EnablePorts
+                : nodeItem.Layout.Ports.Values as IEnumerable<BiaNodePort>;
         }
     }
 }
