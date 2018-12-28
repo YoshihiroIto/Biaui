@@ -300,7 +300,10 @@ namespace Biaui.Controls.NodeEditor
                         nodeItem.PropertyChanged -= NodeItemPropertyChanged;
 
                         if (_nodeDict.TryGetValue(nodeItem, out var panel))
-                            RemoveNodePanel(panel);
+                        {
+                            if (panel != null)
+                                RemoveNodePanel(panel);
+                        }
 
                         _nodeDict.Remove(nodeItem);
                         _selectedNodes.Remove(nodeItem);
