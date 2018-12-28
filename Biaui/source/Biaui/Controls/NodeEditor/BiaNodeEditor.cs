@@ -82,7 +82,7 @@ namespace Biaui.Controls.NodeEditor
 
 
         #region NodePortEnabledChecker
-        
+
         public IBiaNodePortEnabledChecker NodePortEnabledChecker
         {
             get => _NodePortEnabledChecker;
@@ -92,9 +92,9 @@ namespace Biaui.Controls.NodeEditor
                     SetValue(NodePortEnabledCheckerProperty, value);
             }
         }
-        
+
         private IBiaNodePortEnabledChecker _NodePortEnabledChecker;
-        
+
         public static readonly DependencyProperty NodePortEnabledCheckerProperty =
             DependencyProperty.Register(
                 nameof(NodePortEnabledChecker),
@@ -105,9 +105,9 @@ namespace Biaui.Controls.NodeEditor
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._NodePortEnabledChecker = (IBiaNodePortEnabledChecker)e.NewValue;
+                        self._NodePortEnabledChecker = (IBiaNodePortEnabledChecker) e.NewValue;
                     }));
-        
+
         #endregion
 
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
@@ -437,6 +437,7 @@ namespace Biaui.Controls.NodeEditor
 
                         nodePanel.Style = FindResource(item.GetType()) as Style;
                         nodePanel.DataContext = item;
+                        nodePanel.Opacity = 1.0;
 
                         _changedUpdate.Add((item, nodePanel));
 
@@ -905,17 +906,37 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var child in _nodePanelBag.Children)
             {
-                var nodeItem = (IBiaNodeItem)child.DataContext;
+                var nodeItem = (IBiaNodeItem) child.DataContext;
 
                 UpdateNodePortEnabled(nodeItem, args);
 
                 child.InvalidatePorts();
+
+                InternalBiaNodeItemData internalData;
+
+                if (nodeItem.InternalData == null)
+                {
+                    internalData = new InternalBiaNodeItemData();
+                    nodeItem.InternalData = internalData;
+                }
+                else
+                {
+                    internalData = (InternalBiaNodeItemData) nodeItem.InternalData;
+                }
+
+                if (isStart)
+                    child.Opacity = internalData.EnablePorts.Count > 0
+                        ? 1.0
+                        : 0.2;
+                else
+                    child.Opacity = 1.0;
             }
         }
 
         private void UpdateNodePortEnabled(IBiaNodeItem target, in BiaNodePortEnabledCheckerArgs args)
         {
             InternalBiaNodeItemData internalData;
+
             if (target.InternalData == null)
             {
                 internalData = new InternalBiaNodeItemData();
@@ -923,7 +944,7 @@ namespace Biaui.Controls.NodeEditor
             }
             else
             {
-                internalData = (InternalBiaNodeItemData)target.InternalData;
+                internalData = (InternalBiaNodeItemData) target.InternalData;
             }
 
             internalData.EnablePorts.Clear();
