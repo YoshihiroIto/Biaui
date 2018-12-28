@@ -32,6 +32,19 @@ namespace Biaui.Internals
             );
         }
 
+        public ImmutableRect(in ImmutableVec2 pos0, in ImmutableVec2 pos1)
+        {
+            var (minX, maxX) = (pos0.X, pos1.X).MinMax();
+            var (minY, maxY) = (pos0.Y, pos1.Y).MinMax();
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
         public ImmutableRect(Point[] poss)
         {
             var minX = poss[0].X;
@@ -118,6 +131,18 @@ namespace Biaui.Internals
             var targetBottom = target.Y + target.Height;
 
             return target.X <= right && targetRight >= X && target.Y <= bottom && targetBottom >= Y;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IntersectsWith(in ImmutableVec2 target)
+        {
+            var right = X + Width;
+            var bottom = Y + Height;
+
+            return target.X >= X &&
+                   target.X < right &&
+                   target.Y >= bottom &&
+                   target.Y < bottom;
         }
 
         public bool IntersectsWith(in ImmutableCircle target)

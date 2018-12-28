@@ -66,6 +66,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var v0112 = new ImmutableVec2((v01.X + v12.X) * 0.5, (v01.Y + v12.Y) * 0.5);
                 var v1223 = new ImmutableVec2((v12.X + v23.X) * 0.5, (v12.Y + v23.Y) * 0.5);
 
+                if (NumberHelper.Abs(v0112.X - v1223.X) < 0.00001 &&
+                    NumberHelper.Abs(v0112.Y - v1223.Y) < 0.00001)
+                    return rect.IntersectsWith(v0112);
+
                 var c = new ImmutableVec2((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
 
                 Span<ImmutableVec2> cl = new[]

@@ -47,6 +47,12 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static double Abs(double value)
+            => value > 0
+                ? value
+                : -value;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Clamp01(double value)
         {
             if (value < 0.0)
