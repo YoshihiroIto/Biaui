@@ -528,7 +528,7 @@ namespace Biaui.Controls.Mock.Presentation
                         NodePortId.Make("Red"), new BiaNodePort
                         {
                             Id = NodePortId.Make("Red"),
-                            Offset = new Point(0, -Constants.BasicOneLineHeight * 4),
+                            Offset = new Point(0, -28 * 4),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End,
                             Color = Colors.Red
@@ -538,7 +538,7 @@ namespace Biaui.Controls.Mock.Presentation
                         NodePortId.Make("Green"), new BiaNodePort
                         {
                             Id = NodePortId.Make("Green"),
-                            Offset = new Point(0, -Constants.BasicOneLineHeight * 3),
+                            Offset = new Point(0, -28 * 3),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End,
                             Color = Colors.LimeGreen
@@ -548,7 +548,7 @@ namespace Biaui.Controls.Mock.Presentation
                         NodePortId.Make("Blue"), new BiaNodePort
                         {
                             Id = NodePortId.Make("Blue"),
-                            Offset = new Point(0, -Constants.BasicOneLineHeight * 2),
+                            Offset = new Point(0, -28 * 2),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End,
                             Color = Colors.DodgerBlue
@@ -558,7 +558,7 @@ namespace Biaui.Controls.Mock.Presentation
                         NodePortId.Make("OutputA"), new BiaNodePort
                         {
                             Id = NodePortId.Make("OutputA"),
-                            Offset = new Point(0, -Constants.BasicOneLineHeight * 1),
+                            Offset = new Point(0, -28 * 1),
                             Dir = BiaNodePortDir.Right,
                             Align = BiaNodePortAlign.End
                         }
