@@ -164,30 +164,31 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var link in LinksSource)
             {
-                (BiaNodePort Port1, BiaNodePort Port2) portPair;
+                InternalBiaNodeLinkData internalData;
 
                 if (link.InternalData == null)
                 {
-                    var port1 = link.Item1.FindPortFromId(link.Item1PortId);
-                    var port2 = link.Item2.FindPortFromId(link.Item2PortId);
+                    internalData = new InternalBiaNodeLinkData
+                    {
+                        Port1 = link.Item1.FindPortFromId(link.Item1PortId),
+                        Port2 = link.Item2.FindPortFromId(link.Item2PortId)
+                    };
 
-                    portPair = (port1, port2);
-
-                    link.InternalData = portPair;
+                    link.InternalData = internalData;
                 }
                 else
                 {
-                    portPair = ((BiaNodePort, BiaNodePort)) link.InternalData;
+                    internalData = (InternalBiaNodeLinkData) link.InternalData;
                 }
 
-                if (portPair.Port1 == null || portPair.Port2 == null)
+                if (internalData.Port1 == null || internalData.Port2 == null)
                     continue;
 
-                var pos1 = link.Item1.MakePortPos(portPair.Port1);
-                var pos2 = link.Item2.MakePortPos(portPair.Port2);
+                var pos1 = link.Item1.MakePortPos(internalData.Port1);
+                var pos2 = link.Item2.MakePortPos(internalData.Port2);
 
-                var pos12 = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, portPair.Port1.Dir);
-                var pos21 = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, portPair.Port2.Dir);
+                var pos12 = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, internalData.Port1.Dir);
+                var pos21 = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, internalData.Port2.Dir);
 
                 // ※.HitTestBezier を呼ぶと_bezierPointsは書き変わる
                 bezierPoints[0] = pos1;
