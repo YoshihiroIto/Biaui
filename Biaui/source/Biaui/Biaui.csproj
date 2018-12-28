@@ -209,7 +209,10 @@
     <Compile Include="Controls\NodeEditor\BiaNodePanel.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePort.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePortLayout.cs" />
+    <Compile Include="Controls\NodeEditor\IBiaNodePortEnabledChecker.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodePortExtensions.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeItemData.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeLinkData.cs" />
     <Compile Include="Controls\NodeEditor\Internal\LinkConnector.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BoxSelector.cs" />
     <Compile Include="Controls\Internals\FrameworkElementBag.cs" />

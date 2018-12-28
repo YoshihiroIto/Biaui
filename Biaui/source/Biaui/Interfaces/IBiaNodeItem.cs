@@ -17,6 +17,8 @@ namespace Biaui.Interfaces
         Size Size { get; set; }
 
         BiaNodePortLayout Layout { get; }
+
+        object InternalData { get; set; }
     }
 
     public enum BiaNodePanelHitType

@@ -135,6 +135,18 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
+        #region NodePortEnabledChecker
+        
+        private IBiaNodePortEnabledChecker _NodePortEnabledChecker = new NodePortEnabledChecker();
+        
+        public IBiaNodePortEnabledChecker NodePortEnabledChecker
+        {
+            get => _NodePortEnabledChecker;
+            set => SetProperty(ref _NodePortEnabledChecker, value);
+        }
+        
+        #endregion
+
         public BiaNodeEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
         {
             var addCount = 0;
@@ -458,6 +470,8 @@ namespace Biaui.Controls.Mock.Presentation
         public abstract BiaNodePanelHitType HitType { get; }
 
         public abstract BiaNodePortLayout Layout { get; }
+
+        public object InternalData { get; set; }
     }
 
     public class BasicNode : NodeBase
@@ -675,5 +689,31 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
 
         public object InternalData { get; set; }
+    }
+
+    public class NodePortEnabledChecker : IBiaNodePortEnabledChecker
+    {
+        public IEnumerable<int> Check(IBiaNodeItem target, in BiaNodePortEnabledCheckerArgs args)
+        {
+            switch (args.Timing)
+            {
+                case BiaNodePortEnableTiming.Default:
+                    return target.Layout.Ports.Keys;
+
+                case BiaNodePortEnableTiming.ConnectionStarting:
+                    // 開始ノードが CircleNodeの場合相手もCircleNodeに限る
+                    if (args.SourceItem is CircleNode)
+                    {
+                        return target is CircleNode
+                            ? target.Layout.Ports.Keys
+                            : Enumerable.Empty<int>();
+                    }
+                    else
+                        return target.Layout.Ports.Keys;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }

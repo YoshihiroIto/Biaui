@@ -2,14 +2,14 @@
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:behavior="clr-namespace:Biaui.Controls.Mock.Control.Behavior"
+                    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
+                    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command"
                     xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor;assembly=Biaui"
-        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:presentation="clr-namespace:Biaui.Controls.Mock.Presentation"
-                    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command"
                     Title="Biaui.Controls.Mock"
                     Width="1000"
                     Height="800"
@@ -592,6 +592,7 @@
                                           BorderThickness="1"
                                           CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}"
                                           LinksSource="{Binding BiaNodeEditorViewModel.Links, Mode=OneWay}"
+                                          NodePortEnabledChecker="{Binding BiaNodeEditorViewModel.NodePortEnabledChecker, Mode=OneWay}"
                                           NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
                     <nodeEditor:BiaNodeEditor.Resources>
                         <ResourceDictionary>

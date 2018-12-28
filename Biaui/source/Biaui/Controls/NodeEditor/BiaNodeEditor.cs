@@ -80,6 +80,36 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+
+        #region NodePortEnabledChecker
+        
+        public IBiaNodePortEnabledChecker NodePortEnabledChecker
+        {
+            get => _NodePortEnabledChecker;
+            set
+            {
+                if (value != _NodePortEnabledChecker)
+                    SetValue(NodePortEnabledCheckerProperty, value);
+            }
+        }
+        
+        private IBiaNodePortEnabledChecker _NodePortEnabledChecker;
+        
+        public static readonly DependencyProperty NodePortEnabledCheckerProperty =
+            DependencyProperty.Register(
+                nameof(NodePortEnabledChecker),
+                typeof(IBiaNodePortEnabledChecker),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    default(IBiaNodePortEnabledChecker),
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._NodePortEnabledChecker = (IBiaNodePortEnabledChecker)e.NewValue;
+                    }));
+        
+        #endregion
+
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
 
         public event EventHandler<NodeLinkConnectingEventArgs> NodeLinkConnecting;
@@ -580,6 +610,8 @@ namespace Biaui.Controls.NodeEditor
 
                 if (args.IsCancel == false)
                     _linkConnector.BeginDrag(nodeItem, port);
+
+                UpdateNodePortEnabled(true);
             }
 
             e.Handled = true;
@@ -684,6 +716,8 @@ namespace Biaui.Controls.NodeEditor
                             _linkConnector.TargetItem,
                             _linkConnector.TargetPort.Id));
                 }
+
+                UpdateNodePortEnabled(false);
             }
 
             _linkConnector.EndDrag();
@@ -851,5 +885,46 @@ namespace Biaui.Controls.NodeEditor
         }
 
         #endregion
+
+        private void UpdateNodePortEnabled(bool isStart)
+        {
+            if (NodePortEnabledChecker == null)
+                return;
+
+            var args = new BiaNodePortEnabledCheckerArgs(
+                isStart
+                    ? BiaNodePortEnableTiming.ConnectionStarting
+                    : BiaNodePortEnableTiming.Default,
+                _linkConnector.SourceItem,
+                _linkConnector.SourcePort.Id);
+
+            foreach (var child in _nodePanelBag.Children)
+            {
+                var nodeItem = (IBiaNodeItem)child.DataContext;
+
+                UpdateNodePortEnabled(nodeItem, args);
+
+                child.InvalidatePorts();
+            }
+        }
+
+        private void UpdateNodePortEnabled(IBiaNodeItem target, in BiaNodePortEnabledCheckerArgs args)
+        {
+            InternalBiaNodeItemData internalData;
+            if (target.InternalData == null)
+            {
+                internalData = new InternalBiaNodeItemData();
+                target.InternalData = internalData;
+            }
+            else
+            {
+                internalData = (InternalBiaNodeItemData)target.InternalData;
+            }
+
+            internalData.EnablePorts.Clear();
+
+            foreach (var enabledPort in NodePortEnabledChecker.Check(target, args))
+                internalData.EnablePorts.Add(enabledPort);
+        }
     }
 }
