@@ -17,17 +17,6 @@ namespace Biaui.Controls.NodeEditor
 
         internal Point MakePortPos() => Item.MakePortPos(Port);
 
-        internal BiaNodePort FindPort()
-        {
-            if (Item.Layout.Ports == null)
-                return null;
-
-            if (Item.Layout.Ports.TryGetValue(Port.Id, out var port))
-                return port;
-
-            return null;
-        }
-
         internal BiaNodeItemPortIdPair ToItemPortIdPair()
             => new BiaNodeItemPortIdPair(Item, Port.Id);
 

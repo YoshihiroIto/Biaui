@@ -175,11 +175,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void Invalidate()
         {
-            _parent.IsNodePortDragging = IsNodePortDragging;
-
             UpdateBezierPoints();
-
             UpdateChildren(ActualWidth, ActualHeight);
+
+            _parent.IsNodePortDragging = IsNodePortDragging;
+            _parent.InvokeLinkChanged();
         }
 
         internal ImmutableRect Transform(in ImmutableRect rect) => _parent.TransformRect(rect);

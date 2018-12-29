@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -12,9 +16,37 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal class NodeContainer
+    internal class NodeContainer : FrameworkElementBag<BiaNodePanel>
     {
-        internal IEnumerable<KeyValuePair<IBiaNodeItem, BiaNodePanel>> Items => _nodeDict;
+        #region NodesSource
+
+        internal ObservableCollection<IBiaNodeItem> NodesSource
+        {
+            get => _NodesSource;
+            set
+            {
+                if (value != _NodesSource)
+                    SetValue(NodesSourceProperty, value);
+            }
+        }
+
+        private ObservableCollection<IBiaNodeItem> _NodesSource;
+
+        public static readonly DependencyProperty NodesSourceProperty =
+            DependencyProperty.Register(nameof(NodesSource), typeof(ObservableCollection<IBiaNodeItem>),
+                typeof(NodeContainer),
+                new PropertyMetadata(
+                    default(ObservableCollection<IBiaNodeItem>),
+                    (s, e) =>
+                    {
+                        var self = (NodeContainer) s;
+
+                        var old = self._NodesSource;
+                        self._NodesSource = (ObservableCollection<IBiaNodeItem>) e.NewValue;
+                        self.UpdateNodesSource(old, self._NodesSource);
+                    }));
+
+        #endregion
 
         private readonly BiaNodeEditor _parent;
         private readonly MouseOperator _mouseOperator;
@@ -22,7 +54,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict
             = new Dictionary<IBiaNodeItem, BiaNodePanel>();
 
-        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate = new List<(IBiaNodeItem, BiaNodePanel)>();
+        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate
+            = new List<(IBiaNodeItem, BiaNodePanel)>();
 
         private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
         private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
@@ -34,9 +67,14 @@ namespace Biaui.Controls.NodeEditor.Internal
         private int _isEnableUpdateChildrenBagDepth;
 
         internal NodeContainer(BiaNodeEditor parent, MouseOperator mouseOperator)
+            : base(parent)
         {
             _parent = parent;
             _mouseOperator = mouseOperator;
+
+            _parent.SizeChanged += (_, __) => UpdateChildrenBag(true);
+            _parent.Unloaded += (_, __) => StopTimer();
+            _parent.NodesSourceChanging += (_, __) => Clear();
 
             _mouseOperator.PanelMoving += OnPanelMoving;
             _mouseOperator.PostMouseWheel += OnPostMouseWheel;
@@ -49,7 +87,26 @@ namespace Biaui.Controls.NodeEditor.Internal
                 (_, __) => DoRemoverNodePanel(),
                 Dispatcher.CurrentDispatcher);
 
-            _removeNodePanelTimer.Stop();
+            StopTimer();
+
+            SetBinding(
+                NodesSourceProperty,
+                new Binding(nameof(NodesSource))
+                {
+                    Source = parent,
+                    Mode = BindingMode.OneWay
+                });
+        }
+
+        private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
+        {
+            ++_isEnableUpdateChildrenBagDepth;
+            {
+                foreach (var n in _selectedNodes)
+                    n.Pos += e.Diff;
+            }
+            --_isEnableUpdateChildrenBagDepth;
+            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
         }
 
         private void OnPreMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -97,76 +154,48 @@ namespace Biaui.Controls.NodeEditor.Internal
             UpdateChildrenBag(true);
         }
 
-        internal void Stop()
+        private void StopTimer()
         {
             _removeNodePanelTimer.Stop();
         }
 
-        internal void AddOrUpdate(IBiaNodeItem nodeItem, BiaNodePanel panel)
+        private void AddOrUpdate(IBiaNodeItem nodeItem, BiaNodePanel panel)
         {
             _nodeDict[nodeItem] = panel;
         }
 
-        internal void Remove(IBiaNodeItem nodeItem)
+        private void Remove(IBiaNodeItem nodeItem)
         {
             _nodeDict.Remove(nodeItem);
             _selectedNodes.Remove(nodeItem);
             _preSelectedNodes.Remove(nodeItem);
         }
 
-        internal void Clear()
+        private void Clear()
         {
-            _nodeDict.Clear();
-
-            _selectedNodes.Clear();
-            _preSelectedNodes.Clear();
-        }
-
-        internal void ClearPreSelectedNode()
-        {
-            foreach (var n in _preSelectedNodes.ToArray())
-                n.IsPreSelected = false;
-        }
-
-        internal void CleanAll()
-        {
-            foreach (var i in Items)
+            foreach (var i in _nodeDict)
             {
                 var nodeItem = i.Key;
                 var panel = i.Value;
 
-                nodeItem.PropertyChanged -= _parent.NodeItemPropertyChanged;
+                nodeItem.PropertyChanged -= NodeItemPropertyChanged;
 
                 if (panel != null)
                     RemoveNodePanel(panel);
             }
 
-            Clear();
-
-            _parent._backgroundPanel.InvalidateVisual();
+            _nodeDict.Clear();
+            _selectedNodes.Clear();
+            _preSelectedNodes.Clear();
         }
 
-        internal void RemoveNodePanel(BiaNodePanel panel)
+        private void ClearPreSelectedNode()
         {
-            if (panel == null)
-                throw new ArgumentNullException(nameof(panel));
-
-            ReturnNodePanel(panel);
-            _parent._nodePanelBag.RemoveChild(panel);
+            foreach (var n in _preSelectedNodes.ToArray())
+                n.IsPreSelected = false;
         }
 
-        private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
-        {
-            ++_isEnableUpdateChildrenBagDepth;
-            {
-                foreach (var n in _selectedNodes)
-                    n.Pos += e.Diff;
-            }
-            --_isEnableUpdateChildrenBagDepth;
-            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
-        }
-
-        internal void SelectNodes(in ImmutableRect rect)
+        private void SelectNodes(in ImmutableRect rect)
         {
             ++_isEnableUpdateChildrenBagDepth;
             {
@@ -174,7 +203,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                     ClearSelectedNode();
 
-                foreach (var c in _parent._nodePanelBag.Children)
+                foreach (var c in Children)
                 {
                     var node = (IBiaNodeItem) c.DataContext;
 
@@ -191,13 +220,13 @@ namespace Biaui.Controls.NodeEditor.Internal
             Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
         }
 
-        internal void PreSelectNodes(in ImmutableRect rect)
+        private void PreSelectNodes(in ImmutableRect rect)
         {
             ++_isEnableUpdateChildrenBagDepth;
             {
                 ClearPreSelectedNode();
 
-                foreach (var c in _parent._nodePanelBag.Children)
+                foreach (var c in Children)
                 {
                     var node = (IBiaNodeItem) c.DataContext;
 
@@ -207,6 +236,21 @@ namespace Biaui.Controls.NodeEditor.Internal
                     node.IsPreSelected = true;
                 }
             }
+            --_isEnableUpdateChildrenBagDepth;
+            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
+        }
+
+        private void AlignSelectedNodes()
+        {
+            ++_isEnableUpdateChildrenBagDepth;
+
+            foreach (var n in _selectedNodes)
+            {
+                n.Pos = new Point(
+                    Math.Round(n.Pos.X / 32) * 32,
+                    Math.Round(n.Pos.Y / 32) * 32);
+            }
+
             --_isEnableUpdateChildrenBagDepth;
             Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
         }
@@ -273,28 +317,21 @@ namespace Biaui.Controls.NodeEditor.Internal
             return isHit;
         }
 
-
-        internal void AlignSelectedNodes()
-        {
-            ++_isEnableUpdateChildrenBagDepth;
-
-            foreach (var n in _selectedNodes)
-            {
-                n.Pos = new Point(
-                    Math.Round(n.Pos.X / 32) * 32,
-                    Math.Round(n.Pos.Y / 32) * 32);
-            }
-
-            --_isEnableUpdateChildrenBagDepth;
-            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
-        }
-
         private void ReturnNodePanel(BiaNodePanel panel)
         {
             if (panel == null)
                 throw new ArgumentNullException(nameof(panel));
 
             _recycleNodePanelPool.Push(panel);
+        }
+
+        private void RemoveNodePanel(BiaNodePanel panel)
+        {
+            if (panel == null)
+                throw new ArgumentNullException(nameof(panel));
+
+            ReturnNodePanel(panel);
+            RemoveChild(panel);
         }
 
         private void DoRemoverNodePanel()
@@ -313,15 +350,21 @@ namespace Biaui.Controls.NodeEditor.Internal
                 _removeNodePanelTimer.Stop();
         }
 
+        private void RequestRemoveNodePanel(BiaNodePanel panel)
+        {
+            _removeNodePanelPool.Push(panel);
 
-        internal BiaNodePanel FindPanel(IBiaNodeItem nodeItem)
+            _removeNodePanelTimer.Start();
+        }
+
+        private BiaNodePanel FindPanel(IBiaNodeItem nodeItem)
         {
             return _nodeDict.TryGetValue(nodeItem, out var panel) == false
                 ? null
                 : panel;
         }
 
-        internal void UpdateChildrenBag(bool isPushRemove)
+        private void UpdateChildrenBag(bool isPushRemove)
         {
             if (_isEnableUpdateChildrenBagDepth > 0)
                 return;
@@ -330,16 +373,16 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             UpdateChildrenBag(viewPortRect, isPushRemove);
 
-            _parent._nodePanelBag.InvalidateMeasure();
+            InvalidateMeasure();
         }
 
-        internal void UpdateChildrenBag(in ImmutableRect viewportRect, bool isPushRemove)
+        private void UpdateChildrenBag(in ImmutableRect viewportRect, bool isPushRemove)
         {
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
             // 対象のitemはまだ_nodeDictに登録されていないので問題ない(再入しない)。
 
-            foreach (var c in Items)
+            foreach (var c in _nodeDict)
             {
                 var item = c.Key;
                 var nodePanel = c.Value;
@@ -372,16 +415,16 @@ namespace Biaui.Controls.NodeEditor.Internal
                         bool isAdded;
                         (nodePanel, isAdded) = FindOrCreateNodePanel();
 
-                        nodePanel.Style = _parent.FindResource(item.GetType()) as Style;
+                        nodePanel.Style = FindResource(item.GetType()) as Style;
                         nodePanel.DataContext = item;
                         nodePanel.Opacity = 1.0;
 
                         _changedUpdate.Add((item, nodePanel));
 
                         if (isAdded)
-                            _parent._nodePanelBag.ChangeElement(nodePanel);
+                            ChangeElement(nodePanel);
                         else
-                            _parent._nodePanelBag.AddChild(nodePanel);
+                            AddChild(nodePanel);
                     }
                 }
                 else
@@ -402,13 +445,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                 AddOrUpdate(c.Item1, c.Item2);
 
             _changedUpdate.Clear();
-        }
-
-        private void RequestRemoveNodePanel(BiaNodePanel panel)
-        {
-            _removeNodePanelPool.Push(panel);
-
-            _removeNodePanelTimer.Start();
         }
 
         private (BiaNodePanel Panel, bool IsAdded) FindOrCreateNodePanel()
@@ -432,18 +468,13 @@ namespace Biaui.Controls.NodeEditor.Internal
             return (p, false);
         }
 
-        private void SetFrontmost(BiaNodePanel child)
-        {
-            _parent._nodePanelBag.ToLast(child);
-        }
-
         private void ClearSelectedNode()
         {
             foreach (var n in _selectedNodes.ToArray())
                 n.IsSelected = false;
         }
 
-        internal void UpdateNodePortEnabled(bool isStart)
+        private void UpdateNodePortEnabled(bool isStart)
         {
             if (_parent.NodePortEnabledChecker == null)
                 return;
@@ -455,7 +486,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 _parent.SourceNodePortConnecting.Item,
                 _parent.SourceNodePortConnecting.Port.Id);
 
-            foreach (var child in _parent._nodePanelBag.Children)
+            foreach (var child in Children)
             {
                 var nodeItem = (IBiaNodeItem) child.DataContext;
 
@@ -509,7 +540,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        internal void UpdateSelectedNode(IBiaNodeItem node)
+        private void UpdateSelectedNode(IBiaNodeItem node)
         {
             if (node.IsSelected)
                 _selectedNodes.Add(node);
@@ -522,12 +553,146 @@ namespace Biaui.Controls.NodeEditor.Internal
                 _preSelectedNodes.Remove(node);
         }
 
+        private void UpdateNodesSource(
+            ObservableCollection<IBiaNodeItem> oldSource,
+            ObservableCollection<IBiaNodeItem> newSource)
+        {
+            if (oldSource != null)
+                oldSource.CollectionChanged -= NodesSourceOnCollectionChanged;
+
+            if (newSource != null)
+            {
+                newSource.CollectionChanged += NodesSourceOnCollectionChanged;
+
+                // 最初は全部追加として扱う
+                NodesSourceOnCollectionChanged(null,
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newSource, 0));
+            }
+        }
+
+        private void NodesSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (e.NewItems == null)
+                        break;
+
+                    foreach (IBiaNodeItem nodeItem in e.NewItems)
+                    {
+                        nodeItem.PropertyChanged += NodeItemPropertyChanged;
+
+                        AddOrUpdate(nodeItem, null);
+                        UpdateSelectedNode(nodeItem);
+                    }
+
+                    UpdateChildrenBag(true);
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    if (e.OldItems == null)
+                        break;
+
+                    foreach (IBiaNodeItem nodeItem in e.OldItems)
+                    {
+                        nodeItem.PropertyChanged -= NodeItemPropertyChanged;
+
+                        var panel = FindPanel(nodeItem);
+                        if (panel != null)
+                            RemoveNodePanel(panel);
+
+                        Remove(nodeItem);
+                    }
+
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    Clear();
+                    break;
+
+                case NotifyCollectionChangedAction.Replace:
+                {
+                    var oldItems = e.OldItems.Cast<IBiaNodeItem>().ToArray();
+                    var newItems = e.NewItems.Cast<IBiaNodeItem>().ToArray();
+
+                    if (oldItems.Length != newItems.Length)
+                        throw new NotSupportedException();
+
+                    for (var i = 0; i != oldItems.Length; ++i)
+                    {
+                        var oldItem = oldItems[i];
+                        var newItem = newItems[i];
+
+                        var panel = FindPanel(oldItem);
+
+                        oldItem.PropertyChanged -= NodeItemPropertyChanged;
+                        Remove(oldItem);
+
+                        newItem.PropertyChanged += NodeItemPropertyChanged;
+                        AddOrUpdate(newItem, null);
+                        UpdateSelectedNode(newItem);
+
+                        if (panel != null)
+                            RemoveNodePanel(panel);
+                    }
+
+                    UpdateChildrenBag(true);
+                    break;
+                }
+
+                case NotifyCollectionChangedAction.Move:
+                    throw new NotSupportedException();
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void NodeItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var node = (IBiaNodeItem) sender;
+
+            switch (e.PropertyName)
+            {
+                case nameof(IBiaNodeItem.Pos):
+                case nameof(IBiaNodeItem.Size):
+                {
+                    _parent.InvokeNodeItemMoved();
+
+                    ChangeElementInternal(true);
+                    break;
+                }
+
+                case nameof(IBiaNodeItem.IsSelected):
+                case nameof(IBiaNodeItem.IsPreSelected):
+                {
+                    UpdateSelectedNode(node);
+                    ChangeElementInternal(false);
+                    break;
+                }
+            }
+
+            //////////////////////////////////////////////////////////////////////////////////////
+            void ChangeElementInternal(bool isPushRemove)
+            {
+                var panel = FindPanel(node);
+
+                if (panel != null)
+                {
+                    ChangeElement(panel);
+                    UpdateChildrenBag(isPushRemove);
+                }
+            }
+        }
+
+        #region NodePanel
+
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
             var nodeItem = (IBiaNodeItem) panel.DataContext;
 
-            SetFrontmost(panel);
+            ToLast(panel);
 
             nodeItem.IsMouseOver = true;
 
@@ -586,16 +751,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                 UpdateNodePortEnabled(true);
             }
 
-            _parent._backgroundPanel.InvalidateVisual();
-
             e.Handled = true;
         }
 
         private void NodePanel_OnMouseMove(object sender, MouseEventArgs e)
         {
             _mouseOperator.OnMouseMove(e);
-
-            //e.Handled = true;
         }
+
+        #endregion
     }
 }

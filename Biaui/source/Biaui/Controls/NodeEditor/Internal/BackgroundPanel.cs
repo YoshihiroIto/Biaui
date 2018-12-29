@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -14,37 +13,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class BackgroundPanel : Canvas
     {
-        #region LinksSource
-
-        public ObservableCollection<IBiaNodeLink> LinksSource
-        {
-            get => _LinksSource;
-            set
-            {
-                if (value != _LinksSource)
-                    SetValue(LinksSourceProperty, value);
-            }
-        }
-
-        private ObservableCollection<IBiaNodeLink> _LinksSource;
-
-        public static readonly DependencyProperty LinksSourceProperty =
-            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<IBiaNodeLink>),
-                typeof(BackgroundPanel),
-                new FrameworkPropertyMetadata(
-                    default(ObservableCollection<IBiaNodeLink>),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BackgroundPanel) s;
-                        self._LinksSource = (ObservableCollection<IBiaNodeLink>) e.NewValue;
-                    }));
-
-        #endregion
-
-        private readonly IHasTransform _transform;
-        private readonly IHasIsNodePortDragging _hasIsNodePortDragging;
+        private readonly BiaNodeEditor _parent;
 
         static BackgroundPanel()
         {
@@ -52,13 +21,15 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(BackgroundPanel)));
         }
 
-        internal BackgroundPanel(IHasTransform transform, IHasIsNodePortDragging hasIsNodePortDragging, MouseOperator mouseOperator)
+        internal BackgroundPanel(BiaNodeEditor parent, MouseOperator mouseOperator)
         {
-            _transform = transform;
-            _hasIsNodePortDragging = hasIsNodePortDragging;
+            _parent = parent;
 
-            _transform.Translate.Changed += (_, __) => InvalidateVisual();
-            _transform.Scale.Changed += (_, __) => InvalidateVisual();
+            _parent.Translate.Changed += (_, __) => InvalidateVisual();
+            _parent.Scale.Changed += (_, __) => InvalidateVisual();
+            _parent.NodeItemMoved += (_, __) => InvalidateVisual();
+            _parent.LinksSourceChanging += (_, __) => InvalidateVisual();
+            _parent.LinkChanged += (_, __) => InvalidateVisual();
 
             mouseOperator.PreMouseLeftButtonUp += (_, __) => InvalidateVisual();
         }
@@ -82,9 +53,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var p = this.GetBorderPen(Color.FromRgb(0x37, 0x37, 0x40));
 
-            var s = _transform.Scale.ScaleX;
-            var tx = _transform.Translate.X;
-            var ty = _transform.Translate.Y;
+            var s = _parent.Scale.ScaleX;
+            var tx = _parent.Translate.X;
+            var ty = _parent.Translate.Y;
 
             var bx = FrameworkElementHelper.RoundLayoutValue(ActualWidth);
             var by = FrameworkElementHelper.RoundLayoutValue(ActualHeight);
@@ -159,20 +130,19 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void DrawNodeLink(DrawingContext dc)
         {
-            if (LinksSource == null)
+            if (_parent.LinksSource == null)
                 return;
 
             Span<Point> bezierPoints = stackalloc Point[4];
             var hitTestWork = MemoryMarshal.Cast<Point, ImmutableVec2>(bezierPoints);
 
-            var viewport = _transform.TransformRect(ActualWidth, ActualHeight);
+            var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
 
-            var colorRes = TryFindResource("TextBoxBackgroundColorKey");
-            var backgroundColor = (Color?) colorRes ?? Colors.Black;
+            var backgroundColor = ((SolidColorBrush)_parent.Background).Color;
 
-            var alpha = _hasIsNodePortDragging.IsNodePortDragging ? 0.2 : 1.0;
+            var alpha = _parent.IsNodePortDragging ? 0.2 : 1.0;
 
-            foreach (var link in LinksSource)
+            foreach (var link in _parent.LinksSource)
             {
                 InternalBiaNodeLinkData internalData;
 
@@ -250,8 +220,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
             }
 
-            dc.PushTransform(_transform.Translate);
-            dc.PushTransform(_transform.Scale);
+            dc.PushTransform(_parent.Translate);
+            dc.PushTransform(_parent.Scale);
             {
                 foreach (var c in _curves)
                 {
