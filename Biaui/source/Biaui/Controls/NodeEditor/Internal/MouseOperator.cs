@@ -55,10 +55,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal bool IsMoved { get; private set; }
 
         internal event MouseButtonEventHandler MouseLeftButtonDown;
-
         internal event MouseButtonEventHandler MouseLeftButtonUp;
-
         internal event MouseEventHandler MouseMove;
+        internal event MouseWheelEventHandler MouseWheel;
 
         internal MouseOperator(BiaNodeEditor target, IHasTransform transformTarget)
         {
@@ -81,6 +80,12 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 MouseMove?.Invoke(this, e);
                 OnMouseMove(e);
+            };
+
+            _target.MouseWheel += (_, e) =>
+            {
+                MouseWheel?.Invoke(this, e);
+                OnMouseWheel(e);
             };
         }
 

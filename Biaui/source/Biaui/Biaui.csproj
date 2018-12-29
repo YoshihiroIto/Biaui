@@ -215,6 +215,7 @@
     <Compile Include="Controls\NodeEditor\Internal\BiaNodePortExtensions.cs" />
     <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeItemData.cs" />
     <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeLinkData.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeContainer.cs" />
     <Compile Include="Controls\NodeEditor\Internal\NodePortConnector.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BoxSelector.cs" />
     <Compile Include="Controls\Internals\FrameworkElementBag.cs" />
