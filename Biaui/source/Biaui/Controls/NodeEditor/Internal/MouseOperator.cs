@@ -8,14 +8,18 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class MouseOperator
     {
-        internal (Point LeftTop, Point RightBottom) SelectionRect
+        internal ImmutableRect SelectionRect
         {
             get
             {
                 var (left, right) = (_mouseDownPos.X, _mouseMovePos.X).MinMax();
                 var (top, bottom) = (_mouseDownPos.Y, _mouseMovePos.Y).MinMax();
 
-                return (new Point(left, top), new Point(right, bottom));
+                return new ImmutableRect(
+                    left,
+                    top,
+                    right - left,
+                    bottom - top);
             }
         }
 
@@ -24,7 +28,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private double _mouseDownScrollX;
         private double _mouseDownScrollY;
-        private readonly UIElement _target;
+        private readonly BiaNodeEditor _target;
         private readonly IHasTransform _transformTarget;
 
         private enum OpType
@@ -41,16 +45,43 @@ namespace Biaui.Controls.NodeEditor.Internal
         private OpType _opType = OpType.None;
 
         internal bool IsOperating => _opType != OpType.None;
+
         internal bool IsBoxSelect => _opType == OpType.BoxSelect;
+
         internal bool IsPanelMove => _opType == OpType.PanelMove;
+
         internal bool IsLinkMove => _opType == OpType.LinkMove;
 
         internal bool IsMoved { get; private set; }
 
-        internal MouseOperator(UIElement target, IHasTransform transformTarget)
+        internal event MouseButtonEventHandler MouseLeftButtonDown;
+
+        internal event MouseButtonEventHandler MouseLeftButtonUp;
+
+        internal event MouseEventHandler MouseMove;
+
+        internal MouseOperator(BiaNodeEditor target, IHasTransform transformTarget)
         {
             _target = target;
             _transformTarget = transformTarget;
+
+            _target.MouseLeftButtonDown += (_, e) =>
+            {
+                OnMouseLeftButtonDown(e, TargetType.NodeEditor);
+                MouseLeftButtonDown?.Invoke(this, e);
+            };
+
+            _target.MouseLeftButtonUp += (_, e) =>
+            {
+                MouseLeftButtonUp?.Invoke(this, e);
+                OnMouseLeftButtonUp(e);
+            };
+
+            _target.MouseMove += (_, e) =>
+            {
+                MouseMove?.Invoke(this, e);
+                OnMouseMove(e);
+            };
         }
 
         internal enum TargetType
@@ -78,7 +109,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                 switch (targetType)
                 {
                     case TargetType.NodeEditor:
-                        _opType = KeyboardHelper.IsPressSpace ? OpType.EditorScroll : OpType.BoxSelect;
+                        _opType = KeyboardHelper.IsPressSpace
+                            ? OpType.EditorScroll
+                            : OpType.BoxSelect;
                         break;
 
                     case TargetType.NodePanel:
@@ -155,6 +188,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         internal event EventHandler<PanelMovingEventArgs> PanelMoving;
+
         internal event EventHandler<LinkMovingEventArgs> LinkMoving;
 
         private readonly PanelMovingEventArgs _PanelMovingEventArgs = new PanelMovingEventArgs();
@@ -181,7 +215,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var s = _transformTarget.Scale.ScaleX;
 
-            s *= e.Delta > 0 ? 1.25 : 1.0 / 1.25;
+            s *= e.Delta > 0
+                ? 1.25
+                : 1.0 / 1.25;
 
             var p = e.GetPosition(_target);
             var d0 = _transformTarget.TransformPos(p.X, p.Y);

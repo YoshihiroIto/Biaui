@@ -184,7 +184,6 @@ namespace Biaui.Controls.NodeEditor
 
         private readonly BackgroundPanel _backgroundPanel;
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
-        private readonly BoxSelector _boxSelector;
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
@@ -210,7 +209,7 @@ namespace Biaui.Controls.NodeEditor
             var grid = new Grid();
             grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, this));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
-            grid.Children.Add(_boxSelector = new BoxSelector());
+            grid.Children.Add(new BoxSelector(_mouseOperator));
             grid.Children.Add(new NodePortConnector(this, _mouseOperator));
             base.Child = grid;
 
@@ -701,17 +700,16 @@ namespace Biaui.Controls.NodeEditor
             e.Handled = true;
         }
 
+        #if false
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
 
-            _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodeEditor);
+           // _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodeEditor);
 
-            if (_mouseOperator.IsBoxSelect)
-                BeginBoxSelector();
-
-            e.Handled = true;
+           // e.Handled = true;
         }
+        #endif
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
@@ -719,9 +717,7 @@ namespace Biaui.Controls.NodeEditor
 
             if (_mouseOperator.IsBoxSelect)
             {
-                EndBoxSelector();
-
-                SelectNodes(this.TransformRect(_boxSelector.Rect));
+                SelectNodes(this.TransformRect(_mouseOperator.SelectionRect));
                 ClearPreSelectedNode();
             }
 
@@ -740,7 +736,7 @@ namespace Biaui.Controls.NodeEditor
 
             UpdateChildrenBag(true);
 
-            _mouseOperator.OnMouseLeftButtonUp(e);
+            //_mouseOperator.OnMouseLeftButtonUp(e);
 
             if (IsNodePortDragging)
             {
@@ -761,22 +757,21 @@ namespace Biaui.Controls.NodeEditor
 
             _backgroundPanel.InvalidateVisual();
 
-            e.Handled = true;
+         //   e.Handled = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
-            _mouseOperator.OnMouseMove(e);
+            //_mouseOperator.OnMouseMove(e);
 
             if (_mouseOperator.IsOperating)
                 UpdateChildrenBag(false);
 
             if (_mouseOperator.IsBoxSelect)
             {
-                UpdateBoxSelector();
-                PreSelectNodes(this.TransformRect(_boxSelector.Rect));
+                PreSelectNodes(this.TransformRect(_mouseOperator.SelectionRect));
             }
 
             //e.Handled = true;
@@ -896,31 +891,6 @@ namespace Biaui.Controls.NodeEditor
                 new GeometryHitTestParameters(_rectGeom));
 
             return isHit;
-        }
-
-        #endregion
-
-        #region BoxSelect
-
-        private void BeginBoxSelector()
-        {
-            _boxSelector.Rect = new ImmutableRect(0, 0, 0, 0);
-        }
-
-        private void EndBoxSelector()
-        {
-            _boxSelector.Visibility = Visibility.Collapsed;
-        }
-
-        private void UpdateBoxSelector()
-        {
-            var (leftTop, rightBottom) = _mouseOperator.SelectionRect;
-
-            _boxSelector.Rect =
-                new ImmutableRect(leftTop, new Size(rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y));
-
-            if (_boxSelector.Visibility != Visibility.Visible)
-                _boxSelector.Visibility = Visibility.Visible;
         }
 
         #endregion

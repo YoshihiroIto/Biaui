@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
 
@@ -7,33 +8,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class BoxSelector : FrameworkElement
     {
-        #region Rect
-
-        public ImmutableRect Rect
-        {
-            get => _Rect;
-            set
-            {
-                if (value != _Rect)
-                    SetValue(RectProperty, value);
-            }
-        }
-
-        private ImmutableRect _Rect;
-
-        public static readonly DependencyProperty RectProperty =
-            DependencyProperty.Register(nameof(Rect), typeof(ImmutableRect), typeof(BoxSelector),
-                new FrameworkPropertyMetadata(
-                    Boxes.ImmutableRect0,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BoxSelector) s;
-                        self._Rect = (ImmutableRect) e.NewValue;
-                    }));
-
-        #endregion
+        private readonly MouseOperator _mouseOperator;
 
         static BoxSelector()
         {
@@ -41,17 +16,41 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(BoxSelector)));
         }
 
+        public BoxSelector(MouseOperator mouseOperator)
+        {
+            _mouseOperator = mouseOperator;
+
+            mouseOperator.MouseLeftButtonUp += MouseOperatorOnMouseLeftButtonUp;
+            mouseOperator.MouseMove += MouseOperatorOnMouseMove;
+        }
+
+        private void MouseOperatorOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_mouseOperator.IsBoxSelect == false)
+                return;
+
+            Visibility = Visibility.Collapsed;
+        }
+
+        private void MouseOperatorOnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_mouseOperator.IsBoxSelect == false)
+                return;
+            
+            if (Visibility != Visibility.Visible)
+                Visibility = Visibility.Visible;
+
+            InvalidateVisual();
+        }
+
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
 
-            if (Rect.Width <= 0 || Rect.Height <= 0)
-                return;
-
             var b = Caches.GetSolidColorBrush(Color.FromArgb(0x3F, 0x41, 0x69, 0xE1));
             var p = this.GetBorderPen(Color.FromArgb(0xFF, 0x41, 0x69, 0xE1));
 
-            var r = FrameworkElementHelper.RoundLayoutRect(Rect);
+            var r = FrameworkElementHelper.RoundLayoutRect(_mouseOperator.SelectionRect);
             dc.DrawRectangle(b, p, Unsafe.As<ImmutableRect, Rect>(ref r));
         }
     }
