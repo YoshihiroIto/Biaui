@@ -30,6 +30,30 @@ namespace Biaui.Controls.NodeEditor
 
         internal BiaNodeItemPortIdPair ToItemPortIdPair()
             => new BiaNodeItemPortIdPair(Item, Port.Id);
+
+        // ReSharper disable PossibleNullReferenceException
+        public static bool operator ==(in BiaNodeItemPortPair source1, in BiaNodeItemPortPair source2)
+            => source1?.Item == source2?.Item &&
+               source1?.Port == source2?.Port;
+        // ReSharper restore PossibleNullReferenceException
+
+        public static bool operator !=(in BiaNodeItemPortPair source1, in BiaNodeItemPortPair source2)
+            => !(source1 == source2);
+
+        public bool Equals(BiaNodeItemPortPair other)
+            => this == other;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is BiaNodeItemPortPair other)
+                return this == other;
+
+            return false;
+        }
+
+        public override int GetHashCode()
+            => Item.GetHashCode() ^
+               Port.GetHashCode();
     }
 
     public class BiaNodeItemPortIdPair
@@ -53,5 +77,29 @@ namespace Biaui.Controls.NodeEditor
 
             return null;
         }
+
+        // ReSharper disable PossibleNullReferenceException
+        public static bool operator ==(in BiaNodeItemPortIdPair source1, in BiaNodeItemPortIdPair source2)
+            => source1?.Item == source2?.Item &&
+               source1?.PortId == source2?.PortId;
+        // ReSharper restore PossibleNullReferenceException
+
+        public static bool operator !=(in BiaNodeItemPortIdPair source1, in BiaNodeItemPortIdPair source2)
+            => !(source1 == source2);
+
+        public bool Equals(BiaNodeItemPortIdPair other)
+            => this == other;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is BiaNodeItemPortIdPair other)
+                return this == other;
+
+            return false;
+        }
+
+        public override int GetHashCode()
+            => Item.GetHashCode() ^
+               PortId.GetHashCode();
     }
 }
