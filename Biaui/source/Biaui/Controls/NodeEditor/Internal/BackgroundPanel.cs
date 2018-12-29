@@ -52,13 +52,15 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(BackgroundPanel)));
         }
 
-        internal BackgroundPanel(IHasTransform transform, IHasIsNodePortDragging hasIsNodePortDragging)
+        internal BackgroundPanel(IHasTransform transform, IHasIsNodePortDragging hasIsNodePortDragging, MouseOperator mouseOperator)
         {
             _transform = transform;
             _hasIsNodePortDragging = hasIsNodePortDragging;
 
             _transform.Translate.Changed += (_, __) => InvalidateVisual();
             _transform.Scale.Changed += (_, __) => InvalidateVisual();
+
+            mouseOperator.MouseLeftButtonUp += (_, __) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)

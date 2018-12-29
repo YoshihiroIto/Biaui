@@ -207,7 +207,7 @@ namespace Biaui.Controls.NodeEditor
             _mouseOperator.PanelMoving += OnPanelMoving;
 
             var grid = new Grid();
-            grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, this));
+            grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, this, _mouseOperator));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
             grid.Children.Add(new BoxSelector(_mouseOperator));
             grid.Children.Add(new NodePortConnector(this, _mouseOperator));
@@ -700,17 +700,6 @@ namespace Biaui.Controls.NodeEditor
             e.Handled = true;
         }
 
-        #if false
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-
-           // _mouseOperator.OnMouseLeftButtonDown(e, MouseOperator.TargetType.NodeEditor);
-
-           // e.Handled = true;
-        }
-        #endif
-
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
@@ -736,8 +725,6 @@ namespace Biaui.Controls.NodeEditor
 
             UpdateChildrenBag(true);
 
-            //_mouseOperator.OnMouseLeftButtonUp(e);
-
             if (IsNodePortDragging)
             {
                 if (TargetNodePortConnecting != null)
@@ -755,16 +742,12 @@ namespace Biaui.Controls.NodeEditor
             SourceNodePortConnecting = null;
             TargetNodePortConnecting = null;
 
-            _backgroundPanel.InvalidateVisual();
-
          //   e.Handled = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-
-            //_mouseOperator.OnMouseMove(e);
 
             if (_mouseOperator.IsOperating)
                 UpdateChildrenBag(false);
