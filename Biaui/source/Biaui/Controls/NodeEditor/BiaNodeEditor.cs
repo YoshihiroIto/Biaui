@@ -112,8 +112,6 @@ namespace Biaui.Controls.NodeEditor
 
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
 
-        public event EventHandler<NodeLinkConnectingEventArgs> NodeLinkConnecting;
-
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel>
@@ -168,25 +166,7 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator = new MouseOperator(this, this);
             _mouseOperator.PanelMoving += OnPanelMoving;
-            _mouseOperator.LinkMoving += (s, e) =>
-            {
-                var changed = _linkConnector.OnLinkMoving(s, e, NodesSource);
-
-                if (changed && _linkConnector.IsDragging)
-                {
-                    if (_linkConnector.TargetItem != null &&
-                        _linkConnector.TargetPort != null)
-                    {
-                        NodeLinkConnecting?.Invoke(
-                            this,
-                            new NodeLinkConnectingEventArgs(
-                                _linkConnector.SourceItem,
-                                _linkConnector.SourcePort.Id,
-                                _linkConnector.TargetItem,
-                                _linkConnector.TargetPort.Id));
-                    }
-                }
-            };
+            _mouseOperator.LinkMoving += (s, e) => _linkConnector.OnLinkMoving(s, e, NodesSource);
 
             _removeNodePanelTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(1000),

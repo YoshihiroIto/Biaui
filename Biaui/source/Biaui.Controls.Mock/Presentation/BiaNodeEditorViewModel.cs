@@ -111,18 +111,6 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region NodeLinkConnectingCommand
-
-        private ICommand _NodeLinkConnectingCommand;
-
-        public ICommand NodeLinkConnectingCommand
-        {
-            get => _NodeLinkConnectingCommand;
-            set => SetProperty(ref _NodeLinkConnectingCommand, value);
-        }
-
-        #endregion
-
         #region NodeLinkCompletedCommand
 
         private ICommand _NodeLinkCompletedCommand;
@@ -234,13 +222,6 @@ namespace Biaui.Controls.Mock.Presentation
             {
                 Debug.WriteLine($"NodeLinkStartingCommand: {NodePortId.ToString(e.SourcePortId)}");
             });
-
-            NodeLinkConnectingCommand = new DelegateCommand<NodeLinkConnectingEventArgs>().Setup(e =>
-            {
-                Debug.WriteLine(
-                    $"NodeLinkConnectingCommand: {NodePortId.ToString(e.SourcePortId)}, {NodePortId.ToString(e.TargetPortId)}");
-            });
-
 
             var connectedCount = 0;
             NodeLinkCompletedCommand = new DelegateCommand<NodeLinkCompletedEventArgs>().Setup(e =>

@@ -606,9 +606,6 @@
                         <behaviors:EventTrigger EventName="NodeLinkStarting">
                             <command:EventToCommand Command="{Binding BiaNodeEditorViewModel.NodeLinkStartingCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
                         </behaviors:EventTrigger>
-                        <behaviors:EventTrigger EventName="NodeLinkConnecting">
-                            <command:EventToCommand Command="{Binding BiaNodeEditorViewModel.NodeLinkConnectingCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
-                        </behaviors:EventTrigger>
                         <behaviors:EventTrigger EventName="NodeLinkCompleted">
                             <command:EventToCommand Command="{Binding BiaNodeEditorViewModel.NodeLinkCompletedCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
                         </behaviors:EventTrigger>

@@ -76,16 +76,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private Point _mousePos;
 
-        internal bool OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e,
+        internal void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e,
             IEnumerable<IBiaNodeItem> nodeItems)
         {
             _mousePos = _transform.TransformPos(e.MousePos.X, e.MousePos.Y);
 
-            var changed = UpdateLinkTarget(_mousePos, nodeItems);
+            UpdateLinkTarget(_mousePos, nodeItems);
 
             Invalidate();
-
-            return changed;
         }
 
         internal void UpdateBezierPoints()
@@ -155,11 +153,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private bool UpdateLinkTarget(Point mousePos, IEnumerable<IBiaNodeItem> nodeItems)
+        private void UpdateLinkTarget(Point mousePos, IEnumerable<IBiaNodeItem> nodeItems)
         {
-            var oldTargetItem = TargetItem;
-            var oldTargetPort = TargetPort;
-
             TargetItem = null;
             TargetPort = null;
 
@@ -201,9 +196,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                         break;
                 }
             }
-
-            return oldTargetItem != TargetItem ||
-                   oldTargetPort != TargetPort;
         }
 
         internal void Invalidate()
