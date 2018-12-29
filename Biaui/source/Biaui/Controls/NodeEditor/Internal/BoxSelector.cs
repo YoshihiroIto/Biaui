@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
-using Biaui.Controls.Internals;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
@@ -35,9 +34,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                     }));
 
         #endregion
-
-        internal ImmutableRect TransformRect(IHasTransform transform)
-            => transform.TransformRect(Rect);
 
         static BoxSelector()
         {

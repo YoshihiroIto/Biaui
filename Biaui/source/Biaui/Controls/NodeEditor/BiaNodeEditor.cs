@@ -669,7 +669,7 @@ namespace Biaui.Controls.NodeEditor
             {
                 EndBoxSelector();
 
-                SelectNodes(_boxSelector.TransformRect(this));
+                SelectNodes(this.TransformRect(_boxSelector.Rect));
                 ClearPreSelectedNode();
             }
 
@@ -726,7 +726,7 @@ namespace Biaui.Controls.NodeEditor
             if (_mouseOperator.IsBoxSelect)
             {
                 UpdateBoxSelector();
-                PreSelectNodes(_boxSelector.TransformRect(this));
+                PreSelectNodes(this.TransformRect(_boxSelector.Rect));
             }
 
             //e.Handled = true;
