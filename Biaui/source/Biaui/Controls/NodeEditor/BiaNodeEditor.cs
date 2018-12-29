@@ -80,7 +80,6 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-
         #region NodePortEnabledChecker
 
         public IBiaNodePortEnabledChecker NodePortEnabledChecker
@@ -114,15 +113,15 @@ namespace Biaui.Controls.NodeEditor
 
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
-        private readonly Dictionary<IBiaNodeItem, BiaNodePanel>
-            _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
+        private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict
+            = new Dictionary<IBiaNodeItem, BiaNodePanel>();
+
+        private readonly MouseOperator _mouseOperator;
 
         private readonly BackgroundPanel _backgroundPanel;
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
         private readonly BoxSelector _boxSelector;
         private readonly LinkConnector _linkConnector;
-
-        private readonly MouseOperator _mouseOperator;
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
@@ -131,9 +130,9 @@ namespace Biaui.Controls.NodeEditor
         private readonly HashSet<IBiaNodeItem> _selectedNodes = new HashSet<IBiaNodeItem>();
         private readonly HashSet<IBiaNodeItem> _preSelectedNodes = new HashSet<IBiaNodeItem>();
 
-        public ScaleTransform Scale { get; }
+        public ScaleTransform Scale { get; } = new ScaleTransform();
 
-        public TranslateTransform Translate { get; }
+        public TranslateTransform Translate { get; } = new TranslateTransform();
 
         public bool IsDragging => _linkConnector.IsDragging;
 
@@ -148,14 +147,14 @@ namespace Biaui.Controls.NodeEditor
             SizeChanged += (_, __) => UpdateChildrenBag(true);
             Unloaded += (_, __) => _removeNodePanelTimer.Stop();
 
-            Scale = new ScaleTransform();
-            Translate = new TranslateTransform();
+            _mouseOperator = new MouseOperator(this, this);
+            _mouseOperator.PanelMoving += OnPanelMoving;
 
             var grid = new Grid();
             grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, this));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
             grid.Children.Add(_boxSelector = new BoxSelector());
-            grid.Children.Add(_linkConnector = new LinkConnector(this));
+            grid.Children.Add(_linkConnector = new LinkConnector(this, _mouseOperator));
             base.Child = grid;
 
             _backgroundPanel.SetBinding(BackgroundPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
@@ -163,10 +162,6 @@ namespace Biaui.Controls.NodeEditor
                 Source = this,
                 Mode = BindingMode.OneWay
             });
-
-            _mouseOperator = new MouseOperator(this, this);
-            _mouseOperator.PanelMoving += OnPanelMoving;
-            _mouseOperator.LinkMoving += (s, e) => _linkConnector.OnLinkMoving(s, e, NodesSource);
 
             _removeNodePanelTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(1000),
@@ -176,9 +171,6 @@ namespace Biaui.Controls.NodeEditor
 
             _removeNodePanelTimer.Stop();
         }
-
-        private ImmutableRect MakeCurrentViewport()
-            => this.TransformRect(ActualWidth, ActualHeight);
 
         #region Nodes
 
@@ -374,12 +366,14 @@ namespace Biaui.Controls.NodeEditor
             if (_isEnableUpdateChildrenBagDepth > 0)
                 return;
 
-            UpdateChildrenBag(MakeCurrentViewport(), isPushRemove);
+            var viewPortRect = this.TransformRect(ActualWidth, ActualHeight);
+
+            UpdateChildrenBag(viewPortRect, isPushRemove);
 
             _nodePanelBag.InvalidateMeasure();
         }
 
-        private void UpdateChildrenBag(in ImmutableRect rect, bool isPushRemove)
+        private void UpdateChildrenBag(in ImmutableRect viewportRect, bool isPushRemove)
         {
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
@@ -411,7 +405,7 @@ namespace Biaui.Controls.NodeEditor
                     }
                 }
 
-                if (rect.IntersectsWith(itemRect))
+                if (viewportRect.IntersectsWith(itemRect))
                 {
                     if (nodePanel == null)
                     {
