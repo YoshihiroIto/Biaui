@@ -28,7 +28,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private double _mouseDownScrollX;
         private double _mouseDownScrollY;
-        private readonly BiaNodeEditor _target;
+        private readonly FrameworkElement _target;
         private readonly IHasTransform _transformTarget;
 
         private enum OpType
@@ -54,38 +54,49 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal bool IsMoved { get; private set; }
 
-        internal event MouseButtonEventHandler MouseLeftButtonDown;
-        internal event MouseButtonEventHandler MouseLeftButtonUp;
-        internal event MouseEventHandler MouseMove;
-        internal event MouseWheelEventHandler MouseWheel;
+        internal event MouseButtonEventHandler PreMouseLeftButtonDown;
+        internal event MouseButtonEventHandler PostMouseLeftButtonDown;
 
-        internal MouseOperator(BiaNodeEditor target, IHasTransform transformTarget)
+        internal event MouseButtonEventHandler PreMouseLeftButtonUp;
+        internal event MouseButtonEventHandler PostMouseLeftButtonUp;
+
+        internal event MouseEventHandler PreMouseMove;
+        internal event MouseEventHandler PostMouseMove;
+
+        internal event MouseWheelEventHandler PreMouseWheel;
+        internal event MouseWheelEventHandler PostMouseWheel;
+
+        internal MouseOperator(FrameworkElement target, IHasTransform transformTarget)
         {
             _target = target;
             _transformTarget = transformTarget;
 
             _target.MouseLeftButtonDown += (_, e) =>
             {
+                PreMouseLeftButtonDown?.Invoke(this, e);
                 OnMouseLeftButtonDown(e, TargetType.NodeEditor);
-                MouseLeftButtonDown?.Invoke(this, e);
+                PostMouseLeftButtonDown?.Invoke(this, e);
             };
 
             _target.MouseLeftButtonUp += (_, e) =>
             {
-                MouseLeftButtonUp?.Invoke(this, e);
+                PreMouseLeftButtonUp?.Invoke(this, e);
                 OnMouseLeftButtonUp(e);
+                PostMouseLeftButtonUp?.Invoke(this, e);
             };
 
             _target.MouseMove += (_, e) =>
             {
-                MouseMove?.Invoke(this, e);
+                PreMouseMove?.Invoke(this, e);
                 OnMouseMove(e);
+                PostMouseMove?.Invoke(this, e);
             };
 
             _target.MouseWheel += (_, e) =>
             {
-                MouseWheel?.Invoke(this, e);
+                PreMouseWheel?.Invoke(this, e);
                 OnMouseWheel(e);
+                PostMouseWheel?.Invoke(this, e);
             };
         }
 

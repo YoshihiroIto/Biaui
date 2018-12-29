@@ -39,9 +39,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             _mouseOperator = mouseOperator;
 
             _mouseOperator.PanelMoving += OnPanelMoving;
-            _mouseOperator.MouseWheel += OnMouseWheel;
-            _mouseOperator.MouseMove += OnMouseMove;
-            _mouseOperator.MouseLeftButtonUp += MouseOperatorOnMouseLeftButtonUp;
+            _mouseOperator.PostMouseWheel += OnPostMouseWheel;
+            _mouseOperator.PostMouseMove += OnPostMouseMove;
+            _mouseOperator.PreMouseLeftButtonUp += OnPreMouseLeftButtonUp;
 
             _removeNodePanelTimer = new DispatcherTimer(
                 TimeSpan.FromMilliseconds(1000),
@@ -52,7 +52,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             _removeNodePanelTimer.Stop();
         }
 
-        private void MouseOperatorOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void OnPreMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (_mouseOperator.IsBoxSelect)
             {
@@ -83,7 +83,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             _parent.TargetNodePortConnecting = null;
         }
 
-        private void OnMouseMove(object sender, MouseEventArgs e)
+        private void OnPostMouseMove(object sender, MouseEventArgs e)
         {
             if (_mouseOperator.IsOperating)
                 UpdateChildrenBag(false);
@@ -92,7 +92,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 PreSelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
         }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        private void OnPostMouseWheel(object sender, MouseWheelEventArgs e)
         {
             UpdateChildrenBag(true);
         }

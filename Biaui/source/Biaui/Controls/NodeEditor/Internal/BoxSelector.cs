@@ -20,8 +20,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             _mouseOperator = mouseOperator;
 
-            mouseOperator.MouseLeftButtonUp += MouseOperatorOnMouseLeftButtonUp;
-            mouseOperator.MouseMove += MouseOperatorOnMouseMove;
+            mouseOperator.PreMouseLeftButtonUp += MouseOperatorOnMouseLeftButtonUp;
+            mouseOperator.PreMouseMove += MouseOperatorOnMouseMove;
         }
 
         private void MouseOperatorOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

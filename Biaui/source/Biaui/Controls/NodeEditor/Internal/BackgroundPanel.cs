@@ -60,7 +60,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             _transform.Translate.Changed += (_, __) => InvalidateVisual();
             _transform.Scale.Changed += (_, __) => InvalidateVisual();
 
-            mouseOperator.MouseLeftButtonUp += (_, __) => InvalidateVisual();
+            mouseOperator.PreMouseLeftButtonUp += (_, __) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)
