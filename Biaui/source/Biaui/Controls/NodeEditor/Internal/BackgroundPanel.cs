@@ -44,7 +44,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         #endregion
 
         private readonly IHasTransform _transform;
-        private readonly IHasIsDragging _hasIsDragging;
+        private readonly IHasIsNodePortDragging _hasIsNodePortDragging;
 
         static BackgroundPanel()
         {
@@ -52,10 +52,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(BackgroundPanel)));
         }
 
-        internal BackgroundPanel(IHasTransform transform, IHasIsDragging hasIsDragging)
+        internal BackgroundPanel(IHasTransform transform, IHasIsNodePortDragging hasIsNodePortDragging)
         {
             _transform = transform;
-            _hasIsDragging = hasIsDragging;
+            _hasIsNodePortDragging = hasIsNodePortDragging;
 
             _transform.Translate.Changed += (_, __) => InvalidateVisual();
             _transform.Scale.Changed += (_, __) => InvalidateVisual();
@@ -168,7 +168,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var colorRes = TryFindResource("TextBoxBackgroundColorKey");
             var backgroundColor = (Color?) colorRes ?? Colors.Black;
 
-            var alpha = _hasIsDragging.IsDragging ? 0.2 : 1.0;
+            var alpha = _hasIsNodePortDragging.IsNodePortDragging ? 0.2 : 1.0;
 
             foreach (var link in LinksSource)
             {
@@ -178,8 +178,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     internalData = new InternalBiaNodeLinkData
                     {
-                        Port1 = link.Item1.FindPortFromId(link.Item1PortId),
-                        Port2 = link.Item2.FindPortFromId(link.Item2PortId)
+                        Port1 = link.ItemPort1.FindPort(),
+                        Port2 = link.ItemPort2.FindPort()
                     };
 
                     link.InternalData = internalData;
@@ -192,8 +192,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (internalData.Port1 == null || internalData.Port2 == null)
                     continue;
 
-                var pos1 = link.Item1.MakePortPos(internalData.Port1);
-                var pos2 = link.Item2.MakePortPos(internalData.Port2);
+                var pos1 = link.ItemPort1.Item.MakePortPos(internalData.Port1);
+                var pos2 = link.ItemPort2.Item.MakePortPos(internalData.Port2);
 
                 var pos12 = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, internalData.Port1.Dir);
                 var pos21 = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, internalData.Port2.Dir);

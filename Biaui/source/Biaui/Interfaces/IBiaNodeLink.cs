@@ -1,18 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Media;
+using Biaui.Controls.NodeEditor;
 
 namespace Biaui.Interfaces
 {
     public interface IBiaNodeLink : INotifyPropertyChanged
     {
-        IBiaNodeItem Item1 { get; }
+        BiaNodeItemPortIdPair ItemPort1 { get; }
 
-        int Item1PortId { get; }
-
-        IBiaNodeItem Item2 { get; }
-
-        int Item2PortId { get; }
+        BiaNodeItemPortIdPair ItemPort2 { get; }
 
         Color Color { get; set; }
 

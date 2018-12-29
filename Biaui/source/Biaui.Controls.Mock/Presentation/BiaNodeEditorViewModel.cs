@@ -124,15 +124,15 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
 
         #region NodePortEnabledChecker
-        
+
         private IBiaNodePortEnabledChecker _NodePortEnabledChecker = new NodePortEnabledChecker();
-        
+
         public IBiaNodePortEnabledChecker NodePortEnabledChecker
         {
             get => _NodePortEnabledChecker;
             set => SetProperty(ref _NodePortEnabledChecker, value);
         }
-        
+
         #endregion
 
         public BiaNodeEditorViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
@@ -155,8 +155,8 @@ namespace Biaui.Controls.Mock.Presentation
                 var selectedNodes = new HashSet<IBiaNodeItem>(Nodes.Where(x => x.IsSelected));
 
                 var linksWithSelectedNode = Links
-                    .Where(x => selectedNodes.Contains(x.Item1) ||
-                                selectedNodes.Contains(x.Item2))
+                    .Where(x => selectedNodes.Contains(x.ItemPort1.Item) ||
+                                selectedNodes.Contains(x.ItemPort2.Item))
                     .ToArray();
 
                 foreach (var node in selectedNodes)
@@ -197,8 +197,8 @@ namespace Biaui.Controls.Mock.Presentation
                         };
 
                 var linksWithSelectedNode = Links
-                    .Where(x => removedNode == x.Item1 ||
-                                removedNode == x.Item2)
+                    .Where(x => removedNode == x.ItemPort1.Item ||
+                                removedNode == x.ItemPort2.Item)
                     .ToArray();
 
                 foreach (var link in linksWithSelectedNode)
@@ -220,30 +220,23 @@ namespace Biaui.Controls.Mock.Presentation
 
             NodeLinkStartingCommand = new DelegateCommand<NodeLinkStartingEventArgs>().Setup(e =>
             {
-                Debug.WriteLine($"NodeLinkStartingCommand: {NodePortId.ToString(e.SourcePortId)}");
+                Debug.WriteLine($"NodeLinkStartingCommand: {NodePortId.ToString(e.Source.PortId)}");
             });
 
             var connectedCount = 0;
             NodeLinkCompletedCommand = new DelegateCommand<NodeLinkCompletedEventArgs>().Setup(e =>
             {
                 Debug.WriteLine(
-                    $"NodeLinkCompletedCommand: {NodePortId.ToString(e.SourcePortId)}, {NodePortId.ToString(e.TargetPortId)}");
+                    $"NodeLinkCompletedCommand: {NodePortId.ToString(e.Source.PortId)}, {NodePortId.ToString(e.Target.PortId)}");
 
-                var l = FindNodeLink(Links,
-                    e.SourceNodeItem,
-                    e.SourcePortId,
-                    e.TargetNodeItem,
-                    e.TargetPortId
-                );
+                var l = FindNodeLink(Links, e.Source, e.Target);
 
                 if (l == null)
                 {
                     Links.Add(new NodeLink
                     {
-                        Item1 = e.SourceNodeItem,
-                        Item1PortId = e.SourcePortId,
-                        Item2 = e.TargetNodeItem,
-                        Item2PortId = e.TargetPortId,
+                        ItemPort1 = e.Source,
+                        ItemPort2 = e.Target,
                         Color = Colors.LimeGreen,
                         Style = (connectedCount & 1) == 0
                             ? BiaNodeLinkStyle.None | BiaNodeLinkStyle.Arrow
@@ -263,24 +256,17 @@ namespace Biaui.Controls.Mock.Presentation
         }
 
         private static IBiaNodeLink FindNodeLink(IEnumerable<IBiaNodeLink> links,
-            IBiaNodeItem sourceNodeItem,
-            int sourcePortId,
-            IBiaNodeItem targetNodeItem,
-            int targetPortId
-        )
+            BiaNodeItemPortIdPair source,
+            BiaNodeItemPortIdPair target)
         {
             return links?.AsParallel().FirstOrDefault(l =>
             {
-                if (l.Item1 == sourceNodeItem &&
-                    l.Item1PortId == sourcePortId &&
-                    l.Item2 == targetNodeItem &&
-                    l.Item2PortId == targetPortId)
+                if (l.ItemPort1 == source &&
+                    l.ItemPort2 == target)
                     return true;
 
-                if (l.Item2 == sourceNodeItem &&
-                    l.Item2PortId == sourcePortId &&
-                    l.Item1 == targetNodeItem &&
-                    l.Item1PortId == targetPortId)
+                if (l.ItemPort2 == source &&
+                    l.ItemPort1 == target)
                     return true;
 
                 return false;
@@ -359,11 +345,8 @@ namespace Biaui.Controls.Mock.Presentation
                 links.Add(
                     new NodeLink
                     {
-                        Item1 = nodes[i - 1],
-                        Item1PortId = NodePortId.Make("OutputA"),
-
-                        Item2 = nodes[i],
-                        Item2PortId = NodePortId.Make("InputA"),
+                        ItemPort1 = new BiaNodeItemPortIdPair(nodes[i - 1], NodePortId.Make("OutputA")),
+                        ItemPort2 = new BiaNodeItemPortIdPair(nodes[i], NodePortId.Make("InputA")),
 
                         Color = Colors.DeepPink,
                         Style = (i & 1) == 0
@@ -597,50 +580,26 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class NodeLink : ModelBase, IBiaNodeLink
     {
-        #region Item1
+        #region ItemPort1
 
-        private IBiaNodeItem _Item1;
+        private BiaNodeItemPortIdPair _ItemPort1;
 
-        public IBiaNodeItem Item1
+        public BiaNodeItemPortIdPair ItemPort1
         {
-            get => _Item1;
-            set => SetProperty(ref _Item1, value);
+            get => _ItemPort1;
+            set => SetProperty(ref _ItemPort1, value);
         }
 
         #endregion
 
-        #region Item1PortId
+        #region ItemPort2
 
-        private int _Item1PortId;
+        private BiaNodeItemPortIdPair _ItemPort2;
 
-        public int Item1PortId
+        public BiaNodeItemPortIdPair ItemPort2
         {
-            get => _Item1PortId;
-            set => SetProperty(ref _Item1PortId, value);
-        }
-
-        #endregion
-
-        #region Item2
-
-        private IBiaNodeItem _Item2;
-
-        public IBiaNodeItem Item2
-        {
-            get => _Item2;
-            set => SetProperty(ref _Item2, value);
-        }
-
-        #endregion
-
-        #region Item2PortId
-
-        private int _Item2PortId;
-
-        public int Item2PortId
-        {
-            get => _Item2PortId;
-            set => SetProperty(ref _Item2PortId, value);
+            get => _ItemPort2;
+            set => SetProperty(ref _ItemPort2, value);
         }
 
         #endregion
@@ -682,6 +641,7 @@ namespace Biaui.Controls.Mock.Presentation
                     return target.Layout.Ports.Keys;
 
                 case BiaNodePortEnableTiming.ConnectionStarting:
+
                     // 開始ノードが CircleNodeの場合相手もCircleNodeに限る
                     if (args.SourceItem is CircleNode)
                     {

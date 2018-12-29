@@ -178,7 +178,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\BiaHsvWheelBackground.cs" />
     <Compile Include="Controls\BiaHsvWheelCursor.cs" />
-    <Compile Include="Controls\Internals\IHasIsDragging.cs" />
+    <Compile Include="Controls\Internals\IHasIsNodePortDragging.cs" />
     <Compile Include="Controls\Internals\SystemButton.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodeEditor.cs" />
     <Compile Include="Controls\BiaTextBox.cs" />
@@ -207,6 +207,7 @@
     <Compile Include="Controls\Effects\HsvWheelBackgroundEffect.cs" />
     <Compile Include="Controls\Effects\HsvBoxBackgroundEffect.cs" />
     <Compile Include="Controls\BiaHsvBoxBackground.cs" />
+    <Compile Include="Controls\NodeEditor\BiaNodeItemPortPair.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePanel.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePort.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePortLayout.cs" />
@@ -214,7 +215,7 @@
     <Compile Include="Controls\NodeEditor\Internal\BiaNodePortExtensions.cs" />
     <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeItemData.cs" />
     <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeLinkData.cs" />
-    <Compile Include="Controls\NodeEditor\Internal\LinkConnector.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodePortConnector.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BoxSelector.cs" />
     <Compile Include="Controls\Internals\FrameworkElementBag.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs" />

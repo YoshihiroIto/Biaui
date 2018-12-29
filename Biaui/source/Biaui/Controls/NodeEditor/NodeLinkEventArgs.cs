@@ -1,5 +1,4 @@
 ﻿using System;
-using Biaui.Interfaces;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -8,35 +7,11 @@ namespace Biaui.Controls.NodeEditor
     /// </summary>
     public class NodeLinkStartingEventArgs : EventArgs
     {
-        public IBiaNodeItem SourceNodeItem { get; }
-        public int SourcePortId { get; }
+        public readonly BiaNodeItemPortIdPair Source;
 
-        internal NodeLinkStartingEventArgs(IBiaNodeItem sourceNodeItem, int sourcePortId)
+        internal NodeLinkStartingEventArgs(in BiaNodeItemPortIdPair source)
         {
-            SourceNodeItem = sourceNodeItem;
-            SourcePortId = sourcePortId;
-        }
-    }
-
-    /// <summary>
-    /// ノード接続中
-    /// </summary>
-    public class NodeLinkConnectingEventArgs : EventArgs
-    {
-        public IBiaNodeItem SourceNodeItem { get; }
-        public int SourcePortId { get; }
-
-        public IBiaNodeItem TargetNodeItem { get; }
-        public int TargetPortId { get; }
-
-        internal NodeLinkConnectingEventArgs(
-            IBiaNodeItem sourceNodeItem, int sourcePortId,
-            IBiaNodeItem targetNodeItem, int targetPortId)
-        {
-            SourceNodeItem = sourceNodeItem;
-            SourcePortId = sourcePortId;
-            TargetNodeItem = targetNodeItem;
-            TargetPortId = targetPortId;
+            Source = source;
         }
     }
 
@@ -45,20 +20,15 @@ namespace Biaui.Controls.NodeEditor
     /// </summary>
     public class NodeLinkCompletedEventArgs : EventArgs
     {
-        public IBiaNodeItem SourceNodeItem { get; }
-        public int SourcePortId { get; }
-
-        public IBiaNodeItem TargetNodeItem { get; }
-        public int TargetPortId { get; }
+        public readonly BiaNodeItemPortIdPair Source;
+        public readonly BiaNodeItemPortIdPair Target;
 
         internal NodeLinkCompletedEventArgs(
-            IBiaNodeItem sourceNodeItem, int sourcePortId,
-            IBiaNodeItem targetNodeItem, int targetPortId)
+            in BiaNodeItemPortIdPair source,
+            in BiaNodeItemPortIdPair target)
         {
-            SourceNodeItem = sourceNodeItem;
-            SourcePortId = sourcePortId;
-            TargetNodeItem = targetNodeItem;
-            TargetPortId = targetPortId;
+            Source = source;
+            Target = target;
         }
     }
 }

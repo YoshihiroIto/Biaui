@@ -18,7 +18,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodeEditor : BiaClippingBorder, IHasTransform, IHasIsDragging
+    public class BiaNodeEditor : BiaClippingBorder, IHasTransform, IHasIsNodePortDragging
     {
         #region NodesSource
 
@@ -80,6 +80,64 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        #region SourceNodePortConnecting
+
+        public BiaNodeItemPortPair SourceNodePortConnecting
+        {
+            get => _sourceNodePortConnecting;
+            set
+            {
+                if (value != _sourceNodePortConnecting)
+                    SetValue(SourceNodePortConnectingProperty, value);
+            }
+        }
+
+        private BiaNodeItemPortPair _sourceNodePortConnecting;
+
+        public static readonly DependencyProperty SourceNodePortConnectingProperty =
+            DependencyProperty.Register(
+                nameof(SourceNodePortConnecting),
+                typeof(BiaNodeItemPortPair),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    default(BiaNodeItemPortPair),
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._sourceNodePortConnecting = (BiaNodeItemPortPair) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region TargetNodePortConnecting
+
+        public BiaNodeItemPortPair TargetNodePortConnecting
+        {
+            get => _targetNodePortConnecting;
+            set
+            {
+                if (value != _targetNodePortConnecting)
+                    SetValue(TargetNodePortConnectingProperty, value);
+            }
+        }
+
+        private BiaNodeItemPortPair _targetNodePortConnecting;
+
+        public static readonly DependencyProperty TargetNodePortConnectingProperty =
+            DependencyProperty.Register(
+                nameof(TargetNodePortConnecting),
+                typeof(BiaNodeItemPortPair),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    default(BiaNodeItemPortPair),
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._targetNodePortConnecting = (BiaNodeItemPortPair) e.NewValue;
+                    }));
+
+        #endregion
+
         #region NodePortEnabledChecker
 
         public IBiaNodePortEnabledChecker NodePortEnabledChecker
@@ -113,6 +171,12 @@ namespace Biaui.Controls.NodeEditor
 
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
+        public ScaleTransform Scale { get; } = new ScaleTransform();
+
+        public TranslateTransform Translate { get; } = new TranslateTransform();
+
+        public bool IsNodePortDragging { get; internal set; }
+
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict
             = new Dictionary<IBiaNodeItem, BiaNodePanel>();
 
@@ -121,7 +185,6 @@ namespace Biaui.Controls.NodeEditor
         private readonly BackgroundPanel _backgroundPanel;
         private readonly FrameworkElementBag<BiaNodePanel> _nodePanelBag;
         private readonly BoxSelector _boxSelector;
-        private readonly LinkConnector _linkConnector;
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
@@ -129,12 +192,6 @@ namespace Biaui.Controls.NodeEditor
         private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
         private readonly HashSet<IBiaNodeItem> _selectedNodes = new HashSet<IBiaNodeItem>();
         private readonly HashSet<IBiaNodeItem> _preSelectedNodes = new HashSet<IBiaNodeItem>();
-
-        public ScaleTransform Scale { get; } = new ScaleTransform();
-
-        public TranslateTransform Translate { get; } = new TranslateTransform();
-
-        public bool IsDragging => _linkConnector.IsDragging;
 
         static BiaNodeEditor()
         {
@@ -154,7 +211,7 @@ namespace Biaui.Controls.NodeEditor
             grid.Children.Add(_backgroundPanel = new BackgroundPanel(this, this));
             grid.Children.Add(_nodePanelBag = new FrameworkElementBag<BiaNodePanel>(this));
             grid.Children.Add(_boxSelector = new BoxSelector());
-            grid.Children.Add(_linkConnector = new LinkConnector(this, _mouseOperator));
+            grid.Children.Add(new NodePortConnector(this, _mouseOperator));
             base.Child = grid;
 
             _backgroundPanel.SetBinding(BackgroundPanel.LinksSourceProperty, new Binding(nameof(LinksSource))
@@ -585,10 +642,11 @@ namespace Biaui.Controls.NodeEditor
                 if (port == null)
                     throw new NotSupportedException();
 
-                var args = new NodeLinkStartingEventArgs(nodeItem, port.Id);
+                var args = new NodeLinkStartingEventArgs(new BiaNodeItemPortIdPair(nodeItem, port.Id));
                 NodeLinkStarting?.Invoke(this, args);
 
-                _linkConnector.BeginDrag(nodeItem, port);
+                SourceNodePortConnecting = new BiaNodeItemPortPair(nodeItem, port);
+                TargetNodePortConnecting = null;
 
                 UpdateNodePortEnabled(true);
             }
@@ -684,24 +742,22 @@ namespace Biaui.Controls.NodeEditor
 
             _mouseOperator.OnMouseLeftButtonUp(e);
 
-            if (_linkConnector.IsDragging)
+            if (IsNodePortDragging)
             {
-                if (_linkConnector.TargetItem != null &&
-                    _linkConnector.TargetPort != null)
+                if (TargetNodePortConnecting != null)
                 {
                     NodeLinkCompleted?.Invoke(
                         this,
                         new NodeLinkCompletedEventArgs(
-                            _linkConnector.SourceItem,
-                            _linkConnector.SourcePort.Id,
-                            _linkConnector.TargetItem,
-                            _linkConnector.TargetPort.Id));
+                            SourceNodePortConnecting.ToItemPortIdPair(),
+                            TargetNodePortConnecting.ToItemPortIdPair()));
                 }
 
                 UpdateNodePortEnabled(false);
             }
 
-            _linkConnector.EndDrag();
+            SourceNodePortConnecting = null;
+            TargetNodePortConnecting = null;
 
             _backgroundPanel.InvalidateVisual();
 
@@ -878,8 +934,8 @@ namespace Biaui.Controls.NodeEditor
                 isStart
                     ? BiaNodePortEnableTiming.ConnectionStarting
                     : BiaNodePortEnableTiming.Default,
-                _linkConnector.SourceItem,
-                _linkConnector.SourcePort.Id);
+                SourceNodePortConnecting.Item,
+                SourceNodePortConnecting.Port.Id);
 
             foreach (var child in _nodePanelBag.Children)
             {

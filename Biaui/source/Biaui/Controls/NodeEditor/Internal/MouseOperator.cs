@@ -87,7 +87,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     case TargetType.NodeLink:
                         _opType = OpType.LinkMove;
-                        DoLinkMove(e);
                         break;
 
                     default:
