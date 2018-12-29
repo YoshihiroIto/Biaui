@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Internals;
@@ -54,7 +55,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             var b = Caches.GetSolidColorBrush(Color.FromArgb(0x3F, 0x41, 0x69, 0xE1));
             var p = this.GetBorderPen(Color.FromArgb(0xFF, 0x41, 0x69, 0xE1));
 
-            dc.DrawRectangle(b, p, FrameworkElementHelper.RoundLayoutRect(Rect).ToRect());
+            var r = FrameworkElementHelper.RoundLayoutRect(Rect);
+            dc.DrawRectangle(b, p, Unsafe.As<ImmutableRect, Rect>(ref r));
         }
     }
 }

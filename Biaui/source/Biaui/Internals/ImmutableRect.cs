@@ -119,9 +119,6 @@ namespace Biaui.Internals
             );
         }
 
-        public Rect ToRect()
-            => new Rect(X, Y, Width, Height);
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IntersectsWith(in ImmutableRect target)
         {
