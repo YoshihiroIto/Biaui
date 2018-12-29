@@ -14,7 +14,7 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(typeof(BiaNodePanel)));
         }
 
-        public void InvalidatePorts()
+        internal void InvalidatePorts()
         {
             var ports = this.Descendants<BiaNodePanelPorts>().FirstOrDefault();
 
