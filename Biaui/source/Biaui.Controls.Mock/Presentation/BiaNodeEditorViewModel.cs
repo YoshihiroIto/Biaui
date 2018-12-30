@@ -256,21 +256,21 @@ namespace Biaui.Controls.Mock.Presentation
         }
 
         private static IBiaNodeLink FindNodeLink(IEnumerable<IBiaNodeLink> links,
-            BiaNodeItemPortIdPair source,
-            BiaNodeItemPortIdPair target)
+            in BiaNodeItemPortIdPair source,
+            in BiaNodeItemPortIdPair target)
         {
-            return links?.AsParallel().FirstOrDefault(l =>
+            foreach (var link in links)
             {
-                if (l.ItemPort1 == source &&
-                    l.ItemPort2 == target)
-                    return true;
+                if (link.ItemPort1 == source &&
+                    link.ItemPort2 == target)
+                    return link;
 
-                if (l.ItemPort2 == source &&
-                    l.ItemPort1 == target)
-                    return true;
+                if (link.ItemPort2 == source &&
+                    link.ItemPort1 == target)
+                    return link;
+            }
 
-                return false;
-            });
+            return null;
         }
 
         private static void MakeNodes(ObservableCollection<IBiaNodeItem> nodes)

@@ -21,7 +21,7 @@ namespace Biaui.Controls.NodeEditor
 
         internal BiaNodePortEnabledCheckerArgs(
             BiaNodePortEnableTiming timing,
-            BiaNodeItemPortIdPair source
+            in BiaNodeItemPortIdPair source
         )
         {
             Timing = timing;

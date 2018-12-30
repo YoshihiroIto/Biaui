@@ -125,7 +125,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (_parent.IsNodePortDragging)
             {
-                if (_parent.TargetNodePortConnecting != null)
+                if (_parent.TargetNodePortConnecting.IsNotNull)
                 {
                     _parent.InvokeNodeLinkCompleted(
                         new NodeLinkCompletedEventArgs(
@@ -136,8 +136,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 UpdateNodePortEnabled(false);
             }
 
-            _parent.SourceNodePortConnecting = null;
-            _parent.TargetNodePortConnecting = null;
+            _parent.SourceNodePortConnecting = default;
+            _parent.TargetNodePortConnecting = default;
         }
 
         private void OnPostMouseMove(object sender, MouseEventArgs e)
@@ -748,7 +748,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 _parent.InvokeNodeLinkStarting(args);
 
                 _parent.SourceNodePortConnecting = new BiaNodeItemPortPair(nodeItem, port);
-                _parent.TargetNodePortConnecting = null;
+                _parent.TargetNodePortConnecting = default;
 
                 UpdateNodePortEnabled(true);
             }

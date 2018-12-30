@@ -23,7 +23,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal ScaleTransform Scale => _parent.Scale;
 
-        public bool IsNodePortDragging => _parent.SourceNodePortConnecting != null;
+        public bool IsNodePortDragging => _parent.SourceNodePortConnecting.IsNotNull;
 
         internal readonly Point[] BezierPoints = new Point[4];
         private readonly BiaNodeEditor _parent;
@@ -73,7 +73,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             BezierPoints[0] = srcPos;
             BezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _parent.SourceNodePortConnecting.Port.Dir);
 
-            if (_parent.TargetNodePortConnecting == null)
+            if (_parent.TargetNodePortConnecting.IsNull)
             {
                 BezierPoints[2] = _mousePos;
                 BezierPoints[3] = _mousePos;
@@ -117,7 +117,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
 
             // 接続先ポートの丸
-            if (_parent.TargetNodePortConnecting != null)
+            if (_parent.TargetNodePortConnecting.IsNotNull)
             {
                 var targetRect = new ImmutableRect(
                     BezierPoints[3].X - radius, BezierPoints[3].Y - radius, radius * 2, radius * 2);
@@ -135,7 +135,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void UpdateLinkTarget(Point mousePos, IEnumerable<IBiaNodeItem> nodeItems)
         {
-            _parent.TargetNodePortConnecting = null;
+            _parent.TargetNodePortConnecting = default;
 
             if (nodeItems == null)
                 return;

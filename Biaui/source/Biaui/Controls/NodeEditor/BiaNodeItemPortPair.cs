@@ -4,7 +4,7 @@ using Biaui.Interfaces;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodeItemPortPair
+    public readonly struct BiaNodeItemPortPair
     {
         public readonly IBiaNodeItem Item;
         public readonly BiaNodePort Port;
@@ -15,6 +15,9 @@ namespace Biaui.Controls.NodeEditor
             Port = port;
         }
 
+        public bool IsNull => Item == null;
+        public bool IsNotNull => Item != null;
+
         internal Point MakePortPos() => Item.MakePortPos(Port);
 
         internal BiaNodeItemPortIdPair ToItemPortIdPair()
@@ -22,8 +25,8 @@ namespace Biaui.Controls.NodeEditor
 
         // ReSharper disable PossibleNullReferenceException
         public static bool operator ==(in BiaNodeItemPortPair source1, in BiaNodeItemPortPair source2)
-            => source1?.Item == source2?.Item &&
-               source1?.Port == source2?.Port;
+            => source1.Item == source2.Item &&
+               source1.Port == source2.Port;
         // ReSharper restore PossibleNullReferenceException
 
         public static bool operator !=(in BiaNodeItemPortPair source1, in BiaNodeItemPortPair source2)
@@ -45,7 +48,7 @@ namespace Biaui.Controls.NodeEditor
                Port.GetHashCode();
     }
 
-    public class BiaNodeItemPortIdPair
+    public readonly struct BiaNodeItemPortIdPair
     {
         public readonly IBiaNodeItem Item;
         public readonly int PortId;
@@ -69,8 +72,8 @@ namespace Biaui.Controls.NodeEditor
 
         // ReSharper disable PossibleNullReferenceException
         public static bool operator ==(in BiaNodeItemPortIdPair source1, in BiaNodeItemPortIdPair source2)
-            => source1?.Item == source2?.Item &&
-               source1?.PortId == source2?.PortId;
+            => source1.Item == source2.Item &&
+               source1.PortId == source2.PortId;
         // ReSharper restore PossibleNullReferenceException
 
         public static bool operator !=(in BiaNodeItemPortIdPair source1, in BiaNodeItemPortIdPair source2)
