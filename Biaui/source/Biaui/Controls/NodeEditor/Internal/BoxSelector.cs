@@ -45,6 +45,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         protected override void OnRender(DrawingContext dc)
         {
+            base.OnRender(dc);
+
             var b = Caches.GetSolidColorBrush(Color.FromArgb(0x3F, 0x41, 0x69, 0xE1));
             var p = this.GetBorderPen(Color.FromArgb(0xFF, 0x41, 0x69, 0xE1));
 

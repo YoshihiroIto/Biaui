@@ -220,6 +220,7 @@
     <Compile Include="Controls\Internals\FrameworkElementBag.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePanelPorts.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BackgroundPanel.cs" />
     <Compile Include="Controls\NodeEditor\Internal\MouseOperator.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeItemExtensions.cs" />
     <Compile Include="Controls\NodeEditor\NodeLinkEventArgs.cs" />
