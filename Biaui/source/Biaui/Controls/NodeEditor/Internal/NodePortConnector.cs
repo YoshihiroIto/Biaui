@@ -176,7 +176,12 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal void Invalidate()
         {
             UpdateBezierPoints();
-            UpdateChildren(ActualWidth, ActualHeight);
+
+            for (var i = 0; i != RowCount * ColumnCount; ++i)
+            {
+                var child = (LinkConnectorCell) Children[i];
+                child.InvalidateVisual();
+            }
 
             _parent.IsNodePortDragging = IsNodePortDragging;
             _parent.InvokeLinkChanged();
@@ -204,8 +209,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 child.Pos = new Point(cellWidth * x, cellHeight * y);
                 child.Margin = margin;
-
-                child.InvalidateVisual();
             }
         }
     }
