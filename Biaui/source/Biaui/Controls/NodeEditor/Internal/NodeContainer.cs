@@ -483,8 +483,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                 isStart
                     ? BiaNodePortEnableTiming.ConnectionStarting
                     : BiaNodePortEnableTiming.Default,
-                _parent.SourceNodePortConnecting.Item,
-                _parent.SourceNodePortConnecting.Port.Id);
+                new BiaNodeItemPortIdPair(
+                    _parent.SourceNodePortConnecting.Item,
+                    _parent.SourceNodePortConnecting.Port.Id
+                ));
 
             foreach (var child in Children)
             {

@@ -643,7 +643,7 @@ namespace Biaui.Controls.Mock.Presentation
                 case BiaNodePortEnableTiming.ConnectionStarting:
 
                     // 開始ノードが CircleNodeの場合相手もCircleNodeに限る
-                    if (args.SourceItem is CircleNode)
+                    if (args.Source.Item is CircleNode)
                     {
                         return target is CircleNode
                             ? target.Layout.Ports.Keys

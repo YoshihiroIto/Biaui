@@ -17,18 +17,15 @@ namespace Biaui.Controls.NodeEditor
     public readonly struct BiaNodePortEnabledCheckerArgs
     {
         public readonly BiaNodePortEnableTiming Timing;
-        public readonly IBiaNodeItem SourceItem;
-        public readonly int SourceItemPortId;
+        public readonly BiaNodeItemPortIdPair Source;
 
         internal BiaNodePortEnabledCheckerArgs(
             BiaNodePortEnableTiming timing,
-            IBiaNodeItem sourceItem,
-            int sourceItemPortId
+            BiaNodeItemPortIdPair source
         )
         {
             Timing = timing;
-            SourceItem = sourceItem;
-            SourceItemPortId = sourceItemPortId;
+            Source = source;
         }
     }
 }
