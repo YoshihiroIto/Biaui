@@ -378,6 +378,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
             // 対象のitemはまだ_nodeDictに登録されていないので問題ない(再入しない)。
 
+            var enabledCheckerArgs = new BiaNodePortEnabledCheckerArgs(
+                BiaNodePortEnableTiming.Default,
+                new BiaNodeItemPortIdPair(null, 0));
+
             foreach (var c in _nodeDict)
             {
                 var item = c.Key;
@@ -414,6 +418,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                         nodePanel.Style = FindResource(item.GetType()) as Style;
                         nodePanel.DataContext = item;
                         nodePanel.Opacity = 1.0;
+
+                        UpdateNodePortEnabled(item, enabledCheckerArgs);
 
                         _changedUpdate.Add((item, nodePanel));
 
