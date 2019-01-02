@@ -245,11 +245,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             ++_isEnableUpdateChildrenBagDepth;
 
             foreach (var n in _selectedNodes)
-            {
-                n.Pos = new Point(
-                    Math.Round(n.Pos.X / 32) * 32,
-                    Math.Round(n.Pos.Y / 32) * 32);
-            }
+                n.Pos = n.AlignedPos();
 
             --_isEnableUpdateChildrenBagDepth;
             Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);

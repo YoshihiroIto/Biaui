@@ -225,7 +225,7 @@
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeItemExtensions.cs" />
     <Compile Include="Controls\NodeEditor\NodeLinkEventArgs.cs" />
     <Compile Include="Controls\NodeEditor\NodePortId.cs" />
-    <Compile Include="Interfaces\IHasPos.cs" />
+    <Compile Include="Interfaces\IBiaHasPos.cs" />
     <Compile Include="Controls\Internals\IHasTransform.cs" />
     <Compile Include="Interfaces\IBiaNodeLink.cs" />
     <Compile Include="Internals\Boxes.cs" />

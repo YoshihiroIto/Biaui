@@ -81,7 +81,7 @@ namespace Biaui.Controls.Internals
         {
             foreach (var child in _changedElements)
             {
-                var pos = ((IHasPos) child.DataContext).Pos;
+                var pos = ((IBiaHasPos) child.DataContext).AlignedPos();
 
                 child.Arrange(new Rect(pos, child.DesiredSize));
             }

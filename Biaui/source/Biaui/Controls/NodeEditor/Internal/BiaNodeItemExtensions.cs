@@ -19,7 +19,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal static Point MakePortPos(this IBiaNodeItem nodeItem, BiaNodePort port)
         {
             var itemSize = nodeItem.Size;
-            var itemPos = nodeItem.Pos;
+            var itemPos = nodeItem.AlignedPos();
 
             var portLocalPos = port.MakePos(itemSize.Width, itemSize.Height);
 

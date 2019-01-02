@@ -298,6 +298,12 @@ namespace Biaui.Controls.Mock.Presentation
                 var ry = 0.0;
 #endif
 
+                var pos = new Point(
+                    BiaHasPosHelper.AlignPos(x * 800 + rx),
+                    BiaHasPosHelper.AlignPos(y * 800 + ry));
+
+                var titleBackground = titleBackgrounds[i % titleBackgrounds.Length];
+
                 IBiaNodeItem nodeItem = null;
 
                 switch (i % 3)
@@ -306,8 +312,8 @@ namespace Biaui.Controls.Mock.Presentation
                         nodeItem = new BasicNode
                         {
                             Title = $"Title:{i++}",
-                            TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
-                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            TitleBackground = titleBackground,
+                            Pos = pos
                         };
                         break;
 
@@ -315,8 +321,8 @@ namespace Biaui.Controls.Mock.Presentation
                         nodeItem = new ColorNode
                         {
                             Title = $"Color:{i++}",
-                            TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
-                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            TitleBackground = titleBackground,
+                            Pos = pos
                         };
                         break;
 
@@ -324,8 +330,8 @@ namespace Biaui.Controls.Mock.Presentation
                         nodeItem = new CircleNode
                         {
                             Title = $"Circle:{i++}",
-                            TitleBackground = titleBackgrounds[i % titleBackgrounds.Length],
-                            Pos = new Point(x * 800 + rx, y * 800 + ry),
+                            TitleBackground = titleBackground,
+                            Pos = pos
                         };
                         break;
                 }
