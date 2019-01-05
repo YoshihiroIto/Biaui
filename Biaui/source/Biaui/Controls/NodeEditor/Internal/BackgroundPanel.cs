@@ -229,7 +229,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             _curves.Clear();
         }
 
-
         private static void DrawLine(
             StreamGeometryContext ctx,
             ref Point pos1, ref Point pos2,
@@ -244,23 +243,23 @@ namespace Biaui.Controls.NodeEditor.Internal
                 u1.IsHorizontal &&
                 u2.IsHorizontal)
             {
-                DrawHLine(ctx, u1, u2);
+                DrawDifferenceLine(ctx, u1, u2, true);
             }
             else if (u1.Port.Dir != u2.Port.Dir &&
-                u1.IsVertical &&
-                u2.IsVertical)
+                     u1.IsVertical &&
+                     u2.IsVertical)
             {
-                DrawVLine(ctx, u1, u2);
+                DrawDifferenceLine(ctx, u1, u2, false);
             }
             else if (u1.Port.Dir == u2.Port.Dir &&
                      u1.Port.Dir.IsHorizontal())
             {
-                DrawSameHLine(ctx, u1, u2);
+                DrawSameLine(ctx, u1, u2, true);
             }
             else if (u1.Port.Dir == u2.Port.Dir &&
                      u1.IsVertical)
             {
-                DrawSameVLine(ctx, u1, u2);
+                DrawSameLine(ctx, u1, u2, false);
             }
             else
             {
@@ -270,27 +269,31 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         const double minPortOffset = 24.0;
 
-        private static void DrawHLine(
+        private static void DrawDifferenceLine(
             StreamGeometryContext ctx,
             in PortUnit unit1,
-            in PortUnit unit2)
+            in PortUnit unit2,
+            bool isHorizontal)
         {
+            var b = isHorizontal;
+
             var (start, end) =
-                unit1.Port.Dir == BiaNodePortDir.Right
+                unit1.Port.Dir == Transposer.NodePortDir(BiaNodePortDir.Right, b)
                     ? (unit1, unit2)
                     : (unit2, unit1);
 
-            var startItemCenter = start.Item.AlignedPos().Y + start.Item.Size.Height * 0.5;
-            var startItemPortOffset = start.Item.Size.Height * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.Y);
+            var startItemCenter = start.Item.AlignedPos().Y(b) + start.Item.Size.Height(b) * 0.5;
+            var startItemPortOffset =
+                start.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.Y(b));
             var fold = minPortOffset + startItemPortOffset;
             var cornerRadius = fold * 0.5;
 
-            var startFoldPos = start.Pos.X + fold;
-            var foldStartPos = new ImmutableVec2(startFoldPos, start.Pos.Y);
+            var startFoldPos = start.Pos.X(b) + fold;
+            var foldStartPos = Transposer.CreateImmutableVec2(startFoldPos, start.Pos.Y(b), b);
 
-            if (startFoldPos < end.Pos.X - fold)
+            if (startFoldPos < end.Pos.X(b) - fold)
             {
-                var foldEndPos = new ImmutableVec2(startFoldPos, end.Pos.Y);
+                var foldEndPos = Transposer.CreateImmutableVec2(startFoldPos, end.Pos.Y(b), b);
 
                 DrawLines(ctx, cornerRadius,
                     new[]
@@ -303,94 +306,47 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
             else
             {
-                var foldEndPos = new ImmutableVec2(end.Pos.X - fold, end.Pos.Y);
-                var foldY = start.Pos.Y < end.Pos.Y
-                    ? start.Item.AlignedPos().Y + start.Item.Size.Height + fold
-                    : end.Item.AlignedPos().Y + end.Item.Size.Height + fold;
+                var foldEndPos = Transposer.CreateImmutableVec2(end.Pos.X(b) - fold, end.Pos.Y(b), b);
+
+                var foldV = start.Pos.Y(b) < end.Pos.Y(b)
+                    ? start.Item.AlignedPos().Y(b) + start.Item.Size.Height(b) + fold
+                    : end.Item.AlignedPos().Y(b) + end.Item.Size.Height(b) + fold;
 
                 DrawLines(ctx, cornerRadius,
                     new[]
                     {
                         start.Pos,
                         foldStartPos,
-                        new ImmutableVec2(foldStartPos.X, foldY),
-                        new ImmutableVec2(foldEndPos.X, foldY),
+                        Transposer.CreateImmutableVec2(foldStartPos.X(b), foldV, b),
+                        Transposer.CreateImmutableVec2(foldEndPos.X(b), foldV, b),
                         foldEndPos,
                         end.Pos
                     });
             }
         }
 
-        private static void DrawVLine(
+        private static void DrawSameLine(
             StreamGeometryContext ctx,
             in PortUnit unit1,
-            in PortUnit unit2)
+            in PortUnit unit2,
+            bool isHorizontal)
         {
-            var (start, end) =
-                unit1.Port.Dir == BiaNodePortDir.Bottom
-                    ? (unit1, unit2)
-                    : (unit2, unit1);
+            var b = isHorizontal;
 
-            var startItemCenter = start.Item.AlignedPos().X + start.Item.Size.Width * 0.5;
-            var startItemPortOffset = start.Item.Size.Width * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.X);
-            var fold = minPortOffset + startItemPortOffset;
-            var cornerRadius = fold * 0.5;
+            var startItemCenter = unit1.Item.AlignedPos().Y(b) + unit1.Item.Size.Height(b) * 0.5;
+            var startItemPortOffset =
+                unit1.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.Y(b));
 
-            var startFoldPos = start.Pos.Y + fold;
-            var foldStartPos = new ImmutableVec2(start.Pos.X, startFoldPos);
-
-            if (startFoldPos < end.Pos.Y - fold)
-            {
-                var foldEndPos = new ImmutableVec2(end.Pos.X, startFoldPos);
-
-                DrawLines(ctx, cornerRadius,
-                    new[]
-                    {
-                        start.Pos,
-                        foldStartPos,
-                        foldEndPos,
-                        end.Pos
-                    });
-            }
-            else
-            {
-                var foldEndPos = new ImmutableVec2(end.Pos.X, end.Pos.Y - fold);
-                var foldX = start.Pos.X < end.Pos.X
-                    ? start.Item.AlignedPos().X + start.Item.Size.Width + fold
-                    : end.Item.AlignedPos().X + end.Item.Size.Width + fold;
-
-                DrawLines(ctx, cornerRadius,
-                    new[]
-                    {
-                        start.Pos,
-                        foldStartPos,
-                        new ImmutableVec2(foldX, foldStartPos.Y),
-                        new ImmutableVec2(foldX, foldEndPos.Y),
-                        foldEndPos,
-                        end.Pos
-                    });
-            }
-        }
-
-
-        private static void DrawSameHLine(
-            StreamGeometryContext ctx,
-            in PortUnit unit1,
-            in PortUnit unit2)
-        {
-            var startItemCenter = unit1.Item.AlignedPos().Y + unit1.Item.Size.Height * 0.5;
-            var startItemPortOffset = unit1.Item.Size.Height * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.Y);
-
-            var endItemCenter = unit2.Item.AlignedPos().Y + unit2.Item.Size.Height * 0.5;
-            var endItemPortOffset = unit2.Item.Size.Height * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y);
+            var endItemCenter = unit2.Item.AlignedPos().Y(b) + unit2.Item.Size.Height(b) * 0.5;
+            var endItemPortOffset = unit2.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y(b));
             var fold = minPortOffset + (startItemPortOffset, endItemPortOffset).Max();
 
-            var foldPos = unit1.Port.Dir == BiaNodePortDir.Left
-                ? (unit1.Pos.X, unit2.Pos.X).Min() - fold
-                : (unit1.Pos.X, unit2.Pos.X).Max() + fold;
+            var foldPos = unit1.Port.Dir == Transposer.NodePortDir(BiaNodePortDir.Left, b)
+                ? (unit1.Pos.X(b), unit2.Pos.X(b)).Min() - fold
+                : (unit1.Pos.X(b), unit2.Pos.X(b)).Max() + fold;
 
-            var foldStartPos = new ImmutableVec2(foldPos, unit1.Pos.Y);
-            var foldEndPos = new ImmutableVec2(foldPos, unit2.Pos.Y);
+            var foldStartPos = Transposer.CreateImmutableVec2(foldPos, unit1.Pos.Y(b), b);
+            var foldEndPos = Transposer.CreateImmutableVec2(foldPos, unit2.Pos.Y(b), b);
 
             var cornerRadius = fold * 0.5;
 
@@ -403,38 +359,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                     unit2.Pos
                 });
         }
-
-        private static void DrawSameVLine(
-            StreamGeometryContext ctx,
-            in PortUnit unit1,
-            in PortUnit unit2)
-        {
-            var startItemCenter = unit1.Item.AlignedPos().X + unit1.Item.Size.Width * 0.5;
-            var startItemPortOffset = unit1.Item.Size.Width * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.X);
-
-            var endItemCenter = unit2.Item.AlignedPos().X+ unit2.Item.Size.Width * 0.5;
-            var endItemPortOffset = unit2.Item.Size.Width * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.X);
-            var fold = minPortOffset + (startItemPortOffset, endItemPortOffset).Max();
-
-            var foldPos = unit1.Port.Dir == BiaNodePortDir.Top
-                ? (unit1.Pos.Y, unit2.Pos.Y).Min() - fold
-                : (unit1.Pos.Y, unit2.Pos.Y).Max() + fold;
-
-            var foldStartPos = new ImmutableVec2(unit1.Pos.X, foldPos);
-            var foldEndPos = new ImmutableVec2(unit2.Pos.X, foldPos);
-
-            var cornerRadius = fold * 0.5;
-
-            DrawLines(ctx, cornerRadius,
-                new[]
-                {
-                    unit1.Pos,
-                    foldStartPos,
-                    foldEndPos,
-                    unit2.Pos
-                });
-        }
-
 
         private static void DrawHVLine(
             StreamGeometryContext ctx,
@@ -470,6 +394,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             internal readonly BiaNodePort Port;
 
             internal bool IsHorizontal => Port.Dir.IsHorizontal();
+
             internal bool IsVertical => Port.Dir.IsVertical();
 
             internal PortUnit(in ImmutableVec2 pos, IBiaNodeItem item, BiaNodePort port)
