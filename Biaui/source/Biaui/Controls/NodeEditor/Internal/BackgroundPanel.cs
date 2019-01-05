@@ -295,14 +295,15 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 var foldEndPos = Transposer.CreateImmutableVec2(startFoldPos, end.Pos.Y(b), b);
 
-                DrawLines(ctx, cornerRadius,
-                    new[]
-                    {
-                        start.Pos,
-                        foldStartPos,
-                        foldEndPos,
-                        end.Pos
-                    });
+                Span<ImmutableVec2> points = stackalloc[]
+                {
+                    start.Pos,
+                    foldStartPos,
+                    foldEndPos,
+                    end.Pos
+                };
+
+                DrawLines(ctx, cornerRadius, points);
             }
             else
             {
@@ -312,16 +313,17 @@ namespace Biaui.Controls.NodeEditor.Internal
                     ? start.Item.AlignedPos().Y(b) + start.Item.Size.Height(b) + fold
                     : end.Item.AlignedPos().Y(b) + end.Item.Size.Height(b) + fold;
 
-                DrawLines(ctx, cornerRadius,
-                    new[]
-                    {
-                        start.Pos,
-                        foldStartPos,
-                        Transposer.CreateImmutableVec2(foldStartPos.X(b), foldV, b),
-                        Transposer.CreateImmutableVec2(foldEndPos.X(b), foldV, b),
-                        foldEndPos,
-                        end.Pos
-                    });
+                Span<ImmutableVec2> points = stackalloc[]
+                {
+                    start.Pos,
+                    foldStartPos,
+                    Transposer.CreateImmutableVec2(foldStartPos.X(b), foldV, b),
+                    Transposer.CreateImmutableVec2(foldEndPos.X(b), foldV, b),
+                    foldEndPos,
+                    end.Pos
+                };
+
+                DrawLines(ctx, cornerRadius, points);
             }
         }
 
@@ -350,14 +352,15 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var cornerRadius = fold * 0.5;
 
-            DrawLines(ctx, cornerRadius,
-                new[]
-                {
-                    unit1.Pos,
-                    foldStartPos,
-                    foldEndPos,
-                    unit2.Pos
-                });
+            Span<ImmutableVec2> points = stackalloc[]
+            {
+                unit1.Pos,
+                foldStartPos,
+                foldEndPos,
+                unit2.Pos
+            };
+
+            DrawLines(ctx, cornerRadius, points);
         }
 
         private static void DrawHVLine(
@@ -374,17 +377,18 @@ namespace Biaui.Controls.NodeEditor.Internal
             var rightOffset = right.MakeOffsetPos();
             var cornerRadius = leftOffset.FoldLength * 0.5;
 
-            DrawLines(ctx, cornerRadius,
-                new[]
-                {
-                    left.Pos,
-                    leftOffset.OffsetPos,
-                    left.IsVertical
-                        ? new ImmutableVec2(rightOffset.OffsetPos.X, leftOffset.OffsetPos.Y)
-                        : new ImmutableVec2(leftOffset.OffsetPos.X, rightOffset.OffsetPos.Y),
-                    rightOffset.OffsetPos,
-                    right.Pos
-                });
+            Span<ImmutableVec2> points = stackalloc[]
+            {
+                left.Pos,
+                leftOffset.OffsetPos,
+                left.IsVertical
+                    ? new ImmutableVec2(rightOffset.OffsetPos.X, leftOffset.OffsetPos.Y)
+                    : new ImmutableVec2(leftOffset.OffsetPos.X, rightOffset.OffsetPos.Y),
+                rightOffset.OffsetPos,
+                right.Pos
+            };
+
+            DrawLines(ctx, cornerRadius, points);
         }
 
         internal readonly struct PortUnit
