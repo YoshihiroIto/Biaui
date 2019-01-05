@@ -102,7 +102,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        const double minPortOffset = 24.0;
+        private const double minPortOffset = 24.0;
 
         private static (int PointCount, double startRadius) MakeDifferenceLines(
             in PortUnit unit1,
@@ -256,6 +256,50 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var cornerRadius = leftOffset.FoldLength * 0.5;
 
+            // 迂回必要なしの場合
+            {
+                if (left.IsRight)
+                {
+                    var r = false;
+                    var c = new ImmutableVec2(right.Pos.X, left.Pos.Y);
+
+                    if (right.IsBottom)
+                        r = c.Y > rightOffset.OffsetPos.Y && c.X > leftOffset.OffsetPos.X;
+
+                    else if (right.IsTop)
+                        r = c.Y < rightOffset.OffsetPos.Y && c.X > leftOffset.OffsetPos.X;
+
+                    if (r)
+                    {
+                        work[0] = left.Pos;
+                        work[1] = c;
+                        work[2] = right.Pos;
+
+                        return (3, cornerRadius);
+                    }
+                }
+                if (right.IsLeft)
+                {
+                    var r = false;
+                    var c = new ImmutableVec2(left.Pos.X, right.Pos.Y);
+
+                    if (left.IsBottom)
+                        r = c.Y > leftOffset.OffsetPos.Y && c.X < rightOffset.OffsetPos.X;
+
+                    else if (left.IsTop)
+                        r = c.Y < leftOffset.OffsetPos.Y && c.X < rightOffset.OffsetPos.X;
+
+                    if (r)
+                    {
+                        work[0] = left.Pos;
+                        work[1] = c;
+                        work[2] = right.Pos;
+
+                        return (3, cornerRadius);
+                    }
+                }
+            }
+
             work[0] = left.Pos;
             work[1] = leftOffset.OffsetPos;
             work[2] = left.IsVertical
@@ -274,8 +318,11 @@ namespace Biaui.Controls.NodeEditor.Internal
             internal readonly BiaNodePort Port;
 
             internal bool IsHorizontal => Port.Dir.IsHorizontal();
-
             internal bool IsVertical => Port.Dir.IsVertical();
+            internal bool IsLeft => Port.Dir == BiaNodePortDir.Left;
+            internal bool IsTop => Port.Dir == BiaNodePortDir.Top;
+            internal bool IsRight => Port.Dir == BiaNodePortDir.Right;
+            internal bool IsBottom => Port.Dir == BiaNodePortDir.Bottom;
 
             internal PortUnit(in ImmutableVec2 pos, IBiaNodeItem item, BiaNodePort port)
             {
