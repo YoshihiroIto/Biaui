@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace Biaui.Interfaces
@@ -10,15 +11,18 @@ namespace Biaui.Interfaces
 
     public static class BiaHasPosExtensions
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Point AlignedPos(this IBiaHasPos self)
             => BiaHasPosHelper.AlignPos(self.Pos);
     }
 
     public static class BiaHasPosHelper
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Point AlignPos(Point pos)
             => new Point(AlignPos(pos.X), AlignPos(pos.Y));
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double AlignPos(double pos)
         {
             const double align = Internals.Constants.NodePanelAlignSize;
