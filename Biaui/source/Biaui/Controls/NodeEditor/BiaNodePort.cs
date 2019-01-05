@@ -30,4 +30,15 @@ namespace Biaui.Controls.NodeEditor
         Right,
         Bottom
     }
+
+    public static class BiaNodePortDirExtensions
+    {
+        public static bool IsVertical(this BiaNodePortDir self) =>
+            self == BiaNodePortDir.Top ||
+            self == BiaNodePortDir.Bottom;
+
+        public static bool IsHorizontal(this BiaNodePortDir self) =>
+            self == BiaNodePortDir.Left ||
+            self == BiaNodePortDir.Right;
+    }
 }

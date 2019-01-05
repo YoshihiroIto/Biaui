@@ -36,6 +36,7 @@ namespace Biaui.Internals
                     pos,
                     radius,
                     radius,
+                    true,
                     true);
             }
             ((IDisposable) ctx).Dispose();

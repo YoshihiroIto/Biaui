@@ -138,9 +138,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
 
-            var backgroundColor = ((SolidColorBrush)_parent.Background).Color;
+            var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
 
-            var alpha = _parent.IsNodePortDragging ? 0.2 : 1.0;
+            var alpha = _parent.IsNodePortDragging
+                ? 0.2
+                : 1.0;
 
             foreach (var link in _parent.LinksSource)
             {
@@ -182,7 +184,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var color = ColorHelper.Lerp(alpha, backgroundColor, link.Color);
                 var key = (color, link.Style);
 
-                // 線
                 if (_curves.TryGetValue(key, out var curve) == false)
                 {
                     var geom = new StreamGeometry
@@ -195,29 +196,17 @@ namespace Biaui.Controls.NodeEditor.Internal
                     _curves.Add(key, curve);
                 }
 
-                curve.Ctx.BeginFigure(pos1, false, false);
-                curve.Ctx.BezierTo(pos12, pos21, pos2, true, true);
+                // 線
+                var item1 = link.ItemPort1.Item;
+                var item2 = link.ItemPort2.Item;
 
+                DrawLine(curve.Ctx, ref pos1, ref pos2, item1, item2, internalData);
+
+#if false
                 // 矢印
                 if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
-                {
-                    var p1 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.50);
-                    var p2 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.45);
-
-                    const double size = 20;
-                    var pv = ImmutableVec2.SetSize(p1 - p2, size);
-                    var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
-
-                    var t1 = p1 + pv;
-                    var t2 = p1 + sv;
-                    var t3 = p1 - sv;
-
-                    curve.Ctx.DrawTriangle(
-                        Unsafe.As<ImmutableVec2, Point>(ref t1),
-                        Unsafe.As<ImmutableVec2, Point>(ref t2),
-                        Unsafe.As<ImmutableVec2, Point>(ref t3),
-                        false, false);
-                }
+                    DrawArrow(curve.Ctx, in pos1, in pos12, in pos21, in pos2);
+#endif
             }
 
             dc.PushTransform(_parent.Translate);
@@ -238,6 +227,379 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.Pop();
 
             _curves.Clear();
+        }
+
+
+        private static void DrawLine(
+            StreamGeometryContext ctx,
+            ref Point pos1, ref Point pos2,
+            IBiaNodeItem item1,
+            IBiaNodeItem item2,
+            InternalBiaNodeLinkData internalData)
+        {
+            var u1 = new PortUnit(Unsafe.As<Point, ImmutableVec2>(ref pos1), item1, internalData.Port1);
+            var u2 = new PortUnit(Unsafe.As<Point, ImmutableVec2>(ref pos2), item2, internalData.Port2);
+
+            if (u1.Port.Dir != u2.Port.Dir &&
+                u1.IsHorizontal &&
+                u2.IsHorizontal)
+            {
+                DrawHLine(ctx, u1, u2);
+            }
+            else if (u1.Port.Dir != u2.Port.Dir &&
+                u1.IsVertical &&
+                u2.IsVertical)
+            {
+                DrawVLine(ctx, u1, u2);
+            }
+            else if (u1.Port.Dir == u2.Port.Dir &&
+                     u1.Port.Dir.IsHorizontal())
+            {
+                DrawSameHLine(ctx, u1, u2);
+            }
+            else if (u1.Port.Dir == u2.Port.Dir &&
+                     u1.IsVertical)
+            {
+                DrawSameVLine(ctx, u1, u2);
+            }
+            else
+            {
+                DrawHVLine(ctx, u1, u2);
+            }
+        }
+
+        const double minPortOffset = 24.0;
+
+        private static void DrawHLine(
+            StreamGeometryContext ctx,
+            in PortUnit unit1,
+            in PortUnit unit2)
+        {
+            var (start, end) =
+                unit1.Port.Dir == BiaNodePortDir.Right
+                    ? (unit1, unit2)
+                    : (unit2, unit1);
+
+            var startItemCenter = start.Item.AlignedPos().Y + start.Item.Size.Height * 0.5;
+            var startItemPortOffset = start.Item.Size.Height * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.Y);
+            var fold = minPortOffset + startItemPortOffset;
+            var cornerRadius = fold * 0.5;
+
+            var startFoldPos = start.Pos.X + fold;
+            var foldStartPos = new ImmutableVec2(startFoldPos, start.Pos.Y);
+
+            if (startFoldPos < end.Pos.X - fold)
+            {
+                var foldEndPos = new ImmutableVec2(startFoldPos, end.Pos.Y);
+
+                DrawLines(ctx, cornerRadius,
+                    new[]
+                    {
+                        start.Pos,
+                        foldStartPos,
+                        foldEndPos,
+                        end.Pos
+                    });
+            }
+            else
+            {
+                var foldEndPos = new ImmutableVec2(end.Pos.X - fold, end.Pos.Y);
+                var foldY = start.Pos.Y < end.Pos.Y
+                    ? start.Item.AlignedPos().Y + start.Item.Size.Height + fold
+                    : end.Item.AlignedPos().Y + end.Item.Size.Height + fold;
+
+                DrawLines(ctx, cornerRadius,
+                    new[]
+                    {
+                        start.Pos,
+                        foldStartPos,
+                        new ImmutableVec2(foldStartPos.X, foldY),
+                        new ImmutableVec2(foldEndPos.X, foldY),
+                        foldEndPos,
+                        end.Pos
+                    });
+            }
+        }
+
+        private static void DrawVLine(
+            StreamGeometryContext ctx,
+            in PortUnit unit1,
+            in PortUnit unit2)
+        {
+            var (start, end) =
+                unit1.Port.Dir == BiaNodePortDir.Bottom
+                    ? (unit1, unit2)
+                    : (unit2, unit1);
+
+            var startItemCenter = start.Item.AlignedPos().X + start.Item.Size.Width * 0.5;
+            var startItemPortOffset = start.Item.Size.Width * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.X);
+            var fold = minPortOffset + startItemPortOffset;
+            var cornerRadius = fold * 0.5;
+
+            var startFoldPos = start.Pos.Y + fold;
+            var foldStartPos = new ImmutableVec2(start.Pos.X, startFoldPos);
+
+            if (startFoldPos < end.Pos.Y - fold)
+            {
+                var foldEndPos = new ImmutableVec2(end.Pos.X, startFoldPos);
+
+                DrawLines(ctx, cornerRadius,
+                    new[]
+                    {
+                        start.Pos,
+                        foldStartPos,
+                        foldEndPos,
+                        end.Pos
+                    });
+            }
+            else
+            {
+                var foldEndPos = new ImmutableVec2(end.Pos.X, end.Pos.Y - fold);
+                var foldX = start.Pos.X < end.Pos.X
+                    ? start.Item.AlignedPos().X + start.Item.Size.Width + fold
+                    : end.Item.AlignedPos().X + end.Item.Size.Width + fold;
+
+                DrawLines(ctx, cornerRadius,
+                    new[]
+                    {
+                        start.Pos,
+                        foldStartPos,
+                        new ImmutableVec2(foldX, foldStartPos.Y),
+                        new ImmutableVec2(foldX, foldEndPos.Y),
+                        foldEndPos,
+                        end.Pos
+                    });
+            }
+        }
+
+
+        private static void DrawSameHLine(
+            StreamGeometryContext ctx,
+            in PortUnit unit1,
+            in PortUnit unit2)
+        {
+            var startItemCenter = unit1.Item.AlignedPos().Y + unit1.Item.Size.Height * 0.5;
+            var startItemPortOffset = unit1.Item.Size.Height * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.Y);
+
+            var endItemCenter = unit2.Item.AlignedPos().Y + unit2.Item.Size.Height * 0.5;
+            var endItemPortOffset = unit2.Item.Size.Height * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y);
+            var fold = minPortOffset + (startItemPortOffset, endItemPortOffset).Max();
+
+            var foldPos = unit1.Port.Dir == BiaNodePortDir.Left
+                ? (unit1.Pos.X, unit2.Pos.X).Min() - fold
+                : (unit1.Pos.X, unit2.Pos.X).Max() + fold;
+
+            var foldStartPos = new ImmutableVec2(foldPos, unit1.Pos.Y);
+            var foldEndPos = new ImmutableVec2(foldPos, unit2.Pos.Y);
+
+            var cornerRadius = fold * 0.5;
+
+            DrawLines(ctx, cornerRadius,
+                new[]
+                {
+                    unit1.Pos,
+                    foldStartPos,
+                    foldEndPos,
+                    unit2.Pos
+                });
+        }
+
+        private static void DrawSameVLine(
+            StreamGeometryContext ctx,
+            in PortUnit unit1,
+            in PortUnit unit2)
+        {
+            var startItemCenter = unit1.Item.AlignedPos().X + unit1.Item.Size.Width * 0.5;
+            var startItemPortOffset = unit1.Item.Size.Width * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.X);
+
+            var endItemCenter = unit2.Item.AlignedPos().X+ unit2.Item.Size.Width * 0.5;
+            var endItemPortOffset = unit2.Item.Size.Width * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.X);
+            var fold = minPortOffset + (startItemPortOffset, endItemPortOffset).Max();
+
+            var foldPos = unit1.Port.Dir == BiaNodePortDir.Top
+                ? (unit1.Pos.Y, unit2.Pos.Y).Min() - fold
+                : (unit1.Pos.Y, unit2.Pos.Y).Max() + fold;
+
+            var foldStartPos = new ImmutableVec2(unit1.Pos.X, foldPos);
+            var foldEndPos = new ImmutableVec2(unit2.Pos.X, foldPos);
+
+            var cornerRadius = fold * 0.5;
+
+            DrawLines(ctx, cornerRadius,
+                new[]
+                {
+                    unit1.Pos,
+                    foldStartPos,
+                    foldEndPos,
+                    unit2.Pos
+                });
+        }
+
+
+        private static void DrawHVLine(
+            StreamGeometryContext ctx,
+            in PortUnit unit1,
+            in PortUnit unit2)
+        {
+            var (left, right) =
+                unit1.Pos.X < unit2.Pos.X
+                    ? (unit1, unit2)
+                    : (unit2, unit1);
+
+            var leftOffset = left.MakeOffsetPos();
+            var rightOffset = right.MakeOffsetPos();
+            var cornerRadius = leftOffset.FoldLength * 0.5;
+
+            DrawLines(ctx, cornerRadius,
+                new[]
+                {
+                    left.Pos,
+                    leftOffset.OffsetPos,
+                    left.IsVertical
+                        ? new ImmutableVec2(rightOffset.OffsetPos.X, leftOffset.OffsetPos.Y)
+                        : new ImmutableVec2(leftOffset.OffsetPos.X, rightOffset.OffsetPos.Y),
+                    rightOffset.OffsetPos,
+                    right.Pos
+                });
+        }
+
+        internal readonly struct PortUnit
+        {
+            internal readonly ImmutableVec2 Pos;
+            internal readonly IBiaNodeItem Item;
+            internal readonly BiaNodePort Port;
+
+            internal bool IsHorizontal => Port.Dir.IsHorizontal();
+            internal bool IsVertical => Port.Dir.IsVertical();
+
+            internal PortUnit(in ImmutableVec2 pos, IBiaNodeItem item, BiaNodePort port)
+            {
+                Pos = pos;
+                Item = item;
+                Port = port;
+            }
+
+            internal (ImmutableVec2 OffsetPos, double FoldLength) MakeOffsetPos()
+            {
+                double itemPortOffset;
+                {
+                    if (IsVertical)
+                    {
+                        var itemCenter = Item.AlignedPos().X + Item.Size.Width * 0.5;
+                        itemPortOffset = Item.Size.Width * 0.5 - NumberHelper.Abs(itemCenter - Pos.X);
+                    }
+                    else
+                    {
+                        var itemCenter = Item.AlignedPos().Y + Item.Size.Height * 0.5;
+                        itemPortOffset = Item.Size.Height * 0.5 - NumberHelper.Abs(itemCenter - Pos.Y);
+                    }
+                }
+
+                var foldLength = minPortOffset + itemPortOffset;
+                var foldOffset = DirVector(foldLength);
+
+                return (Pos + foldOffset, foldLength);
+            }
+
+            private ImmutableVec2 DirVector(double length)
+            {
+                switch (Port.Dir)
+                {
+                    case BiaNodePortDir.Left:
+                        return new ImmutableVec2(-length, 0);
+
+                    case BiaNodePortDir.Top:
+                        return new ImmutableVec2(0, -length);
+
+                    case BiaNodePortDir.Right:
+                        return new ImmutableVec2(+length, 0);
+
+                    case BiaNodePortDir.Bottom:
+                        return new ImmutableVec2(0, +length);
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(Port.Dir), Port.Dir, null);
+                }
+            }
+        }
+
+        private static void DrawLines(
+            StreamGeometryContext ctx,
+            double maxCornerRadius,
+            Span<ImmutableVec2> points)
+        {
+            var isFirst = true;
+
+            for (var i = 2; i != points.Length; ++i)
+            {
+                ref var p0 = ref points[i - 2];
+                ref var p1 = ref points[i - 1];
+                ref var p2 = ref points[i - 0];
+
+                var d01 = (p0 - p1).Length;
+                var d12 = (p1 - p2).Length;
+
+                var d = (d01, d12).Min();
+                var radius = (d * 0.5, maxCornerRadius).Min();
+
+                var v01 = ImmutableVec2.SetSize(p0 - p1, radius);
+                var v21 = ImmutableVec2.SetSize(p2 - p1, radius);
+
+                var p01 = p1 + v01;
+                var p21 = p1 + v21;
+
+                var hp12 = (p1 + p2) * 0.5;
+
+                var c0 = p01 - v01 * ControlPointRatio;
+                var c1 = p21 - v21 * ControlPointRatio;
+
+                if (isFirst)
+                {
+                    isFirst = false;
+                    ctx.BeginFigure(Unsafe.As<ImmutableVec2, Point>(ref p0), false, false);
+                }
+
+                ctx.LineTo(Unsafe.As<ImmutableVec2, Point>(ref p01), true, false);
+
+                ctx.BezierTo(
+                    Unsafe.As<ImmutableVec2, Point>(ref c0),
+                    Unsafe.As<ImmutableVec2, Point>(ref c1),
+                    Unsafe.As<ImmutableVec2, Point>(ref p21),
+                    true,
+                    true);
+
+                var isLastPoint = i == points.Length - 1;
+                ctx.LineTo(
+                    isLastPoint
+                        ? Unsafe.As<ImmutableVec2, Point>(ref p2)
+                        : Unsafe.As<ImmutableVec2, Point>(ref hp12),
+                    true,
+                    false);
+            }
+        }
+
+        private static readonly double ControlPointRatio = (Math.Sqrt(2) - 1) * 4 / 3;
+
+        private static void DrawArrow(
+            StreamGeometryContext ctx,
+            in Point pos1, in Point pos12, in Point pos21, in Point pos2)
+        {
+            var p1 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.50);
+            var p2 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.45);
+
+            const double size = 20;
+            var pv = ImmutableVec2.SetSize(p1 - p2, size);
+            var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
+
+            var t1 = p1 + pv;
+            var t2 = p1 + sv;
+            var t3 = p1 - sv;
+
+            ctx.DrawTriangle(
+                Unsafe.As<ImmutableVec2, Point>(ref t1),
+                Unsafe.As<ImmutableVec2, Point>(ref t2),
+                Unsafe.As<ImmutableVec2, Point>(ref t3),
+                false, false);
         }
     }
 }

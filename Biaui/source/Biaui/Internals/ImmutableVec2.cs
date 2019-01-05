@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace Biaui.Internals
@@ -10,11 +11,16 @@ namespace Biaui.Internals
         public readonly double X;
         public readonly double Y;
 
+        public double Length => Math.Sqrt(X * X + Y * Y);
+
         public ImmutableVec2(double x, double y)
             => (X, Y) = (x, y);
 
         public ImmutableVec2(Point p)
             => (X, Y) = (p.X, p.Y);
+
+        public ImmutableVec2(Size p)
+            => (X, Y) = (p.Width, p.Height);
 
         // ReSharper disable CompareOfFloatsByEqualityOperator
         public static bool operator ==(in ImmutableVec2 source1, in ImmutableVec2 source2)
@@ -40,17 +46,40 @@ namespace Biaui.Internals
             => X.GetHashCode() ^
                Y.GetHashCode();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2 SetSize(in ImmutableVec2 v, double size)
         {
-            var n = Math.Sqrt(v.X * v.X + v.Y * v.Y);
+            var n = v.X * v.X + v.Y * v.Y;
 
-            return new ImmutableVec2(size * v.X / n, size * v.Y / n);
+            if (NumberHelper.AreCloseZero(n))
+                return new ImmutableVec2(0, 0);
+
+            var l = Math.Sqrt(n);
+
+            return new ImmutableVec2(size * v.X / l, size * v.Y / l);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ImmutableVec2 Lerp(double ratio, in ImmutableVec2 v1, ImmutableVec2 v2)
+            => new ImmutableVec2(
+                (v2.X - v1.X) * ratio + v1.X,
+                (v2.Y - v1.Y) * ratio + v1.Y);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2 operator +(in ImmutableVec2 v1, in ImmutableVec2 v2)
             => new ImmutableVec2(v1.X + v2.X, v1.Y + v2.Y);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2 operator -(in ImmutableVec2 v1, in ImmutableVec2 v2)
             => new ImmutableVec2(v1.X - v2.X, v1.Y - v2.Y);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ImmutableVec2 operator *(in ImmutableVec2 v1, double v2)
+            => new ImmutableVec2(v1.X * v2, v1.Y * v2);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ImmutableVec2 operator /(in ImmutableVec2 v1, double v2)
+            => new ImmutableVec2(v1.X / v2, v1.Y / v2);
+
     }
 }
