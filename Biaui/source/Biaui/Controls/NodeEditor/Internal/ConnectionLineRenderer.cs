@@ -48,6 +48,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             Span<ImmutableVec2> points,
             int count)
         {
+            if (count < 3)
+                return;
+
             var isFirst = true;
 
             for (var i = 2; i != count; ++i)
@@ -197,6 +200,59 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var leftOffset = left.MakeOffsetPos();
             var rightOffset = right.MakeOffsetPos();
+
+            //　交差している場合
+            if (left.IsHorizontal)
+            {
+                var (left1, left2) = (left.Pos.X < leftOffset.OffsetPos.X)
+                    ? (left.Pos, leftOffset.OffsetPos)
+                    : (leftOffset.OffsetPos, left.Pos);
+
+                var (right1, right2) = (right.Pos.Y < rightOffset.OffsetPos.Y)
+                    ? (right.Pos, rightOffset.OffsetPos)
+                    : (rightOffset.OffsetPos, right.Pos);
+
+                if (right1.X > left1.X &&
+                    right1.X < left2.X &&
+                    left1.Y > right1.Y &&
+                    left1.Y < right2.Y)
+                {
+                    // 交差している
+                    work[0] = left.Pos;
+                    work[1] = new ImmutableVec2(right.Pos.X, left.Pos.Y);
+                    work[2] = right.Pos;
+
+                    var r = (right.Pos.X, left.Pos.Y).Min() * 0.5;
+
+                    return (3, r, r);
+                }
+            }
+            else
+            {
+                var (left1, left2) = (left.Pos.Y < leftOffset.OffsetPos.Y)
+                    ? (left.Pos, leftOffset.OffsetPos)
+                    : (leftOffset.OffsetPos, left.Pos);
+
+                var (right1, right2) = (right.Pos.X < rightOffset.OffsetPos.X)
+                    ? (right.Pos, rightOffset.OffsetPos)
+                    : (rightOffset.OffsetPos, right.Pos);
+
+                if (right1.Y > left1.Y &&
+                    right1.Y < left2.Y &&
+                    left1.X > right1.X &&
+                    left1.X < right2.X)
+                {
+                    // 交差している
+                    work[0] = left.Pos;
+                    work[1] = new ImmutableVec2(left.Pos.X, right.Pos.Y);
+                    work[2] = right.Pos;
+
+                    var r = (left.Pos.X, right.Pos.Y).Min() * 0.5;
+
+                    return (3, r, r);
+                }
+            }
+
             var cornerRadius = leftOffset.FoldLength * 0.5;
 
             work[0] = left.Pos;

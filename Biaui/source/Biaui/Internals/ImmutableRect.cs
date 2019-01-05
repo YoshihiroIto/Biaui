@@ -47,6 +47,12 @@ namespace Biaui.Internals
 
         public ImmutableRect(Span<Point> points)
         {
+            if (points.Length == 0)
+            {
+                (X, Y, Width, Height) = (0, 0, 0, 0);
+                return;
+            }
+
             var minX = points[0].X;
             var minY = points[0].Y;
             var maxX = points[0].X;
@@ -71,6 +77,12 @@ namespace Biaui.Internals
 
         public ImmutableRect(ReadOnlySpan<Point> points)
         {
+            if (points.Length == 0)
+            {
+                (X, Y, Width, Height) = (0, 0, 0, 0);
+                return;
+            }
+
             var minX = points[0].X;
             var minY = points[0].Y;
             var maxX = points[0].X;
@@ -95,6 +107,12 @@ namespace Biaui.Internals
 
         public ImmutableRect(Span<ImmutableVec2> points)
         {
+            if (points.Length == 0)
+            {
+                (X, Y, Width, Height) = (0, 0, 0, 0);
+                return;
+            }
+
             var minX = points[0].X;
             var minY = points[0].Y;
             var maxX = points[0].X;
@@ -119,6 +137,12 @@ namespace Biaui.Internals
 
         public ImmutableRect(ReadOnlySpan<ImmutableVec2> points)
         {
+            if (points.Length == 0)
+            {
+                (X, Y, Width, Height) = (0, 0, 0, 0);
+                return;
+            }
+
             var minX = points[0].X;
             var minY = points[0].Y;
             var maxX = points[0].X;
