@@ -179,7 +179,8 @@
     <Compile Include="Controls\BiaHsvWheelBackground.cs" />
     <Compile Include="Controls\BiaHsvWheelCursor.cs" />
     <Compile Include="Controls\Internals\SystemButton.cs" />
-    <Compile Include="Controls\Internals\Transposer.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\ConnectionLineRenderer.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\Transposer.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodeEditor.cs" />
     <Compile Include="Controls\BiaTextBox.cs" />
     <Compile Include="Controls\BiaRadioButton.cs" />

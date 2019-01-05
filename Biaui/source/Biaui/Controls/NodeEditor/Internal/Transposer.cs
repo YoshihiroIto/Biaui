@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using Biaui.Controls.NodeEditor;
 using Biaui.Internals;
 
-namespace Biaui.Controls.Internals
+namespace Biaui.Controls.NodeEditor.Internal
 {
     internal static class Transposer
     {

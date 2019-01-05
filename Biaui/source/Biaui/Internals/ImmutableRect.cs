@@ -45,20 +45,20 @@ namespace Biaui.Internals
             );
         }
 
-        public ImmutableRect(Point[] poss)
+        public ImmutableRect(Span<Point> points)
         {
-            var minX = poss[0].X;
-            var minY = poss[0].Y;
-            var maxX = poss[0].X;
-            var maxY = poss[0].Y;
+            var minX = points[0].X;
+            var minY = points[0].Y;
+            var maxX = points[0].X;
+            var maxY = points[0].Y;
 
-            for (var i = 1; i < poss.Length; ++i)
+            for (var i = 1; i < points.Length; ++i)
             {
-                minX = (minX, poss[i].X).Min();
-                maxX = (maxX, poss[i].X).Max();
+                minX = (minX, points[i].X).Min();
+                maxX = (maxX, points[i].X).Max();
 
-                minY = (minY, poss[i].Y).Min();
-                maxY = (maxY, poss[i].Y).Max();
+                minY = (minY, points[i].Y).Min();
+                maxY = (maxY, points[i].Y).Max();
             }
 
             (X, Y, Width, Height) = (
@@ -69,15 +69,88 @@ namespace Biaui.Internals
             );
         }
 
+        public ImmutableRect(ReadOnlySpan<Point> points)
+        {
+            var minX = points[0].X;
+            var minY = points[0].Y;
+            var maxX = points[0].X;
+            var maxY = points[0].Y;
+
+            for (var i = 1; i < points.Length; ++i)
+            {
+                minX = (minX, points[i].X).Min();
+                maxX = (maxX, points[i].X).Max();
+
+                minY = (minY, points[i].Y).Min();
+                maxY = (maxY, points[i].Y).Max();
+            }
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
+        public ImmutableRect(Span<ImmutableVec2> points)
+        {
+            var minX = points[0].X;
+            var minY = points[0].Y;
+            var maxX = points[0].X;
+            var maxY = points[0].Y;
+
+            for (var i = 1; i < points.Length; ++i)
+            {
+                minX = (minX, points[i].X).Min();
+                maxX = (maxX, points[i].X).Max();
+
+                minY = (minY, points[i].Y).Min();
+                maxY = (maxY, points[i].Y).Max();
+            }
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
+        public ImmutableRect(ReadOnlySpan<ImmutableVec2> points)
+        {
+            var minX = points[0].X;
+            var minY = points[0].Y;
+            var maxX = points[0].X;
+            var maxY = points[0].Y;
+
+            for (var i = 1; i < points.Length; ++i)
+            {
+                minX = (minX, points[i].X).Min();
+                maxX = (maxX, points[i].X).Max();
+
+                minY = (minY, points[i].Y).Min();
+                maxY = (maxY, points[i].Y).Max();
+            }
+
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        }
+
+
         public enum CtorPoint4 { };
 
         // ReSharper disable once UnusedParameter.Local
-        public ImmutableRect(Point[] poss, CtorPoint4 _)
+        public ImmutableRect(ReadOnlySpan<Point> points, CtorPoint4 _)
         {
-            var minX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Min();
-            var maxX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Max();
-            var minY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Min();
-            var maxY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Max();
+            var minX = (points[0].X, points[1].X, points[2].X, points[3].X).Min();
+            var maxX = (points[0].X, points[1].X, points[2].X, points[3].X).Max();
+            var minY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Min();
+            var maxY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Max();
 
             (X, Y, Width, Height) = (
                 minX,
@@ -88,28 +161,12 @@ namespace Biaui.Internals
         }
 
         // ReSharper disable once UnusedParameter.Local
-        public ImmutableRect(ReadOnlySpan<Point> poss, CtorPoint4 _)
+        public ImmutableRect(ReadOnlySpan<ImmutableVec2> points, CtorPoint4 _)
         {
-            var minX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Min();
-            var maxX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Max();
-            var minY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Min();
-            var maxY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Max();
-
-            (X, Y, Width, Height) = (
-                minX,
-                minY,
-                maxX - minX,
-                maxY - minY
-            );
-        }
-
-        // ReSharper disable once UnusedParameter.Local
-        public ImmutableRect(ReadOnlySpan<ImmutableVec2> poss, CtorPoint4 _)
-        {
-            var minX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Min();
-            var maxX = (poss[0].X, poss[1].X, poss[2].X, poss[3].X).Max();
-            var minY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Min();
-            var maxY = (poss[0].Y, poss[1].Y, poss[2].Y, poss[3].Y).Max();
+            var minX = (points[0].X, points[1].X, points[2].X, points[3].X).Min();
+            var maxX = (points[0].X, points[1].X, points[2].X, points[3].X).Max();
+            var minY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Min();
+            var maxY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Max();
 
             (X, Y, Width, Height) = (
                 minX,
