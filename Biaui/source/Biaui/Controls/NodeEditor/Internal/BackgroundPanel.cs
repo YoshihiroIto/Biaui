@@ -207,7 +207,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
 
                 ConnectionLineRenderer.DrawLines(
-                    curve.Ctx, lines.startRadius, lines.endRadius, work, lines.PointCount);
+                    curve.Ctx, lines.startRadius, work, lines.PointCount);
 
 #if false
                 // 矢印

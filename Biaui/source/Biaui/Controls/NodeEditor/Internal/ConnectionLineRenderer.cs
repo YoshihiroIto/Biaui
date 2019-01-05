@@ -9,7 +9,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal static class ConnectionLineRenderer
     {
-        internal static (int PointCount, double startRadius, double endRadius) MakeLines(
+        internal static (int PointCount, double startRadius) MakeLines(
             ref Point pos1,
             ref Point pos2,
             IBiaNodeItem item1,
@@ -44,7 +44,6 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal static void DrawLines(
             StreamGeometryContext ctx,
             double startRadius,
-            double endRadius,
             Span<ImmutableVec2> points,
             int count)
         {
@@ -63,7 +62,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var d12 = (p1 - p2).Length;
 
                 var d = (d01, d12).Min();
-                var radius = (d * 0.5, startRadius).Min();
+
+                //var radius = (d * 0.5, startRadius).Min();
+                var radius = (d * 0.5, 64.0).Min();
 
                 var v01 = ImmutableVec2.SetSize(p0 - p1, radius);
                 var v21 = ImmutableVec2.SetSize(p2 - p1, radius);
@@ -103,7 +104,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         const double minPortOffset = 24.0;
 
-        private static (int PointCount, double startRadius, double endRadius) MakeDifferenceLines(
+        private static (int PointCount, double startRadius) MakeDifferenceLines(
             in PortUnit unit1,
             in PortUnit unit2,
             bool isHorizontal,
@@ -134,7 +135,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 work[2] = foldEndPos;
                 work[3] = end.Pos;
 
-                return (4, cornerRadius, cornerRadius);
+                return (4, cornerRadius);
             }
             else
             {
@@ -151,11 +152,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                 work[4] = foldEndPos;
                 work[5] = end.Pos;
 
-                return (6, cornerRadius, cornerRadius);
+                return (6, cornerRadius);
             }
         }
 
-        private static (int PointCount, double startRadius, double endRadius) MakeSameLines(
+        private static (int PointCount, double startRadius) MakeSameLines(
             in PortUnit unit1,
             in PortUnit unit2,
             bool isHorizontal,
@@ -185,10 +186,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             work[2] = foldEndPos;
             work[3] = unit2.Pos;
 
-            return (4, cornerRadius, cornerRadius);
+            return (4, cornerRadius);
         }
 
-        private static (int PointCount, double startRadius, double endRadius) MakeHVLines(
+        private static (int PointCount, double startRadius) MakeHVLines(
             in PortUnit unit1,
             in PortUnit unit2,
             Span<ImmutableVec2> work)
@@ -224,7 +225,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var r = (right.Pos.X, left.Pos.Y).Min() * 0.5;
 
-                    return (3, r, r);
+                    return (3, r);
                 }
             }
             else
@@ -249,7 +250,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var r = (left.Pos.X, right.Pos.Y).Min() * 0.5;
 
-                    return (3, r, r);
+                    return (3, r);
                 }
             }
 
@@ -263,7 +264,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             work[3] = rightOffset.OffsetPos;
             work[4] = right.Pos;
 
-            return (5, cornerRadius, cornerRadius);
+            return (5, cornerRadius);
         }
 
         internal readonly struct PortUnit
