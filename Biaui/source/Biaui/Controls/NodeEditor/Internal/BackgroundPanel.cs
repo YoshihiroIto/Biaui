@@ -169,7 +169,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var item1 = link.ItemPort1.Item;
                 var item2 = link.ItemPort2.Item;
 
-
                 // 大雑把にカリング
                 //  --> 接続線が膨らんだ前提でバウンディングボックスを作りビューポートと判定を取る
                 var (left, right) = (pos1.X, pos2.X).MinMax();
@@ -186,7 +185,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var lines = ConnectionLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, internalData, work);
 
                 // ラインのバウンディングボックスと判定
-                var lineBox = new ImmutableRect(work.Slice(0, lines.PointCount));
+                var lineBox = new ImmutableRect(lines);
                 if (viewport.IntersectsWith(lineBox) == false)
                     continue;
 
@@ -206,8 +205,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     _curves.Add(key, curve);
                 }
 
-                ConnectionLineRenderer.DrawLines(
-                    curve.Ctx, lines.startRadius, work, lines.PointCount);
+                ConnectionLineRenderer.DrawLines(curve.Ctx, lines);
 
 #if false
                 // 矢印
