@@ -641,9 +641,6 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public IEnumerable<int> Check(IBiaNodeItem target, in BiaNodePortEnabledCheckerArgs args)
         {
-return target.Layout.Ports.Keys;
-
-
             switch (args.Timing)
             {
                 case BiaNodePortEnableTiming.Default:
