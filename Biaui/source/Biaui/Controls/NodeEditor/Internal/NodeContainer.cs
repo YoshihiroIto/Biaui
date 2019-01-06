@@ -415,7 +415,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                         bool isAdded;
                         (nodePanel, isAdded) = FindOrCreateNodePanel();
 
-                        nodePanel.Style = FindResource(item.GetType()) as Style;
+                        var itemType = item.GetType();
+                        if (_styleDict.TryGetValue(itemType, out var style) == false)
+                        {
+                            style = FindResource(item.GetType()) as Style;
+                            _styleDict.Add(itemType, style);
+                        }
+
+                        nodePanel.Style = style;
                         nodePanel.DataContext = item;
                         nodePanel.Opacity = 1.0;
 
@@ -448,6 +455,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             _changedUpdate.Clear();
         }
+
+        private readonly Dictionary<Type, Style> _styleDict = new Dictionary<Type, Style>();
 
         private (BiaNodePanel Panel, bool IsAdded) FindOrCreateNodePanel()
         {

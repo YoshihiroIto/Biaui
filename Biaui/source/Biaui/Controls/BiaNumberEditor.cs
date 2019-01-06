@@ -580,7 +580,9 @@ namespace Biaui.Controls
 
         private void DrawBackground(DrawingContext dc)
         {
-            var brush = _isEditing ? _textBox.Background : Background;
+            var brush = _isEditing
+                ? _textBox.Background
+                : Background;
 
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
@@ -619,7 +621,9 @@ namespace Biaui.Controls
                 return;
 
             var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutActualWidth(IsVisibleBorder) / SliderWidth;
-            var brush = _isEditing ? _textBox.Background : SliderBrush;
+            var brush = _isEditing
+                ? _textBox.Background
+                : SliderBrush;
 
             var r = this.RoundLayoutActualRectangle(IsVisibleBorder);
             r.Width = FrameworkElementHelper.RoundLayoutValue(w);
@@ -652,10 +656,10 @@ namespace Biaui.Controls
             );
         }
 
+        private static readonly Brush moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
+
         private void DrawSpin(DrawingContext dc)
         {
-            var moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
-
             {
                 var offsetX = 5.0;
                 var offsetY = 8.0;
@@ -664,6 +668,7 @@ namespace Biaui.Controls
                     dc.DrawRectangle(_SpinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
 
                 var key = (offsetX, offsetY);
+
                 if (_TranslateTransformCache.TryGetValue(key, out var tt) == false)
                 {
                     tt = new TranslateTransform(offsetX, offsetY);
@@ -672,7 +677,9 @@ namespace Biaui.Controls
 
                 dc.PushTransform(tt);
                 dc.DrawGeometry(
-                    _mouseOverType == MouseOverType.DecSpin ? moBrush : Foreground, null, _DecSpinGeom);
+                    _mouseOverType == MouseOverType.DecSpin
+                        ? moBrush
+                        : Foreground, null, _DecSpinGeom);
                 dc.Pop();
             }
 
@@ -685,6 +692,7 @@ namespace Biaui.Controls
                         new Rect(ActualWidth - SpinWidth, 0, SpinWidth, ActualHeight));
 
                 var key = (offsetX, offsetY);
+
                 if (_TranslateTransformCache.TryGetValue(key, out var tt) == false)
                 {
                     tt = new TranslateTransform(offsetX, offsetY);
@@ -693,7 +701,9 @@ namespace Biaui.Controls
 
                 dc.PushTransform(tt);
                 dc.DrawGeometry(
-                    _mouseOverType == MouseOverType.IncSpin ? moBrush : Foreground, null, _IncSpinGeom);
+                    _mouseOverType == MouseOverType.IncSpin
+                        ? moBrush
+                        : Foreground, null, _IncSpinGeom);
                 dc.Pop();
             }
         }
@@ -785,7 +795,9 @@ namespace Biaui.Controls
                         GuiHelper.HideCursor();
 
                     // Ctrl押下中は５倍速い
-                    var s = KeyboardHelper.IsPressControl ? 5.0 : 1.0;
+                    var s = KeyboardHelper.IsPressControl
+                        ? 5.0
+                        : 1.0;
                     var w = currentPos.X - _oldPos.X;
                     var v = Value + s * w * Increment;
 
@@ -843,7 +855,9 @@ namespace Biaui.Controls
                 if (Math.Abs(p.X - _mouseDownPos.X) <= _clickPlayWidth)
                 {
                     // Ctrl押下中は５倍速い
-                    var inc = KeyboardHelper.IsPressControl ? Increment * 5 : Increment;
+                    var inc = KeyboardHelper.IsPressControl
+                        ? Increment * 5
+                        : Increment;
 
                     if (p.X <= SpinWidth && IsReadOnly == false)
                         AddValue(-inc);
@@ -1028,7 +1042,9 @@ namespace Biaui.Controls
         }
 
         protected override int VisualChildrenCount
-            => _isEditing ? 1 : 0;
+            => _isEditing
+                ? 1
+                : 0;
 
         protected override Visual GetVisualChild(int index)
             => _textBox;
@@ -1094,7 +1110,10 @@ namespace Biaui.Controls
                 var figure = new PathFigure(start, segments, true);
                 figure.Freeze();
 
-                _DecSpinGeom = new PathGeometry(new[] {figure});
+                _DecSpinGeom = new PathGeometry(new[]
+                {
+                    figure
+                });
                 _DecSpinGeom.Freeze();
             }
 
@@ -1113,7 +1132,10 @@ namespace Biaui.Controls
                 var figure = new PathFigure(start, segments, true);
                 figure.Freeze();
 
-                _IncSpinGeom = new PathGeometry(new[] {figure});
+                _IncSpinGeom = new PathGeometry(new[]
+                {
+                    figure
+                });
                 _IncSpinGeom.Freeze();
             }
 
@@ -1128,8 +1150,11 @@ namespace Biaui.Controls
         private double SliderWidth => Math.Abs(SliderMaximum - SliderMinimum);
 
         private double ActualSliderMinimum => (SliderMinimum, SliderMaximum).Min();
+
         private double ActualSliderMaximum => (SliderMinimum, SliderMaximum).Max();
+
         private double ActualMinimum => (Minimum, Maximum).Min();
+
         private double ActualMaximum => (Minimum, Maximum).Max();
 
         private string UiValueString
