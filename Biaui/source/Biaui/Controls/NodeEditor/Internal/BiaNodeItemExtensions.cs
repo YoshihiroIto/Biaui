@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Biaui.Interfaces;
 using Biaui.Internals;
@@ -7,13 +8,36 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal static class BiaNodeItemExtensions
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static InternalBiaNodeItemData InternalData(this IBiaNodeItem self)
+        {
+            InternalBiaNodeItemData internalData;
+
+            if (self.InternalData == null)
+            {
+                internalData = new InternalBiaNodeItemData();
+                self.InternalData = internalData;
+            }
+            else
+            {
+                internalData = (InternalBiaNodeItemData) self.InternalData;
+            }
+
+            return internalData;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ImmutableRect MakeRect(this IBiaNodeItem self)
             => new ImmutableRect(self.Pos, self.Size);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ImmutableCircle MakeCircle(this IBiaNodeItem self)
         {
             var size = self.Size;
-            return new ImmutableCircle(self.Pos.X + size.Width * 0.5, self.Pos.Y + size.Height * 0.5, size.Width * 0.5);
+            return new ImmutableCircle(
+                self.Pos.X + size.Width * 0.5,
+                self.Pos.Y + size.Height * 0.5,
+                size.Width * 0.5);
         }
 
         internal static Point MakePortPos(this IBiaNodeItem nodeItem, BiaNodePort port)
@@ -58,10 +82,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal static IEnumerable<BiaNodePort> EnabledPorts(this IBiaNodeItem nodeItem)
         {
-            var internalData = (InternalBiaNodeItemData)nodeItem.InternalData;
-
-            return internalData != null
-                ? internalData.EnablePorts
+            return nodeItem.InternalData().EnablePorts != null
+                ? nodeItem.InternalData().EnablePorts
                 : nodeItem.Layout.Ports.Values as IEnumerable<BiaNodePort>;
         }
     }

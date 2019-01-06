@@ -144,28 +144,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var link in _parent.LinksSource)
             {
-                InternalBiaNodeLinkData internalData;
-
-                if (link.InternalData == null)
-                {
-                    internalData = new InternalBiaNodeLinkData
-                    {
-                        Port1 = link.ItemPort1.FindPort(),
-                        Port2 = link.ItemPort2.FindPort()
-                    };
-
-                    link.InternalData = internalData;
-                }
-                else
-                {
-                    internalData = (InternalBiaNodeLinkData) link.InternalData;
-                }
-
-                if (internalData.Port1 == null || internalData.Port2 == null)
+                if (link.InternalData().Port1 == null || link.InternalData().Port2 == null)
                     continue;
 
-                var pos1 = link.ItemPort1.Item.MakePortPos(internalData.Port1);
-                var pos2 = link.ItemPort2.Item.MakePortPos(internalData.Port2);
+                var pos1 = link.ItemPort1.Item.MakePortPos(link.InternalData().Port1);
+                var pos2 = link.ItemPort2.Item.MakePortPos(link.InternalData().Port2);
                 var item1 = link.ItemPort1.Item;
                 var item2 = link.ItemPort2.Item;
 
@@ -182,7 +165,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (viewport.IntersectsWith(inflateBox) == false)
                     continue;
 
-                var lines = ConnectionLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, internalData, work);
+                var lines = ConnectionLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(), work);
 
                 // ラインのバウンディングボックスと判定
                 var lineBox = new ImmutableRect(lines);

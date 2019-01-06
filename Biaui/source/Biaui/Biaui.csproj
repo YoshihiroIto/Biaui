@@ -179,6 +179,7 @@
     <Compile Include="Controls\BiaHsvWheelBackground.cs" />
     <Compile Include="Controls\BiaHsvWheelCursor.cs" />
     <Compile Include="Controls\Internals\SystemButton.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodePortExtensions.cs" />
     <Compile Include="Controls\NodeEditor\Internal\ConnectionLineRenderer.cs" />
     <Compile Include="Controls\NodeEditor\Internal\Transposer.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodeEditor.cs" />
@@ -213,7 +214,7 @@
     <Compile Include="Controls\NodeEditor\BiaNodePort.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePortLayout.cs" />
     <Compile Include="Controls\NodeEditor\IBiaNodePortEnabledChecker.cs" />
-    <Compile Include="Controls\NodeEditor\Internal\BiaNodePortExtensions.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodeLinkExtensions.cs" />
     <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeItemData.cs" />
     <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeLinkData.cs" />
     <Compile Include="Controls\NodeEditor\Internal\NodeContainer.cs" />

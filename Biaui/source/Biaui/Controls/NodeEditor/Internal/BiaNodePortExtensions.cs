@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal static class BiaNodePortExtensions
+    internal static class BiaNodePortExtensions 
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static Point MakePos(this BiaNodePort port, double panelWidth, double panelHeight)
