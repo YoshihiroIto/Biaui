@@ -415,11 +415,18 @@ namespace Biaui.Controls.NodeEditor.Internal
                         bool isAdded;
                         (nodePanel, isAdded) = FindOrCreateNodePanel();
 
-                        var itemType = item.GetType();
-                        if (_styleDict.TryGetValue(itemType, out var style) == false)
+                        var style = item.InternalData().Style;
+                        if (style == null)
                         {
-                            style = FindResource(item.GetType()) as Style;
-                            _styleDict.Add(itemType, style);
+                            var itemType = item.GetType();
+
+                            if (_styleDict.TryGetValue(itemType, out style) == false)
+                            {
+                                style = FindResource(item.GetType()) as Style;
+                                _styleDict.Add(itemType, style);
+                            }
+
+                            item.InternalData().Style = style;
                         }
 
                         nodePanel.Style = style;
