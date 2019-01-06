@@ -67,6 +67,9 @@ namespace Biaui.Controls.Internals
 
         internal void ChangeElement(T child)
         {
+            if (_isInMeasureOverride)
+                return;
+
             _changedElements.Add(child);
         }
 
@@ -91,15 +94,21 @@ namespace Biaui.Controls.Internals
             return base.ArrangeOverride(finalSize);
         }
 
+        private bool _isInMeasureOverride;
+
         protected override Size MeasureOverride(Size availableSize)
         {
-            foreach (var child in _changedElements.ToArray())
+            _isInMeasureOverride = true;
+
+            foreach (var child in _changedElements)
             {
                 child.Measure(availableSize);
 
                 if (child.DataContext is IBiaNodeItem nodeItem)
                     nodeItem.Size = child.DesiredSize;
             }
+
+            _isInMeasureOverride = false;
 
             return base.MeasureOverride(availableSize);
         }
