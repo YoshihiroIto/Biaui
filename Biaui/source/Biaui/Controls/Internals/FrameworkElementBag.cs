@@ -10,7 +10,7 @@ namespace Biaui.Controls.Internals
     {
         private readonly List<T> _children = new List<T>();
         private readonly HashSet<T> _childrenForSearch = new HashSet<T>();
-        private readonly List<T> _changedElements = new List<T>();
+        private readonly HashSet<T> _changedElements = new HashSet<T>();
 
         public IReadOnlyList<T> Children => _children;
 
