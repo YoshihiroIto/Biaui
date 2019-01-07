@@ -12,6 +12,7 @@ namespace Biaui.Internals
         public readonly double Y;
 
         public double Length => Math.Sqrt(X * X + Y * Y);
+        public double LengthSq => X * X + Y * Y;
 
         public ImmutableVec2(double x, double y)
             => (X, Y) = (x, y);
@@ -23,17 +24,21 @@ namespace Biaui.Internals
             => (X, Y) = (p.Width, p.Height);
 
         // ReSharper disable CompareOfFloatsByEqualityOperator
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(in ImmutableVec2 source1, in ImmutableVec2 source2)
             => source1.X == source2.X &&
                source1.Y == source2.Y;
         // ReSharper restore CompareOfFloatsByEqualityOperator
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator !=(in ImmutableVec2 source1, in ImmutableVec2 source2)
             => !(source1 == source2);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(ImmutableVec2 other)
             => this == other;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj)
         {
             if (obj is ImmutableVec2 other)
@@ -42,6 +47,7 @@ namespace Biaui.Internals
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
             => X.GetHashCode() ^
                Y.GetHashCode();
@@ -49,7 +55,7 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2 SetSize(in ImmutableVec2 v, double size)
         {
-            var n = v.X * v.X + v.Y * v.Y;
+            var n = v.LengthSq;
 
             if (NumberHelper.AreCloseZero(n))
                 return new ImmutableVec2(0, 0);

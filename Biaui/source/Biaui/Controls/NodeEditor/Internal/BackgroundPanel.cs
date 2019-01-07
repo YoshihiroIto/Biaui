@@ -165,7 +165,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (viewport.IntersectsWith(inflateBox) == false)
                     continue;
 
-                var lines = ConnectionLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(), work);
+                var lines = ConnectionLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(),
+                    work);
 
                 // ラインのバウンディングボックスと判定
                 var lineBox = new ImmutableRect(lines);
@@ -190,11 +191,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 ConnectionLineRenderer.DrawLines(curve.Ctx, lines);
 
-#if false
                 // 矢印
                 if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
-                    DrawArrow(curve.Ctx, in pos1, in pos12, in pos21, in pos2);
-#endif
+                {
+                    DrawArrow(
+                        curve.Ctx,
+                        lines,
+                        Unsafe.As<Point, ImmutableVec2>(ref pos1));
+                }
             }
 
             dc.PushTransform(_parent.Translate);
@@ -219,24 +223,58 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private static void DrawArrow(
             StreamGeometryContext ctx,
-            in Point pos1, in Point pos12, in Point pos21, in Point pos2)
+            Span<ImmutableVec2> lines,
+            in ImmutableVec2 startPos)
         {
-            var p1 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.50);
-            var p2 = BiaNodeEditorHelper.InterpolationBezier(pos1, pos12, pos21, pos2, 0.45);
+            if (lines.Length < 2)
+                return;
+
+            var isPosDir = lines[0] == startPos;
+
+            var span = FindLongestSpan(lines);
+
+            var (edge1, edge2) =
+                isPosDir
+                    ? (lines[span], lines[span - 1])
+                    : (lines[span - 1], lines[span]);
+
+            var pos = (edge1 + edge2) * 0.5;
 
             const double size = 20;
-            var pv = ImmutableVec2.SetSize(p1 - p2, size);
+            var pv = ImmutableVec2.SetSize(edge1 - edge2, size);
             var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
 
-            var t1 = p1 + pv;
-            var t2 = p1 + sv;
-            var t3 = p1 - sv;
+            var t1 = pos + pv;
+            var t2 = pos + sv;
+            var t3 = pos - sv;
 
             ctx.DrawTriangle(
                 Unsafe.As<ImmutableVec2, Point>(ref t1),
                 Unsafe.As<ImmutableVec2, Point>(ref t2),
                 Unsafe.As<ImmutableVec2, Point>(ref t3),
                 false, false);
+        }
+
+        private static int FindLongestSpan(Span<ImmutableVec2> lines)
+        {
+            var maxLength = -1.0;
+            var maxIndex = 1;
+
+            for (var i = 1; i != lines.Length; ++i)
+            {
+                var p1 = lines[i - 1];
+                var p2 = lines[i];
+
+                var l = (p1 - p2).LengthSq;
+
+                if (l > maxLength)
+                {
+                    maxLength = l;
+                    maxIndex = i;
+                }
+            }
+
+            return maxIndex;
         }
     }
 }

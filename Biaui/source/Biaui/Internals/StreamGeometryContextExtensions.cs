@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 
@@ -74,6 +75,7 @@ namespace Biaui.Internals
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void DrawTriangle(this StreamGeometryContext ctx,
             Point pos1, Point pos2, Point pos3, bool isStroked, bool isClosed)
         {
