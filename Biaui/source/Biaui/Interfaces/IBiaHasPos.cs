@@ -27,7 +27,7 @@ namespace Biaui.Interfaces
         {
             const double align = Internals.Constants.NodePanelAlignSize;
 
-            return Math.Round(pos / align) * align;
+            return Math.Round(pos / align, MidpointRounding.AwayFromZero) * align;
         }
     }
 }
