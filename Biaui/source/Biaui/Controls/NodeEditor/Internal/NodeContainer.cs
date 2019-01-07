@@ -288,9 +288,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             return true;
         }
 
-        private static readonly RectangleGeometry _rectGeom = new RectangleGeometry();
+        private readonly RectangleGeometry _rectGeom = new RectangleGeometry();
 
-        private static bool IsHitVisual(in ImmutableRect rect, IBiaNodeItem node, Visual panel)
+        private bool IsHitVisual(in ImmutableRect rect, IBiaNodeItem node, Visual panel)
         {
             _rectGeom.Rect = new Rect(
                 rect.X - node.Pos.X,
@@ -384,26 +384,38 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var c in _nodeDict)
             {
-                var item = c.Key;
+                var nodeItem = c.Key;
                 var nodePanel = c.Value;
+
+                Type nodeItemType = null;
 
                 ImmutableRect itemRect;
                 {
-                    // 対象アイテムが一度も表示されていない場合は、大きさを適当に設定してしのぐ
-                    // ReSharper disable CompareOfFloatsByEqualityOperator
-                    if (item.Size.Width == 0 /* || item.Size.Height == 0*/)
-                        // ReSharper restore CompareOfFloatsByEqualityOperator
+                    if (nodeItem.Size == default)
                     {
-                        const double tempWidth = 256.0;
-                        const double tempHeight = 512.0;
+                        var pos = nodeItem.Pos;
 
-                        var pos = item.Pos;
-                        itemRect = new ImmutableRect(pos.X, pos.Y, tempWidth, tempHeight);
+                        nodeItemType = nodeItem.GetType();
+
+                        // 同タイプのパネルが表示済みならその大きさを使う
+                        if (_panelDefaultSizeDict.TryGetValue(nodeItemType, out var size))
+                        {
+                            itemRect = new ImmutableRect(pos.X, pos.Y, size.Width, size.Height);
+                            nodeItem.Size = size;
+                        }
+                        else
+                        {
+                            // 対象アイテムが一度も表示されていない場合は、大きさを適当に設定してしのぐ
+                            const double tempWidth = 256.0;
+                            const double tempHeight = 512.0;
+
+                            itemRect = new ImmutableRect(pos.X, pos.Y, tempWidth, tempHeight);
+                        }
                     }
                     else
                     {
-                        var pos = item.Pos;
-                        var size = item.Size;
+                        var pos = nodeItem.Pos;
+                        var size = nodeItem.Size;
                         itemRect = new ImmutableRect(pos.X, pos.Y, size.Width, size.Height);
                     }
                 }
@@ -415,27 +427,28 @@ namespace Biaui.Controls.NodeEditor.Internal
                         bool isAdded;
                         (nodePanel, isAdded) = FindOrCreateNodePanel();
 
-                        var style = item.InternalData().Style;
+                        var style = nodeItem.InternalData().Style;
                         if (style == null)
                         {
-                            var itemType = item.GetType();
+                            if (nodeItemType == null)
+                                nodeItemType = nodeItem.GetType();
 
-                            if (_styleDict.TryGetValue(itemType, out style) == false)
+                            if (_styleDict.TryGetValue(nodeItemType, out style) == false)
                             {
-                                style = FindResource(item.GetType()) as Style;
-                                _styleDict.Add(itemType, style);
+                                style = FindResource(nodeItemType) as Style;
+                                _styleDict.Add(nodeItemType, style);
                             }
 
-                            item.InternalData().Style = style;
+                            nodeItem.InternalData().Style = style;
                         }
 
                         nodePanel.Style = style;
-                        nodePanel.DataContext = item;
+                        nodePanel.DataContext = nodeItem;
                         nodePanel.Opacity = 1.0;
 
-                        UpdateNodePortEnabled(item, enabledCheckerArgs);
+                        UpdateNodePortEnabled(nodeItem, enabledCheckerArgs);
 
-                        _changedUpdate.Add((item, nodePanel));
+                        _changedUpdate.Add((nodeItem, nodePanel));
 
                         if (isAdded)
                             ChangeElement(nodePanel);
@@ -451,7 +464,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         {
                             RequestRemoveNodePanel(nodePanel);
 
-                            _changedUpdate.Add((item, null));
+                            _changedUpdate.Add((nodeItem, null));
                         }
                     }
                 }
@@ -462,8 +475,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             _changedUpdate.Clear();
         }
-
-        private readonly Dictionary<Type, Style> _styleDict = new Dictionary<Type, Style>();
 
         private (BiaNodePanel Panel, bool IsAdded) FindOrCreateNodePanel()
         {
@@ -756,5 +767,40 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         #endregion
+
+        protected override void ArrangeChildren(IEnumerable<BiaNodePanel> children)
+        {
+            foreach (var child in children)
+            {
+                var pos = ((IBiaHasPos) child.DataContext).AlignedPos();
+
+                child.Arrange(new Rect(pos, child.DesiredSize));
+            }
+        }
+
+        protected override void MeasureChildren(IEnumerable<BiaNodePanel> children, Size availableSize)
+        {
+            foreach (var child in children)
+            {
+                child.Measure(availableSize);
+
+                var nodeItem = (IBiaNodeItem)child.DataContext;
+
+                var desiredSize = child.DesiredSize;
+
+                if (nodeItem.Size == default)
+                {
+                    var nodeItemType = nodeItem.GetType();
+
+                    if (_panelDefaultSizeDict.ContainsKey(nodeItemType) == false)
+                        _panelDefaultSizeDict.Add(nodeItemType, desiredSize);
+                }
+
+                nodeItem.Size = desiredSize;
+            }
+        }
+
+        private readonly Dictionary<Type, Style> _styleDict = new Dictionary<Type, Style>();
+        private readonly Dictionary<Type, Size> _panelDefaultSizeDict = new Dictionary<Type, Size>();
     }
 }

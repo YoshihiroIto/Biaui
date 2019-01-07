@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using Biaui.Interfaces;
 
 namespace Biaui.Controls.Internals
 {
     internal class FrameworkElementBag<T> : FrameworkElement
         where T : FrameworkElement
     {
+        internal IReadOnlyList<T> Children => _children;
+        
         private readonly List<T> _children = new List<T>();
         private readonly HashSet<T> _childrenForSearch = new HashSet<T>();
         private readonly HashSet<T> _changedElements = new HashSet<T>();
-
-        public IReadOnlyList<T> Children => _children;
 
         static FrameworkElementBag()
         {
@@ -75,19 +74,11 @@ namespace Biaui.Controls.Internals
 
         protected override int VisualChildrenCount => _children.Count;
 
-        protected override Visual GetVisualChild(int index)
-        {
-            return _children[index];
-        }
+        protected override Visual GetVisualChild(int index) => _children[index];
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            foreach (var child in _changedElements)
-            {
-                var pos = ((IBiaHasPos) child.DataContext).AlignedPos();
-
-                child.Arrange(new Rect(pos, child.DesiredSize));
-            }
+            ArrangeChildren(_changedElements);
 
             _changedElements.Clear();
 
@@ -100,17 +91,23 @@ namespace Biaui.Controls.Internals
         {
             _isInMeasureOverride = true;
 
-            foreach (var child in _changedElements)
-            {
-                child.Measure(availableSize);
-
-                if (child.DataContext is IBiaNodeItem nodeItem)
-                    nodeItem.Size = child.DesiredSize;
-            }
+            MeasureChildren(_changedElements, availableSize);
 
             _isInMeasureOverride = false;
 
             return base.MeasureOverride(availableSize);
+        }
+
+        protected virtual void ArrangeChildren(IEnumerable<T> children)
+        {
+            foreach (var child in children)
+                child.Arrange(new Rect(new Point(), child.DesiredSize));
+        }
+
+        protected virtual void MeasureChildren(IEnumerable<T> children, Size availableSize)
+        {
+            foreach (var child in children)
+                child.Measure(availableSize);
         }
     }
 }
