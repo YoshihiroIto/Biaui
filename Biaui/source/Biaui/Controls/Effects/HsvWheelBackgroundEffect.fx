@@ -1,6 +1,7 @@
 float Value : register(C0);
 float AspectRatioCorrectionX : register(C1);
 float AspectRatioCorrectionY : register(C2);
+float3 BorderColor : register(C3);
 
 float4 main(float2 uv : TEXCOORD) : COLOR
 {
@@ -100,8 +101,14 @@ float4 main(float2 uv : TEXCOORD) : COLOR
     }
 #endif
 
+
+	float r = min(1, (0.5 - sqrt(i)) * 100 * 2);
+
     float3 c = lerp(float3(1, 1, 1), color, s10);
 
-    return float4(c * Value, 1);
+	c = c * Value;
+	c = lerp(BorderColor, c, r);
+
+    return float4(c, 1);
 }
 

@@ -134,6 +134,8 @@ namespace Biaui.Controls
 
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
 
+            _effect.BorderColor = (Color)FindResource("BackgroundBackgroundColorKey");
+
             SizeChanged += (_, __) =>
             {
                 (_effect.AspectRatioCorrectionX, _effect.AspectRatioCorrectionY) =

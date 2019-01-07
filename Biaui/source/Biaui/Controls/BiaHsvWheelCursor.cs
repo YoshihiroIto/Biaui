@@ -138,17 +138,6 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            // Border
-            {
-                var p = this.GetBorderPen(BorderColor);
-
-                var (cx, cy) = MakeAspectRatioCorrection(ActualWidth, ActualHeight);
-
-                dc.DrawEllipse(null, p, new Point(ActualWidth / 2, ActualHeight / 2),
-                    ActualWidth / 2 / cx,
-                    ActualHeight / 2 / cy);
-            }
-
             // Cursor
             RenderHelper.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
