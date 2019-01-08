@@ -1,6 +1,6 @@
-#tool "nuget:?package=xunit.runner.console"
-#tool "Squirrel.Windows" 
-#addin Cake.Squirrel
+#tool nuget:?package=xunit.runner.console&version=2.4.1
+#tool Squirrel.Windows&version=1.9.0
+#addin Cake.Squirrel&version=0.14.0
 
 var target = Argument("target", "Build");
 var configuration = Argument("configuration", "Debug");
