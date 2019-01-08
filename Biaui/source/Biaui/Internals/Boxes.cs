@@ -32,6 +32,8 @@ namespace Biaui.Internals
 
         internal static object ConstantsBasicCornerRadiusPrim = Biaui.Constants.BasicCornerRadiusPrim;
 
+        internal static object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;
+
         internal static object Bool(bool i) => i ? BoolTrue : BoolFalse;
 
     }

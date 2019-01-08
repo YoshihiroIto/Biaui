@@ -39,13 +39,13 @@ namespace Biaui.Controls.Internals
                 new FrameworkPropertyMetadata(typeof(SystemButton)));
         }
 
-        private Window _parentWindow;
+        private BiaWindow _parentWindow;
 
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
 
-            _parentWindow = Window.GetWindow(this);
+            _parentWindow = (BiaWindow)Window.GetWindow(this);
 
             if (_parentWindow != null)
                 _parentWindow.StateChanged += ParentWindowOnStateChanged;
@@ -72,7 +72,11 @@ namespace Biaui.Controls.Internals
                     break;
 
                 case WindowAction.Close:
-                    _parentWindow.Close();
+                    if (_parentWindow.CloseButtonBehavior == WindowCloseButtonBehavior.Normal)
+                        _parentWindow.Close();
+                    
+                    _parentWindow.InvokeCloseButtonClicked();
+
                     break;
 
                 case WindowAction.Maximize:
