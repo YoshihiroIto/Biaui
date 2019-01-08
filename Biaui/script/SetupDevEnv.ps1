@@ -13,7 +13,7 @@ Invoke-WebRequest https://cakebuild.net/download/bootstrapper/windows -OutFile e
 
 
 # --[DocFX]--------------------------------------------------------------
-Invoke-WebRequest -Uri https://github.com/dotnet/docfx/releases/download/v2.39.2/docfx.zip -OutFile docfx.zip
+Invoke-WebRequest -Uri https://github.com/dotnet/docfx/releases/download/v2.40.7/docfx.zip -OutFile docfx.zip
 Expand-Archive -Path docfx.zip -DestinationPath external\docfx
 Remove-Item docfx.zip
 
