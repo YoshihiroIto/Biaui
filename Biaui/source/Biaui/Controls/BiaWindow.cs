@@ -110,11 +110,6 @@ namespace Biaui.Controls
                 typeof(FrameworkElement), new FrameworkPropertyMetadata(Boxes.Int0));
         }
 
-        public BiaWindow()
-        {
-            _CloseButtonClickedCommand = default(ICommand);
-        }
-
         internal void InvokeCloseButtonClicked()
         {
             CloseButtonClicked?.Invoke(this, EventArgs.Empty);
