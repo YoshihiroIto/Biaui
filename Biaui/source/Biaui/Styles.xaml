@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Font.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Colors.xaml" />
+
+        <!--  StandardControls  -->
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/AccessText.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/CheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Decorator.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Label.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ListBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ListView.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Menu.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/RadioButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ScrollViewer.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Slider.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/TabControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ToggleButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ToolTip.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/TreeView.xaml" />
+
+        <!--  Controls  -->
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

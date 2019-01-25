@@ -1,0 +1,668 @@
+﻿<controls:BiaWindow x:Class="Biaui.Showcase.MainWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+                    xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
+                    xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:showcase="clr-namespace:Biaui.Showcase"
+                    Title="Biaui Showcase"
+                    Width="1500"
+                    Height="1000"
+                    WindowStartupLocation="CenterScreen"
+                    mc:Ignorable="d">
+    <controls:BiaWindow.Resources>
+        <Style TargetType="{x:Type controls:BiaTextBox}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <Style TargetType="{x:Type controls:BiaComboBox}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <Style TargetType="{x:Type controls:BiaButton}">
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <DataTemplate x:Key="ListItemTemplateStyle">
+            <controls:BiaTextBlock Text="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemIndexTemplateStyle">
+            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+            <controls:BiaTextBlock Text="{Binding Index}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemNameTemplateStyle">
+            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+            <controls:BiaTextBlock Text="{Binding Name}" />
+        </DataTemplate>
+    </controls:BiaWindow.Resources>
+
+    <controls:BiaWindow.Menu>
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" InputGestureText="AAA" />
+                <MenuItem Header="_Open File">
+                    <MenuItem Header="Item A">
+                        <MenuItem Header="E_xit" IsChecked="True" />
+                        <MenuItem Header="_Open File" IsEnabled="False" />
+                        <MenuItem Header="E_xit"
+                                  IsChecked="True"
+                                  IsEnabled="False" />
+                        <Separator />
+                        <MenuItem Header="_Open File" />
+                        <MenuItem Header="E_xit" />
+                        <MenuItem Header="_Open File" />
+                    </MenuItem>
+
+                    <MenuItem Header="Item B" IsEnabled="False" />
+                    <MenuItem Header="Item C" IsChecked="True" />
+                    <MenuItem Header="Item D"
+                              IsChecked="True"
+                              IsEnabled="False" />
+                </MenuItem>
+                <MenuItem Header="E_xit" />
+                <MenuItem Header="_Open File" />
+                <MenuItem Header="E_xit" />
+                <MenuItem Header="_Open File" />
+                <MenuItem Header="E_xit" />
+                <MenuItem Header="_Open File" />
+            </MenuItem>
+
+            <MenuItem Header="_Window">
+                <MenuItem Header="Item A" />
+                <MenuItem Header="Item B" IsEnabled="False" />
+                <MenuItem Header="Item C" IsChecked="True" />
+                <MenuItem Header="Item D"
+                          IsChecked="True"
+                          IsEnabled="False" />
+            </MenuItem>
+
+            <MenuItem Header="Apple" IsEnabled="False">
+                <MenuItem Header="Berry" />
+                <MenuItem Header="Orange" />
+            </MenuItem>
+
+            <MenuItem Header="_Help" />
+
+            <MenuItem Header="ファイル">
+                <MenuItem Header="終了(_X)" />
+            </MenuItem>
+
+            <MenuItem Header="編集(_E)" />
+        </Menu>
+    </controls:BiaWindow.Menu>
+
+    <StackPanel Margin="8" Orientation="Horizontal">
+        <StackPanel Margin="0,4,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+
+            <controls:BiaTextBlock Text="ベトナム" ToolTip="ホーチミン" />
+            <controls:BiaTextBlock Text="オランダ" ToolTip="アムステルダム" />
+            <controls:BiaTextBlock Text="日本" ToolTip="東京" />
+
+            <controls:BiaButton Content="abc" />
+            <controls:BiaButton Content="1234" />
+            <controls:BiaButton Content="東京" IsEnabled="False" />
+
+            <controls:BiaTextBox Text="あいうえお" />
+            <controls:BiaTextBox IsEnabled="False" Text="将棋" />
+            <controls:BiaTextBox IsReadOnly="True" Text="King Queen Jack" />
+
+            <StackPanel Margin="0,4,0,0" HorizontalAlignment="Left">
+                <controls:BiaToggleButton Content="ホーチミン" />
+                <controls:BiaToggleButton Margin="0,4,0,0" Content="ダナン" />
+                <controls:BiaToggleButton Margin="0,4,0,0" Content="ハノイ" />
+            </StackPanel>
+
+            <controls:BiaClippingBorder Margin="0,4,0,0">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type controls:BiaToggleButton}">
+                            <Setter Property="CornerRadius" Value="0" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <controls:BiaToggleButton Grid.Column="0" Content="Asia" />
+                    <controls:BiaToggleButton Grid.Column="1"
+                                              Margin="1,0,0,0"
+                                              Content="USA" />
+                    <controls:BiaToggleButton Grid.Column="2"
+                                              Margin="1,0,0,0"
+                                              Content="EU" />
+                </Grid>
+            </controls:BiaClippingBorder>
+
+            <controls:BiaClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type controls:BiaToggleButton}">
+                            <Setter Property="CornerRadius" Value="0" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="0"
+                                              Margin="0,0,0,0"
+                                              Content="A0" />
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="1"
+                                              Margin="1,0,0,0"
+                                              Content="A1" />
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="2"
+                                              Margin="1,0,0,0"
+                                              Content="A2" />
+                    <controls:BiaToggleButton Grid.Row="0"
+                                              Grid.Column="3"
+                                              Margin="1,0,0,0"
+                                              Content="A3" />
+
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="0"
+                                              Margin="0,1,0,0"
+                                              Content="B0" />
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="1"
+                                              Margin="1,1,0,0"
+                                              Content="B1" />
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="2"
+                                              Margin="1,1,0,0"
+                                              Content="B2" />
+                    <controls:BiaToggleButton Grid.Row="1"
+                                              Grid.Column="3"
+                                              Margin="1,1,0,0"
+                                              Content="B3" />
+
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="0"
+                                              Margin="0,1,0,0"
+                                              Content="C0" />
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="1"
+                                              Margin="1,1,0,0"
+                                              Content="C1" />
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="2"
+                                              Margin="1,1,0,0"
+                                              Content="C2" />
+                    <controls:BiaToggleButton Grid.Row="2"
+                                              Grid.Column="3"
+                                              Margin="1,1,0,0"
+                                              Content="C3" />
+
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="0"
+                                              Margin="0,1,0,0"
+                                              Content="D0" />
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="1"
+                                              Margin="1,1,0,0"
+                                              Content="D1" />
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="2"
+                                              Margin="1,1,0,0"
+                                              Content="D2" />
+                    <controls:BiaToggleButton Grid.Row="3"
+                                              Grid.Column="3"
+                                              Margin="1,1,0,0"
+                                              Content="D3" />
+                </Grid>
+            </controls:BiaClippingBorder>
+
+            <controls:BiaComboBox ItemsSource="{Binding ShortItems}" SelectedItem="{Binding SelectedShortItem}" />
+            <controls:BiaComboBox ItemsSource="{Binding LongItems}" SelectedItem="{Binding SelectedLongItem}" />
+
+            <StackPanel Margin="0,4,0,0">
+                <controls:BiaRadioButton Content="123" />
+                <controls:BiaRadioButton Content="7890" IsEnabled="False" />
+                <controls:BiaRadioButton Content="XYZ" IsChecked="True" />
+                <controls:BiaRadioButton Content="時計" />
+            </StackPanel>
+
+            <StackPanel Margin="0,4,0,0">
+                <controls:BiaCheckBox Content="123" />
+                <controls:BiaCheckBox Content="456" IsChecked="True" />
+                <controls:BiaCheckBox Content="7890" IsEnabled="False" />
+                <controls:BiaCheckBox Content="ABC"
+                                      IsChecked="True"
+                                      IsEnabled="False" />
+                <controls:BiaCheckBox Content="XYZ" />
+                <controls:BiaCheckBox Content="パソコン" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <ListBox Width="100"
+                     Height="200"
+                     Margin="0,4,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     ItemTemplate="{StaticResource ListItemTemplateStyle}"
+                     ItemsSource="{Binding LongItems}" />
+
+            <ListBox Width="100"
+                     Height="200"
+                     Margin="0,4,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     IsEnabled="False"
+                     ItemTemplate="{StaticResource ListItemTemplateStyle}"
+                     ItemsSource="{Binding LongItems}" />
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <ListView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      ItemsSource="{Binding Areas, Mode=OneTime}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="50"
+                                        CellTemplate="{StaticResource ItemIndexTemplateStyle}"
+                                        Header="番号" />
+                        <GridViewColumn Width="120"
+                                        CellTemplate="{StaticResource ItemNameTemplateStyle}"
+                                        Header="名前" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <ListView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      IsEnabled="False"
+                      ItemsSource="{Binding Areas, Mode=OneTime}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="50"
+                                        CellTemplate="{StaticResource ItemIndexTemplateStyle}"
+                                        Header="番号" />
+                        <GridViewColumn Width="120"
+                                        CellTemplate="{StaticResource ItemNameTemplateStyle}"
+                                        Header="名前" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Slider Margin="0,4,0,0" />
+            <Slider Margin="0,4,0,0" IsEnabled="False" />
+
+            <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                <Slider Height="80"
+                        HorizontalAlignment="Left"
+                        Orientation="Vertical" />
+                <Slider Height="80"
+                        Margin="4,0,0,0"
+                        HorizontalAlignment="Left"
+                        IsEnabled="False"
+                        Orientation="Vertical" />
+
+            </StackPanel>
+
+            <controls:BiaColorPicker Height="160"
+                                     Margin="0,4,0,0"
+                                     Blue="0.25"
+                                     Green="0.5"
+                                     Red="1" />
+            <controls:BiaColorPicker Height="240"
+                                     Margin="0,16,0,0"
+                                     Blue="0.125"
+                                     Green="0.25"
+                                     Red="0.5"
+                                     Style="{StaticResource BiaColorPickerWheelType}" />
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <TreeView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      ItemsSource="{Binding Persons, Mode=OneTime}">
+                <TreeView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </TreeView.ItemsPanel>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
+                        <controls:BiaTextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <TreeView Width="200"
+                      Height="200"
+                      Margin="0,4,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      IsEnabled="False"
+                      ItemsSource="{Binding Persons, Mode=OneTime}"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling">
+                <TreeView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </TreeView.ItemsPanel>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
+                        <controls:BiaTextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <controls:BiaNumberEditor Margin="0,4,0,0"
+                                      Caption="Simple"
+                                      Maximum="1000"
+                                      Minimum="0"
+                                      Mode="Simple"
+                                      SliderMaximum="100"
+                                      SliderMinimum="0"
+                                      UnitString=" %"
+                                      Value="87.654" />
+
+            <controls:BiaNumberEditor Margin="0,4,0,0"
+                                      Caption="WideRange"
+                                      Maximum="10000"
+                                      Minimum="-10000"
+                                      Mode="WideRange"
+                                      SliderMaximum="10000"
+                                      SliderMinimum="-10000"
+                                      UnitString=" メートル"
+                                      Value="87.654" />
+
+            <controls:BiaNumberEditor Margin="0,4,0,0"
+                                      Caption="Disable"
+                                      IsEnabled="False"
+                                      Value="40" />
+            <controls:BiaNumberEditor Margin="0,4,0,0"
+                                      Caption="ReadOnly"
+                                      IsReadOnly="True"
+                                      Value="60" />
+
+            <controls:BiaClippingBorder Margin="0,4,0,0"
+                                        Background="{DynamicResource TextBoxBorderBrushKey}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                                        BorderThickness="1"
+                                        CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type controls:BiaNumberEditor}">
+                            <Setter Property="SliderMinimum" Value="-1000" />
+                            <Setter Property="SliderMaximum" Value="1000" />
+                            <Setter Property="Minimum" Value="-1000" />
+                            <Setter Property="Maximum" Value="1000" />
+                            <Setter Property="CornerRadius" Value="0" />
+                            <Setter Property="IsVisibleBorder" Value="False" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <controls:BiaNumberEditor Grid.Row="0"
+                                              Caption="Position.X"
+                                              Value="-422.5" />
+
+                    <controls:BiaNumberEditor Grid.Row="1"
+                                              Margin="0,1,0,0"
+                                              Caption="Position.Y"
+                                              Value="213" />
+
+                    <controls:BiaNumberEditor Grid.Row="2"
+                                              Margin="0,1,0,0"
+                                              Caption="Position.Z"
+                                              Value="-722.1977" />
+                </Grid>
+            </controls:BiaClippingBorder>
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Top">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Top">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Bottom">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Bottom">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Left">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Left">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TabStripPlacement="Right">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+
+            <TabControl Width="300"
+                        Height="100"
+                        Margin="0,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        TabStripPlacement="Right">
+                <TabItem Header="TabItem1">
+                    <controls:BiaTextBlock Text="TabItem1 Content" />
+                </TabItem>
+                <TabItem Header="TabItem2">
+                    <controls:BiaTextBlock Text="TabItem2 Content" />
+                </TabItem>
+                <TabItem Header="TabItem3">
+                    <controls:BiaTextBlock Text="TabItem3 Content" />
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+
+        <StackPanel Margin="24,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <showcase:TextEditor Width="400"
+                                 Height="600"
+                                 Margin="0,4,0,0">
+                <showcase:TextEditor.Resources>
+                    <Style TargetType="{x:Type avalon:TextArea}">
+                        <Setter Property="Margin" Value="4,0,0,0" />
+                    </Style>
+                </showcase:TextEditor.Resources>
+
+                <showcase:TextEditor.Style>
+                    <Style TargetType="{x:Type avalon:TextEditor}">
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
+                        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="ShowLineNumbers" Value="True" />
+                        <Setter Property="UseLayoutRounding" Value="True" />
+                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                        <Setter Property="FontFamily" Value="{DynamicResource BiauiMonoFontFamily}" />
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type avalon:TextEditor}">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                        <ScrollViewer Name="PART_ScrollViewer"
+                                                      Padding="{TemplateBinding Padding}"
+                                                      HorizontalContentAlignment="Left"
+                                                      VerticalContentAlignment="Top"
+                                                      CanContentScroll="True"
+                                                      Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextArea}"
+                                                      Focusable="False"
+                                                      HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="WordWrap" Value="True">
+                                            <Setter TargetName="PART_ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </showcase:TextEditor.Style>
+            </showcase:TextEditor>
+        </StackPanel>
+    </StackPanel>
+</controls:BiaWindow>

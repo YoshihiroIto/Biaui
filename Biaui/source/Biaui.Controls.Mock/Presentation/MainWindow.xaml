@@ -1,0 +1,617 @@
+﻿<controls:BiaWindow x:Class="Biaui.Controls.Mock.Presentation.MainWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:behavior="clr-namespace:Biaui.Controls.Mock.Control.Behavior"
+                    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
+                    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command"
+                    xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor;assembly=Biaui"
+                    xmlns:presentation="clr-namespace:Biaui.Controls.Mock.Presentation"
+                    Title="Biaui.Controls.Mock"
+                    Width="1000"
+                    Height="800"
+                    WindowStartupLocation="CenterScreen"
+                    mc:Ignorable="d">
+    <behaviors:Interaction.Behaviors>
+        <behavior:WindowDisposeDataContextOnClosedBehavior />
+    </behaviors:Interaction.Behaviors>
+
+    <TabControl Margin="8">
+        <TabItem Header="BiaNumberEditor">
+            <StackPanel Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type controls:BiaNumberEditor}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="280"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type controls:BiaNumberEditor}">
+                            <Setter Property="Margin" Value="0,4,0,0" />
+                            <Setter Property="UnitString" Value=" %" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <controls:BiaNumberEditor Caption="MinMaxValue" Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
+                    <controls:BiaNumberEditor Caption="SpinValue" Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
+                    <controls:BiaNumberEditor Caption="TextInputValue" Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
+                    <controls:BiaNumberEditor Caption="SliderValueSimple" Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
+                    <controls:BiaNumberEditor Caption="SliderValueWideRange" Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
+                </StackPanel>
+
+                <StackPanel Width="160"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaNumberEditor Caption="ParamA" Value="{Binding BiaNumberEditorViewModel.ParamA}" />
+                    <controls:BiaNumberEditor Caption="ParamB"
+                                              IsEnabled="False"
+                                              Value="{Binding BiaNumberEditorViewModel.ParamB}" />
+                    <controls:BiaNumberEditor Caption="ParamC"
+                                              IsReadOnly="True"
+                                              Value="{Binding BiaNumberEditorViewModel.ParamC}" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaColorPicker">
+            <Grid Margin="4,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <controls:BiaColorPicker Grid.Row="0"
+                                         Grid.Column="0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="0"
+                                         Grid.Column="2"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsReadOnly="True"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="0"
+                                         Grid.Column="4"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsEnabled="False"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="1"
+                                         Grid.Column="0"
+                                         Margin="0,16,0,0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="1"
+                                         Grid.Column="2"
+                                         Margin="0,16,0,0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsReadOnly="True"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+
+                <controls:BiaColorPicker Grid.Row="1"
+                                         Grid.Column="4"
+                                         Margin="0,16,0,0"
+                                         Blue="{Binding Blue, Mode=TwoWay}"
+                                         DataContext="{Binding BiaColorPickerViewModel}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Hue="{Binding Hue, Mode=OneWayToSource}"
+                                         IsEnabled="False"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Saturation="{Binding Saturation, Mode=OneWayToSource}"
+                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Value="{Binding Value, Mode=OneWayToSource}" />
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="BiaButton">
+            <StackPanel Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type controls:BiaButton}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="280"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaButton Content="Asia" />
+                    <controls:BiaButton Content="ホーチミン" />
+                    <controls:BiaButton Content="Disabled" IsEnabled="False" />
+
+                    <controls:BiaButton HorizontalAlignment="Left" Content="Asia" />
+                    <controls:BiaButton HorizontalAlignment="Left" Content="ホーチミン" />
+                    <controls:BiaButton HorizontalAlignment="Left"
+                                        Content="Disabled"
+                                        IsEnabled="False" />
+
+                    <controls:BiaButton HorizontalAlignment="Right" Content="Asia" />
+                    <controls:BiaButton HorizontalAlignment="Right" Content="ホーチミン" />
+                    <controls:BiaButton HorizontalAlignment="Right"
+                                        Content="Disabled"
+                                        IsEnabled="False" />
+
+                    <controls:BiaButton HorizontalAlignment="Center" Content="Asia" />
+                    <controls:BiaButton HorizontalAlignment="Center" Content="ホーチミン" />
+                    <controls:BiaButton HorizontalAlignment="Center"
+                                        Content="Disabled"
+                                        IsEnabled="False" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="32,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+
+                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandA, Mode=OneTime}" Content="CommandA" />
+                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandB, Mode=OneTime}"
+                                        CommandParameter="ParamB"
+                                        Content="CommandB" />
+                    <controls:BiaButton Command="{Binding BiaButtonViewModel.CommandC, Mode=OneTime}" Content="CommandC" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaToggleButton">
+            <StackPanel Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type controls:BiaToggleButton}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="280"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type controls:BiaToggleButton}">
+                            <Setter Property="Margin" Value="0,4,0,0" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <controls:BiaToggleButton Content="Asia" />
+                    <controls:BiaToggleButton Content="ホーチミン" />
+                    <controls:BiaToggleButton Content="Disabled" IsEnabled="False" />
+
+                    <controls:BiaToggleButton HorizontalAlignment="Left" Content="Asia" />
+                    <controls:BiaToggleButton HorizontalAlignment="Left" Content="ホーチミン" />
+                    <controls:BiaToggleButton HorizontalAlignment="Left"
+                                              Content="Disabled"
+                                              IsEnabled="False" />
+
+                    <controls:BiaToggleButton HorizontalAlignment="Right" Content="Asia" />
+                    <controls:BiaToggleButton HorizontalAlignment="Right" Content="ホーチミン" />
+                    <controls:BiaToggleButton HorizontalAlignment="Right"
+                                              Content="Disabled"
+                                              IsEnabled="False" />
+
+                    <controls:BiaToggleButton HorizontalAlignment="Center" Content="Asia" />
+                    <controls:BiaToggleButton HorizontalAlignment="Center" Content="ホーチミン" />
+                    <controls:BiaToggleButton HorizontalAlignment="Center"
+                                              Content="Disabled"
+                                              IsEnabled="False" />
+                </StackPanel>
+
+                <controls:BiaClippingBorder Width="160"
+                                            Margin="32,4,0,0"
+                                            VerticalAlignment="Top"
+                                            CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                    <Grid>
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type controls:BiaToggleButton}">
+                                <Setter Property="CornerRadius" Value="0" />
+                            </Style>
+                        </Grid.Resources>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <controls:BiaToggleButton Grid.Row="0"
+                                                  Grid.Column="0"
+                                                  Margin="0,0,0,0"
+                                                  Content="A0" />
+                        <controls:BiaToggleButton Grid.Row="0"
+                                                  Grid.Column="1"
+                                                  Margin="1,0,0,0"
+                                                  Content="A1" />
+                        <controls:BiaToggleButton Grid.Row="0"
+                                                  Grid.Column="2"
+                                                  Margin="1,0,0,0"
+                                                  Content="A2" />
+                        <controls:BiaToggleButton Grid.Row="0"
+                                                  Grid.Column="3"
+                                                  Margin="1,0,0,0"
+                                                  Content="A3" />
+
+                        <controls:BiaToggleButton Grid.Row="1"
+                                                  Grid.Column="0"
+                                                  Margin="0,1,0,0"
+                                                  Content="B0" />
+                        <controls:BiaToggleButton Grid.Row="1"
+                                                  Grid.Column="1"
+                                                  Margin="1,1,0,0"
+                                                  Content="B1" />
+                        <controls:BiaToggleButton Grid.Row="1"
+                                                  Grid.Column="2"
+                                                  Margin="1,1,0,0"
+                                                  Content="B2" />
+                        <controls:BiaToggleButton Grid.Row="1"
+                                                  Grid.Column="3"
+                                                  Margin="1,1,0,0"
+                                                  Content="B3" />
+
+                        <controls:BiaToggleButton Grid.Row="2"
+                                                  Grid.Column="0"
+                                                  Margin="0,1,0,0"
+                                                  Content="C0" />
+                        <controls:BiaToggleButton Grid.Row="2"
+                                                  Grid.Column="1"
+                                                  Margin="1,1,0,0"
+                                                  Content="C1" />
+                        <controls:BiaToggleButton Grid.Row="2"
+                                                  Grid.Column="2"
+                                                  Margin="1,1,0,0"
+                                                  Content="C2" />
+                        <controls:BiaToggleButton Grid.Row="2"
+                                                  Grid.Column="3"
+                                                  Margin="1,1,0,0"
+                                                  Content="C3" />
+
+                        <controls:BiaToggleButton Grid.Row="3"
+                                                  Grid.Column="0"
+                                                  Margin="0,1,0,0"
+                                                  Content="D0" />
+                        <controls:BiaToggleButton Grid.Row="3"
+                                                  Grid.Column="1"
+                                                  Margin="1,1,0,0"
+                                                  Content="D1" />
+                        <controls:BiaToggleButton Grid.Row="3"
+                                                  Grid.Column="2"
+                                                  Margin="1,1,0,0"
+                                                  Content="D2" />
+                        <controls:BiaToggleButton Grid.Row="3"
+                                                  Grid.Column="3"
+                                                  Margin="1,1,0,0"
+                                                  Content="D3" />
+                    </Grid>
+                </controls:BiaClippingBorder>
+
+                <StackPanel Width="100"
+                            Margin="32,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+
+                    <controls:BiaToggleButton Command="{Binding BiaToggleButtonViewModel.CommandA, Mode=OneTime}" Content="CommandA" />
+                    <controls:BiaToggleButton Command="{Binding BiaToggleButtonViewModel.CommandB, Mode=OneTime}"
+                                              CommandParameter="ParamB"
+                                              Content="CommandB" />
+                    <controls:BiaToggleButton Command="{Binding BiaToggleButtonViewModel.CommandC, Mode=OneTime}" Content="CommandC" />
+
+                    <controls:BiaToggleButton Content="X" IsChecked="{Binding BiaToggleButtonViewModel.IsCheckedX}" />
+                    <controls:BiaToggleButton Content="Y"
+                                              IsChecked="{Binding BiaToggleButtonViewModel.IsCheckedY}"
+                                              IsEnabled="False" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaCheckBox">
+            <StackPanel Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaCheckBox Content="123" />
+                    <controls:BiaCheckBox Content="456" IsChecked="True" />
+                    <controls:BiaCheckBox Content="7890" IsEnabled="False" />
+                    <controls:BiaCheckBox Content="ABC"
+                                          IsChecked="True"
+                                          IsEnabled="False" />
+                    <controls:BiaCheckBox Content="XYZ" />
+                    <controls:BiaCheckBox Content="パソコン" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="32,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaCheckBox Content="X" IsChecked="{Binding BiaCheckBoxViewModel.IsCheckedX}" />
+                    <controls:BiaCheckBox Content="Y"
+                                          IsChecked="{Binding BiaCheckBoxViewModel.IsCheckedY}"
+                                          IsEnabled="False" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaRadioButton">
+            <StackPanel Margin="4,4,0,0" Orientation="Horizontal">
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+
+                    <controls:BiaRadioButton Content="123" />
+                    <controls:BiaRadioButton Content="456" IsChecked="True" />
+                    <controls:BiaRadioButton Content="7890" IsEnabled="False" />
+                    <controls:BiaRadioButton Content="ABC"
+                                             IsChecked="True"
+                                             IsEnabled="False" />
+                    <controls:BiaRadioButton Content="XYZ" />
+                    <controls:BiaRadioButton Content="パソコン" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaRadioButton Content="GroupA_X" IsChecked="{Binding BiaRadioButtonViewModel.GroupA_X}" />
+                    <controls:BiaRadioButton Content="GroupA_Y" IsChecked="{Binding BiaRadioButtonViewModel.GroupA_Y}" />
+                    <controls:BiaRadioButton Content="GroupA_Z" IsChecked="{Binding BiaRadioButtonViewModel.GroupA_Z}" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaRadioButton Content="GroupB_X" IsChecked="{Binding BiaRadioButtonViewModel.GroupB_X}" />
+                    <controls:BiaRadioButton Content="GroupB_Y" IsChecked="{Binding BiaRadioButtonViewModel.GroupB_Y}" />
+                    <controls:BiaRadioButton Content="GroupB_Z" IsChecked="{Binding BiaRadioButtonViewModel.GroupB_Z}" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            IsEnabled="False"
+                            Orientation="Vertical">
+                    <controls:BiaRadioButton Content="GroupC_X" IsChecked="{Binding BiaRadioButtonViewModel.GroupC_X}" />
+                    <controls:BiaRadioButton Content="GroupC_Y" IsChecked="{Binding BiaRadioButtonViewModel.GroupC_Y}" />
+                    <controls:BiaRadioButton Content="GroupC_Z" IsChecked="{Binding BiaRadioButtonViewModel.GroupC_Z}" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaTextBox">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type controls:BiaTextBox}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaTextBox Text="あいうえお" />
+                    <controls:BiaTextBox IsEnabled="False" Text="将棋" />
+                    <controls:BiaTextBox IsReadOnly="True" Text="King Queen Jack" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaTextBox Text="{Binding BiaTextBoxViewModel.TextA}" />
+                    <controls:BiaTextBox IsEnabled="False" Text="{Binding BiaTextBoxViewModel.TextB}" />
+                    <controls:BiaTextBox IsReadOnly="True" Text="{Binding BiaTextBoxViewModel.TextC}" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaComboBox">
+            <StackPanel Margin="4,4,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type controls:BiaComboBox}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="100"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.ShortItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedShortItem}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedLongItem}" />
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.AllFruits, Mode=OneTime}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedFruits}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.AllFruits, Mode=OneTime}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedFruits}">
+                        <controls:BiaComboBox.ItemToStringConverter>
+                            <presentation:FruitsToStringConverter />
+                        </controls:BiaComboBox.ItemToStringConverter>
+                    </controls:BiaComboBox>
+                </StackPanel>
+
+                <StackPanel Width="100"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedA}" />
+                    <controls:BiaComboBox IsEnabled="False"
+                                          ItemsSource="{Binding BiaComboBoxViewModel.LongItems}"
+                                          SelectedItem="{Binding BiaComboBoxViewModel.SelectedB}" />
+                    <controls:BiaComboBox ItemsSource="{Binding BiaComboBoxViewModel.LongItems}" SelectedItem="{Binding BiaComboBoxViewModel.SelectedC}" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaTextBlock">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type controls:BiaTextBlock}">
+                        <Setter Property="Margin" Value="0,4,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Width="200"
+                            Margin="4,4,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
+                    <controls:BiaTextBlock Text="あいうえお" />
+                    <controls:BiaTextBlock IsEnabled="False" Text="将棋" />
+                    <controls:BiaTextBlock HorizontalAlignment="Left" Text="あいうえお" />
+                    <controls:BiaTextBlock HorizontalAlignment="Left"
+                                           IsEnabled="False"
+                                           Text="将棋" />
+                    <controls:BiaTextBlock HorizontalAlignment="Right" Text="あいうえお" />
+                    <controls:BiaTextBlock HorizontalAlignment="Right"
+                                           IsEnabled="False"
+                                           Text="将棋" />
+                    <controls:BiaTextBlock HorizontalAlignment="Center" Text="あいうえお" />
+                    <controls:BiaTextBlock HorizontalAlignment="Center"
+                                           IsEnabled="False"
+                                           Text="将棋" />
+
+                    <controls:BiaTextBlock Text="Reimplementation. about x20-30 faster than standard WPF controls" />
+
+                    <controls:BiaTextBlock Text="{Binding BiaTextBlockViewModel.TextA}" />
+                    <controls:BiaTextBlock IsEnabled="False" Text="{Binding BiaTextBlockViewModel.TextB}" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="BiaNodeEditor">
+            <DockPanel>
+                <StackPanel Margin="4,8,4,0"
+                            DockPanel.Dock="Top"
+                            Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type controls:BiaButton}">
+                            <Setter Property="Margin" Value="0,0,4,0" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.AddNodeCommand, Mode=OneWay}" Content="Add Node" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.RemoveSelectedNodesCommand, Mode=OneWay}" Content="Remove Selected Nodes" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ClearNodesCommand, Mode=OneWay}" Content="Clear Nodes" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceLastNodeCommand, Mode=OneWay}" Content="Replace Last Node" />
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceNodesSourceCommand, Mode=OneWay}" Content="Replace Nodes Source" />
+                </StackPanel>
+
+                <nodeEditor:BiaNodeEditor Margin="4,8"
+                                          BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
+                                          BorderThickness="1"
+                                          CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}"
+                                          LinksSource="{Binding BiaNodeEditorViewModel.Links, Mode=OneWay}"
+                                          NodePortEnabledChecker="{Binding BiaNodeEditorViewModel.NodePortEnabledChecker, Mode=OneWay}"
+                                          NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
+                    <nodeEditor:BiaNodeEditor.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="NodeEditor/NodePanel.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </nodeEditor:BiaNodeEditor.Resources>
+
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="NodeLinkStarting">
+                            <command:EventToCommand Command="{Binding BiaNodeEditorViewModel.NodeLinkStartingCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
+                        </behaviors:EventTrigger>
+                        <behaviors:EventTrigger EventName="NodeLinkCompleted">
+                            <command:EventToCommand Command="{Binding BiaNodeEditorViewModel.NodeLinkCompletedCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </nodeEditor:BiaNodeEditor>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</controls:BiaWindow>
