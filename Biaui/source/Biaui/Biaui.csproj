@@ -283,7 +283,6 @@
     <Resource Include="Assets\Fonts\GenMuli.ttf" />
     <Resource Include="Controls\Effects\HsvBoxBackgroundEffect.ps" />
     <Resource Include="Controls\Effects\HsvWheelBackgroundEffect.ps" />
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
