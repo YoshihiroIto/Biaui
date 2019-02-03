@@ -34,15 +34,15 @@
                                   KeyboardNavigation.TabIndex="1" />
 
                         <controls:BiaClippingBorder x:Name="contentPanel"
-                                                 Grid.Row="1"
-                                                 Grid.Column="0"
-                                                 Padding="4,0"
-                                                 Background="{TemplateBinding Background}"
-                                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                 KeyboardNavigation.DirectionalNavigation="Contained"
-                                                 KeyboardNavigation.TabIndex="2"
-                                                 KeyboardNavigation.TabNavigation="Local">
+                                                    Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Padding="4,0"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained"
+                                                    KeyboardNavigation.TabIndex="2"
+                                                    KeyboardNavigation.TabNavigation="Local">
                             <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="{TemplateBinding Padding}"
                                               ContentSource="SelectedContent"
@@ -140,6 +140,57 @@
         </Setter>
     </Style>
 
+    <Style x:Key="TabItemTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
+            </DataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
+                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
+            </MultiDataTrigger>
+
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TabItemBiaTextBlockStyle" TargetType="{x:Type controls:BiaTextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
+        <Setter Property="Margin" Value="0" />
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
+            </DataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
+                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
+            </MultiDataTrigger>
+
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type TabItem}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource TabItem.FocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
@@ -165,56 +216,8 @@
                                           RecognizesAccessKey="True"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <ContentPresenter.Resources>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="Padding" Value="0" />
-
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
-                                            <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
-                                        </DataTrigger>
-
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
-                                                <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
-                                                <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-
-                                            <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
-                                        </MultiDataTrigger>
-
-                                        <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-
-                                <Style TargetType="{x:Type controls:BiaTextBlock}">
-                                    <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-                                    <Setter Property="Margin" Value="0" />
-
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
-                                            <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
-                                        </DataTrigger>
-
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
-                                                <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
-                                                <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-
-                                            <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
-                                        </MultiDataTrigger>
-
-                                        <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
+                                <Style BasedOn="{StaticResource TabItemTextBlockStyle}" TargetType="{x:Type TextBlock}" />
+                                <Style BasedOn="{StaticResource TabItemBiaTextBlockStyle}" TargetType="{x:Type controls:BiaTextBlock}" />
                             </ContentPresenter.Resources>
                         </ContentPresenter>
                     </Border>
