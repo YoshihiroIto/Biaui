@@ -6,7 +6,7 @@ namespace Biaui.Internals
     internal static class Win32Helper
     {
         [DllImport("User32.dll")]
-        internal static extern bool SetCursorPos(int X, int Y);
+        internal static extern bool SetCursorPos(int x, int y);
 
         [DllImport("user32.dll")]
         internal static extern bool ClipCursor(ref RECT lpRect);
