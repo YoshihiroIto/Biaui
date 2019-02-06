@@ -25,10 +25,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TreeView">
                     <controls:BiaClippingBorder x:Name="Bd"
-                                             Background="{TemplateBinding Background}"
-                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                             BorderThickness="{TemplateBinding BorderThickness}"
-                                             CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                         <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
                             <ItemsPresenter />
                         </ScrollViewer>
