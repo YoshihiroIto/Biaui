@@ -114,7 +114,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
                     <ControlTemplate.Resources>
-                        <internals:LeftMarginMultiplierConverter x:Key="lengthConverter" Length="19" />
+                        <internals:LeftMarginMultiplierConverter x:Key="LengthConverter" Length="19" />
                     </ControlTemplate.Resources>
                     <StackPanel>
                         <Border Name="Bd"
@@ -122,7 +122,7 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid Margin="{Binding Converter={StaticResource lengthConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid Margin="{Binding Converter={StaticResource LengthConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="19" />
                                     <ColumnDefinition />

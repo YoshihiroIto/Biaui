@@ -209,7 +209,7 @@ namespace Biaui.Internals
             Debug.Assert(textWidth > maxWidth);
 
             // 文字列に ... を加える文を考慮して削る文字数を求める
-            var dot3width = _dotAdvanceWidth * 3.0;
+            var dot3Width = _dotAdvanceWidth * 3.0;
 
             var removeCount = 1;
             var newTextWidth = textWidth;
@@ -218,7 +218,7 @@ namespace Biaui.Internals
                 {
                     newTextWidth -= advanceWidths[i];
 
-                    if (maxWidth - newTextWidth >= dot3width)
+                    if (maxWidth - newTextWidth >= dot3Width)
                         break;
 
                     ++removeCount;
@@ -239,7 +239,7 @@ namespace Biaui.Internals
             advanceWidths[glyphIndexes.Length - 1 - 1] = _dotAdvanceWidth;
             advanceWidths[glyphIndexes.Length - 1 - 0] = _dotAdvanceWidth;
 
-            return newTextWidth + dot3width;
+            return newTextWidth + dot3Width;
         }
 
         private readonly LruCache<(string, double, double, double, TextAlignment), GlyphRun> _textCache =

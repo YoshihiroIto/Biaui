@@ -97,7 +97,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private const double minPortOffset = 24.0;
+        private const double MinPortOffset = 24.0;
 
         private static Span<ImmutableVec2> MakeDifferenceLines(
             in PortUnit unit1,
@@ -115,7 +115,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var startItemCenter = start.Item.AlignedPos().Y(b) + start.Item.Size.Height(b) * 0.5;
             var startItemPortOffset =
                 start.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.Y(b));
-            var fold = minPortOffset + startItemPortOffset;
+            var fold = MinPortOffset + startItemPortOffset;
 
             var startFoldPos = start.Pos.X(b) + fold;
             var foldStartPos = Transposer.CreateImmutableVec2(startFoldPos, start.Pos.Y(b), b);
@@ -164,7 +164,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var endItemCenter = unit2.Item.AlignedPos().Y(b) + unit2.Item.Size.Height(b) * 0.5;
             var endItemPortOffset = unit2.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y(b));
-            var fold = minPortOffset + (startItemPortOffset, endItemPortOffset).Max();
+            var fold = MinPortOffset + (startItemPortOffset, endItemPortOffset).Max();
 
             var foldPos = unit1.Port.Dir == Transposer.NodePortDir(BiaNodePortDir.Left, b)
                 ? (unit1.Pos.X(b), unit2.Pos.X(b)).Min() - fold
@@ -339,7 +339,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     }
                 }
 
-                var foldLength = minPortOffset + itemPortOffset;
+                var foldLength = MinPortOffset + itemPortOffset;
                 var foldOffset = DirVector(foldLength);
 
                 return (Pos + foldOffset, foldLength);

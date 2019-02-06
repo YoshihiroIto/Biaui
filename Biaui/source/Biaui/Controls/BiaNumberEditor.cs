@@ -656,7 +656,7 @@ namespace Biaui.Controls
             );
         }
 
-        private static readonly Brush moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
+        private static readonly Brush _moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
 
         private void DrawSpin(DrawingContext dc)
         {
@@ -669,16 +669,16 @@ namespace Biaui.Controls
 
                 var key = (offsetX, offsetY);
 
-                if (_TranslateTransformCache.TryGetValue(key, out var tt) == false)
+                if (_translateTransformCache.TryGetValue(key, out var tt) == false)
                 {
                     tt = new TranslateTransform(offsetX, offsetY);
-                    _TranslateTransformCache.Add(key, tt);
+                    _translateTransformCache.Add(key, tt);
                 }
 
                 dc.PushTransform(tt);
                 dc.DrawGeometry(
                     _mouseOverType == MouseOverType.DecSpin
-                        ? moBrush
+                        ? _moBrush
                         : Foreground, null, _DecSpinGeom);
                 dc.Pop();
             }
@@ -693,16 +693,16 @@ namespace Biaui.Controls
 
                 var key = (offsetX, offsetY);
 
-                if (_TranslateTransformCache.TryGetValue(key, out var tt) == false)
+                if (_translateTransformCache.TryGetValue(key, out var tt) == false)
                 {
                     tt = new TranslateTransform(offsetX, offsetY);
-                    _TranslateTransformCache.Add(key, tt);
+                    _translateTransformCache.Add(key, tt);
                 }
 
                 dc.PushTransform(tt);
                 dc.DrawGeometry(
                     _mouseOverType == MouseOverType.IncSpin
-                        ? moBrush
+                        ? _moBrush
                         : Foreground, null, _IncSpinGeom);
                 dc.Pop();
             }
@@ -747,7 +747,7 @@ namespace Biaui.Controls
             e.Handled = true;
         }
 
-        private const double _clickPlayWidth = 4;
+        private const double ClickPlayWidth = 4;
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -773,7 +773,7 @@ namespace Biaui.Controls
                 return;
 
             if (_isMouseMoved == false)
-                if (Math.Abs(currentPos.X - _mouseDownPos.X) <= _clickPlayWidth)
+                if (Math.Abs(currentPos.X - _mouseDownPos.X) <= ClickPlayWidth)
                     return;
 
             if (_mouseOverTypeOnMouseDown != MouseOverType.Slider)
@@ -852,7 +852,7 @@ namespace Biaui.Controls
             {
                 var p = e.GetPosition(this);
 
-                if (Math.Abs(p.X - _mouseDownPos.X) <= _clickPlayWidth)
+                if (Math.Abs(p.X - _mouseDownPos.X) <= ClickPlayWidth)
                 {
                     // Ctrl押下中は５倍速い
                     var inc = KeyboardHelper.IsPressControl
@@ -1198,7 +1198,7 @@ namespace Biaui.Controls
         private static Geometry _IncSpinGeom;
         private static Brush _SpinBackground;
 
-        private static readonly Dictionary<(double X, double Y), TranslateTransform> _TranslateTransformCache =
+        private static readonly Dictionary<(double X, double Y), TranslateTransform> _translateTransformCache =
             new Dictionary<(double X, double Y), TranslateTransform>();
     }
 }

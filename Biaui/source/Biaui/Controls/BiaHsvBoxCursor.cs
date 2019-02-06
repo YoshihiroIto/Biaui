@@ -150,14 +150,14 @@ namespace Biaui.Controls
                 var p2 = new Point(z, h);
                 var p3 = new Point(w, h);
 
-                var p0a = new Point(z - 0.5, z);
-                var p1a = new Point(w + 0.5, z);
-                var p2a = new Point(z - 0.5, h);
-                var p3a = new Point(w + 0.5, h);
+                var p0A = new Point(z - 0.5, z);
+                var p1A = new Point(w + 0.5, z);
+                var p2A = new Point(z - 0.5, h);
+                var p3A = new Point(w + 0.5, h);
 
-                dc.DrawLine(p, p0a, p1a);
+                dc.DrawLine(p, p0A, p1A);
                 dc.DrawLine(p, p1, p3);
-                dc.DrawLine(p, p3a, p2a);
+                dc.DrawLine(p, p3A, p2A);
                 dc.DrawLine(p, p2, p0);
             }
 

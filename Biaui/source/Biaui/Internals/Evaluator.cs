@@ -10,11 +10,11 @@ namespace Biaui.Internals
         {
             try
             {
-                return _EvaluatorType.InvokeMember(
+                return _evaluatorType.InvokeMember(
                     "Eval",
                     BindingFlags.InvokeMethod,
                     null,
-                    _EvaluatorInstance,
+                    _evaluatorInstance,
                     new object[] {statement}
                 ).ToString();
             }
@@ -43,11 +43,11 @@ namespace Biaui.Internals
             var results = provider.CompileAssemblyFromSource(parameters, source);
             var assembly = results.CompiledAssembly;
 
-            _EvaluatorType = assembly.GetType("Evaluator.Evaluator");
-            _EvaluatorInstance = Activator.CreateInstance(_EvaluatorType);
+            _evaluatorType = assembly.GetType("Evaluator.Evaluator");
+            _evaluatorInstance = Activator.CreateInstance(_evaluatorType);
         }
 
-        private static readonly Type _EvaluatorType;
-        private static readonly object _EvaluatorInstance;
+        private static readonly Type _evaluatorType;
+        private static readonly object _evaluatorInstance;
     }
 }
