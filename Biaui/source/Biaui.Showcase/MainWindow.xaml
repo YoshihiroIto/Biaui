@@ -461,6 +461,24 @@
                                               Value="-722.1977" />
                 </Grid>
             </controls:BiaClippingBorder>
+
+            <Expander Margin="0,4,0,0"
+                      Header="ABC"
+                      IsExpanded="True">
+                <StackPanel>
+                    <TextBlock Text="A" />
+                    <TextBlock Text="B" />
+                    <TextBlock Text="C" />
+                </StackPanel>
+            </Expander>
+
+            <Expander Margin="0,4,0,0" Header="XYZ">
+                <StackPanel>
+                    <TextBlock Text="X" />
+                    <TextBlock Text="Y" />
+                    <TextBlock Text="Z" />
+                </StackPanel>
+            </Expander>
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"
@@ -624,7 +642,7 @@
                 </showcase:TextEditor.Resources>
 
                 <showcase:TextEditor.Style>
-                    <Style TargetType="{x:Type avalon:TextEditor}">
+                    <Style TargetType="{x:Type showcase:TextEditor}">
                         <Setter Property="BorderThickness" Value="1" />
                         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
                         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
@@ -637,7 +655,7 @@
 
                         <Setter Property="Template">
                             <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type avalon:TextEditor}">
+                                <ControlTemplate TargetType="{x:Type showcase:TextEditor}">
                                     <Border Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}"

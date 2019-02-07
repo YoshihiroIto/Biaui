@@ -69,6 +69,10 @@
     <Page Include="StandardControls\AccessText.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="StandardControls\Expander.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="StandardControls\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
