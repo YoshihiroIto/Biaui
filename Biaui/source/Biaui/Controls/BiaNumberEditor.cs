@@ -828,11 +828,11 @@ namespace Biaui.Controls
                 if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
                 {
                     ReleaseMouseCapture();
+                    this.ResetMouseClipping();
 
                     switch (Mode)
                     {
                         case BiaNumberEditorMode.Simple:
-                            this.ResetMouseClipping();
                             break;
 
                         case BiaNumberEditorMode.WideRange:
