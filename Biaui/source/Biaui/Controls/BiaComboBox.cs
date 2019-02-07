@@ -337,7 +337,7 @@ namespace Biaui.Controls
                 var offset = new TranslateTransform(ActualWidth - SystemParameters.VerticalScrollBarWidth, 10.5);
 
                 dc.PushTransform(offset);
-                dc.DrawGeometry(MarkBrush, null, _markGeom);
+                dc.DrawGeometry(MarkBrush, null, MarkGeom);
                 dc.Pop();
             }
         }
@@ -396,11 +396,25 @@ namespace Biaui.Controls
             Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
+        private bool _isDoesFindParent;
+        private bool _hasScrollViewerParent;
+
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
 
             if (IsEnabled == false)
+                return;
+
+            if (_isDoesFindParent == false)
+            {
+                _hasScrollViewerParent = this.GetParent<ScrollViewer>() != null;
+                _isDoesFindParent = true;
+            }
+
+            // スクロール操作と混同するため、
+            // 親にスクロールビューワーが存在すればホイール操作を無効にする
+            if (_hasScrollViewerParent)
                 return;
 
             if (e.Delta > 0)
@@ -582,6 +596,6 @@ namespace Biaui.Controls
             }
         }
 
-        private static readonly Geometry _markGeom = Geometry.Parse("M 0.0,0.0 L 3.5,4.0 7.0,0.0 z");
+        private static readonly Geometry MarkGeom = Geometry.Parse("M 0.0,0.0 L 3.5,4.0 7.0,0.0 z");
     }
 }
