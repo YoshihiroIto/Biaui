@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type GridSplitter}">
+        <Setter Property="ResizeDirection" Value="Columns" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type GridSplitter}">
@@ -21,6 +23,7 @@
                         </Canvas>
 
                         <controls:BiaTextBlock x:Name="Thumb"
+                                               Margin="1"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                Text="::" />
