@@ -533,9 +533,63 @@ namespace Biaui.Controls
 
         #endregion
 
-        public event EventHandler StartedContinuousEditing;
+        #region StartedContinuousEditingCommand
+        
+        public ICommand StartedContinuousEditingCommand
+        {
+            get => _StartedContinuousEditingCommand;
+            set
+            {
+                if (value != _StartedContinuousEditingCommand)
+                    SetValue(StartedContinuousEditingCommandProperty, value);
+            }
+        }
+        
+        private ICommand _StartedContinuousEditingCommand;
+        
+        public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._StartedContinuousEditingCommand = (ICommand)e.NewValue;
+                    }));
+        
+        #endregion
 
-        public event EventHandler EndContinuousEditing;
+        #region EndContinuousEditingCommand
+        
+        public ICommand EndContinuousEditingCommand
+        {
+            get => _EndContinuousEditingCommand;
+            set
+            {
+                if (value != _EndContinuousEditingCommand)
+                    SetValue(EndContinuousEditingCommandProperty, value);
+            }
+        }
+        
+        private ICommand _EndContinuousEditingCommand;
+        
+        public static readonly DependencyProperty EndContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaNumberEditor),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._EndContinuousEditingCommand = (ICommand)e.NewValue;
+                    }));
+        
+        #endregion
 
         static BiaNumberEditor()
         {
@@ -727,7 +781,8 @@ namespace Biaui.Controls
         private MouseOverType _mouseOverTypeOnMouseDown;
         private MouseOverType _mouseOverType;
 
-        private bool _isSliderEdited;
+        private bool _isContinuousEdited;
+        private double _ContinuousEditingStartValue;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -742,7 +797,8 @@ namespace Biaui.Controls
             _isMouseDown = true;
             _isMouseMoved = false;
             _mouseOverTypeOnMouseDown = MakeMouseOverType(e);
-            _isSliderEdited = false;
+            _isContinuousEdited = false;
+            _ContinuousEditingStartValue = Value;
 
             if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
             {
@@ -824,10 +880,13 @@ namespace Biaui.Controls
 
             if (NumberHelper.AreClose(newValue, oldValue) == false)
             {
-                if (_isSliderEdited == false)
+                if (_isContinuousEdited == false)
                 {
-                    _isSliderEdited = true;
-                    StartedContinuousEditing?.Invoke(this, EventArgs.Empty);
+                    _isContinuousEdited = true;
+
+                    if(StartedContinuousEditingCommand != null)
+                        if (StartedContinuousEditingCommand.CanExecute(null))
+                            StartedContinuousEditingCommand.Execute(null);
                 }
 
                 Value = newValue;
@@ -871,10 +930,23 @@ namespace Biaui.Controls
 
             if (_isMouseMoved)
             {
-                if (_isSliderEdited)
+                if (_isContinuousEdited)
                 {
-                    EndContinuousEditing?.Invoke(this, EventArgs.Empty);
-                    _isSliderEdited = false;
+                    if (EndContinuousEditingCommand != null)
+                    {
+                        if (EndContinuousEditingCommand.CanExecute(null))
+                        {
+
+                            var changedValue = Value;
+                            Value = _ContinuousEditingStartValue;
+
+                            EndContinuousEditingCommand.Execute(null);
+
+                            Value = changedValue;
+                        }
+                    }
+
+                    _isContinuousEdited = false;
                 }
             }
             else
