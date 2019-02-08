@@ -533,6 +533,10 @@ namespace Biaui.Controls
 
         #endregion
 
+        public event EventHandler StartedContinuousEditing;
+
+        public event EventHandler EndContinuousEditing;
+
         static BiaNumberEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNumberEditor),
@@ -723,6 +727,8 @@ namespace Biaui.Controls
         private MouseOverType _mouseOverTypeOnMouseDown;
         private MouseOverType _mouseOverType;
 
+        private bool _isSliderEdited;
+
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
@@ -736,6 +742,7 @@ namespace Biaui.Controls
             _isMouseDown = true;
             _isMouseMoved = false;
             _mouseOverTypeOnMouseDown = MakeMouseOverType(e);
+            _isSliderEdited = false;
 
             if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
             {
@@ -779,13 +786,16 @@ namespace Biaui.Controls
             if (_mouseOverTypeOnMouseDown != MouseOverType.Slider)
                 return;
 
+            var oldValue = Value;
+            var newValue = Value;
+
             switch (Mode)
             {
                 case BiaNumberEditorMode.Simple:
                 {
                     // 0から1
                     var xr = (currentPos.X, 0.0, ActualWidth).Clamp() / ActualWidth;
-                    Value = SliderWidth * xr + ActualSliderMinimum;
+                    newValue = SliderWidth * xr + ActualSliderMinimum;
                     break;
                 }
 
@@ -799,9 +809,9 @@ namespace Biaui.Controls
                         ? 5.0
                         : 1.0;
                     var w = currentPos.X - _oldPos.X;
-                    var v = Value + s * w * Increment;
+                    var v = oldValue + s * w * Increment;
 
-                    Value = (v, ActualSliderMinimum, ActualSliderMaximum).Clamp();
+                    newValue = (v, ActualSliderMinimum, ActualSliderMaximum).Clamp();
 
                     // 移動量だけ取れれば良いので、現在位置をスタート位置に戻す
                     var p = PointToScreen(_mouseDownPos);
@@ -810,6 +820,17 @@ namespace Biaui.Controls
 
                     break;
                 }
+            }
+
+            if (NumberHelper.AreClose(newValue, oldValue) == false)
+            {
+                if (_isSliderEdited == false)
+                {
+                    _isSliderEdited = true;
+                    StartedContinuousEditing?.Invoke(this, EventArgs.Empty);
+                }
+
+                Value = newValue;
             }
 
             _mouseOverType = MouseOverType.Slider;
@@ -848,7 +869,15 @@ namespace Biaui.Controls
 
             _isMouseDown = false;
 
-            if (_isMouseMoved == false)
+            if (_isMouseMoved)
+            {
+                if (_isSliderEdited)
+                {
+                    EndContinuousEditing?.Invoke(this, EventArgs.Empty);
+                    _isSliderEdited = false;
+                }
+            }
+            else
             {
                 var p = e.GetPosition(this);
 
