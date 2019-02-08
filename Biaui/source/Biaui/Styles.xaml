@@ -10,6 +10,7 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Decorator.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Expander.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/GridSplitter.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Label.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/ListView.xaml" />
