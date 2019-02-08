@@ -137,12 +137,39 @@
                     <controls:BiaToggleButton Grid.Column="0" Content="Asia" />
                     <controls:BiaToggleButton Grid.Column="1"
                                               Margin="1,0,0,0"
-                                              Content="USA" />
+                                              Content="USA"
+                                              IsChecked="True" />
                     <controls:BiaToggleButton Grid.Column="2"
                                               Margin="1,0,0,0"
                                               Content="EU" />
                 </Grid>
             </controls:BiaClippingBorder>
+
+            <controls:BiaClippingBorder Margin="0,4,0,0">
+                <Grid IsEnabled="False">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type controls:BiaToggleButton}">
+                            <Setter Property="CornerRadius" Value="0" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <controls:BiaToggleButton Grid.Column="0" Content="Asia" />
+                    <controls:BiaToggleButton Grid.Column="1"
+                                              Margin="1,0,0,0"
+                                              Content="USA"
+                                              IsChecked="True" />
+                    <controls:BiaToggleButton Grid.Column="2"
+                                              Margin="1,0,0,0"
+                                              Content="EU" />
+                </Grid>
+            </controls:BiaClippingBorder>
+
 
             <controls:BiaClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                 <Grid>
