@@ -71,11 +71,14 @@ namespace Biaui.Controls
 
                         if (self._Command != null)
                             self._Command.CanExecuteChanged += self.CommandOnCanExecuteChanged;
+
+                        self.CommandOnCanExecuteChanged(null, null);
                     }));
 
         private void CommandOnCanExecuteChanged(object sender, EventArgs e)
         {
-            IsEnabled = Command.CanExecute(CommandParameter);
+            if (Command != null)
+                IsEnabled = Command.CanExecute(CommandParameter);
         }
 
         #endregion
