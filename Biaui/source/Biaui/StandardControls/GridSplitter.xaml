@@ -34,7 +34,6 @@
 
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Background" Property="Background" Value="#10FFFFFF" />
-
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

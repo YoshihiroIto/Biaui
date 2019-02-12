@@ -4,7 +4,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Padding="{TemplateBinding Padding}">
-                        <Grid Background="Transparent" SnapsToDevicePixels="False">
+                        <Grid x:Name="Background"
+                              Background="Transparent"
+                              SnapsToDevicePixels="False">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -39,6 +41,10 @@
 
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="arrow" Property="Fill" Value="#808080" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Background" Property="Background" Value="#10FFFFFF" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
