@@ -1013,6 +1013,8 @@ namespace Biaui.Controls
         private TextBox _textBox;
         private bool _isEditing;
 
+        private Window _parentWindow;
+
         private void AddValue(double i)
         {
             var v = Value + i;
@@ -1063,6 +1065,12 @@ namespace Biaui.Controls
             _textBox.Focus();
 
             _isEditing = true;
+
+            if (_parentWindow == null)
+                _parentWindow = this.GetParent<Window>();
+
+            if (_parentWindow != null)
+                _parentWindow.PreviewMouseDown += ParentWindow_PreviewMouseDown;
         }
 
         private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -1127,6 +1135,18 @@ namespace Biaui.Controls
             }
         }
 
+        private void ParentWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // 自コントロール上であれば、終了させない
+            var pos = e.GetPosition(this);
+            var rect = this.RoundLayoutActualRectangle(false);
+            if (rect.Contains(pos))
+                return;
+
+            if (_isEditing)
+                FinishEditing(true);
+        }
+
         private void FinishEditing(bool isEdit)
         {
             if (isEdit)
@@ -1140,6 +1160,9 @@ namespace Biaui.Controls
             RemoveVisualChild(_textBox);
             _isEditing = false;
             InvalidateVisual();
+
+            if (_parentWindow != null)
+                _parentWindow.PreviewMouseDown -= ParentWindow_PreviewMouseDown;
         }
 
         protected override int VisualChildrenCount
