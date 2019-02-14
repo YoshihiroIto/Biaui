@@ -27,5 +27,6 @@
 
         <!--  Controls  -->
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
