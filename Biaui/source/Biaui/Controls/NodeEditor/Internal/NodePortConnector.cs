@@ -58,7 +58,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             _mousePos = _parent.TransformPos(e.MousePos.X, e.MousePos.Y);
 
-            UpdateLinkTarget(_mousePos, _parent.NodesSource);
+            UpdateLinkTarget(_mousePos, (IEnumerable<IBiaNodeItem>)_parent.NodesSource);
 
             Invalidate();
         }

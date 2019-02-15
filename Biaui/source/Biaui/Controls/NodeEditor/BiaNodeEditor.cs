@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
@@ -14,27 +15,27 @@ namespace Biaui.Controls.NodeEditor
     {
         #region NodesSource
 
-        public ObservableCollection<IBiaNodeItem> NodesSource
+        public IEnumerable NodesSource
         {
             get => _NodesSource;
             set
             {
-                if (value != _NodesSource)
+                if (!Equals(value, _NodesSource))
                     SetValue(NodesSourceProperty, value);
             }
         }
 
-        private ObservableCollection<IBiaNodeItem> _NodesSource;
+        private IEnumerable _NodesSource;
 
         public static readonly DependencyProperty NodesSourceProperty =
-            DependencyProperty.Register(nameof(NodesSource), typeof(ObservableCollection<IBiaNodeItem>),
+            DependencyProperty.Register(nameof(NodesSource), typeof(IEnumerable),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(ObservableCollection<IBiaNodeItem>),
+                    default(IEnumerable),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._NodesSource = (ObservableCollection<IBiaNodeItem>) e.NewValue;
+                        self._NodesSource = (IEnumerable) e.NewValue;
                         self.InvokeNodesSourceChanging();
                     }));
 
