@@ -538,6 +538,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             target.InternalData().EnablePorts.Clear();
 
+            if (_parent.NodePortEnabledChecker == null)
+                return;
+
             foreach (var enabledPortId in _parent.NodePortEnabledChecker.Check(target, args))
             {
                 Debug.Assert(target.Layout.Ports.ContainsKey(enabledPortId));
