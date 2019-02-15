@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -20,7 +21,7 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         #region NodesSource
 
-        internal ObservableCollection<IBiaNodeItem> NodesSource
+        internal IEnumerable NodesSource
         {
             get => _NodesSource;
             set
@@ -30,20 +31,20 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private ObservableCollection<IBiaNodeItem> _NodesSource;
+        private IEnumerable _NodesSource;
 
         public static readonly DependencyProperty NodesSourceProperty =
-            DependencyProperty.Register(nameof(NodesSource), typeof(ObservableCollection<IBiaNodeItem>),
+            DependencyProperty.Register(nameof(NodesSource), typeof(IEnumerable),
                 typeof(NodeContainer),
                 new PropertyMetadata(
-                    default(ObservableCollection<IBiaNodeItem>),
+                    default(IEnumerable),
                     (s, e) =>
                     {
                         var self = (NodeContainer) s;
 
                         var old = self._NodesSource;
-                        self._NodesSource = (ObservableCollection<IBiaNodeItem>) e.NewValue;
-                        self.UpdateNodesSource(old, self._NodesSource);
+                        self._NodesSource = (IEnumerable) e.NewValue;
+                        self.UpdateNodesSource(old as INotifyCollectionChanged, self._NodesSource as INotifyCollectionChanged);
                     }));
 
         #endregion
@@ -564,8 +565,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         private void UpdateNodesSource(
-            ObservableCollection<IBiaNodeItem> oldSource,
-            ObservableCollection<IBiaNodeItem> newSource)
+            INotifyCollectionChanged oldSource,
+            INotifyCollectionChanged newSource)
         {
             if (oldSource != null)
                 oldSource.CollectionChanged -= NodesSourceOnCollectionChanged;
@@ -576,7 +577,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 // 最初は全部追加として扱う
                 NodesSourceOnCollectionChanged(null,
-                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newSource, 0));
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, (IList)newSource, 0));
             }
         }
 
