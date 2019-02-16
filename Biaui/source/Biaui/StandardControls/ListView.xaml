@@ -136,6 +136,7 @@
                         <Button Margin="0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
+                                Foreground="#989898"
                                 Style="{DynamicResource SharpButtonStyle}">
                             <ContentPresenter Name="HeaderContent"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
