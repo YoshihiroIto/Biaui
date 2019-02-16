@@ -1008,6 +1008,9 @@ namespace Biaui.Controls
 
         private void ShowEditBox()
         {
+            if (_isEditing)
+                return;
+
             if (_textBox == null)
             {
                 _textBox = new TextBox
