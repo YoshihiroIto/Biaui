@@ -801,11 +801,7 @@ namespace Biaui.Controls
             _ContinuousEditingStartValue = Value;
 
             if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
-            {
                 CaptureMouse();
-
-                this.SetMouseClipping();
-            }
 
             e.Handled = true;
         }
@@ -857,9 +853,6 @@ namespace Biaui.Controls
 
                 case BiaNumberEditorMode.WideRange:
                 {
-                    if (_isMouseMoved == false)
-                        GuiHelper.HideCursor();
-
                     // Ctrl押下中は５倍速い
                     var s = KeyboardHelper.IsPressControl
                         ? 5.0
@@ -868,11 +861,6 @@ namespace Biaui.Controls
                     var v = oldValue + s * w * Increment;
 
                     newValue = (v, ActualSliderMinimum, ActualSliderMaximum).Clamp();
-
-                    // 移動量だけ取れれば良いので、現在位置をスタート位置に戻す
-                    var p = PointToScreen(_mouseDownPos);
-                    Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
-                    currentPos = _mouseDownPos;
 
                     break;
                 }
@@ -906,24 +894,7 @@ namespace Biaui.Controls
             if (IsReadOnly == false)
             {
                 if (_mouseOverTypeOnMouseDown == MouseOverType.Slider)
-                {
                     ReleaseMouseCapture();
-                    this.ResetMouseClipping();
-
-                    switch (Mode)
-                    {
-                        case BiaNumberEditorMode.Simple:
-                            break;
-
-                        case BiaNumberEditorMode.WideRange:
-                        {
-                            var p = PointToScreen(_mouseDownPos);
-                            Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
-                            GuiHelper.ShowCursor();
-                            break;
-                        }
-                    }
-                }
             }
 
             _isMouseDown = false;
@@ -983,7 +954,6 @@ namespace Biaui.Controls
                 _isMouseDown = false;
                 ReleaseMouseCapture();
                 this.ResetMouseClipping();
-                GuiHelper.ShowCursor();
             }
 
             _mouseOverType = MouseOverType.None;
