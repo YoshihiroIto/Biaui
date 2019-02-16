@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -26,7 +25,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             get => _NodesSource;
             set
             {
-                if (value != _NodesSource)
+                if (!Equals(value, _NodesSource))
                     SetValue(NodesSourceProperty, value);
             }
         }
