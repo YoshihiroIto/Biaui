@@ -360,7 +360,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 : panel;
         }
 
-        private void UpdateChildrenBag(bool isPushRemove)
+        public void UpdateChildrenBag(bool isPushRemove)
         {
             if (_isEnableUpdateChildrenBagDepth > 0)
                 return;
