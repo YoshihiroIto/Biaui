@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
+                    xmlns:c="clr-namespace:Biaui.Internals"
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:internals="clr-namespace:Biaui.Internals">
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
@@ -83,6 +84,8 @@
                                     <ColumnDefinition Width="19" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
+
+                                <!--  x:NameはBiaui.Internals.Constants.TreeViewItemExpanderName  -->
                                 <ToggleButton x:Name="Expander"
                                               ClickMode="Press"
                                               IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"

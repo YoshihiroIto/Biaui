@@ -12,5 +12,7 @@
 
         // ポートマークの半径で一番大きいもの
         internal const double PortMarkRadius_Max = PortMarkRadius_Highlight2;
+
+        internal static string TreeViewItemExpanderName = "Expander";
     }
 }

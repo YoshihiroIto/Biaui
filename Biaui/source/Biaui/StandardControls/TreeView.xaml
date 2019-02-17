@@ -128,6 +128,8 @@
                                     <ColumnDefinition Width="19" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
+
+                                <!--  x:NameはBiaui.Internals.Constants.TreeViewItemExpanderName  -->
                                 <ToggleButton x:Name="Expander"
                                               ClickMode="Press"
                                               IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"

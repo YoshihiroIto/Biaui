@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Biaui.Internals;
 
@@ -109,8 +110,18 @@ namespace Biaui.Controls
         {
             base.OnPreviewMouseLeftButtonDown(e);
 
-            var treeViewItem = (e.OriginalSource as FrameworkElement)?.GetParent<TreeViewItem>();
+            var orgSource = e.OriginalSource as FrameworkElement;
+            if (orgSource == null)
+                return;
 
+            // アイテムの改変マークだったら選択処理を行わない
+            var toggleButton = orgSource.GetParent<ToggleButton>();
+            if (toggleButton != null)
+                if (toggleButton.Name == Biaui.Internals.Constants.TreeViewItemExpanderName)
+                    if (toggleButton.Visibility == Visibility.Visible)
+                        return;
+
+            var treeViewItem = orgSource.GetParent<TreeViewItem>();
             if (treeViewItem == null)
                 return;
 
