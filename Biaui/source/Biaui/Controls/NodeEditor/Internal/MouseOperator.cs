@@ -235,19 +235,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                 ? 1.25
                 : 1.0 / 1.25;
 
-            var p = e.GetPosition(_target);
-            var d0 = _transformTarget.TransformPos(p.X, p.Y);
-
             s = (s, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
-            _transformTarget.Scale.ScaleX = s;
-            _transformTarget.Scale.ScaleY = s;
 
-            var d1 = _transformTarget.TransformPos(p.X, p.Y);
+            var p = e.GetPosition(_target);
 
-            var diff = d1 - d0;
-
-            _transformTarget.Translate.X += diff.X * s;
-            _transformTarget.Translate.Y += diff.Y * s;
+            _transformTarget.SetTransform(s, p.X, p.Y);
         }
     }
 }

@@ -43,5 +43,20 @@ namespace Biaui.Controls.Internals
                 rect.Width / s,
                 rect.Height / s);
         }
+
+        internal static void SetTransform(this IHasTransform self, double scale, double centerX, double centerY)
+        {
+            var d0 = self.TransformPos(centerX, centerY);
+
+            self.Scale.ScaleX = scale;
+            self.Scale.ScaleY = scale;
+
+            var d1 = self.TransformPos(centerX, centerY);
+
+            var diff = d1 - d0;
+
+            self.Translate.X += diff.X * scale;
+            self.Translate.Y += diff.Y * scale;
+        }
     }
 }
