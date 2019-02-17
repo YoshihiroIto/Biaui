@@ -238,7 +238,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var p = e.GetPosition(_target);
             var d0 = _transformTarget.TransformPos(p.X, p.Y);
 
-            s = (s, 0.25, 3.0).Clamp();
+            s = (s, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
             _transformTarget.Scale.ScaleX = s;
             _transformTarget.Scale.ScaleY = s;
 
