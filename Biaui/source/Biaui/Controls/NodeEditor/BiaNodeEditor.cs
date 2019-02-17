@@ -185,14 +185,13 @@ namespace Biaui.Controls.NodeEditor
         public BiaNodeEditor()
         {
             var mouseOperator = new MouseOperator(this, this);
-            var nodeContainer = new NodeContainer(this, mouseOperator);
 
             var grid = new Grid();
             grid.Children.Add(new BackgroundPanel(this, mouseOperator));
-            grid.Children.Add(nodeContainer);
+            grid.Children.Add(new NodeContainer(this, mouseOperator));
             grid.Children.Add(new BoxSelector(mouseOperator));
             grid.Children.Add(new NodePortConnector(this, mouseOperator));
-            grid.Children.Add(CreateScaleSlider(nodeContainer));
+            grid.Children.Add(CreateScaleSlider());
             base.Child = grid;
         }
 
@@ -228,7 +227,7 @@ namespace Biaui.Controls.NodeEditor
         internal void InvokeLinkChanged()
             => LinkChanged?.Invoke(this, EventArgs.Empty);
 
-        private Slider CreateScaleSlider(NodeContainer nodeContainer)
+        private Slider CreateScaleSlider()
         {
             var scaleSlider = new Slider
             {
@@ -248,7 +247,6 @@ namespace Biaui.Controls.NodeEditor
                 var cy = ActualHeight * 0.5;
 
                 this.SetTransform(scaleSlider.Value, cx, cy);
-                nodeContainer.UpdateChildrenBag(true);
             };
 
             Scale.Changed += (_, __) => scaleSlider.Value = Scale.ScaleX;

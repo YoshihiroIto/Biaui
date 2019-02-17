@@ -75,9 +75,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             _parent.SizeChanged += (_, __) => UpdateChildrenBag(true);
             _parent.Unloaded += (_, __) => StopTimer();
             _parent.NodesSourceChanging += (_, __) => Clear();
+            _parent.Scale.Changed +=(_, __) => UpdateChildrenBag(true); 
+            _parent.Translate.Changed +=(_, __) => UpdateChildrenBag(true); 
 
             _mouseOperator.PanelMoving += OnPanelMoving;
-            _mouseOperator.PostMouseWheel += OnPostMouseWheel;
             _mouseOperator.PostMouseMove += OnPostMouseMove;
             _mouseOperator.PreMouseLeftButtonUp += OnPreMouseLeftButtonUp;
 
@@ -147,11 +148,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (_mouseOperator.IsBoxSelect)
                 PreSelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
-        }
-
-        private void OnPostMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            UpdateChildrenBag(true);
         }
 
         private void StopTimer()
