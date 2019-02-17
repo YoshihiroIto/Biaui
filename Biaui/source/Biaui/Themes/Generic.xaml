@@ -8,13 +8,14 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvWheelCursor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaRadioButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaToggleButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindow.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
 
         <!--  Internals  -->
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/SystemButton.xaml" />

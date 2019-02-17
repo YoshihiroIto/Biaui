@@ -66,6 +66,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\BiaTreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\BiaWindowStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -191,6 +195,7 @@
     <Compile Include="Controls\BiaHsvWheelBackground.cs" />
     <Compile Include="Controls\BiaHsvWheelCursor.cs" />
     <Compile Include="Controls\Internals\SystemButton.cs" />
+    <Compile Include="Controls\BiaTreeView.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodePortExtensions.cs" />
     <Compile Include="Controls\NodeEditor\Internal\ConnectionLineRenderer.cs" />
     <Compile Include="Controls\NodeEditor\Internal\Transposer.cs" />
@@ -257,6 +262,7 @@
     <Compile Include="Internals\ImmutableRect.cs" />
     <Compile Include="Internals\ImmutableCircle.cs" />
     <Compile Include="Internals\ImmutableVec2.cs" />
+    <Compile Include="Internals\ItemsControlExtensions.cs" />
     <Compile Include="Internals\KeyboardHelper.cs" />
     <Compile Include="Internals\LazyRunner.cs" />
     <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />

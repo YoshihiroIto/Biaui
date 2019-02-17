@@ -421,6 +421,26 @@
                 </TreeView.ItemTemplate>
             </TreeView>
 
+            <controls:BiaTextBlock Margin="0,4,0,0" Text="Multi Selectable:" />
+            <controls:BiaTreeView Width="200"
+                                  Height="200"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top"
+                                  ItemsSource="{Binding Persons, Mode=OneTime}">
+                <TreeView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </TreeView.ItemsPanel>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
+                        <controls:BiaTextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </controls:BiaTreeView>
+
+
             <controls:BiaNumberEditor Margin="0,4,0,0"
                                       Caption="Simple"
                                       Maximum="1000"
