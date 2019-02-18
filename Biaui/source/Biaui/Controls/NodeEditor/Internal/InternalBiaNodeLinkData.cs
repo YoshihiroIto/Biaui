@@ -2,7 +2,7 @@
 {
     internal class InternalBiaNodeLinkData
     {
-        internal BiaNodePort Port1 { get; set; }
-        internal BiaNodePort Port2 { get; set; }
+        internal BiaNodeSlot Slot1 { get; set; }
+        internal BiaNodeSlot Slot2 { get; set; }
     }
 }

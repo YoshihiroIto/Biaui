@@ -40,51 +40,51 @@ namespace Biaui.Controls.NodeEditor.Internal
                 size.Width * 0.5);
         }
 
-        internal static Point MakePortPos(this IBiaNodeItem nodeItem, BiaNodePort port)
+        internal static Point MakeSlotPos(this IBiaNodeItem nodeItem, BiaNodeSlot slot)
         {
             var itemSize = nodeItem.Size;
             var itemPos = nodeItem.AlignedPos();
 
-            var portLocalPos = port.MakePos(itemSize.Width, itemSize.Height);
+            var slotLocalPos = slot.MakePos(itemSize.Width, itemSize.Height);
 
-            return new Point(itemPos.X + portLocalPos.X, itemPos.Y + portLocalPos.Y);
+            return new Point(itemPos.X + slotLocalPos.X, itemPos.Y + slotLocalPos.Y);
         }
 
-        internal static BiaNodePort FindPortFromPos(this IBiaNodeItem nodeItem, Point pos)
+        internal static BiaNodeSlot FindSlotFromPos(this IBiaNodeItem nodeItem, Point pos)
         {
-            if (nodeItem.Layout.Ports == null)
+            if (nodeItem.Layout.Slots == null)
                 return null;
 
             var itemSize = nodeItem.Size;
 
-            foreach (var port in nodeItem.EnabledPorts())
+            foreach (var slot in nodeItem.EnabledSlots())
             {
-                var portLocalPos = port.MakePos(itemSize.Width, itemSize.Height);
+                var slotLocalPos = slot.MakePos(itemSize.Width, itemSize.Height);
 
-                var d = (portLocalPos, pos).DistanceSq();
-                if (d <= Biaui.Internals.Constants.PortMarkRadiusSq)
-                    return port;
+                var d = (slotLocalPos, pos).DistanceSq();
+                if (d <= Biaui.Internals.Constants.SlotMarkRadiusSq)
+                    return slot;
             }
 
             return null;
         }
 
-        internal static BiaNodePort FindPortFromId(this IBiaNodeItem nodeItem, int portId)
+        internal static BiaNodeSlot FindSlotFromId(this IBiaNodeItem nodeItem, int slotId)
         {
-            if (nodeItem.Layout.Ports == null)
+            if (nodeItem.Layout.Slots == null)
                 return null;
 
-            if (nodeItem.Layout.Ports.TryGetValue(portId, out var port))
-                return port;
+            if (nodeItem.Layout.Slots.TryGetValue(slotId, out var slot))
+                return slot;
 
             return null;
         }
 
-        internal static IEnumerable<BiaNodePort> EnabledPorts(this IBiaNodeItem nodeItem)
+        internal static IEnumerable<BiaNodeSlot> EnabledSlots(this IBiaNodeItem nodeItem)
         {
-            return nodeItem.InternalData().EnablePorts != null
-                ? nodeItem.InternalData().EnablePorts
-                : nodeItem.Layout.Ports.Values as IEnumerable<BiaNodePort>;
+            return nodeItem.InternalData().EnableSlots != null
+                ? nodeItem.InternalData().EnableSlots
+                : nodeItem.Layout.Slots.Values as IEnumerable<BiaNodeSlot>;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class InternalBiaNodeItemData
     {
-        internal readonly HashSet<BiaNodePort> EnablePorts = new HashSet<BiaNodePort>();
+        internal readonly HashSet<BiaNodeSlot> EnableSlots = new HashSet<BiaNodeSlot>();
 
         internal Style Style;
     }

@@ -72,89 +72,89 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        #region SourceNodePortConnecting
+        #region SourceNodeSlotConnecting
 
-        public BiaNodeItemPortPair SourceNodePortConnecting
+        public BiaNodeItemSlotPair SourceNodeSlotConnecting
         {
-            get => _sourceNodePortConnecting;
+            get => _sourceNodeSlotConnecting;
             set
             {
-                if (value != _sourceNodePortConnecting)
-                    SetValue(SourceNodePortConnectingProperty, value);
+                if (value != _sourceNodeSlotConnecting)
+                    SetValue(SourceNodeSlotConnectingProperty, value);
             }
         }
 
-        private BiaNodeItemPortPair _sourceNodePortConnecting;
+        private BiaNodeItemSlotPair _sourceNodeSlotConnecting;
 
-        public static readonly DependencyProperty SourceNodePortConnectingProperty =
+        public static readonly DependencyProperty SourceNodeSlotConnectingProperty =
             DependencyProperty.Register(
-                nameof(SourceNodePortConnecting),
-                typeof(BiaNodeItemPortPair),
+                nameof(SourceNodeSlotConnecting),
+                typeof(BiaNodeItemSlotPair),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(BiaNodeItemPortPair),
+                    default(BiaNodeItemSlotPair),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._sourceNodePortConnecting = (BiaNodeItemPortPair) e.NewValue;
+                        self._sourceNodeSlotConnecting = (BiaNodeItemSlotPair) e.NewValue;
                     }));
 
         #endregion
 
-        #region TargetNodePortConnecting
+        #region TargetNodeSlotConnecting
 
-        public BiaNodeItemPortPair TargetNodePortConnecting
+        public BiaNodeItemSlotPair TargetNodeSlotConnecting
         {
-            get => _targetNodePortConnecting;
+            get => _targetNodeSlotConnecting;
             set
             {
-                if (value != _targetNodePortConnecting)
-                    SetValue(TargetNodePortConnectingProperty, value);
+                if (value != _targetNodeSlotConnecting)
+                    SetValue(TargetNodeSlotConnectingProperty, value);
             }
         }
 
-        private BiaNodeItemPortPair _targetNodePortConnecting;
+        private BiaNodeItemSlotPair _targetNodeSlotConnecting;
 
-        public static readonly DependencyProperty TargetNodePortConnectingProperty =
+        public static readonly DependencyProperty TargetNodeSlotConnectingProperty =
             DependencyProperty.Register(
-                nameof(TargetNodePortConnecting),
-                typeof(BiaNodeItemPortPair),
+                nameof(TargetNodeSlotConnecting),
+                typeof(BiaNodeItemSlotPair),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(BiaNodeItemPortPair),
+                    default(BiaNodeItemSlotPair),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._targetNodePortConnecting = (BiaNodeItemPortPair) e.NewValue;
+                        self._targetNodeSlotConnecting = (BiaNodeItemSlotPair) e.NewValue;
                     }));
 
         #endregion
 
-        #region NodePortEnabledChecker
+        #region NodeSlotEnabledChecker
 
-        public IBiaNodePortEnabledChecker NodePortEnabledChecker
+        public IBiaNodeSlotEnabledChecker NodeSlotEnabledChecker
         {
-            get => _NodePortEnabledChecker;
+            get => _nodeSlotEnabledChecker;
             set
             {
-                if (value != _NodePortEnabledChecker)
-                    SetValue(NodePortEnabledCheckerProperty, value);
+                if (value != _nodeSlotEnabledChecker)
+                    SetValue(NodeSlotEnabledCheckerProperty, value);
             }
         }
 
-        private IBiaNodePortEnabledChecker _NodePortEnabledChecker;
+        private IBiaNodeSlotEnabledChecker _nodeSlotEnabledChecker;
 
-        public static readonly DependencyProperty NodePortEnabledCheckerProperty =
+        public static readonly DependencyProperty NodeSlotEnabledCheckerProperty =
             DependencyProperty.Register(
-                nameof(NodePortEnabledChecker),
-                typeof(IBiaNodePortEnabledChecker),
+                nameof(NodeSlotEnabledChecker),
+                typeof(IBiaNodeSlotEnabledChecker),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(IBiaNodePortEnabledChecker),
+                    default(IBiaNodeSlotEnabledChecker),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._NodePortEnabledChecker = (IBiaNodePortEnabledChecker) e.NewValue;
+                        self._nodeSlotEnabledChecker = (IBiaNodeSlotEnabledChecker) e.NewValue;
                     }));
 
         #endregion
@@ -170,7 +170,7 @@ namespace Biaui.Controls.NodeEditor
 
         public TranslateTransform Translate { get; } = new TranslateTransform();
 
-        public bool IsNodePortDragging { get; internal set; }
+        public bool IsNodeSlotDragging { get; internal set; }
 
         internal event EventHandler NodeItemMoved;
 
@@ -197,7 +197,7 @@ namespace Biaui.Controls.NodeEditor
                 grid.Children.Add(new BackgroundPanel(this, mouseOperator));
                 grid.Children.Add(new NodeContainer(this, mouseOperator));
                 grid.Children.Add(new BoxSelector(mouseOperator));
-                grid.Children.Add(new NodePortConnector(this, mouseOperator));
+                grid.Children.Add(new NodeSlotConnector(this, mouseOperator));
                 grid.Children.Add(CreateScaleSlider());
             }
 

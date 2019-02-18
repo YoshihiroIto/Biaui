@@ -14,8 +14,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 internalData = new InternalBiaNodeLinkData
                 {
-                    Port1 = self.ItemPort1.FindPort(),
-                    Port2 = self.ItemPort2.FindPort()
+                    Slot1 = self.ItemSlot1.FindSlot(),
+                    Slot2 = self.ItemSlot2.FindSlot()
                 };
                 self.InternalData = internalData;
             }

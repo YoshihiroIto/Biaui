@@ -44,24 +44,24 @@ namespace Biaui.Controls.NodeEditor.Internal
                 : self.Width;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static BiaNodePortDir NodePortDir(BiaNodePortDir target, bool isTrue)
+        internal static BiaNodeSlotDir NodeSlotDir(BiaNodeSlotDir target, bool isTrue)
         {
             if (isTrue)
                 return target;
 
             switch (target)
             {
-                case BiaNodePortDir.Left:
-                    return BiaNodePortDir.Top;
+                case BiaNodeSlotDir.Left:
+                    return BiaNodeSlotDir.Top;
 
-                case BiaNodePortDir.Top:
-                    return BiaNodePortDir.Left;
+                case BiaNodeSlotDir.Top:
+                    return BiaNodeSlotDir.Left;
 
-                case BiaNodePortDir.Right:
-                    return BiaNodePortDir.Bottom;
+                case BiaNodeSlotDir.Right:
+                    return BiaNodeSlotDir.Bottom;
 
-                case BiaNodePortDir.Bottom:
-                    return BiaNodePortDir.Right;
+                case BiaNodeSlotDir.Bottom:
+                    return BiaNodeSlotDir.Right;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(target), target, null);

@@ -9,20 +9,20 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         private const double ControlPointLength = 200;
 
-        internal static Point MakeBezierControlPoint(Point src, BiaNodePortDir dir)
+        internal static Point MakeBezierControlPoint(Point src, BiaNodeSlotDir dir)
         {
             switch (dir)
             {
-                case BiaNodePortDir.Left:
+                case BiaNodeSlotDir.Left:
                     return new Point(src.X - ControlPointLength, src.Y);
 
-                case BiaNodePortDir.Top:
+                case BiaNodeSlotDir.Top:
                     return new Point(src.X, src.Y - ControlPointLength);
 
-                case BiaNodePortDir.Right:
+                case BiaNodeSlotDir.Right:
                     return new Point(src.X + ControlPointLength, src.Y);
 
-                case BiaNodePortDir.Bottom:
+                case BiaNodeSlotDir.Bottom:
                     return new Point(src.X, src.Y + ControlPointLength);
 
                 default:

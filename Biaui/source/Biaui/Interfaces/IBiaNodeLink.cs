@@ -7,9 +7,9 @@ namespace Biaui.Interfaces
 {
     public interface IBiaNodeLink : INotifyPropertyChanged
     {
-        BiaNodeItemPortIdPair ItemPort1 { get; }
+        BiaNodeItemSlotIdPair ItemSlot1 { get; }
 
-        BiaNodeItemPortIdPair ItemPort2 { get; }
+        BiaNodeItemSlotIdPair ItemSlot2 { get; }
 
         Color Color { get; set; }
 

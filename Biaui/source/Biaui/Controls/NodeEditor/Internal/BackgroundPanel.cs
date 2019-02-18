@@ -136,7 +136,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
 
-            var alpha = _parent.IsNodePortDragging
+            var alpha = _parent.IsNodeSlotDragging
                 ? 0.2
                 : 1.0;
 
@@ -144,13 +144,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var link in _parent.LinksSource)
             {
-                if (link.InternalData().Port1 == null || link.InternalData().Port2 == null)
+                if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
                     continue;
 
-                var pos1 = link.ItemPort1.Item.MakePortPos(link.InternalData().Port1);
-                var pos2 = link.ItemPort2.Item.MakePortPos(link.InternalData().Port2);
-                var item1 = link.ItemPort1.Item;
-                var item2 = link.ItemPort2.Item;
+                var pos1 = link.ItemSlot1.Item.MakeSlotPos(link.InternalData().Slot1);
+                var pos2 = link.ItemSlot2.Item.MakeSlotPos(link.InternalData().Slot2);
+                var item1 = link.ItemSlot1.Item;
+                var item2 = link.ItemSlot2.Item;
 
                 // 大雑把にカリング
                 //  --> 接続線が膨らんだ前提でバウンディングボックスを作りビューポートと判定を取る

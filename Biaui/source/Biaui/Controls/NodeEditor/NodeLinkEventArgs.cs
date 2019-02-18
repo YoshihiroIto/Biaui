@@ -7,9 +7,9 @@ namespace Biaui.Controls.NodeEditor
     /// </summary>
     public class NodeLinkStartingEventArgs : EventArgs
     {
-        public readonly BiaNodeItemPortIdPair Source;
+        public readonly BiaNodeItemSlotIdPair Source;
 
-        internal NodeLinkStartingEventArgs(in BiaNodeItemPortIdPair source)
+        internal NodeLinkStartingEventArgs(in BiaNodeItemSlotIdPair source)
         {
             Source = source;
         }
@@ -20,12 +20,12 @@ namespace Biaui.Controls.NodeEditor
     /// </summary>
     public class NodeLinkCompletedEventArgs : EventArgs
     {
-        public readonly BiaNodeItemPortIdPair Source;
-        public readonly BiaNodeItemPortIdPair Target;
+        public readonly BiaNodeItemSlotIdPair Source;
+        public readonly BiaNodeItemSlotIdPair Target;
 
         internal NodeLinkCompletedEventArgs(
-            in BiaNodeItemPortIdPair source,
-            in BiaNodeItemPortIdPair target)
+            in BiaNodeItemSlotIdPair source,
+            in BiaNodeItemSlotIdPair target)
         {
             Source = source;
             Target = target;

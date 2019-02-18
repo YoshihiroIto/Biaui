@@ -592,7 +592,7 @@
                                           BorderThickness="1"
                                           CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}"
                                           LinksSource="{Binding BiaNodeEditorViewModel.Links, Mode=OneWay}"
-                                          NodePortEnabledChecker="{Binding BiaNodeEditorViewModel.NodePortEnabledChecker, Mode=OneWay}"
+                                          NodeSlotEnabledChecker="{Binding BiaNodeEditorViewModel.NodeSlotEnabledChecker, Mode=OneWay}"
                                           NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
                     <nodeEditor:BiaNodeEditor.Resources>
                         <ResourceDictionary>

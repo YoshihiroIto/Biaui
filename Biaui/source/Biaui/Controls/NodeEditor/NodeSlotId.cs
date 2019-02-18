@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public static class NodePortId
+    public static class NodeSlotId
     {
         public static int Make(string v)
         {

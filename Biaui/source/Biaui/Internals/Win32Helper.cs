@@ -29,6 +29,7 @@ namespace Biaui.Internals
         [DllImport("gdi32.dll")]
         internal static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
+        // ReSharper disable once InconsistentNaming
         internal struct RECT
         {
             public int Left;
@@ -48,7 +49,9 @@ namespace Biaui.Internals
         [DllImport("user32.dll")]
         internal static extern short GetAsyncKeyState(int vKey);
 
+        // ReSharper disable InconsistentNaming
         internal const int VK_CONTROL = 0x11;
         internal const int VK_SPACE = 0x20;
+        // ReSharper restore InconsistentNaming
     }
 }

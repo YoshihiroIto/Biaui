@@ -11,19 +11,19 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal class NodePortConnector : Canvas
+    internal class NodeSlotConnector : Canvas
     {
-        static NodePortConnector()
+        static NodeSlotConnector()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NodePortConnector),
-                new FrameworkPropertyMetadata(typeof(NodePortConnector)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(NodeSlotConnector),
+                new FrameworkPropertyMetadata(typeof(NodeSlotConnector)));
         }
 
         internal TranslateTransform Translate => _parent.Translate;
 
         internal ScaleTransform Scale => _parent.Scale;
 
-        public bool IsNodePortDragging => _parent.SourceNodePortConnecting.IsNotNull;
+        public bool IsNodeSlotDragging => _parent.SourceNodeSlotConnecting.IsNotNull;
 
         internal readonly Point[] BezierPoints = new Point[4];
         private readonly BiaNodeEditor _parent;
@@ -31,7 +31,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         private const int ColumnCount = 8;
         private const int RowCount = 8;
 
-        internal NodePortConnector(BiaNodeEditor parent, MouseOperator mouseOperator)
+        internal NodeSlotConnector(BiaNodeEditor parent, MouseOperator mouseOperator)
         {
             _parent = parent;
 
@@ -42,9 +42,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             SizeChanged += (_, e) => UpdateChildren(e.NewSize.Width, e.NewSize.Height);
 
             var source = DependencyPropertyDescriptor.FromProperty(
-                BiaNodeEditor.SourceNodePortConnectingProperty, typeof(BiaNodeEditor));
+                BiaNodeEditor.SourceNodeSlotConnectingProperty, typeof(BiaNodeEditor));
             var target = DependencyPropertyDescriptor.FromProperty(
-                BiaNodeEditor.TargetNodePortConnectingProperty, typeof(BiaNodeEditor));
+                BiaNodeEditor.TargetNodeSlotConnectingProperty, typeof(BiaNodeEditor));
 
             source.AddValueChanged(_parent, (_, __) => Invalidate());
             target.AddValueChanged(_parent, (_, __) => Invalidate());
@@ -65,43 +65,43 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void UpdateBezierPoints()
         {
-            if (IsNodePortDragging == false)
+            if (IsNodeSlotDragging == false)
                 return;
 
-            var srcPos = _parent.SourceNodePortConnecting.MakePortPos();
+            var srcPos = _parent.SourceNodeSlotConnecting.MakeSlotPos();
 
             BezierPoints[0] = srcPos;
-            BezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _parent.SourceNodePortConnecting.Port.Dir);
+            BezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _parent.SourceNodeSlotConnecting.Slot.Dir);
 
-            if (_parent.TargetNodePortConnecting.IsNull)
+            if (_parent.TargetNodeSlotConnecting.IsNull)
             {
                 BezierPoints[2] = _mousePos;
                 BezierPoints[3] = _mousePos;
             }
             else
             {
-                var targetPortPos = _parent.TargetNodePortConnecting.MakePortPos();
+                var targetSlotPos = _parent.TargetNodeSlotConnecting.MakeSlotPos();
 
-                BezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetPortPos, _parent.TargetNodePortConnecting.Port.Dir);
-                BezierPoints[3] = targetPortPos;
+                BezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetSlotPos, _parent.TargetNodeSlotConnecting.Slot.Dir);
+                BezierPoints[3] = targetSlotPos;
             }
         }
 
         internal void Render(DrawingContext dc, in ImmutableRect rect, double scale)
         {
-            if (IsNodePortDragging == false)
+            if (IsNodeSlotDragging == false)
                 return;
 
             if (double.IsNaN(_mousePos.X))
                 return;
 
-            var radius = Biaui.Internals.Constants.PortMarkRadius_Highlight2 * scale;
+            var radius = Biaui.Internals.Constants.SlotMarkRadius_Highlight2 * scale;
 
             // 接続線
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.Black, 5));
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 3));
 
-            var portPen = Caches.GetPen(Colors.Black, 2);
+            var slotPen = Caches.GetPen(Colors.Black, 2);
 
             // 接続元ポートの丸
             var srcRect = new ImmutableRect(
@@ -110,14 +110,14 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (rect.IntersectsWith(srcRect))
             {
                 dc.DrawCircle(
-                    Caches.GetSolidColorBrush(_parent.SourceNodePortConnecting.Port.Color),
-                    portPen,
+                    Caches.GetSolidColorBrush(_parent.SourceNodeSlotConnecting.Slot.Color),
+                    slotPen,
                     BezierPoints[0],
-                    Biaui.Internals.Constants.PortMarkRadius_Highlight2);
+                    Biaui.Internals.Constants.SlotMarkRadius_Highlight2);
             }
 
             // 接続先ポートの丸
-            if (_parent.TargetNodePortConnecting.IsNotNull)
+            if (_parent.TargetNodeSlotConnecting.IsNotNull)
             {
                 var targetRect = new ImmutableRect(
                     BezierPoints[3].X - radius, BezierPoints[3].Y - radius, radius * 2, radius * 2);
@@ -125,50 +125,50 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (rect.IntersectsWith(targetRect))
                 {
                     dc.DrawCircle(
-                        Caches.GetSolidColorBrush(_parent.TargetNodePortConnecting.Port.Color),
-                        portPen,
+                        Caches.GetSolidColorBrush(_parent.TargetNodeSlotConnecting.Slot.Color),
+                        slotPen,
                         BezierPoints[3],
-                        Biaui.Internals.Constants.PortMarkRadius_Highlight2);
+                        Biaui.Internals.Constants.SlotMarkRadius_Highlight2);
                 }
             }
         }
 
         private void UpdateLinkTarget(Point mousePos, IEnumerable<IBiaNodeItem> nodeItems)
         {
-            _parent.TargetNodePortConnecting = default;
+            _parent.TargetNodeSlotConnecting = default;
 
             if (nodeItems == null)
                 return;
 
-            const double PortRadius = Biaui.Internals.Constants.PortMarkRadius;
+            const double SlotRadius = Biaui.Internals.Constants.SlotMarkRadius;
 
             foreach (var nodeItem in nodeItems)
             {
                 var nodePos = nodeItem.Pos;
-                if (mousePos.X < nodePos.X - PortRadius) continue;
-                if (mousePos.Y < nodePos.Y - PortRadius) continue;
+                if (mousePos.X < nodePos.X - SlotRadius) continue;
+                if (mousePos.Y < nodePos.Y - SlotRadius) continue;
 
                 var nodeSize = nodeItem.Size;
-                if (mousePos.X > nodePos.X + nodeSize.Width + PortRadius) continue;
-                if (mousePos.Y > nodePos.Y + nodeSize.Height + PortRadius) continue;
+                if (mousePos.X > nodePos.X + nodeSize.Width + SlotRadius) continue;
+                if (mousePos.Y > nodePos.Y + nodeSize.Height + SlotRadius) continue;
 
-                foreach (var port in nodeItem.EnabledPorts())
+                foreach (var slot in nodeItem.EnabledSlots())
                 {
-                    if (port == _parent.SourceNodePortConnecting.Port &&
-                        nodeItem == _parent.SourceNodePortConnecting.Item)
+                    if (slot == _parent.SourceNodeSlotConnecting.Slot &&
+                        nodeItem == _parent.SourceNodeSlotConnecting.Item)
                         continue;
 
-                    var portPos = nodeItem.MakePortPos(port);
+                    var slotPos = nodeItem.MakeSlotPos(slot);
 
-                    if ((portPos, mousePos).DistanceSq() > Biaui.Internals.Constants.PortMarkRadiusSq)
+                    if ((slotPos, mousePos).DistanceSq() > Biaui.Internals.Constants.SlotMarkRadiusSq)
                         continue;
 
-                    _parent.TargetNodePortConnecting = new BiaNodeItemPortPair(nodeItem, port);
+                    _parent.TargetNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);
 
                     break;
                 }
 
-                if (_parent.TargetNodePortConnecting != null)
+                if (_parent.TargetNodeSlotConnecting != null)
                     break;
             }
         }
@@ -183,7 +183,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 child.InvalidateVisual();
             }
 
-            _parent.IsNodePortDragging = IsNodePortDragging;
+            _parent.IsNodeSlotDragging = IsNodeSlotDragging;
             _parent.InvokeLinkChanged();
         }
 
@@ -193,7 +193,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             var cellWidth = width / ColumnCount;
             var cellHeight = height / RowCount;
-            var margin = Biaui.Internals.Constants.PortMarkRadius_Max * _parent.Scale.ScaleX;
+            var margin = Biaui.Internals.Constants.SlotMarkRadius_Max * _parent.Scale.ScaleX;
 
             var i = 0;
 
@@ -215,13 +215,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 
     internal class LinkConnectorCell : FrameworkElement
     {
-        private readonly NodePortConnector _parent;
+        private readonly NodeSlotConnector _parent;
 
         internal Point Pos { get; set; }
 
         internal new double Margin { get; set; }
 
-        internal LinkConnectorCell(NodePortConnector parent)
+        internal LinkConnectorCell(NodeSlotConnector parent)
         {
             IsHitTestVisible = false;
             _parent = parent;
@@ -235,7 +235,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 ActualHeight <= 1)
                 return;
 
-            if (_parent.IsNodePortDragging == false)
+            if (_parent.IsNodeSlotDragging == false)
                 return;
 
             var scale = _parent.Scale.ScaleX;

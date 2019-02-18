@@ -9,12 +9,12 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodePanelPorts : Border
+    public class BiaNodePanelSlots : Border
     {
-        static BiaNodePanelPorts()
+        static BiaNodePanelSlots()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodePanelPorts),
-                new FrameworkPropertyMetadata(typeof(BiaNodePanelPorts)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodePanelSlots),
+                new FrameworkPropertyMetadata(typeof(BiaNodePanelSlots)));
         }
 
         private Point _mousePoint;
@@ -36,18 +36,18 @@ namespace Biaui.Controls.NodeEditor
             var nodeItem = (IBiaNodeItem) DataContext;
             var isMouseOverNode = nodeItem.IsMouseOver;
 
-            foreach (var port in nodeItem.EnabledPorts())
+            foreach (var slot in nodeItem.EnabledSlots())
             {
-                var portPos = port.MakePos(ActualWidth, ActualHeight);
+                var slotPos = slot.MakePos(ActualWidth, ActualHeight);
 
-                var r = Biaui.Internals.Constants.PortMarkRadius;
+                var r = Biaui.Internals.Constants.SlotMarkRadius;
 
                 // パネルがマウスオーバー時は、ポート自体のマウス位置見て半径を作る
                 if (isMouseOverNode)
-                    if ((portPos, _mousePoint).DistanceSq() <= Biaui.Internals.Constants.PortMarkRadiusSq)
-                        r = Biaui.Internals.Constants.PortMarkRadius_Highlight;
+                    if ((slotPos, _mousePoint).DistanceSq() <= Biaui.Internals.Constants.SlotMarkRadiusSq)
+                        r = Biaui.Internals.Constants.SlotMarkRadius_Highlight;
 
-                var color = port.Color;
+                var color = slot.Color;
 
                 if (_ellipses.TryGetValue(color, out var curve) == false)
                 {
@@ -61,7 +61,7 @@ namespace Biaui.Controls.NodeEditor
                     _ellipses.Add(color, curve);
                 }
 
-                curve.Ctx.DrawEllipse(portPos, r, r, true, true);
+                curve.Ctx.DrawEllipse(slotPos, r, r, true, true);
             }
 
             var pen = Caches.GetPen(Colors.Black, 2);

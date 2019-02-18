@@ -123,14 +123,14 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
-        #region NodePortEnabledChecker
+        #region NodeSlotEnabledChecker
 
-        private IBiaNodePortEnabledChecker _NodePortEnabledChecker = new NodePortEnabledChecker();
+        private IBiaNodeSlotEnabledChecker _nodeSlotEnabledChecker = new NodeSlotEnabledChecker();
 
-        public IBiaNodePortEnabledChecker NodePortEnabledChecker
+        public IBiaNodeSlotEnabledChecker NodeSlotEnabledChecker
         {
-            get => _NodePortEnabledChecker;
-            set => SetProperty(ref _NodePortEnabledChecker, value);
+            get => _nodeSlotEnabledChecker;
+            set => SetProperty(ref _nodeSlotEnabledChecker, value);
         }
 
         #endregion
@@ -155,8 +155,8 @@ namespace Biaui.Controls.Mock.Presentation
                 var selectedNodes = new HashSet<IBiaNodeItem>(Nodes.Where(x => x.IsSelected));
 
                 var linksWithSelectedNode = Links
-                    .Where(x => selectedNodes.Contains(x.ItemPort1.Item) ||
-                                selectedNodes.Contains(x.ItemPort2.Item))
+                    .Where(x => selectedNodes.Contains(x.ItemSlot1.Item) ||
+                                selectedNodes.Contains(x.ItemSlot2.Item))
                     .ToArray();
 
                 foreach (var node in selectedNodes)
@@ -197,8 +197,8 @@ namespace Biaui.Controls.Mock.Presentation
                         };
 
                 var linksWithSelectedNode = Links
-                    .Where(x => removedNode == x.ItemPort1.Item ||
-                                removedNode == x.ItemPort2.Item)
+                    .Where(x => removedNode == x.ItemSlot1.Item ||
+                                removedNode == x.ItemSlot2.Item)
                     .ToArray();
 
                 foreach (var link in linksWithSelectedNode)
@@ -220,14 +220,14 @@ namespace Biaui.Controls.Mock.Presentation
 
             NodeLinkStartingCommand = new DelegateCommand<NodeLinkStartingEventArgs>().Setup(e =>
             {
-                Debug.WriteLine($"NodeLinkStartingCommand: {NodePortId.ToString(e.Source.PortId)}");
+                Debug.WriteLine($"NodeLinkStartingCommand: {NodeSlotId.ToString(e.Source.SlotId)}");
             });
 
             var connectedCount = 0;
             NodeLinkCompletedCommand = new DelegateCommand<NodeLinkCompletedEventArgs>().Setup(e =>
             {
                 Debug.WriteLine(
-                    $"NodeLinkCompletedCommand: {NodePortId.ToString(e.Source.PortId)}, {NodePortId.ToString(e.Target.PortId)}");
+                    $"NodeLinkCompletedCommand: {NodeSlotId.ToString(e.Source.SlotId)}, {NodeSlotId.ToString(e.Target.SlotId)}");
 
                 var l = FindNodeLink(Links, e.Source, e.Target);
 
@@ -235,8 +235,8 @@ namespace Biaui.Controls.Mock.Presentation
                 {
                     Links.Add(new NodeLink
                     {
-                        ItemPort1 = e.Source,
-                        ItemPort2 = e.Target,
+                        ItemSlot1 = e.Source,
+                        ItemSlot2 = e.Target,
                         Color = Colors.LimeGreen,
                         Style = (connectedCount & 1) == 0
                             ? BiaNodeLinkStyle.None | BiaNodeLinkStyle.Arrow
@@ -256,17 +256,17 @@ namespace Biaui.Controls.Mock.Presentation
         }
 
         private static IBiaNodeLink FindNodeLink(IEnumerable<IBiaNodeLink> links,
-            in BiaNodeItemPortIdPair source,
-            in BiaNodeItemPortIdPair target)
+            in BiaNodeItemSlotIdPair source,
+            in BiaNodeItemSlotIdPair target)
         {
             foreach (var link in links)
             {
-                if (link.ItemPort1 == source &&
-                    link.ItemPort2 == target)
+                if (link.ItemSlot1 == source &&
+                    link.ItemSlot2 == target)
                     return link;
 
-                if (link.ItemPort2 == source &&
-                    link.ItemPort1 == target)
+                if (link.ItemSlot2 == source &&
+                    link.ItemSlot1 == target)
                     return link;
             }
 
@@ -351,8 +351,8 @@ namespace Biaui.Controls.Mock.Presentation
                 links.Add(
                     new NodeLink
                     {
-                        ItemPort1 = new BiaNodeItemPortIdPair(nodes[i - 1], NodePortId.Make("OutputA")),
-                        ItemPort2 = new BiaNodeItemPortIdPair(nodes[i], NodePortId.Make("InputA")),
+                        ItemSlot1 = new BiaNodeItemSlotIdPair(nodes[i - 1], NodeSlotId.Make("OutputA")),
+                        ItemSlot2 = new BiaNodeItemSlotIdPair(nodes[i], NodeSlotId.Make("InputA")),
 
                         Color = Colors.DeepPink,
                         Style = (i & 1) == 0
@@ -439,7 +439,7 @@ namespace Biaui.Controls.Mock.Presentation
 
         public abstract BiaNodePanelHitType HitType { get; }
 
-        public abstract BiaNodePortLayout Layout { get; }
+        public abstract BiaNodeSlotLayout Layout { get; }
 
         public object InternalData { get; set; }
     }
@@ -448,27 +448,27 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
-        public override BiaNodePortLayout Layout => _Layout;
+        public override BiaNodeSlotLayout Layout => _Layout;
 
-        private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
+        private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
         {
-            Ports =
-                new Dictionary<int, BiaNodePort>
+            Slots =
+                new Dictionary<int, BiaNodeSlot>
                 {
                     {
-                        NodePortId.Make("InputA"), new BiaNodePort
+                        NodeSlotId.Make("InputA"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("InputA"),
-                            Dir = BiaNodePortDir.Top,
-                            Align = BiaNodePortAlign.Center
+                            Id = NodeSlotId.Make("InputA"),
+                            Dir = BiaNodeSlotDir.Top,
+                            Align = BiaNodeSlotAlign.Center
                         }
                     },
                     {
-                        NodePortId.Make("OutputA"), new BiaNodePort
+                        NodeSlotId.Make("OutputA"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("OutputA"),
-                            Dir = BiaNodePortDir.Bottom,
-                            Align = BiaNodePortAlign.Center
+                            Id = NodeSlotId.Make("OutputA"),
+                            Dir = BiaNodeSlotDir.Bottom,
+                            Align = BiaNodeSlotAlign.Center
                         }
                     }
                 }
@@ -479,58 +479,58 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
-        public override BiaNodePortLayout Layout => _Layout;
+        public override BiaNodeSlotLayout Layout => _Layout;
 
-        private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
+        private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
         {
-            Ports =
-                new Dictionary<int, BiaNodePort>
+            Slots =
+                new Dictionary<int, BiaNodeSlot>
                 {
                     {
-                        NodePortId.Make("InputA"), new BiaNodePort
+                        NodeSlotId.Make("InputA"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("InputA"),
-                            Dir = BiaNodePortDir.Left,
-                            Align = BiaNodePortAlign.Center
+                            Id = NodeSlotId.Make("InputA"),
+                            Dir = BiaNodeSlotDir.Left,
+                            Align = BiaNodeSlotAlign.Center
                         }
                     },
                     {
-                        NodePortId.Make("Red"), new BiaNodePort
+                        NodeSlotId.Make("Red"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("Red"),
+                            Id = NodeSlotId.Make("Red"),
                             Offset = new Point(0, -28 * 4),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.End,
+                            Dir = BiaNodeSlotDir.Right,
+                            Align = BiaNodeSlotAlign.End,
                             Color = Colors.Red
                         }
                     },
                     {
-                        NodePortId.Make("Green"), new BiaNodePort
+                        NodeSlotId.Make("Green"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("Green"),
+                            Id = NodeSlotId.Make("Green"),
                             Offset = new Point(0, -28 * 3),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.End,
+                            Dir = BiaNodeSlotDir.Right,
+                            Align = BiaNodeSlotAlign.End,
                             Color = Colors.LimeGreen
                         }
                     },
                     {
-                        NodePortId.Make("Blue"), new BiaNodePort
+                        NodeSlotId.Make("Blue"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("Blue"),
+                            Id = NodeSlotId.Make("Blue"),
                             Offset = new Point(0, -28 * 2),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.End,
+                            Dir = BiaNodeSlotDir.Right,
+                            Align = BiaNodeSlotAlign.End,
                             Color = Colors.DodgerBlue
                         }
                     },
                     {
-                        NodePortId.Make("OutputA"), new BiaNodePort
+                        NodeSlotId.Make("OutputA"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("OutputA"),
+                            Id = NodeSlotId.Make("OutputA"),
                             Offset = new Point(0, -28 * 1),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.End
+                            Dir = BiaNodeSlotDir.Right,
+                            Align = BiaNodeSlotAlign.End
                         }
                     }
                 }
@@ -541,43 +541,43 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Circle;
 
-        public override BiaNodePortLayout Layout => _Layout;
+        public override BiaNodeSlotLayout Layout => _Layout;
 
-        private static readonly BiaNodePortLayout _Layout = new BiaNodePortLayout
+        private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
         {
-            Ports =
-                new Dictionary<int, BiaNodePort>
+            Slots =
+                new Dictionary<int, BiaNodeSlot>
                 {
                     {
-                        NodePortId.Make("InputA"), new BiaNodePort
+                        NodeSlotId.Make("InputA"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("InputA"),
-                            Dir = BiaNodePortDir.Left,
-                            Align = BiaNodePortAlign.Center
+                            Id = NodeSlotId.Make("InputA"),
+                            Dir = BiaNodeSlotDir.Left,
+                            Align = BiaNodeSlotAlign.Center
                         }
                     },
                     {
-                        NodePortId.Make("Top"), new BiaNodePort
+                        NodeSlotId.Make("Top"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("Top"),
-                            Dir = BiaNodePortDir.Top,
-                            Align = BiaNodePortAlign.Center
+                            Id = NodeSlotId.Make("Top"),
+                            Dir = BiaNodeSlotDir.Top,
+                            Align = BiaNodeSlotAlign.Center
                         }
                     },
                     {
-                        NodePortId.Make("OutputA"), new BiaNodePort
+                        NodeSlotId.Make("OutputA"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("OutputA"),
-                            Dir = BiaNodePortDir.Right,
-                            Align = BiaNodePortAlign.Center
+                            Id = NodeSlotId.Make("OutputA"),
+                            Dir = BiaNodeSlotDir.Right,
+                            Align = BiaNodeSlotAlign.Center
                         }
                     },
                     {
-                        NodePortId.Make("Bottom"), new BiaNodePort
+                        NodeSlotId.Make("Bottom"), new BiaNodeSlot
                         {
-                            Id = NodePortId.Make("Bottom"),
-                            Dir = BiaNodePortDir.Bottom,
-                            Align = BiaNodePortAlign.Center
+                            Id = NodeSlotId.Make("Bottom"),
+                            Dir = BiaNodeSlotDir.Bottom,
+                            Align = BiaNodeSlotAlign.Center
                         }
                     }
                 }
@@ -586,26 +586,26 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class NodeLink : ModelBase, IBiaNodeLink
     {
-        #region ItemPort1
+        #region ItemSlot1
 
-        private BiaNodeItemPortIdPair _ItemPort1;
+        private BiaNodeItemSlotIdPair _ItemSlot1;
 
-        public BiaNodeItemPortIdPair ItemPort1
+        public BiaNodeItemSlotIdPair ItemSlot1
         {
-            get => _ItemPort1;
-            set => SetProperty(ref _ItemPort1, value);
+            get => _ItemSlot1;
+            set => SetProperty(ref _ItemSlot1, value);
         }
 
         #endregion
 
-        #region ItemPort2
+        #region ItemSlot2
 
-        private BiaNodeItemPortIdPair _ItemPort2;
+        private BiaNodeItemSlotIdPair _ItemSlot2;
 
-        public BiaNodeItemPortIdPair ItemPort2
+        public BiaNodeItemSlotIdPair ItemSlot2
         {
-            get => _ItemPort2;
-            set => SetProperty(ref _ItemPort2, value);
+            get => _ItemSlot2;
+            set => SetProperty(ref _ItemSlot2, value);
         }
 
         #endregion
@@ -637,26 +637,26 @@ namespace Biaui.Controls.Mock.Presentation
         public object InternalData { get; set; }
     }
 
-    public class NodePortEnabledChecker : IBiaNodePortEnabledChecker
+    public class NodeSlotEnabledChecker : IBiaNodeSlotEnabledChecker
     {
-        public IEnumerable<int> Check(IBiaNodeItem target, in BiaNodePortEnabledCheckerArgs args)
+        public IEnumerable<int> Check(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args)
         {
             switch (args.Timing)
             {
-                case BiaNodePortEnableTiming.Default:
-                    return target.Layout.Ports.Keys;
+                case BiaNodeSlotEnableTiming.Default:
+                    return target.Layout.Slots.Keys;
 
-                case BiaNodePortEnableTiming.ConnectionStarting:
+                case BiaNodeSlotEnableTiming.ConnectionStarting:
 
                     // 開始ノードが CircleNodeの場合相手もCircleNodeに限る
                     if (args.Source.Item is CircleNode)
                     {
                         return target is CircleNode
-                            ? target.Layout.Ports.Keys
+                            ? target.Layout.Slots.Keys
                             : Enumerable.Empty<int>();
                     }
                     else
-                        return target.Layout.Ports.Keys;
+                        return target.Layout.Slots.Keys;
 
                 default:
                     throw new ArgumentOutOfRangeException();

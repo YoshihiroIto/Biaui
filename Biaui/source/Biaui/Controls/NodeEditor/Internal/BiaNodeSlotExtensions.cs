@@ -3,17 +3,17 @@ using System.Windows;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal static class BiaNodePortExtensions 
+    internal static class BiaNodeSlotExtensions 
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static Point MakePos(this BiaNodePort port, double panelWidth, double panelHeight)
+        internal static Point MakePos(this BiaNodeSlot slot, double panelWidth, double panelHeight)
         {
-            var i = ((int) port.Align << 2) | (int) port.Dir;
+            var i = ((int) slot.Align << 2) | (int) slot.Dir;
 
             var x = AlignPosTable[i * 2 + 0];
             var y = AlignPosTable[i * 2 + 1];
 
-            return new Point(port.Offset.X + x * panelWidth, port.Offset.Y + y * panelHeight);
+            return new Point(slot.Offset.X + x * panelWidth, slot.Offset.Y + y * panelHeight);
         }
 
         private static readonly double[] AlignPosTable =

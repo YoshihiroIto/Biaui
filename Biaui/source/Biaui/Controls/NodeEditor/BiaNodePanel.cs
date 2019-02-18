@@ -14,21 +14,21 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(typeof(BiaNodePanel)));
         }
 
-        internal void InvalidatePorts()
+        internal void InvalidateSlots()
         {
-            var ports = this.Descendants<BiaNodePanelPorts>().FirstOrDefault();
+            var slots = this.Descendants<BiaNodePanelSlots>().FirstOrDefault();
 
-            ports?.InvalidateVisual();
+            slots?.InvalidateVisual();
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
-            var ports = this.Descendants<BiaNodePanelPorts>().FirstOrDefault();
+            var slots = this.Descendants<BiaNodePanelSlots>().FirstOrDefault();
 
-            ports?.UpdateMousePos(e.GetPosition(this));
-            ports?.InvalidateVisual();
+            slots?.UpdateMousePos(e.GetPosition(this));
+            slots?.InvalidateVisual();
         }
     }
 }

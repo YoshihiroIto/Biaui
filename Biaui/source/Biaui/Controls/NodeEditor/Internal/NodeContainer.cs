@@ -124,21 +124,21 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             UpdateChildrenBag(true);
 
-            if (_parent.IsNodePortDragging)
+            if (_parent.IsNodeSlotDragging)
             {
-                if (_parent.TargetNodePortConnecting.IsNotNull)
+                if (_parent.TargetNodeSlotConnecting.IsNotNull)
                 {
                     _parent.InvokeNodeLinkCompleted(
                         new NodeLinkCompletedEventArgs(
-                            _parent.SourceNodePortConnecting.ToItemPortIdPair(),
-                            _parent.TargetNodePortConnecting.ToItemPortIdPair()));
+                            _parent.SourceNodeSlotConnecting.ToItemSlotIdPair(),
+                            _parent.TargetNodeSlotConnecting.ToItemSlotIdPair()));
                 }
 
-                UpdateNodePortEnabled(false);
+                UpdateNodeSlotEnabled(false);
             }
 
-            _parent.SourceNodePortConnecting = default;
-            _parent.TargetNodePortConnecting = default;
+            _parent.SourceNodeSlotConnecting = default;
+            _parent.TargetNodeSlotConnecting = default;
         }
 
         private void OnPostMouseMove(object sender, MouseEventArgs e)
@@ -361,9 +361,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (_isEnableUpdateChildrenBagDepth > 0)
                 return;
 
-            var viewPortRect = _parent.TransformRect(_parent.ActualWidth, _parent.ActualHeight);
+            var viewportRect = _parent.TransformRect(_parent.ActualWidth, _parent.ActualHeight);
 
-            UpdateChildrenBag(viewPortRect, isPushRemove);
+            UpdateChildrenBag(viewportRect, isPushRemove);
 
             InvalidateMeasure();
         }
@@ -374,9 +374,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
             // 対象のitemはまだ_nodeDictに登録されていないので問題ない(再入しない)。
 
-            var enabledCheckerArgs = new BiaNodePortEnabledCheckerArgs(
-                BiaNodePortEnableTiming.Default,
-                new BiaNodeItemPortIdPair(null, 0));
+            var enabledCheckerArgs = new BiaNodeSlotEnabledCheckerArgs(
+                BiaNodeSlotEnableTiming.Default,
+                new BiaNodeItemSlotIdPair(null, 0));
 
             foreach (var c in _nodeDict)
             {
@@ -442,7 +442,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         nodePanel.DataContext = nodeItem;
                         nodePanel.Opacity = 1.0;
 
-                        UpdateNodePortEnabled(nodeItem, enabledCheckerArgs);
+                        UpdateNodeSlotEnabled(nodeItem, enabledCheckerArgs);
 
                         _changedUpdate.Add((nodeItem, nodePanel));
 
@@ -499,30 +499,30 @@ namespace Biaui.Controls.NodeEditor.Internal
                 n.IsSelected = false;
         }
 
-        private void UpdateNodePortEnabled(bool isStart)
+        private void UpdateNodeSlotEnabled(bool isStart)
         {
-            if (_parent.NodePortEnabledChecker == null)
+            if (_parent.NodeSlotEnabledChecker == null)
                 return;
 
-            var args = new BiaNodePortEnabledCheckerArgs(
+            var args = new BiaNodeSlotEnabledCheckerArgs(
                 isStart
-                    ? BiaNodePortEnableTiming.ConnectionStarting
-                    : BiaNodePortEnableTiming.Default,
-                new BiaNodeItemPortIdPair(
-                    _parent.SourceNodePortConnecting.Item,
-                    _parent.SourceNodePortConnecting.Port.Id
+                    ? BiaNodeSlotEnableTiming.ConnectionStarting
+                    : BiaNodeSlotEnableTiming.Default,
+                new BiaNodeItemSlotIdPair(
+                    _parent.SourceNodeSlotConnecting.Item,
+                    _parent.SourceNodeSlotConnecting.Slot.Id
                 ));
 
             foreach (var child in Children)
             {
                 var nodeItem = (IBiaNodeItem) child.DataContext;
 
-                UpdateNodePortEnabled(nodeItem, args);
+                UpdateNodeSlotEnabled(nodeItem, args);
 
-                child.InvalidatePorts();
+                child.InvalidateSlots();
 
                 if (isStart)
-                    child.Opacity = nodeItem.InternalData().EnablePorts.Count > 0
+                    child.Opacity = nodeItem.InternalData().EnableSlots.Count > 0
                         ? 1.0
                         : 0.2;
                 else
@@ -530,19 +530,19 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private void UpdateNodePortEnabled(IBiaNodeItem target, in BiaNodePortEnabledCheckerArgs args)
+        private void UpdateNodeSlotEnabled(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args)
         {
-            target.InternalData().EnablePorts.Clear();
+            target.InternalData().EnableSlots.Clear();
 
-            if (_parent.NodePortEnabledChecker == null)
+            if (_parent.NodeSlotEnabledChecker == null)
                 return;
 
-            foreach (var enabledPortId in _parent.NodePortEnabledChecker.Check(target, args))
+            foreach (var enabledSlotId in _parent.NodeSlotEnabledChecker.Check(target, args))
             {
-                Debug.Assert(target.Layout.Ports.ContainsKey(enabledPortId));
+                Debug.Assert(target.Layout.Slots.ContainsKey(enabledSlotId));
 
-                var port = target.Layout.Ports[enabledPortId];
-                target.InternalData().EnablePorts.Add(port);
+                var slot = target.Layout.Slots[enabledSlotId];
+                target.InternalData().EnableSlots.Add(slot);
             }
         }
 
@@ -712,7 +712,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             nodeItem.IsMouseOver = false;
 
-            panel.InvalidatePorts();
+            panel.InvalidateSlots();
 
             e.Handled = true;
         }
@@ -735,26 +735,26 @@ namespace Biaui.Controls.NodeEditor.Internal
                     nodeItem.IsSelected = !nodeItem.IsSelected;
             }
 
-            var port = nodeItem.FindPortFromPos(e.GetPosition(panel));
+            var slot = nodeItem.FindSlotFromPos(e.GetPosition(panel));
 
             _mouseOperator.OnMouseLeftButtonDown(
                 e,
-                port == null
+                slot == null
                     ? MouseOperator.TargetType.NodePanel
                     : MouseOperator.TargetType.NodeLink);
 
             if (_mouseOperator.IsLinkMove)
             {
-                if (port == null)
+                if (slot == null)
                     throw new NotSupportedException();
 
-                var args = new NodeLinkStartingEventArgs(new BiaNodeItemPortIdPair(nodeItem, port.Id));
+                var args = new NodeLinkStartingEventArgs(new BiaNodeItemSlotIdPair(nodeItem, slot.Id));
                 _parent.InvokeNodeLinkStarting(args);
 
-                _parent.SourceNodePortConnecting = new BiaNodeItemPortPair(nodeItem, port);
-                _parent.TargetNodePortConnecting = default;
+                _parent.SourceNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);
+                _parent.TargetNodeSlotConnecting = default;
 
-                UpdateNodePortEnabled(true);
+                UpdateNodeSlotEnabled(true);
             }
 
             e.Handled = true;

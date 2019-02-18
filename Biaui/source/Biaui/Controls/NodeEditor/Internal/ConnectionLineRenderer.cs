@@ -17,24 +17,24 @@ namespace Biaui.Controls.NodeEditor.Internal
             InternalBiaNodeLinkData internalData,
             Span<ImmutableVec2> work)
         {
-            var u1 = new PortUnit(Unsafe.As<Point, ImmutableVec2>(ref pos1), item1, internalData.Port1);
-            var u2 = new PortUnit(Unsafe.As<Point, ImmutableVec2>(ref pos2), item2, internalData.Port2);
+            var u1 = new SlotUnit(Unsafe.As<Point, ImmutableVec2>(ref pos1), item1, internalData.Slot1);
+            var u2 = new SlotUnit(Unsafe.As<Point, ImmutableVec2>(ref pos2), item2, internalData.Slot2);
 
-            if (u1.Port.Dir != u2.Port.Dir &&
+            if (u1.Slot.Dir != u2.Slot.Dir &&
                 u1.IsHorizontal &&
                 u2.IsHorizontal)
                 return MakeDifferenceLines(u1, u2, true, work);
 
-            if (u1.Port.Dir != u2.Port.Dir &&
+            if (u1.Slot.Dir != u2.Slot.Dir &&
                 u1.IsVertical &&
                 u2.IsVertical)
                 return MakeDifferenceLines(u1, u2, false, work);
 
-            if (u1.Port.Dir == u2.Port.Dir &&
-                u1.Port.Dir.IsHorizontal())
+            if (u1.Slot.Dir == u2.Slot.Dir &&
+                u1.Slot.Dir.IsHorizontal())
                 return MakeSameLines(u1, u2, true, work);
 
-            if (u1.Port.Dir == u2.Port.Dir &&
+            if (u1.Slot.Dir == u2.Slot.Dir &&
                 u1.IsVertical)
                 return MakeSameLines(u1, u2, false, work);
 
@@ -97,25 +97,25 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private const double MinPortOffset = 24.0;
+        private const double MinSlotOffset = 24.0;
 
         private static Span<ImmutableVec2> MakeDifferenceLines(
-            in PortUnit unit1,
-            in PortUnit unit2,
+            in SlotUnit unit1,
+            in SlotUnit unit2,
             bool isHorizontal,
             Span<ImmutableVec2> work)
         {
             var b = isHorizontal;
 
             var (start, end) =
-                unit1.Port.Dir == Transposer.NodePortDir(BiaNodePortDir.Right, b)
+                unit1.Slot.Dir == Transposer.NodeSlotDir(BiaNodeSlotDir.Right, b)
                     ? (unit1, unit2)
                     : (unit2, unit1);
 
             var startItemCenter = start.Item.AlignedPos().Y(b) + start.Item.Size.Height(b) * 0.5;
-            var startItemPortOffset =
+            var startItemSlotOffset =
                 start.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.Y(b));
-            var fold = MinPortOffset + startItemPortOffset;
+            var fold = MinSlotOffset + startItemSlotOffset;
 
             var startFoldPos = start.Pos.X(b) + fold;
             var foldStartPos = Transposer.CreateImmutableVec2(startFoldPos, start.Pos.Y(b), b);
@@ -151,22 +151,22 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         private static Span<ImmutableVec2> MakeSameLines(
-            in PortUnit unit1,
-            in PortUnit unit2,
+            in SlotUnit unit1,
+            in SlotUnit unit2,
             bool isHorizontal,
             Span<ImmutableVec2> work)
         {
             var b = isHorizontal;
 
             var startItemCenter = unit1.Item.AlignedPos().Y(b) + unit1.Item.Size.Height(b) * 0.5;
-            var startItemPortOffset =
+            var startItemSlotOffset =
                 unit1.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.Y(b));
 
             var endItemCenter = unit2.Item.AlignedPos().Y(b) + unit2.Item.Size.Height(b) * 0.5;
-            var endItemPortOffset = unit2.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y(b));
-            var fold = MinPortOffset + (startItemPortOffset, endItemPortOffset).Max();
+            var endItemSlotOffset = unit2.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y(b));
+            var fold = MinSlotOffset + (startItemSlotOffset, endItemSlotOffset).Max();
 
-            var foldPos = unit1.Port.Dir == Transposer.NodePortDir(BiaNodePortDir.Left, b)
+            var foldPos = unit1.Slot.Dir == Transposer.NodeSlotDir(BiaNodeSlotDir.Left, b)
                 ? (unit1.Pos.X(b), unit2.Pos.X(b)).Min() - fold
                 : (unit1.Pos.X(b), unit2.Pos.X(b)).Max() + fold;
 
@@ -182,8 +182,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         private static Span<ImmutableVec2> MakeHVLines(
-            in PortUnit unit1,
-            in PortUnit unit2,
+            in SlotUnit unit1,
+            in SlotUnit unit2,
             Span<ImmutableVec2> work)
         {
             var (left, right) =
@@ -298,48 +298,48 @@ namespace Biaui.Controls.NodeEditor.Internal
             return work.Slice(0, 5);
         }
 
-        internal readonly struct PortUnit
+        internal readonly struct SlotUnit
         {
             internal readonly ImmutableVec2 Pos;
             internal readonly IBiaNodeItem Item;
-            internal readonly BiaNodePort Port;
+            internal readonly BiaNodeSlot Slot;
 
-            internal bool IsHorizontal => Port.Dir.IsHorizontal();
+            internal bool IsHorizontal => Slot.Dir.IsHorizontal();
 
-            internal bool IsVertical => Port.Dir.IsVertical();
+            internal bool IsVertical => Slot.Dir.IsVertical();
 
-            internal bool IsLeft => Port.Dir == BiaNodePortDir.Left;
+            internal bool IsLeft => Slot.Dir == BiaNodeSlotDir.Left;
 
-            internal bool IsTop => Port.Dir == BiaNodePortDir.Top;
+            internal bool IsTop => Slot.Dir == BiaNodeSlotDir.Top;
 
-            internal bool IsRight => Port.Dir == BiaNodePortDir.Right;
+            internal bool IsRight => Slot.Dir == BiaNodeSlotDir.Right;
 
-            internal bool IsBottom => Port.Dir == BiaNodePortDir.Bottom;
+            internal bool IsBottom => Slot.Dir == BiaNodeSlotDir.Bottom;
 
-            internal PortUnit(in ImmutableVec2 pos, IBiaNodeItem item, BiaNodePort port)
+            internal SlotUnit(in ImmutableVec2 pos, IBiaNodeItem item, BiaNodeSlot slot)
             {
                 Pos = pos;
                 Item = item;
-                Port = port;
+                Slot = slot;
             }
 
             internal (ImmutableVec2 OffsetPos, double FoldLength) MakeOffsetPos()
             {
-                double itemPortOffset;
+                double itemSlotOffset;
                 {
                     if (IsVertical)
                     {
                         var itemCenter = Item.AlignedPos().X + Item.Size.Width * 0.5;
-                        itemPortOffset = Item.Size.Width * 0.5 - NumberHelper.Abs(itemCenter - Pos.X);
+                        itemSlotOffset = Item.Size.Width * 0.5 - NumberHelper.Abs(itemCenter - Pos.X);
                     }
                     else
                     {
                         var itemCenter = Item.AlignedPos().Y + Item.Size.Height * 0.5;
-                        itemPortOffset = Item.Size.Height * 0.5 - NumberHelper.Abs(itemCenter - Pos.Y);
+                        itemSlotOffset = Item.Size.Height * 0.5 - NumberHelper.Abs(itemCenter - Pos.Y);
                     }
                 }
 
-                var foldLength = MinPortOffset + itemPortOffset;
+                var foldLength = MinSlotOffset + itemSlotOffset;
                 var foldOffset = DirVector(foldLength);
 
                 return (Pos + foldOffset, foldLength);
@@ -347,22 +347,22 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             private ImmutableVec2 DirVector(double length)
             {
-                switch (Port.Dir)
+                switch (Slot.Dir)
                 {
-                    case BiaNodePortDir.Left:
+                    case BiaNodeSlotDir.Left:
                         return new ImmutableVec2(-length, 0);
 
-                    case BiaNodePortDir.Top:
+                    case BiaNodeSlotDir.Top:
                         return new ImmutableVec2(0, -length);
 
-                    case BiaNodePortDir.Right:
+                    case BiaNodeSlotDir.Right:
                         return new ImmutableVec2(+length, 0);
 
-                    case BiaNodePortDir.Bottom:
+                    case BiaNodeSlotDir.Bottom:
                         return new ImmutableVec2(0, +length);
 
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(Port.Dir), Port.Dir, null);
+                        throw new ArgumentOutOfRangeException(nameof(Slot.Dir), Slot.Dir, null);
                 }
             }
         }

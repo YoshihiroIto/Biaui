@@ -16,7 +16,7 @@ namespace Biaui.Interfaces
 
         Size Size { get; set; }
 
-        BiaNodePortLayout Layout { get; }
+        BiaNodeSlotLayout Layout { get; }
 
         object InternalData { get; set; }
     }
