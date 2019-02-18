@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -269,7 +268,8 @@ namespace Biaui.Controls.NodeEditor
 
             mouseOperator.PrePreviewMouseLeftButtonDown += (_, __) =>
             {
-                Debug.Assert(isInEditing == false);
+                if (isInEditing)
+                    return;
 
                 PropertyEditStarting?.Invoke(this, EventArgs.Empty);
                 isInEditing = true;
