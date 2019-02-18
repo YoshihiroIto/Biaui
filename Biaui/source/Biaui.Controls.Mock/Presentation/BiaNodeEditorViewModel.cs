@@ -439,7 +439,7 @@ namespace Biaui.Controls.Mock.Presentation
 
         public abstract BiaNodePanelHitType HitType { get; }
 
-        public abstract BiaNodeSlotLayout Layout { get; }
+        public abstract BiaNodeSlotLayout SlotLayout { get; }
 
         public object InternalData { get; set; }
     }
@@ -448,7 +448,7 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
-        public override BiaNodeSlotLayout Layout => _Layout;
+        public override BiaNodeSlotLayout SlotLayout => _Layout;
 
         private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
         {
@@ -479,7 +479,7 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
-        public override BiaNodeSlotLayout Layout => _Layout;
+        public override BiaNodeSlotLayout SlotLayout => _Layout;
 
         private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
         {
@@ -541,7 +541,7 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Circle;
 
-        public override BiaNodeSlotLayout Layout => _Layout;
+        public override BiaNodeSlotLayout SlotLayout => _Layout;
 
         private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
         {
@@ -644,7 +644,7 @@ namespace Biaui.Controls.Mock.Presentation
             switch (args.Timing)
             {
                 case BiaNodeSlotEnableTiming.Default:
-                    return target.Layout.Slots.Keys;
+                    return target.SlotLayout.Slots.Keys;
 
                 case BiaNodeSlotEnableTiming.ConnectionStarting:
 
@@ -652,11 +652,11 @@ namespace Biaui.Controls.Mock.Presentation
                     if (args.Source.Item is CircleNode)
                     {
                         return target is CircleNode
-                            ? target.Layout.Slots.Keys
+                            ? target.SlotLayout.Slots.Keys
                             : Enumerable.Empty<int>();
                     }
                     else
-                        return target.Layout.Slots.Keys;
+                        return target.SlotLayout.Slots.Keys;
 
                 default:
                     throw new ArgumentOutOfRangeException();
