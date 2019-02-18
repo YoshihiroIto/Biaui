@@ -123,6 +123,18 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
+        #region ChangeSelectedNodeSlotsCommand
+
+        private ICommand _changeSelectedNodeSlotsCommand;
+
+        public ICommand ChangeSelectedNodeSlotsCommand
+        {
+            get => _changeSelectedNodeSlotsCommand;
+            set => SetProperty(ref _changeSelectedNodeSlotsCommand, value);
+        }
+
+        #endregion
+
         #region NodeSlotEnabledChecker
 
         private IBiaNodeSlotEnabledChecker _nodeSlotEnabledChecker = new NodeSlotEnabledChecker();
@@ -250,6 +262,31 @@ namespace Biaui.Controls.Mock.Presentation
                     Links.Remove(l);
                 }
             });
+
+            ChangeSelectedNodeSlotsCommand = new DelegateCommand().Setup(() =>
+            {
+                foreach (var node in Nodes.Where(x => x.IsSelected))
+                {
+                    node.Slots =
+                        new Dictionary<int, BiaNodeSlot>
+                        {
+                            {
+                                NodeSlotId.Make("InputA"), new BiaNodeSlot
+                                {
+                                    Id = NodeSlotId.Make("InputA"),
+                                    Dir = BiaNodeSlotDir.Bottom,
+                                    Align = BiaNodeSlotAlign.End
+                                }
+                            }
+                        };
+
+                    foreach (var link in Links)
+                        if (link.ItemSlot1.Item == node ||
+                            link.ItemSlot2.Item == node)
+                            link.Reset();
+                }
+            });
+
 
             MakeNodes(Nodes);
             MakeLinks(Links, Nodes);

@@ -571,23 +571,24 @@
 
         <TabItem Header="BiaNodeEditor">
             <DockPanel>
-                <StackPanel Margin="4,8,4,0"
-                            DockPanel.Dock="Top"
-                            Orientation="Horizontal">
-                    <StackPanel.Resources>
+                <WrapPanel Margin="4,8,4,0"
+                           DockPanel.Dock="Top"
+                           Orientation="Horizontal">
+                    <WrapPanel.Resources>
                         <Style TargetType="{x:Type controls:BiaButton}">
-                            <Setter Property="Margin" Value="0,0,4,0" />
+                            <Setter Property="Margin" Value="0,0,4,4" />
                         </Style>
-                    </StackPanel.Resources>
+                    </WrapPanel.Resources>
 
                     <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.AddNodeCommand, Mode=OneWay}" Content="Add Node" />
                     <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.RemoveSelectedNodesCommand, Mode=OneWay}" Content="Remove Selected Nodes" />
                     <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ClearNodesCommand, Mode=OneWay}" Content="Clear Nodes" />
                     <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceLastNodeCommand, Mode=OneWay}" Content="Replace Last Node" />
                     <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceNodesSourceCommand, Mode=OneWay}" Content="Replace Nodes Source" />
-                </StackPanel>
+                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ChangeSelectedNodeSlotsCommand, Mode=OneWay}" Content="Change Selected Node Slots" />
+                </WrapPanel>
 
-                <nodeEditor:BiaNodeEditor Margin="4,8"
+                <nodeEditor:BiaNodeEditor Margin="4"
                                           BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                                           BorderThickness="1"
                                           CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}"

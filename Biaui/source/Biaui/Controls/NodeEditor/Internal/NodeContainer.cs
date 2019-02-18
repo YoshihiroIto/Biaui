@@ -374,10 +374,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
             // 対象のitemはまだ_nodeDictに登録されていないので問題ない(再入しない)。
 
-            var enabledCheckerArgs = new BiaNodeSlotEnabledCheckerArgs(
-                BiaNodeSlotEnableTiming.Default,
-                new BiaNodeItemSlotIdPair(null, 0));
-
             foreach (var c in _nodeDict)
             {
                 var nodeItem = c.Key;
@@ -442,7 +438,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         nodePanel.DataContext = nodeItem;
                         nodePanel.Opacity = 1.0;
 
-                        UpdateNodeSlotEnabled(nodeItem, enabledCheckerArgs);
+                        UpdateNodeSlotEnabled(nodeItem);
 
                         _changedUpdate.Add((nodeItem, nodePanel));
 
@@ -544,6 +540,15 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var slot = target.Slots[enabledSlotId];
                 target.InternalData().EnableSlots.Add(slot);
             }
+        }
+
+        private static readonly BiaNodeSlotEnabledCheckerArgs DefaultEnabledCheckerArgs = new BiaNodeSlotEnabledCheckerArgs(
+            BiaNodeSlotEnableTiming.Default,
+            new BiaNodeItemSlotIdPair(null, 0));
+
+        private void UpdateNodeSlotEnabled(IBiaNodeItem target)
+        {
+            UpdateNodeSlotEnabled(target, DefaultEnabledCheckerArgs);
         }
 
         private void UpdateSelectedNode(IBiaNodeItem node)
@@ -676,6 +681,17 @@ namespace Biaui.Controls.NodeEditor.Internal
                     ChangeElementInternal(false);
                     break;
                 }
+
+                case nameof(IBiaNodeItem.Slots):
+                    ChangeElementInternal(false);
+
+                    UpdateNodeSlotEnabled(node);
+
+                    var panel = _nodeDict[node];
+                    panel.InvalidateSlots();
+
+                    _parent.InvokeLinkChanged();
+                    break;
             }
 
             //////////////////////////////////////////////////////////////////////////////////////

@@ -18,6 +18,14 @@ namespace Biaui.Interfaces
         object InternalData { get; set; }
     }
 
+    public static class BiaNodeLinkExtensions
+    {
+        public static void Reset(this IBiaNodeLink self)
+        {
+            self.InternalData = null;
+        }
+    }
+
     [Flags]
     public enum BiaNodeLinkStyle
     {
