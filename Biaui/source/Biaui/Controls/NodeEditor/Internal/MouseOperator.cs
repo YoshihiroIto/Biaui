@@ -54,6 +54,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal bool IsMoved { get; private set; }
 
+
+        internal event MouseButtonEventHandler PrePreviewMouseLeftButtonDown;
+        internal event MouseButtonEventHandler PostPreviewMouseLeftButtonDown;
+
+        internal event MouseButtonEventHandler PrePreviewMouseLeftButtonUp;
+        internal event MouseButtonEventHandler PostPreviewMouseLeftButtonUp;
+
         internal event MouseButtonEventHandler PreMouseLeftButtonDown;
         internal event MouseButtonEventHandler PostMouseLeftButtonDown;
 
@@ -70,6 +77,18 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             _target = target;
             _transformTarget = transformTarget;
+
+            _target.PreviewMouseLeftButtonDown += (_, e) =>
+            {
+                PrePreviewMouseLeftButtonDown?.Invoke(this, e);
+                PostPreviewMouseLeftButtonDown?.Invoke(this, e);
+            };
+
+            _target.PreviewMouseLeftButtonUp += (_, e) =>
+            {
+                PrePreviewMouseLeftButtonUp?.Invoke(this, e);
+                PostPreviewMouseLeftButtonUp?.Invoke(this, e);
+            };
 
             _target.MouseLeftButtonDown += (_, e) =>
             {

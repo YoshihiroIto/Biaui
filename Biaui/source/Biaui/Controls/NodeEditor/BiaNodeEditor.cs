@@ -162,6 +162,9 @@ namespace Biaui.Controls.NodeEditor
 
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
+        public event EventHandler PropertyEditStarting;
+        public event EventHandler PropertyEditCompleted;
+
         public ScaleTransform Scale { get; } = new ScaleTransform();
 
         public TranslateTransform Translate { get; } = new TranslateTransform();
@@ -185,13 +188,20 @@ namespace Biaui.Controls.NodeEditor
         public BiaNodeEditor()
         {
             var mouseOperator = new MouseOperator(this, this);
+            {
+                mouseOperator.PrePreviewMouseLeftButtonDown += (_, __) => PropertyEditStarting?.Invoke(this, EventArgs.Empty);
+                mouseOperator.PostMouseLeftButtonUp += (_, __) => PropertyEditCompleted?.Invoke(this, EventArgs.Empty);
+            }
 
             var grid = new Grid();
-            grid.Children.Add(new BackgroundPanel(this, mouseOperator));
-            grid.Children.Add(new NodeContainer(this, mouseOperator));
-            grid.Children.Add(new BoxSelector(mouseOperator));
-            grid.Children.Add(new NodePortConnector(this, mouseOperator));
-            grid.Children.Add(CreateScaleSlider());
+            {
+                grid.Children.Add(new BackgroundPanel(this, mouseOperator));
+                grid.Children.Add(new NodeContainer(this, mouseOperator));
+                grid.Children.Add(new BoxSelector(mouseOperator));
+                grid.Children.Add(new NodePortConnector(this, mouseOperator));
+                grid.Children.Add(CreateScaleSlider());
+            }
+
             base.Child = grid;
         }
 
