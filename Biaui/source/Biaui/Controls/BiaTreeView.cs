@@ -45,6 +45,10 @@ namespace Biaui.Controls
             "IsSelected", typeof(bool), typeof(BiaTreeView),
             new FrameworkPropertyMetadata(OnIsSelectedChanged));
 
+
+        public event EventHandler ItemSelectionStarting;
+        public event EventHandler ItemSelectionCompleted;
+
         static BiaTreeView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaTreeView),
@@ -143,24 +147,32 @@ namespace Biaui.Controls
 
         private void ToggleSingleItem(TreeViewItem treeViewItem)
         {
-            var current = GetIsSelected(treeViewItem);
-            var next = !current;
+            ItemSelectionStarting?.Invoke(this, EventArgs.Empty);
+            {
+                var current = GetIsSelected(treeViewItem);
+                var next = !current;
 
-            SetIsSelected(treeViewItem, next);
+                SetIsSelected(treeViewItem, next);
 
-            SelectedItem = next ? treeViewItem.DataContext : null;
-            _multipleSelectionEdgeItem = treeViewItem;
+                SelectedItem = next ? treeViewItem.DataContext : null;
+                _multipleSelectionEdgeItem = treeViewItem;
+            }
+            ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
         private void SelectSingleItem(TreeViewItem treeViewItem)
         {
-            var items = this.EnumerateChildren<TreeViewItem>();
+            ItemSelectionStarting?.Invoke(this, EventArgs.Empty);
+            {
+                var items = this.EnumerateChildren<TreeViewItem>();
 
-            foreach (var item in items)
-                SetIsSelected(item, item == treeViewItem);
+                foreach (var item in items)
+                    SetIsSelected(item, item == treeViewItem);
 
-            SelectedItem = treeViewItem.DataContext;
-            _multipleSelectionEdgeItem = treeViewItem;
+                SelectedItem = treeViewItem.DataContext;
+                _multipleSelectionEdgeItem = treeViewItem;
+            }
+            ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
         private TreeViewItem _multipleSelectionEdgeItem;
@@ -179,28 +191,32 @@ namespace Biaui.Controls
                 return;
             }
 
-            var isInSelection = false;
-
-            foreach (var item in this.EnumerateChildren<TreeViewItem>())
+            ItemSelectionStarting?.Invoke(this, EventArgs.Empty);
             {
-                if (ReferenceEquals(item, edgeItem) ||
-                    ReferenceEquals(item, _multipleSelectionEdgeItem))
-                {
-                    isInSelection = !isInSelection;
+                var isInSelection = false;
 
-                    SetIsSelected(item, true);
-
-                    if (isInSelection == false)
-                        break;
-                }
-                else if (isInSelection)
+                foreach (var item in this.EnumerateChildren<TreeViewItem>())
                 {
-                    SetIsSelected(item, true);
+                    if (ReferenceEquals(item, edgeItem) ||
+                        ReferenceEquals(item, _multipleSelectionEdgeItem))
+                    {
+                        isInSelection = !isInSelection;
+
+                        SetIsSelected(item, true);
+
+                        if (isInSelection == false)
+                            break;
+                    }
+                    else if (isInSelection)
+                    {
+                        SetIsSelected(item, true);
+                    }
                 }
+
+                SelectedItem = edgeItem.DataContext;
+                _multipleSelectionEdgeItem = edgeItem;
             }
-
-            SelectedItem = edgeItem.DataContext;
-            _multipleSelectionEdgeItem = edgeItem;
+            ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
         private T GetRelativeItem<T>(T item, int relativePosition)
