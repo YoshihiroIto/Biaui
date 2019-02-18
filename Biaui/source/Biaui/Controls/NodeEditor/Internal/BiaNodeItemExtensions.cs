@@ -52,7 +52,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal static BiaNodeSlot FindSlotFromPos(this IBiaNodeItem nodeItem, Point pos)
         {
-            if (nodeItem.SlotLayout.Slots == null)
+            if (nodeItem.Slots == null)
                 return null;
 
             var itemSize = nodeItem.Size;
@@ -71,10 +71,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal static BiaNodeSlot FindSlotFromId(this IBiaNodeItem nodeItem, int slotId)
         {
-            if (nodeItem.SlotLayout.Slots == null)
+            if (nodeItem.Slots == null)
                 return null;
 
-            if (nodeItem.SlotLayout.Slots.TryGetValue(slotId, out var slot))
+            if (nodeItem.Slots.TryGetValue(slotId, out var slot))
                 return slot;
 
             return null;
@@ -84,7 +84,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             return nodeItem.InternalData().EnableSlots != null
                 ? nodeItem.InternalData().EnableSlots
-                : nodeItem.SlotLayout.Slots.Values as IEnumerable<BiaNodeSlot>;
+                : nodeItem.Slots.Values;
         }
     }
 }

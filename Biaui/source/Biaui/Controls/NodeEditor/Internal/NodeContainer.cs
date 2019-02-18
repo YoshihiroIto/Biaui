@@ -539,9 +539,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var enabledSlotId in _parent.NodeSlotEnabledChecker.Check(target, args))
             {
-                Debug.Assert(target.SlotLayout.Slots.ContainsKey(enabledSlotId));
+                Debug.Assert(target.Slots.ContainsKey(enabledSlotId));
 
-                var slot = target.SlotLayout.Slots[enabledSlotId];
+                var slot = target.Slots[enabledSlotId];
                 target.InternalData().EnableSlots.Add(slot);
             }
         }

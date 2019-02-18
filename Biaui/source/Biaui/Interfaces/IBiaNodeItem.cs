@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using Biaui.Controls.NodeEditor;
 
@@ -16,7 +17,7 @@ namespace Biaui.Interfaces
 
         Size Size { get; set; }
 
-        BiaNodeSlotLayout SlotLayout { get; }
+        IReadOnlyDictionary<int, BiaNodeSlot> Slots { get; set; }
 
         object InternalData { get; set; }
     }

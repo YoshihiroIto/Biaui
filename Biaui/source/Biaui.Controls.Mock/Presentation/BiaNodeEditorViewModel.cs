@@ -439,7 +439,17 @@ namespace Biaui.Controls.Mock.Presentation
 
         public abstract BiaNodePanelHitType HitType { get; }
 
-        public abstract BiaNodeSlotLayout SlotLayout { get; }
+        #region SlotLayout
+
+        private IReadOnlyDictionary<int, BiaNodeSlot> _Slots;
+
+        public IReadOnlyDictionary<int, BiaNodeSlot> Slots
+        {
+            get => _Slots;
+            set => SetProperty(ref _Slots, value);
+        }
+
+        #endregion
 
         public object InternalData { get; set; }
     }
@@ -448,9 +458,7 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
-        public override BiaNodeSlotLayout SlotLayout => _Layout;
-
-        private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
+        public BasicNode()
         {
             Slots =
                 new Dictionary<int, BiaNodeSlot>
@@ -471,17 +479,15 @@ namespace Biaui.Controls.Mock.Presentation
                             Align = BiaNodeSlotAlign.Center
                         }
                     }
-                }
-        };
+                };
+        }
     }
 
     public class ColorNode : NodeBase
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
-        public override BiaNodeSlotLayout SlotLayout => _Layout;
-
-        private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
+        public ColorNode()
         {
             Slots =
                 new Dictionary<int, BiaNodeSlot>
@@ -533,17 +539,15 @@ namespace Biaui.Controls.Mock.Presentation
                             Align = BiaNodeSlotAlign.End
                         }
                     }
-                }
-        };
+                };
+        }
     }
 
     public class CircleNode : NodeBase
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Circle;
 
-        public override BiaNodeSlotLayout SlotLayout => _Layout;
-
-        private static readonly BiaNodeSlotLayout _Layout = new BiaNodeSlotLayout
+        public CircleNode()
         {
             Slots =
                 new Dictionary<int, BiaNodeSlot>
@@ -580,8 +584,8 @@ namespace Biaui.Controls.Mock.Presentation
                             Align = BiaNodeSlotAlign.Center
                         }
                     }
-                }
-        };
+                };
+        }
     }
 
     public class NodeLink : ModelBase, IBiaNodeLink
@@ -644,7 +648,7 @@ namespace Biaui.Controls.Mock.Presentation
             switch (args.Timing)
             {
                 case BiaNodeSlotEnableTiming.Default:
-                    return target.SlotLayout.Slots.Keys;
+                    return target.Slots.Keys;
 
                 case BiaNodeSlotEnableTiming.ConnectionStarting:
 
@@ -652,11 +656,11 @@ namespace Biaui.Controls.Mock.Presentation
                     if (args.Source.Item is CircleNode)
                     {
                         return target is CircleNode
-                            ? target.SlotLayout.Slots.Keys
+                            ? target.Slots.Keys
                             : Enumerable.Empty<int>();
                     }
                     else
-                        return target.SlotLayout.Slots.Keys;
+                        return target.Slots.Keys;
 
                 default:
                     throw new ArgumentOutOfRangeException();

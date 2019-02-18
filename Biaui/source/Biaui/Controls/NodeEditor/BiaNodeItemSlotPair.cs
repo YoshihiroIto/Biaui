@@ -61,10 +61,10 @@ namespace Biaui.Controls.NodeEditor
 
         internal BiaNodeSlot FindSlot()
         {
-            if (Item.SlotLayout.Slots == null)
+            if (Item.Slots == null)
                 return null;
 
-            if (Item.SlotLayout.Slots.TryGetValue(SlotId, out var slot))
+            if (Item.Slots.TryGetValue(SlotId, out var slot))
                 return slot;
 
             return null;

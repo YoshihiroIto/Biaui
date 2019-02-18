@@ -229,7 +229,6 @@
     <Compile Include="Controls\NodeEditor\BiaNodeItemSlotPair.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePanel.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodeSlot.cs" />
-    <Compile Include="Controls\NodeEditor\BiaNodeSlotLayout.cs" />
     <Compile Include="Controls\NodeEditor\IBiaNodeSlotEnabledChecker.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeLinkExtensions.cs" />
     <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeItemData.cs" />
