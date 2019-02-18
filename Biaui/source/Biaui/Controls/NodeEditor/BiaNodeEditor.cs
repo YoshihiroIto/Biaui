@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,7 +12,7 @@ using Biaui.Interfaces;
 
 namespace Biaui.Controls.NodeEditor
 {
-    public class BiaNodeEditor : BiaClippingBorder, IHasTransform 
+    public class BiaNodeEditor : BiaClippingBorder, IHasTransform
     {
         #region NodesSource
 
@@ -188,10 +189,8 @@ namespace Biaui.Controls.NodeEditor
         public BiaNodeEditor()
         {
             var mouseOperator = new MouseOperator(this, this);
-            {
-                mouseOperator.PrePreviewMouseLeftButtonDown += (_, __) => PropertyEditStarting?.Invoke(this, EventArgs.Empty);
-                mouseOperator.PostMouseLeftButtonUp += (_, __) => PropertyEditCompleted?.Invoke(this, EventArgs.Empty);
-            }
+
+            SetupPropertyEditCommand(mouseOperator);
 
             var grid = new Grid();
             {
@@ -262,6 +261,28 @@ namespace Biaui.Controls.NodeEditor
             Scale.Changed += (_, __) => scaleSlider.Value = Scale.ScaleX;
 
             return scaleSlider;
+        }
+
+        private void SetupPropertyEditCommand(MouseOperator mouseOperator)
+        {
+            var isInEditing = false;
+
+            mouseOperator.PrePreviewMouseLeftButtonDown += (_, __) =>
+            {
+                Debug.Assert(isInEditing == false);
+
+                PropertyEditStarting?.Invoke(this, EventArgs.Empty);
+                isInEditing = true;
+            };
+
+            mouseOperator.PostMouseLeftButtonUp += (_, __) =>
+            {
+                if (isInEditing == false)
+                    return;
+
+                PropertyEditCompleted?.Invoke(this, EventArgs.Empty);
+                isInEditing = false;
+            };
         }
     }
 }
