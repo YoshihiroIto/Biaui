@@ -446,6 +446,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                             ChangeElement(nodePanel);
                         else
                             AddChild(nodePanel);
+
+                        nodePanel.InvalidateSlots();
                     }
                 }
                 else
