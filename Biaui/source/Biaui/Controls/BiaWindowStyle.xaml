@@ -37,13 +37,6 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <!--  タイトル下地  -->
-                            <Rectangle x:Name="HeaderBackground"
-                                       Grid.Row="0"
-                                       Margin="0,0,0,0"
-                                       Fill="#303038"
-                                       StrokeThickness="0" />
-
                             <!--  Title  -->
                             <TextBlock Grid.Row="0"
                                        Margin="4,1,0,0"
@@ -65,21 +58,6 @@
                             <ContentPresenter Grid.Row="1"
                                               HorizontalAlignment="Stretch"
                                               VerticalAlignment="Stretch" />
-
-                            <!--  影  -->
-                            <Rectangle Grid.Row="0"
-                                       Grid.RowSpan="2"
-                                       Height="5"
-                                       Margin="0,30,0,0"
-                                       VerticalAlignment="Top"
-                                       IsHitTestVisible="False">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="0.0" Color="#FF181818" />
-                                        <GradientStop Offset="1.0" Color="#00181818" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
                         </Grid>
                     </Border>
 
