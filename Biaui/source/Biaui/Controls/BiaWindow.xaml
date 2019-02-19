@@ -75,8 +75,19 @@
                                        Grid.RowSpan="2"
                                        Margin="47,1,0,0"
                                        FontSize="18"
-                                       Foreground="{DynamicResource AccentForegroundBrushKey}"
-                                       Text="{TemplateBinding Title}" />
+                                       Text="{TemplateBinding Title}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
                             <!--  Menu  -->
                             <ContentControl Grid.Row="1"

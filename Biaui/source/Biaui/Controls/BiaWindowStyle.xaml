@@ -58,8 +58,19 @@
                             <TextBlock Grid.Row="0"
                                        Margin="4,1,0,0"
                                        FontSize="18"
-                                       Foreground="{DynamicResource AccentForegroundBrushKey}"
-                                       Text="{TemplateBinding Title}" />
+                                       Text="{TemplateBinding Title}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
                             <!--  System Button  -->
                             <StackPanel Grid.Row="0"
