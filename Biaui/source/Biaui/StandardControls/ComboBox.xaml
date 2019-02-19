@@ -37,6 +37,12 @@
     </Style>
 
     <Style TargetType="{x:Type ComboBox}">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
+
         <Setter Property="Background" Value="{DynamicResource SemiactiveBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SemiactiveBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
