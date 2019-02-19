@@ -33,6 +33,37 @@ namespace Biaui.Controls.Internals
 
         #endregion
 
+        #region IsVisibleButton
+        
+        public bool IsVisibleButton
+        {
+            get => _IsVisibleButton;
+            set
+            {
+                if (value != _IsVisibleButton)
+                    SetValue(IsVisibleButtonProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleButton = true;
+        
+        public static readonly DependencyProperty IsVisibleButtonProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleButton),
+                typeof(bool),
+                typeof(SystemButton),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (SystemButton) s;
+                        self._IsVisibleButton = (bool)e.NewValue;
+
+                        self.MakeVisibility();
+                    }));
+        
+        #endregion
+
         static SystemButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SystemButton),
@@ -44,6 +75,7 @@ namespace Biaui.Controls.Internals
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
+
 
             _parentWindow = (BiaWindow)Window.GetWindow(this);
 
@@ -98,6 +130,12 @@ namespace Biaui.Controls.Internals
 
         private void MakeVisibility()
         {
+            if (IsVisibleButton == false)
+            {
+                Visibility = Visibility.Collapsed;
+                return;
+            }
+
             switch (WindowAction)
             {
                 case WindowAction.Maximize:

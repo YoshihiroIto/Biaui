@@ -92,6 +92,125 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsVisibleMinimizeButton
+        
+        public bool IsVisibleMinimizeButton
+        {
+            get => _IsVisibleMinimizeButton;
+            set
+            {
+                if (value != _IsVisibleMinimizeButton)
+                    SetValue(IsVisibleMinimizeButtonProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleMinimizeButton = true;
+        
+        public static readonly DependencyProperty IsVisibleMinimizeButtonProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleMinimizeButton),
+                typeof(bool),
+                typeof(BiaWindow),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._IsVisibleMinimizeButton = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+        
+
+        #region IsVisibleMaximizeButton
+        
+        public bool IsVisibleMaximizeButton
+        {
+            get => _IsVisibleMaximizeButton;
+            set
+            {
+                if (value != _IsVisibleMaximizeButton)
+                    SetValue(IsVisibleMaximizeButtonProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleMaximizeButton = true;
+        
+        public static readonly DependencyProperty IsVisibleMaximizeButtonProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleMaximizeButton),
+                typeof(bool),
+                typeof(BiaWindow),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._IsVisibleMaximizeButton = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+        
+
+        #region IsVisibleNormalizeButton
+        
+        public bool IsVisibleNormalizeButton
+        {
+            get => _IsVisibleNormalizeButton;
+            set
+            {
+                if (value != _IsVisibleNormalizeButton)
+                    SetValue(IsVisibleNormalizeButtonProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleNormalizeButton = true;
+        
+        public static readonly DependencyProperty IsVisibleNormalizeButtonProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleNormalizeButton),
+                typeof(bool),
+                typeof(BiaWindow),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._IsVisibleNormalizeButton = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+        
+
+        #region IsVisibleCloseButtonButton
+        
+        public bool IsVisibleCloseButtonButton
+        {
+            get => _IsVisibleCloseButtonButton;
+            set
+            {
+                if (value != _IsVisibleCloseButtonButton)
+                    SetValue(IsVisibleCloseButtonButtonProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleCloseButtonButton = true;
+        
+        public static readonly DependencyProperty IsVisibleCloseButtonButtonProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleCloseButtonButton),
+                typeof(bool),
+                typeof(BiaWindow),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._IsVisibleCloseButtonButton = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+
         public event EventHandler CloseButtonClicked;
 
         static BiaWindow()

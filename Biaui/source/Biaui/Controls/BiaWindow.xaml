@@ -81,10 +81,10 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Top"
                                         Orientation="Horizontal">
-                                <internals:SystemButton WindowAction="Minimize" />
-                                <internals:SystemButton WindowAction="Maximize" />
-                                <internals:SystemButton WindowAction="Normalize" />
-                                <internals:SystemButton WindowAction="Close" />
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
                             </StackPanel>
 
                             <ContentPresenter Grid.Row="2"
