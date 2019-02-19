@@ -83,7 +83,8 @@
                                 <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
                             </StackPanel>
 
-                            <ContentPresenter Grid.Row="1"
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              Grid.Row="1"
                                               HorizontalAlignment="Stretch"
                                               VerticalAlignment="Stretch" />
                         </Grid>
@@ -95,6 +96,9 @@
                         </Trigger>
                         <Trigger Property="WindowState" Value="Normal">
                             <Setter TargetName="Border" Property="BorderThickness" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ContentPresenter" Property="Opacity" Value="0.25" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
