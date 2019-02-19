@@ -43,7 +43,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                         var old = self._NodesSource;
                         self._NodesSource = (IEnumerable) e.NewValue;
-                        self.UpdateNodesSource(old as INotifyCollectionChanged, self._NodesSource as INotifyCollectionChanged);
+                        self.UpdateNodesSource(old as INotifyCollectionChanged,
+                            self._NodesSource as INotifyCollectionChanged);
                     }));
 
         #endregion
@@ -75,8 +76,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             _parent.SizeChanged += (_, __) => UpdateChildrenBag(true);
             _parent.Unloaded += (_, __) => StopTimer();
             _parent.NodesSourceChanging += (_, __) => Clear();
-            _parent.Scale.Changed +=(_, __) => UpdateChildrenBag(true); 
-            _parent.Translate.Changed +=(_, __) => UpdateChildrenBag(true); 
+            _parent.Scale.Changed += (_, __) => UpdateChildrenBag(true);
+            _parent.Translate.Changed += (_, __) => UpdateChildrenBag(true);
 
             _mouseOperator.PanelMoving += OnPanelMoving;
             _mouseOperator.PostMouseMove += OnPostMouseMove;
@@ -531,7 +532,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var enabledSlotIds =
                 _parent.NodeSlotEnabledChecker == null
-                    ? target.Slots?.Keys ??  Enumerable.Empty<int>()
+                    ? target.Slots?.Keys ?? Enumerable.Empty<int>()
                     : _parent.NodeSlotEnabledChecker.Check(target, args);
 
             foreach (var enabledSlotId in enabledSlotIds)
@@ -544,9 +545,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private static readonly BiaNodeSlotEnabledCheckerArgs DefaultEnabledCheckerArgs = new BiaNodeSlotEnabledCheckerArgs(
-            BiaNodeSlotEnableTiming.Default,
-            new BiaNodeItemSlotIdPair(null, 0));
+        private static readonly BiaNodeSlotEnabledCheckerArgs DefaultEnabledCheckerArgs =
+            new BiaNodeSlotEnabledCheckerArgs(
+                BiaNodeSlotEnableTiming.Default,
+                new BiaNodeItemSlotIdPair(null, 0));
 
         private void UpdateNodeSlotEnabled(IBiaNodeItem target)
         {
@@ -579,7 +581,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 // 最初は全部追加として扱う
                 NodesSourceOnCollectionChanged(null,
-                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, (IList)newSource, 0));
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, (IList) newSource, 0));
             }
         }
 
@@ -801,7 +803,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 child.Measure(availableSize);
 
-                var nodeItem = (IBiaNodeItem)child.DataContext;
+                var nodeItem = (IBiaNodeItem) child.DataContext;
 
                 var desiredSize = child.DesiredSize;
 
