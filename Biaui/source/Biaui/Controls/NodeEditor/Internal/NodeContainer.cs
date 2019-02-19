@@ -497,9 +497,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void UpdateNodeSlotEnabled(bool isStart)
         {
-            if (_parent.NodeSlotEnabledChecker == null)
-                return;
-
             var args = new BiaNodeSlotEnabledCheckerArgs(
                 isStart
                     ? BiaNodeSlotEnableTiming.ConnectionStarting
@@ -530,10 +527,12 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             target.InternalData().EnableSlots.Clear();
 
-            if (_parent.NodeSlotEnabledChecker == null)
-                return;
+            var enabledSlotIds =
+                _parent.NodeSlotEnabledChecker == null
+                    ? target.Slots.Keys
+                    : _parent.NodeSlotEnabledChecker.Check(target, args);
 
-            foreach (var enabledSlotId in _parent.NodeSlotEnabledChecker.Check(target, args))
+            foreach (var enabledSlotId in enabledSlotIds)
             {
                 Debug.Assert(target.Slots.ContainsKey(enabledSlotId));
 
