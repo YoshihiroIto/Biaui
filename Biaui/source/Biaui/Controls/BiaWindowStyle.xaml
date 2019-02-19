@@ -19,6 +19,8 @@
         <Setter Property="IsVisibleMinimizeButton" Value="False" />
         <Setter Property="IsVisibleNormalizeButton" Value="False" />
 
+        <Setter Property="ShowInTaskbar" Value="False" />
+
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CaptionHeight="48"
