@@ -15,6 +15,10 @@
         <Setter Property="ToolTipService.ShowDuration" Value="100000" />
         <Setter Property="ToolTipService.BetweenShowDelay" Value="0" />
 
+        <Setter Property="IsVisibleMaximizeButton" Value="False" />
+        <Setter Property="IsVisibleMinimizeButton" Value="False" />
+        <Setter Property="IsVisibleNormalizeButton" Value="False" />
+
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CaptionHeight="48"
