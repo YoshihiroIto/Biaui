@@ -17,7 +17,7 @@
 
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome CaptionHeight="48"
+                <WindowChrome CaptionHeight="32"
                               CornerRadius="0"
                               GlassFrameThickness="1"
                               ResizeBorderThickness="8" />
@@ -42,7 +42,6 @@
                             </Style>
                         </Border.Style>
 
-
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="24" />
@@ -51,8 +50,7 @@
                             </Grid.RowDefinitions>
 
                             <!--  タイトル下地  -->
-                            <Rectangle x:Name="HeaderBackground"
-                                       Grid.Row="0"
+                            <Rectangle Grid.Row="0"
                                        Grid.RowSpan="2"
                                        Margin="0,0,0,0"
                                        Fill="#303038"
@@ -98,18 +96,6 @@
                                             Content="{Binding Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}"
                                             WindowChrome.IsHitTestVisibleInChrome="True" />
 
-                            <!--  System Button  -->
-                            <StackPanel Grid.Row="0"
-                                        Grid.RowSpan="2"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        Orientation="Horizontal">
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
-                            </StackPanel>
-
                             <ContentPresenter x:Name="ContentPresenter"
                                               Grid.Row="2"
                                               HorizontalAlignment="Stretch"
@@ -129,6 +115,18 @@
                                     </LinearGradientBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
+
+                            <!--  System Button  -->
+                            <StackPanel Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Orientation="Horizontal">
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
+                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
+                            </StackPanel>
                         </Grid>
                     </Border>
 

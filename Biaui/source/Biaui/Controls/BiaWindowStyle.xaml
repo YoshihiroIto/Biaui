@@ -23,7 +23,7 @@
 
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome CaptionHeight="48"
+                <WindowChrome CaptionHeight="32"
                               CornerRadius="0"
                               GlassFrameThickness="1"
                               ResizeBorderThickness="8" />
@@ -49,32 +49,11 @@
                         </Border.Style>
 
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="24" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch" />
 
-                            <!--  Title  -->
-                            <TextBlock Grid.Row="0"
-                                       Margin="4,1,0,0"
-                                       FontSize="18"
-                                       Text="{TemplateBinding Title}">
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
-
-                                        <Style.Triggers>
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--  System Button  -->
-                            <StackPanel Grid.Row="0"
-                                        HorizontalAlignment="Right"
+                            <StackPanel HorizontalAlignment="Right"
                                         VerticalAlignment="Top"
                                         Orientation="Horizontal">
                                 <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
@@ -82,11 +61,6 @@
                                 <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
                                 <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
                             </StackPanel>
-
-                            <ContentPresenter x:Name="ContentPresenter"
-                                              Grid.Row="1"
-                                              HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch" />
                         </Grid>
                     </Border>
 
