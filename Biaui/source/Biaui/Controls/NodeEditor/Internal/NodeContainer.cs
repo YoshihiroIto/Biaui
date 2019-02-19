@@ -529,11 +529,12 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var enabledSlotIds =
                 _parent.NodeSlotEnabledChecker == null
-                    ? target.Slots.Keys
+                    ? target.Slots?.Keys ??  Enumerable.Empty<int>()
                     : _parent.NodeSlotEnabledChecker.Check(target, args);
 
             foreach (var enabledSlotId in enabledSlotIds)
             {
+                Debug.Assert(target.Slots != null);
                 Debug.Assert(target.Slots.ContainsKey(enabledSlotId));
 
                 var slot = target.Slots[enabledSlotId];
