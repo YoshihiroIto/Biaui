@@ -394,7 +394,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                         if (_panelDefaultSizeDict.TryGetValue(nodeItemType, out var size))
                         {
                             itemRect = new ImmutableRect(pos.X, pos.Y, size.Width, size.Height);
-                            nodeItem.Size = size;
                         }
                         else
                         {
