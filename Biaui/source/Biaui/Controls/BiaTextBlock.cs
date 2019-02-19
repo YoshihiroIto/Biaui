@@ -52,8 +52,10 @@ namespace Biaui.Controls
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaTextBlock),
-                new PropertyMetadata(
+                new FrameworkPropertyMetadata(
                     default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBlock) s;
