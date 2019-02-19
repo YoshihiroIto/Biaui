@@ -29,8 +29,20 @@
                 <ControlTemplate TargetType="{x:Type controls:BiaWindow}">
                     <Border x:Name="Border"
                             Background="{DynamicResource BackgroundBackgroundBrushKey}"
-                            BorderBrush="{DynamicResource BackgroundBorderBrushKey}"
                             BorderThickness="1">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBorderBrushKey}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="24" />
