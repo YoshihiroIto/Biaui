@@ -144,7 +144,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 switch (targetType)
                 {
                     case TargetType.NodeEditor:
-                        _opType = KeyboardHelper.IsPressSpace
+                        _opType = KeyboardHelper.IsPressShift
                             ? OpType.EditorScroll
                             : OpType.BoxSelect;
                         break;
