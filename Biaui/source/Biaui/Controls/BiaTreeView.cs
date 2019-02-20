@@ -88,6 +88,13 @@ namespace Biaui.Controls
             if (!(e.OriginalSource is TreeViewItem treeViewItem))
                 return;
 
+            // [CTRL] + A
+            if (e.Key == Key.A && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                SelectAllItems();
+                e.Handled = true;
+            }
+
             TreeViewItem targetItem = null;
 
             switch (e.Key)
@@ -108,6 +115,8 @@ namespace Biaui.Controls
                 SelectMultipleItems(targetItem);
             else
                 SelectSingleItem(targetItem);
+
+                e.Handled = true;
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -143,6 +152,31 @@ namespace Biaui.Controls
                     SelectSingleItem(treeViewItem);
                     break;
             }
+        }
+
+        private void SelectAllItems()
+        {
+            ItemSelectionStarting?.Invoke(this, EventArgs.Empty);
+            {
+                var items = this.EnumerateChildren<TreeViewItem>();
+
+                TreeViewItem firstItem = null;
+
+                foreach (var item in items)
+                {
+                    if (firstItem == null)
+                        firstItem = item;
+
+                    SetIsSelected(item, true);
+                }
+
+                if (firstItem != null)
+                {
+                    SelectedItem = firstItem.DataContext;
+                    _multipleSelectionEdgeItem = firstItem;
+                }
+            }
+            ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
         private void ToggleSingleItem(TreeViewItem treeViewItem)
