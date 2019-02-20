@@ -5,7 +5,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace Biaui
 {
-    public class ListViewBehavior : Behavior<ListBox>
+    public class ListBoxBehavior : Behavior<ListBox>
     {
         #region ItemSelectionStartingCommand
 
@@ -25,12 +25,12 @@ namespace Biaui
             DependencyProperty.Register(
                 nameof(ItemSelectionStartingCommand),
                 typeof(ICommand),
-                typeof(ListViewBehavior),
+                typeof(ListBoxBehavior),
                 new PropertyMetadata(
                     default(ICommand),
                     (s, e) =>
                     {
-                        var self = (ListViewBehavior) s;
+                        var self = (ListBoxBehavior) s;
                         self._ItemSelectionStartingCommand = (ICommand) e.NewValue;
                     }));
 
@@ -54,12 +54,12 @@ namespace Biaui
             DependencyProperty.Register(
                 nameof(ItemSelectionCompletedCommand),
                 typeof(ICommand),
-                typeof(ListViewBehavior),
+                typeof(ListBoxBehavior),
                 new PropertyMetadata(
                     default(ICommand),
                     (s, e) =>
                     {
-                        var self = (ListViewBehavior) s;
+                        var self = (ListBoxBehavior) s;
                         self._ItemSelectionCompletedCommand = (ICommand) e.NewValue;
                     }));
 
@@ -95,7 +95,9 @@ namespace Biaui
 
         private void AssociatedObjectOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.A && IsPressControlKey)
+            if ((e.Key == Key.A && IsPressControlKey) ||
+                (e.Key == Key.Divide && IsPressControlKey) ||
+                (e.Key == Key.Oem2 && IsPressControlKey))
             {
                 if (_isInCtrlA == false)
                 {
@@ -104,7 +106,12 @@ namespace Biaui
                 }
             }
 
-            if (e.Key == Key.Up || e.Key == Key.Down)
+            var isMove =
+                e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right ||
+                e.Key == Key.Prior || e.Key == Key.Next ||
+                e.Key == Key.End || e.Key == Key.Home;
+
+            if (isMove)
             {
                 if (_isInKeySelection == false)
                 {
