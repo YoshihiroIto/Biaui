@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Internal;
-using Biaui.Interfaces;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -43,29 +41,29 @@ namespace Biaui.Controls.NodeEditor
 
         #region LinksSource
 
-        public ObservableCollection<IBiaNodeLink> LinksSource
+        public IEnumerable LinksSource
         {
             get => _LinksSource;
             set
             {
-                if (value != _LinksSource)
+                if (!Equals(value, _LinksSource))
                     SetValue(LinksSourceProperty, value);
             }
         }
 
-        private ObservableCollection<IBiaNodeLink> _LinksSource;
+        private IEnumerable _LinksSource;
 
         public static readonly DependencyProperty LinksSourceProperty =
-            DependencyProperty.Register(nameof(LinksSource), typeof(ObservableCollection<IBiaNodeLink>),
+            DependencyProperty.Register(nameof(LinksSource), typeof(IEnumerable),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    default(ObservableCollection<IBiaNodeLink>),
+                    default(IEnumerable),
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
 
                         var old = self._LinksSource;
-                        self._LinksSource = (ObservableCollection<IBiaNodeLink>) e.NewValue;
+                        self._LinksSource = (IEnumerable) e.NewValue;
                         self.UpdateLinksSource(old, self._LinksSource);
                     }));
 
@@ -204,16 +202,19 @@ namespace Biaui.Controls.NodeEditor
         }
 
         private void UpdateLinksSource(
-            ObservableCollection<IBiaNodeLink> oldSource,
-            ObservableCollection<IBiaNodeLink> newSource)
+            IEnumerable oldSource,
+            IEnumerable newSource)
         {
             LinksSourceChanging?.Invoke(this, EventArgs.Empty);
 
-            if (oldSource != null)
-                oldSource.CollectionChanged -= LinksSourceOnCollectionChanged;
+            var observableOldSource = oldSource as INotifyCollectionChanged;
+            var observableNewSource = newSource as INotifyCollectionChanged;
 
-            if (newSource != null)
-                newSource.CollectionChanged += LinksSourceOnCollectionChanged;
+            if (observableOldSource != null)
+                observableOldSource.CollectionChanged -= LinksSourceOnCollectionChanged;
+
+            if (observableNewSource != null)
+                observableNewSource.CollectionChanged += LinksSourceOnCollectionChanged;
 
             //////////////////////////////////////////////////////////////////////////////
             void LinksSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

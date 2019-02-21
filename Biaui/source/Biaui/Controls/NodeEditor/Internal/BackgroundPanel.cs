@@ -142,7 +142,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             Span<ImmutableVec2> work = stackalloc ImmutableVec2[10];
 
-            foreach (var link in _parent.LinksSource)
+            foreach (IBiaNodeLink link in _parent.LinksSource)
             {
                 if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
                     continue;
