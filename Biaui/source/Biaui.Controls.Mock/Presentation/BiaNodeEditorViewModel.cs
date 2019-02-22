@@ -680,6 +680,11 @@ namespace Biaui.Controls.Mock.Presentation
 
     public class NodeSlotEnabledChecker : IBiaNodeSlotEnabledChecker
     {
+        public bool IsEnableSlot(in BiaNodeItemSlotIdPair slot)
+        {
+            return true;
+        }
+
         public IEnumerable<int> Check(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args)
         {
             switch (args.Timing)
