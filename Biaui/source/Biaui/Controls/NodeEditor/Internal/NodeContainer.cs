@@ -756,6 +756,17 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var slot = nodeItem.FindSlotFromPos(e.GetPosition(panel));
 
+            // 元スロットが無効であればリンク処置は行わない
+            if (slot != null)
+            {
+                var slotData = new BiaNodeItemSlotIdPair(nodeItem, slot.Id);
+                if (_parent.NodeSlotEnabledChecker != null)
+                {
+                    if (_parent.NodeSlotEnabledChecker.IsEnableSlot(slotData) == false)
+                        slot = null;
+                }
+            }
+
             _mouseOperator.OnMouseLeftButtonDown(
                 e,
                 slot == null
@@ -767,7 +778,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (slot == null)
                     throw new NotSupportedException();
 
-                var args = new NodeLinkStartingEventArgs(new BiaNodeItemSlotIdPair(nodeItem, slot.Id));
+                var slotData = new BiaNodeItemSlotIdPair(nodeItem, slot.Id);
+                var args = new NodeLinkStartingEventArgs(slotData);
                 _parent.InvokeNodeLinkStarting(args);
 
                 _parent.SourceNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);

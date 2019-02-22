@@ -5,6 +5,7 @@ namespace Biaui.Controls.NodeEditor
 {
     public interface IBiaNodeSlotEnabledChecker
     {
+        bool IsEnableSlot(in BiaNodeItemSlotIdPair slot);
         IEnumerable<int> Check(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args);
     }
 

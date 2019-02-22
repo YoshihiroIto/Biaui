@@ -33,6 +33,8 @@ namespace Biaui.Controls.NodeEditor
                 ActualHeight <= 1)
                 return;
 
+            var parent = this.GetParent<BiaNodeEditor>();
+
             var nodeItem = (IBiaNodeItem) DataContext;
             var isMouseOverNode = nodeItem.IsMouseOver;
 
@@ -42,10 +44,18 @@ namespace Biaui.Controls.NodeEditor
 
                 var r = Biaui.Internals.Constants.SlotMarkRadius;
 
-                // パネルがマウスオーバー時は、ポート自体のマウス位置見て半径を作る
+                // ポート自体が有効でパネルがマウスオーバー時は、ポート自体のマウス位置見て半径を作る
                 if (isMouseOverNode)
-                    if ((slotPos, _mousePoint).DistanceSq() <= Biaui.Internals.Constants.SlotMarkRadiusSq)
-                        r = Biaui.Internals.Constants.SlotMarkRadius_Highlight;
+                {
+                    if (parent.NodeSlotEnabledChecker != null)
+                    {
+                        var slotData = new BiaNodeItemSlotIdPair(nodeItem, slot.Id);
+
+                        if (parent.NodeSlotEnabledChecker.IsEnableSlot(slotData))
+                            if ((slotPos, _mousePoint).DistanceSq() <= Biaui.Internals.Constants.SlotMarkRadiusSq)
+                                r = Biaui.Internals.Constants.SlotMarkRadius_Highlight;
+                    }
+                }
 
                 var color = slot.Color;
 
