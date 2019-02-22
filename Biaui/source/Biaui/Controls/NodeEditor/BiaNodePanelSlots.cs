@@ -38,7 +38,7 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var slot in nodeItem.EnabledSlots())
             {
-                var slotPos = slot.MakePos(ActualWidth, ActualHeight);
+                var slotPos = slot.MakePos(nodeItem.Size.Width, nodeItem.Size.Height);
 
                 var r = Biaui.Internals.Constants.SlotMarkRadius;
 
