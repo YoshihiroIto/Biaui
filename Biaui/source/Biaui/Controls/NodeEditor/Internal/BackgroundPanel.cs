@@ -39,7 +39,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 ActualHeight <= 1)
                 return;
 
-            DrawGrid(dc);
+            //DrawGrid(dc);
 
             DrawNodeLink(dc);
         }
