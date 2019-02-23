@@ -126,8 +126,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 #endif
 
         private static readonly
-            Dictionary<(Color Color, BiaNodeLinkStyle Style), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
-                = new Dictionary<(Color, BiaNodeLinkStyle), (StreamGeometry, StreamGeometryContext)>();
+            Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
+                = new Dictionary<(Color, BiaNodeLinkStyle, bool), (StreamGeometry, StreamGeometryContext)>();
 
         private void DrawNodeLink(DrawingContext dc)
         {
@@ -184,7 +184,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                                   link.ItemSlot2.Item.IsMouseOver;
 
                 var color = ColorHelper.Lerp(alpha, backgroundColor, isHighlight ? _parent.HighlightLinkColor : link.Color);
-                var key = (color, link.Style);
+                var key = (color, link.Style, isHighlight);
 
                 if (_curves.TryGetValue(key, out var curve) == false)
                 {
@@ -215,6 +215,23 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 foreach (var c in _curves)
                 {
+                    if (c.Key.IsHightlight)
+                        continue;
+
+                    var pen =
+                        (c.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
+                            ? Caches.GetDashedPen(c.Key.Color, 3)
+                            : Caches.GetPen(c.Key.Color, 3);
+
+                    ((IDisposable) c.Value.Ctx).Dispose();
+                    dc.DrawGeometry(Caches.GetSolidColorBrush(c.Key.Color), pen, c.Value.Geom);
+                }
+
+                foreach (var c in _curves)
+                {
+                    if (c.Key.IsHightlight == false)
+                        continue;
+
                     var pen =
                         (c.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
                             ? Caches.GetDashedPen(c.Key.Color, 3)
