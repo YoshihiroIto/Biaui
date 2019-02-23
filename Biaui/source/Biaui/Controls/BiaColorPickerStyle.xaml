@@ -43,7 +43,9 @@
         </Setter>
     </Style>
 
-    <Style x:Key="BiaColorPickerWheelType" TargetType="{x:Type colorPicker:BiaColorPicker}">
+    <Style x:Key="BiaColorPickerWheelStyle" TargetType="{x:Type colorPicker:BiaColorPicker}">
+        <Setter Property="MinHeight" Value="160" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
