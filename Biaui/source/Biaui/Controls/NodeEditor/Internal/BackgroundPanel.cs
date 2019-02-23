@@ -44,6 +44,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             DrawNodeLink(dc);
         }
 
+#if false
         private readonly StreamGeometry _gridGeom = new StreamGeometry();
 
         private void DrawGrid(DrawingContext dc)
@@ -122,6 +123,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             ((IDisposable) geomCtx).Dispose();
             dc.DrawGeometry(null, p, _gridGeom);
         }
+#endif
 
         private static readonly
             Dictionary<(Color Color, BiaNodeLinkStyle Style), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
@@ -174,7 +176,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                     continue;
 
                 // 
-                var color = ColorHelper.Lerp(alpha, backgroundColor, link.Color);
+                var isHighlight = link.ItemSlot1.Item.IsSelected ||
+                                  link.ItemSlot1.Item.IsPreSelected ||
+                                  link.ItemSlot1.Item.IsMouseOver ||
+                                  link.ItemSlot2.Item.IsSelected ||
+                                  link.ItemSlot2.Item.IsPreSelected ||
+                                  link.ItemSlot2.Item.IsMouseOver;
+
+                var color = ColorHelper.Lerp(alpha, backgroundColor, isHighlight ? _parent.HighlightLinkColor : link.Color);
                 var key = (color, link.Style);
 
                 if (_curves.TryGetValue(key, out var curve) == false)

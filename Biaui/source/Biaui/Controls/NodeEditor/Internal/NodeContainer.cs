@@ -672,14 +672,15 @@ namespace Biaui.Controls.NodeEditor.Internal
                 case nameof(IBiaNodeItem.Size):
                 {
                     _parent.InvokeNodeItemMoved();
-
                     ChangeElementInternal(true);
                     break;
                 }
 
                 case nameof(IBiaNodeItem.IsSelected):
                 case nameof(IBiaNodeItem.IsPreSelected):
+                case nameof(IBiaNodeItem.IsMouseOver):
                 {
+                    _parent.InvokeNodeItemMoved();
                     UpdateSelectedNode(node);
                     ChangeElementInternal(false);
                     break;

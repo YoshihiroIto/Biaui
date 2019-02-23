@@ -156,8 +156,36 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
-        public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
+        #region HighlightLinkColor
+        
+        public Color HighlightLinkColor
+        {
+            get => _HighlightLinkColor;
+            set
+            {
+                if (value != _HighlightLinkColor)
+                    SetValue(HighlightLinkColorProperty, value);
+            }
+        }
+        
+        private Color _HighlightLinkColor = Colors.GhostWhite;
+        
+        public static readonly DependencyProperty HighlightLinkColorProperty =
+            DependencyProperty.Register(
+                nameof(HighlightLinkColor),
+                typeof(Color),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Colors.GhostWhite,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._HighlightLinkColor = (Color)e.NewValue;
+                    }));
+        
+        #endregion
 
+        public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
         public event EventHandler PropertyEditStarting;
