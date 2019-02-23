@@ -7,7 +7,7 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal static class ConnectionLineRenderer
+    internal static class LinkLineRenderer
     {
         internal static Span<ImmutableVec2> MakeLines(
             ref Point pos1,

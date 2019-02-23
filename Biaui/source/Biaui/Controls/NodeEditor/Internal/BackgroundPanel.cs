@@ -165,7 +165,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (viewport.IntersectsWith(inflateBox) == false)
                     continue;
 
-                var lines = ConnectionLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(),
+                var lines = LinkLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(),
                     work);
 
                 // ラインのバウンディングボックスと判定
@@ -189,7 +189,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     _curves.Add(key, curve);
                 }
 
-                ConnectionLineRenderer.DrawLines(curve.Ctx, lines);
+                LinkLineRenderer.DrawLines(curve.Ctx, lines);
 
                 // 矢印
                 if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)

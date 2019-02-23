@@ -197,7 +197,7 @@
     <Compile Include="Controls\Internals\SystemButton.cs" />
     <Compile Include="Controls\BiaTreeView.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeSlotExtensions.cs" />
-    <Compile Include="Controls\NodeEditor\Internal\ConnectionLineRenderer.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\LinkLineRenderer.cs" />
     <Compile Include="Controls\NodeEditor\Internal\Transposer.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodeEditor.cs" />
     <Compile Include="Controls\BiaTextBox.cs" />
