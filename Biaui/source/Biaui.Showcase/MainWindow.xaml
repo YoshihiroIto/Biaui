@@ -373,7 +373,7 @@
                                      Blue="0.125"
                                      Green="0.25"
                                      Red="0.5"
-                                     Style="{StaticResource BiaColorPickerWheelType}" />
+                                     Style="{StaticResource BiaColorPickerWheelStyle}" />
         </StackPanel>
 
         <StackPanel Margin="24,0,0,0"

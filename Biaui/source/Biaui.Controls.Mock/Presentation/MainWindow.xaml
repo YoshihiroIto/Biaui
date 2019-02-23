@@ -121,7 +121,7 @@
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
                                          Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
-                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Style="{StaticResource BiaColorPickerWheelStyle}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
 
                 <controls:BiaColorPicker Grid.Row="1"
@@ -134,7 +134,7 @@
                                          IsReadOnly="True"
                                          Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
-                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Style="{StaticResource BiaColorPickerWheelStyle}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
 
                 <controls:BiaColorPicker Grid.Row="1"
@@ -147,7 +147,7 @@
                                          IsEnabled="False"
                                          Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
-                                         Style="{StaticResource BiaColorPickerWheelType}"
+                                         Style="{StaticResource BiaColorPickerWheelStyle}"
                                          Value="{Binding Value, Mode=OneWayToSource}" />
             </Grid>
         </TabItem>

@@ -89,7 +89,7 @@
                                                          Blue="0.25"
                                                          Green="0.5"
                                                          Red="1"
-                                                         Style="{StaticResource BiaColorPickerWheelType}" />
+                                                         Style="{StaticResource BiaColorPickerWheelStyle}" />
                             </StackPanel>
                         </controls:BiaClippingBorder>
 
