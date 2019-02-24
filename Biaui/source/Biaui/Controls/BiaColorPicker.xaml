@@ -77,6 +77,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <colorPicker:BiaNumberEditor x:Name="RedEditor"
@@ -95,6 +96,22 @@
                                                              Margin="0,1,0,0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                                <colorPicker:BiaNumberEditor x:Name="AlphaEditor"
+                                                             Grid.Row="3"
+                                                             Margin="0,1,0,0"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}">
+                                    <colorPicker:BiaNumberEditor.Style>
+                                        <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </colorPicker:BiaNumberEditor.Style>
+                                </colorPicker:BiaNumberEditor>
                             </Grid>
                         </colorPicker:BiaClippingBorder>
 

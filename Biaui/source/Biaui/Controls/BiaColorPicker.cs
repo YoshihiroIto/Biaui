@@ -88,6 +88,61 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region Alpha
+
+        public double Alpha
+        {
+            get => _Alpha;
+            set
+            {
+                if (NumberHelper.AreClose(value, _Alpha) == false)
+                    SetValue(AlphaProperty, value);
+            }
+        }
+
+        private double _Alpha;
+
+        public static readonly DependencyProperty AlphaProperty =
+            DependencyProperty.Register(nameof(Alpha), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._Alpha = (double) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region IsVisibleAlphaEditor
+        
+        public bool IsVisibleAlphaEditor
+        {
+            get => _IsVisibleAlphaEditor;
+            set
+            {
+                if (value != _IsVisibleAlphaEditor)
+                    SetValue(IsVisibleAlphaEditorProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleAlphaEditor = true;
+        
+        public static readonly DependencyProperty IsVisibleAlphaEditorProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleAlphaEditor),
+                typeof(bool),
+                typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._IsVisibleAlphaEditor = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+
         #region Hue
 
         public double Hue
@@ -213,6 +268,7 @@ namespace Biaui.Controls
                     _redEditor.Caption = "Red";
                     _greenEditor.Caption = "Green";
                     _blueEditor.Caption = "Blue";
+                    _alphaEditor.Caption = "Alpha";
                     _hueEditor.Caption = "Hue";
                     _saturationEditor.Caption = "Saturation";
                     _valueEditor.Caption = "Value";
@@ -222,6 +278,7 @@ namespace Biaui.Controls
                     _redEditor.Caption = "R";
                     _greenEditor.Caption = "G";
                     _blueEditor.Caption = "B";
+                    _alphaEditor.Caption = "A";
                     _hueEditor.Caption = "H";
                     _saturationEditor.Caption = "S";
                     _valueEditor.Caption = "V";
@@ -247,6 +304,10 @@ namespace Biaui.Controls
                         _blueEditor = e;
                         break;
 
+                    case "AlphaEditor":
+                        _alphaEditor = e;
+                        break;
+
                     case "HueEditor":
                         _hueEditor = e;
                         break;
@@ -268,6 +329,7 @@ namespace Biaui.Controls
         private BiaNumberEditor _redEditor;
         private BiaNumberEditor _greenEditor;
         private BiaNumberEditor _blueEditor;
+        private BiaNumberEditor _alphaEditor;
         private BiaNumberEditor _hueEditor;
         private BiaNumberEditor _saturationEditor;
         private BiaNumberEditor _valueEditor;
@@ -293,7 +355,7 @@ namespace Biaui.Controls
 
             _isConverting = true;
 
-            (Red, Green, Blue) = ColorSpaceHelper.HsvToRgb(Hue, Saturation, Value) ;
+            (Red, Green, Blue) = ColorSpaceHelper.HsvToRgb(Hue, Saturation, Value);
 
             _isConverting = false;
         }
