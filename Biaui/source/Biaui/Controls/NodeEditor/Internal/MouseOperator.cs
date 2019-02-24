@@ -54,7 +54,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal bool IsMoved { get; private set; }
 
-
         internal event MouseButtonEventHandler PrePreviewMouseLeftButtonDown;
         internal event MouseButtonEventHandler PostPreviewMouseLeftButtonDown;
 
@@ -72,6 +71,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal event MouseWheelEventHandler PreMouseWheel;
         internal event MouseWheelEventHandler PostMouseWheel;
+
+        internal void InvokePostMouseLeftButtonDown(MouseButtonEventArgs e) => PostMouseLeftButtonDown?.Invoke(this, e);
 
         internal MouseOperator(FrameworkElement target, IHasTransform transformTarget)
         {

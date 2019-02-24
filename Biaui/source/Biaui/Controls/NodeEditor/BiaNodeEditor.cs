@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Internal;
+using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -157,7 +158,7 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         #region HighlightLinkColor
-        
+
         public Color HighlightLinkColor
         {
             get => _HighlightLinkColor;
@@ -167,9 +168,9 @@ namespace Biaui.Controls.NodeEditor
                     SetValue(HighlightLinkColorProperty, value);
             }
         }
-        
+
         private Color _HighlightLinkColor = Colors.GhostWhite;
-        
+
         public static readonly DependencyProperty HighlightLinkColorProperty =
             DependencyProperty.Register(
                 nameof(HighlightLinkColor),
@@ -180,9 +181,9 @@ namespace Biaui.Controls.NodeEditor
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._HighlightLinkColor = (Color)e.NewValue;
+                        self._HighlightLinkColor = (Color) e.NewValue;
                     }));
-        
+
         #endregion
 
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
@@ -295,14 +296,17 @@ namespace Biaui.Controls.NodeEditor
         {
             var isInEditing = false;
 
-            mouseOperator.PrePreviewMouseLeftButtonDown += (_, __) =>
+            mouseOperator.PostMouseLeftButtonDown += (_, __) =>
             {
-                if (isInEditing)
+                isInEditing = mouseOperator.IsBoxSelect ||
+                              mouseOperator.IsPanelMove;
+
+                if (isInEditing == false)
                     return;
 
                 PropertyEditStarting?.Invoke(this, EventArgs.Empty);
-                isInEditing = true;
             };
+
 
             mouseOperator.PostMouseLeftButtonUp += (_, __) =>
             {

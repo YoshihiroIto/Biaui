@@ -789,6 +789,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 UpdateNodeSlotEnabled(true);
             }
 
+            _mouseOperator.InvokePostMouseLeftButtonDown(e);
+
             e.Handled = true;
         }
 
