@@ -179,6 +179,64 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region StartedContinuousEditingCommand
+
+        public ICommand StartedContinuousEditingCommand
+        {
+            get => _StartedContinuousEditingCommand;
+            set
+            {
+                if (value != _StartedContinuousEditingCommand)
+                    SetValue(StartedContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _StartedContinuousEditingCommand;
+
+        public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaColorBar),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaColorBar) s;
+                        self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region EndContinuousEditingCommand
+
+        public ICommand EndContinuousEditingCommand
+        {
+            get => _EndContinuousEditingCommand;
+            set
+            {
+                if (value != _EndContinuousEditingCommand)
+                    SetValue(EndContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _EndContinuousEditingCommand;
+
+        public static readonly DependencyProperty EndContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaColorBar),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaColorBar) s;
+                        self._EndContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
         private Brush _backgroundBrush;
         private bool _isRequestUpdateBackgroundBrush = true;
 
@@ -250,6 +308,8 @@ namespace Biaui.Controls
         }
 
         private bool _isMouseDown;
+        private bool _isContinuousEdited;
+        private double _ContinuousEditingStartValue;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -260,6 +320,12 @@ namespace Biaui.Controls
 
             _isMouseDown = true;
             GuiHelper.HideCursor();
+
+            _ContinuousEditingStartValue = Value;
+            _isContinuousEdited = true;
+            if (StartedContinuousEditingCommand != null)
+                if (StartedContinuousEditingCommand.CanExecute(null))
+                    StartedContinuousEditingCommand.Execute(null);
 
             UpdateParams(e);
 
@@ -305,6 +371,24 @@ namespace Biaui.Controls
             this.ResetMouseClipping();
             GuiHelper.ShowCursor();
             ReleaseMouseCapture();
+
+            if (_isContinuousEdited)
+            {
+                if (EndContinuousEditingCommand != null)
+                {
+                    if (EndContinuousEditingCommand.CanExecute(null))
+                    {
+                        var changedValue = Value;
+                        Value = _ContinuousEditingStartValue;
+
+                        EndContinuousEditingCommand.Execute(null);
+
+                        Value = changedValue;
+                    }
+                }
+
+                _isContinuousEdited = false;
+            }
 
             e.Handled = true;
         }

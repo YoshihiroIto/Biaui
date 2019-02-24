@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -443,6 +444,8 @@ namespace Biaui.Controls
                 }
             }
 
+            _valueBar = this.Descendants<BiaColorBar>().First();
+
             SetContinuousEditingCommand();
         }
 
@@ -454,6 +457,8 @@ namespace Biaui.Controls
         private BiaNumberEditor _hueEditor;
         private BiaNumberEditor _saturationEditor;
         private BiaNumberEditor _valueEditor;
+
+        private BiaColorBar _valueBar;
 
         private bool _isConverting;
 
@@ -515,8 +520,6 @@ namespace Biaui.Controls
                 }
 
                 ++editingDepth;
-
-                Debug.WriteLine($"start:{editingDepth}");
             });
 
             var end = new DelegateCommand(() =>
@@ -540,8 +543,6 @@ namespace Biaui.Controls
                         }
                     }
                 }
-
-                Debug.WriteLine($"end:{editingDepth}");
             });
 
             _redEditor.StartedContinuousEditingCommand = started;
@@ -551,6 +552,7 @@ namespace Biaui.Controls
             _hueEditor.StartedContinuousEditingCommand = started;
             _saturationEditor.StartedContinuousEditingCommand = started;
             _valueEditor.StartedContinuousEditingCommand = started;
+            _valueBar.StartedContinuousEditingCommand = started;
 
             _redEditor.EndContinuousEditingCommand = end;
             _greenEditor.EndContinuousEditingCommand = end;
@@ -559,6 +561,7 @@ namespace Biaui.Controls
             _hueEditor.EndContinuousEditingCommand = end;
             _saturationEditor.EndContinuousEditingCommand = end;
             _valueEditor.EndContinuousEditingCommand = end;
+            _valueBar.EndContinuousEditingCommand = end;
         }
 
 
