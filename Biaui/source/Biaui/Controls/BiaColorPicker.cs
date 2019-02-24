@@ -339,6 +339,9 @@ namespace Biaui.Controls
 
                         if (self._wheelBackground != null)
                             self._wheelBackground.StartedBatchEditingCommand = self._StartedBatchEditingCommand;
+
+                        if (self._boxBackground != null)
+                            self._boxBackground.StartedBatchEditingCommand = self._StartedBatchEditingCommand;
                     }));
 
         #endregion
@@ -371,6 +374,9 @@ namespace Biaui.Controls
 
                         if (self._wheelBackground != null)
                             self._wheelBackground.EndBatchEditingCommand = self._EndBatchEditingCommand;
+
+                        if (self._boxBackground != null)
+                            self._boxBackground.EndBatchEditingCommand = self._EndBatchEditingCommand;
                     }));
 
         #endregion
@@ -452,6 +458,7 @@ namespace Biaui.Controls
 
             _valueBar = this.Descendants<BiaColorBar>().First();
             _wheelBackground = this.Descendants<BiaHsvWheelBackground>().FirstOrDefault();
+            _boxBackground = this.Descendants<BiaHsvBoxBackground>().FirstOrDefault();
 
             SetContinuousEditingCommand();
         }
@@ -467,6 +474,7 @@ namespace Biaui.Controls
 
         private BiaColorBar _valueBar;
         private BiaHsvWheelBackground _wheelBackground;
+        private BiaHsvBoxBackground _boxBackground;
 
         private bool _isConverting;
 
@@ -553,28 +561,64 @@ namespace Biaui.Controls
                 }
             });
 
-            _redEditor.StartedContinuousEditingCommand = started;
-            _greenEditor.StartedContinuousEditingCommand = started;
-            _blueEditor.StartedContinuousEditingCommand = started;
-            _alphaEditor.StartedContinuousEditingCommand = started;
-            _hueEditor.StartedContinuousEditingCommand = started;
-            _saturationEditor.StartedContinuousEditingCommand = started;
-            _valueEditor.StartedContinuousEditingCommand = started;
-            _valueBar.StartedContinuousEditingCommand = started;
+            if (_redEditor != null)
+            {
+                _redEditor.StartedContinuousEditingCommand = started;
+                _redEditor.EndContinuousEditingCommand = end;
+            }
 
-            _redEditor.EndContinuousEditingCommand = end;
-            _greenEditor.EndContinuousEditingCommand = end;
-            _blueEditor.EndContinuousEditingCommand = end;
-            _alphaEditor.EndContinuousEditingCommand = end;
-            _hueEditor.EndContinuousEditingCommand = end;
-            _saturationEditor.EndContinuousEditingCommand = end;
-            _valueEditor.EndContinuousEditingCommand = end;
-            _valueBar.EndContinuousEditingCommand = end;
+            if (_greenEditor != null)
+            {
+                _greenEditor.StartedContinuousEditingCommand = started;
+                _greenEditor.EndContinuousEditingCommand = end;
+            }
+
+            if (_blueEditor != null)
+            {
+                _blueEditor.StartedContinuousEditingCommand = started;
+                _blueEditor.EndContinuousEditingCommand = end;
+            }
+
+            if (_alphaEditor != null)
+            {
+                _alphaEditor.StartedContinuousEditingCommand = started;
+                _alphaEditor.EndContinuousEditingCommand = end;
+            }
+
+            if (_hueEditor != null)
+            {
+                _hueEditor.StartedContinuousEditingCommand = started;
+                _hueEditor.EndContinuousEditingCommand = end;
+            }
+
+            if (_saturationEditor != null)
+            {
+                _saturationEditor.StartedContinuousEditingCommand = started;
+                _saturationEditor.EndContinuousEditingCommand = end;
+            }
+
+            if (_valueEditor != null)
+            {
+                _valueEditor.StartedContinuousEditingCommand = started;
+                _valueEditor.EndContinuousEditingCommand = end;
+            }
+
+            if (_valueBar != null)
+            {
+                _valueBar.StartedContinuousEditingCommand = started;
+                _valueBar.EndContinuousEditingCommand = end;
+            }
 
             if (_wheelBackground != null)
             {
                 _wheelBackground.StartedContinuousEditingCommand = started;
                 _wheelBackground.EndContinuousEditingCommand = end;
+            }
+
+            if (_boxBackground != null)
+            {
+                _boxBackground.StartedContinuousEditingCommand = started;
+                _boxBackground.EndContinuousEditingCommand = end;
             }
         }
 
