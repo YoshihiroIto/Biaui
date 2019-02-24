@@ -981,9 +981,7 @@ namespace Biaui.Controls
 
         private TextBox _textBox;
         private bool _isEditing;
-
-        private Window _parentWindow;
-
+    
         private void AddValue(double i)
         {
             var v = Value + i;
@@ -1023,6 +1021,7 @@ namespace Biaui.Controls
                 _textBox.TextChanged += TextBox_OnTextChanged;
                 _textBox.LostFocus += TextBox_OnLostFocus;
                 _textBox.PreviewKeyDown += TextBox_OnPreviewKeyDown;
+                _textBox.PreviewMouseDown += TextBox_OnPreviewMouseDown;
             }
 
             _textBox.Width = ActualWidth;
@@ -1035,14 +1034,21 @@ namespace Biaui.Controls
 
             _textBox.SelectAll();
             _textBox.Focus();
+            _textBox.CaptureMouse();
 
             _isEditing = true;
+        }
 
-            if (_parentWindow == null)
-                _parentWindow = this.GetParent<Window>();
+        private void TextBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // 自コントロール上であれば、終了させない
+            var pos = e.GetPosition(this);
+            var rect = this.RoundLayoutActualRectangle(false);
+            if (rect.Contains(pos))
+                return;
 
-            if (_parentWindow != null)
-                _parentWindow.PreviewMouseDown += ParentWindow_PreviewMouseDown;
+            if (_isEditing)
+                FinishEditing(true);
         }
 
         private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -1107,18 +1113,6 @@ namespace Biaui.Controls
             }
         }
 
-        private void ParentWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // 自コントロール上であれば、終了させない
-            var pos = e.GetPosition(this);
-            var rect = this.RoundLayoutActualRectangle(false);
-            if (rect.Contains(pos))
-                return;
-
-            if (_isEditing)
-                FinishEditing(true);
-        }
-
         private void FinishEditing(bool isEdit)
         {
             if (isEdit)
@@ -1129,12 +1123,13 @@ namespace Biaui.Controls
                     Value = v.Value;
             }
 
+
+            _textBox.ReleaseMouseCapture();
+
+
             RemoveVisualChild(_textBox);
             _isEditing = false;
             InvalidateVisual();
-
-            if (_parentWindow != null)
-                _parentWindow.PreviewMouseDown -= ParentWindow_PreviewMouseDown;
         }
 
         protected override int VisualChildrenCount
