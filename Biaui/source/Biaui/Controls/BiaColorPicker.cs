@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -115,7 +117,7 @@ namespace Biaui.Controls
         #endregion
 
         #region IsVisibleAlphaEditor
-        
+
         public bool IsVisibleAlphaEditor
         {
             get => _IsVisibleAlphaEditor;
@@ -125,9 +127,9 @@ namespace Biaui.Controls
                     SetValue(IsVisibleAlphaEditorProperty, value);
             }
         }
-        
+
         private bool _IsVisibleAlphaEditor = true;
-        
+
         public static readonly DependencyProperty IsVisibleAlphaEditorProperty =
             DependencyProperty.Register(
                 nameof(IsVisibleAlphaEditor),
@@ -138,9 +140,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaColorPicker) s;
-                        self._IsVisibleAlphaEditor = (bool)e.NewValue;
+                        self._IsVisibleAlphaEditor = (bool) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region Hue
@@ -250,6 +252,122 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region StartedContinuousEditingCommand
+
+        public ICommand StartedContinuousEditingCommand
+        {
+            get => _StartedContinuousEditingCommand;
+            set
+            {
+                if (value != _StartedContinuousEditingCommand)
+                    SetValue(StartedContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _StartedContinuousEditingCommand;
+
+        public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region EndContinuousEditingCommand
+
+        public ICommand EndContinuousEditingCommand
+        {
+            get => _EndContinuousEditingCommand;
+            set
+            {
+                if (value != _EndContinuousEditingCommand)
+                    SetValue(EndContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _EndContinuousEditingCommand;
+
+        public static readonly DependencyProperty EndContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._EndContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region StartedBatchEditingCommand
+
+        public ICommand StartedBatchEditingCommand
+        {
+            get => _StartedBatchEditingCommand;
+            set
+            {
+                if (value != _StartedBatchEditingCommand)
+                    SetValue(StartedBatchEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _StartedBatchEditingCommand;
+
+        public static readonly DependencyProperty StartedBatchEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedBatchEditingCommand),
+                typeof(ICommand),
+                typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._StartedBatchEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region EndBatchEditingCommand
+
+        public ICommand EndBatchEditingCommand
+        {
+            get => _EndBatchEditingCommand;
+            set
+            {
+                if (value != _EndBatchEditingCommand)
+                    SetValue(EndBatchEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _EndBatchEditingCommand;
+
+        public static readonly DependencyProperty EndBatchEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndBatchEditingCommand),
+                typeof(ICommand),
+                typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._EndBatchEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
         static BiaColorPicker()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaColorPicker),
@@ -324,12 +442,15 @@ namespace Biaui.Controls
                         throw new Exception();
                 }
             }
+
+            SetContinuousEditingCommand();
         }
 
         private BiaNumberEditor _redEditor;
         private BiaNumberEditor _greenEditor;
         private BiaNumberEditor _blueEditor;
         private BiaNumberEditor _alphaEditor;
+
         private BiaNumberEditor _hueEditor;
         private BiaNumberEditor _saturationEditor;
         private BiaNumberEditor _valueEditor;
@@ -343,7 +464,15 @@ namespace Biaui.Controls
 
             _isConverting = true;
 
+            if (StartedBatchEditingCommand != null &&
+                StartedBatchEditingCommand.CanExecute(null))
+                StartedBatchEditingCommand.Execute(null);
+
             (Hue, Saturation, Value) = ColorSpaceHelper.RgbToHsv(Red, Green, Blue);
+
+            if (EndBatchEditingCommand != null &&
+                EndBatchEditingCommand.CanExecute(null))
+                EndBatchEditingCommand.Execute(null);
 
             _isConverting = false;
         }
@@ -355,9 +484,101 @@ namespace Biaui.Controls
 
             _isConverting = true;
 
+            if (StartedBatchEditingCommand != null &&
+                StartedBatchEditingCommand.CanExecute(null))
+                StartedBatchEditingCommand.Execute(null);
+
             (Red, Green, Blue) = ColorSpaceHelper.HsvToRgb(Hue, Saturation, Value);
 
+            if (EndBatchEditingCommand != null &&
+                EndBatchEditingCommand.CanExecute(null))
+                EndBatchEditingCommand.Execute(null);
+
             _isConverting = false;
+        }
+
+        private void SetContinuousEditingCommand()
+        {
+            int editingDepth = 0;
+
+            (double, double, double) continuousEditingStartValue = default;
+
+            var started = new DelegateCommand(() =>
+            {
+                if (editingDepth == 0)
+                {
+                    continuousEditingStartValue = (Red, Green, Blue);
+
+                    if (StartedContinuousEditingCommand != null)
+                        if (StartedContinuousEditingCommand.CanExecute(null))
+                            StartedContinuousEditingCommand.Execute(null);
+                }
+
+                ++editingDepth;
+
+                Debug.WriteLine($"start:{editingDepth}");
+            });
+
+            var end = new DelegateCommand(() =>
+            {
+                Debug.Assert(editingDepth > 0);
+
+                --editingDepth;
+                if (editingDepth == 0)
+                {
+                    if (EndContinuousEditingCommand != null)
+                    {
+                        if (EndContinuousEditingCommand.CanExecute(null))
+                        {
+                            var changedValue = (Red, Green, Blue);
+
+                            (Red, Green, Blue) = continuousEditingStartValue;
+
+                            EndContinuousEditingCommand.Execute(null);
+
+                            (Red, Green, Blue) = changedValue;
+                        }
+                    }
+                }
+
+                Debug.WriteLine($"end:{editingDepth}");
+            });
+
+            _redEditor.StartedContinuousEditingCommand = started;
+            _greenEditor.StartedContinuousEditingCommand = started;
+            _blueEditor.StartedContinuousEditingCommand = started;
+            _alphaEditor.StartedContinuousEditingCommand = started;
+            _hueEditor.StartedContinuousEditingCommand = started;
+            _saturationEditor.StartedContinuousEditingCommand = started;
+            _valueEditor.StartedContinuousEditingCommand = started;
+
+            _redEditor.EndContinuousEditingCommand = end;
+            _greenEditor.EndContinuousEditingCommand = end;
+            _blueEditor.EndContinuousEditingCommand = end;
+            _alphaEditor.EndContinuousEditingCommand = end;
+            _hueEditor.EndContinuousEditingCommand = end;
+            _saturationEditor.EndContinuousEditingCommand = end;
+            _valueEditor.EndContinuousEditingCommand = end;
+        }
+
+
+        private class DelegateCommand : ICommand
+        {
+            private readonly Action _execute;
+
+            public DelegateCommand(Action execute)
+            {
+                _execute = execute;
+            }
+
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
+
+            bool ICommand.CanExecute(object parameter) => true;
+            void ICommand.Execute(object parameter) => _execute?.Invoke();
         }
     }
 }

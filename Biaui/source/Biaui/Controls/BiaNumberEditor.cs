@@ -907,7 +907,6 @@ namespace Biaui.Controls
                     {
                         if (EndContinuousEditingCommand.CanExecute(null))
                         {
-
                             var changedValue = Value;
                             Value = _ContinuousEditingStartValue;
 
