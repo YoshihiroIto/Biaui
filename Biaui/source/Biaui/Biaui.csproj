@@ -109,9 +109,6 @@
     <Page Include="Controls\NodeEditor\BiaNodeEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\BiaHsvWheelCursor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\BiaTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
