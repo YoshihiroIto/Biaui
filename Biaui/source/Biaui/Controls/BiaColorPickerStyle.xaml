@@ -73,9 +73,9 @@
                                                        Grid.Column="0"
                                                        Grid.ColumnSpan="3"
                                                        Margin="0,0,28,0"
-                                                       Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                       Hue="{Binding Hue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                        IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                       Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                                                       Saturation="{Binding Saturation, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                         <colorPicker:BiaColorBar Grid.Row="0"
                                                  Grid.Column="2"
@@ -140,7 +140,7 @@
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}">
                                     <colorPicker:BiaNumberEditor.Style>
-                                        <Style TargetType="{x:Type colorPicker:BiaNumberEditor}" BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}">
+                                        <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="False">
                                                     <Setter Property="Visibility" Value="Collapsed" />

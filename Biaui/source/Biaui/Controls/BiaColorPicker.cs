@@ -336,6 +336,9 @@ namespace Biaui.Controls
                     {
                         var self = (BiaColorPicker) s;
                         self._StartedBatchEditingCommand = (ICommand) e.NewValue;
+
+                        if (self._wheelBackground != null)
+                            self._wheelBackground.StartedBatchEditingCommand = self._StartedBatchEditingCommand;
                     }));
 
         #endregion
@@ -365,6 +368,9 @@ namespace Biaui.Controls
                     {
                         var self = (BiaColorPicker) s;
                         self._EndBatchEditingCommand = (ICommand) e.NewValue;
+
+                        if (self._wheelBackground != null)
+                            self._wheelBackground.EndBatchEditingCommand = self._EndBatchEditingCommand;
                     }));
 
         #endregion
@@ -445,6 +451,7 @@ namespace Biaui.Controls
             }
 
             _valueBar = this.Descendants<BiaColorBar>().First();
+            _wheelBackground = this.Descendants<BiaHsvWheelBackground>().FirstOrDefault();
 
             SetContinuousEditingCommand();
         }
@@ -459,6 +466,7 @@ namespace Biaui.Controls
         private BiaNumberEditor _valueEditor;
 
         private BiaColorBar _valueBar;
+        private BiaHsvWheelBackground _wheelBackground;
 
         private bool _isConverting;
 
@@ -562,8 +570,13 @@ namespace Biaui.Controls
             _saturationEditor.EndContinuousEditingCommand = end;
             _valueEditor.EndContinuousEditingCommand = end;
             _valueBar.EndContinuousEditingCommand = end;
-        }
 
+            if (_wheelBackground != null)
+            {
+                _wheelBackground.StartedContinuousEditingCommand = started;
+                _wheelBackground.EndContinuousEditingCommand = end;
+            }
+        }
 
         private class DelegateCommand : ICommand
         {

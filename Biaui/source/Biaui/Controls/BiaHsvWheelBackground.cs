@@ -120,6 +120,122 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region StartedContinuousEditingCommand
+
+        public ICommand StartedContinuousEditingCommand
+        {
+            get => _StartedContinuousEditingCommand;
+            set
+            {
+                if (value != _StartedContinuousEditingCommand)
+                    SetValue(StartedContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _StartedContinuousEditingCommand;
+
+        public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaHsvWheelBackground),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaHsvWheelBackground) s;
+                        self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region EndContinuousEditingCommand
+
+        public ICommand EndContinuousEditingCommand
+        {
+            get => _EndContinuousEditingCommand;
+            set
+            {
+                if (value != _EndContinuousEditingCommand)
+                    SetValue(EndContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _EndContinuousEditingCommand;
+
+        public static readonly DependencyProperty EndContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaHsvWheelBackground),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaHsvWheelBackground) s;
+                        self._EndContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region StartedBatchEditingCommand
+
+        public ICommand StartedBatchEditingCommand
+        {
+            get => _StartedBatchEditingCommand;
+            set
+            {
+                if (value != _StartedBatchEditingCommand)
+                    SetValue(StartedBatchEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _StartedBatchEditingCommand;
+
+        public static readonly DependencyProperty StartedBatchEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedBatchEditingCommand),
+                typeof(ICommand),
+                typeof(BiaHsvWheelBackground),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaHsvWheelBackground) s;
+                        self._StartedBatchEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region EndBatchEditingCommand
+
+        public ICommand EndBatchEditingCommand
+        {
+            get => _EndBatchEditingCommand;
+            set
+            {
+                if (value != _EndBatchEditingCommand)
+                    SetValue(EndBatchEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _EndBatchEditingCommand;
+
+        public static readonly DependencyProperty EndBatchEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndBatchEditingCommand),
+                typeof(ICommand),
+                typeof(BiaHsvWheelBackground),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaHsvWheelBackground) s;
+                        self._EndBatchEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
         private readonly HsvWheelBackgroundEffect _effect = new HsvWheelBackgroundEffect();
 
         static BiaHsvWheelBackground()
@@ -134,7 +250,7 @@ namespace Biaui.Controls
 
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
 
-            _effect.BorderColor = (Color)FindResource("BackgroundBackgroundColorKey");
+            _effect.BorderColor = (Color) FindResource("BackgroundBackgroundColorKey");
 
             SizeChanged += (_, __) =>
             {
@@ -190,6 +306,8 @@ namespace Biaui.Controls
         }
 
         private bool _isMouseDown;
+        private bool _isContinuousEdited;
+        private (double, double) _ContinuousEditingStartValue;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -200,6 +318,14 @@ namespace Biaui.Controls
 
             _isMouseDown = true;
             GuiHelper.HideCursor();
+
+
+            _ContinuousEditingStartValue = (Hue, Saturation);
+            _isContinuousEdited = true;
+            if (StartedContinuousEditingCommand != null)
+                if (StartedContinuousEditingCommand.CanExecute(null))
+                    StartedContinuousEditingCommand.Execute(null);
+
 
             UpdateParams(e);
 
@@ -248,6 +374,32 @@ namespace Biaui.Controls
             GuiHelper.ShowCursor();
             this.ResetMouseClipping();
             ReleaseMouseCapture();
+
+            if (_isContinuousEdited)
+            {
+                if (EndContinuousEditingCommand != null)
+                {
+                    if (EndContinuousEditingCommand.CanExecute(null))
+                    {
+                        var changedValue = (Hue, Saturation);
+                        (Hue, Saturation) = _ContinuousEditingStartValue;
+
+                        EndContinuousEditingCommand.Execute(null);
+
+                        if (StartedBatchEditingCommand != null &&
+                            StartedBatchEditingCommand.CanExecute(null))
+                            StartedBatchEditingCommand.Execute(null);
+
+                        (Hue, Saturation) = changedValue;
+
+                        if (EndBatchEditingCommand != null &&
+                            EndBatchEditingCommand.CanExecute(null))
+                            EndBatchEditingCommand.Execute(null);
+                    }
+                }
+
+                _isContinuousEdited = false;
+            }
 
             e.Handled = true;
         }
