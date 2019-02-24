@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:biaui="clr-namespace:Biaui"
+                    xmlns:controls="clr-namespace:Biaui.Controls">
+    <Style TargetType="{x:Type Popup}">
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource BiauiFontFamily}" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+        <Setter Property="TextOptions.TextHintingMode" Value="Animated" />
+
+        <Setter Property="Child">
+            <Setter.Value>
+                <controls:BiaClippingBorder Margin="0,0,8,8"
+                                            Background="{DynamicResource SemiactiveBackgroundBrushKey}"
+                                            BorderBrush="{DynamicResource SemiactiveBorderBrushKey}"
+                                            BorderThickness="1"
+                                            CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                    <ContentPresenter HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      SnapsToDevicePixels="True" />
+
+                    <controls:BiaClippingBorder.Effect>
+                        <DropShadowEffect ShadowDepth="2" Color="Black" />
+                    </controls:BiaClippingBorder.Effect>
+                </controls:BiaClippingBorder>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
