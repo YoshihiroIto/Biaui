@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Internal;
-using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
