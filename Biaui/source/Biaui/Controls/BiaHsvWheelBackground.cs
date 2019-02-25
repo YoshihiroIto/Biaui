@@ -316,6 +316,9 @@ namespace Biaui.Controls
             if (IsReadOnly)
                 return;
 
+            if (IsOutSide(e.GetPosition(this)))
+                return;
+
             _isMouseDown = true;
             GuiHelper.HideCursor();
 
@@ -417,6 +420,28 @@ namespace Biaui.Controls
             }
 
             e.Handled = true;
+        }
+
+        private bool IsOutSide(Point pos)
+        {
+            var bw = FrameworkElementHelper.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+
+            var width = ActualWidth - bw * 2;
+            var height = ActualHeight - bw * 2;
+
+            var x = (pos.X - bw) / width;
+            var y = (pos.Y - bw) / height;
+
+            var dx = x - 0.5;
+            var dy = y - 0.5;
+
+            var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
+            dx = dx * cx;
+            dy = dy * cy;
+
+            var s = Math.Sqrt(dx * dx + dy * dy) * 2;
+
+            return s > 1;
         }
     }
 }
