@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Internal;
+using Biaui.Interfaces;
+using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -227,6 +232,9 @@ namespace Biaui.Controls.NodeEditor
             }
 
             base.Child = grid;
+
+            //// キー操作を受け付けるためにフォーカスをあてる
+            //mouseOperator.PreMouseLeftButtonDown += (_, __) => Focus();
         }
 
         private void UpdateLinksSource(
@@ -297,6 +305,9 @@ namespace Biaui.Controls.NodeEditor
 
             mouseOperator.PostMouseLeftButtonDown += (_, __) =>
             {
+                // キー操作を受け付けるためにフォーカスをあてる
+                Focus();
+
                 isInEditing = mouseOperator.IsBoxSelect ||
                               mouseOperator.IsPanelMove;
 
@@ -315,6 +326,84 @@ namespace Biaui.Controls.NodeEditor
                 PropertyEditCompleted?.Invoke(this, EventArgs.Empty);
                 isInEditing = false;
             };
+        }
+
+        public void FitAllNodes()
+        {
+            if (NodesSource == null)
+                return;
+
+            FitNodesInternal(NodesSource.Cast<IBiaNodeItem>());
+        }
+
+        public void FitSelectedNodes()
+        {
+            if (NodesSource == null)
+                return;
+
+            FitNodesInternal(NodesSource.Cast<IBiaNodeItem>().Where(x => x.IsSelected));
+        }
+
+        private void FitNodesInternal(IEnumerable<IBiaNodeItem> targetNodes)
+        {
+            var minX = double.MaxValue;
+            var minY = double.MaxValue;
+            var maxX = double.MinValue;
+            var maxY = double.MinValue;
+
+            foreach (var node in targetNodes)
+            {
+                minX = (minX, node.Pos.X).Min();
+                maxX = (maxX, node.Pos.X + node.Size.Width).Max();
+                minY = (minY, node.Pos.Y).Min();
+                maxY = (maxY, node.Pos.Y + node.Size.Height).Max();
+            }
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (minX == double.MaxValue)
+                return;
+
+            const double margin = 128.0;
+            minX -= margin;
+            minY -= margin;
+            maxX += margin;
+            maxY += margin;
+
+            // ---------------------------------------------------------------
+            var centerX = (minX + maxX) * 0.5;
+            var centerY = (minY + maxY) * 0.5;
+            var w = maxX - minX;
+            var h = maxY - minY;
+
+            var scaleX = ActualWidth / w;
+            var scaleY = ActualHeight / h;
+
+            var viewCx = ActualWidth * 0.5;
+            var viewCy = ActualHeight * 0.5;
+
+            var scale = (scaleX, scaleY).Min();
+            scale = (scale, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
+
+            Translate.X = -centerX * scale + viewCx;
+            Translate.Y = -centerY * scale + viewCy;
+            Scale.ScaleX = scale;
+            Scale.ScaleY = scale;
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            switch (e.Key)
+            {
+                case Key.A:
+                    FitAllNodes();
+                    break;
+
+                case Key.F:
+                    FitSelectedNodes();
+                    break;
+            }
         }
     }
 }

@@ -3,5 +3,8 @@
                     xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor">
     <Style TargetType="{x:Type nodeEditor:BiaNodeEditor}">
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
+
+        <!--  キー操作を受け付けるためにフォーカスをあてる  -->
+        <Setter Property="Focusable" Value="True" />
     </Style>
 </ResourceDictionary>
