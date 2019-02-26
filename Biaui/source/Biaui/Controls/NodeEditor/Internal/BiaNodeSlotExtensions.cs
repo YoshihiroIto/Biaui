@@ -1,10 +1,25 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Windows;
+using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal static class BiaNodeSlotExtensions 
+    internal static class BiaNodeSlotExtensions
     {
+        internal static bool HitCheck(this BiaNodeSlot slot, Point slotPos, Point mousePos)
+        {
+            if (slot.TargetSlotHitChecker != null)
+            {
+                if (slot.TargetSlotHitChecker(slotPos, mousePos) == false)
+                    return false;
+            }
+            else if ((slotPos, mousePos).DistanceSq() > Biaui.Internals.Constants.SlotMarkRadiusSq)
+                return false;
+
+            return true;
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static Point MakePos(this BiaNodeSlot slot, double panelWidth, double panelHeight)
         {

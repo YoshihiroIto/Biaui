@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Biaui.Controls.NodeEditor
@@ -14,6 +15,8 @@ namespace Biaui.Controls.NodeEditor
         public BiaNodeSlotAlign Align { get; set; }
 
         public Color Color { get; set; } = Colors.White;
+
+        public Func<Point /*スロット座標*/, Point /*マウス座標*/, bool> TargetSlotHitChecker;
     }
 
     public enum BiaNodeSlotAlign

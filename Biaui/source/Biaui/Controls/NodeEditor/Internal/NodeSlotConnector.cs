@@ -160,7 +160,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var slotPos = nodeItem.MakeSlotPos(slot);
 
-                    if ((slotPos, mousePos).DistanceSq() > Biaui.Internals.Constants.SlotMarkRadiusSq)
+                    if (slot.HitCheck(slotPos, mousePos) == false)
                         continue;
 
                     _parent.TargetNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);
