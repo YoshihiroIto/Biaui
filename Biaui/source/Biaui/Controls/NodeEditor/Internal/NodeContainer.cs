@@ -204,7 +204,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                     ClearSelectedNode();
 
-                foreach (var c in Children)
+                foreach (var c in Children.ToArray())
                 {
                     var node = (IBiaNodeItem) c.DataContext;
 
@@ -687,6 +687,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                     _parent.InvokeNodeItemMoved();
                     UpdateSelectedNode(node);
                     ChangeElementInternal(false);
+
+                    if (e.PropertyName == nameof(IBiaNodeItem.IsSelected))
+                        ToLast(_nodeDict[node]);
+
                     break;
                 }
 

@@ -55,6 +55,12 @@ namespace Biaui.Controls.Internals
             if (_childrenForSearch.Contains(child) == false)
                 return;
 
+            if (_children.Count == 0)
+                return;
+
+            if (Equals(_children[_children.Count - 1], child))
+                return;
+
             _children.Remove(child);
             RemoveVisualChild(child);
 
