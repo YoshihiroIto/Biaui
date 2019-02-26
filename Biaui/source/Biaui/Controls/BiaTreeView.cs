@@ -117,7 +117,10 @@ namespace Biaui.Controls
             }
 
             if (targetItem == null)
+            {
+                e.Handled = true;
                 return;
+            }
 
             if ((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
                 SelectMultipleItems(targetItem);
