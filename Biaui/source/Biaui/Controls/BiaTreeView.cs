@@ -28,6 +28,8 @@ namespace Biaui.Controls
         {
             var self = (BiaTreeView) obj;
 
+            self._selectedItem = e.NewValue;
+
             if (self.SelectedItems == null)
                 return;
 
@@ -35,10 +37,16 @@ namespace Biaui.Controls
             self.SelectedItems.Add(e.NewValue);
         }
 
+        private object _selectedItem; 
+
         public new object SelectedItem
         {
-            get => (TreeViewItem) GetValue(SelectedItemProperty);
-            set => SetValue(SelectedItemProperty, value);
+            get => _selectedItem;
+            set
+            {
+                if (_selectedItem != value)
+                    SetValue(SelectedItemProperty, value);
+            }
         }
 
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached(
