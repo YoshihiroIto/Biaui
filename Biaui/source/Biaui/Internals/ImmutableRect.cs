@@ -13,6 +13,8 @@ namespace Biaui.Internals
         public readonly double Width;
         public readonly double Height;
 
+        public bool HasArea => Width > 0 && Height > 0;
+
         public ImmutableRect(double x, double y, double width, double height)
             => (X, Y, Width, Height) = (x, y, width, height);
 

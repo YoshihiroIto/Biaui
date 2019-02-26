@@ -232,9 +232,6 @@ namespace Biaui.Controls.NodeEditor
             }
 
             base.Child = grid;
-
-            //// キー操作を受け付けるためにフォーカスをあてる
-            //mouseOperator.PreMouseLeftButtonDown += (_, __) => Focus();
         }
 
         private void UpdateLinksSource(

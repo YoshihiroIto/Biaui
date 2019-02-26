@@ -115,8 +115,12 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             if (_mouseOperator.IsBoxSelect)
             {
-                SelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
-                ClearPreSelectedNode();
+                // クリック（面積のないボックス選択）は何もしない
+                if (_mouseOperator.SelectionRect.HasArea)
+                {
+                    SelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
+                    ClearPreSelectedNode();
+                }
             }
 
             if (_mouseOperator.IsPanelMove)
