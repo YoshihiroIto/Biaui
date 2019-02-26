@@ -123,8 +123,6 @@ namespace Biaui.Controls
                 SelectMultipleItems(targetItem);
             else
                 SelectSingleItem(targetItem);
-
-                e.Handled = true;
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
