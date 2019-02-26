@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -216,16 +217,20 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(typeof(BiaNodeEditor)));
         }
 
+        private readonly NodeContainer _nodeContainer;
+
         public BiaNodeEditor()
         {
             var mouseOperator = new MouseOperator(this, this);
+
+            _nodeContainer = new NodeContainer(this, mouseOperator);
 
             SetupPropertyEditCommand(mouseOperator);
 
             var grid = new Grid();
             {
                 grid.Children.Add(new BackgroundPanel(this, mouseOperator));
-                grid.Children.Add(new NodeContainer(this, mouseOperator));
+                grid.Children.Add(_nodeContainer);
                 grid.Children.Add(new BoxSelector(mouseOperator));
                 grid.Children.Add(new NodeSlotConnector(this, mouseOperator));
                 grid.Children.Add(CreateScaleSlider());
@@ -325,6 +330,22 @@ namespace Biaui.Controls.NodeEditor
             };
         }
 
+        public void Sleep()
+        {
+            ++_nodeContainer._isEnableUpdateChildrenBagDepth;
+        }
+
+        public void Wakeup()
+        {
+            --_nodeContainer._isEnableUpdateChildrenBagDepth;
+            Debug.Assert(_nodeContainer._isEnableUpdateChildrenBagDepth >= 0);
+
+            if (_nodeContainer._isEnableUpdateChildrenBagDepth == 0)
+                _nodeContainer.UpdateChildrenBag(true);
+        }
+
+        #region Fit
+
         public void FitAllNodes()
         {
             if (NodesSource == null)
@@ -402,5 +423,7 @@ namespace Biaui.Controls.NodeEditor
                     break;
             }
         }
+
+        #endregion
     }
 }

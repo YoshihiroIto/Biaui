@@ -65,7 +65,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
-        private int _isEnableUpdateChildrenBagDepth;
+        internal int _isEnableUpdateChildrenBagDepth;
 
         internal NodeContainer(BiaNodeEditor parent, MouseOperator mouseOperator)
             : base(parent)
@@ -361,7 +361,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 : panel;
         }
 
-        public void UpdateChildrenBag(bool isPushRemove)
+        internal void UpdateChildrenBag(bool isPushRemove)
         {
             if (_isEnableUpdateChildrenBagDepth > 0)
                 return;
