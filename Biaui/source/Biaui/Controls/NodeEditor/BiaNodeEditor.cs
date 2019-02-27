@@ -274,6 +274,13 @@ namespace Biaui.Controls.NodeEditor
         internal void InvokeLinkChanged()
             => LinkChanged?.Invoke(this, EventArgs.Empty);
 
+        internal void InvokePropertyEditStarting()
+            => PropertyEditStarting?.Invoke(this, EventArgs.Empty);
+
+        internal void InvokePropertyEditCompleted()
+            => PropertyEditCompleted?.Invoke(this, EventArgs.Empty);
+
+
         private Slider CreateScaleSlider()
         {
             var scaleSlider = new Slider
@@ -316,7 +323,7 @@ namespace Biaui.Controls.NodeEditor
                 if (isInEditing == false)
                     return;
 
-                PropertyEditStarting?.Invoke(this, EventArgs.Empty);
+                InvokePropertyEditStarting();
             };
 
 
@@ -325,7 +332,7 @@ namespace Biaui.Controls.NodeEditor
                 if (isInEditing == false)
                     return;
 
-                PropertyEditCompleted?.Invoke(this, EventArgs.Empty);
+                InvokePropertyEditCompleted();
                 isInEditing = false;
             };
         }

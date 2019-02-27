@@ -755,9 +755,12 @@ namespace Biaui.Controls.NodeEditor.Internal
                 // [Ctrl]押下で追加する
                 if (KeyboardHelper.IsPressControl == false)
                 {
+                    _parent.InvokePropertyEditStarting();
                     ClearSelectedNode();
 
                     nodeItem.IsSelected = true;
+
+                    _parent.InvokePropertyEditCompleted();
                 }
                 else
                     nodeItem.IsSelected = !nodeItem.IsSelected;
