@@ -15,7 +15,7 @@ namespace Biaui
         public static double ButtonPaddingX = 10;
         public static double ButtonPaddingY = 3;
 
-        public static double NodeEditor_MinScale = 0.2;
+        public static double NodeEditor_MinScale = 0.1;
         public static double NodeEditor_MaxScale = 2;
     }
 }
