@@ -37,7 +37,7 @@ namespace Biaui.Controls
             self.SelectedItems.Add(e.NewValue);
         }
 
-        private object _selectedItem; 
+        private object _selectedItem;
 
         public new object SelectedItem
         {
@@ -132,6 +132,18 @@ namespace Biaui.Controls
         {
             base.OnPreviewMouseLeftButtonDown(e);
 
+            OnPreviewMouseLeftButton(e, true);
+        }
+
+        protected override void OnPreviewMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnPreviewMouseLeftButtonUp(e);
+
+            OnPreviewMouseLeftButton(e, false);
+        }
+
+        private void OnPreviewMouseLeftButton(MouseButtonEventArgs e, bool isDown)
+        {
             var orgSource = e.OriginalSource as FrameworkElement;
             if (orgSource == null)
                 return;
@@ -150,15 +162,24 @@ namespace Biaui.Controls
             switch (Keyboard.Modifiers)
             {
                 case ModifierKeys.Control:
-                    ToggleSingleItem(treeViewItem);
+                    if (isDown)
+                        ToggleSingleItem(treeViewItem);
                     break;
 
                 case ModifierKeys.Shift:
-                    SelectMultipleItems(treeViewItem);
+                    if (isDown)
+                        SelectMultipleItems(treeViewItem);
                     break;
 
                 default:
-                    SelectSingleItem(treeViewItem);
+                    if (isDown)
+                    {
+                        if (GetIsSelected(treeViewItem) == false)
+                            SelectSingleItem(treeViewItem);
+                    }
+                    else
+                        SelectSingleItem(treeViewItem);
+
                     break;
             }
         }
