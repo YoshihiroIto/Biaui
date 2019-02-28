@@ -14,6 +14,9 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         private readonly BiaNodeEditor _parent;
 
+        private const double LineWidth = 3;
+        private const double ArrowSize = 20;
+
         static BackgroundPanel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BackgroundPanel),
@@ -126,7 +129,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 #endif
 
         private static readonly
-            Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
+            Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom,
+                StreamGeometryContext Ctx)> _curves
                 = new Dictionary<(Color, BiaNodeLinkStyle, bool), (StreamGeometry, StreamGeometryContext)>();
 
         private void DrawNodeLink(DrawingContext dc)
@@ -144,6 +148,17 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             Span<ImmutableVec2> work = stackalloc ImmutableVec2[10];
 
+
+            // 線分の太さを考慮
+            var inflate = ArrowSize * _parent.Scale.ScaleX;
+
+            var lineCullingRect = new ImmutableRect(
+                viewport.X - inflate,
+                viewport.Y - inflate,
+                viewport.Width + inflate * 2,
+                viewport.Height + inflate * 2
+            );
+
             foreach (IBiaNodeLink link in _parent.LinksSource)
             {
                 if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
@@ -154,27 +169,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var item1 = link.ItemSlot1.Item;
                 var item2 = link.ItemSlot2.Item;
 
-                // 大雑把にカリング
-                //  --> 接続線が膨らんだ前提でバウンディングボックスを作りビューポートと判定を取る
-                var (left, right) = (pos1.X, pos2.X).MinMax();
-                var (top, bottom) = (pos1.Y, pos2.Y).MinMax();
+                var lines = LinkLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(), work);
 
-                // 膨らませ量
-                var w = (item1.Size.Width, item2.Size.Width).Max();
-                var h = (item1.Size.Height, item2.Size.Height).Max();
-
-                var inflateBox = new ImmutableRect(left - w, top - h, right - left + w * 2, bottom - top + h * 2);
-                if (viewport.IntersectsWith(inflateBox) == false)
+                // 線分ごとにバウンディングボックス判定、折れ丸は無視
+                if (IsHitLines(lineCullingRect, lines) == false)
                     continue;
-
-                var lines = LinkLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(),
-                    work);
-
-                // ラインのバウンディングボックスと判定
-                var lineBox = new ImmutableRect(lines);
-                if (viewport.IntersectsWith(lineBox) == false)
-                    continue;
-
                 // 
                 var isHighlight = link.ItemSlot1.Item.IsSelected ||
                                   link.ItemSlot1.Item.IsPreSelected ||
@@ -183,7 +182,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                                   link.ItemSlot2.Item.IsPreSelected ||
                                   link.ItemSlot2.Item.IsMouseOver;
 
-                var color = ColorHelper.Lerp(alpha, backgroundColor, isHighlight ? _parent.HighlightLinkColor : link.Color);
+                var color = ColorHelper.Lerp(alpha, backgroundColor,
+                    isHighlight ? _parent.HighlightLinkColor : link.Color);
                 var key = (color, link.Style, isHighlight);
 
                 if (_curves.TryGetValue(key, out var curve) == false)
@@ -220,8 +220,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var pen =
                         (c.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(c.Key.Color, 3)
-                            : Caches.GetPen(c.Key.Color, 3);
+                            ? Caches.GetDashedPen(c.Key.Color, LineWidth)
+                            : Caches.GetPen(c.Key.Color, LineWidth);
 
                     ((IDisposable) c.Value.Ctx).Dispose();
                     dc.DrawGeometry(Caches.GetSolidColorBrush(c.Key.Color), pen, c.Value.Geom);
@@ -234,8 +234,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var pen =
                         (c.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(c.Key.Color, 3)
-                            : Caches.GetPen(c.Key.Color, 3);
+                            ? Caches.GetDashedPen(c.Key.Color, LineWidth)
+                            : Caches.GetPen(c.Key.Color, LineWidth);
 
                     ((IDisposable) c.Value.Ctx).Dispose();
                     dc.DrawGeometry(Caches.GetSolidColorBrush(c.Key.Color), pen, c.Value.Geom);
@@ -266,8 +266,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var pos = (edge1 + edge2) * 0.5;
 
-            const double size = 20;
-            var pv = ImmutableVec2.SetSize(edge1 - edge2, size);
+            var pv = ImmutableVec2.SetSize(edge1 - edge2, ArrowSize);
             var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
 
             var t1 = pos + pv;
@@ -301,6 +300,71 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
 
             return maxIndex;
+        }
+
+        private bool IsHitLines(in ImmutableRect rect, Span<ImmutableVec2> points)
+        {
+            if (points.Length <= 1)
+                return false;
+
+            for (var i = 1; i != points.Length; ++i)
+            {
+                ref var p0 = ref points[i - 1];
+                ref var p1 = ref points[i - 0];
+
+                // 垂直線
+                if (NumberHelper.AreClose(p0.X, p1.X))
+                {
+                    if (p0.X < rect.X)
+                        continue;
+
+                    if (p0.X > rect.X + rect.Width)
+                        continue;
+
+                    if (p0.Y > rect.Y &&
+                        p0.Y < rect.Y + rect.Height)
+                        return true;
+
+                    if (p1.Y > rect.Y &&
+                        p1.Y < rect.Y + rect.Height)
+                        return true;
+
+                    if (p0.Y < rect.Y &&
+                        p1.Y > rect.Y + rect.Height)
+                        return true;
+
+                    if (p1.Y < rect.Y &&
+                        p0.Y > rect.Y + rect.Height)
+                        return true;
+                }
+                // 水平線
+                else
+                {
+                    if (p0.Y < rect.Y)
+                        continue;
+
+                    if (p0.Y > rect.Y + rect.Height)
+                        continue;
+
+                    if (p0.X > rect.X &&
+                        p0.X < rect.X + rect.Width)
+                        return true;
+
+                    if (p1.X > rect.X &&
+                        p1.X < rect.X + rect.Width)
+                        return true;
+
+                    if (p0.X < rect.X &&
+                        p1.X > rect.X + rect.Width)
+                        return true;
+
+                    if (p1.X < rect.X &&
+                        p0.X > rect.X + rect.Width)
+                        return true;
+                }
+            }
+
+            return false;
         }
     }
 }
