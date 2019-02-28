@@ -432,5 +432,10 @@ namespace Biaui.Controls.NodeEditor
         }
 
         #endregion
+
+        public Point ControlPosToNodeEditorPos(Point point)
+        {
+            return this.TransformPos(point.X, point.Y);
+        }
     }
 }
