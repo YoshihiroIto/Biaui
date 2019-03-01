@@ -29,12 +29,6 @@ namespace Biaui.Controls
             var self = (BiaTreeView) obj;
 
             self._selectedItem = e.NewValue;
-
-            if (self.SelectedItems == null)
-                return;
-
-            self.SelectedItems.Clear();
-            self.SelectedItems.Add(e.NewValue);
         }
 
         private object _selectedItem;
