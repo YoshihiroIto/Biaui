@@ -148,8 +148,7 @@ namespace Biaui.Controls
 
         private void OnPreviewMouseLeftButton(MouseButtonEventArgs e, bool isDown)
         {
-            var orgSource = e.OriginalSource as FrameworkElement;
-            if (orgSource == null)
+            if (!(e.OriginalSource is FrameworkElement orgSource))
                 return;
 
             // アイテムの改変マークだったら選択処理を行わない
