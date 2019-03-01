@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -91,6 +93,51 @@ namespace Biaui.Controls
             parent.SelectedItem = isSelected
                 ? treeViewItem.DataContext
                 : null;
+        }
+
+        private INotifyCollectionChanged _oldItemsSource;
+
+        public BiaTreeView()
+        {
+            var itemsSourceDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty, typeof(BiaTreeView));
+            itemsSourceDescriptor.AddValueChanged(this,
+                (sender, e) =>
+                {
+                    if (_oldItemsSource != null)
+                        _oldItemsSource.CollectionChanged -= ItemsSourceOnCollectionChanged;
+
+                    var itemsSource = ItemsSource as INotifyCollectionChanged;
+                    if (itemsSource != null)
+                        itemsSource.CollectionChanged += ItemsSourceOnCollectionChanged;
+
+                    _oldItemsSource = itemsSource;
+                });
+        }
+
+        private void ItemsSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (SelectedItems == null)
+                return;
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (var item in e.OldItems)
+                        SelectedItems.Remove(item);
+
+                    break;
+
+                case NotifyCollectionChangedAction.Replace:
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Reset:
+                    throw new NotImplementedException();
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
