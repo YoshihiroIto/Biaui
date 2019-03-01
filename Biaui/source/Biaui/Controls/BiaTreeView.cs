@@ -78,15 +78,25 @@ namespace Biaui.Controls
             var treeViewItem = obj as TreeViewItem;
 
             var parent = treeViewItem?.GetParent<BiaTreeView>();
-            var selectedItems = parent?.SelectedItems;
 
-            if (selectedItems == null)
+            if (parent == null)
                 return;
 
-            if (GetIsSelected(treeViewItem))
-                selectedItems.Add(treeViewItem.DataContext);
-            else
-                selectedItems.Remove(treeViewItem.DataContext);
+            var selectedItems = parent.SelectedItems;
+
+            var isSelected = GetIsSelected(treeViewItem);
+
+            if (selectedItems != null)
+            {
+                if (isSelected)
+                    selectedItems.Add(treeViewItem.DataContext);
+                else
+                    selectedItems.Remove(treeViewItem.DataContext);
+            }
+
+            parent.SelectedItem = isSelected
+                ? treeViewItem.DataContext
+                : null;
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
