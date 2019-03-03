@@ -49,8 +49,12 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => X.GetHashCode() ^
-               Y.GetHashCode();
+        {
+            unchecked
+            {
+                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+            }
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2 SetSize(in ImmutableVec2 v, double size)

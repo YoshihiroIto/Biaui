@@ -44,8 +44,12 @@ namespace Biaui.Controls.NodeEditor
         }
 
         public override int GetHashCode()
-            => Item.GetHashCode() ^
-               Slot.GetHashCode();
+        {
+            unchecked
+            {
+                return ((Item != null ? Item.GetHashCode() : 0) * 397) ^ (Slot != null ? Slot.GetHashCode() : 0);
+            }
+        }
     }
 
     public readonly struct BiaNodeItemSlotIdPair
@@ -91,7 +95,11 @@ namespace Biaui.Controls.NodeEditor
         }
 
         public override int GetHashCode()
-            => Item.GetHashCode() ^
-               SlotId.GetHashCode();
+        {
+            unchecked
+            {
+                return ((Item != null ? Item.GetHashCode() : 0) * 397) ^ SlotId;
+            }
+        }
     }
 }

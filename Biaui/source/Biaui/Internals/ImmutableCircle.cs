@@ -35,8 +35,14 @@ namespace Biaui.Internals
         }
 
         public override int GetHashCode()
-            => CenterX.GetHashCode() ^
-               CenterY.GetHashCode() ^
-               Radius.GetHashCode();
+        {
+            unchecked
+            {
+                var hashCode = CenterX.GetHashCode();
+                hashCode = (hashCode * 397) ^ CenterY.GetHashCode();
+                hashCode = (hashCode * 397) ^ Radius.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

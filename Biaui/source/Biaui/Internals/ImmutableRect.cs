@@ -304,9 +304,15 @@ namespace Biaui.Internals
         }
 
         public override int GetHashCode()
-            => X.GetHashCode() ^
-               Y.GetHashCode() ^
-               Width.GetHashCode() ^
-               Height.GetHashCode();
+        {
+            unchecked
+            {
+                var hashCode = X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ Width.GetHashCode();
+                hashCode = (hashCode * 397) ^ Height.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }
