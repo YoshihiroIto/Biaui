@@ -756,14 +756,19 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                 {
                     _parent.InvokePropertyEditStarting();
-                    ClearSelectedNode();
 
+                    ClearSelectedNode();
                     nodeItem.IsSelected = true;
 
                     _parent.InvokePropertyEditCompleted();
                 }
                 else
-                    nodeItem.IsSelected = !nodeItem.IsSelected;
+                    nodeItem.IsSelected = true;
+            }
+            else
+            {
+                if (KeyboardHelper.IsPressControl)
+                    nodeItem.IsSelected = false;
             }
 
             var slot = nodeItem.FindSlotFromPos(e.GetPosition(panel));
