@@ -172,7 +172,7 @@
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
+                <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
             </DataTrigger>
 
             <MultiDataTrigger>
@@ -182,7 +182,7 @@
                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
                 </MultiDataTrigger.Conditions>
 
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
             </MultiDataTrigger>
 
             <Trigger Property="IsEnabled" Value="False">
