@@ -738,6 +738,13 @@ namespace Biaui.Controls.NodeEditor.Internal
             var panel = (BiaNodePanel) sender;
             var nodeItem = (IBiaNodeItem) panel.DataContext;
 
+            // 親コントロールがマウスキャプチャーしてもここに飛んでくる
+            // IsMouseOverを作りたいので、マウス位置とノードコントロールの位置・サイズを見てマウスオーバー状態を作る
+            var mouesPos = e.GetPosition(panel);
+            if (mouesPos.X >= 0 && mouesPos.X < nodeItem.Size.Width &&
+                mouesPos.Y >= 0 && mouesPos.Y < nodeItem.Size.Height)
+                return;
+
             nodeItem.IsMouseOver = false;
 
             panel.InvalidateSlots();
