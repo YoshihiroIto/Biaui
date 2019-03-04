@@ -75,6 +75,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="StandardControls\ToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="StandardControls\GridSplitter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -213,9 +217,6 @@
     <Compile Include="Controls\BiaHsvBoxCursor.cs" />
     <Compile Include="Controls\BiaButton.cs" />
     <Compile Include="Controls\BiaWindow.cs" />
-    <Page Include="StandardControls\ToggleButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="StandardControls\ToolTip.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
