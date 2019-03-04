@@ -1,7 +1,38 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary x:Class="Biaui.StandardControls.TabControlAttachedProperties"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
-                    xmlns:controls="clr-namespace:Biaui.Controls">
+                    xmlns:controls="clr-namespace:Biaui.Controls"
+                    xmlns:standardControls="clr-namespace:Biaui.StandardControls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Button.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="TabAddButtonStyle"
+           BasedOn="{StaticResource SharpButtonStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="Content" Value="+" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="6,-2,7,0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Visibility" Value="Collapsed" />
+
+        <Style.Triggers>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonActiveForegroundBrushKey}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonPressedForegroundBrushKey}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+                <Setter Property="Background" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type TabControl}">
         <Setter Property="Padding" Value="2" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -25,13 +56,25 @@
                             <RowDefinition x:Name="RowDefinition1" Height="*" />
                         </Grid.RowDefinitions>
 
-                        <TabPanel x:Name="headerPanel"
-                                  Grid.Row="0"
-                                  Grid.Column="0"
-                                  Panel.ZIndex="1"
-                                  Background="Transparent"
-                                  IsItemsHost="true"
-                                  KeyboardNavigation.TabIndex="1" />
+                        <DockPanel x:Name="headerPanel"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   Panel.ZIndex="1">
+
+                            <TabPanel x:Name="TabPanel"
+                                      HorizontalAlignment="Left"
+                                      Background="Transparent"
+                                      DockPanel.Dock="Left"
+                                      IsItemsHost="true"
+                                      KeyboardNavigation.TabIndex="1" />
+
+                            <Button x:Name="AddButton"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Click="AddButton_OnClick"
+                                    Style="{StaticResource TabAddButtonStyle}" />
+
+                        </DockPanel>
 
                         <controls:BiaClippingBorder x:Name="contentPanel"
                                                     Grid.Row="1"
@@ -51,6 +94,10 @@
                     </Grid>
 
                     <ControlTemplate.Triggers>
+                        <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="True">
+                            <Setter TargetName="AddButton" Property="Visibility" Value="Visible" />
+                        </Trigger>
+
                         <Trigger Property="TabStripPlacement" Value="Top">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
@@ -75,7 +122,10 @@
                             <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
                             <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
                             <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
+
+                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="Top" />
                         </Trigger>
+
                         <Trigger Property="TabStripPlacement" Value="Left">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
@@ -93,7 +143,12 @@
                             <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
                             <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
                             <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
+
+                            <Setter TargetName="TabPanel" Property="DockPanel.Dock" Value="Top" />
+                            <Setter TargetName="AddButton" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="Top" />
                         </Trigger>
+
                         <Trigger Property="TabStripPlacement" Value="Right">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
@@ -111,6 +166,10 @@
                             <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
                             <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
                             <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
+
+                            <Setter TargetName="TabPanel" Property="DockPanel.Dock" Value="Top" />
+                            <Setter TargetName="AddButton" Property="HorizontalAlignment" Value="Left" />
+                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="Top" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -122,6 +181,10 @@
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+            </Trigger>
+
+            <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="True">
+                <Setter Property="Visibility" Value="Visible" />
             </Trigger>
         </Style.Triggers>
     </Style>
