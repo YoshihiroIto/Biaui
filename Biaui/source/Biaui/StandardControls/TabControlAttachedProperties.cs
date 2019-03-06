@@ -4,7 +4,7 @@ using Biaui.Internals;
 
 namespace Biaui.StandardControls
 {
-    public partial class TabControlAttachedProperties
+    public class TabControlAttachedProperties
     {
         public static readonly DependencyProperty IsVisibleAddButtonProperty =
             DependencyProperty.RegisterAttached(
