@@ -99,7 +99,8 @@ namespace Biaui.Controls
 
         public BiaTreeView()
         {
-            var itemsSourceDescriptor = DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty, typeof(BiaTreeView));
+            var itemsSourceDescriptor =
+                DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty, typeof(BiaTreeView));
             itemsSourceDescriptor.AddValueChanged(this,
                 (sender, e) =>
                 {
@@ -116,19 +117,27 @@ namespace Biaui.Controls
 
         private void ItemsSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (SelectedItems == null)
-                return;
-
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
+                {
+                    var vm = e.NewItems[0];
+                    var item = this.EnumerateChildren<TreeViewItem>().FirstOrDefault(x => x.DataContext == vm);
+                    item?.BringIntoView();
+                    _multipleSelectionEdgeItem = item;
+
                     break;
+                }
 
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var item in e.OldItems)
-                        SelectedItems.Remove(item);
+                    if (SelectedItems != null)
+                    {
+                        foreach (var item in e.OldItems)
+                            SelectedItems.Remove(item);
+                    }
 
                     _multipleSelectionEdgeItem = null;
+
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
