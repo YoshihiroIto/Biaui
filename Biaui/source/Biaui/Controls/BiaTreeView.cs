@@ -128,6 +128,7 @@ namespace Biaui.Controls
                     foreach (var item in e.OldItems)
                         SelectedItems.Remove(item);
 
+                    _multipleSelectionEdgeItem = null;
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
