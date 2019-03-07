@@ -150,11 +150,18 @@
 
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
-        <Setter Property="VirtualizingStackPanel.ScrollUnit" Value="Pixel" />
         <Setter Property="VirtualizingStackPanel.CacheLength" Value="20,20" />
         <Setter Property="VirtualizingStackPanel.CacheLengthUnit" Value="Item" />
 
         <Setter Property="ItemContainerStyle" Value="{StaticResource BiaTreeViewItemStyle}" />
+
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel CanVerticallyScroll="True" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
 
         <Setter Property="Template">
             <Setter.Value>
