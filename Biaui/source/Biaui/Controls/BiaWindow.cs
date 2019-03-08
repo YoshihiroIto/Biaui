@@ -93,7 +93,7 @@ namespace Biaui.Controls
         #endregion
 
         #region IsVisibleMinimizeButton
-        
+
         public bool IsVisibleMinimizeButton
         {
             get => _IsVisibleMinimizeButton;
@@ -103,9 +103,9 @@ namespace Biaui.Controls
                     SetValue(IsVisibleMinimizeButtonProperty, value);
             }
         }
-        
+
         private bool _IsVisibleMinimizeButton = true;
-        
+
         public static readonly DependencyProperty IsVisibleMinimizeButtonProperty =
             DependencyProperty.Register(
                 nameof(IsVisibleMinimizeButton),
@@ -116,14 +116,14 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaWindow) s;
-                        self._IsVisibleMinimizeButton = (bool)e.NewValue;
+                        self._IsVisibleMinimizeButton = (bool) e.NewValue;
                     }));
-        
+
         #endregion
-        
+
 
         #region IsVisibleMaximizeButton
-        
+
         public bool IsVisibleMaximizeButton
         {
             get => _IsVisibleMaximizeButton;
@@ -133,9 +133,9 @@ namespace Biaui.Controls
                     SetValue(IsVisibleMaximizeButtonProperty, value);
             }
         }
-        
+
         private bool _IsVisibleMaximizeButton = true;
-        
+
         public static readonly DependencyProperty IsVisibleMaximizeButtonProperty =
             DependencyProperty.Register(
                 nameof(IsVisibleMaximizeButton),
@@ -146,14 +146,14 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaWindow) s;
-                        self._IsVisibleMaximizeButton = (bool)e.NewValue;
+                        self._IsVisibleMaximizeButton = (bool) e.NewValue;
                     }));
-        
+
         #endregion
-        
+
 
         #region IsVisibleNormalizeButton
-        
+
         public bool IsVisibleNormalizeButton
         {
             get => _IsVisibleNormalizeButton;
@@ -163,9 +163,9 @@ namespace Biaui.Controls
                     SetValue(IsVisibleNormalizeButtonProperty, value);
             }
         }
-        
+
         private bool _IsVisibleNormalizeButton = true;
-        
+
         public static readonly DependencyProperty IsVisibleNormalizeButtonProperty =
             DependencyProperty.Register(
                 nameof(IsVisibleNormalizeButton),
@@ -176,14 +176,14 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaWindow) s;
-                        self._IsVisibleNormalizeButton = (bool)e.NewValue;
+                        self._IsVisibleNormalizeButton = (bool) e.NewValue;
                     }));
-        
+
         #endregion
-        
+
 
         #region IsVisibleCloseButtonButton
-        
+
         public bool IsVisibleCloseButtonButton
         {
             get => _IsVisibleCloseButtonButton;
@@ -193,9 +193,9 @@ namespace Biaui.Controls
                     SetValue(IsVisibleCloseButtonButtonProperty, value);
             }
         }
-        
+
         private bool _IsVisibleCloseButtonButton = true;
-        
+
         public static readonly DependencyProperty IsVisibleCloseButtonButtonProperty =
             DependencyProperty.Register(
                 nameof(IsVisibleCloseButtonButton),
@@ -206,9 +206,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaWindow) s;
-                        self._IsVisibleCloseButtonButton = (bool)e.NewValue;
+                        self._IsVisibleCloseButtonButton = (bool) e.NewValue;
                     }));
-        
+
         #endregion
 
         public event EventHandler CloseButtonClicked;
@@ -236,6 +236,18 @@ namespace Biaui.Controls
             if (CloseButtonClickedCommand != null)
                 if (CloseButtonClickedCommand.CanExecute(null))
                     CloseButtonClickedCommand.Execute(null);
+        }
+
+        // https://stackoverflow.com/questions/29207331/wpf-window-with-custom-chrome-has-unwanted-outline-on-right-and-bottom
+        protected void FixLayout()
+        {
+            void WindowSourceInitialized(object sender, EventArgs e)
+            {
+                InvalidateMeasure();
+                SourceInitialized -= WindowSourceInitialized;
+            }
+
+            SourceInitialized += WindowSourceInitialized;
         }
     }
 }
