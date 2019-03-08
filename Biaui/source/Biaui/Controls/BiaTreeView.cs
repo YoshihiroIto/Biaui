@@ -128,9 +128,11 @@ namespace Biaui.Controls
                 case NotifyCollectionChangedAction.Add:
                 {
                     var vm = e.NewItems[0];
+
                     var item = this.EnumerateChildren<TreeViewItem>().FirstOrDefault(x => x.DataContext == vm);
                     item?.BringIntoView();
-                    _multipleSelectionEdgeItem = item;
+
+                    _multipleSelectionEdgeItemDataContext = vm;
 
                     break;
                 }
@@ -142,7 +144,7 @@ namespace Biaui.Controls
                             SelectedItems.Remove(item);
                     }
 
-                    _multipleSelectionEdgeItem = null;
+                    _multipleSelectionEdgeItemDataContext = null;
 
                     break;
 
@@ -269,7 +271,7 @@ namespace Biaui.Controls
                 if (firstItem != null)
                 {
                     SelectedItem = firstItem.DataContext;
-                    _multipleSelectionEdgeItem = firstItem;
+                    _multipleSelectionEdgeItemDataContext = firstItem.DataContext;
                 }
             }
             ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
@@ -285,7 +287,7 @@ namespace Biaui.Controls
                 SetIsSelected(treeViewItem, next);
 
                 SelectedItem = next ? treeViewItem.DataContext : null;
-                _multipleSelectionEdgeItem = treeViewItem;
+                _multipleSelectionEdgeItemDataContext = treeViewItem.DataContext;
             }
             ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
@@ -300,22 +302,22 @@ namespace Biaui.Controls
                     SetIsSelected(item, item == treeViewItem);
 
                 SelectedItem = treeViewItem.DataContext;
-                _multipleSelectionEdgeItem = treeViewItem;
+                _multipleSelectionEdgeItemDataContext = treeViewItem.DataContext;
             }
             ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
-        private TreeViewItem _multipleSelectionEdgeItem;
+        private object _multipleSelectionEdgeItemDataContext;
 
         private void SelectMultipleItems(TreeViewItem edgeItem)
         {
-            if (_multipleSelectionEdgeItem == null)
+            if (_multipleSelectionEdgeItemDataContext == null)
                 return;
 
             if (edgeItem == null)
                 return;
 
-            if (edgeItem == _multipleSelectionEdgeItem)
+            if (edgeItem.DataContext == _multipleSelectionEdgeItemDataContext)
             {
                 SelectSingleItem(edgeItem);
                 return;
@@ -327,8 +329,8 @@ namespace Biaui.Controls
 
                 foreach (var item in this.EnumerateChildren<TreeViewItem>())
                 {
-                    if (ReferenceEquals(item, edgeItem) ||
-                        ReferenceEquals(item, _multipleSelectionEdgeItem))
+                    if (ReferenceEquals(item.DataContext, edgeItem.DataContext) ||
+                        ReferenceEquals(item.DataContext, _multipleSelectionEdgeItemDataContext))
                     {
                         isInSelection = !isInSelection;
 
@@ -344,7 +346,7 @@ namespace Biaui.Controls
                 }
 
                 SelectedItem = edgeItem.DataContext;
-                _multipleSelectionEdgeItem = edgeItem;
+                _multipleSelectionEdgeItemDataContext = edgeItem.DataContext;
             }
             ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
