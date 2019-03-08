@@ -90,9 +90,15 @@ namespace Biaui.Controls
                     selectedItems.Remove(treeViewItem.DataContext);
             }
 
-            parent.SelectedItem = isSelected
-                ? treeViewItem.DataContext
-                : null;
+            if (isSelected)
+                parent.SelectedItem = treeViewItem.DataContext;
+            else
+            {
+                if (selectedItems == null || selectedItems.Count == 0)
+                    parent.SelectedItem = null;
+                else
+                    parent.SelectedItem = selectedItems[0];
+            }
         }
 
         private INotifyCollectionChanged _oldItemsSource;
