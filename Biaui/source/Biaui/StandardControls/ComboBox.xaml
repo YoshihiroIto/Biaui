@@ -135,11 +135,11 @@
                                PopupAnimation="None"
                                VerticalOffset="1">
                             <controls:BiaClippingBorder x:Name="dropdown"
-                                                     MaxHeight="414"
-                                                     Background="{DynamicResource SubmenuItemBackground}"
-                                                     BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
-                                                     BorderThickness="1"
-                                                     SnapsToDevicePixels="True">
+                                                        MaxHeight="414"
+                                                        Background="{DynamicResource SubmenuItemBackground}"
+                                                        BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
+                                                        BorderThickness="1"
+                                                        SnapsToDevicePixels="True">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <ItemsPresenter />
                                 </ScrollViewer>
@@ -176,7 +176,7 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <StackPanel KeyboardNavigation.DirectionalNavigation="Contained" />
+                    <VirtualizingStackPanel KeyboardNavigation.DirectionalNavigation="Contained" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
