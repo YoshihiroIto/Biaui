@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -142,9 +143,11 @@ namespace Biaui.Controls
                     {
                         foreach (var item in e.OldItems)
                             SelectedItems.Remove(item);
+
+                        SelectedItem = SelectedItems.Count == 0 ? null : SelectedItems[0];
                     }
 
-                    _multipleSelectionEdgeItemDataContext = null;
+                    _multipleSelectionEdgeItemDataContext = SelectedItem;
 
                     break;
 
