@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -239,7 +238,12 @@ namespace Biaui.Controls
 
                 case ModifierKeys.Shift:
                     if (isDown)
-                        SelectMultipleItems(treeViewItem);
+                    {
+                        if (_multipleSelectionEdgeItemDataContext == null)
+                            SelectSingleItem(treeViewItem);
+                        else
+                            SelectMultipleItems(treeViewItem);
+                    }
                     break;
 
                 default:
