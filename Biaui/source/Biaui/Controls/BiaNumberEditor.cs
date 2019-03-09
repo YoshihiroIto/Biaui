@@ -173,12 +173,12 @@ namespace Biaui.Controls
             }
         }
 
-        private double _SliderMinimum;
+        private double _SliderMinimum = double.MinValue;
 
         public static readonly DependencyProperty SliderMinimumProperty =
             DependencyProperty.Register(nameof(SliderMinimum), typeof(double), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.Double0,
+                    Boxes.DoubleMin,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
@@ -201,12 +201,12 @@ namespace Biaui.Controls
             }
         }
 
-        private double _SliderMaximum = 100.0;
+        private double _SliderMaximum = double.MaxValue;
 
         public static readonly DependencyProperty SliderMaximumProperty =
             DependencyProperty.Register(nameof(SliderMaximum), typeof(double), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.Double100,
+                    Boxes.DoubleMax,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
@@ -229,12 +229,12 @@ namespace Biaui.Controls
             }
         }
 
-        private double _Minimum;
+        private double _Minimum = double.MinValue;
 
         public static readonly DependencyProperty MinimumProperty =
             DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.Double0,
+                    Boxes.DoubleMin,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
@@ -261,12 +261,12 @@ namespace Biaui.Controls
             }
         }
 
-        private double _Maximum = 100.0;
+        private double _Maximum = double.MaxValue;
 
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.Double100,
+                    Boxes.DoubleMax,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>

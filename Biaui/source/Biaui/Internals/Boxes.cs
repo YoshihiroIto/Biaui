@@ -17,6 +17,8 @@ namespace Biaui.Internals
         internal static object Double0 = 0.0;
         internal static object Double1 = 1.0;
         internal static object Double100 = 100.0;
+        internal static object DoubleMin = double.MinValue;
+        internal static object DoubleMax = double.MaxValue;
 
         internal static object ColorRed = Colors.Red;
         internal static object ColorWhite = Colors.White;

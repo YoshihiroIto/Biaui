@@ -43,11 +43,26 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <controls:BiaNumberEditor Caption="MinMaxValue" Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
-                    <controls:BiaNumberEditor Caption="SpinValue" Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
-                    <controls:BiaNumberEditor Caption="TextInputValue" Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
-                    <controls:BiaNumberEditor Caption="SliderValueSimple" Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
-                    <controls:BiaNumberEditor Caption="SliderValueWideRange" Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
+                    <controls:BiaNumberEditor Caption="MinMaxValue"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
+                    <controls:BiaNumberEditor Caption="SpinValue"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
+                    <controls:BiaNumberEditor Caption="TextInputValue"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
+                    <controls:BiaNumberEditor Caption="SliderValueSimple"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
+                    <controls:BiaNumberEditor Caption="SliderValueWideRange"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
                 </StackPanel>
 
                 <StackPanel Width="160"
