@@ -265,30 +265,33 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
-                    <Border x:Name="mainBorder"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
+                    <controls:BiaClippingBorder x:Name="MainBorder"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}">
 
-                        <ContentPresenter x:Name="contentPresenter"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                                          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
-                                          ContentSource="Header"
-                                          Focusable="False"
-                                          RecognizesAccessKey="True"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                            <ContentPresenter.Resources>
-                                <Style BasedOn="{StaticResource TabItemTextBlockStyle}" TargetType="{x:Type TextBlock}" />
-                                <Style BasedOn="{StaticResource TabItemBiaTextBlockStyle}" TargetType="{x:Type controls:BiaTextBlock}" />
-                            </ContentPresenter.Resources>
-                        </ContentPresenter>
-                    </Border>
+                        <Border x:Name="SelectionBorder" BorderBrush="{DynamicResource Item.SelectedActive.Background}">
+
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                              VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                              ContentSource="Header"
+                                              Focusable="False"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <ContentPresenter.Resources>
+                                    <Style BasedOn="{StaticResource TabItemTextBlockStyle}" TargetType="{x:Type TextBlock}" />
+                                    <Style BasedOn="{StaticResource TabItemBiaTextBlockStyle}" TargetType="{x:Type controls:BiaTextBlock}" />
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </Border>
+                    </controls:BiaClippingBorder>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Top">
                             <Setter Property="Margin" Value="0,0,0,-1" />
                             <Setter Property="Padding" Value="10,3" />
-                            <Setter TargetName="mainBorder" Property="CornerRadius">
+                            <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="0"
                                                   BottomRight="0"
@@ -296,13 +299,15 @@
                                                   TopRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="mainBorder" Property="BorderThickness" Value="1,1,1,0" />
+                            <Setter TargetName="MainBorder" Property="BorderThickness" Value="1,1,1,0" />
+
+                            <Setter TargetName="SelectionBorder" Property="BorderThickness" Value="0,1,0,0" />
                         </Trigger>
 
                         <Trigger Property="TabStripPlacement" Value="Bottom">
                             <Setter Property="Margin" Value="0,-1,0,0" />
                             <Setter Property="Padding" Value="10,3" />
-                            <Setter TargetName="mainBorder" Property="CornerRadius">
+                            <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
                                                   BottomRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
@@ -310,13 +315,15 @@
                                                   TopRight="0" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="mainBorder" Property="BorderThickness" Value="1,0,1,1" />
+                            <Setter TargetName="MainBorder" Property="BorderThickness" Value="1,0,1,1" />
+
+                            <Setter TargetName="SelectionBorder" Property="BorderThickness" Value="0,0,0,1" />
                         </Trigger>
 
                         <Trigger Property="TabStripPlacement" Value="Left">
                             <Setter Property="Margin" Value="0,0,-1,0" />
                             <Setter Property="Padding" Value="10,3" />
-                            <Setter TargetName="mainBorder" Property="CornerRadius">
+                            <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
                                                   BottomRight="0"
@@ -324,13 +331,15 @@
                                                   TopRight="0" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="mainBorder" Property="BorderThickness" Value="1,1,0,1" />
+                            <Setter TargetName="MainBorder" Property="BorderThickness" Value="1,1,0,1" />
+
+                            <Setter TargetName="SelectionBorder" Property="BorderThickness" Value="1,0,0,0" />
                         </Trigger>
 
                         <Trigger Property="TabStripPlacement" Value="Right">
                             <Setter Property="Margin" Value="-1,0,0,0" />
                             <Setter Property="Padding" Value="10,3" />
-                            <Setter TargetName="mainBorder" Property="CornerRadius">
+                            <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="0"
                                                   BottomRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
@@ -338,7 +347,9 @@
                                                   TopRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="mainBorder" Property="BorderThickness" Value="0,1,1,1" />
+                            <Setter TargetName="MainBorder" Property="BorderThickness" Value="0,1,1,1" />
+
+                            <Setter TargetName="SelectionBorder" Property="BorderThickness" Value="0,0,1,0" />
                         </Trigger>
 
                         <Trigger Property="IsSelected" Value="True">
@@ -349,6 +360,8 @@
                         <Trigger Property="IsSelected" Value="False">
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderBrush" Value="Transparent" />
+
+                            <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="Transparent" />
                         </Trigger>
 
                         <MultiTrigger>
@@ -359,6 +372,8 @@
 
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderBrush" Value="Transparent" />
+
+                            <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="Transparent" />
                         </MultiTrigger>
 
                         <MultiTrigger>
@@ -369,6 +384,8 @@
 
                             <Setter Property="Background" Value="{DynamicResource BackgroundBackgroundBrushKey}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
+
+                            <Setter TargetName="SelectionBorder" Property="BorderBrush" Value="Transparent" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
