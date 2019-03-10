@@ -325,7 +325,7 @@ namespace Biaui.Controls
                         4.5, 3.5,
                         Foreground,
                         dc,
-                        ActualWidth,
+                        (1.0, ActualWidth - 32).Max(),       // ▼分の幅を引く
                         TextAlignment.Left
                     );
             }
