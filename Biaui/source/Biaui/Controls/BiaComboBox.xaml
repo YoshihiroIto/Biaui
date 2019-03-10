@@ -3,7 +3,7 @@
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type controls:BiaComboBox}">
-        <Setter Property="Background" Value="{DynamicResource SemiactiveBackgroundBrushKey}" />
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
