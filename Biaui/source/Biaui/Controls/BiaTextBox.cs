@@ -209,7 +209,7 @@ namespace Biaui.Controls
                     4.5, 3.5,
                     Foreground,
                     dc,
-                    ActualWidth,
+                    (1.0, ActualWidth - 9).Max(),
                     TextAlignment.Left
                 );
             }
