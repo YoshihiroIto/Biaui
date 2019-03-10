@@ -43,9 +43,9 @@
             </Trigger>
         </Style.Triggers>
 
-        <Setter Property="Background" Value="{DynamicResource SemiactiveBackgroundBrushKey}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource SemiactiveBorderBrushKey}" />
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
