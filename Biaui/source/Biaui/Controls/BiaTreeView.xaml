@@ -171,7 +171,9 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
+                        <ScrollViewer Margin="0,0,-1,0"
+                                      Padding="{TemplateBinding Padding}"
+                                      Focusable="False">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </controls:BiaClippingBorder>
