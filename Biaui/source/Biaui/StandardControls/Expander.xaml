@@ -14,14 +14,14 @@
                             <Path x:Name="arrow"
                                   Width="10"
                                   Height="10"
-                                  Margin="3,0,-3,0"
+                                  Margin="4,0,-4,0"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
                                   Data="M 0 0 L 6.9 4 L 0 8 Z"
                                   Fill="#A0A0A0"
                                   SnapsToDevicePixels="false" />
                             <ContentPresenter Grid.Column="1"
-                                              Margin="4,0,0,0"
+                                              Margin="6,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
                                               RecognizesAccessKey="True"
@@ -32,7 +32,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
                             <Setter TargetName="arrow" Property="Data" Value="M 0 0 L 8 0 L 4 6.9 Z" />
-                            <Setter TargetName="arrow" Property="Margin" Value="3,3,-3,0" />
+                            <Setter TargetName="arrow" Property="Margin" Value="4,3,-4,0" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="true">
@@ -80,7 +80,6 @@
                                           MinWidth="0"
                                           MinHeight="0"
                                           Margin="0"
-                                          Padding="{TemplateBinding Padding}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding Header}"
@@ -95,8 +94,8 @@
                                           Foreground="{TemplateBinding Foreground}"
                                           IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           Style="{StaticResource ExpanderDownHeaderStyle}" />
+
                             <ContentPresenter x:Name="ExpandSite"
-                                              Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               DockPanel.Dock="Bottom"
