@@ -12,9 +12,12 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Path x:Name="arrow"
+                                  Width="10"
+                                  Height="10"
+                                  Margin="3,0,-3,0"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  Data="M 0 0 L 12 6 L 0 12 Z"
+                                  Data="M 0 0 L 6.9 4 L 0 8 Z"
                                   Fill="#A0A0A0"
                                   SnapsToDevicePixels="false" />
                             <ContentPresenter Grid.Column="1"
@@ -28,7 +31,8 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter TargetName="arrow" Property="Data" Value="M 0 0 L 12 0 L 6 12 Z" />
+                            <Setter TargetName="arrow" Property="Data" Value="M 0 0 L 8 0 L 4 6.9 Z" />
+                            <Setter TargetName="arrow" Property="Margin" Value="3,3,-3,0" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="true">
@@ -46,6 +50,10 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Background" Property="Background" Value="#10FFFFFF" />
                         </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter TargetName="Background" Property="Background" Value="#08FFFFFF" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -58,7 +66,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Expander}">
@@ -71,7 +79,7 @@
                             <ToggleButton x:Name="HeaderSite"
                                           MinWidth="0"
                                           MinHeight="0"
-                                          Margin="1"
+                                          Margin="0"
                                           Padding="{TemplateBinding Padding}"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
