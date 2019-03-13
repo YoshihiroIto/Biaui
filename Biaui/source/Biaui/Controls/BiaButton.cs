@@ -354,7 +354,7 @@ namespace Biaui.Controls
             else if (double.IsInfinity(h))
                 h = Constants.BasicOneLineHeight;
 
-            return new Size(_textWidth, h);
+            return new Size((_textWidth, constraint.Width).Min(), h);
         }
 
         private void UpdateSize()
