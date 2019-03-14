@@ -71,9 +71,26 @@
                                 </Border>
 
                                 <ControlTemplate.Triggers>
-                                    <Trigger Property="IsHighlighted" Value="True">
+                                    <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource SubmenuItemBackgroundHighlighted}" />
                                     </Trigger>
+
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsSelected" Value="True" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Background" Value="{DynamicResource Item.SelectedActive.Background}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border}" />
+                                    </MultiTrigger>
+
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsSelected" Value="True" />
+                                            <Condition Property="IsMouseOver" Value="True" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border.IsMouseOver}" />
+                                    </MultiTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
