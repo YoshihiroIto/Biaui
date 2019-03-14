@@ -79,7 +79,6 @@
                             <ToggleButton x:Name="HeaderSite"
                                           MinWidth="0"
                                           MinHeight="0"
-                                          Margin="0"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding Header}"
@@ -96,6 +95,7 @@
                                           Style="{StaticResource ExpanderDownHeaderStyle}" />
 
                             <ContentPresenter x:Name="ExpandSite"
+                                              Margin="{TemplateBinding Padding}"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               DockPanel.Dock="Bottom"
