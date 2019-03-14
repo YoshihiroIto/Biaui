@@ -16,3 +16,18 @@ WPF dark theme and controls.
 * Some lightweight standard controls
     * Reimplementation. about x20-30 faster than standard WPF controls
 
+
+## Including External Assets
+
+* Material Design icons by Google
+    * https://github.com/google/material-design-icons
+    * Apache License 2.0
+
+* Muli
+    * https://fonts.google.com/specimen/Muli
+    * SIL OPEN FONT LICENSE 1.1
+
+* 源真ゴシック
+    * http://jikasei.me/font/genshin
+    * SIL OPEN FONT LICENSE 1.1
+
