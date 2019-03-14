@@ -1,0 +1,254 @@
+﻿<ResourceDictionary x:Class="Biaui.Controls.BiaFilteringComboBoxEventHandler"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
+                    xmlns:controls="clr-namespace:Biaui.Controls">
+    <Style x:Key="DropDownToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrushKey}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <ContentPresenter Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonActiveBorderBrushKey}" />
+                <Setter Property="Foreground" Value="{DynamicResource ButtonActiveForegroundBrushKey}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonPressedBorderBrushKey}" />
+                <Setter Property="Foreground" Value="{DynamicResource ButtonPressedForegroundBrushKey}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInactiveForegroundBrushKey}" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
+                <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type controls:BiaFilteringComboBox}">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
+
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
+        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ComboBoxItem}">
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                <Border Padding="1"
+                                        Background="{TemplateBinding Background}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                    <ContentPresenter Margin="4,0,0,0" />
+                                </Border>
+
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsHighlighted" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource SubmenuItemBackgroundHighlighted}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate />
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                            <Grid Margin="-1">
+                                <ToggleButton x:Name="toggleButton"
+                                              ClickMode="Press"
+                                              Focusable="False"
+                                              Foreground="{DynamicResource InactiveForegroundBrushKey}"
+                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              IsTabStop="False"
+                                              OverridesDefaultStyle="True"
+                                              Style="{StaticResource DropDownToggleButtonStyle}">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Border Background="Transparent">
+                                                <Path Width="{x:Static SystemParameters.VerticalScrollBarWidth}"
+                                                      HorizontalAlignment="Right"
+                                                      VerticalAlignment="Center"
+                                                      Data="M 0.0,0.0 L 3.5,4.0 7.0,0.0 z"
+                                                      Fill="{TemplateBinding Foreground}" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <ContentPresenter Grid.Column="0"
+                                                  Margin="4.5,2.25,26,2.25"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                  IsHitTestVisible="False"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                        </Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+
+                        <Popup x:Name="PART_Popup"
+                               MinWidth="{TemplateBinding ActualWidth}"
+                               AllowsTransparency="True"
+                               Closed="Popup_OnClosed"
+                               FocusVisualStyle="{x:Null}"
+                               Focusable="False"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               Placement="Bottom"
+                               PopupAnimation="None"
+                               VerticalOffset="1">
+                            <controls:BiaClippingBorder x:Name="dropdown"
+                                                        MaxHeight="414"
+                                                        Background="{DynamicResource SubmenuItemBackground}"
+                                                        BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
+                                                        BorderThickness="1"
+                                                        SnapsToDevicePixels="True">
+                                <DockPanel>
+                                    <TextBox x:Name="WordTextBox"
+                                             BorderThickness="0,0,0,1"
+                                             DockPanel.Dock="Top"
+                                             PreviewKeyDown="WordTextBox_OnKeyDown"
+                                             Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaFilteringComboBox}}, Path=FilterWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <TextBox.Template>
+                                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="0,0,0,1"
+                                                        CornerRadius="0"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                                    <DockPanel>
+                                                        <Viewbox Width="16"
+                                                                 Height="16"
+                                                                 Margin="4,0,2,0"
+                                                                 VerticalAlignment="Center"
+                                                                 DockPanel.Dock="Left">
+                                                            <Canvas Width="24" Height="24">
+                                                                <Path Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaFilteringComboBox}}, Path=Foreground}" />
+                                                            </Canvas>
+                                                        </Viewbox>
+
+                                                        <Button Width="24"
+                                                                Padding="0"
+                                                                VerticalAlignment="Stretch"
+                                                                Click="ClearButton_OnClick"
+                                                                DockPanel.Dock="Right"
+                                                                Loaded="ClearButton_OnLoaded"
+                                                                Style="{DynamicResource SharpButtonStyle}"
+                                                                Tag="{Binding ElementName=WordTextBox}">
+                                                            <Viewbox Width="16"
+                                                                     Height="16"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center">
+                                                                <Canvas Width="24" Height="24">
+                                                                    <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}" />
+                                                                </Canvas>
+                                                            </Viewbox>
+                                                        </Button>
+
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      Margin="{TemplateBinding Padding}"
+                                                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                      Background="Transparent"
+                                                                      HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" />
+                                                    </DockPanel>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </TextBox.Template>
+                                    </TextBox>
+
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </controls:BiaClippingBorder>
+                        </Popup>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="false">
+                            <Setter TargetName="dropdown" Property="MinHeight" Value="100" />
+                        </Trigger>
+                        <Trigger Property="IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="toggleButton" Property="Foreground" Value="{DynamicResource AccentBrushKey}" />
+                            <Setter TargetName="toggleButton" Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
+                            <Setter TargetName="toggleButton" Property="Background" Value="{DynamicResource BackgroundBrushKey}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                        </Trigger>
+                        <Trigger SourceName="PART_Popup" Property="IsOpen" Value="True">
+                            <Setter TargetName="toggleButton" Property="Background" Value="{DynamicResource AccentBrushKey}" />
+                            <Setter TargetName="toggleButton" Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel KeyboardNavigation.DirectionalNavigation="Contained" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

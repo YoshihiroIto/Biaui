@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\BiaProgressPanel.cs" />
+    <Compile Include="Controls\BiaFilteringComboBox.cs" />
+    <Compile Include="Controls\BiaFilteringComboBoxEventHandler.cs" />
     <Compile Include="StandardControls\TabControlAttachedProperties.cs" />
     <Page Include="Controls\BiaTreeView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -77,6 +79,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\BiaWindowStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaFilteringComboBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
