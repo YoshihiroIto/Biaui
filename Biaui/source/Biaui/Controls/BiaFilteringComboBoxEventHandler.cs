@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,10 +26,7 @@ namespace Biaui.Controls
             var button = (FrameworkElement) sender;
             var wordTextBox = (TextBox) button.Tag;
 
-            wordTextBox.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                wordTextBox.Focus();
-            }));
+            wordTextBox.Dispatcher.BeginInvoke(new Action(() => wordTextBox.Focus()));
         }
 
         private void WordTextBox_OnKeyDown(object sender, KeyEventArgs e)
@@ -66,6 +64,33 @@ namespace Biaui.Controls
 
             var expression = parent.GetBindingExpression(Selector.SelectedItemProperty);
             expression?.UpdateTarget();
+        }
+
+        private void Popup_OnOpened(object sender, EventArgs e)
+        {
+            var popup = (FrameworkElement) sender;
+
+            UpdateClearButton(popup);
+        }
+
+        private void Popup_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var popup = (FrameworkElement) sender;
+            var parent = popup.GetParent<BiaFilteringComboBox>();
+
+            var descriptor = DependencyPropertyDescriptor.FromProperty(BiaFilteringComboBox.FilterWordProperty,
+                typeof(BiaFilteringComboBox));
+
+            descriptor.AddValueChanged(parent, (_, __) => UpdateClearButton(popup));
+        }
+
+        private void UpdateClearButton(FrameworkElement popup)
+        {
+            var parent = popup.GetParent<BiaFilteringComboBox>();
+            var clearButton = popup.Descendants<Button>().FirstOrDefault();
+
+            if (clearButton != null)
+                clearButton.IsEnabled = string.IsNullOrEmpty(parent.FilterWord) == false;
         }
     }
 }

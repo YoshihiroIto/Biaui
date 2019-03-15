@@ -163,6 +163,8 @@
                                FocusVisualStyle="{x:Null}"
                                Focusable="False"
                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                               Loaded="Popup_OnLoaded"
+                               Opened="Popup_OnOpened"
                                Placement="Bottom"
                                PopupAnimation="None"
                                VerticalOffset="1">
