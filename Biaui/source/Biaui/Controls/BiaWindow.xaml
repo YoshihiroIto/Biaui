@@ -145,7 +145,7 @@
                                 <BeginStoryboard>
                                     <Storyboard TargetName="ContentPresenter">
                                         <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                         To="0.25"
+                                                         To="0.5"
                                                          Duration="0:0:0.15" />
                                     </Storyboard>
                                 </BeginStoryboard>

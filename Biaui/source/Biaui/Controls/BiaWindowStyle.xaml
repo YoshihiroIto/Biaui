@@ -72,7 +72,25 @@
                             <Setter TargetName="Border" Property="BorderThickness" Value="1" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="ContentPresenter" Property="Opacity" Value="0.25" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetName="ContentPresenter">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         To="0.5"
+                                                         Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetName="ContentPresenter">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -152,14 +170,29 @@
                             <Setter TargetName="Border" Property="BorderThickness" Value="1" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="ContentPresenter" Property="Opacity" Value="0.25" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetName="ContentPresenter">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         To="0.5"
+                                                         Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetName="ContentPresenter">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
 </ResourceDictionary>
