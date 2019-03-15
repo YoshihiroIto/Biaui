@@ -16,6 +16,7 @@ namespace Biaui.Controls
             var button = (FrameworkElement) sender;
             var wordTextBox = (TextBox) button.Tag;
 
+            wordTextBox.Text = "";
             wordTextBox.Focus();
         }
 
