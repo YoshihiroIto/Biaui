@@ -693,10 +693,12 @@ namespace Biaui.Controls
 
         private void DrawText(DrawingContext dc)
         {
+            var offsetY = (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
+            
             TextRenderer.Default.Draw(
                 Caption,
                 Padding.Left + SpinWidth,
-                Padding.Top,
+                Padding.Top + offsetY,
                 Foreground,
                 dc,
                 ActualWidth - Padding.Left - Padding.Right,
@@ -706,7 +708,7 @@ namespace Biaui.Controls
             TextRenderer.Default.Draw(
                 UiValueString,
                 Padding.Left,
-                Padding.Top,
+                Padding.Top + offsetY,
                 Foreground,
                 dc,
                 ActualWidth - Padding.Left - Padding.Right - SpinWidth,
@@ -718,9 +720,10 @@ namespace Biaui.Controls
 
         private void DrawSpin(DrawingContext dc)
         {
+            var offsetY =  8 + (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
+
             {
                 var offsetX = 5.0;
-                var offsetY = 8.0;
 
                 if (_mouseOverType == MouseOverType.DecSpin)
                     dc.DrawRectangle(_SpinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
@@ -743,7 +746,6 @@ namespace Biaui.Controls
 
             {
                 var offsetX = ActualWidth - 5.0 * 2 + 1;
-                var offsetY = 8.0;
 
                 if (_mouseOverType == MouseOverType.IncSpin)
                     dc.DrawRectangle(_SpinBackground, null,
