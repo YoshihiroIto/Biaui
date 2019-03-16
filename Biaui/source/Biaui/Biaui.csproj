@@ -69,7 +69,12 @@
     <Compile Include="Controls\BiaProgressPanel.cs" />
     <Compile Include="Controls\BiaFilteringComboBox.cs" />
     <Compile Include="Controls\BiaFilteringComboBoxEventHandler.cs" />
+    <Compile Include="Controls\BiaHighlightTextBlock.cs" />
     <Compile Include="StandardControls\TabControlAttachedProperties.cs" />
+    <Page Include="Controls\BiaHighlightTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\BiaTreeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

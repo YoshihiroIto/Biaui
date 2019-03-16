@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -57,7 +58,8 @@ namespace Biaui.Internals
             _dotAdvanceWidth = _glyphTypeface.AdvanceWidths[_dotGlyphIndex] * _fontSize;
         }
 
-        internal void Draw(
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal double Draw(
             string text,
             double x,
             double y,
@@ -66,17 +68,48 @@ namespace Biaui.Internals
             double maxWidth,
             TextAlignment align)
         {
+            if (string.IsNullOrEmpty(text))
+                return 0;
+
+            return Draw(
+                text,
+                0,
+                text.Length,
+                x,
+                y,
+                brush,
+                dc,
+                maxWidth,
+                align);
+        }
+
+        internal double Draw(
+            string text,
+            int textStartIndex,
+            int textLength,
+            double x,
+            double y,
+            Brush brush,
+            DrawingContext dc,
+            double maxWidth,
+            TextAlignment align)
+        {
             if (NumberHelper.AreCloseZero(_fontSize))
-                return;
+                return 0;
 
             if (string.IsNullOrEmpty(text))
-                return;
+                return 0;
 
-            var gr = MakeGlyphRun(text, x, y, maxWidth, align);
-            if (gr == null)
-                return;
+            if (maxWidth <= 0)
+                return 0;
 
-            dc.DrawGlyphRun(brush, gr);
+            var gr = MakeGlyphRun(text, textStartIndex, textLength, x, y, maxWidth, align);
+            if (gr == default)
+                return 0;
+
+            dc.DrawGlyphRun(brush, gr.Item1);
+
+            return gr.Item2;
         }
 
         internal double CalcWidth(string text)
@@ -110,33 +143,35 @@ namespace Biaui.Internals
         internal double FontHeight =>
             _fontLineSpacing * _fontSize;
 
-        private GlyphRun MakeGlyphRun(
+        private (GlyphRun, double) MakeGlyphRun(
             string text,
+            int textStartIndex,
+            int textLength,
             double offsetX,
             double offsetY,
             double maxWidth,
             TextAlignment align)
         {
-            var textKey = (text, offsetX, offsetY, maxWidth, align);
+            var textKey = (text, textStartIndex, textLength, offsetX, offsetY, maxWidth, align);
 
             if (_textCache.TryGetValue(textKey, out var gr))
                 return gr;
 
-            var glyphIndexes = new ushort[text.Length];
-            var advanceWidths = new double[text.Length];
+            var glyphIndexes = new ushort[textLength];
+            var advanceWidths = new double[textLength];
             var textWidth = 0.0;
             var isRequiredTrimming = false;
             {
-                for (var i = 0; i != text.Length; ++i)
+                for (var i = 0; i != textLength; ++i)
                 {
-                    if (_glyphDataCache.TryGetValue(text[i], out var data) == false)
+                    if (_glyphDataCache.TryGetValue(text[textStartIndex + i], out var data) == false)
                     {
-                        if (_glyphTypeface.CharacterToGlyphMap.TryGetValue(text[i], out data.GlyphIndex) == false)
+                        if (_glyphTypeface.CharacterToGlyphMap.TryGetValue(text[textStartIndex + i], out data.GlyphIndex) == false)
                             throw new Exception();
 
                         data.AdvanceWidth = _glyphTypeface.AdvanceWidths[data.GlyphIndex] * _fontSize;
 
-                        _glyphDataCache.Add(text[i], data);
+                        _glyphDataCache.Add(text[textStartIndex + i], data);
                     }
 
                     glyphIndexes[i] = data.GlyphIndex;
@@ -158,7 +193,7 @@ namespace Biaui.Internals
             }
 
             if (NumberHelper.AreCloseZero(textWidth))
-                return null;
+                return default;
 
             var x = offsetX;
             var y = offsetY + _glyphTypeface.Baseline * _fontSize;
@@ -183,7 +218,7 @@ namespace Biaui.Internals
             }
 
             gr =
-                new GlyphRun(
+                (new GlyphRun(
                     _glyphTypeface,
                     0,
                     false,
@@ -192,7 +227,7 @@ namespace Biaui.Internals
                     glyphIndexes,
                     new Point(x, y),
                     advanceWidths,
-                    null, null, null, null, null, null);
+                    null, null, null, null, null, null), textWidth);
 
             _textCache.Add(textKey, gr);
 
@@ -242,8 +277,8 @@ namespace Biaui.Internals
             return newTextWidth + dot3Width;
         }
 
-        private readonly LruCache<(string, double, double, double, TextAlignment), GlyphRun> _textCache =
-            new LruCache<(string, double, double, double, TextAlignment), GlyphRun>(10_0000, false);
+        private readonly LruCache<(string, int, int, double, double, double, TextAlignment), (GlyphRun, double)> _textCache =
+            new LruCache<(string, int,int, double, double, double, TextAlignment), (GlyphRun, double)>(10_0000, false);
 
         // 最大65536エントリ
         private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache =

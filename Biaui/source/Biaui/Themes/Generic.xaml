@@ -6,6 +6,8 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaFilteringComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHighlightTextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaProgressPanel.xaml" />
@@ -15,7 +17,6 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaToggleButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindow.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaFilteringComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
 
         <!--  Internals  -->
