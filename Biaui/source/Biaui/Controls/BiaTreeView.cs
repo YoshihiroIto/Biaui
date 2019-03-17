@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Biaui.Interfaces;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -114,14 +115,58 @@ namespace Biaui.Controls
                 (sender, e) =>
                 {
                     if (_oldItemsSource != null)
-                        _oldItemsSource.CollectionChanged -= ItemsSourceOnCollectionChanged;
+                        RemoveCollectionChangedEvent(_oldItemsSource);
 
                     var itemsSource = ItemsSource as INotifyCollectionChanged;
                     if (itemsSource != null)
-                        itemsSource.CollectionChanged += ItemsSourceOnCollectionChanged;
+                        AddCollectionChangedEvent(itemsSource);
 
                     _oldItemsSource = itemsSource;
                 });
+        }
+
+        private void AddCollectionChangedEvent(INotifyCollectionChanged c)
+        {
+            c.CollectionChanged += ItemsSourceOnCollectionChanged;
+
+            if (!(c is IList list))
+                return;
+
+            foreach (var item in list)
+            {
+                if (!(item is IBiaHasChildren hasChildren))
+                    continue;
+
+                if (hasChildren.Children is INotifyCollectionChanged ncc)
+                    AddCollectionChangedEvent(ncc);
+
+                foreach (var child in hasChildren.Children)
+                    if (child is IBiaHasChildren nccHasChildren)
+                        if (nccHasChildren.Children is INotifyCollectionChanged nccChild)
+                            AddCollectionChangedEvent(nccChild);
+            }
+        }
+
+        private void RemoveCollectionChangedEvent(INotifyCollectionChanged c)
+        {
+            c.CollectionChanged -= ItemsSourceOnCollectionChanged;
+
+            if (!(c is IList list))
+                return;
+
+            foreach (var item in list)
+            {
+                if (!(item is IBiaHasChildren hasChildren))
+                    continue;
+
+                if (hasChildren.Children is INotifyCollectionChanged ncc)
+                    RemoveCollectionChangedEvent(ncc);
+
+                foreach (var child in hasChildren.Children)
+                    if (child is IBiaHasChildren nccHasChildren)
+                        if (nccHasChildren.Children is INotifyCollectionChanged nccChild)
+                            RemoveCollectionChangedEvent(nccChild);
+            }
         }
 
         private void ItemsSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -137,6 +182,10 @@ namespace Biaui.Controls
 
                     _multipleSelectionEdgeItemDataContext = vm;
 
+                    foreach (var newItem in e.NewItems.OfType<IBiaHasChildren>())
+                        if (newItem.Children  is INotifyCollectionChanged ncc)
+                            AddCollectionChangedEvent(ncc);
+
                     break;
                 }
 
@@ -150,6 +199,10 @@ namespace Biaui.Controls
                     }
 
                     _multipleSelectionEdgeItemDataContext = SelectedItem;
+
+                    foreach (var oldItem in e.OldItems.OfType<IBiaHasChildren>())
+                        if (oldItem.Children  is INotifyCollectionChanged ncc)
+                            RemoveCollectionChangedEvent(ncc);
 
                     break;
 
@@ -247,6 +300,7 @@ namespace Biaui.Controls
                         else
                             SelectMultipleItems(treeViewItem);
                     }
+
                     break;
 
                 default:
