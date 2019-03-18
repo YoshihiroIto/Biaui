@@ -1,13 +1,14 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Biaui.Internals;
 
 namespace Biaui.Controls
 {
-    public class BiaFilteringComboBox : System.Windows.Controls.ComboBox
+    public class BiaFilteringComboBox : ComboBox
     {
         #region FilterWord
-        
+
         public string FilterWord
         {
             get => _FilterWord;
@@ -17,9 +18,9 @@ namespace Biaui.Controls
                     SetValue(FilterWordProperty, value);
             }
         }
-        
+
         private string _FilterWord;
-        
+
         public static readonly DependencyProperty FilterWordProperty =
             DependencyProperty.Register(
                 nameof(FilterWord),
@@ -30,28 +31,28 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFilteringComboBox) s;
-                        self._FilterWord = (string)e.NewValue;
+                        self._FilterWord = (string) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region IsEnableMouseWheel
-        
-        public bool IsEnableMouseWheel
+
+        public bool IsMouseWheelEnabled
         {
-            get => _IsEnableMouseWheel;
+            get => _isMouseWheelEnabled;
             set
             {
-                if (value != _IsEnableMouseWheel)
-                    SetValue(IsEnableMouseWheelProperty, value);
+                if (value != _isMouseWheelEnabled)
+                    SetValue(IsMouseWheelEnabledProperty, value);
             }
         }
-        
-        private bool _IsEnableMouseWheel = true;
-        
-        public static readonly DependencyProperty IsEnableMouseWheelProperty =
+
+        private bool _isMouseWheelEnabled = true;
+
+        public static readonly DependencyProperty IsMouseWheelEnabledProperty =
             DependencyProperty.Register(
-                nameof(IsEnableMouseWheel),
+                nameof(IsMouseWheelEnabled),
                 typeof(bool),
                 typeof(BiaFilteringComboBox),
                 new PropertyMetadata(
@@ -59,9 +60,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFilteringComboBox) s;
-                        self._IsEnableMouseWheel = (bool)e.NewValue;
+                        self._isMouseWheelEnabled = (bool) e.NewValue;
                     }));
-        
+
         #endregion
 
         static BiaFilteringComboBox()
@@ -74,7 +75,25 @@ namespace Biaui.Controls
         {
             base.OnPreviewMouseWheel(e);
 
-            e.Handled = IsEnableMouseWheel == false;
+            if (IsMouseWheelEnabled)
+                return;
+
+            e.Handled = true;
+
+            if (IsDropDownOpen)
+                return;
+
+            var parentScrollViewer = this.GetParent<ScrollViewer>();
+            if (parentScrollViewer == null)
+                return;
+
+            var args = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+            {
+                RoutedEvent = MouseWheelEvent,
+                Source = this
+            };
+
+            parentScrollViewer.RaiseEvent(args);
         }
     }
 }
