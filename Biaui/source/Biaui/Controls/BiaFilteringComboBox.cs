@@ -7,23 +7,23 @@ namespace Biaui.Controls
 {
     public class BiaFilteringComboBox : ComboBox
     {
-        #region FilterWord
+        #region FilterWords
 
-        public string FilterWord
+        public string FilterWords
         {
-            get => _FilterWord;
+            get => _filterWords;
             set
             {
-                if (value != _FilterWord)
-                    SetValue(FilterWordProperty, value);
+                if (value != _filterWords)
+                    SetValue(FilterWordsProperty, value);
             }
         }
 
-        private string _FilterWord;
+        private string _filterWords;
 
-        public static readonly DependencyProperty FilterWordProperty =
+        public static readonly DependencyProperty FilterWordsProperty =
             DependencyProperty.Register(
-                nameof(FilterWord),
+                nameof(FilterWords),
                 typeof(string),
                 typeof(BiaFilteringComboBox),
                 new PropertyMetadata(
@@ -31,7 +31,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFilteringComboBox) s;
-                        self._FilterWord = (string) e.NewValue;
+                        self._filterWords = (string) e.NewValue;
                     }));
 
         #endregion

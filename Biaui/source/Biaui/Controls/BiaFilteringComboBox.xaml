@@ -185,7 +185,7 @@
                                              BorderThickness="0,0,0,1"
                                              DockPanel.Dock="Top"
                                              PreviewKeyDown="WordTextBox_OnKeyDown"
-                                             Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaFilteringComboBox}}, Path=FilterWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                             Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaFilteringComboBox}}, Path=FilterWords, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBox.Template>
                                             <ControlTemplate TargetType="{x:Type TextBox}">
                                                 <Border Background="{TemplateBinding Background}"
