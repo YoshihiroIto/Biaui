@@ -153,16 +153,22 @@
                                AllowsTransparency="True"
                                FocusVisualStyle="{x:Null}"
                                Focusable="False"
+                               HorizontalOffset="-2"
                                IsOpen="{TemplateBinding IsDropDownOpen}"
                                Placement="Bottom"
                                PopupAnimation="None"
                                VerticalOffset="1">
                             <controls:BiaClippingBorder x:Name="dropdown"
                                                         MaxHeight="414"
+                                                        Margin="0,0,3,3"
                                                         Background="{DynamicResource SubmenuItemBackground}"
-                                                        BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
+                                                        BorderBrush="{DynamicResource Item.SelectedActive.Border}"
                                                         BorderThickness="1"
                                                         SnapsToDevicePixels="True">
+                                <controls:BiaClippingBorder.Effect>
+                                    <DropShadowEffect ShadowDepth="2" Color="Black" />
+                                </controls:BiaClippingBorder.Effect>
+
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <ItemsPresenter />
                                 </ScrollViewer>

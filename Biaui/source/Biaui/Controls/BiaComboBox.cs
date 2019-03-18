@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using Biaui.Internals;
 
@@ -325,7 +326,7 @@ namespace Biaui.Controls
                         4.5, 3.5,
                         Foreground,
                         dc,
-                        (1.0, ActualWidth - 32).Max(),       // ▼分の幅を引く
+                        (1.0, ActualWidth - 32).Max(), // ▼分の幅を引く
                         TextAlignment.Left
                     );
             }
@@ -438,6 +439,12 @@ namespace Biaui.Controls
                 {
                     IsTabStop = false,
                     FocusVisualStyle = null,
+                    Margin = new Thickness(0,0,3,3),
+                    Effect = new DropShadowEffect
+                    {
+                        ShadowDepth = 2,
+                        Color = Colors.Black
+                    }
                 };
 
                 _scale = new ScaleTransform();
@@ -446,17 +453,26 @@ namespace Biaui.Controls
                 {
                     Child = _listBox,
                     AllowsTransparency = true,
-                    VerticalOffset = 2,
+                    VerticalOffset = 1,
                     StaysOpen = false,
                     Focusable = false,
                     RenderTransform = _scale,
+                    HorizontalOffset = -2,
                     PlacementTarget = this
                 };
 
                 _listBox.SetBinding(ItemsControl.ItemsSourceProperty,
-                    new Binding(nameof(ItemsSource)) {Source = this, Mode = BindingMode.TwoWay});
+                    new Binding(nameof(ItemsSource))
+                    {
+                        Source = this,
+                        Mode = BindingMode.TwoWay
+                    });
                 _listBox.SetBinding(Selector.SelectedItemProperty,
-                    new Binding(nameof(SelectedItem)) {Source = this, Mode = BindingMode.TwoWay});
+                    new Binding(nameof(SelectedItem))
+                    {
+                        Source = this,
+                        Mode = BindingMode.TwoWay
+                    });
                 _listBox.PreviewKeyDown += ListBoxOnPreviewKeyDown;
                 _listBox.PreviewMouseLeftButtonDown += ListBoxOnPreviewMouseLeftButtonDown;
 
@@ -504,6 +520,9 @@ namespace Biaui.Controls
                     }
                 }
             }
+
+            var listBoxBorder = _listBox.Descendants<Border>().First();
+            listBoxBorder.BorderBrush = (Brush)FindResource("Item.SelectedActive.Border");
         }
 
         private void SetupListBoxItemTemplate()
