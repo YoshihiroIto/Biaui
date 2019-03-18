@@ -46,10 +46,24 @@ namespace Biaui.Controls.NodeEditor.Internal
             var target = DependencyPropertyDescriptor.FromProperty(
                 BiaNodeEditor.TargetNodeSlotConnectingProperty, typeof(BiaNodeEditor));
 
-            source.AddValueChanged(_parent, (_, __) => Invalidate());
-            target.AddValueChanged(_parent, (_, __) => Invalidate());
-
             _parent.PreviewMouseUp += (_, __) => _mousePos = new Point(double.NaN, double.NaN);
+
+            Loaded += (_, __) =>
+            {
+                source.AddValueChanged(_parent, ConnectionChangedHandler);
+                target.AddValueChanged(_parent, ConnectionChangedHandler);
+            };
+
+            Unloaded += (_, __) =>
+            {
+                source.RemoveValueChanged(_parent, ConnectionChangedHandler);
+                target.RemoveValueChanged(_parent, ConnectionChangedHandler);
+            };
+        }
+
+        private void ConnectionChangedHandler(object sender, EventArgs e)
+        {
+            Invalidate();
         }
 
         private Point _mousePos = new Point(double.NaN, double.NaN);
