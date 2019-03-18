@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -107,22 +106,25 @@ namespace Biaui.Controls
 
         private INotifyCollectionChanged _oldItemsSource;
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly PropertyChangeNotifier _itemsSourceChangeNotifier;
+
         public BiaTreeView()
         {
-            var itemsSourceDescriptor =
-                DependencyPropertyDescriptor.FromProperty(ItemsSourceProperty, typeof(BiaTreeView));
-            itemsSourceDescriptor.AddValueChanged(this,
-                (sender, e) =>
-                {
-                    if (_oldItemsSource != null)
-                        RemoveCollectionChangedEvent(_oldItemsSource);
+            _itemsSourceChangeNotifier = new PropertyChangeNotifier(this, ItemsSourceProperty);
+            _itemsSourceChangeNotifier.ValueChanged += ItemsSourceChangedHandler;
+        }
 
-                    var itemsSource = ItemsSource as INotifyCollectionChanged;
-                    if (itemsSource != null)
-                        AddCollectionChangedEvent(itemsSource);
+        private void ItemsSourceChangedHandler(object sender, EventArgs e)
+        {
+            if (_oldItemsSource != null)
+                RemoveCollectionChangedEvent(_oldItemsSource);
 
-                    _oldItemsSource = itemsSource;
-                });
+            var itemsSource = ItemsSource as INotifyCollectionChanged;
+            if (itemsSource != null)
+                AddCollectionChangedEvent(itemsSource);
+
+            _oldItemsSource = itemsSource;
         }
 
         private void AddCollectionChangedEvent(INotifyCollectionChanged c)
@@ -183,7 +185,7 @@ namespace Biaui.Controls
                     _multipleSelectionEdgeItemDataContext = vm;
 
                     foreach (var newItem in e.NewItems.OfType<IBiaHasChildren>())
-                        if (newItem.Children  is INotifyCollectionChanged ncc)
+                        if (newItem.Children is INotifyCollectionChanged ncc)
                             AddCollectionChangedEvent(ncc);
 
                     break;
@@ -201,7 +203,7 @@ namespace Biaui.Controls
                     _multipleSelectionEdgeItemDataContext = SelectedItem;
 
                     foreach (var oldItem in e.OldItems.OfType<IBiaHasChildren>())
-                        if (oldItem.Children  is INotifyCollectionChanged ncc)
+                        if (oldItem.Children is INotifyCollectionChanged ncc)
                             RemoveCollectionChangedEvent(ncc);
 
                     break;

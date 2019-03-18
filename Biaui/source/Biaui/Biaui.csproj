@@ -71,6 +71,7 @@
     <Compile Include="Controls\BiaFilteringComboBoxEventHandler.cs" />
     <Compile Include="Controls\BiaHighlightTextBlock.cs" />
     <Compile Include="Interfaces\IBiaHasChildren.cs" />
+    <Compile Include="Internals\PropertyChangeNotifier.cs" />
     <Compile Include="StandardControls\TabControlAttachedProperties.cs" />
     <Page Include="Controls\BiaHighlightTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
