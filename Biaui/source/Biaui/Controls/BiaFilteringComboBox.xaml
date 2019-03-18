@@ -164,6 +164,7 @@
                                Focusable="False"
                                IsOpen="{TemplateBinding IsDropDownOpen}"
                                Loaded="Popup_OnLoaded"
+                               Unloaded="Popup_OnUnloaded"
                                Opened="Popup_OnOpened"
                                Placement="Bottom"
                                PopupAnimation="None"

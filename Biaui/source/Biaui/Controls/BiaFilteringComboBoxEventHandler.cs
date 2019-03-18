@@ -75,13 +75,31 @@ namespace Biaui.Controls
 
         private void Popup_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var popup = (FrameworkElement) sender;
+            var popup = (Popup) sender;
             var parent = popup.GetParent<BiaFilteringComboBox>();
 
             var descriptor = DependencyPropertyDescriptor.FromProperty(BiaFilteringComboBox.FilterWordsProperty,
                 typeof(BiaFilteringComboBox));
 
-            descriptor.AddValueChanged(parent, (_, __) => UpdateClearButton(popup));
+            descriptor.AddValueChanged(parent, UpdateClearButtonHandler);
+        }
+
+        private void Popup_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            var popup = (Popup) sender;
+            var parent = popup.GetParent<BiaFilteringComboBox>();
+
+            var descriptor = DependencyPropertyDescriptor.FromProperty(BiaFilteringComboBox.FilterWordsProperty,
+                typeof(BiaFilteringComboBox));
+
+            descriptor.RemoveValueChanged(parent, UpdateClearButtonHandler);
+        }
+
+        private void UpdateClearButtonHandler(object sender, EventArgs e)
+        {
+            var popup = (FrameworkElement) sender;
+
+            UpdateClearButton(popup);
         }
 
         private void UpdateClearButton(FrameworkElement popup)
