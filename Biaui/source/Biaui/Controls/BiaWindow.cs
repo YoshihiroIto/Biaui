@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -121,7 +122,6 @@ namespace Biaui.Controls
 
         #endregion
 
-
         #region IsVisibleMaximizeButton
 
         public bool IsVisibleMaximizeButton
@@ -150,7 +150,6 @@ namespace Biaui.Controls
                     }));
 
         #endregion
-
 
         #region IsVisibleNormalizeButton
 
@@ -181,7 +180,6 @@ namespace Biaui.Controls
 
         #endregion
 
-
         #region IsVisibleCloseButtonButton
 
         public bool IsVisibleCloseButtonButton
@@ -210,6 +208,51 @@ namespace Biaui.Controls
                     }));
 
         #endregion
+
+        #region Icon
+        
+        public new Brush Icon
+        {
+            get => _Icon;
+            set
+            {
+                if (value != _Icon)
+                    SetValue(IconProperty, value);
+            }
+        }
+        
+        private Brush _Icon = DefaultIcon;
+        
+        public new static readonly DependencyProperty IconProperty =
+            DependencyProperty.Register(
+                nameof(Icon),
+                typeof(Brush),
+                typeof(BiaWindow),
+                new PropertyMetadata(
+                    DefaultIcon,
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._Icon = (Brush)e.NewValue;
+                    }));
+        
+        #endregion
+
+        private static Brush DefaultIcon
+        {
+            get
+            {
+                if (_DefaultIcon == null)
+                {
+                    _DefaultIcon = new SolidColorBrush(Color.FromRgb(0x53, 0x7C, 0xCE));
+                    _DefaultIcon.Freeze();
+                }
+
+                return _DefaultIcon;
+            }
+        }
+
+        private static Brush _DefaultIcon;
 
         public event EventHandler CloseButtonClicked;
 

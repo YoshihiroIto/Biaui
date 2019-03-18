@@ -65,9 +65,7 @@
                                            Margin="6,6,0,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
-                                           Fill="BlueViolet"
-                                           Stroke="#808080"
-                                           StrokeThickness="1" />
+                                           Fill="{Binding Icon, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}" />
 
                                 <!--  Title  -->
                                 <TextBlock Grid.Row="0"
