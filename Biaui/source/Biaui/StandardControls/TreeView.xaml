@@ -4,7 +4,7 @@
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:internals="clr-namespace:Biaui.Internals">
     <Style TargetType="{x:Type TreeView}">
-        <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />

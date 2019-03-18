@@ -3,7 +3,7 @@
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
