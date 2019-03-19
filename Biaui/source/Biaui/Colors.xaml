@@ -174,5 +174,5 @@
     <SolidColorBrush x:Key="SubmenuItemBackground" Color="#242424" />
     <SolidColorBrush x:Key="SubmenuItemBackgroundHighlighted" Color="#333334" />
 
-
+    <SolidColorBrush x:Key="PanelSeparatorBorderBrush" Color="#565659" />
 </ResourceDictionary>
