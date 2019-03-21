@@ -823,7 +823,10 @@ namespace Biaui.Controls
             }
 
             if (_isMouseDown == false)
+            {
+                Cursor = _mouseOverType == MouseOverType.Slider ? Cursors.SizeWE : Cursors.Arrow;
                 return;
+            }
 
             if (IsReadOnly)
                 return;
@@ -885,6 +888,8 @@ namespace Biaui.Controls
             _mouseOverType = MouseOverType.Slider;
             _isMouseMoved = true;
             _oldPos = currentPos;
+
+            Cursor = _mouseOverType == MouseOverType.Slider ? Cursors.SizeWE : Cursors.Arrow;
 
             e.Handled = true;
         }
