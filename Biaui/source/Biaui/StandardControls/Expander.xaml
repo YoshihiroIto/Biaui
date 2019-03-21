@@ -1,4 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary x:Class="Biaui.StandardControls.ExpanderEventHandler"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converter="clr-namespace:Biaui.Internals.Converter"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
     <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>
@@ -60,6 +64,8 @@
         </Setter>
     </Style>
 
+    <converter:MultiplyConverter x:Key="Multiply" />
+
     <Style TargetType="{x:Type Expander}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="Background" Value="Transparent" />
@@ -75,7 +81,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="3"
                             SnapsToDevicePixels="true">
-                        <DockPanel>
+                        <DockPanel PreviewMouseWheel="OnPreviewMouseWheel">
                             <ToggleButton x:Name="HeaderSite"
                                           MinWidth="0"
                                           MinHeight="0"
@@ -94,22 +100,67 @@
                                           IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           Style="{StaticResource ExpanderDownHeaderStyle}" />
 
-                            <ContentPresenter x:Name="ExpandSite"
-                                              Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              DockPanel.Dock="Bottom"
-                                              Focusable="false"
-                                              Visibility="Collapsed" />
+                            <ScrollViewer x:Name="ExpandSiteScrollView"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Bottom"
+                                          DockPanel.Dock="Bottom"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden">
+                                <ScrollViewer.Tag>
+                                    <system:Double>1.0</system:Double>
+                                </ScrollViewer.Tag>
+                                <ScrollViewer.Height>
+                                    <MultiBinding Converter="{StaticResource Multiply}">
+                                        <Binding ElementName="ExpandSite" Path="ActualHeight" />
+                                        <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </ScrollViewer.Height>
+
+                                <ContentPresenter x:Name="ExpandSite"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  DockPanel.Dock="Bottom"
+                                                  Focusable="false" />
+                            </ScrollViewer>
                         </DockPanel>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsExpanded" Value="true">
-                            <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible" />
-                        </Trigger>
 
+                    <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ExpandSiteScrollView"
+                                                         Storyboard.TargetProperty="Tag"
+                                                         To="1"
+                                                         Duration="0:0:0.3">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ExpandSiteScrollView"
+                                                         Storyboard.TargetProperty="Tag"
+                                                         To="0"
+                                                         Duration="0:0:0.3">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Biaui.Internals
+namespace Biaui.Internals.Converter
 {
     internal class LeftMarginMultiplierConverter : IValueConverter
     {

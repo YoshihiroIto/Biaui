@@ -72,6 +72,8 @@
     <Compile Include="Controls\BiaHighlightTextBlock.cs" />
     <Compile Include="Interfaces\IBiaHasChildren.cs" />
     <Compile Include="Internals\PropertyChangeNotifier.cs" />
+    <Compile Include="Internals\Converter\MultiplyConverter.cs" />
+    <Compile Include="StandardControls\ExpanderEventHandler.cs" />
     <Compile Include="StandardControls\TabControlAttachedProperties.cs" />
     <Page Include="Controls\BiaHighlightTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -285,7 +287,7 @@
     <Compile Include="Internals\ItemsControlExtensions.cs" />
     <Compile Include="Internals\KeyboardHelper.cs" />
     <Compile Include="Internals\LazyRunner.cs" />
-    <Compile Include="Internals\LeftMarginMultiplierConverter.cs" />
+    <Compile Include="Internals\Converter\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Internals\LruCache.cs" />
     <Compile Include="Internals\MouseSimulator.cs" />
     <Compile Include="Internals\NumberHelper.cs" />
