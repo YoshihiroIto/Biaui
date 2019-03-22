@@ -18,6 +18,7 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindow.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaEditableTextBlock.xaml" />
 
         <!--  Internals  -->
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/SystemButton.xaml" />

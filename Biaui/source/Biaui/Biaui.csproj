@@ -66,6 +66,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BiaEditableTextBlock.cs" />
+    <Compile Include="Controls\BiaEditableTextBlockEventHandler.cs" />
     <Compile Include="Controls\BiaProgressPanel.cs" />
     <Compile Include="Controls\BiaFilteringComboBox.cs" />
     <Compile Include="Controls\BiaFilteringComboBoxEventHandler.cs" />
@@ -75,6 +77,10 @@
     <Compile Include="Internals\Converter\MultiplyConverter.cs" />
     <Compile Include="StandardControls\ExpanderEventHandler.cs" />
     <Compile Include="StandardControls\TabControlAttachedProperties.cs" />
+    <Page Include="Controls\BiaEditableTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\BiaHighlightTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
