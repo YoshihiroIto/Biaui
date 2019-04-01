@@ -306,8 +306,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                 null,
                 r =>
                 {
-                    isHit = true;
-                    return HitTestResultBehavior.Stop;
+                    if (r.VisualHit is UIElement uiElement && uiElement.IsHitTestVisible)
+                    {
+                        isHit = true;
+                        return HitTestResultBehavior.Stop;
+                    }
+
+                    return HitTestResultBehavior.Continue;
                 },
                 new GeometryHitTestParameters(_rectGeom));
 
