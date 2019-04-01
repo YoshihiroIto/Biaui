@@ -274,6 +274,7 @@ namespace Biaui.Controls
                     IsTabStop = false,
                     IsUndoEnabled = false,
                     FocusVisualStyle = null,
+                    FontFamily = Application.Current.FindResource("BiauiFontFamily") as FontFamily,
                     SelectionLength = 0
                 };
 
