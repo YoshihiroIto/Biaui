@@ -843,21 +843,14 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             foreach (var child in children)
             {
-                child.Measure(availableSize);
-
                 var nodeItem = (IBiaNodeItem) child.DataContext;
 
-                var desiredSize = child.DesiredSize;
+                child.Measure(nodeItem.Size);
 
-                if (nodeItem.Size == default)
-                {
-                    var nodeItemType = nodeItem.GetType();
+                var nodeItemType = nodeItem.GetType();
 
-                    if (_panelDefaultSizeDict.ContainsKey(nodeItemType) == false)
-                        _panelDefaultSizeDict.Add(nodeItemType, desiredSize);
-                }
-
-                nodeItem.Size = desiredSize;
+                if (_panelDefaultSizeDict.ContainsKey(nodeItemType) == false)
+                    _panelDefaultSizeDict.Add(nodeItemType, nodeItem.Size);
             }
         }
 
