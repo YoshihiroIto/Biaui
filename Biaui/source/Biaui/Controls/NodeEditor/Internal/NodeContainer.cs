@@ -446,6 +446,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                         nodePanel.Style = style;
                         nodePanel.DataContext = nodeItem;
                         nodePanel.Opacity = 1.0;
+                        if (nodeItem.Size != default)
+                        {
+                            nodePanel.Width = nodeItem.Size.Width;
+                            nodePanel.Height = nodeItem.Size.Height;
+                        }
 
                         UpdateNodeSlotEnabled(nodeItem);
 
@@ -465,6 +470,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                     {
                         if (nodePanel != null)
                         {
+                            nodePanel.DataContext = null;
+
                             RequestRemoveNodePanel(nodePanel);
 
                             _changedUpdate.Add((nodeItem, null));
