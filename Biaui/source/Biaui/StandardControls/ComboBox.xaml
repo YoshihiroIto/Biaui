@@ -103,6 +103,7 @@
                 <ControlTemplate TargetType="{x:Type ComboBox}">
                     <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <Border x:Name="border"
+                                Padding="{TemplateBinding Padding}"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
