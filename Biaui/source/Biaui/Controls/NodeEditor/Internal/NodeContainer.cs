@@ -382,6 +382,14 @@ namespace Biaui.Controls.NodeEditor.Internal
             UpdateChildrenBag(viewportRect, isPushRemove);
 
             InvalidateMeasure();
+
+            foreach (var child in Children)
+            {
+                if (child.DataContext == null)
+                    continue;
+
+                child.InvalidateMeasure();
+            }
         }
 
         private void UpdateChildrenBag(in ImmutableRect viewportRect, bool isPushRemove)
