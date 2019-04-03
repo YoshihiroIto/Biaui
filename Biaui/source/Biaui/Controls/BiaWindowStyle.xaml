@@ -268,11 +268,14 @@
                                 </TextBlock>
 
                                 <!--  Menu  -->
-                                <ContentControl Grid.Row="0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Content="{Binding Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}"
-                                                WindowChrome.IsHitTestVisibleInChrome="True" />
+                                <StackPanel Grid.Row="0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal"
+                                            WindowChrome.IsHitTestVisibleInChrome="True">
+                                    <ContentControl Content="{Binding Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}" />
+                                    <ContentControl Content="{Binding MenuRight, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}" />
+                                </StackPanel>
 
                                 <ContentPresenter x:Name="ContentPresenter"
                                                   Grid.Row="1"

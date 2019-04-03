@@ -35,6 +35,35 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region MenuRight
+
+        public UIElement MenuRight
+        {
+            get => _MenuRight;
+            set
+            {
+                if (value != _MenuRight)
+                    SetValue(MenuRightProperty, value);
+            }
+        }
+
+        private UIElement _MenuRight;
+
+        public static readonly DependencyProperty MenuRightProperty =
+            DependencyProperty.Register(
+                nameof(MenuRight),
+                typeof(UIElement),
+                typeof(BiaWindow),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._MenuRight = (UIElement) e.NewValue;
+                    }));
+
+        #endregion
+
         #region CloseButtonBehavior
 
         public WindowCloseButtonBehavior CloseButtonBehavior
@@ -210,7 +239,7 @@ namespace Biaui.Controls
         #endregion
 
         #region Icon
-        
+
         public new Brush Icon
         {
             get => _Icon;
@@ -220,9 +249,9 @@ namespace Biaui.Controls
                     SetValue(IconProperty, value);
             }
         }
-        
+
         private Brush _Icon = DefaultIcon;
-        
+
         public new static readonly DependencyProperty IconProperty =
             DependencyProperty.Register(
                 nameof(Icon),
@@ -233,9 +262,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaWindow) s;
-                        self._Icon = (Brush)e.NewValue;
+                        self._Icon = (Brush) e.NewValue;
                     }));
-        
+
         #endregion
 
         private static Brush DefaultIcon
