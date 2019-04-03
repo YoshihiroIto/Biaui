@@ -206,6 +206,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 foreach (var c in Children.ToArray())
                 {
+                    if (c.DataContext == null)
+                        continue;
+
                     var node = (IBiaNodeItem) c.DataContext;
 
                     if (HitTest(node, rect) == false)
@@ -229,6 +232,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 foreach (var c in Children)
                 {
+                    if (c.DataContext == null)
+                        continue;
+
                     var node = (IBiaNodeItem) c.DataContext;
 
                     if (HitTest(node, rect) == false)
@@ -522,6 +528,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var child in Children)
             {
+                if (child.DataContext == null)
+                    continue;
+
                 var nodeItem = (IBiaNodeItem) child.DataContext;
 
                 UpdateNodeSlotEnabled(nodeItem, args);
@@ -836,6 +845,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             foreach (var child in children)
             {
+                if (child.DataContext == null)
+                    continue;
+
                 var pos = ((IBiaHasPos) child.DataContext).AlignedPos();
 
                 child.Arrange(new Rect(pos, child.DesiredSize));
@@ -846,6 +858,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             foreach (var child in children)
             {
+                if (child.DataContext == null)
+                    continue;
+
                 var nodeItem = (IBiaNodeItem) child.DataContext;
 
                 child.Measure(nodeItem.Size != default ? nodeItem.Size : availableSize);
