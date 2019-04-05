@@ -3,6 +3,7 @@
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type ToolTip}">
         <Setter Property="FontFamily" Value="{DynamicResource BiauiFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
         <Setter Property="TextOptions.TextHintingMode" Value="Animated" />
@@ -17,7 +18,7 @@
                                                 Background="{DynamicResource PanelBackgroundBrushKey}"
                                                 BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                                                 BorderThickness="1">
-                        <ContentPresenter Margin="4"
+                        <ContentPresenter Margin="8,4"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top" />
 
