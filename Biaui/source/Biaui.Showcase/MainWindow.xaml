@@ -4,7 +4,9 @@
                     xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
                     xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+                    xmlns:converters="clr-namespace:Biaui.Controls.Converters;assembly=Biaui"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:internals="clr-namespace:Biaui.Controls.Internals;assembly=Biaui"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:showcase="clr-namespace:Biaui.Showcase"
                     xmlns:standardControls="clr-namespace:Biaui.StandardControls;assembly=Biaui"
@@ -680,13 +682,12 @@
                 </TabControl>
             </StackPanel>
 
-            <StackPanel Margin="24,0,0,0"
+            <StackPanel Width="400"
+                        Margin="24,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Orientation="Vertical">
-                <showcase:TextEditor Width="400"
-                                     Height="600"
-                                     Margin="0,4,0,0">
+                <showcase:TextEditor Height="300" Margin="0,4,0,0">
                     <showcase:TextEditor.Resources>
                         <Style TargetType="{x:Type avalon:TextArea}">
                             <Setter Property="Margin" Value="4,0,0,0" />
@@ -733,6 +734,42 @@
                         </Style>
                     </showcase:TextEditor.Style>
                 </showcase:TextEditor>
+
+                <controls:BiaTreeListView Height="300" ItemsSource="{Binding Persons, Mode=OneTime}">
+                    <controls:BiaTreeListView.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
+                            <GridViewRowPresenter Columns="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=Columns, Mode=OneWay}" />
+                        </HierarchicalDataTemplate>
+                    </controls:BiaTreeListView.ItemTemplate>
+
+                    <controls:BiaTreeListView.Columns>
+                        <GridViewColumnCollection>
+                            <GridViewColumn Width="80" Header="Name">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.FirstMarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Name, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="80" Header="Data1">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.MarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data1, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="80" Header="Data2">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.MarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data2, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridViewColumnCollection>
+                    </controls:BiaTreeListView.Columns>
+                </controls:BiaTreeListView>
             </StackPanel>
         </StackPanel>
     </DockPanel>

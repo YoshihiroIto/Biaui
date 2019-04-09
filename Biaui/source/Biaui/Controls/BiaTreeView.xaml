@@ -1,9 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls"
-                    xmlns:internals="clr-namespace:Biaui.Internals"
-                    xmlns:converter="clr-namespace:Biaui.Internals.Converter">
+                    xmlns:converter="clr-namespace:Biaui.Internals.Converter"
+                    xmlns:internals="clr-namespace:Biaui.Internals">
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
@@ -171,7 +170,7 @@
                                                 Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                                CornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=CornerRadius}">
                         <ScrollViewer Margin="0,0,-1,0"
                                       Padding="{TemplateBinding Padding}"
                                       Focusable="False">

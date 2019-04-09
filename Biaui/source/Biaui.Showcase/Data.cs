@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -64,10 +65,14 @@ namespace Biaui.Showcase
 
     public class Person
     {
+        private static int _count;
+
         public string Name { get; set; }
         public List<Person> Child { get; set; }
-    }
 
+        public long Data1 { get; set; } = _count ++;
+        public string Data2 { get; set; } = Guid.NewGuid().ToString();
+    }
 
     public class Data : NotificationObject
     {

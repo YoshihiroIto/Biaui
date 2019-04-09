@@ -53,6 +53,35 @@ namespace Biaui.Controls
         public event EventHandler ItemSelectionStarting;
         public event EventHandler ItemSelectionCompleted;
 
+        #region CornerRadius
+        
+        public CornerRadius CornerRadius
+        {
+            get => _CornerRadius;
+            set
+            {
+                if (value != _CornerRadius)
+                    SetValue(CornerRadiusProperty, value);
+            }
+        }
+        
+        private CornerRadius _CornerRadius = Constants.GroupCornerRadius;
+        
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register(
+                nameof(CornerRadius),
+                typeof(CornerRadius),
+                typeof(BiaTreeView),
+                new PropertyMetadata(
+                    Constants.GroupCornerRadius,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeView) s;
+                        self._CornerRadius = (CornerRadius)e.NewValue;
+                    }));
+        
+        #endregion
+
         static BiaTreeView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaTreeView),
