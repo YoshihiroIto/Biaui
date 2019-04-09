@@ -4,9 +4,7 @@
                     xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
                     xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
-                    xmlns:converters="clr-namespace:Biaui.Controls.Converters;assembly=Biaui"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:internals="clr-namespace:Biaui.Controls.Internals;assembly=Biaui"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:showcase="clr-namespace:Biaui.Showcase"
                     xmlns:standardControls="clr-namespace:Biaui.StandardControls;assembly=Biaui"
@@ -747,6 +745,7 @@
                             <GridViewColumn Width="80" Header="Name">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
+                                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                                         <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.FirstMarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Name, Mode=OneWay}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -755,6 +754,7 @@
                             <GridViewColumn Width="80" Header="Data1">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
+                                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                                         <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.MarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data1, Mode=OneWay}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -763,6 +763,7 @@
                             <GridViewColumn Width="80" Header="Data2">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
+                                        <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                                         <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.MarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data2, Mode=OneWay}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
