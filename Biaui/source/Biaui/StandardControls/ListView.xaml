@@ -67,7 +67,7 @@
     </Style>
 
     <Style TargetType="{x:Type ListView}">
-        <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
