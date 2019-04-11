@@ -24,6 +24,7 @@
                                                   AlternationCount="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=AlternationCount, Mode=OneWay}"
                                                   BorderThickness="0"
                                                   CornerRadius="0"
+                                                  IsVisibleItemExpanderButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=IsVisibleItemExpanderButton, Mode=OneWay}"
                                                   ItemContainerStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemContainerStyle, Mode=OneWay}"
                                                   ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemTemplate, Mode=OneWay}"
                                                   ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemsSource, Mode=OneWay}"

@@ -54,7 +54,7 @@ namespace Biaui.Controls
         public event EventHandler ItemSelectionCompleted;
 
         #region CornerRadius
-        
+
         public CornerRadius CornerRadius
         {
             get => _CornerRadius;
@@ -64,9 +64,9 @@ namespace Biaui.Controls
                     SetValue(CornerRadiusProperty, value);
             }
         }
-        
+
         private CornerRadius _CornerRadius = Constants.GroupCornerRadius;
-        
+
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(
                 nameof(CornerRadius),
@@ -77,9 +77,38 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaTreeView) s;
-                        self._CornerRadius = (CornerRadius)e.NewValue;
+                        self._CornerRadius = (CornerRadius) e.NewValue;
                     }));
-        
+
+        #endregion
+
+        #region IsVisibleItemExpanderButton
+
+        public bool IsVisibleItemExpanderButton
+        {
+            get => _IsVisibleItemExpanderButton;
+            set
+            {
+                if (value != _IsVisibleItemExpanderButton)
+                    SetValue(IsVisibleItemExpanderButtonProperty, value);
+            }
+        }
+
+        private bool _IsVisibleItemExpanderButton = true;
+
+        public static readonly DependencyProperty IsVisibleItemExpanderButtonProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleItemExpanderButton),
+                typeof(bool),
+                typeof(BiaTreeView),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeView) s;
+                        self._IsVisibleItemExpanderButton = (bool) e.NewValue;
+                    }));
+
         #endregion
 
         static BiaTreeView()

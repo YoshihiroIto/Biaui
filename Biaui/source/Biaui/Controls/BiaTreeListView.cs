@@ -240,6 +240,35 @@ namespace Biaui.Controls
         
         #endregion
 
+        #region IsVisibleItemExpanderButton
+
+        public bool IsVisibleItemExpanderButton
+        {
+            get => _IsVisibleItemExpanderButton;
+            set
+            {
+                if (value != _IsVisibleItemExpanderButton)
+                    SetValue(IsVisibleItemExpanderButtonProperty, value);
+            }
+        }
+
+        private bool _IsVisibleItemExpanderButton = true;
+
+        public static readonly DependencyProperty IsVisibleItemExpanderButtonProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleItemExpanderButton),
+                typeof(bool),
+                typeof(BiaTreeListView),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeListView) s;
+                        self._IsVisibleItemExpanderButton = (bool) e.NewValue;
+                    }));
+
+        #endregion
+
         static BiaTreeListView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaTreeListView),
