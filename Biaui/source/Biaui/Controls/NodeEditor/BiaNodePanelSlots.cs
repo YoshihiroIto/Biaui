@@ -36,6 +36,10 @@ namespace Biaui.Controls.NodeEditor
             var parent = this.GetParent<BiaNodeEditor>();
 
             var nodeItem = (IBiaNodeItem) DataContext;
+
+            if (nodeItem == null)
+                return;
+
             var isMouseOverNode = nodeItem.IsMouseOver;
 
             foreach (var slot in nodeItem.EnabledSlots())
