@@ -108,36 +108,69 @@
                     </StackPanel>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ActiveBackgroundBrushKey}" />
-                        </Trigger>
-
                         <Trigger Property="IsExpanded" Value="False">
                             <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
                         </Trigger>
+
                         <Trigger Property="HasItems" Value="False">
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                         </Trigger>
 
-                        <Trigger Property="controls:BiaTreeView.IsSelected" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedInactive.Border}" />
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
 
-                        <MultiTrigger>
+                        <!--<MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True" />
+                            </MultiTrigger.Conditions>
+
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                        </MultiTrigger>-->
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                        </MultiDataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedInactive.Border}" />
+                        </MultiDataTrigger>
+
+                        <!--<MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True" />
                                 <Condition Property="controls:BiaTreeView.IsSelected" Value="True" />
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
+
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border.IsMouseOver}" />
-                        </MultiTrigger>
+                        </MultiTrigger>-->
 
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border.IsMouseOver}" />
+                        </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

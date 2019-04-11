@@ -49,6 +49,15 @@ namespace Biaui.Controls
             "IsSelected", typeof(bool), typeof(BiaTreeView),
             new FrameworkPropertyMetadata(OnIsSelectedChanged));
 
+        public static bool GetIsSelected(TreeViewItem target)
+        {
+            return (bool) target.GetValue(IsSelectedProperty);
+        }
+
+        public static void SetIsSelected(TreeViewItem target, bool value)
+        {
+            target.SetValue(IsSelectedProperty, value);
+        }
 
         public event EventHandler ItemSelectionStarting;
         public event EventHandler ItemSelectionCompleted;
@@ -111,20 +120,39 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsSelectionEnabled
+        
+        public bool IsSelectionEnabled
+        {
+            get => _IsSelectionEnabled;
+            set
+            {
+                if (value != _IsSelectionEnabled)
+                    SetValue(IsSelectionEnabledProperty, value);
+            }
+        }
+        
+        private bool _IsSelectionEnabled = true;
+        
+        public static readonly DependencyProperty IsSelectionEnabledProperty =
+            DependencyProperty.Register(
+                nameof(IsSelectionEnabled),
+                typeof(bool),
+                typeof(BiaTreeView),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeView) s;
+                        self._IsSelectionEnabled = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+
         static BiaTreeView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaTreeView),
                 new FrameworkPropertyMetadata(typeof(BiaTreeView)));
-        }
-
-        public static bool GetIsSelected(TreeViewItem target)
-        {
-            return (bool) target.GetValue(IsSelectedProperty);
-        }
-
-        public static void SetIsSelected(TreeViewItem target, bool value)
-        {
-            target.SetValue(IsSelectedProperty, value);
         }
 
         private static void OnIsSelectedChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)

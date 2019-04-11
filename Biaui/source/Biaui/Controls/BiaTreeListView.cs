@@ -269,6 +269,35 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsSelectionEnabled
+        
+        public bool IsSelectionEnabled
+        {
+            get => _IsSelectionEnabled;
+            set
+            {
+                if (value != _IsSelectionEnabled)
+                    SetValue(IsSelectionEnabledProperty, value);
+            }
+        }
+        
+        private bool _IsSelectionEnabled = true;
+        
+        public static readonly DependencyProperty IsSelectionEnabledProperty =
+            DependencyProperty.Register(
+                nameof(IsSelectionEnabled),
+                typeof(bool),
+                typeof(BiaTreeListView),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeListView) s;
+                        self._IsSelectionEnabled = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+
         static BiaTreeListView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaTreeListView),
