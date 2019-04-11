@@ -22,10 +22,14 @@
                             <controls:BiaTreeView x:Name="TreeView"
                                                   HorizontalAlignment="Stretch"
                                                   VerticalAlignment="Top"
+                                                  AlternationCount="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=AlternationCount, Mode=OneWay}"
                                                   BorderThickness="0"
                                                   CornerRadius="0"
-                                                  ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemTemplate}"
-                                                  ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemsSource}">
+                                                  ItemContainerStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemContainerStyle, Mode=OneWay}"
+                                                  ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemTemplate, Mode=OneWay}"
+                                                  ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=ItemsSource, Mode=OneWay}"
+                                                  SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=SelectedItem, Mode=OneWay}"
+                                                  SelectedItems="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=SelectedItems, Mode=OneWay}">
                                 <TreeView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel IsItemsHost="True" />

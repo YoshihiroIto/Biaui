@@ -95,6 +95,122 @@ namespace Biaui.Controls
         
         #endregion
 
+        #region ItemContainerStyle
+        
+        public Style ItemContainerStyle
+        {
+            get => _ItemContainerStyle;
+            set
+            {
+                if (value != _ItemContainerStyle)
+                    SetValue(ItemContainerStyleProperty, value);
+            }
+        }
+        
+        private Style _ItemContainerStyle;
+        
+        public static readonly DependencyProperty ItemContainerStyleProperty =
+            DependencyProperty.Register(
+                nameof(ItemContainerStyle),
+                typeof(Style),
+                typeof(BiaTreeListView),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeListView) s;
+                        self._ItemContainerStyle = (Style)e.NewValue;
+                    }));
+        
+        #endregion
+
+        #region SelectedItem
+        
+        public object SelectedItem
+        {
+            get => _SelectedItem;
+            set
+            {
+                if (value != _SelectedItem)
+                    SetValue(SelectedItemProperty, value);
+            }
+        }
+        
+        private object _SelectedItem;
+        
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register(
+                nameof(SelectedItem),
+                typeof(object),
+                typeof(BiaTreeListView),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeListView) s;
+                        self._SelectedItem = e.NewValue;
+                    }));
+        
+        #endregion
+
+        #region SelectedItems
+        
+        public IList SelectedItems
+        {
+            get => _SelectedItems;
+            set
+            {
+                if (!Equals(value, _SelectedItems))
+                    SetValue(SelectedItemsProperty, value);
+            }
+        }
+        
+        private IList _SelectedItems;
+        
+        public static readonly DependencyProperty SelectedItemsProperty =
+            DependencyProperty.Register(
+                nameof(SelectedItems),
+                typeof(IList),
+                typeof(BiaTreeListView),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeListView) s;
+                        self._SelectedItems = (IList)e.NewValue;
+                    }));
+        
+        #endregion
+
+        #region AlternationCount
+        
+        public int AlternationCount
+        {
+            get => _AlternationCount;
+            set
+            {
+                if (value != _AlternationCount)
+                    SetValue(AlternationCountProperty, value);
+            }
+        }
+        
+        private int _AlternationCount;
+        
+        public static readonly DependencyProperty AlternationCountProperty =
+            DependencyProperty.Register(
+                nameof(AlternationCount),
+                typeof(int),
+                typeof(BiaTreeListView),
+                new PropertyMetadata(
+                    Boxes.Int0,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeListView) s;
+                        self._AlternationCount = (int)e.NewValue;
+                    }));
+        
+        #endregion
+
         static BiaTreeListView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaTreeListView),
