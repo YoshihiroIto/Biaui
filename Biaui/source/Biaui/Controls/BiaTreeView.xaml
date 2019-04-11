@@ -120,15 +120,6 @@
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
 
-                        <!--<MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True" />
-                            </MultiTrigger.Conditions>
-
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ActiveBackgroundBrushKey}" />
-                        </MultiTrigger>-->
-
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="True" />
@@ -148,17 +139,6 @@
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedInactive.Border}" />
                         </MultiDataTrigger>
-
-                        <!--<MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True" />
-                                <Condition Property="controls:BiaTreeView.IsSelected" Value="True" />
-                                <Condition Property="IsMouseOver" Value="True" />
-                            </MultiTrigger.Conditions>
-
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border.IsMouseOver}" />
-                        </MultiTrigger>-->
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
