@@ -14,6 +14,8 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(typeof(BiaNodePanel)));
         }
 
+        public bool IsActive => DataContext != null;
+
         internal void InvalidateSlots()
         {
             var slots = this.Descendants<BiaNodePanelSlots>().FirstOrDefault();

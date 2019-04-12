@@ -204,12 +204,12 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                     ClearSelectedNode();
 
-                foreach (var c in Children.ToArray())
+                foreach (var child in Children.ToArray())
                 {
-                    if (c.DataContext == null)
+                    if (child.IsActive == false)
                         continue;
 
-                    var node = (IBiaNodeItem) c.DataContext;
+                    var node = (IBiaNodeItem) child.DataContext;
 
                     if (HitTest(node, rect) == false)
                         continue;
@@ -230,12 +230,12 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 ClearPreSelectedNode();
 
-                foreach (var c in Children)
+                foreach (var child in Children)
                 {
-                    if (c.DataContext == null)
+                    if (child.IsActive == false)
                         continue;
 
-                    var node = (IBiaNodeItem) c.DataContext;
+                    var node = (IBiaNodeItem) child.DataContext;
 
                     if (HitTest(node, rect) == false)
                         continue;
@@ -325,23 +325,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             return isHit;
         }
 
-        private void ReturnNodePanel(BiaNodePanel panel)
-        {
-            if (panel == null)
-                throw new ArgumentNullException(nameof(panel));
-
-            _recycleNodePanelPool.Push(panel);
-        }
-
-        private void RemoveNodePanel(BiaNodePanel panel)
-        {
-            if (panel == null)
-                throw new ArgumentNullException(nameof(panel));
-
-            ReturnNodePanel(panel);
-            RemoveChild(panel);
-        }
-
         private void DoRemoverNodePanel()
         {
             for (var i = 0; i != 5; ++i)
@@ -356,6 +339,23 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (_removeNodePanelPool.Count == 0)
                 _removeNodePanelTimer.Stop();
+        }
+
+        private void RemoveNodePanel(BiaNodePanel panel)
+        {
+            if (panel == null)
+                throw new ArgumentNullException(nameof(panel));
+
+            ReturnNodePanel(panel);
+            RemoveChild(panel);
+        }
+
+        private void ReturnNodePanel(BiaNodePanel panel)
+        {
+            if (panel == null)
+                throw new ArgumentNullException(nameof(panel));
+
+            _recycleNodePanelPool.Push(panel);
         }
 
         private void RequestRemoveNodePanel(BiaNodePanel panel)
@@ -385,7 +385,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var child in Children)
             {
-                if (child.DataContext == null)
+                if (child.IsActive == false)
                     continue;
 
                 child.InvalidateMeasure();
@@ -457,6 +457,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                             nodeItem.InternalData().Style = style;
                         }
 
+                        nodePanel.Visibility = Visibility.Visible;
                         nodePanel.Style = style;
                         nodePanel.DataContext = nodeItem;
                         nodePanel.Opacity = 1.0;
@@ -481,6 +482,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         if (nodePanel != null)
                         {
                             nodePanel.DataContext = null;
+                            nodePanel.Visibility = Visibility.Hidden;
 
                             RequestRemoveNodePanel(nodePanel);
 
@@ -536,7 +538,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var child in Children)
             {
-                if (child.DataContext == null)
+                if (child.IsActive == false)
                     continue;
 
                 var nodeItem = (IBiaNodeItem) child.DataContext;
@@ -749,6 +751,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         private void NodePanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
+
+            Debug.Assert(panel.IsActive);
             var nodeItem = (IBiaNodeItem) panel.DataContext;
 
             ToLast(panel);
@@ -761,6 +765,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         private void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
+
+            Debug.Assert(panel.IsActive);
             var nodeItem = (IBiaNodeItem) panel.DataContext;
 
             // 親コントロールがマウスキャプチャーしてもここに飛んでくる
@@ -780,6 +786,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
+
+            Debug.Assert(panel.IsActive);
             var nodeItem = (IBiaNodeItem) panel.DataContext;
 
             if (nodeItem.IsSelected == false)
@@ -853,7 +861,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             foreach (var child in children)
             {
-                if (child.DataContext == null)
+                if (child.IsActive == false)
                     continue;
 
                 var pos = ((IBiaHasPos) child.DataContext).AlignedPos();
@@ -866,7 +874,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             foreach (var child in children)
             {
-                if (child.DataContext == null)
+                if (child.IsActive == false)
                     continue;
 
                 var nodeItem = (IBiaNodeItem) child.DataContext;
