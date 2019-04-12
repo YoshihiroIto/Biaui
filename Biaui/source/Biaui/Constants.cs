@@ -19,13 +19,13 @@ namespace Biaui
         public static double NodeEditor_MinScale = 0.1;
         public static double NodeEditor_MaxScale = 2;
 
-        public static TreeListViewItemMarginConverter FirstMarginConverter = new TreeListViewItemMarginConverter
+        public static TreeListViewItemMarginConverter TreeListViewItemFirstMarginConverter = new TreeListViewItemMarginConverter
         {
             IsFirstColumn = true,
             Length = 19
         };
 
-        public static TreeListViewItemMarginConverter MarginConverter = new TreeListViewItemMarginConverter
+        public static TreeListViewItemMarginConverter TreeListViewItemMarginConverter = new TreeListViewItemMarginConverter
         {
             Length = 19
         };
