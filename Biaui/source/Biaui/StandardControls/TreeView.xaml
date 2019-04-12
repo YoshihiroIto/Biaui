@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls"
-                    xmlns:internals="clr-namespace:Biaui.Internals"
-                    xmlns:converter="clr-namespace:Biaui.Internals.Converter">
+                    xmlns:converter="clr-namespace:Biaui.Internals.Converter"
+                    xmlns:internals="clr-namespace:Biaui.Internals">
     <Style TargetType="{x:Type TreeView}">
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
@@ -116,15 +116,28 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
                     <ControlTemplate.Resources>
-                        <converter:LeftMarginMultiplierConverter x:Key="LengthConverter" Length="19" />
+                        <converter:IndentToMargin x:Key="LengthConverter" />
                     </ControlTemplate.Resources>
+
                     <StackPanel>
                         <Border Name="Bd"
                                 Padding="{TemplateBinding Padding}"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid Margin="{Binding Converter={StaticResource LengthConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Setter Property="Margin">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource LengthConverter}">
+                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Grid.Style>
+
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="19" />
                                     <ColumnDefinition />

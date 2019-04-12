@@ -299,7 +299,7 @@
     <Compile Include="Internals\ItemsControlExtensions.cs" />
     <Compile Include="Internals\KeyboardHelper.cs" />
     <Compile Include="Internals\LazyRunner.cs" />
-    <Compile Include="Internals\Converter\LeftMarginMultiplierConverter.cs" />
+    <Compile Include="Internals\Converter\IndentToMargin.cs" />
     <Compile Include="Internals\LruCache.cs" />
     <Compile Include="Internals\MouseSimulator.cs" />
     <Compile Include="Internals\NumberHelper.cs" />

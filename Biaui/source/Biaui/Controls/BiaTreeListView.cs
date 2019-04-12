@@ -298,6 +298,36 @@ namespace Biaui.Controls
         
         #endregion
 
+        #region IndentSize
+        
+        public double IndentSize
+        {
+            get => _IndentSize;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _IndentSize)
+                    SetValue(IndentSizeProperty, value);
+            }
+        }
+        
+        private double _IndentSize = 19.0;
+        
+        public static readonly DependencyProperty IndentSizeProperty =
+            DependencyProperty.Register(
+                nameof(IndentSize),
+                typeof(double),
+                typeof(BiaTreeListView),
+                new PropertyMetadata(
+                    19.0,
+                    (s, e) =>
+                    {
+                        var self = (BiaTreeListView) s;
+                        self._IndentSize = (double)e.NewValue;
+                    }));
+        
+        #endregion
+
         static BiaTreeListView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaTreeListView),

@@ -78,15 +78,29 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
                     <ControlTemplate.Resources>
-                        <converter:LeftMarginMultiplierConverter x:Key="LengthConverter" Length="19" />
+                        <converter:IndentToMargin x:Key="LengthConverter" />
                     </ControlTemplate.Resources>
+
                     <StackPanel>
                         <Border Name="Bd"
                                 Padding="{TemplateBinding Padding}"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid Margin="{Binding Converter={StaticResource LengthConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Setter Property="Margin">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource LengthConverter}">
+                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" />
+                                                    <Binding Path="IndentSize" RelativeSource="{RelativeSource AncestorType={x:Type controls:BiaTreeView}}" />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Grid.Style>
+
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="19" />
                                     <ColumnDefinition />
