@@ -63,6 +63,10 @@
     <SolidColorBrush x:Key="ButtonActiveBorderBrushKey" Color="#191A1F" />
     <SolidColorBrush x:Key="ButtonActiveForegroundBrushKey" Color="#BABEC5" />
 
+    <LinearGradientBrush x:Key="FixListHeaderBrushKey" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Offset="0.0" Color="{DynamicResource ButtonInactiveBackgroundColorKey}" />
+        <GradientStop Offset="1.0" Color="#373D47" />
+    </LinearGradientBrush>
 
     <Color x:Key="ButtonInactiveBackgroundColorKey">#3C424E</Color>
     <Color x:Key="ButtonInactiveBorderColorKey">#191A1F</Color>
