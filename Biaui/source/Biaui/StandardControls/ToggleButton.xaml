@@ -101,8 +101,8 @@
 
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.6" />
+                <Setter Property="Background" Value="Transparent" />
             </Trigger>
         </Style.Triggers>
     </Style>
-
 </ResourceDictionary>
