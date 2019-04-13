@@ -17,6 +17,7 @@
     <Color x:Key="BackgroundBackgroundColorKey">#2D2D30</Color>
     <SolidColorBrush x:Key="BackgroundBorderBrushKey" Color="#383838" />
 
+    <SolidColorBrush x:Key="ListItemAlternationBackground" Color="#262628" />
 
     <SolidColorBrush x:Key="Item.MouseOver.Background" Color="Transparent" />
     <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#D0537CCE" />
