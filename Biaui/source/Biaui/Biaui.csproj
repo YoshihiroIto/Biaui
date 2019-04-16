@@ -66,6 +66,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BiaFlagBox.cs" />
     <Compile Include="Controls\BiaEditableTextBlock.cs" />
     <Compile Include="Controls\BiaEditableTextBlockEventHandler.cs" />
     <Compile Include="Controls\BiaProgressPanel.cs" />
