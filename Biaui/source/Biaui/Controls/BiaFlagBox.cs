@@ -8,90 +8,6 @@ namespace Biaui.Controls
 {
     public class BiaFlagBox : FrameworkElement
     {
-        #region Background
-
-        public Brush Background
-        {
-            get => _Background;
-            set
-            {
-                if (value != _Background)
-                    SetValue(BackgroundProperty, value);
-            }
-        }
-
-        private Brush _Background;
-
-        public static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaFlagBox),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaFlagBox) s;
-                        self._Background = (Brush) e.NewValue;
-                    }));
-
-        #endregion
-
-        #region Foreground
-
-        public Brush Foreground
-        {
-            get => _Foreground;
-            set
-            {
-                if (value != _Foreground)
-                    SetValue(ForegroundProperty, value);
-            }
-        }
-
-        private Brush _Foreground;
-
-        public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaFlagBox),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaFlagBox) s;
-                        self._Foreground = (Brush) e.NewValue;
-                    }));
-
-        #endregion
-
-        #region IsPressed
-
-        public bool IsPressed
-        {
-            get => _IsPressed;
-            set
-            {
-                if (value != _IsPressed)
-                    SetValue(IsPressedProperty, Boxes.Bool(value));
-            }
-        }
-
-        private bool _IsPressed;
-
-        public static readonly DependencyProperty IsPressedProperty =
-            DependencyProperty.Register(nameof(IsPressed), typeof(bool), typeof(BiaFlagBox),
-                new FrameworkPropertyMetadata(
-                    Boxes.BoolFalse,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaFlagBox) s;
-                        self._IsPressed = (bool) e.NewValue;
-                    }));
-
-        #endregion
-
         #region Flag0
 
         public bool Flag0
@@ -340,6 +256,8 @@ namespace Biaui.Controls
 
         #endregion
 
+        private bool _isPressed;
+
         private bool IsCheckedButton(int index)
         {
             switch (index)
@@ -391,45 +309,45 @@ namespace Biaui.Controls
         }
 
         private bool IsMouseOverButton(int index)
-            => (_isMouseOver & (1 << index)) != 0;
+            => (_isMouseOverButton & (1 << index)) != 0;
 
         private void SetIsMouseOverButton(int index, bool i)
         {
             if (i)
-                _isMouseOver |= (1u << index);
+                _isMouseOverButton |= (1u << index);
             else
-                _isMouseOver &= ~(1u << index);
+                _isMouseOverButton &= ~(1u << index);
 
             InvalidateVisual();
         }
 
         private void ResetIsMouseOverButton()
         {
-            _isMouseOver = 0;
+            _isMouseOverButton = 0;
             InvalidateVisual();
         }
 
         private bool IsPressedButton(int index)
-            => (_isPressed & (1 << index)) != 0;
+            => (_isPressedButton & (1 << index)) != 0;
 
         private void SetIsPressedButton(int index, bool i)
         {
             if (i)
-                _isPressed |= (1u << index);
+                _isPressedButton |= (1u << index);
             else
-                _isPressed &= ~(1u << index);
+                _isPressedButton &= ~(1u << index);
 
             InvalidateVisual();
         }
 
         private void ResetIsPressedButton()
         {
-            _isPressed = 0;
+            _isPressedButton = 0;
             InvalidateVisual();
         }
 
-        private uint _isMouseOver;
-        private uint _isPressed;
+        private uint _isMouseOverButton;
+        private uint _isPressedButton;
 
         static BiaFlagBox()
         {
@@ -554,7 +472,7 @@ namespace Biaui.Controls
         {
             base.OnMouseLeftButtonDown(e);
 
-            IsPressed = IsInMouse(e);
+            _isPressed = IsInMouse(e);
 
             CaptureMouse();
 
@@ -576,13 +494,13 @@ namespace Biaui.Controls
         {
             base.OnMouseLeftButtonUp(e);
 
-            if (IsPressed == false)
+            if (_isPressed == false)
                 return;
 
             if (IsMouseCaptured)
                 ReleaseMouseCapture();
 
-            IsPressed = false;
+            _isPressed = false;
 
             UpdateState(e, false);
 
@@ -616,7 +534,7 @@ namespace Biaui.Controls
             var index = y * ColumnCount + x;
 
             // IsChecked を作る
-            if (IsPressed)
+            if (_isPressed)
             {
                 if (KeyboardHelper.IsPressShift)
                 {
@@ -636,7 +554,7 @@ namespace Biaui.Controls
             SetIsMouseOverButton(index, true);
 
             // IsPressed を作る
-            if (IsPressed)
+            if (_isPressed)
                 SetIsPressedButton(index, true);
         }
 
