@@ -550,7 +550,9 @@ namespace Biaui.Controls
         {
             if (isEnabled == false)
             {
-                return _buttonInactiveBackgroundBrushKey;
+                return isChecked
+                    ? _toggleButtonBackgroundBrushKeyIsCheckedIsDisabled
+                    : _buttonInactiveBackgroundBrushKey;
             }
 
             if (isPressed)
@@ -576,6 +578,9 @@ namespace Biaui.Controls
 
         private static readonly Brush _buttonInactiveBackgroundBrushKey =
             (Brush) Application.Current.FindResource("ButtonInactiveBackgroundBrushKey");
+
+        private static readonly Brush _toggleButtonBackgroundBrushKeyIsCheckedIsDisabled =
+            (Brush) Application.Current.FindResource("ToggleButtonBackgroundBrushKey.IsChecked.IsDisabled");
 
         private static readonly Brush _toggleButtonBackgroundBrushKeyIsCheckedIsMouseOver =
             (Brush) Application.Current.FindResource("ToggleButtonBackgroundBrushKey.IsChecked.IsMouseOver");
