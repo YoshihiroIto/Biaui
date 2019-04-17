@@ -256,6 +256,132 @@ namespace Biaui.Controls
 
         #endregion
 
+        private (bool, bool, bool, bool, bool, bool, bool, bool) AllFlags
+        {
+            get => (Flag0, Flag1, Flag2, Flag3, Flag4, Flag5, Flag6, Flag7);
+            set =>
+                (Flag0, Flag1, Flag2, Flag3, Flag4, Flag5, Flag6, Flag7) =
+                (
+                    value.Item1, value.Item2, value.Item3, value.Item4,
+                    value.Item5, value.Item6, value.Item7, value.Item8);
+        }
+
+        #region StartedContinuousEditingCommand
+
+        public ICommand StartedContinuousEditingCommand
+        {
+            get => _StartedContinuousEditingCommand;
+            set
+            {
+                if (value != _StartedContinuousEditingCommand)
+                    SetValue(StartedContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _StartedContinuousEditingCommand;
+
+        public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaFlagBox),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaFlagBox) s;
+                        self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region EndContinuousEditingCommand
+
+        public ICommand EndContinuousEditingCommand
+        {
+            get => _EndContinuousEditingCommand;
+            set
+            {
+                if (value != _EndContinuousEditingCommand)
+                    SetValue(EndContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _EndContinuousEditingCommand;
+
+        public static readonly DependencyProperty EndContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaFlagBox),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaFlagBox) s;
+                        self._EndContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region StartedBatchEditingCommand
+        
+        public ICommand StartedBatchEditingCommand
+        {
+            get => _StartedBatchEditingCommand;
+            set
+            {
+                if (value != _StartedBatchEditingCommand)
+                    SetValue(StartedBatchEditingCommandProperty, value);
+            }
+        }
+        
+        private ICommand _StartedBatchEditingCommand;
+        
+        public static readonly DependencyProperty StartedBatchEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedBatchEditingCommand),
+                typeof(ICommand),
+                typeof(BiaFlagBox),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (BiaFlagBox) s;
+                        self._StartedBatchEditingCommand = (ICommand)e.NewValue;
+                    }));
+        
+        #endregion
+
+        #region EndBatchEditingCommand
+        
+        public ICommand EndBatchEditingCommand
+        {
+            get => _EndBatchEditingCommand;
+            set
+            {
+                if (value != _EndBatchEditingCommand)
+                    SetValue(EndBatchEditingCommandProperty, value);
+            }
+        }
+        
+        private ICommand _EndBatchEditingCommand;
+        
+        public static readonly DependencyProperty EndBatchEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndBatchEditingCommand),
+                typeof(ICommand),
+                typeof(BiaFlagBox),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (BiaFlagBox) s;
+                        self._EndBatchEditingCommand = (ICommand)e.NewValue;
+                    }));
+        
+        #endregion
+
         private bool _isPressed;
 
         private bool IsCheckedButton(int index)
@@ -468,11 +594,20 @@ namespace Biaui.Controls
 
         #endregion
 
+        private bool _isContinuousEdited;
+        private (bool, bool, bool, bool, bool, bool, bool, bool)  _ContinuousEditingStartValue;
+
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
 
             _isPressed = IsInMouse(e);
+
+            _ContinuousEditingStartValue = AllFlags;
+            _isContinuousEdited = true;
+            if (StartedContinuousEditingCommand != null)
+                if (StartedContinuousEditingCommand.CanExecute(null))
+                    StartedContinuousEditingCommand.Execute(null);
 
             CaptureMouse();
 
@@ -503,6 +638,25 @@ namespace Biaui.Controls
             _isPressed = false;
 
             UpdateState(e, false);
+
+            if (_isContinuousEdited)
+            {
+                if (EndContinuousEditingCommand != null)
+                {
+                    if (EndContinuousEditingCommand.CanExecute(null))
+                    {
+                        var changedValue = AllFlags;
+                        AllFlags = _ContinuousEditingStartValue;
+                        EndContinuousEditingCommand.Execute(null);
+
+                        StartedBatchEditingCommand?.Execute(null);
+                        AllFlags = changedValue;
+                        EndBatchEditingCommand?.Execute(null);
+                    }
+                }
+
+                _isContinuousEdited = false;
+            }
 
             if (IsInMouse(e) == false)
                 return;
