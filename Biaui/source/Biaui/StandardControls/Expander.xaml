@@ -105,11 +105,13 @@
                                           HorizontalContentAlignment="Stretch"
                                           VerticalContentAlignment="Bottom"
                                           DockPanel.Dock="Bottom"
+                                          Loaded="ExpandSiteScrollView_OnLoaded"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Hidden">
                                 <ScrollViewer.Tag>
                                     <system:Double>1.0</system:Double>
                                 </ScrollViewer.Tag>
+
                                 <ScrollViewer.Height>
                                     <MultiBinding Converter="{StaticResource Multiply}">
                                         <Binding ElementName="ExpandSite" Path="ActualHeight" />

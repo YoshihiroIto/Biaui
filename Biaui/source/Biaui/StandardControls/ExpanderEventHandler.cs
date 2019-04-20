@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Biaui.Internals;
 
 namespace Biaui.StandardControls
 {
@@ -15,6 +17,14 @@ namespace Biaui.StandardControls
             };
 
             (sender as UIElement)?.RaiseEvent(e2);
+        }
+
+        private void ExpandSiteScrollView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var sv = (ScrollViewer) sender;
+            var expander = sv.GetParent<Expander>();
+
+            sv.Tag = expander.IsExpanded ? 1.0 : 0.0;
         }
     }
 }
