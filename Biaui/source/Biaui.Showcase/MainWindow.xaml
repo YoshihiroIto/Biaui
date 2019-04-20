@@ -746,7 +746,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.FirstMarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Name, Mode=OneWay}" />
+                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.TreeListViewItemFirstMarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Name, Mode=OneWay}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -755,7 +755,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.MarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data1, Mode=OneWay}" />
+                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.TreeListViewItemMarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data1, Mode=OneWay}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -764,7 +764,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.MarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data2, Mode=OneWay}" />
+                                        <controls:BiaTextBlock Margin="{Binding Converter={x:Static biaui:Constants.TreeListViewItemMarginConverter}, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Text="{Binding Data2, Mode=OneWay}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
