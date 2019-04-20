@@ -427,7 +427,7 @@ namespace Biaui.Controls
             Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
-        private ListBox _listBox;
+        private ListBox _items;
         private Popup _popup;
         private ScaleTransform _scale;
 
@@ -435,7 +435,7 @@ namespace Biaui.Controls
         {
             if (_popup == null)
             {
-                _listBox = new ListBox
+                _items = new ListBox
                 {
                     IsTabStop = false,
                     FocusVisualStyle = null,
@@ -451,7 +451,7 @@ namespace Biaui.Controls
 
                 _popup = new Popup
                 {
-                    Child = _listBox,
+                    Child = _items,
                     AllowsTransparency = true,
                     VerticalOffset = 1,
                     StaysOpen = false,
@@ -461,20 +461,20 @@ namespace Biaui.Controls
                     PlacementTarget = this
                 };
 
-                _listBox.SetBinding(ItemsControl.ItemsSourceProperty,
+                _items.SetBinding(ItemsControl.ItemsSourceProperty,
                     new Binding(nameof(ItemsSource))
                     {
                         Source = this,
                         Mode = BindingMode.TwoWay
                     });
-                _listBox.SetBinding(Selector.SelectedItemProperty,
+                _items.SetBinding(Selector.SelectedItemProperty,
                     new Binding(nameof(SelectedItem))
                     {
                         Source = this,
                         Mode = BindingMode.TwoWay
                     });
-                _listBox.PreviewKeyDown += ListBoxOnPreviewKeyDown;
-                _listBox.PreviewMouseLeftButtonDown += ListBoxOnPreviewMouseLeftButtonDown;
+                _items.PreviewKeyDown += ListBoxOnPreviewKeyDown;
+                _items.PreviewMouseLeftButtonDown += ListBoxOnPreviewMouseLeftButtonDown;
 
                 _popup.Closed += PopupOnClosed;
             }
@@ -485,7 +485,7 @@ namespace Biaui.Controls
                 SetupListBoxItemTemplate();
             }
 
-            _listBox.Width = ActualWidth;
+            _items.Width = ActualWidth;
 
             Mouse.Capture(this, CaptureMode.SubTree);
 
@@ -496,22 +496,22 @@ namespace Biaui.Controls
             _popup.IsOpen = true;
             IsOpen = true;
 
-            if (_listBox.SelectedItem == null)
+            if (_items.SelectedItem == null)
             {
-                _listBox.Focus();
+                _items.Focus();
             }
             else
             {
-                var item = _listBox.ItemContainerGenerator.ContainerFromItem(_listBox.SelectedItem) as ListBoxItem;
+                var item = _items.ItemContainerGenerator.ContainerFromItem(_items.SelectedItem) as ListBoxItem;
                 item?.Focus();
 
                 // 選択アイテム位置にスクロール
                 {
-                    var sv = _listBox.Descendants<ScrollViewer>().FirstOrDefault();
+                    var sv = _items.Descendants<ScrollViewer>().FirstOrDefault();
 
                     if (sv != null)
                     {
-                        var offset = (double) _listBox.Items.IndexOf(_listBox.SelectedItem);
+                        var offset = (double) _items.Items.IndexOf(_items.SelectedItem);
 
                         if (offset > sv.ScrollableHeight)
                             offset = sv.ScrollableHeight;
@@ -521,7 +521,7 @@ namespace Biaui.Controls
                 }
             }
 
-            var listBoxBorder = _listBox.Descendants<Border>().First();
+            var listBoxBorder = _items.Descendants<Border>().First();
             listBoxBorder.BorderBrush = (Brush)FindResource("Item.SelectedActive.Border");
         }
 
@@ -542,7 +542,7 @@ namespace Biaui.Controls
 
                 itemTemplate.VisualTree = textBlock;
             }
-            _listBox.ItemTemplate = itemTemplate;
+            _items.ItemTemplate = itemTemplate;
         }
 
         private void ListBoxOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -600,7 +600,7 @@ namespace Biaui.Controls
             {
                 if (ia.Length > 0)
                 {
-                    var item = _listBox.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
+                    var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
                     item?.Focus();
 
                     SelectedItem = ia[0];
