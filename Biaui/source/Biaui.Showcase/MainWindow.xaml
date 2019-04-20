@@ -287,6 +287,8 @@
                     <controls:BiaCheckBox Content="XYZ" />
                     <controls:BiaCheckBox Content="パソコン" />
                 </StackPanel>
+
+                <controls:BiaFlagBox Margin="0,4,0,0" HorizontalAlignment="Left" />
             </StackPanel>
 
             <StackPanel Margin="24,0,0,0"
