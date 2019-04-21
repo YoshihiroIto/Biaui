@@ -263,7 +263,6 @@ namespace Biaui.Controls
 
             // 背景
             {
-
                 if (NumberHelper.AreCloseZero(CornerRadius))
                     dc.DrawRectangle(
                         Background,

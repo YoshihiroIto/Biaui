@@ -66,6 +66,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BiaColorSelector.cs" />
     <Compile Include="Controls\BiaFlagBox.cs" />
     <Compile Include="Controls\BiaEditableTextBlock.cs" />
     <Compile Include="Controls\BiaEditableTextBlockEventHandler.cs" />
@@ -74,12 +75,18 @@
     <Compile Include="Controls\BiaFilteringComboBoxEventHandler.cs" />
     <Compile Include="Controls\BiaHighlightTextBlock.cs" />
     <Compile Include="Controls\BiaTreeListView.cs" />
+    <Compile Include="Controls\Converters\DoubleColorToBrushConverter.cs" />
     <Compile Include="Controls\Converters\TreeListViewItemMarginConverter.cs" />
     <Compile Include="Interfaces\IBiaHasChildren.cs" />
     <Compile Include="Internals\PropertyChangeNotifier.cs" />
     <Compile Include="Internals\Converter\MultiplyConverter.cs" />
     <Compile Include="StandardControls\ExpanderEventHandler.cs" />
     <Compile Include="StandardControls\TabControlAttachedProperties.cs" />
+    <Compile Include="Types.cs" />
+    <Page Include="Controls\BiaColorSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\BiaEditableTextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

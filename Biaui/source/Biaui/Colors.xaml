@@ -20,7 +20,6 @@
     <SolidColorBrush x:Key="ListItemAlternationBackground" Color="#262628" />
 
     <SolidColorBrush x:Key="Item.MouseOver.Background" Color="Transparent" />
-    <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#D0537CCE" />
     <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="{StaticResource AccentColorKey}" />
     <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="{StaticResource AccentColorKey}" />
     <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="{StaticResource AccentColorKey}" />
@@ -62,6 +61,9 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="ButtonActiveBorderBrushKey" Color="#191A1F" />
     <SolidColorBrush x:Key="ButtonActiveForegroundBrushKey" Color="#BABEC5" />
+
+    <Color x:Key="ButtonActiveBorderBrushKey.IsMouseOver">#BABEC5</Color>
+    <SolidColorBrush x:Key="ButtonActiveBorderBrushKey.IsMouseOver.Brush" Color="{StaticResource ButtonActiveBorderBrushKey.IsMouseOver}" />
 
     <LinearGradientBrush x:Key="FixListHeaderBrushKey" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Offset="0.0" Color="#3C424E" />
@@ -180,4 +182,27 @@
     <SolidColorBrush x:Key="SubmenuItemBackgroundHighlighted" Color="#333334" />
 
     <SolidColorBrush x:Key="PanelSeparatorBorderBrush" Color="#565659" />
+
+    <DrawingBrush x:Key="CheckerBrush"
+                  TileMode="Tile"
+                  Viewport="0,0,12,12"
+                  ViewportUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#FF999999">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,100,100" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#FF666666">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup RenderOptions.EdgeMode="Aliased">
+                            <RectangleGeometry Rect="0,0,50,50" />
+                            <RectangleGeometry Rect="50,50,50,50" />
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>

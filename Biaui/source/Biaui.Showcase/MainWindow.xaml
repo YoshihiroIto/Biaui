@@ -289,6 +289,9 @@
                 </StackPanel>
 
                 <controls:BiaFlagBox Margin="0,4,0,0" HorizontalAlignment="Left" />
+                <controls:BiaColorSelector Margin="0,4,0,0"
+                                           HorizontalAlignment="Left"
+                                           Choices="{x:Static showcase:Constants.PresetColors}" />
             </StackPanel>
 
             <StackPanel Margin="24,0,0,0"
@@ -735,7 +738,9 @@
                     </showcase:TextEditor.Style>
                 </showcase:TextEditor>
 
-                <controls:BiaTreeListView Height="300" ItemsSource="{Binding Persons, Mode=OneTime}">
+                <controls:BiaTreeListView Height="300"
+                                          Margin="0,4,0,0"
+                                          ItemsSource="{Binding Persons, Mode=OneTime}">
                     <controls:BiaTreeListView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="showcase:Person" ItemsSource="{Binding Child}">
                             <GridViewRowPresenter Columns="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=Columns, Mode=OneWay}" />

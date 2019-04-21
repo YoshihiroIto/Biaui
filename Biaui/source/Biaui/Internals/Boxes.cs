@@ -12,6 +12,14 @@ namespace Biaui.Internals
         internal static object BoolFalse = false;
 
         internal static object Int0 = 0;
+        internal static object Int1 = 1;
+        internal static object Int2 = 2;
+        internal static object Int3 = 3;
+        internal static object Int4 = 4;
+        internal static object Int5 = 5;
+        internal static object Int6 = 6;
+        internal static object Int7 = 7;
+
         internal static object IntMax = int.MaxValue;
 
         internal static object Double0 = 0.0;
