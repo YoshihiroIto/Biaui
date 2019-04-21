@@ -4,6 +4,8 @@
                     xmlns:converter="clr-namespace:Biaui.Internals.Converter"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Cursor" Value="Hand" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -54,11 +56,11 @@
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Background" Property="Background" Value="#10FFFFFF" />
+                            <Setter TargetName="Background" Property="Background" Value="#14FFFFFF" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="False">
-                            <Setter TargetName="Background" Property="Background" Value="#08FFFFFF" />
+                            <Setter TargetName="Background" Property="Background" Value="#0CFFFFFF" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -75,7 +77,6 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
         <Setter Property="Template">
