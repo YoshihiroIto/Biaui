@@ -71,10 +71,8 @@ namespace Biaui.Controls
                         var selectedItemIndex = Array.IndexOf(items, selectedItem);
                         var nextIndex = selectedItemIndex + (isDown ? +1 : -1);
 
-                        if (nextIndex == -1)
-                            nextIndex = items.Length - 1;
-                        else if (nextIndex == items.Length)
-                            nextIndex = 0;
+                        nextIndex = Math.Max(nextIndex, 0);
+                        nextIndex = Math.Min(nextIndex, items.Length - 1);
 
                         var nextItem = items[nextIndex];
                         nextItem.IsSelected = true;
