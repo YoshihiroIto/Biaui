@@ -10,6 +10,7 @@
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MarkBrush" Value="{DynamicResource InactiveForegroundBrushKey}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
