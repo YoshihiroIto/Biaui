@@ -278,9 +278,16 @@ namespace Biaui.Controls
             }
 
             // キャプション
-            var y = 4; // todo:正しく求める
+            const double y = 4.0; // todo:正しく求める
 
-            TextRenderer.Default.Draw(Content, 0, y, Foreground, dc, ActualWidth, TextAlignment.Center);
+            TextRenderer.Default.Draw(
+                Content,
+                Constants.ButtonPaddingX,
+                y,
+                Foreground,
+                dc,
+                ActualWidth - Constants.ButtonPaddingX * 2.0,
+                TextAlignment.Center);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
