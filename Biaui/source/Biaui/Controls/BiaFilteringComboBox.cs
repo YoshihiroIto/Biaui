@@ -78,14 +78,14 @@ namespace Biaui.Controls
             if (IsMouseWheelEnabled)
                 return;
 
-            e.Handled = true;
-
             if (IsDropDownOpen)
                 return;
 
             var parentScrollViewer = this.GetParent<ScrollViewer>();
             if (parentScrollViewer == null)
                 return;
+
+            e.Handled = true;
 
             var args = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
             {
