@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -35,8 +36,8 @@ namespace Biaui.Controls
                 e.Key != Key.Up)
                 return;
 
-            var button = (FrameworkElement) sender;
-            var sv = button.Parent.Descendants<ScrollViewer>().First();
+            var textBox = (FrameworkElement) sender;
+            var sv = textBox.Parent.Descendants<ScrollViewer>().First();
 
             if (e.Key == Key.Down)
                 sv.ScrollToHome();
@@ -44,15 +45,41 @@ namespace Biaui.Controls
                 sv.ScrollToBottom();
 
             // ※.VirtualizingStackPanelなためスクロールを済ませてからアイテムを探しに行く
-            sv.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                var content =
-                    e.Key == Key.Down
-                        ? button.Parent.Descendants<ComboBoxItem>().FirstOrDefault()
-                        : button.Parent.Descendants<ComboBoxItem>().LastOrDefault();
+            sv.Dispatcher.BeginInvoke(
+                DispatcherPriority.Input,
+                new Action(() =>
+                {
+                    var items = textBox.Parent.Descendants<ComboBoxItem>().ToArray();
 
-                content?.Focus();
-            }));
+                    if (items.Length == 0)
+                        return;
+
+                    var selectedItem = items.FirstOrDefault(x => x.IsSelected);
+                    var isDown = e.Key == Key.Down;
+
+                    if (selectedItem == null)
+                    {
+                        var item = isDown
+                            ? items.FirstOrDefault()
+                            : items.LastOrDefault();
+
+                        if (item != null)
+                            item.IsSelected = true;
+                    }
+                    else
+                    {
+                        var selectedItemIndex = Array.IndexOf(items, selectedItem);
+                        var nextIndex = selectedItemIndex + (isDown ? +1 : -1);
+
+                        if (nextIndex == -1)
+                            nextIndex = items.Length - 1;
+                        else if (nextIndex == items.Length)
+                            nextIndex = 0;
+
+                        var nextItem = items[nextIndex];
+                        nextItem.IsSelected = true;
+                    }
+                }));
         }
 
         private void Popup_OnClosed(object sender, EventArgs e)
