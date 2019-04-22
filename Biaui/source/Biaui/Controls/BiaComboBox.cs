@@ -578,6 +578,7 @@ namespace Biaui.Controls
 
             if (e.Key == Key.Return || e.Key == Key.Escape)
             {
+                Mouse.Capture(null);
                 _popup.IsOpen = false;
                 Focus();
             }
