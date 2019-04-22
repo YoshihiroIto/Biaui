@@ -88,19 +88,30 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Border x:Name="ScrollBarThumb"
-                            Width="Auto"
-                            Height="Auto"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="4"
-                            SnapsToDevicePixels="True" />
+                    <Border x:Name="ScrollBarMargin"
+                            Width="16"
+                            Background="Transparent"
+                            IsHitTestVisible="True">
+                        <Rectangle x:Name="ScrollBarThumb"
+                                   Width="8"
+                                   Height="Auto"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Stretch"
+                                   Fill="{TemplateBinding Background}"
+                                   RadiusX="4"
+                                   RadiusY="4"
+                                   SnapsToDevicePixels="True" />
+                    </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="Tag" Value="Horizontal">
                             <Setter TargetName="ScrollBarThumb" Property="Width" Value="Auto" />
                             <Setter TargetName="ScrollBarThumb" Property="Height" Value="8" />
+                            <Setter TargetName="ScrollBarThumb" Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter TargetName="ScrollBarThumb" Property="VerticalAlignment" Value="Center" />
+
+                            <Setter TargetName="ScrollBarMargin" Property="Width" Value="Auto" />
+                            <Setter TargetName="ScrollBarMargin" Property="Height" Value="16" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -122,12 +133,12 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="Foreground" Value="#ABABAB" />
         <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="Width" Value="8" />
+        <Setter Property="Width" Value="16" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
                     <Grid x:Name="GridRoot"
-                          Width="8"
+                          Width="16"
                           Background="{TemplateBinding Background}">
 
                         <Grid.RowDefinitions>
@@ -137,7 +148,7 @@
                         <Track x:Name="PART_Track"
                                Grid.Row="0"
                                Focusable="False"
-                               IsDirectionReversed="true">
+                               IsDirectionReversed="True">
 
                             <Track.DecreaseRepeatButton>
                                 <RepeatButton x:Name="PageDecButton" Style="{StaticResource ScrollBarTrackStyle}" />
@@ -178,7 +189,7 @@
                             </Setter>
 
                             <Setter Property="Width" Value="Auto" />
-                            <Setter Property="Height" Value="8" />
+                            <Setter Property="Height" Value="16" />
                             <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
                         </Trigger>
                     </ControlTemplate.Triggers>
