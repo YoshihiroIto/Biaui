@@ -296,6 +296,64 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region StartedContinuousEditingCommand
+
+        public ICommand StartedContinuousEditingCommand
+        {
+            get => _StartedContinuousEditingCommand;
+            set
+            {
+                if (value != _StartedContinuousEditingCommand)
+                    SetValue(StartedContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _StartedContinuousEditingCommand;
+
+        public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(StartedContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaComboBox),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaComboBox) s;
+                        self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region EndContinuousEditingCommand
+
+        public ICommand EndContinuousEditingCommand
+        {
+            get => _EndContinuousEditingCommand;
+            set
+            {
+                if (value != _EndContinuousEditingCommand)
+                    SetValue(EndContinuousEditingCommandProperty, value);
+            }
+        }
+
+        private ICommand _EndContinuousEditingCommand;
+
+        public static readonly DependencyProperty EndContinuousEditingCommandProperty =
+            DependencyProperty.Register(
+                nameof(EndContinuousEditingCommand),
+                typeof(ICommand),
+                typeof(BiaComboBox),
+                new PropertyMetadata(
+                    default(ICommand),
+                    (s, e) =>
+                    {
+                        var self = (BiaComboBox) s;
+                        self._EndContinuousEditingCommand = (ICommand) e.NewValue;
+                    }));
+
+        #endregion
+
         static BiaComboBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaComboBox),
@@ -368,14 +426,15 @@ namespace Biaui.Controls
 
             if (IsOpen)
             {
-                Mouse.Capture(null);
-                _popup.IsOpen = false;
+                Discard();
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
             }
             else
             {
                 Focus();
-                ShowListBox();
+
+                _ContinuousEditingStartValue = SelectedItem;
+                ShowPopup();
             }
 
             e.Handled = true;
@@ -431,7 +490,7 @@ namespace Biaui.Controls
         private Popup _popup;
         private ScaleTransform _scale;
 
-        private void ShowListBox()
+        private void ShowPopup()
         {
             if (_popup == null)
             {
@@ -523,6 +582,11 @@ namespace Biaui.Controls
 
             var listBoxBorder = _items.Descendants<Border>().First();
             listBoxBorder.BorderBrush = (Brush)FindResource("Item.SelectedActive.Border");
+
+
+            if (StartedContinuousEditingCommand != null)
+                if (StartedContinuousEditingCommand.CanExecute(null))
+                    StartedContinuousEditingCommand.Execute(null);
         }
 
         private void SetupListBoxItemTemplate()
@@ -562,7 +626,8 @@ namespace Biaui.Controls
                 parent = (parent as FrameworkElement)?.TemplatedParent;
             }
 
-            _popup.IsOpen = false;
+            SetValue();
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
@@ -576,10 +641,15 @@ namespace Biaui.Controls
             if (IsOpen == false)
                 return;
 
-            if (e.Key == Key.Return || e.Key == Key.Escape)
+            if (e.Key == Key.Escape)
             {
-                Mouse.Capture(null);
-                _popup.IsOpen = false;
+                Discard();
+                Focus();
+            }
+
+            if (e.Key == Key.Return)
+            {
+                SetValue();
                 Focus();
             }
         }
@@ -587,6 +657,50 @@ namespace Biaui.Controls
         private void PopupOnClosed(object sender, EventArgs e)
         {
             IsOpen = false;
+        }
+
+        private object _ContinuousEditingStartValue;
+
+        private void SetValue()
+        {
+            if (EndContinuousEditingCommand != null)
+            {
+                if (EndContinuousEditingCommand.CanExecute(null))
+                {
+                    var changedValue = SelectedItem;
+                    SelectedItem = _ContinuousEditingStartValue;
+
+                    EndContinuousEditingCommand.Execute(null);
+
+                    SelectedItem = changedValue;
+                }
+            }
+
+            Mouse.Capture(null);
+            _popup.IsOpen = false;
+        }
+
+        private void Discard()
+        {
+            var done = false;
+
+            if (EndContinuousEditingCommand != null)
+            {
+                if (EndContinuousEditingCommand.CanExecute(null))
+                {
+                    SelectedItem = _ContinuousEditingStartValue;
+
+                    EndContinuousEditingCommand.Execute(null);
+
+                    done = true;
+                }
+            }
+
+            if (done == false)
+                SelectedItem = _ContinuousEditingStartValue;
+
+            Mouse.Capture(null);
+            _popup.IsOpen = false;
         }
 
         private void MoveSelectedItem(int dir)
@@ -609,7 +723,7 @@ namespace Biaui.Controls
             }
             else
             {
-                i = i + dir;
+                i += dir;
                 i = (i, 0, ia.Length - 1).Clamp();
 
                 SelectedItem = ia[i];
