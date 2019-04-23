@@ -178,12 +178,10 @@ namespace Biaui.Controls
             base.OnDropDownClosed(e);
 
             var dropDown = FindDropDown();
-            dropDown.PreviewMouseDown += DropDownOnPreviewMouseDown;
-            dropDown.PreviewKeyDown += DropDownOnPreviewKeyDown;
+            dropDown.PreviewMouseDown -= DropDownOnPreviewMouseDown;
+            dropDown.PreviewKeyDown -= DropDownOnPreviewKeyDown;
 
-            if (_isSelectedOnPopup)
-                SetValue();
-            else
+            if (_isSelectedOnPopup == false)
                 Discard();
         }
 
@@ -197,12 +195,18 @@ namespace Biaui.Controls
         private void DropDownOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _isSelectedOnPopup = true;
+
+            SetValue();
         }
 
         private void DropDownOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
+            {
                 _isSelectedOnPopup = true;
+
+                SetValue();
+            }
         }
 
         private object _ContinuousEditingStartValue;
