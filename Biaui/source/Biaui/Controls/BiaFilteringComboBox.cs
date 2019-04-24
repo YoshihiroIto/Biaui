@@ -131,88 +131,64 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaFilteringComboBox)));
         }
 
-        protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
-        {
-            base.OnPreviewMouseWheel(e);
-
-            if (IsMouseWheelEnabled)
-                return;
-
-            if (IsDropDownOpen)
-                return;
-
-            var parentScrollViewer = this.GetParent<ScrollViewer>();
-            if (parentScrollViewer == null)
-                return;
-
-            e.Handled = true;
-
-            var args = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
-            {
-                RoutedEvent = MouseWheelEvent,
-                Source = this
-            };
-
-            parentScrollViewer.RaiseEvent(args);
-        }
+        private bool _isOpen;
+        private bool _isDoneSetValue;
+        private bool _isDoneDiscard;
+        private object _ContinuousEditingStartValue;
+        private FrameworkElement _dropDown;
 
         protected override void OnDropDownOpened(EventArgs e)
         {
             base.OnDropDownOpened(e);
 
+            if (_isOpen)
+                return;
+
+            _isOpen = true;
+            _isDoneSetValue = false;
+            _isDoneDiscard = false;
+            _ContinuousEditingStartValue = SelectedItem;
+            _dropDown = FindDropDown();
+
             if (StartedContinuousEditingCommand != null)
                 if (StartedContinuousEditingCommand.CanExecute(null))
                     StartedContinuousEditingCommand.Execute(null);
 
-
-            _ContinuousEditingStartValue = SelectedItem;
-            _isSelectedOnPopup = false;
-
-            var dropDown = FindDropDown();
-            dropDown.PreviewMouseDown += DropDownOnPreviewMouseDown;
-            dropDown.PreviewKeyDown += DropDownOnPreviewKeyDown;
+            _dropDown.PreviewMouseDown += DropDownOnPreviewMouseDown;
+            _dropDown.PreviewKeyDown += DropDownOnPreviewKeyDown;
         }
 
         protected override void OnDropDownClosed(EventArgs e)
         {
             base.OnDropDownClosed(e);
 
-            var dropDown = FindDropDown();
-            dropDown.PreviewMouseDown -= DropDownOnPreviewMouseDown;
-            dropDown.PreviewKeyDown -= DropDownOnPreviewKeyDown;
+            _dropDown.PreviewMouseDown -= DropDownOnPreviewMouseDown;
+            _dropDown.PreviewKeyDown -= DropDownOnPreviewKeyDown;
 
-            if (_isSelectedOnPopup == false)
+            if (_isDoneSetValue == false)
                 Discard();
+
+            _isOpen = false;
         }
-
-        private FrameworkElement FindDropDown() =>
-            this.Descendants()
-                .OfType<FrameworkElement>()
-                .First(x => x.Name == "dropdown");
-
-        private bool _isSelectedOnPopup;
 
         private void DropDownOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            _isSelectedOnPopup = true;
-
             SetValue();
         }
 
         private void DropDownOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
-            {
-                _isSelectedOnPopup = true;
-
                 SetValue();
-            }
         }
-
-        private object _ContinuousEditingStartValue;
 
         private void SetValue()
         {
+            if (_isDoneSetValue)
+                return;
+
+            _isDoneSetValue = true;
+
             if (EndContinuousEditingCommand != null)
             {
                 if (EndContinuousEditingCommand.CanExecute(null))
@@ -229,6 +205,11 @@ namespace Biaui.Controls
 
         private void Discard()
         {
+            if (_isDoneDiscard)
+                return;
+
+            _isDoneDiscard = true;
+
             var done = false;
 
             if (EndContinuousEditingCommand != null)
@@ -246,5 +227,10 @@ namespace Biaui.Controls
             if (done == false)
                 SelectedItem = _ContinuousEditingStartValue;
         }
+
+        private FrameworkElement FindDropDown() =>
+            this.Descendants()
+                .OfType<FrameworkElement>()
+                .First(x => x.Name == "dropdown");
     }
 }
