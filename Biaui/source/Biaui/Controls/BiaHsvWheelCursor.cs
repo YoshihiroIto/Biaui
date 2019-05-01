@@ -127,9 +127,15 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaHsvWheelCursor)));
         }
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly PropertyChangeNotifier _isEnabledChangeNotifier;
+
         public BiaHsvWheelCursor()
         {
             IsHitTestVisible = false;
+
+            _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
+            _isEnabledChangeNotifier.ValueChanged += (_, __) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)
