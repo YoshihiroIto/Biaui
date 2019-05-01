@@ -65,7 +65,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
-        internal int _isEnableUpdateChildrenBagDepth;
+        internal int IsEnableUpdateChildrenBagDepth;
 
         internal NodeContainer(BiaNodeEditor parent, MouseOperator mouseOperator)
             : base(parent)
@@ -102,13 +102,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
         {
-            ++_isEnableUpdateChildrenBagDepth;
+            ++IsEnableUpdateChildrenBagDepth;
             {
                 foreach (var n in _selectedNodes)
                     n.Pos += e.Diff;
             }
-            --_isEnableUpdateChildrenBagDepth;
-            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
+            --IsEnableUpdateChildrenBagDepth;
+            Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
         }
 
         private void OnPreMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -198,7 +198,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void SelectNodes(in ImmutableRect rect)
         {
-            ++_isEnableUpdateChildrenBagDepth;
+            ++IsEnableUpdateChildrenBagDepth;
             {
                 // [Ctrl]押下で追加する
                 if (KeyboardHelper.IsPressControl == false)
@@ -220,13 +220,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                         node.IsSelected = true;
                 }
             }
-            --_isEnableUpdateChildrenBagDepth;
-            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
+            --IsEnableUpdateChildrenBagDepth;
+            Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
         }
 
         private void PreSelectNodes(in ImmutableRect rect)
         {
-            ++_isEnableUpdateChildrenBagDepth;
+            ++IsEnableUpdateChildrenBagDepth;
             {
                 ClearPreSelectedNode();
 
@@ -243,19 +243,19 @@ namespace Biaui.Controls.NodeEditor.Internal
                     node.IsPreSelected = true;
                 }
             }
-            --_isEnableUpdateChildrenBagDepth;
-            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
+            --IsEnableUpdateChildrenBagDepth;
+            Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
         }
 
         private void AlignSelectedNodes()
         {
-            ++_isEnableUpdateChildrenBagDepth;
+            ++IsEnableUpdateChildrenBagDepth;
 
             foreach (var n in _selectedNodes)
                 n.Pos = n.AlignedPos();
 
-            --_isEnableUpdateChildrenBagDepth;
-            Debug.Assert(_isEnableUpdateChildrenBagDepth >= 0);
+            --IsEnableUpdateChildrenBagDepth;
+            Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
         }
 
         private bool HitTest(IBiaNodeItem node, in ImmutableRect rect)
@@ -374,7 +374,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void UpdateChildrenBag(bool isPushRemove)
         {
-            if (_isEnableUpdateChildrenBagDepth > 0)
+            if (IsEnableUpdateChildrenBagDepth > 0)
                 return;
 
             var viewportRect = _parent.TransformRect(_parent.ActualWidth, _parent.ActualHeight);

@@ -339,15 +339,15 @@ namespace Biaui.Controls.NodeEditor
 
         public void Sleep()
         {
-            ++_nodeContainer._isEnableUpdateChildrenBagDepth;
+            ++_nodeContainer.IsEnableUpdateChildrenBagDepth;
         }
 
         public void Wakeup()
         {
-            --_nodeContainer._isEnableUpdateChildrenBagDepth;
-            Debug.Assert(_nodeContainer._isEnableUpdateChildrenBagDepth >= 0);
+            --_nodeContainer.IsEnableUpdateChildrenBagDepth;
+            Debug.Assert(_nodeContainer.IsEnableUpdateChildrenBagDepth >= 0);
 
-            if (_nodeContainer._isEnableUpdateChildrenBagDepth == 0)
+            if (_nodeContainer.IsEnableUpdateChildrenBagDepth == 0)
                 _nodeContainer.UpdateChildrenBag(true);
         }
 
