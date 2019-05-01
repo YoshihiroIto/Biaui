@@ -22,6 +22,9 @@ namespace Biaui.Internals
 
         internal static object IntMax = int.MaxValue;
 
+        internal static object Float0 = 0.0f;
+        internal static object Float1 = 1.0f;
+
         internal static object Double0 = 0.0;
         internal static object Double1 = 1.0;
         internal static object Double100 = 100.0;

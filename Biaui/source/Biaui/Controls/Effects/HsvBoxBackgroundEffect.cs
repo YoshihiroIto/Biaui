@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Biaui.Internals;
 
@@ -47,5 +48,63 @@ namespace Biaui.Controls.Effects
                     }));
 
         #endregion
+
+        #region IsEnabled
+
+        public float IsEnabled
+        {
+            get => _IsEnabled;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _IsEnabled)
+                    SetValue(IsEnabledProperty, value);
+            }
+        }
+
+        private float _IsEnabled = 1.0f;
+
+        public static readonly DependencyProperty IsEnabledProperty =
+            DependencyProperty.Register(nameof(IsEnabled), typeof(float), typeof(HsvBoxBackgroundEffect),
+                new PropertyMetadata(
+                    Boxes.Float1,
+                    (s, e) =>
+                    {
+                        var self = (HsvBoxBackgroundEffect) s;
+                        self._IsEnabled = (float) e.NewValue;
+
+                        PixelShaderConstantCallback(6)(s, e);
+                    }));
+
+        #endregion
+
+        #region DisableColor
+
+        public Color DisableColor
+        {
+            get => _DisableColor;
+            set
+            {
+                if (value != _DisableColor)
+                    SetValue(DisableColorProperty, value);
+            }
+        }
+
+        private Color _DisableColor = Colors.Red;
+
+        public static readonly DependencyProperty DisableColorProperty =
+            DependencyProperty.Register(nameof(DisableColor), typeof(Color), typeof(HsvBoxBackgroundEffect),
+                new PropertyMetadata(
+                    Boxes.ColorRed,
+                    (s, e) =>
+                    {
+                        var self = (HsvBoxBackgroundEffect) s;
+                        self._DisableColor = (Color) e.NewValue;
+
+                        PixelShaderConstantCallback(7)(s, e);
+                    }));
+
+        #endregion
+
     }
 }

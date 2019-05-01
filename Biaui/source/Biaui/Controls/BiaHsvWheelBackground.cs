@@ -238,6 +238,9 @@ namespace Biaui.Controls
 
         private readonly HsvWheelBackgroundEffect _effect = new HsvWheelBackgroundEffect();
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly PropertyChangeNotifier _isEnabledChangeNotifier;
+
         static BiaHsvWheelBackground()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvWheelBackground),
@@ -251,11 +254,19 @@ namespace Biaui.Controls
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
 
             _effect.BorderColor = (Color) FindResource("BackgroundBackgroundColorKey");
+            _effect.DisableColor = (Color) FindResource("InactiveBackgroundColorKey");
 
             SizeChanged += (_, __) =>
             {
                 (_effect.AspectRatioCorrectionX, _effect.AspectRatioCorrectionY) =
                     BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
+            };
+
+            _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
+            _isEnabledChangeNotifier.ValueChanged += (_, __) =>
+            {
+                _effect.IsEnabled = IsEnabled ? 1.0f : 0.0f;
+                InvalidateVisual();
             };
         }
 

@@ -237,6 +237,9 @@ namespace Biaui.Controls
 
         private readonly HsvBoxBackgroundEffect _effect = new HsvBoxBackgroundEffect();
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly PropertyChangeNotifier _isEnabledChangeNotifier;
+
         static BiaHsvBoxBackground()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvBoxBackground),
@@ -248,6 +251,15 @@ namespace Biaui.Controls
             Effect = _effect;
 
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+
+            _effect.DisableColor = (Color) FindResource("InactiveBackgroundColorKey");
+
+            _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
+            _isEnabledChangeNotifier.ValueChanged += (_, __) =>
+            {
+                _effect.IsEnabled = IsEnabled ? 1.0f : 0.0f;
+                InvalidateVisual();
+            };
         }
 
         protected override void OnRender(DrawingContext dc)
