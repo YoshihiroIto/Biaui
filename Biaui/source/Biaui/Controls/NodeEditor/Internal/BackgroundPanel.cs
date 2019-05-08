@@ -161,6 +161,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (IBiaNodeLink link in _parent.LinksSource)
             {
+                if (link.IsVisible== false)
+                    continue;
+
                 if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
                     continue;
 
