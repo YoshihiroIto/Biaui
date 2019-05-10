@@ -29,6 +29,9 @@ namespace Biaui.Internals
         [DllImport("gdi32.dll")]
         internal static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
+        [DllImport("USER32.dll", CallingConvention = CallingConvention.StdCall)]
+        internal static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+
         // ReSharper disable once InconsistentNaming
         internal struct RECT
         {
@@ -54,5 +57,10 @@ namespace Biaui.Internals
         internal const int VK_CONTROL = 0x11;
         internal const int VK_SPACE = 0x20;
         // ReSharper restore InconsistentNaming
+
+        // ReSharper disable IdentifierTypo
+        internal const int MOUSEEVENTF_LEFTDOWN = 0x2;
+        internal const int MOUSEEVENTF_LEFTUP = 0x4;
+        // ReSharper restore IdentifierTypo
     }
 }

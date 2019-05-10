@@ -242,8 +242,21 @@ namespace Biaui.Controls
             if (IsEnabled == false)
                 return;
 
-            Focus();
-            ShowEditBox();
+            if (_isEditing)
+            {
+                if (this.IsInActualSize(e.GetPosition(this)) == false)
+                {
+                    FinishEditing(true);
+                    ReleaseMouseCapture();
+
+                    Win32Helper.mouse_event(Win32Helper.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                }
+            }
+            else
+            {
+                Focus();
+                ShowEditBox();
+            }
 
             e.Handled = true;
         }
@@ -279,7 +292,6 @@ namespace Biaui.Controls
                 };
 
                 _textBox.TextChanged += TextBox_OnTextChanged;
-                _textBox.LostFocus += TextBox_OnLostFocus;
                 _textBox.PreviewKeyDown += TextBox_OnPreviewKeyDown;
             }
 
@@ -295,17 +307,13 @@ namespace Biaui.Controls
             _textBox.Focus();
 
             _isEditing = true;
+
+            CaptureMouse();
         }
 
         private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             InvalidateVisual();
-        }
-
-        private void TextBox_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (_isEditing)
-                FinishEditing(true);
         }
 
         private void TextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -351,11 +359,17 @@ namespace Biaui.Controls
         private void FinishEditing(bool isEdit)
         {
             if (isEdit)
+            {
                 Text = _textBox.Text;
+                GetBindingExpression(TextProperty)?.UpdateSource();
+            }
 
             RemoveVisualChild(_textBox);
             _isEditing = false;
             InvalidateVisual();
+
+            if (IsMouseCaptured)
+                ReleaseMouseCapture();
         }
 
         protected override int VisualChildrenCount

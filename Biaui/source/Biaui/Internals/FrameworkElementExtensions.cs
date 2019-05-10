@@ -121,6 +121,12 @@ namespace Biaui.Internals
             Win32Helper.ClipCursor(IntPtr.Zero);
         }
 
+        internal static bool IsInActualSize(this FrameworkElement self, Point pos)
+        {
+            return pos.X >= 0 && pos.X <= self.ActualWidth &&
+                   pos.Y >= 0 && pos.Y <= self.ActualHeight;
+        }
+
         internal const double BorderWidth = 1.0;
 
         private static readonly double RoundLayoutBorderWidth =
