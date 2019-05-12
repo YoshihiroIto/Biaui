@@ -676,6 +676,8 @@ namespace Biaui.Controls.Mock.Presentation
         #endregion
 
         public object InternalData { get; set; }
+
+        public bool IsVisible => true;
     }
 
     public class NodeSlotEnabledChecker : IBiaNodeSlotEnabledChecker
