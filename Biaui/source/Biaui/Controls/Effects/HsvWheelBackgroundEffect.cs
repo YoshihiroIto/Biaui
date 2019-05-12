@@ -20,7 +20,11 @@ namespace Biaui.Controls.Effects
 
             PixelShader = ps;
             UpdateShaderValue(ValueProperty);
+            UpdateShaderValue(AspectRatioCorrectionXProperty);
+            UpdateShaderValue(AspectRatioCorrectionYProperty);
             UpdateShaderValue(BorderColorProperty);
+            UpdateShaderValue(IsEnabledProperty);
+            UpdateShaderValue(DisableColorProperty);
         }
 
         #region Value

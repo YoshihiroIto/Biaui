@@ -260,11 +260,6 @@ namespace Biaui.Controls
                 _effect.IsEnabled = IsEnabled ? 1.0f : 0.0f;
                 InvalidateVisual();
             };
-
-            // todo:初回描画がこうしないと走らない。要調査
-            IsEnabled = true;
-            IsEnabled = false;
-            IsEnabled = true;
         }
 
         protected override void OnRender(DrawingContext dc)

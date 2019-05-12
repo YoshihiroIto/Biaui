@@ -19,6 +19,8 @@ namespace Biaui.Controls.Effects
 
             PixelShader = ps;
             UpdateShaderValue(ValueProperty);
+            UpdateShaderValue(IsEnabledProperty);
+            UpdateShaderValue(DisableColorProperty);
         }
 
         #region Value
@@ -105,6 +107,5 @@ namespace Biaui.Controls.Effects
                     }));
 
         #endregion
-
     }
 }
