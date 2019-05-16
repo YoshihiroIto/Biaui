@@ -77,6 +77,8 @@ namespace Biaui.Controls
                         var nextItem = items[nextIndex];
                         nextItem.IsSelected = true;
                     }
+
+                    textBox.Focus();
                 }));
         }
 
