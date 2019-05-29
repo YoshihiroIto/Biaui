@@ -33,36 +33,38 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:BiaWindow}">
-                    <Border x:Name="Border"
-                            Background="{DynamicResource BackgroundBackgroundBrushKey}"
-                            BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
+                    <AdornerDecorator>
+                        <Border x:Name="Border"
+                                Background="{DynamicResource BackgroundBackgroundBrushKey}"
+                                BorderThickness="1">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
 
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBorderBrushKey}" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBorderBrushKey}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
 
-                        <Grid>
-                            <ContentPresenter x:Name="ContentPresenter"
-                                              HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch" />
+                            <Grid>
+                                <ContentPresenter x:Name="ContentPresenter"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch" />
 
-                            <StackPanel HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        Orientation="Horizontal">
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
+                                <StackPanel HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Orientation="Horizontal">
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </AdornerDecorator>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
@@ -129,38 +131,40 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:BiaWindow}">
-                    <Border x:Name="Border"
-                            Background="{DynamicResource BackgroundBackgroundBrushKey}"
-                            BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
+                    <AdornerDecorator>
+                        <Border x:Name="Border"
+                                Background="{DynamicResource BackgroundBackgroundBrushKey}"
+                                BorderThickness="1">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
 
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBorderBrushKey}" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource BackgroundBorderBrushKey}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
 
-                        <Grid>
-                            <ContentPresenter x:Name="ContentPresenter"
-                                              HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch"
-                                              Content="{Binding Mode=OneWay}"
-                                              ContentTemplate="{DynamicResource ControlTemplateKey}" />
+                            <Grid>
+                                <ContentPresenter x:Name="ContentPresenter"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch"
+                                                  Content="{Binding Mode=OneWay}"
+                                                  ContentTemplate="{DynamicResource ControlTemplateKey}" />
 
-                            <StackPanel HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        Orientation="Horizontal">
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
-                                <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
+                                <StackPanel HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Orientation="Horizontal">
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </AdornerDecorator>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
