@@ -46,22 +46,32 @@
                     <controls:BiaNumberEditor Caption="MinMaxValue"
                                               Maximum="100"
                                               Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
                                               Value="{Binding BiaNumberEditorViewModel.MinMaxValue}" />
                     <controls:BiaNumberEditor Caption="SpinValue"
                                               Maximum="100"
                                               Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
                                               Value="{Binding BiaNumberEditorViewModel.SpinValue}" />
                     <controls:BiaNumberEditor Caption="TextInputValue"
                                               Maximum="100"
                                               Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
                                               Value="{Binding BiaNumberEditorViewModel.TextInputValue}" />
                     <controls:BiaNumberEditor Caption="SliderValueSimple"
                                               Maximum="100"
                                               Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
                                               Value="{Binding BiaNumberEditorViewModel.SliderValueSimple}" />
                     <controls:BiaNumberEditor Caption="SliderValueWideRange"
                                               Maximum="100"
                                               Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
                                               Value="{Binding BiaNumberEditorViewModel.SliderValueWideRange}" />
                 </StackPanel>
 
@@ -70,12 +80,25 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Orientation="Vertical">
-                    <controls:BiaNumberEditor Caption="ParamA" Value="{Binding BiaNumberEditorViewModel.ParamA}" />
+                    <controls:BiaNumberEditor Caption="ParamA"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
+                                              Value="{Binding BiaNumberEditorViewModel.ParamA}" />
                     <controls:BiaNumberEditor Caption="ParamB"
                                               IsEnabled="False"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
                                               Value="{Binding BiaNumberEditorViewModel.ParamB}" />
                     <controls:BiaNumberEditor Caption="ParamC"
                                               IsReadOnly="True"
+                                              Maximum="100"
+                                              Minimum="0"
+                                              SliderMaximum="100"
+                                              SliderMinimum="0"
                                               Value="{Binding BiaNumberEditorViewModel.ParamC}" />
                 </StackPanel>
             </StackPanel>
