@@ -393,6 +393,34 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region CaptionForeground
+
+        public Brush CaptionForeground
+        {
+            get => _CaptionForeground;
+            set
+            {
+                if (value != _CaptionForeground)
+                    SetValue(CaptionForegroundProperty, value);
+            }
+        }
+
+        private Brush _CaptionForeground;
+
+        public static readonly DependencyProperty CaptionForegroundProperty =
+            DependencyProperty.Register(nameof(CaptionForeground), typeof(Brush), typeof(BiaNumberEditor),
+                new FrameworkPropertyMetadata(
+                    default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._CaptionForeground = (Brush) e.NewValue;
+                    }));
+
+        #endregion
+
         #region Padding
 
         public Thickness Padding
@@ -699,7 +727,7 @@ namespace Biaui.Controls
                 Caption,
                 Padding.Left + SpinWidth,
                 Padding.Top + offsetY,
-                Foreground,
+                CaptionForeground,
                 dc,
                 ActualWidth - Padding.Left - Padding.Right,
                 TextAlignment.Left

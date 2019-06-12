@@ -80,9 +80,12 @@
     <Color x:Key="TextBoxBackgroundColorKey">#242424</Color>
     <Color x:Key="TextBoxBorderColorKey">#3F3F46</Color>
     <Color x:Key="TextBoxForegroundColorKey">#C8C8C8</Color>
+    <Color x:Key="TextBoxSubForegroundColorKey">#707070</Color>
+
     <SolidColorBrush x:Key="TextBoxBackgroundBrushKey" Color="{StaticResource TextBoxBackgroundColorKey}" />
     <SolidColorBrush x:Key="TextBoxBorderBrushKey" Color="{StaticResource TextBoxBorderColorKey}" />
     <SolidColorBrush x:Key="TextBoxForegroundBrushKey" Color="{StaticResource TextBoxForegroundColorKey}" />
+    <SolidColorBrush x:Key="TextBoxSubForegroundBrushKey" Color="{StaticResource TextBoxSubForegroundColorKey}" />
 
     <SolidColorBrush x:Key="PanelBackgroundBrushKey" Color="#333337" />
     <SolidColorBrush x:Key="PanelBackgroundBrushKey.MouseOver" Color="#404048" />
