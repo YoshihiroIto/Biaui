@@ -39,6 +39,35 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region Watermark
+
+        public string Watermark
+        {
+            get => _Watermark;
+            set
+            {
+                if (value != _Watermark)
+                    SetValue(WatermarkProperty, value);
+            }
+        }
+
+        private string _Watermark;
+
+        public static readonly DependencyProperty WatermarkProperty =
+            DependencyProperty.Register(nameof(Watermark), typeof(string), typeof(BiaTextBox),
+                new FrameworkPropertyMetadata(
+                    default(string),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaTextBox) s;
+                        self._Watermark = (string) e.NewValue;
+                    }));
+
+        #endregion
+
         #region IsReadOnly
 
         public bool IsReadOnly
@@ -123,6 +152,34 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region WatermarkForeground
+
+        public Brush WatermarkForeground
+        {
+            get => _WatermarkForeground;
+            set
+            {
+                if (value != _WatermarkForeground)
+                    SetValue(WatermarkForegroundProperty, value);
+            }
+        }
+
+        private Brush _WatermarkForeground;
+
+        public static readonly DependencyProperty WatermarkForegroundProperty =
+            DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaTextBox),
+                new FrameworkPropertyMetadata(
+                    default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaTextBox) s;
+                        self._WatermarkForeground = (Brush) e.NewValue;
+                    }));
+
+        #endregion
+
         #region BorderColor
 
         public Color BorderColor
@@ -201,11 +258,21 @@ namespace Biaui.Controls
             var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
 
             if (isCornerRadiusZero == false)
-                dc.PushClip(
-                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
+                dc.PushClip(Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
             {
+                if (_isEditing == false)
+                    if (string.IsNullOrEmpty(TargetText))
+                        TextRenderer.Default.Draw(
+                            Watermark,
+                            4.5, 3.5,
+                            WatermarkForeground,
+                            dc,
+                            (1.0, ActualWidth - 9).Max(),
+                            TextAlignment.Left
+                        );
+
                 TextRenderer.Default.Draw(
-                    _isEditing ? _textBox.Text : Text,
+                    TargetText,
                     4.5, 3.5,
                     Foreground,
                     dc,
@@ -216,6 +283,8 @@ namespace Biaui.Controls
             if (isCornerRadiusZero == false)
                 dc.Pop();
         }
+
+        private string TargetText => _isEditing ? _textBox.Text : Text;
 
         private void DrawBackground(DrawingContext dc)
         {
