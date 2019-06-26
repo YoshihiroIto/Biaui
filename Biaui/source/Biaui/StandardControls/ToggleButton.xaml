@@ -50,6 +50,29 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
+
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundBrushKey.IsChecked}" />
+                <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundBrushKey.IsChecked.IsMouseOver}" />
+                <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="True" />
+                    <Condition Property="IsEnabled" Value="False" />
+                </MultiTrigger.Conditions>
+
+                <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundBrushKey.IsChecked.IsDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInactiveForegroundBrushKey}" />
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 
