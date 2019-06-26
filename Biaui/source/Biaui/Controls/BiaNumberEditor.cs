@@ -126,9 +126,10 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         // 最小値・最大値でクランプして保存する
-
                         var self = (BiaNumberEditor) s;
                         self._Value = self.ClampValue((double) e.NewValue);
+
+                        self.ValueChanged?.Invoke(self, EventArgs.Empty);
                     }));
 
         #endregion
@@ -618,6 +619,8 @@ namespace Biaui.Controls
                     }));
         
         #endregion
+
+        public event EventHandler ValueChanged;
 
         static BiaNumberEditor()
         {
