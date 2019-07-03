@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
@@ -6,7 +7,7 @@ namespace Biaui.Internals
 {
     // http://proprogrammer.hatenadiary.jp/entry/2018/08/18/172739
 
-    public readonly struct ImmutableRect: IEquatable<ImmutableRect>
+    public readonly struct ImmutableRect : IEquatable<ImmutableRect>
     {
         public readonly double X;
         public readonly double Y;
@@ -14,6 +15,16 @@ namespace Biaui.Internals
         public readonly double Height;
 
         public bool HasArea => Width > 0 && Height > 0;
+
+        public double Left => X;
+        public double Top => Y;
+        public double Right => X + Width;
+        public double Bottom => Y + Height;
+
+        public ImmutableVec2 TopLeft => new ImmutableVec2(Left, Top);
+        public ImmutableVec2 TopRight => new ImmutableVec2(Right, Top);
+        public ImmutableVec2 BottomLeft => new ImmutableVec2(Left, Bottom);
+        public ImmutableVec2 BottomRight => new ImmutableVec2(Right, Bottom);
 
         public ImmutableRect(double x, double y, double width, double height)
             => (X, Y, Width, Height) = (x, y, width, height);
@@ -107,6 +118,37 @@ namespace Biaui.Internals
             );
         }
 
+        public ImmutableRect(IEnumerable<Point> points)
+        {
+            var minX = double.MaxValue;
+            var minY = double.MaxValue;
+            var maxX = double.MinValue;
+            var maxY = double.MinValue;
+
+            var isAny = false;
+
+            foreach (var point in points)
+            {
+                isAny = true;
+
+                minX = (minX, point.X).Min();
+                maxX = (maxX, point.X).Max();
+
+                minY = (minY, point.Y).Min();
+                maxY = (maxY, point.Y).Max();
+            }
+
+            if (isAny)
+                (X, Y, Width, Height) = (
+                    minX,
+                    minY,
+                    maxX - minX,
+                    maxY - minY
+                );
+            else
+                (X, Y, Width, Height) = (0, 0, 0, 0);
+        }
+
         public ImmutableRect(Span<ImmutableVec2> points)
         {
             if (points.Length == 0)
@@ -167,8 +209,40 @@ namespace Biaui.Internals
             );
         }
 
+        public ImmutableRect(IEnumerable<ImmutableVec2> points)
+        {
+            var minX = double.MaxValue;
+            var minY = double.MaxValue;
+            var maxX = double.MinValue;
+            var maxY = double.MinValue;
 
-        public enum CtorPoint4 { };
+            var isAny = false;
+
+            foreach (var point in points)
+            {
+                isAny = true;
+
+                minX = (minX, point.X).Min();
+                maxX = (maxX, point.X).Max();
+
+                minY = (minY, point.Y).Min();
+                maxY = (maxY, point.Y).Max();
+            }
+
+            if (isAny)
+                (X, Y, Width, Height) = (
+                    minX,
+                    minY,
+                    maxX - minX,
+                    maxY - minY
+                );
+            else
+                (X, Y, Width, Height) = (0, 0, 0, 0);
+        }
+
+        public enum CtorPoint4
+        {
+        };
 
         // ReSharper disable once UnusedParameter.Local
         public ImmutableRect(ReadOnlySpan<Point> points, CtorPoint4 _)
@@ -236,7 +310,7 @@ namespace Biaui.Internals
                 target.CenterY < bottom + target.Radius)
                 return true;
 
-            if (target.CenterX > X - target.Radius&&
+            if (target.CenterX > X - target.Radius &&
                 target.CenterX < right + target.Radius &&
                 target.CenterY > Y &&
                 target.CenterY < bottom)

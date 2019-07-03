@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using Biaui.Internals;
@@ -107,5 +109,75 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             return mt3 * x1 + 3 * mt2 * t * x2 + 3 * (1 - t) * pt2 * x3 + pt3 * x4;
         }
+
+        // 参考： https://floris.briolas.nl/floris/2009/10/bounding-box-of-cubic-bezier/ 
+        public static ImmutableRect MakeBoundingBox(Point p1, Point c1, Point c2, Point p2)
+        {
+            var aX = A(p1.X, c1.X, c2.X, p2.X);
+            var bX = B(p1.X, c1.X, c2.X);
+            var cX = C(p1.X, c1.X);
+
+            var aY = A(p1.Y, c1.Y, c2.Y, p2.Y);
+            var bY = B(p1.Y, c1.Y, c2.Y);
+            var cY = C(p1.Y, c1.Y);
+
+            var resX = Solve(aX, bX, cX).Where(t => t >= 0 && t <= 1);
+            var resY = Solve(aY, bY, cY).Where(t => t >= 0 && t <= 1);
+
+            var bBox = new List<Point> {p1, p2};
+
+            foreach (var e in resX.Union(resY))
+            {
+                var x = Bezier(p1.X, c1.X, c2.X, p2.X, e);
+                var y = Bezier(p1.Y, c1.Y, c2.Y, p2.Y, e);
+
+                var p = new Point(x, y);
+                bBox.Add(p);
+            }
+
+            return new ImmutableRect(bBox);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double A(double p0, double p1, double p2, double p3) => 3 * p3 - 9 * p2 + 9 * p1 - 3 * p0;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double B(double p0, double p1, double p2) => 6 * p2 - 12 * p1 + 6 * p0;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double C(double p0, double p1) => 3 * p1 - 3 * p0;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double Determinant(double a, double b, double c) => Math.Pow(b, 2) - 4d * a * c;
+
+        // ReSharper disable InconsistentNaming
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double _SolveP(double a_, double b_, double c_) =>
+            (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * +1d) / (2d * a_);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double _SolveM(double a_, double b_, double c_) =>
+            (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * -1d) / (2d * a_);
+
+        private static double[] Solve(double a, double b, double c)
+        {
+            var d = Determinant(a, b, c);
+
+            if (d < 0)
+                return Array.Empty<double>();
+
+            if (NumberHelper.AreCloseZero(a))
+                return new[] {-c / b};
+
+            if (NumberHelper.AreCloseZero(d))
+                return new[] {_SolveP(a, b, c)};
+
+            return new[]
+            {
+                _SolveP(a, b, c),
+                _SolveM(a, b, c)
+            };
+        }
+        // ReSharper restore InconsistentNaming
     }
 }
