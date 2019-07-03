@@ -148,7 +148,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             Span<ImmutableVec2> work = stackalloc ImmutableVec2[10];
 
-
             // 線分の太さを考慮
             var inflate = ArrowSize * _parent.Scale.ScaleX;
 
@@ -161,16 +160,16 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (IBiaNodeLink link in _parent.LinksSource)
             {
-                if (link.IsVisible== false)
+                if (link.IsVisible == false)
                     continue;
 
                 if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
                     continue;
 
-                var pos1 = link.ItemSlot1.Item.MakeSlotPos(link.InternalData().Slot1);
-                var pos2 = link.ItemSlot2.Item.MakeSlotPos(link.InternalData().Slot2);
                 var item1 = link.ItemSlot1.Item;
                 var item2 = link.ItemSlot2.Item;
+                var pos1 = item1.MakeSlotPos(link.InternalData().Slot1);
+                var pos2 = item2.MakeSlotPos(link.InternalData().Slot2);
 
                 var lines = LinkLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(), work);
 
@@ -178,15 +177,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (IsHitLines(lineCullingRect, lines) == false)
                     continue;
                 // 
-                var isHighlight = link.ItemSlot1.Item.IsSelected ||
-                                  link.ItemSlot1.Item.IsPreSelected ||
-                                  link.ItemSlot1.Item.IsMouseOver ||
-                                  link.ItemSlot2.Item.IsSelected ||
-                                  link.ItemSlot2.Item.IsPreSelected ||
-                                  link.ItemSlot2.Item.IsMouseOver;
+                var isHighlight = item1.IsSelected || item1.IsPreSelected || item1.IsMouseOver ||
+                                  item2.IsSelected || item2.IsPreSelected || item2.IsMouseOver;
 
-                var color = ColorHelper.Lerp(alpha, backgroundColor,
-                    isHighlight ? _parent.HighlightLinkColor : link.Color);
+                var color = ColorHelper.Lerp(alpha, backgroundColor, isHighlight ? _parent.HighlightLinkColor : link.Color);
                 var key = (color, link.Style, isHighlight);
 
                 if (_curves.TryGetValue(key, out var curve) == false)
@@ -216,32 +210,32 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.PushTransform(_parent.Translate);
             dc.PushTransform(_parent.Scale);
             {
-                foreach (var c in _curves)
+                foreach (var curve in _curves)
                 {
-                    if (c.Key.IsHightlight)
+                    if (curve.Key.IsHightlight)
                         continue;
 
                     var pen =
-                        (c.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(c.Key.Color, LineWidth)
-                            : Caches.GetPen(c.Key.Color, LineWidth);
+                        (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
+                            ? Caches.GetDashedPen(curve.Key.Color, LineWidth)
+                            : Caches.GetPen(curve.Key.Color, LineWidth);
 
-                    ((IDisposable) c.Value.Ctx).Dispose();
-                    dc.DrawGeometry(Caches.GetSolidColorBrush(c.Key.Color), pen, c.Value.Geom);
+                    ((IDisposable) curve.Value.Ctx).Dispose();
+                    dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);
                 }
 
-                foreach (var c in _curves)
+                foreach (var curve in _curves)
                 {
-                    if (c.Key.IsHightlight == false)
+                    if (curve.Key.IsHightlight == false)
                         continue;
 
                     var pen =
-                        (c.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(c.Key.Color, LineWidth)
-                            : Caches.GetPen(c.Key.Color, LineWidth);
+                        (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
+                            ? Caches.GetDashedPen(curve.Key.Color, LineWidth)
+                            : Caches.GetPen(curve.Key.Color, LineWidth);
 
-                    ((IDisposable) c.Value.Ctx).Dispose();
-                    dc.DrawGeometry(Caches.GetSolidColorBrush(c.Key.Color), pen, c.Value.Geom);
+                    ((IDisposable) curve.Value.Ctx).Dispose();
+                    dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);
                 }
             }
             dc.Pop();
