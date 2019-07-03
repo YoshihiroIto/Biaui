@@ -766,7 +766,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             var panel = (BiaNodePanel) sender;
 
-            Debug.Assert(panel.IsActive);
+            if (panel.IsActive == false)
+                return;
+
             var nodeItem = (IBiaNodeItem) panel.DataContext;
 
             // 親コントロールがマウスキャプチャーしてもここに飛んでくる
