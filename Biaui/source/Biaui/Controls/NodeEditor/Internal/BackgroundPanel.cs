@@ -138,6 +138,54 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (_parent.LinksSource == null)
                 return;
 
+            // 描画形状を作る
+
+#if false
+            MakeNodeLink_AxisAlignStyle();
+#else
+            MakeNodeLink_BezierCurveStyle();
+#endif
+
+            // 描画する
+            dc.PushTransform(_parent.Translate);
+            dc.PushTransform(_parent.Scale);
+            {
+                foreach (var curve in _curves)
+                {
+                    if (curve.Key.IsHightlight)
+                        continue;
+
+                    var pen =
+                        (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
+                            ? Caches.GetDashedPen(curve.Key.Color, LineWidth)
+                            : Caches.GetPen(curve.Key.Color, LineWidth);
+
+                    ((IDisposable) curve.Value.Ctx).Dispose();
+                    dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);
+                }
+
+                foreach (var curve in _curves)
+                {
+                    if (curve.Key.IsHightlight == false)
+                        continue;
+
+                    var pen =
+                        (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
+                            ? Caches.GetDashedPen(curve.Key.Color, LineWidth)
+                            : Caches.GetPen(curve.Key.Color, LineWidth);
+
+                    ((IDisposable) curve.Value.Ctx).Dispose();
+                    dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);
+                }
+            }
+            dc.Pop();
+            dc.Pop();
+
+            _curves.Clear();
+        }
+
+        private void MakeNodeLink_AxisAlignStyle()
+        {
             var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
 
             var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
@@ -174,7 +222,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var lines = LinkLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(), work);
 
                 // 線分ごとにバウンディングボックス判定、折れ丸は無視
-                if (IsHitLines(lineCullingRect, lines) == false)
+                if (IsHitLines_AxisAlignStyle(lineCullingRect, lines) == false)
                     continue;
                 // 
                 var isHighlight = item1.IsSelected || item1.IsPreSelected || item1.IsMouseOver ||
@@ -206,42 +254,84 @@ namespace Biaui.Controls.NodeEditor.Internal
                         Unsafe.As<Point, ImmutableVec2>(ref pos1));
                 }
             }
+        }
 
-            dc.PushTransform(_parent.Translate);
-            dc.PushTransform(_parent.Scale);
+        private void MakeNodeLink_BezierCurveStyle()
+        {
+            var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
+
+            var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
+
+            var alpha = _parent.IsNodeSlotDragging
+                ? 0.2
+                : 1.0;
+
+            // 線分の太さを考慮
+            var inflate = ArrowSize * _parent.Scale.ScaleX;
+
+            var lineCullingRect = new ImmutableRect(
+                viewport.X - inflate,
+                viewport.Y - inflate,
+                viewport.Width + inflate * 2,
+                viewport.Height + inflate * 2
+            );
+
+            foreach (IBiaNodeLink link in _parent.LinksSource)
             {
-                foreach (var curve in _curves)
+                if (link.IsVisible == false)
+                    continue;
+
+                if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
+                    continue;
+
+                var item1 = link.ItemSlot1.Item;
+                var item2 = link.ItemSlot2.Item;
+                var pos1 = item1.MakeSlotPos(link.InternalData().Slot1);
+                var pos2 = item2.MakeSlotPos(link.InternalData().Slot2);
+                var pos1B = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1.Dir);
+                var pos2B = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2.Dir);
+
+                var bb = BiaNodeEditorHelper.MakeBoundingBox(pos1, pos1B, pos2B, pos2);
+                if (bb.IntersectsWith(lineCullingRect) == false)
+                    continue;
+
+                var isHighlight = item1.IsSelected || item1.IsPreSelected || item1.IsMouseOver ||
+                                  item2.IsSelected || item2.IsPreSelected || item2.IsMouseOver;
+
+                var color = ColorHelper.Lerp(alpha, backgroundColor, isHighlight ? _parent.HighlightLinkColor : link.Color);
+                var key = (color, link.Style, isHighlight);
+
+                if (_curves.TryGetValue(key, out var curve) == false)
                 {
-                    if (curve.Key.IsHightlight)
-                        continue;
+                    var geom = new StreamGeometry
+                    {
+                        FillRule = FillRule.Nonzero
+                    };
+                    var ctx = geom.Open();
 
-                    var pen =
-                        (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(curve.Key.Color, LineWidth)
-                            : Caches.GetPen(curve.Key.Color, LineWidth);
-
-                    ((IDisposable) curve.Value.Ctx).Dispose();
-                    dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);
+                    curve = (geom, ctx);
+                    _curves.Add(key, curve);
                 }
 
-                foreach (var curve in _curves)
+                curve.Ctx.BeginFigure(pos1, false, false);
+                curve.Ctx.BezierTo(
+                    pos1B,
+                    pos2B,
+                    pos2,
+                    true,
+                    true);
+
+#if false
+                // 矢印
+                if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
                 {
-                    if (curve.Key.IsHightlight == false)
-                        continue;
-
-                    var pen =
-                        (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(curve.Key.Color, LineWidth)
-                            : Caches.GetPen(curve.Key.Color, LineWidth);
-
-                    ((IDisposable) curve.Value.Ctx).Dispose();
-                    dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);
+                    DrawArrow(
+                        curve.Ctx,
+                        lines,
+                        Unsafe.As<Point, ImmutableVec2>(ref pos1));
                 }
+#endif
             }
-            dc.Pop();
-            dc.Pop();
-
-            _curves.Clear();
         }
 
         private static void DrawArrow(
@@ -299,7 +389,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return maxIndex;
         }
 
-        private bool IsHitLines(in ImmutableRect rect, Span<ImmutableVec2> points)
+        private bool IsHitLines_AxisAlignStyle(in ImmutableRect rect, Span<ImmutableVec2> points)
         {
             if (points.Length <= 1)
                 return false;
