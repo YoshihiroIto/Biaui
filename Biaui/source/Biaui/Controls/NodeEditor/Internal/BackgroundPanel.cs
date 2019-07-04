@@ -248,12 +248,45 @@ namespace Biaui.Controls.NodeEditor.Internal
                 // 矢印
                 if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
                 {
-                    DrawArrow(
+                    DrawArrow_AxisAlignStyle(
                         curve.Ctx,
                         lines,
                         Unsafe.As<Point, ImmutableVec2>(ref pos1));
                 }
             }
+        }
+
+        private static void DrawArrow_AxisAlignStyle(
+            StreamGeometryContext ctx,
+            Span<ImmutableVec2> lines,
+            in ImmutableVec2 startPos)
+        {
+            if (lines.Length < 2)
+                return;
+
+            var isPosDir = lines[0] == startPos;
+
+            var span = FindLongestSpan(lines);
+
+            var (edge1, edge2) =
+                isPosDir
+                    ? (lines[span], lines[span - 1])
+                    : (lines[span - 1], lines[span]);
+
+            var pos = (edge1 + edge2) * 0.5;
+
+            var pv = ImmutableVec2.SetSize(edge1 - edge2, ArrowSize);
+            var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
+
+            var t1 = pos + pv;
+            var t2 = pos + sv;
+            var t3 = pos - sv;
+
+            ctx.DrawTriangle(
+                Unsafe.As<ImmutableVec2, Point>(ref t1),
+                Unsafe.As<ImmutableVec2, Point>(ref t2),
+                Unsafe.As<ImmutableVec2, Point>(ref t3),
+                false, false);
         }
 
         private void MakeNodeLink_BezierCurveStyle()
@@ -288,10 +321,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var item2 = link.ItemSlot2.Item;
                 var pos1 = item1.MakeSlotPos(link.InternalData().Slot1);
                 var pos2 = item2.MakeSlotPos(link.InternalData().Slot2);
-                var pos1B = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1.Dir);
-                var pos2B = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2.Dir);
+                var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1.Dir);
+                var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2.Dir);
 
-                var bb = BiaNodeEditorHelper.MakeBoundingBox(pos1, pos1B, pos2B, pos2);
+                var bb = BiaNodeEditorHelper.MakeBoundingBox(
+                    Unsafe.As<Point, ImmutableVec2>(ref pos1),
+                    Unsafe.As<Point, ImmutableVec2>(ref pos1C),
+                    Unsafe.As<Point, ImmutableVec2>(ref pos2C),
+                    Unsafe.As<Point, ImmutableVec2>(ref pos2));
                 if (bb.IntersectsWith(lineCullingRect) == false)
                     continue;
 
@@ -315,50 +352,48 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 curve.Ctx.BeginFigure(pos1, false, false);
                 curve.Ctx.BezierTo(
-                    pos1B,
-                    pos2B,
+                    pos1C,
+                    pos2C,
                     pos2,
                     true,
                     true);
 
-#if false
                 // 矢印
                 if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
                 {
-                    DrawArrow(
+                    DrawArrow_BezierCurveStyle(
                         curve.Ctx,
-                        lines,
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1));
+                        Unsafe.As<Point, ImmutableVec2>(ref pos1),
+                        Unsafe.As<Point, ImmutableVec2>(ref pos1C),
+                        Unsafe.As<Point, ImmutableVec2>(ref pos2C),
+                        Unsafe.As<Point, ImmutableVec2>(ref pos2));
                 }
-#endif
             }
         }
 
-        private static void DrawArrow(
+        private static void DrawArrow_BezierCurveStyle(
             StreamGeometryContext ctx,
-            Span<ImmutableVec2> lines,
-            in ImmutableVec2 startPos)
+            in ImmutableVec2 p1,
+            in ImmutableVec2 c1,
+            in ImmutableVec2 c2,
+            in ImmutableVec2 p2)
         {
-            if (lines.Length < 2)
-                return;
+            var b1X = BiaNodeEditorHelper.Bezier(p1.X, c1.X, c2.X, p2.X, 0.5001);
+            var b1Y = BiaNodeEditorHelper.Bezier(p1.Y, c1.Y, c2.Y, p2.Y, 0.5001);
+            var b2X = BiaNodeEditorHelper.Bezier(p1.X, c1.X, c2.X, p2.X, 0.5);
+            var b2Y = BiaNodeEditorHelper.Bezier(p1.Y, c1.Y, c2.Y, p2.Y, 0.5);
 
-            var isPosDir = lines[0] == startPos;
+            var sx = b1X - b2X;
+            var sy = b1Y - b2Y;
+            var r = Math.Atan2(sy, sx) + Math.PI * 0.5;
+            var m = (Math.Sin(r), Math.Cos(r));
 
-            var span = FindLongestSpan(lines);
+            var l1 = new ImmutableVec2(ArrowSize / 1.732, ArrowSize / 1.732 * 2);
+            var l2 = new ImmutableVec2(-ArrowSize / 1.732, ArrowSize / 1.732 * 2);
 
-            var (edge1, edge2) =
-                isPosDir
-                    ? (lines[span], lines[span - 1])
-                    : (lines[span - 1], lines[span]);
-
-            var pos = (edge1 + edge2) * 0.5;
-
-            var pv = ImmutableVec2.SetSize(edge1 - edge2, ArrowSize);
-            var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
-
-            var t1 = pos + pv;
-            var t2 = pos + sv;
-            var t3 = pos - sv;
+            var t1 = (p1 + p2) * 0.5;
+            var t2 = Rotate(m, l1) + t1;
+            var t3 = Rotate(m, l2) + t1;
 
             ctx.DrawTriangle(
                 Unsafe.As<ImmutableVec2, Point>(ref t1),
@@ -366,6 +401,12 @@ namespace Biaui.Controls.NodeEditor.Internal
                 Unsafe.As<ImmutableVec2, Point>(ref t3),
                 false, false);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static ImmutableVec2 Rotate(in ValueTuple<double, double> m, in ImmutableVec2 pos)
+            => new ImmutableVec2(
+                pos.X * m.Item2 - pos.Y * m.Item1,
+                pos.X * m.Item1 + pos.Y * m.Item2);
 
         private static int FindLongestSpan(Span<ImmutableVec2> lines)
         {

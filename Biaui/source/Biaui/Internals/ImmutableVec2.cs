@@ -14,6 +14,8 @@ namespace Biaui.Internals
         public double Length => Math.Sqrt(X * X + Y * Y);
         public double LengthSq => X * X + Y * Y;
 
+        public static ImmutableVec2 Zero = new ImmutableVec2();
+
         public ImmutableVec2(double x, double y)
             => (X, Y) = (x, y);
 
@@ -90,6 +92,5 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2 operator /(in ImmutableVec2 v1, double v2)
             => new ImmutableVec2(v1.X / v2, v1.Y / v2);
-
     }
 }

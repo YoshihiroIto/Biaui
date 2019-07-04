@@ -100,7 +100,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double Bezier(double x1, double x2, double x3, double x4, double t)
+        public static double Bezier(double x1, double x2, double x3, double x4, double t)
         {
             var mt2 = (1 - t) * (1 - t);
             var mt3 = mt2 * (1 - t);
