@@ -111,7 +111,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         // 参考： https://floris.briolas.nl/floris/2009/10/bounding-box-of-cubic-bezier/ 
-        public static ImmutableRect MakeBoundingBox(Point p1, Point c1, Point c2, Point p2)
+        public static ImmutableRect MakeBoundingBox(in ImmutableVec2 p1, in ImmutableVec2 c1, in ImmutableVec2 c2, in ImmutableVec2 p2)
         {
             var aX = A(p1.X, c1.X, c2.X, p2.X);
             var bX = B(p1.X, c1.X, c2.X);
@@ -124,14 +124,14 @@ namespace Biaui.Controls.NodeEditor.Internal
             var resX = Solve(aX, bX, cX).Where(t => t >= 0 && t <= 1);
             var resY = Solve(aY, bY, cY).Where(t => t >= 0 && t <= 1);
 
-            var bBox = new List<Point> {p1, p2};
+            var bBox = new List<ImmutableVec2> {p1, p2};
 
             foreach (var e in resX.Union(resY))
             {
                 var x = Bezier(p1.X, c1.X, c2.X, p2.X, e);
                 var y = Bezier(p1.Y, c1.Y, c2.Y, p2.Y, e);
 
-                var p = new Point(x, y);
+                var p = new ImmutableVec2(x, y);
                 bBox.Add(p);
             }
 
@@ -152,12 +152,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         // ReSharper disable InconsistentNaming
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double _SolveP(double a_, double b_, double c_) =>
-            (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * +1d) / (2d * a_);
+        private static double _SolveP(double a_, double b_, double c_) => (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * +1d) / (2d * a_);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double _SolveM(double a_, double b_, double c_) =>
-            (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * -1d) / (2d * a_);
+        private static double _SolveM(double a_, double b_, double c_) => (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * -1d) / (2d * a_);
 
         private static double[] Solve(double a, double b, double c)
         {
