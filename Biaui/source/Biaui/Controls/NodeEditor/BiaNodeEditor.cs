@@ -15,6 +15,12 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
+    public enum BiaNodeEditorNodeLinkStyle
+    {
+        AxisAlign,
+        BezierCurve
+    }
+
     public class BiaNodeEditor : BiaClippingBorder, IHasTransform
     {
         #region NodesSource
@@ -187,6 +193,34 @@ namespace Biaui.Controls.NodeEditor
                     {
                         var self = (BiaNodeEditor) s;
                         self._HighlightLinkColor = (Color) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region NodeLinkStyle
+
+        public BiaNodeEditorNodeLinkStyle NodeLinkStyle
+        {
+            get => _NodeLinkStyle;
+            set
+            {
+                if (value != _NodeLinkStyle)
+                    SetValue(NodeLinkStyleProperty, value);
+            }
+        }
+
+        private BiaNodeEditorNodeLinkStyle _NodeLinkStyle = BiaNodeEditorNodeLinkStyle.AxisAlign;
+
+        public static readonly DependencyProperty NodeLinkStyleProperty =
+            DependencyProperty.Register(nameof(NodeLinkStyle), typeof(BiaNodeEditorNodeLinkStyle), typeof(BiaNodeEditor),
+                new FrameworkPropertyMetadata(
+                    BiaNodeEditorNodeLinkStyle.AxisAlign,
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._NodeLinkStyle = (BiaNodeEditorNodeLinkStyle) e.NewValue;
                     }));
 
         #endregion

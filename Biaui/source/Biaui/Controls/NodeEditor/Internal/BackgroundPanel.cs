@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
+using Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker;
 using Biaui.Interfaces;
 using Biaui.Internals;
 
@@ -128,23 +128,43 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 #endif
 
-        private static readonly
-            Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom,
-                StreamGeometryContext Ctx)> _curves
-                = new Dictionary<(Color, BiaNodeLinkStyle, bool), (StreamGeometry, StreamGeometryContext)>();
+        private static readonly Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
+            = new Dictionary<(Color, BiaNodeLinkStyle, bool), (StreamGeometry, StreamGeometryContext)>();
+
+        private static readonly IReadOnlyDictionary<BiaNodeEditorNodeLinkStyle, INodeLinkGeomMaker> NodeLinkGeomMakers =
+            new Dictionary<BiaNodeEditorNodeLinkStyle, INodeLinkGeomMaker>()
+            {
+                {BiaNodeEditorNodeLinkStyle.AxisAlign, new AxisAlignStyleNodeLinkGeomMaker(ArrowSize)},
+                {BiaNodeEditorNodeLinkStyle.BezierCurve, new BezierCurveStyleMakeNodeGeomLink(ArrowSize)}
+            };
 
         private void DrawNodeLink(DrawingContext dc)
         {
             if (_parent.LinksSource == null)
                 return;
 
-            // 描画形状を作る
+            var inflate = ArrowSize * _parent.Scale.ScaleX;
+            var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
+            var lineCullingRect = new ImmutableRect(
+                viewport.X - inflate,
+                viewport.Y - inflate,
+                viewport.Width + inflate * 2,
+                viewport.Height + inflate * 2
+            );
 
-#if false
-            MakeNodeLink_AxisAlignStyle();
-#else
-            MakeNodeLink_BezierCurveStyle();
-#endif
+            var alpha = _parent.IsNodeSlotDragging
+                ? 0.2
+                : 1.0;
+
+            var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
+
+            NodeLinkGeomMakers[_parent.NodeLinkStyle].Make(
+                _parent.LinksSource,
+                lineCullingRect,
+                alpha,
+                backgroundColor,
+                _parent.HighlightLinkColor,
+                _curves);
 
             // 描画する
             dc.PushTransform(_parent.Translate);
@@ -182,317 +202,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.Pop();
 
             _curves.Clear();
-        }
-
-        private void MakeNodeLink_AxisAlignStyle()
-        {
-            var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
-
-            var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
-
-            var alpha = _parent.IsNodeSlotDragging
-                ? 0.2
-                : 1.0;
-
-            Span<ImmutableVec2> work = stackalloc ImmutableVec2[10];
-
-            // 線分の太さを考慮
-            var inflate = ArrowSize * _parent.Scale.ScaleX;
-
-            var lineCullingRect = new ImmutableRect(
-                viewport.X - inflate,
-                viewport.Y - inflate,
-                viewport.Width + inflate * 2,
-                viewport.Height + inflate * 2
-            );
-
-            foreach (IBiaNodeLink link in _parent.LinksSource)
-            {
-                if (link.IsVisible == false)
-                    continue;
-
-                if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
-                    continue;
-
-                var item1 = link.ItemSlot1.Item;
-                var item2 = link.ItemSlot2.Item;
-                var pos1 = item1.MakeSlotPos(link.InternalData().Slot1);
-                var pos2 = item2.MakeSlotPos(link.InternalData().Slot2);
-
-                var lines = LinkLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(), work);
-
-                // 線分ごとにバウンディングボックス判定、折れ丸は無視
-                if (IsHitLines_AxisAlignStyle(lineCullingRect, lines) == false)
-                    continue;
-                // 
-                var isHighlight = item1.IsSelected || item1.IsPreSelected || item1.IsMouseOver ||
-                                  item2.IsSelected || item2.IsPreSelected || item2.IsMouseOver;
-
-                var color = ColorHelper.Lerp(alpha, backgroundColor, isHighlight ? _parent.HighlightLinkColor : link.Color);
-                var key = (color, link.Style, isHighlight);
-
-                if (_curves.TryGetValue(key, out var curve) == false)
-                {
-                    var geom = new StreamGeometry
-                    {
-                        FillRule = FillRule.Nonzero
-                    };
-                    var ctx = geom.Open();
-
-                    curve = (geom, ctx);
-                    _curves.Add(key, curve);
-                }
-
-                LinkLineRenderer.DrawLines(curve.Ctx, lines);
-
-                // 矢印
-                if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
-                {
-                    DrawArrow_AxisAlignStyle(
-                        curve.Ctx,
-                        lines,
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1));
-                }
-            }
-        }
-
-        private static void DrawArrow_AxisAlignStyle(
-            StreamGeometryContext ctx,
-            Span<ImmutableVec2> lines,
-            in ImmutableVec2 startPos)
-        {
-            if (lines.Length < 2)
-                return;
-
-            var isPosDir = lines[0] == startPos;
-
-            var span = FindLongestSpan(lines);
-
-            var (edge1, edge2) =
-                isPosDir
-                    ? (lines[span], lines[span - 1])
-                    : (lines[span - 1], lines[span]);
-
-            var pos = (edge1 + edge2) * 0.5;
-
-            var pv = ImmutableVec2.SetSize(edge1 - edge2, ArrowSize);
-            var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
-
-            var t1 = pos + pv;
-            var t2 = pos + sv;
-            var t3 = pos - sv;
-
-            ctx.DrawTriangle(
-                Unsafe.As<ImmutableVec2, Point>(ref t1),
-                Unsafe.As<ImmutableVec2, Point>(ref t2),
-                Unsafe.As<ImmutableVec2, Point>(ref t3),
-                false, false);
-        }
-
-        private void MakeNodeLink_BezierCurveStyle()
-        {
-            var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
-
-            var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
-
-            var alpha = _parent.IsNodeSlotDragging
-                ? 0.2
-                : 1.0;
-
-            // 線分の太さを考慮
-            var inflate = ArrowSize * _parent.Scale.ScaleX;
-
-            var lineCullingRect = new ImmutableRect(
-                viewport.X - inflate,
-                viewport.Y - inflate,
-                viewport.Width + inflate * 2,
-                viewport.Height + inflate * 2
-            );
-
-            foreach (IBiaNodeLink link in _parent.LinksSource)
-            {
-                if (link.IsVisible == false)
-                    continue;
-
-                if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
-                    continue;
-
-                var item1 = link.ItemSlot1.Item;
-                var item2 = link.ItemSlot2.Item;
-                var pos1 = item1.MakeSlotPos(link.InternalData().Slot1);
-                var pos2 = item2.MakeSlotPos(link.InternalData().Slot2);
-                var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1.Dir);
-                var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2.Dir);
-
-                var bb = BiaNodeEditorHelper.MakeBoundingBox(
-                    Unsafe.As<Point, ImmutableVec2>(ref pos1),
-                    Unsafe.As<Point, ImmutableVec2>(ref pos1C),
-                    Unsafe.As<Point, ImmutableVec2>(ref pos2C),
-                    Unsafe.As<Point, ImmutableVec2>(ref pos2));
-                if (bb.IntersectsWith(lineCullingRect) == false)
-                    continue;
-
-                var isHighlight = item1.IsSelected || item1.IsPreSelected || item1.IsMouseOver ||
-                                  item2.IsSelected || item2.IsPreSelected || item2.IsMouseOver;
-
-                var color = ColorHelper.Lerp(alpha, backgroundColor, isHighlight ? _parent.HighlightLinkColor : link.Color);
-                var key = (color, link.Style, isHighlight);
-
-                if (_curves.TryGetValue(key, out var curve) == false)
-                {
-                    var geom = new StreamGeometry
-                    {
-                        FillRule = FillRule.Nonzero
-                    };
-                    var ctx = geom.Open();
-
-                    curve = (geom, ctx);
-                    _curves.Add(key, curve);
-                }
-
-                curve.Ctx.BeginFigure(pos1, false, false);
-                curve.Ctx.BezierTo(
-                    pos1C,
-                    pos2C,
-                    pos2,
-                    true,
-                    true);
-
-                // 矢印
-                if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
-                {
-                    DrawArrow_BezierCurveStyle(
-                        curve.Ctx,
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1C),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos2C),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos2));
-                }
-            }
-        }
-
-        private static void DrawArrow_BezierCurveStyle(
-            StreamGeometryContext ctx,
-            in ImmutableVec2 p1,
-            in ImmutableVec2 c1,
-            in ImmutableVec2 c2,
-            in ImmutableVec2 p2)
-        {
-            var b1X = BiaNodeEditorHelper.Bezier(p1.X, c1.X, c2.X, p2.X, 0.5001);
-            var b1Y = BiaNodeEditorHelper.Bezier(p1.Y, c1.Y, c2.Y, p2.Y, 0.5001);
-            var b2X = BiaNodeEditorHelper.Bezier(p1.X, c1.X, c2.X, p2.X, 0.5);
-            var b2Y = BiaNodeEditorHelper.Bezier(p1.Y, c1.Y, c2.Y, p2.Y, 0.5);
-
-            var sx = b1X - b2X;
-            var sy = b1Y - b2Y;
-            var r = Math.Atan2(sy, sx) + Math.PI * 0.5;
-            var m = (Math.Sin(r), Math.Cos(r));
-
-            var l1 = new ImmutableVec2(ArrowSize / 1.732, ArrowSize / 1.732 * 2);
-            var l2 = new ImmutableVec2(-ArrowSize / 1.732, ArrowSize / 1.732 * 2);
-
-            var t1 = (p1 + p2) * 0.5;
-            var t2 = Rotate(m, l1) + t1;
-            var t3 = Rotate(m, l2) + t1;
-
-            ctx.DrawTriangle(
-                Unsafe.As<ImmutableVec2, Point>(ref t1),
-                Unsafe.As<ImmutableVec2, Point>(ref t2),
-                Unsafe.As<ImmutableVec2, Point>(ref t3),
-                false, false);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ImmutableVec2 Rotate(in ValueTuple<double, double> m, in ImmutableVec2 pos)
-            => new ImmutableVec2(
-                pos.X * m.Item2 - pos.Y * m.Item1,
-                pos.X * m.Item1 + pos.Y * m.Item2);
-
-        private static int FindLongestSpan(Span<ImmutableVec2> lines)
-        {
-            var maxLength = -1.0;
-            var maxIndex = 1;
-
-            for (var i = 1; i != lines.Length; ++i)
-            {
-                var p1 = lines[i - 1];
-                var p2 = lines[i];
-
-                var l = (p1 - p2).LengthSq;
-
-                if (l > maxLength)
-                {
-                    maxLength = l;
-                    maxIndex = i;
-                }
-            }
-
-            return maxIndex;
-        }
-
-        private bool IsHitLines_AxisAlignStyle(in ImmutableRect rect, Span<ImmutableVec2> points)
-        {
-            if (points.Length <= 1)
-                return false;
-
-            for (var i = 1; i != points.Length; ++i)
-            {
-                ref var p0 = ref points[i - 1];
-                ref var p1 = ref points[i - 0];
-
-                // 垂直線
-                if (NumberHelper.AreClose(p0.X, p1.X))
-                {
-                    if (p0.X < rect.X)
-                        continue;
-
-                    if (p0.X > rect.X + rect.Width)
-                        continue;
-
-                    if (p0.Y > rect.Y &&
-                        p0.Y < rect.Y + rect.Height)
-                        return true;
-
-                    if (p1.Y > rect.Y &&
-                        p1.Y < rect.Y + rect.Height)
-                        return true;
-
-                    if (p0.Y < rect.Y &&
-                        p1.Y > rect.Y + rect.Height)
-                        return true;
-
-                    if (p1.Y < rect.Y &&
-                        p0.Y > rect.Y + rect.Height)
-                        return true;
-                }
-                // 水平線
-                else
-                {
-                    if (p0.Y < rect.Y)
-                        continue;
-
-                    if (p0.Y > rect.Y + rect.Height)
-                        continue;
-
-                    if (p0.X > rect.X &&
-                        p0.X < rect.X + rect.Width)
-                        return true;
-
-                    if (p1.X > rect.X &&
-                        p1.X < rect.X + rect.Width)
-                        return true;
-
-                    if (p0.X < rect.X &&
-                        p1.X > rect.X + rect.Width)
-                        return true;
-
-                    if (p1.X < rect.X &&
-                        p0.X > rect.X + rect.Width)
-                        return true;
-                }
-            }
-
-            return false;
         }
     }
 }

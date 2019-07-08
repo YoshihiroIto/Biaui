@@ -77,6 +77,9 @@
     <Compile Include="Controls\BiaTreeListView.cs" />
     <Compile Include="Controls\Converters\DoubleColorToBrushConverter.cs" />
     <Compile Include="Controls\Converters\TreeListViewItemMarginConverter.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\AxisAlignStyleNodeLinkGeomMaker.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\BezierCurveStyleMakeNodeGeomLink.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\INodeLinkGeomMaker.cs" />
     <Compile Include="Interfaces\IBiaHasChildren.cs" />
     <Compile Include="Internals\PropertyChangeNotifier.cs" />
     <Compile Include="Internals\Converter\MultiplyConverter.cs" />
