@@ -27,8 +27,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             _parent = parent;
 
-            _parent.Translate.Changed += (_, __) => InvalidateVisual();
-            _parent.Scale.Changed += (_, __) => InvalidateVisual();
+            _parent.TranslateTransform.Changed += (_, __) => InvalidateVisual();
+            _parent.ScaleTransform.Changed += (_, __) => InvalidateVisual();
             _parent.NodeItemMoved += (_, __) => InvalidateVisual();
             _parent.LinksSourceChanging += (_, __) => InvalidateVisual();
             _parent.LinkChanged += (_, __) => InvalidateVisual();
@@ -56,9 +56,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var p = this.GetBorderPen(Color.FromRgb(0x37, 0x37, 0x40));
 
-            var s = _parent.Scale.ScaleX;
-            var tx = _parent.Translate.X;
-            var ty = _parent.Translate.Y;
+            var s = _parent.ScaleTransform.ScaleX;
+            var tx = _parent.TranslateTransform.X;
+            var ty = _parent.TranslateTransform.Y;
 
             var bx = FrameworkElementHelper.RoundLayoutValue(ActualWidth);
             var by = FrameworkElementHelper.RoundLayoutValue(ActualHeight);
@@ -143,7 +143,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (_parent.LinksSource == null)
                 return;
 
-            var inflate = ArrowSize * _parent.Scale.ScaleX;
+            var inflate = ArrowSize * _parent.ScaleTransform.ScaleX;
             var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
             var lineCullingRect = new ImmutableRect(
                 viewport.X - inflate,
@@ -167,8 +167,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 _curves);
 
             // 描画する
-            dc.PushTransform(_parent.Translate);
-            dc.PushTransform(_parent.Scale);
+            dc.PushTransform(_parent.TranslateTransform);
+            dc.PushTransform(_parent.ScaleTransform);
             {
                 foreach (var curve in _curves)
                 {

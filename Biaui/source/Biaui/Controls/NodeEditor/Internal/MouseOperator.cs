@@ -129,8 +129,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void OnMouseLeftButtonDown(MouseButtonEventArgs e, TargetType targetType)
         {
-            _mouseDownScrollX = _transformTarget.Translate.X;
-            _mouseDownScrollY = _transformTarget.Translate.Y;
+            _mouseDownScrollX = _transformTarget.TranslateTransform.X;
+            _mouseDownScrollY = _transformTarget.TranslateTransform.Y;
             _mouseDownPos = e.GetPosition(_target);
             _mouseMovePos = _mouseDownPos;
 
@@ -209,8 +209,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             var pos = e.GetPosition(_target);
             var diff = pos - _mouseDownPos;
 
-            _transformTarget.Translate.X = _mouseDownScrollX + diff.X;
-            _transformTarget.Translate.Y = _mouseDownScrollY + diff.Y;
+            _transformTarget.TranslateTransform.X = _mouseDownScrollX + diff.X;
+            _transformTarget.TranslateTransform.Y = _mouseDownScrollY + diff.Y;
         }
 
         internal class PanelMovingEventArgs : EventArgs
@@ -234,7 +234,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             var pos = e.GetPosition(_target);
 
-            _PanelMovingEventArgs.Diff = (pos - _mouseMovePos) / _transformTarget.Scale.ScaleX;
+            _PanelMovingEventArgs.Diff = (pos - _mouseMovePos) / _transformTarget.ScaleTransform.ScaleX;
             PanelMoving?.Invoke(this, _PanelMovingEventArgs);
         }
 
@@ -249,7 +249,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (IsOperating)
                 return;
 
-            var s = _transformTarget.Scale.ScaleX;
+            var s = _transformTarget.ScaleTransform.ScaleX;
 
             s *= e.Delta > 0
                 ? 1.25

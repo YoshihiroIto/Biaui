@@ -76,8 +76,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             _parent.SizeChanged += (_, __) => UpdateChildrenBag(true);
             _parent.Unloaded += (_, __) => StopTimer();
             _parent.NodesSourceChanging += (_, __) => Clear();
-            _parent.Scale.Changed += (_, __) => UpdateChildrenBag(true);
-            _parent.Translate.Changed += (_, __) => UpdateChildrenBag(true);
+            _parent.ScaleTransform.Changed += (_, __) => UpdateChildrenBag(true);
+            _parent.TranslateTransform.Changed += (_, __) => UpdateChildrenBag(true);
 
             _mouseOperator.PanelMoving += OnPanelMoving;
             _mouseOperator.PostMouseMove += OnPostMouseMove;

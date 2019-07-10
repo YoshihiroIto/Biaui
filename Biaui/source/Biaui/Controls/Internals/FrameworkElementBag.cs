@@ -22,8 +22,8 @@ namespace Biaui.Controls.Internals
         internal FrameworkElementBag(IHasTransform transform)
         {
             var g = new TransformGroup();
-            g.Children.Add(transform.Scale);
-            g.Children.Add(transform.Translate);
+            g.Children.Add(transform.ScaleTransform);
+            g.Children.Add(transform.TranslateTransform);
             RenderTransform = g;
         }
 

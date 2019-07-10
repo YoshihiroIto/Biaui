@@ -19,9 +19,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                 new FrameworkPropertyMetadata(typeof(NodeSlotConnector)));
         }
 
-        internal TranslateTransform Translate => _parent.Translate;
+        internal TranslateTransform Translate => _parent.TranslateTransform;
 
-        internal ScaleTransform Scale => _parent.Scale;
+        internal ScaleTransform Scale => _parent.ScaleTransform;
 
         public bool IsNodeSlotDragging => _parent.SourceNodeSlotConnecting.IsNotNull;
 
@@ -207,7 +207,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             var cellWidth = width / ColumnCount;
             var cellHeight = height / RowCount;
-            var margin = Biaui.Internals.Constants.SlotMarkRadius_Max * _parent.Scale.ScaleX;
+            var margin = Biaui.Internals.Constants.SlotMarkRadius_Max * _parent.ScaleTransform.ScaleX;
 
             var i = 0;
 

@@ -225,15 +225,44 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        #region Scale
+        
+        public double Scale
+        {
+            get => _Scale;
+            set
+            {
+                if (NumberHelper.AreClose(value, Scale) == false)
+                    SetValue(ScaleProperty, value);
+            }
+        }
+        
+        private double _Scale = 1.0;
+        
+        public static readonly DependencyProperty ScaleProperty =
+            DependencyProperty.Register(
+                nameof(Scale),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double1,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._Scale = (double)e.NewValue;
+                    }));
+        
+        #endregion
+        
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
         public event EventHandler PropertyEditStarting;
         public event EventHandler PropertyEditCompleted;
 
-        public ScaleTransform Scale { get; } = new ScaleTransform();
+        public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
 
-        public TranslateTransform Translate { get; } = new TranslateTransform();
+        public TranslateTransform TranslateTransform { get; } = new TranslateTransform();
 
         public bool IsNodeSlotDragging { get; internal set; }
 
@@ -271,6 +300,8 @@ namespace Biaui.Controls.NodeEditor
             }
 
             base.Child = grid;
+
+            ScaleTransform.Changed += (_, __) => Scale = ScaleTransform.ScaleX;
         }
 
         private void UpdateLinksSource(
@@ -326,7 +357,7 @@ namespace Biaui.Controls.NodeEditor
                 Height = 200,
                 Minimum = Constants.NodeEditor_MinScale,
                 Maximum = Constants.NodeEditor_MaxScale,
-                Value = Scale.ScaleX
+                Value = ScaleTransform.ScaleX
             };
 
             scaleSlider.ValueChanged += (_, __) =>
@@ -337,7 +368,7 @@ namespace Biaui.Controls.NodeEditor
                 this.SetTransform(scaleSlider.Value, cx, cy);
             };
 
-            Scale.Changed += (_, __) => scaleSlider.Value = Scale.ScaleX;
+            ScaleTransform.Changed += (_, __) => scaleSlider.Value = ScaleTransform.ScaleX;
 
             return scaleSlider;
         }
@@ -443,10 +474,10 @@ namespace Biaui.Controls.NodeEditor
             var scale = (scaleX, scaleY).Min();
             scale = (scale, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
 
-            Translate.X = -centerX * scale + viewCx;
-            Translate.Y = -centerY * scale + viewCy;
-            Scale.ScaleX = scale;
-            Scale.ScaleY = scale;
+            TranslateTransform.X = -centerX * scale + viewCx;
+            TranslateTransform.Y = -centerY * scale + viewCy;
+            ScaleTransform.ScaleX = scale;
+            ScaleTransform.ScaleY = scale;
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

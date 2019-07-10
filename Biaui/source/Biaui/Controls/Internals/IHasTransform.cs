@@ -6,40 +6,40 @@ namespace Biaui.Controls.Internals
 {
     internal interface IHasTransform
     {
-        ScaleTransform Scale { get; }
+        ScaleTransform ScaleTransform { get; }
 
-        TranslateTransform Translate { get; }
+        TranslateTransform TranslateTransform { get; }
     }
 
     internal static class HasTransformExtensions
     {
         internal static Point TransformPos(this IHasTransform self, double x, double y)
         {
-            var s = self.Scale.ScaleX;
+            var s = self.ScaleTransform.ScaleX;
 
             return new Point(
-                (x - self.Translate.X) / s,
-                (y - self.Translate.Y) / s);
+                (x - self.TranslateTransform.X) / s,
+                (y - self.TranslateTransform.Y) / s);
         }
 
         internal static ImmutableRect TransformRect(this IHasTransform self, double w, double h)
         {
-            var s = self.Scale.ScaleX;
+            var s = self.ScaleTransform.ScaleX;
 
             return new ImmutableRect(
-                -self.Translate.X / s,
-                -self.Translate.Y / s,
+                -self.TranslateTransform.X / s,
+                -self.TranslateTransform.Y / s,
                 w / s,
                 h / s);
         }
 
         internal static ImmutableRect TransformRect(this IHasTransform self, in ImmutableRect rect)
         {
-            var s = self.Scale.ScaleX;
+            var s = self.ScaleTransform.ScaleX;
 
             return new ImmutableRect(
-                (rect.X - self.Translate.X) / s,
-                (rect.Y - self.Translate.Y) / s,
+                (rect.X - self.TranslateTransform.X) / s,
+                (rect.Y - self.TranslateTransform.Y) / s,
                 rect.Width / s,
                 rect.Height / s);
         }
@@ -48,15 +48,15 @@ namespace Biaui.Controls.Internals
         {
             var d0 = self.TransformPos(centerX, centerY);
 
-            self.Scale.ScaleX = scale;
-            self.Scale.ScaleY = scale;
+            self.ScaleTransform.ScaleX = scale;
+            self.ScaleTransform.ScaleY = scale;
 
             var d1 = self.TransformPos(centerX, centerY);
 
             var diff = d1 - d0;
 
-            self.Translate.X += diff.X * scale;
-            self.Translate.Y += diff.Y * scale;
+            self.TranslateTransform.X += diff.X * scale;
+            self.TranslateTransform.Y += diff.Y * scale;
         }
     }
 }
