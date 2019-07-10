@@ -16,7 +16,7 @@ namespace Biaui
         public static double ButtonPaddingX = 10;
         public static double ButtonPaddingY = 3;
 
-        public static double NodeEditor_MinScale = 0.1;
+        public static double NodeEditor_MinScale = 0.05;
         public static double NodeEditor_MaxScale = 2;
 
         public static TreeListViewItemMarginConverter TreeListViewItemFirstMarginConverter = new TreeListViewItemMarginConverter
