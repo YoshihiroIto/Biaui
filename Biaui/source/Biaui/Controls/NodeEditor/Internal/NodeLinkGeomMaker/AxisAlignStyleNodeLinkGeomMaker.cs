@@ -13,7 +13,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
     {
         private readonly double _arrowSize;
 
-        internal AxisAlignStyleNodeLinkGeomMaker( double arrowSize )
+        internal AxisAlignStyleNodeLinkGeomMaker(double arrowSize)
         {
             _arrowSize = arrowSize;
         }
@@ -24,6 +24,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
             double alpha,
             Color backgroundColor,
             Color highlightLinkColor,
+            NodeLinkGeomMakerFlags flags,
             Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves)
         {
             Span<ImmutableVec2> work = stackalloc ImmutableVec2[10];
@@ -68,7 +69,8 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 LinkLineRenderer.DrawLines(curve.Ctx, lines);
 
                 // 矢印
-                if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
+                if ((flags & NodeLinkGeomMakerFlags.RequireArrow) != 0 &&
+                    (link.Style & BiaNodeLinkStyle.Arrow) != 0)
                 {
                     DrawArrow(
                         curve.Ctx,

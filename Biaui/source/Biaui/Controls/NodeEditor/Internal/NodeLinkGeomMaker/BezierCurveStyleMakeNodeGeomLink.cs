@@ -24,6 +24,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
             double alpha,
             Color backgroundColor,
             Color highlightLinkColor,
+            NodeLinkGeomMakerFlags flags,
             Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves)
         {
             foreach (IBiaNodeLink link in linksSource)
@@ -76,7 +77,8 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                     true);
 
                 // 矢印
-                if ((link.Style & BiaNodeLinkStyle.Arrow) != 0)
+                if ((flags & NodeLinkGeomMakerFlags.RequireArrow) != 0 &&
+                    (link.Style & BiaNodeLinkStyle.Arrow) != 0)
                 {
                     DrawArrow(
                         curve.Ctx,

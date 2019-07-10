@@ -158,12 +158,18 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var backgroundColor = ((SolidColorBrush) _parent.Background).Color;
 
+            var flags = NodeLinkGeomMakerFlags.None;
+
+            if (_parent.Scale > 0.2)
+                flags |= NodeLinkGeomMakerFlags.RequireArrow;
+
             NodeLinkGeomMakers[_parent.NodeLinkStyle].Make(
                 _parent.LinksSource,
                 lineCullingRect,
                 alpha,
                 backgroundColor,
                 _parent.HighlightLinkColor,
+                flags,
                 _curves);
 
             // 描画する
