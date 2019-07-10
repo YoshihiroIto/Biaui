@@ -8,10 +8,17 @@ namespace Biaui.Internals
     {
         internal static int GetDepth(this TreeViewItem item)
         {
-            TreeViewItem parent;
-            while ((parent = GetParent(item)) != null)
+            try
             {
-                return GetDepth(parent) + 1;
+                TreeViewItem parent;
+                while ((parent = GetParent(item)) != null)
+                {
+                    return GetDepth(parent) + 1;
+                }
+            }
+            catch
+            {
+                // ignored
             }
 
             return 0;
