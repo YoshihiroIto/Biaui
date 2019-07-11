@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using Biaui.Interfaces;
 using Biaui.Internals;
+using Jewelry.Collections;
 
 namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
 {
@@ -42,11 +43,16 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1.Dir);
                 var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2.Dir);
 
-                var bb = BiaNodeEditorHelper.MakeBoundingBox(
-                    Unsafe.As<Point, ImmutableVec2>(ref pos1),
-                    Unsafe.As<Point, ImmutableVec2>(ref pos1C),
-                    Unsafe.As<Point, ImmutableVec2>(ref pos2C),
-                    Unsafe.As<Point, ImmutableVec2>(ref pos2));
+                // ReSharper disable AccessToModifiedClosure
+                var bb = _boundingBoxCache.GetOrAdd(
+                    (pos1, pos2, link.InternalData().Slot1.Dir, link.InternalData().Slot2.Dir),
+                    x => BiaNodeEditorHelper.MakeBoundingBox(
+                        Unsafe.As<Point, ImmutableVec2>(ref pos1),
+                        Unsafe.As<Point, ImmutableVec2>(ref pos1C),
+                        Unsafe.As<Point, ImmutableVec2>(ref pos2C),
+                        Unsafe.As<Point, ImmutableVec2>(ref pos2)));
+                // ReSharper restore AccessToModifiedClosure
+
                 if (bb.IntersectsWith(lineCullingRect) == false)
                     continue;
 
@@ -89,6 +95,9 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 }
             }
         }
+
+        private static readonly LruCache<ValueTuple<Point, Point, BiaNodeSlotDir, BiaNodeSlotDir>, ImmutableRect> _boundingBoxCache =
+            new LruCache<(Point, Point, BiaNodeSlotDir, BiaNodeSlotDir), ImmutableRect>(10000, false);
 
         private void DrawArrow(
             StreamGeometryContext ctx,
