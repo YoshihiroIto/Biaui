@@ -8,116 +8,148 @@ namespace Biaui.Internals
     {
         internal static Pen GetPen(Color color, double thickness)
         {
-            var key = (color, thickness);
+            unchecked
+            {
+                var hashCode = (int) color.R;
+                hashCode = (hashCode * 397) ^ color.G;
+                hashCode = (hashCode * 397) ^ color.B;
+                hashCode = (hashCode * 397) ^ color.A;
+                hashCode = (hashCode * 397) ^ thickness.GetHashCode();
 
-            if (_borderPens.TryGetValue(key, out var p))
+                if (_borderPens.TryGetValue(hashCode, out var p))
+                    return p;
+
+                p = new Pen(GetSolidColorBrush(color), thickness);
+                p.Freeze();
+
+                _borderPens.Add(hashCode, p);
+
                 return p;
-
-            p = new Pen(GetSolidColorBrush(color), thickness);
-            p.Freeze();
-
-            _borderPens.Add(key, p);
-
-            return p;
+            }
         }
 
         internal static Pen GetCapPen(Color color, double thickness)
         {
-            var key = (color, thickness);
-
-            if (_capPens.TryGetValue(key, out var p))
-                return p;
-
-            p = new Pen(GetSolidColorBrush(color), thickness)
+            unchecked
             {
-                StartLineCap = PenLineCap.Round,
-                EndLineCap = PenLineCap.Round
-            };
-            p.Freeze();
+                var hashCode = (int) color.R;
+                hashCode = (hashCode * 397) ^ color.G;
+                hashCode = (hashCode * 397) ^ color.B;
+                hashCode = (hashCode * 397) ^ color.A;
+                hashCode = (hashCode * 397) ^ thickness.GetHashCode();
 
-            _capPens.Add(key, p);
+                if (_capPens.TryGetValue(hashCode, out var p))
+                    return p;
 
-            return p;
+                p = new Pen(GetSolidColorBrush(color), thickness)
+                {
+                    StartLineCap = PenLineCap.Round,
+                    EndLineCap = PenLineCap.Round
+                };
+                p.Freeze();
+
+                _capPens.Add(hashCode, p);
+
+                return p;
+            }
         }
 
         internal static Pen GetDashedPen(Color color, double thickness)
         {
-            var key = (color, thickness);
-
-            if (_dashedPens.TryGetValue(key, out var p))
-                return p;
-
-            p = new Pen(GetSolidColorBrush(color), thickness)
+            unchecked
             {
-                DashStyle = DashStyles.Dash
-            };
-            p.Freeze();
+                var hashCode = (int) color.R;
+                hashCode = (hashCode * 397) ^ color.G;
+                hashCode = (hashCode * 397) ^ color.B;
+                hashCode = (hashCode * 397) ^ color.A;
+                hashCode = (hashCode * 397) ^ thickness.GetHashCode();
 
-            _dashedPens.Add(key, p);
+                if (_dashedPens.TryGetValue(hashCode, out var p))
+                    return p;
 
-            return p;
+                p = new Pen(GetSolidColorBrush(color), thickness)
+                {
+                    DashStyle = DashStyles.Dash
+                };
+                p.Freeze();
+
+                _dashedPens.Add(hashCode, p);
+
+                return p;
+            }
         }
 
         internal static SolidColorBrush GetSolidColorBrush(Color color)
         {
-            if (_solidColorBrushes.TryGetValue(color, out var b))
+            unchecked
+            {
+                var hashCode = (int)color.R;
+                hashCode = (hashCode * 397) ^ color.G;
+                hashCode = (hashCode * 397) ^ color.B;
+                hashCode = (hashCode * 397) ^ color.A;
+
+                if (_solidColorBrushes.TryGetValue(hashCode, out var b))
+                    return b;
+
+                b = new SolidColorBrush(color);
+                b.Freeze();
+
+                _solidColorBrushes.Add(hashCode, b);
+
                 return b;
-
-            b = new SolidColorBrush(color);
-            b.Freeze();
-
-            _solidColorBrushes.Add(color, b);
-
-            return b;
+            }
         }
 
         internal static Geometry GetClipGeom(double w, double h, double cornerRadius, bool isWidthBorder)
         {
-            var key = (w, h, cornerRadius, isWidthBorder);
-            if (_clipGeoms.TryGetValue(key, out var c))
+            unchecked
+            {
+                var hashCode = w.GetHashCode();
+                hashCode = (hashCode * 397) ^ h.GetHashCode();
+                hashCode = (hashCode * 397) ^ cornerRadius.GetHashCode();
+                hashCode = (hashCode * 397) ^ isWidthBorder.GetHashCode();
+
+                if (_clipGeoms.TryGetValue(hashCode, out var c))
+                    return c;
+
+                if (isWidthBorder)
+                {
+                    c = new RectangleGeometry
+                    {
+                        RadiusX = cornerRadius,
+                        RadiusY = cornerRadius,
+                        Rect = FrameworkElementHelper.RoundLayoutRect(
+                            FrameworkElementExtensions.BorderWidth * 0.5,
+                            FrameworkElementExtensions.BorderWidth * 0.5,
+                            w - FrameworkElementExtensions.BorderWidth,
+                            h - FrameworkElementExtensions.BorderWidth)
+                    };
+                }
+                else
+                {
+                    c = new RectangleGeometry
+                    {
+                        RadiusX = cornerRadius,
+                        RadiusY = cornerRadius,
+                        Rect = FrameworkElementHelper.RoundLayoutRect(0, 0, w, h)
+                    };
+                }
+
+                c.Freeze();
+
+                _clipGeoms.Add(hashCode, c);
+
                 return c;
-
-            if (isWidthBorder)
-            {
-                c = new RectangleGeometry
-                {
-                    RadiusX = cornerRadius,
-                    RadiusY = cornerRadius,
-                    Rect = FrameworkElementHelper.RoundLayoutRect(
-                        FrameworkElementExtensions.BorderWidth * 0.5,
-                        FrameworkElementExtensions.BorderWidth * 0.5,
-                        w - FrameworkElementExtensions.BorderWidth,
-                        h - FrameworkElementExtensions.BorderWidth)
-                };
             }
-            else
-            {
-                c = new RectangleGeometry
-                {
-                    RadiusX = cornerRadius,
-                    RadiusY = cornerRadius,
-                    Rect = FrameworkElementHelper.RoundLayoutRect(0, 0, w, h)
-                };
-            }
-
-            c.Freeze();
-
-            _clipGeoms.Add(key, c);
-
-            return c;
         }
 
         private static readonly
-            Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry> _clipGeoms =
-                new Dictionary<(double W, double H, double CorerRadius, bool IsWidthBorder), RectangleGeometry>();
+            Dictionary<int, RectangleGeometry> _clipGeoms = new Dictionary<int, RectangleGeometry>();
 
-        private static readonly Dictionary<(Color, double), Pen> _borderPens = new Dictionary<(Color, double), Pen>();
-        private static readonly Dictionary<(Color, double), Pen> _capPens = new Dictionary<(Color, double), Pen>();
-        private static readonly Dictionary<(Color, double), Pen> _dashedPens = new Dictionary<(Color, double), Pen>();
-
-        private static readonly Dictionary<Color, SolidColorBrush> _solidColorBrushes =
-            new Dictionary<Color, SolidColorBrush>();
-
+        private static readonly Dictionary<int, Pen> _borderPens = new Dictionary<int, Pen>();
+        private static readonly Dictionary<int, Pen> _capPens = new Dictionary<int, Pen>();
+        private static readonly Dictionary<int, Pen> _dashedPens = new Dictionary<int, Pen>();
+        private static readonly Dictionary<int, SolidColorBrush> _solidColorBrushes = new Dictionary<int, SolidColorBrush>();
 
         internal static TraversalRequest PreviousTraversalRequest
             => _PreviousTraversalRequest ??
