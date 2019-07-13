@@ -152,7 +152,19 @@ namespace Biaui.Internals
             double maxWidth,
             TextAlignment align)
         {
-            var textKey = (text, textStartIndex, textLength, offsetX, offsetY, maxWidth, align);
+            int MakeHashCode()
+            {
+                var hashCode = text.GetHashCode();
+                hashCode = (hashCode * 397) ^ textStartIndex.GetHashCode();
+                hashCode = (hashCode * 397) ^ textLength.GetHashCode();
+                hashCode = (hashCode * 397) ^ offsetX.GetHashCode();
+                hashCode = (hashCode * 397) ^ offsetY.GetHashCode();
+                hashCode = (hashCode * 397) ^ maxWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int)align;
+                return hashCode;
+            }
+
+            var textKey = MakeHashCode();
 
             if (_textCache.TryGetValue(textKey, out var gr))
                 return gr;
@@ -277,8 +289,7 @@ namespace Biaui.Internals
             return newTextWidth + dot3Width;
         }
 
-        private readonly LruCache<(string, int, int, double, double, double, TextAlignment), (GlyphRun, double)> _textCache =
-            new LruCache<(string, int,int, double, double, double, TextAlignment), (GlyphRun, double)>(10_0000, false);
+        private readonly LruCache<int, (GlyphRun, double)> _textCache = new LruCache<int, (GlyphRun, double)>(10_0000, false);
 
         // 最大65536エントリ
         private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache =
