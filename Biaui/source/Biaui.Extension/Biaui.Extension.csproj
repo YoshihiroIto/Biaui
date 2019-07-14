@@ -39,6 +39,12 @@
     <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX.Direct3D11, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\SharpDX.Direct3D11.4.2.0\lib\net45\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\SharpDX.Direct3D9.4.2.0\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX.DXGI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\SharpDX.DXGI.4.2.0\lib\net45\SharpDX.DXGI.dll</HintPath>
     </Reference>
@@ -56,16 +62,18 @@
   <ItemGroup>
     <Compile Include="D2dBackgroundPanel.cs" />
     <Compile Include="D2dBackgroundPanelGenerator.cs" />
+    <Compile Include="D2dControl\D2dControl.cs" />
+    <Compile Include="D2dControl\Disposer.cs" />
+    <Compile Include="D2dControl\Dx11ImageSource.cs" />
+    <Compile Include="D2dControl\FrameTimeHelper.cs" />
+    <Compile Include="D2dControl\NativeMethods.cs" />
+    <Compile Include="D2dControl\ResourceCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Biaui\Biaui.csproj">
       <Project>{242505bf-a389-4a70-acbf-27a2debb5e70}</Project>
       <Name>Biaui</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\external\D2dControl\D2dControl\D2dControl.csproj">
-      <Project>{f3ed9cef-8e61-4b40-8e47-de9a97b10301}</Project>
-      <Name>D2dControl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

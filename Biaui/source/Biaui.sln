@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Showcase", "Biaui.Sho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Extension", "Biaui.Extension\Biaui.Extension.csproj", "{814DF7DE-879A-4375-B42F-559AB0A1730C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2dControl", "external\D2dControl\D2dControl\D2dControl.csproj", "{F3ED9CEF-8E61-4B40-8E47-DE9A97B10301}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,10 +48,6 @@ Global
 		{814DF7DE-879A-4375-B42F-559AB0A1730C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{814DF7DE-879A-4375-B42F-559AB0A1730C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{814DF7DE-879A-4375-B42F-559AB0A1730C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3ED9CEF-8E61-4B40-8E47-DE9A97B10301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3ED9CEF-8E61-4B40-8E47-DE9A97B10301}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3ED9CEF-8E61-4B40-8E47-DE9A97B10301}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3ED9CEF-8E61-4B40-8E47-DE9A97B10301}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
