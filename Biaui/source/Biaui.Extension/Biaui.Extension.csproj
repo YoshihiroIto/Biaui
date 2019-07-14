@@ -63,7 +63,7 @@
       <Project>{242505bf-a389-4a70-acbf-27a2debb5e70}</Project>
       <Name>Biaui</Name>
     </ProjectReference>
-    <ProjectReference Include="..\external\D2dControl\D2dControl\D2dControl.csproj">
+    <ProjectReference Include="$(SolutionDir)\external\D2dControl\D2dControl\D2dControl.csproj">
       <Project>{f3ed9cef-8e61-4b40-8e47-de9a97b10301}</Project>
       <Name>D2dControl</Name>
     </ProjectReference>
