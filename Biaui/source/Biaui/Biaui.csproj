@@ -66,6 +66,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BiauiEnvironment.cs" />
     <Compile Include="Controls\BiaColorSelector.cs" />
     <Compile Include="Controls\BiaFlagBox.cs" />
     <Compile Include="Controls\BiaEditableTextBlock.cs" />
@@ -80,6 +81,8 @@
     <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\AxisAlignStyleNodeLinkGeomMaker.cs" />
     <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\BezierCurveStyleMakeNodeGeomLink.cs" />
     <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\INodeLinkGeomMaker.cs" />
+    <Compile Include="Environment\IBackgroundPanel.cs" />
+    <Compile Include="Environment\IBackgroundPanelGenerator.cs" />
     <Compile Include="Interfaces\IBiaHasChildren.cs" />
     <Compile Include="Internals\PropertyChangeNotifier.cs" />
     <Compile Include="Internals\Converter\MultiplyConverter.cs" />
@@ -285,7 +288,7 @@
     <Compile Include="Controls\Internals\FrameworkElementBag.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs" />
     <Compile Include="Controls\NodeEditor\BiaNodePanelSlots.cs" />
-    <Compile Include="Controls\NodeEditor\Internal\BackgroundPanel.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\DefaultBackgroundPanel.cs" />
     <Compile Include="Controls\NodeEditor\Internal\MouseOperator.cs" />
     <Compile Include="Controls\NodeEditor\Internal\BiaNodeItemExtensions.cs" />
     <Compile Include="Controls\NodeEditor\NodeLinkEventArgs.cs" />

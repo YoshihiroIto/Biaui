@@ -5,35 +5,33 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker;
+using Biaui.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
-    internal class BackgroundPanel : Canvas
+    internal class DefaultBackgroundPanel : Canvas, IBackgroundPanel
     {
-        private readonly BiaNodeEditor _parent;
-
         private const double LineWidth = 3;
         private const double ArrowSize = 20;
 
-        static BackgroundPanel()
+        private readonly BiaNodeEditor _parent;
+
+        static DefaultBackgroundPanel()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BackgroundPanel),
-                new FrameworkPropertyMetadata(typeof(BackgroundPanel)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DefaultBackgroundPanel),
+                new FrameworkPropertyMetadata(typeof(DefaultBackgroundPanel)));
         }
 
-        internal BackgroundPanel(BiaNodeEditor parent, MouseOperator mouseOperator)
+        public void Invalidate()
+        {
+            InvalidateVisual();
+        }
+
+        internal DefaultBackgroundPanel(BiaNodeEditor parent)
         {
             _parent = parent;
-
-            _parent.TranslateTransform.Changed += (_, __) => InvalidateVisual();
-            _parent.ScaleTransform.Changed += (_, __) => InvalidateVisual();
-            _parent.NodeItemMoved += (_, __) => InvalidateVisual();
-            _parent.LinksSourceChanging += (_, __) => InvalidateVisual();
-            _parent.LinkChanged += (_, __) => InvalidateVisual();
-
-            mouseOperator.PreMouseLeftButtonUp += (_, __) => InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext dc)

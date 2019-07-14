@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Internal;
+using Biaui.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
 
@@ -212,7 +213,8 @@ namespace Biaui.Controls.NodeEditor
         private BiaNodeEditorNodeLinkStyle _NodeLinkStyle = BiaNodeEditorNodeLinkStyle.AxisAlign;
 
         public static readonly DependencyProperty NodeLinkStyleProperty =
-            DependencyProperty.Register(nameof(NodeLinkStyle), typeof(BiaNodeEditorNodeLinkStyle), typeof(BiaNodeEditor),
+            DependencyProperty.Register(nameof(NodeLinkStyle), typeof(BiaNodeEditorNodeLinkStyle),
+                typeof(BiaNodeEditor),
                 new FrameworkPropertyMetadata(
                     BiaNodeEditorNodeLinkStyle.AxisAlign,
                     FrameworkPropertyMetadataOptions.AffectsRender |
@@ -226,7 +228,7 @@ namespace Biaui.Controls.NodeEditor
         #endregion
 
         #region Scale
-        
+
         public double Scale
         {
             get => _Scale;
@@ -236,9 +238,9 @@ namespace Biaui.Controls.NodeEditor
                     SetValue(ScaleProperty, value);
             }
         }
-        
+
         private double _Scale = 1.0;
-        
+
         public static readonly DependencyProperty ScaleProperty =
             DependencyProperty.Register(
                 nameof(Scale),
@@ -249,15 +251,17 @@ namespace Biaui.Controls.NodeEditor
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._Scale = (double)e.NewValue;
+                        self._Scale = (double) e.NewValue;
                     }));
-        
+
         #endregion
-        
+
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
+
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
 
         public event EventHandler PropertyEditStarting;
+
         public event EventHandler PropertyEditCompleted;
 
         public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
@@ -290,9 +294,12 @@ namespace Biaui.Controls.NodeEditor
 
             SetupPropertyEditCommand(mouseOperator);
 
+            IBackgroundPanel backgroundPanel;
             var grid = new Grid();
             {
-                grid.Children.Add(new BackgroundPanel(this, mouseOperator));
+                backgroundPanel = BiauiEnvironment.BackgroundPanelGenerator.Generate(this);
+
+                grid.Children.Add((UIElement) backgroundPanel);
                 grid.Children.Add(_nodeContainer);
                 grid.Children.Add(new BoxSelector(mouseOperator));
                 grid.Children.Add(new NodeSlotConnector(this, mouseOperator));
@@ -302,6 +309,16 @@ namespace Biaui.Controls.NodeEditor
             base.Child = grid;
 
             ScaleTransform.Changed += (_, __) => Scale = ScaleTransform.ScaleX;
+
+            // backgroundPanel
+            {
+                TranslateTransform.Changed += (_, __) => backgroundPanel.Invalidate();
+                ScaleTransform.Changed += (_, __) => backgroundPanel.Invalidate();
+                NodeItemMoved += (_, __) => backgroundPanel.Invalidate();
+                LinksSourceChanging += (_, __) => backgroundPanel.Invalidate();
+                LinkChanged += (_, __) => backgroundPanel.Invalidate();
+                mouseOperator.PreMouseLeftButtonUp += (_, __) => backgroundPanel.Invalidate();
+            }
         }
 
         private void UpdateLinksSource(

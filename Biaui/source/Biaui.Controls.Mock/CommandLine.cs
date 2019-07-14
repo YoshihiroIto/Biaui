@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Mono.Options;
 
 namespace Biaui.Controls.Mock
@@ -8,7 +7,7 @@ namespace Biaui.Controls.Mock
     {
         public string AppConfigFilePath { get; set; } =
             Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData),
                 "Biaui",
                 "App",
                 "AppConfig.json"
