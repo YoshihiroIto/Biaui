@@ -64,6 +64,16 @@ namespace D2dControl
             protected set => SetValue(FrameTimePropertyKey, value);
         }
 
+        public static readonly DependencyPropertyKey IsAutoFrameUpdatePropertyKey =
+            DependencyProperty.RegisterReadOnly(nameof(IsAutoFrameUpdate), typeof(bool), typeof(D2dControl),
+                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.None));
+
+        public bool IsAutoFrameUpdate
+        {
+            get => (bool) GetValue(IsAutoFrameUpdatePropertyKey.DependencyProperty);
+            protected set => SetValue(IsAutoFrameUpdatePropertyKey, value);
+        }
+
         protected D2dControl()
         {
             Loaded += OnLoaded;
@@ -97,12 +107,19 @@ namespace D2dControl
             EndD3D();
         }
 
-        private void OnRendering(object sender, EventArgs e)
+        public void Invalidate()
         {
-            if (renderTimer.IsRunning == false)
+            if (IsAutoFrameUpdate)
                 return;
 
-            frameTimer.Restart();
+            InvalidateInternal();
+        }
+
+        public void InvalidateInternal()
+        {
+            if (device == null)
+                return;
+
             PrepareAndCallRender();
 
             d3DSurface.Lock();
@@ -111,6 +128,26 @@ namespace D2dControl
             d3DSurface.InvalidateD3DImage();
 
             d3DSurface.Unlock();
+
+            device.ImmediateContext.Flush();
+        }
+
+        private bool _iFirstFrame = true;
+
+        private void OnRendering(object sender, EventArgs e)
+        {
+            if (renderTimer.IsRunning == false)
+                return;
+
+            if (_iFirstFrame == false &&
+                IsAutoFrameUpdate == false)
+                return;
+
+            _iFirstFrame = false;
+
+            frameTimer.Restart();
+
+            InvalidateInternal();
 
             FrameTime = timeHelper.Push(frameTimer.Elapsed.TotalMilliseconds);
         }
@@ -258,8 +295,6 @@ namespace D2dControl
             d2DRenderTarget.EndDraw();
 
             CalcFps();
-
-            device.ImmediateContext.Flush();
         }
 
         private void CalcFps()
