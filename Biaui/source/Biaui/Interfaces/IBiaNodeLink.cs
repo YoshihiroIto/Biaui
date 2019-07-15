@@ -33,6 +33,16 @@ namespace Biaui.Interfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsHighlight(this IBiaNodeLink self)
+        {
+            var item1 = self.ItemSlot1.Item;
+            var item2 = self.ItemSlot2.Item;
+
+            return item1.IsSelected || item1.IsPreSelected || item1.IsMouseOver ||
+                   item2.IsSelected || item2.IsPreSelected || item2.IsMouseOver;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Reset(this IBiaNodeLink self)
         {
             self.InternalData = null;
