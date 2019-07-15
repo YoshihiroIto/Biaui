@@ -107,12 +107,14 @@ namespace D2dControl
             EndD3D();
         }
 
+        private bool _isRequestUpdate = true;
+
         public void Invalidate()
         {
             if (IsAutoFrameUpdate)
                 return;
 
-            InvalidateInternal();
+            _isRequestUpdate = true;
         }
 
         public void InvalidateInternal()
@@ -132,18 +134,16 @@ namespace D2dControl
             device.ImmediateContext.Flush();
         }
 
-        private bool _iFirstFrame = true;
-
         private void OnRendering(object sender, EventArgs e)
         {
             if (renderTimer.IsRunning == false)
                 return;
 
-            if (_iFirstFrame == false &&
-                IsAutoFrameUpdate == false)
+            if (IsAutoFrameUpdate == false &&
+                _isRequestUpdate == false)
                 return;
 
-            _iFirstFrame = false;
+            _isRequestUpdate = false;
 
             frameTimer.Restart();
 
