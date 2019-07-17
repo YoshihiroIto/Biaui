@@ -209,7 +209,6 @@ namespace Biaui.Controls
             if (isSelected)
             {
                 parent.SelectedItem = treeViewItem.DataContext;
-                treeViewItem.BringIntoView();
             }
             else
             {
