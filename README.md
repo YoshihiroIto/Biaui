@@ -31,3 +31,14 @@ WPF dark theme and controls.
     * http://jikasei.me/font/genshin
     * SIL OPEN FONT LICENSE 1.1
 
+## Including External Assets (Biaui.Extension)
+
+* WPF Control for Direct2D with SharpDX
+    * https://github.com/YoshihiroIto/D2dControl
+    * MIT License
+
+* SharpDX 
+    * https://github.com/sharpdx/SharpDX
+    * MIT License
+
+
