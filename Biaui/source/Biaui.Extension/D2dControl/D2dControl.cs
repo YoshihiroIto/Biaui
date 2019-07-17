@@ -155,6 +155,8 @@ namespace D2dControl
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             CreateAndBindTargets();
+            
+            Invalidate();
 
             base.OnRenderSizeChanged(sizeInfo);
         }
