@@ -20,7 +20,7 @@ namespace Biaui.Extension
     {
         private readonly BiaNodeEditor _parent;
 
-        private const float LineWidth = 3.0f;
+        private const float BaseLineWidth = 1.0f;
         private const float ArrowSize = 20.0f;
 
         public D2dBackgroundPanel(BiaNodeEditor parent)
@@ -51,12 +51,13 @@ namespace Biaui.Extension
             target.Transform = new RawMatrix3x2(s, 0, 0, s, tx, ty);
 
             var isDrawArrow = _parent.Scale > 0.2;
+            var lineWidth = BaseLineWidth / s;
 
-            DrawCurves(ResCache["LinkBrush"] as Brush, false, target, isDrawArrow);
-            DrawCurves(ResCache["HighlightLinkBrush"] as Brush, true, target, isDrawArrow);
+            DrawCurves(ResCache["LinkBrush"] as Brush, false, target, isDrawArrow, lineWidth * 0.7f);
+            DrawCurves(ResCache["HighlightLinkBrush"] as Brush, true, target, isDrawArrow, lineWidth);
         }
 
-        private void DrawCurves(Brush brush, bool isHighlight, DeviceContext target, bool isDrawArrow)
+        private void DrawCurves(Brush brush, bool isHighlight, DeviceContext target, bool isDrawArrow, float lineWidth)
         {
             var bezierPos0 = new RawVector2();
             var bezierSegment = new BezierSegment();
@@ -105,7 +106,7 @@ namespace Biaui.Extension
                 }
 
                 curveGeom.Close();
-                target.DrawGeometry(curveSink, brush, LineWidth);
+                target.DrawGeometry(curveSink, brush, lineWidth);
 
                 if (isDrawArrow)
                 {
