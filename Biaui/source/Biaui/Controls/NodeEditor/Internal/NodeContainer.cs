@@ -439,10 +439,11 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     if (nodePanel == null)
                     {
+                        var style = nodeItem.InternalData().Style;
+
                         bool isAdded;
                         (nodePanel, isAdded) = FindOrCreateNodePanel();
 
-                        var style = nodeItem.InternalData().Style;
                         if (style == null)
                         {
                             if (nodeItemType == null)
@@ -458,7 +459,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                         }
 
                         nodePanel.Visibility = Visibility.Visible;
-                        nodePanel.Style = style;
+
+                        if (nodePanel.Style == null ||
+                            style == null ||
+                            nodePanel.Style.GetHashCode() != style.GetHashCode())
+                        {
+                            nodePanel.Style = style;
+                        }
+
                         nodePanel.DataContext = nodeItem;
                         nodePanel.Opacity = 1.0;
 
