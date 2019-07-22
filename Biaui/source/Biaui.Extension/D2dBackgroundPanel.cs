@@ -130,7 +130,7 @@ namespace Biaui.Extension
                 // 接続線カーブ
                 {
                     sink.Value.curveSink.Close();
-                    target.DrawGeometry(sink.Value.curveGeom, (Brush) brush, sink.Key.isHighlight ? lineWidth * 1.5f : lineWidth);
+                    target.DrawGeometry(sink.Value.curveGeom, (Brush) brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
                     sink.Value.curveSink.Dispose();
                     sink.Value.curveGeom.Dispose();
                 }
