@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
@@ -28,14 +29,6 @@ namespace Biaui.Extension
             IsAutoFrameUpdate = false;
 
             _parent = parent;
-
-            ResCache.Add("LinkBrush", t => Conv(t, Colors.DimGray));
-            ResCache.Add("HighlightLinkBrush", t => Conv(t, _parent.HighlightLinkColor));
-
-            SolidColorBrush Conv(RenderTarget t, Color src)
-                => new SolidColorBrush(
-                    t,
-                    new RawColor4(src.R / 255.0f, src.G / 255.0f, src.B / 255.0f, src.A / 255.0f));
         }
 
         public override void Render(DeviceContext target)
@@ -53,71 +46,110 @@ namespace Biaui.Extension
             var isDrawArrow = _parent.Scale > 0.2;
             var lineWidth = BaseLineWidth / s;
 
-            DrawCurves(ResCache["LinkBrush"] as Brush, false, target, isDrawArrow, lineWidth * 0.7f);
-            DrawCurves(ResCache["HighlightLinkBrush"] as Brush, true, target, isDrawArrow, lineWidth);
+            DrawCurves(target, isDrawArrow, lineWidth);
         }
 
-        private void DrawCurves(Brush brush, bool isHighlight, DeviceContext target, bool isDrawArrow, float lineWidth)
+        private readonly Dictionary<(Color color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry arrowGeom, GeometrySink arrowSink)>
+            _sinks = new Dictionary<(Color color, bool isHighlight),
+                (PathGeometry curveGeom, GeometrySink curveSink,
+                PathGeometry arrowGeom, GeometrySink arrowSink)>();
+
+        private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
             var bezierPos0 = new RawVector2();
             var bezierSegment = new BezierSegment();
 
-            var curveSink = new PathGeometry(target.Factory);
-            var arrowSink = new PathGeometry(target.Factory);
-
-            using (var curveGeom = curveSink.Open())
-            using (var arrowGeom = isDrawArrow ? arrowSink.Open() : null)
+            foreach (IBiaNodeLink link in _parent.LinksSource)
             {
-                foreach (IBiaNodeLink link in _parent.LinksSource)
+                if (link.IsVisible == false)
+                    continue;
+
+                if (link.IsLinked() == false)
+                    continue;
+
+                GeometrySink curveSink;
+                GeometrySink arrowSink;
                 {
-                    if (link.IsVisible == false)
-                        continue;
+                    var key = (link.Color, link.IsHighlight());
 
-                    if (link.IsLinked() == false)
-                        continue;
-
-                    if (link.IsHighlight() != isHighlight)
-                        continue;
-
-                    var bezier = link.MakeBezierCurve();
-
-                    // 接続線
+                    if (_sinks.TryGetValue(key, out var p))
                     {
-                        bezierPos0.X = (float) bezier.Item1.X;
-                        bezierPos0.Y = (float) bezier.Item1.Y;
-
-                        curveGeom.BeginFigure(bezierPos0, FigureBegin.Hollow);
-                        {
-                            bezierSegment.Point1.X = (float) bezier.Item2.X;
-                            bezierSegment.Point1.Y = (float) bezier.Item2.Y;
-                            bezierSegment.Point2.X = (float) bezier.Item3.X;
-                            bezierSegment.Point2.Y = (float) bezier.Item3.Y;
-                            bezierSegment.Point3.X = (float) bezier.Item4.X;
-                            bezierSegment.Point3.Y = (float) bezier.Item4.Y;
-
-                            curveGeom.AddBezier(bezierSegment);
-                        }
-                        curveGeom.EndFigure(FigureEnd.Open);
+                        curveSink = p.curveSink;
+                        arrowSink = p.arrowSink;
                     }
+                    else
+                    {
+                        var curveGeom = new PathGeometry(target.Factory);
+                        curveSink = curveGeom.Open();
+                        curveSink.SetFillMode(FillMode.Winding);
 
-                    // 矢印
-                    if (isDrawArrow)
-                        DrawArrow(arrowGeom, bezier);
+                        var arrowGeom = isDrawArrow ? new PathGeometry(target.Factory) : null;
+                        arrowSink = arrowGeom?.Open();
+                        arrowSink?.SetFillMode(FillMode.Winding);
+
+                        _sinks[key] = (curveGeom, curveSink, arrowGeom, arrowSink);
+                    }
                 }
 
-                curveGeom.Close();
-                target.DrawGeometry(curveSink, brush, lineWidth);
+                var bezier = link.MakeBezierCurve();
 
-                if (isDrawArrow)
+                // 接続線
                 {
-                    arrowGeom.Close();
-                    target.FillGeometry(arrowSink, brush);
+                    bezierPos0.X = (float) bezier.Item1.X;
+                    bezierPos0.Y = (float) bezier.Item1.Y;
+
+                    curveSink.BeginFigure(bezierPos0, FigureBegin.Hollow);
+                    {
+                        bezierSegment.Point1.X = (float) bezier.Item2.X;
+                        bezierSegment.Point1.Y = (float) bezier.Item2.Y;
+                        bezierSegment.Point2.X = (float) bezier.Item3.X;
+                        bezierSegment.Point2.Y = (float) bezier.Item3.Y;
+                        bezierSegment.Point3.X = (float) bezier.Item4.X;
+                        bezierSegment.Point3.Y = (float) bezier.Item4.Y;
+
+                        curveSink.AddBezier(bezierSegment);
+                    }
+                    curveSink.EndFigure(FigureEnd.Open);
+                }
+
+                // 矢印
+                if (isDrawArrow)
+                    DrawArrow(arrowSink, bezier);
+            }
+
+            foreach (var sink in _sinks)
+            {
+                // ブラシ取得
+                var resKey = sink.Key.ToString();
+                if (ResCache.TryGetValue(resKey, out var brush) == false)
+                {
+                    ResCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color, sink.Key.isHighlight));
+                    brush = ResCache[resKey];
+                }
+
+                // 接続線カーブ
+                {
+                    sink.Value.curveSink.Close();
+                    target.DrawGeometry(sink.Value.curveGeom, (Brush) brush, sink.Key.isHighlight ? lineWidth * 1.5f : lineWidth);
+                    sink.Value.curveSink.Dispose();
+                    sink.Value.curveGeom.Dispose();
+                }
+
+                // 矢印
+                if (sink.Value.arrowSink != null)
+                {
+                    sink.Value.arrowSink.Close();
+                    target.FillGeometry(sink.Value.arrowGeom, (Brush) brush);
+                    sink.Value.arrowSink.Dispose();
+                    sink.Value.arrowGeom.Dispose();
                 }
             }
+
+            _sinks.Clear();
         }
 
         private static void DrawArrow(
-            GeometrySink geom,
+            GeometrySink sink,
             in (Point p1, Point c1, Point c2, Point p2) bezier)
         {
             var b1X = BiaNodeEditorHelper.Bezier(bezier.p1.X, bezier.c1.X, bezier.c2.X, bezier.p2.X, 0.5001);
@@ -139,10 +171,10 @@ namespace Biaui.Extension
             var t2 = Rotate(m, l1);
             var t3 = Rotate(m, l2);
 
-            geom.BeginFigure(new RawVector2(t1X, t1Y), FigureBegin.Filled);
-            geom.AddLine(new RawVector2((float) t2.X + t1X, (float) t2.Y + t1Y));
-            geom.AddLine(new RawVector2((float) t3.X + t1X, (float) t3.Y + t1Y));
-            geom.EndFigure(FigureEnd.Closed);
+            sink.BeginFigure(new RawVector2(t1X, t1Y), FigureBegin.Filled);
+            sink.AddLine(new RawVector2((float) t2.X + t1X, (float) t2.Y + t1Y));
+            sink.AddLine(new RawVector2((float) t3.X + t1X, (float) t3.Y + t1Y));
+            sink.EndFigure(FigureEnd.Closed);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -150,5 +182,15 @@ namespace Biaui.Extension
             => new ImmutableVec2(
                 pos.X * m.Item2 - pos.Y * m.Item1,
                 pos.X * m.Item1 + pos.Y * m.Item2);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private SolidColorBrush ColorToBrushConv(RenderTarget t, Color src)
+            => new SolidColorBrush(
+                t,
+                new RawColor4(src.R / 255.0f, src.G / 255.0f, src.B / 255.0f, src.A / 255.0f));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private SolidColorBrush ColorToBrushConv(RenderTarget t, Color src, bool isHighlight)
+            => ColorToBrushConv(t, isHighlight ? _parent.HighlightLinkColor : src);
     }
 }
