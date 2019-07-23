@@ -730,15 +730,22 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
 
                 case nameof(IBiaNodeItem.Slots):
+                {
                     ChangeElementInternal(false);
 
                     UpdateNodeSlotEnabled(node);
 
-                    var panel = _nodeDict[node];
-                    panel.InvalidateSlots();
+                    if (_nodeDict.TryGetValue(node, out var panel))
+                    {
+                        if (panel != null)
+                        {
+                            panel.InvalidateSlots();
+                            _parent.InvokeLinkChanged();
+                        }
+                    }
 
-                    _parent.InvokeLinkChanged();
                     break;
+                }
             }
 
             //////////////////////////////////////////////////////////////////////////////////////
