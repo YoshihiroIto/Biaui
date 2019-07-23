@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor;
 using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
+using Jewelry.Collections;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 using BezierSegment = SharpDX.Direct2D1.BezierSegment;
@@ -56,6 +58,15 @@ namespace Biaui.Extension
 
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
+            var inflate = ArrowSize * _parent.ScaleTransform.ScaleX;
+            var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
+            var lineCullingRect = new ImmutableRect(
+                viewport.X - inflate,
+                viewport.Y - inflate,
+                viewport.Width + inflate * 2,
+                viewport.Height + inflate * 2
+            );
+
             var bezierPos0 = new RawVector2();
             var bezierSegment = new BezierSegment();
 
@@ -92,6 +103,17 @@ namespace Biaui.Extension
                 }
 
                 var bezier = link.MakeBezierCurve();
+
+                var bb = _boundingBoxCache.GetOrAdd(
+                    MakeHashCode(bezier),
+                    x => BiaNodeEditorHelper.MakeBoundingBox(
+                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item1),
+                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item2),
+                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item3),
+                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item4)));
+
+                if (bb.IntersectsWith(lineCullingRect) == false)
+                    continue;
 
                 // 接続線
                 {
@@ -130,7 +152,7 @@ namespace Biaui.Extension
                 // 接続線カーブ
                 {
                     sink.Value.curveSink.Close();
-                    target.DrawGeometry(sink.Value.curveGeom, (Brush) brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
+                    target.DrawGeometry(sink.Value.curveGeom, (Brush)brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
                     sink.Value.curveSink.Dispose();
                     sink.Value.curveGeom.Dispose();
                 }
@@ -147,6 +169,27 @@ namespace Biaui.Extension
 
             _sinks.Clear();
         }
+
+        private static int MakeHashCode(in ValueTuple<Point, Point, Point, Point> src)
+        {
+            unchecked
+            {
+                var hashCode = src.Item1.X.GetHashCode();
+
+                hashCode = (hashCode * 397) ^ src.Item1.Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ src.Item2.X.GetHashCode();
+                hashCode = (hashCode * 397) ^ src.Item2.Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ src.Item3.X.GetHashCode();
+                hashCode = (hashCode * 397) ^ src.Item3.Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ src.Item4.X.GetHashCode();
+                hashCode = (hashCode * 397) ^ src.Item4.Y.GetHashCode();
+
+                return hashCode;
+            }
+        }
+
+        private static readonly LruCache<int, ImmutableRect> _boundingBoxCache =
+            new LruCache<int, ImmutableRect>(10000, false);
 
         private static void DrawArrow(
             GeometrySink sink,
@@ -187,7 +230,7 @@ namespace Biaui.Extension
         private SolidColorBrush ColorToBrushConv(RenderTarget t, Color src)
             => new SolidColorBrush(
                 t,
-                new RawColor4(src.R / 255.0f, src.G / 255.0f, src.B / 255.0f, src.A / 255.0f));
+                new RawColor4(src.R / 255.0f, src.G / 255.0f, src.B / 255.0f, 1.0f));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private SolidColorBrush ColorToBrushConv(RenderTarget t, Color src, bool isHighlight)
