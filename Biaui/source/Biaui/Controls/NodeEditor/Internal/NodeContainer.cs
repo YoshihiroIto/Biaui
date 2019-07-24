@@ -852,14 +852,17 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (slot == null)
                     throw new NotSupportedException();
 
-                var slotData = new BiaNodeItemSlotIdPair(nodeItem, slot.Id);
-                var args = new NodeLinkStartingEventArgs(slotData);
-                _parent.InvokeNodeLinkStarting(args);
+                if (_parent.CanConnectLink)
+                {
+                    var slotData = new BiaNodeItemSlotIdPair(nodeItem, slot.Id);
+                    var args = new NodeLinkStartingEventArgs(slotData);
+                    _parent.InvokeNodeLinkStarting(args);
 
-                _parent.SourceNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);
-                _parent.TargetNodeSlotConnecting = default;
+                    _parent.SourceNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);
+                    _parent.TargetNodeSlotConnecting = default;
 
-                UpdateNodeSlotEnabled(true);
+                    UpdateNodeSlotEnabled(true);
+                }
             }
 
             _mouseOperator.InvokePostMouseLeftButtonDown(e);

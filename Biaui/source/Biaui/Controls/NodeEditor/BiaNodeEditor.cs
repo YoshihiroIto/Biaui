@@ -256,6 +256,35 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        #region CanConnectLink
+        
+        public bool CanConnectLink
+        {
+            get => _CanConnectLink;
+            set
+            {
+                if (value != _CanConnectLink)
+                    SetValue(CanConnectLinkProperty, value);
+            }
+        }
+        
+        private bool _CanConnectLink = true;
+        
+        public static readonly DependencyProperty CanConnectLinkProperty =
+            DependencyProperty.Register(
+                nameof(CanConnectLink),
+                typeof(bool),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._CanConnectLink = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
 
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
