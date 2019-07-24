@@ -45,7 +45,7 @@ namespace Biaui.Extension
             var ty = (float) _parent.TranslateTransform.Y;
             target.Transform = new RawMatrix3x2(s, 0, 0, s, tx, ty);
 
-            var isDrawArrow = _parent.Scale > 0.2;
+            var isDrawArrow = _parent.Scale > 0.125;
             var lineWidth = BaseLineWidth / s;
 
             DrawCurves(target, isDrawArrow, lineWidth);
