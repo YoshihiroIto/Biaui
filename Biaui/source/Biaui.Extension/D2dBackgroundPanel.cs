@@ -152,7 +152,7 @@ namespace Biaui.Extension
                 var resKey = sink.Key.ToString();
                 if (ResCache.TryGetValue(resKey, out var brush) == false)
                 {
-                    ResCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color, sink.Key.isHighlight));
+                    ResCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color));
                     brush = ResCache[resKey];
                 }
 
@@ -242,9 +242,5 @@ namespace Biaui.Extension
             => new SolidColorBrush(
                 t,
                 new RawColor4(src.R / 255.0f, src.G / 255.0f, src.B / 255.0f, 1.0f));
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private SolidColorBrush ColorToBrushConv(RenderTarget t, Color src, bool isHighlight)
-            => ColorToBrushConv(t, isHighlight ? _parent.HighlightLinkColor : src);
     }
 }
