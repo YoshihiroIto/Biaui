@@ -285,6 +285,35 @@ namespace Biaui.Controls.NodeEditor
         
         #endregion
 
+        #region OverlayHeaderHeight
+        
+        public double OverlayHeaderHeight
+        {
+            get => _OverlayHeaderHeight;
+            set
+            {
+                if (NumberHelper.AreClose(value, _OverlayHeaderHeight) == false)
+                    SetValue(OverlayHeaderHeightProperty, value);
+            }
+        }
+        
+        private double _OverlayHeaderHeight;
+        
+        public static readonly DependencyProperty OverlayHeaderHeightProperty =
+            DependencyProperty.Register(
+                nameof(OverlayHeaderHeight),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._OverlayHeaderHeight = (double)e.NewValue;
+                    }));
+        
+        #endregion
+
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
 
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
@@ -511,17 +540,20 @@ namespace Biaui.Controls.NodeEditor
             var w = maxX - minX;
             var h = maxY - minY;
 
-            var scaleX = ActualWidth / w;
-            var scaleY = ActualHeight / h;
+            var width = ActualWidth;
+            var height = ActualHeight - OverlayHeaderHeight;
 
-            var viewCx = ActualWidth * 0.5;
-            var viewCy = ActualHeight * 0.5;
+            var scaleX = width / w;
+            var scaleY = height / h;
+
+            var viewCx = width * 0.5;
+            var viewCy = height * 0.5;
 
             var scale = (scaleX, scaleY).Min();
             scale = (scale, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
 
             TranslateTransform.X = -centerX * scale + viewCx;
-            TranslateTransform.Y = -centerY * scale + viewCy;
+            TranslateTransform.Y = -centerY * scale + viewCy + OverlayHeaderHeight;
             ScaleTransform.ScaleX = scale;
             ScaleTransform.ScaleY = scale;
         }
