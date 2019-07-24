@@ -70,6 +70,8 @@ namespace Biaui.Extension
             var bezierPos0 = new RawVector2();
             var bezierSegment = new BezierSegment();
 
+            var hasHighlightCurves = false;
+
             foreach (IBiaNodeLink link in _parent.LinksSource)
             {
                 if (link.IsVisible == false)
@@ -78,10 +80,15 @@ namespace Biaui.Extension
                 if (link.IsLinked() == false)
                     continue;
 
+                var isHighlight = link.IsHighlight();
+
+                if (isHighlight)
+                    hasHighlightCurves = true;
+
                 GeometrySink curveSink;
                 GeometrySink arrowSink;
                 {
-                    var key = (link.Color, link.IsHighlight());
+                    var key = (link.Color, isHighlight);
 
                     if (_sinks.TryGetValue(key, out var p))
                     {
@@ -148,6 +155,10 @@ namespace Biaui.Extension
                     ResCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color, sink.Key.isHighlight));
                     brush = ResCache[resKey];
                 }
+
+                // ハイライトがあれば、非ハイライトを表示しない
+                if (hasHighlightCurves && sink.Key.isHighlight == false)
+                    continue;
 
                 // 接続線カーブ
                 {
