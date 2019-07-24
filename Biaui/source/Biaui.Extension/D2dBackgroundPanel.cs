@@ -24,7 +24,7 @@ namespace Biaui.Extension
         private readonly BiaNodeEditor _parent;
 
         private const float BaseLineWidth = 1.0f;
-        private const float ArrowSize = 20.0f;
+        private const float ArrowSize = 40.0f;
 
         public D2dBackgroundPanel(BiaNodeEditor parent)
         {

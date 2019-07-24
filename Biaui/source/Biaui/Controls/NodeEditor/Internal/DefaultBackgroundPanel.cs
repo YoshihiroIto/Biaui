@@ -14,7 +14,7 @@ namespace Biaui.Controls.NodeEditor.Internal
     internal class DefaultBackgroundPanel : Canvas, IBackgroundPanel
     {
         private const double LineWidth = 3;
-        private const double ArrowSize = 20;
+        private const double ArrowSize = 40;
 
         private readonly BiaNodeEditor _parent;
 
