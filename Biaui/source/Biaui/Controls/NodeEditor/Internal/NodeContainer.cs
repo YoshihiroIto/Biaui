@@ -392,6 +392,19 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
+        internal void RefreshMouseState()
+        {
+            foreach (var child in Children)
+            {
+                if (child.IsActive == false)
+                    continue;
+
+                var nodeItem = (IBiaNodeItem) child.DataContext;
+
+                nodeItem.IsMouseOver = false;
+            }
+        }
+
         private void UpdateChildrenBag(in ImmutableRect viewportRect, bool isPushRemove)
         {
             // メモ：

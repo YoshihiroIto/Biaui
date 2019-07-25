@@ -556,6 +556,9 @@ namespace Biaui.Controls.NodeEditor
             TranslateTransform.Y = -centerY * scale + viewCy + OverlayHeaderHeight;
             ScaleTransform.ScaleX = scale;
             ScaleTransform.ScaleY = scale;
+
+            // マウス状態を再評価
+            _nodeContainer.RefreshMouseState();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
