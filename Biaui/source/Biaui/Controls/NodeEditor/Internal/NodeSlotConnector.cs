@@ -31,6 +31,11 @@ namespace Biaui.Controls.NodeEditor.Internal
         private const int ColumnCount = 8;
         private const int RowCount = 8;
 
+        // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
+        private readonly PropertyChangeNotifier _sourceNotifier;
+        private readonly PropertyChangeNotifier _targetNotifier;
+        // ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
+
         internal NodeSlotConnector(BiaNodeEditor parent, MouseOperator mouseOperator)
         {
             _parent = parent;
@@ -41,24 +46,13 @@ namespace Biaui.Controls.NodeEditor.Internal
             mouseOperator.LinkMoving += OnLinkMoving;
             SizeChanged += (_, e) => UpdateChildren(e.NewSize.Width, e.NewSize.Height);
 
-            var source = DependencyPropertyDescriptor.FromProperty(
-                BiaNodeEditor.SourceNodeSlotConnectingProperty, typeof(BiaNodeEditor));
-            var target = DependencyPropertyDescriptor.FromProperty(
-                BiaNodeEditor.TargetNodeSlotConnectingProperty, typeof(BiaNodeEditor));
-
             _parent.PreviewMouseUp += (_, __) => _mousePos = new Point(double.NaN, double.NaN);
 
-            Loaded += (_, __) =>
-            {
-                source.AddValueChanged(_parent, ConnectionChangedHandler);
-                target.AddValueChanged(_parent, ConnectionChangedHandler);
-            };
+            _sourceNotifier = new PropertyChangeNotifier(_parent, BiaNodeEditor.SourceNodeSlotConnectingProperty);
+            _targetNotifier = new PropertyChangeNotifier(_parent, BiaNodeEditor.TargetNodeSlotConnectingProperty);
 
-            Unloaded += (_, __) =>
-            {
-                source.RemoveValueChanged(_parent, ConnectionChangedHandler);
-                target.RemoveValueChanged(_parent, ConnectionChangedHandler);
-            };
+            _sourceNotifier.ValueChanged += ConnectionChangedHandler;
+            _targetNotifier.ValueChanged += ConnectionChangedHandler;
         }
 
         private void ConnectionChangedHandler(object sender, EventArgs e)
