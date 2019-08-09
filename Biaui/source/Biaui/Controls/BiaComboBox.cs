@@ -427,7 +427,7 @@ namespace Biaui.Controls
             if (IsOpen)
             {
                 Discard();
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+                Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
             }
             else
             {
@@ -453,7 +453,7 @@ namespace Biaui.Controls
             else if (e.Key == Key.Down)
                 MoveSelectedItem(+1);
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
         private bool _isDoesFindParent;
@@ -483,7 +483,7 @@ namespace Biaui.Controls
             else if (e.Delta < 0)
                 MoveSelectedItem(+1);
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
         private ListBox _items;
@@ -627,7 +627,7 @@ namespace Biaui.Controls
 
             SetValue();
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
         private Action FocusThis => () => Focus();

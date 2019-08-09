@@ -1131,7 +1131,7 @@ namespace Biaui.Controls
                     else
                     {
                         FinishEditing(v.Result == MakeValueResult.Ok);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                        Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
                     }
 
                     e.Handled = true;
@@ -1143,7 +1143,7 @@ namespace Biaui.Controls
                     _textBox.Text = FormattedValueString;
                     FinishEditing(false);
 
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                    Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
                     break;

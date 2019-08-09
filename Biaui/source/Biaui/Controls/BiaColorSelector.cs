@@ -356,7 +356,7 @@ namespace Biaui.Controls
             if (IsOpen)
             {
                 Discard();
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+                Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
             }
             else
             {
@@ -399,7 +399,7 @@ namespace Biaui.Controls
             SetValue();
 
             _popup.IsOpen = false;
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
         private DoubleColor _ContinuousEditingStartValue;

@@ -27,7 +27,7 @@ namespace Biaui.Controls
             var button = (FrameworkElement) sender;
             var wordTextBox = (TextBox) button.Tag;
 
-            wordTextBox.Dispatcher.BeginInvoke(new Action(() => wordTextBox.Focus()));
+            wordTextBox.Dispatcher?.BeginInvoke(new Action(() => wordTextBox.Focus()));
         }
 
         private void WordTextBox_OnKeyDown(object sender, KeyEventArgs e)
@@ -45,7 +45,7 @@ namespace Biaui.Controls
                 sv.ScrollToBottom();
 
             // ※.VirtualizingStackPanelなためスクロールを済ませてからアイテムを探しに行く
-            sv.Dispatcher.BeginInvoke(
+            sv.Dispatcher?.BeginInvoke(
                 DispatcherPriority.Input,
                 new Action(() =>
                 {

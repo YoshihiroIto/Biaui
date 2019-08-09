@@ -407,7 +407,7 @@ namespace Biaui.Controls
                 {
                     FinishEditing(true);
 
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                    Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
                     break;
@@ -417,7 +417,7 @@ namespace Biaui.Controls
                 {
                     FinishEditing(false);
 
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                    Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
                     break;
