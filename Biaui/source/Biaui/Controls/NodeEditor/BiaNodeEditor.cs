@@ -252,12 +252,92 @@ namespace Biaui.Controls.NodeEditor
                     {
                         var self = (BiaNodeEditor) s;
                         self._Scale = (double) e.NewValue;
+
+                        if (self._isInTransformChanging == false)
+                        {
+                            self._isInTransformChanging = true;
+                            self.ScaleTransform.ScaleX = self._Scale;
+                            self.ScaleTransform.ScaleY = self._Scale;
+                            self._isInTransformChanging = false;
+                        }
+                    }));
+
+        #endregion
+
+        #region TranslateX
+
+        public double TranslateX
+        {
+            get => _TranslateX;
+            set
+            {
+                if (NumberHelper.AreClose(value, _TranslateX) == false)
+                    SetValue(TranslateXProperty, value);
+            }
+        }
+
+        private double _TranslateX;
+
+        public static readonly DependencyProperty TranslateXProperty =
+            DependencyProperty.Register(
+                nameof(TranslateX),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._TranslateX = (double) e.NewValue;
+
+                        if (self._isInTransformChanging == false)
+                        {
+                            self._isInTransformChanging = true;
+                            self.TranslateTransform.X = self._TranslateX;
+                            self._isInTransformChanging = false;
+                        }
+                    }));
+
+        #endregion
+
+        #region TranslateY
+
+        public double TranslateY
+        {
+            get => _TranslateY;
+            set
+            {
+                if (NumberHelper.AreClose(value, _TranslateY) == false)
+                    SetValue(TranslateYProperty, value);
+            }
+        }
+
+        private double _TranslateY;
+
+        public static readonly DependencyProperty TranslateYProperty =
+            DependencyProperty.Register(
+                nameof(TranslateY),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._TranslateY = (double) e.NewValue;
+
+                        if (self._isInTransformChanging == false)
+                        {
+                            self._isInTransformChanging = true;
+                            self.TranslateTransform.Y = self._TranslateY;
+                            self._isInTransformChanging = false;
+                        }
                     }));
 
         #endregion
 
         #region CanConnectLink
-        
+
         public bool CanConnectLink
         {
             get => _CanConnectLink;
@@ -267,9 +347,9 @@ namespace Biaui.Controls.NodeEditor
                     SetValue(CanConnectLinkProperty, value);
             }
         }
-        
+
         private bool _CanConnectLink = true;
-        
+
         public static readonly DependencyProperty CanConnectLinkProperty =
             DependencyProperty.Register(
                 nameof(CanConnectLink),
@@ -280,13 +360,13 @@ namespace Biaui.Controls.NodeEditor
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._CanConnectLink = (bool)e.NewValue;
+                        self._CanConnectLink = (bool) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region OverlayHeaderHeight
-        
+
         public double OverlayHeaderHeight
         {
             get => _OverlayHeaderHeight;
@@ -296,9 +376,9 @@ namespace Biaui.Controls.NodeEditor
                     SetValue(OverlayHeaderHeightProperty, value);
             }
         }
-        
+
         private double _OverlayHeaderHeight;
-        
+
         public static readonly DependencyProperty OverlayHeaderHeightProperty =
             DependencyProperty.Register(
                 nameof(OverlayHeaderHeight),
@@ -309,9 +389,9 @@ namespace Biaui.Controls.NodeEditor
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._OverlayHeaderHeight = (double)e.NewValue;
+                        self._OverlayHeaderHeight = (double) e.NewValue;
                     }));
-        
+
         #endregion
 
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
@@ -335,6 +415,8 @@ namespace Biaui.Controls.NodeEditor
         internal event EventHandler LinksSourceChanging;
 
         internal event EventHandler LinkChanged;
+
+        private bool _isInTransformChanging;
 
         static BiaNodeEditor()
         {
@@ -366,7 +448,25 @@ namespace Biaui.Controls.NodeEditor
 
             base.Child = grid;
 
-            ScaleTransform.Changed += (_, __) => Scale = ScaleTransform.ScaleX;
+            ScaleTransform.Changed += (_, __) =>
+            {
+                if (_isInTransformChanging == false)
+                {
+                    _isInTransformChanging = true;
+                    Scale = ScaleTransform.ScaleX;
+                    _isInTransformChanging = false;
+                }
+            };
+            TranslateTransform.Changed += (_, __) =>
+            {
+                if (_isInTransformChanging == false)
+                {
+                    _isInTransformChanging = true;
+                    TranslateX = TranslateTransform.X;
+                    TranslateY = TranslateTransform.Y;
+                    _isInTransformChanging = false;
+                }
+            };
 
             // backgroundPanel
             {
