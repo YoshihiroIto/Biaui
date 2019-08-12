@@ -477,6 +477,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                             style == null ||
                             nodePanel.Style.GetHashCode() != style.GetHashCode())
                         {
+                            nodePanel.DataContext = null;
                             nodePanel.Style = style;
                         }
 
