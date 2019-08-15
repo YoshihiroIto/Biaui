@@ -394,6 +394,12 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
+
+        public TranslateTransform TranslateTransform { get; } = new TranslateTransform();
+
+        public bool IsNodeSlotDragging { get; internal set; }
+
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
 
         public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
@@ -402,18 +408,12 @@ namespace Biaui.Controls.NodeEditor
 
         public event EventHandler PropertyEditCompleted;
 
-        public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
-
-        public TranslateTransform TranslateTransform { get; } = new TranslateTransform();
-
-        public bool IsNodeSlotDragging { get; internal set; }
+        public event EventHandler ScaleTransformChanged;
+        public event EventHandler TranslateTransformChanged;
 
         internal event EventHandler NodeItemMoved;
-
         internal event EventHandler NodesSourceChanging;
-
         internal event EventHandler LinksSourceChanging;
-
         internal event EventHandler LinkChanged;
 
         private bool _isInTransformChanging;
@@ -456,6 +456,8 @@ namespace Biaui.Controls.NodeEditor
                     Scale = ScaleTransform.ScaleX;
                     _isInTransformChanging = false;
                 }
+
+                ScaleTransformChanged?.Invoke(this, EventArgs.Empty);
             };
             TranslateTransform.Changed += (_, __) =>
             {
@@ -466,6 +468,8 @@ namespace Biaui.Controls.NodeEditor
                     TranslateY = TranslateTransform.Y;
                     _isInTransformChanging = false;
                 }
+
+                TranslateTransformChanged?.Invoke(this, EventArgs.Empty);
             };
 
             // backgroundPanel
