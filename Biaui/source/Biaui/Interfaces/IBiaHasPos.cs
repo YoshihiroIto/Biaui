@@ -12,7 +12,7 @@ namespace Biaui.Interfaces
     public static class BiaHasPosExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Point AlignedPos(this IBiaHasPos self)
+        public static Point AlignPos(this IBiaHasPos self)
             => BiaHasPosHelper.AlignPos(self.Pos);
     }
 

@@ -112,7 +112,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     ? (unit1, unit2)
                     : (unit2, unit1);
 
-            var startItemCenter = start.Item.AlignedPos().Y(b) + start.Item.Size.Height(b) * 0.5;
+            var startItemCenter = start.Item.AlignPos().Y(b) + start.Item.Size.Height(b) * 0.5;
             var startItemSlotOffset =
                 start.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.Y(b));
             var fold = MinSlotOffset + startItemSlotOffset;
@@ -136,8 +136,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 var foldEndPos = Transposer.CreateImmutableVec2(end.Pos.X(b) - fold, end.Pos.Y(b), b);
 
                 var foldV = start.Pos.Y(b) < end.Pos.Y(b)
-                    ? start.Item.AlignedPos().Y(b) + start.Item.Size.Height(b) + fold
-                    : end.Item.AlignedPos().Y(b) + end.Item.Size.Height(b) + fold;
+                    ? start.Item.AlignPos().Y(b) + start.Item.Size.Height(b) + fold
+                    : end.Item.AlignPos().Y(b) + end.Item.Size.Height(b) + fold;
 
                 work[0] = start.Pos;
                 work[1] = foldStartPos;
@@ -158,11 +158,11 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             var b = isHorizontal;
 
-            var startItemCenter = unit1.Item.AlignedPos().Y(b) + unit1.Item.Size.Height(b) * 0.5;
+            var startItemCenter = unit1.Item.AlignPos().Y(b) + unit1.Item.Size.Height(b) * 0.5;
             var startItemSlotOffset =
                 unit1.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.Y(b));
 
-            var endItemCenter = unit2.Item.AlignedPos().Y(b) + unit2.Item.Size.Height(b) * 0.5;
+            var endItemCenter = unit2.Item.AlignPos().Y(b) + unit2.Item.Size.Height(b) * 0.5;
             var endItemSlotOffset = unit2.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y(b));
             var fold = MinSlotOffset + (startItemSlotOffset, endItemSlotOffset).Max();
 
@@ -329,12 +329,12 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     if (IsVertical)
                     {
-                        var itemCenter = Item.AlignedPos().X + Item.Size.Width * 0.5;
+                        var itemCenter = Item.AlignPos().X + Item.Size.Width * 0.5;
                         itemSlotOffset = Item.Size.Width * 0.5 - NumberHelper.Abs(itemCenter - Pos.X);
                     }
                     else
                     {
-                        var itemCenter = Item.AlignedPos().Y + Item.Size.Height * 0.5;
+                        var itemCenter = Item.AlignPos().Y + Item.Size.Height * 0.5;
                         itemSlotOffset = Item.Size.Height * 0.5 - NumberHelper.Abs(itemCenter - Pos.Y);
                     }
                 }

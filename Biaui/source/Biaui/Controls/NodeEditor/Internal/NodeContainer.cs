@@ -252,7 +252,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             ++IsEnableUpdateChildrenBagDepth;
 
             foreach (var n in _selectedNodes)
-                n.Pos = n.AlignedPos();
+                n.Pos = n.AlignPos();
 
             --IsEnableUpdateChildrenBagDepth;
             Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
@@ -898,7 +898,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (child.IsActive == false)
                     continue;
 
-                var pos = ((IBiaHasPos) child.DataContext).AlignedPos();
+                var pos = ((IBiaHasPos) child.DataContext).AlignPos();
 
                 child.Arrange(new Rect(pos, child.DesiredSize));
             }

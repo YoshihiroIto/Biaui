@@ -43,7 +43,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal static Point MakeSlotPos(this IBiaNodeItem nodeItem, BiaNodeSlot slot)
         {
             var itemSize = nodeItem.Size;
-            var itemPos = nodeItem.AlignedPos();
+            var itemPos = nodeItem.AlignPos();
 
             var slotLocalPos = slot.MakePos(itemSize.Width, itemSize.Height);
 
