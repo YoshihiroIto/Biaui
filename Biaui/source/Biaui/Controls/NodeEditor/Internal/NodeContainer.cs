@@ -66,6 +66,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private readonly DispatcherTimer _removeNodePanelTimer;
 
+        internal IEnumerable<IBiaNodeItem> SelectedNodes => _selectedNodes;
+
         internal int IsEnableUpdateChildrenBagDepth;
 
         internal NodeContainer(BiaNodeEditor parent, BiaNodePanelLayer layer, MouseOperator mouseOperator)
@@ -81,6 +83,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             _parent.ScaleTransform.Changed += (_, __) => UpdateChildrenBag(true);
             _parent.TranslateTransform.Changed += (_, __) => UpdateChildrenBag(true);
 
+            _mouseOperator.PanelBeginMoving += OnPanelBeginMoving;
+            _mouseOperator.PanelEndMoving += OnPanelEndMoving;
             _mouseOperator.PanelMoving += OnPanelMoving;
             _mouseOperator.PostMouseMove += OnPostMouseMove;
             _mouseOperator.PreMouseLeftButtonUp += OnPreMouseLeftButtonUp;
@@ -102,12 +106,29 @@ namespace Biaui.Controls.NodeEditor.Internal
                 });
         }
 
+        private CanMoveByDraggingArgs _CanMoveByDraggingArgs;
+
+        private void OnPanelBeginMoving(object sender, EventArgs e)
+        {
+            _CanMoveByDraggingArgs = new CanMoveByDraggingArgs(_parent.NodeContainers.SelectMany(x => x.SelectedNodes));
+        }
+
+        private void OnPanelEndMoving(object sender, EventArgs e)
+        {
+            _CanMoveByDraggingArgs = null;
+        }
+
         private void OnPanelMoving(object sender, MouseOperator.PanelMovingEventArgs e)
         {
             ++IsEnableUpdateChildrenBagDepth;
             {
                 foreach (var n in _selectedNodes)
+                {
+                    if (n.CanMoveByDragging(_CanMoveByDraggingArgs) == false)
+                        continue;
+
                     n.Pos += e.Diff;
+                }
             }
             --IsEnableUpdateChildrenBagDepth;
             Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
@@ -859,6 +880,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (slot != null)
             {
                 var slotData = new BiaNodeItemSlotIdPair(nodeItem, slot.Id);
+
                 if (_parent.NodeSlotEnabledChecker != null)
                 {
                     if (_parent.NodeSlotEnabledChecker.IsEnableSlot(slotData) == false)
@@ -924,7 +946,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 var nodeItem = (IBiaNodeItem) child.DataContext;
 
-                child.Measure(nodeItem.Size != default ? nodeItem.Size : availableSize);
+                child.Measure(nodeItem.Size != default
+                    ? nodeItem.Size
+                    : availableSize);
 
                 var desiredSize = child.DesiredSize;
 

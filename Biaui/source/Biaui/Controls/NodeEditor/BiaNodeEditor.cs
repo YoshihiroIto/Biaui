@@ -428,14 +428,14 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(typeof(BiaNodeEditor)));
         }
 
-        private readonly NodeContainer[] _nodeContainers = new NodeContainer[3];
+        internal readonly NodeContainer[] NodeContainers = new NodeContainer[3];
 
         public BiaNodeEditor()
         {
             var mouseOperator = new MouseOperator(this, this);
 
-            for(var i = 0;i != _nodeContainers.Length;++ i)
-                _nodeContainers[i] = new NodeContainer(this, (BiaNodePanelLayer)i, mouseOperator);
+            for(var i = 0;i != NodeContainers.Length;++ i)
+                NodeContainers[i] = new NodeContainer(this, (BiaNodePanelLayer)i, mouseOperator);
 
             SetupPropertyEditCommand(mouseOperator);
 
@@ -446,7 +446,7 @@ namespace Biaui.Controls.NodeEditor
 
                 grid.Children.Add((UIElement) backgroundPanel);
 
-                foreach (var nodeContainer in _nodeContainers)
+                foreach (var nodeContainer in NodeContainers)
                     grid.Children.Add(nodeContainer);
 
                 grid.Children.Add(new BoxSelector(mouseOperator));
@@ -591,13 +591,13 @@ namespace Biaui.Controls.NodeEditor
 
         public void Sleep()
         {
-            foreach (var nodeContainer in _nodeContainers)
+            foreach (var nodeContainer in NodeContainers)
                 ++nodeContainer.IsEnableUpdateChildrenBagDepth;
         }
 
         public void Wakeup()
         {
-            foreach (var nodeContainer in _nodeContainers)
+            foreach (var nodeContainer in NodeContainers)
             {
                 --nodeContainer.IsEnableUpdateChildrenBagDepth;
                 Debug.Assert(nodeContainer.IsEnableUpdateChildrenBagDepth >= 0);
@@ -674,7 +674,7 @@ namespace Biaui.Controls.NodeEditor
             ScaleTransform.ScaleY = scale;
 
             // マウス状態を再評価
-            foreach (var nodeContainer in _nodeContainers)
+            foreach (var nodeContainer in NodeContainers)
                 nodeContainer.RefreshMouseState();
         }
 

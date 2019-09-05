@@ -13,15 +13,27 @@ namespace Biaui.Interfaces
 
         bool IsMouseOver { get; set; }
 
-        BiaNodePanelHitType HitType { get; }
-
-        BiaNodePanelLayer Layer { get; }
-
         Size Size { get; set; }
 
         IReadOnlyDictionary<int, BiaNodeSlot> Slots { get; set; }
 
         object InternalData { get; set; }
+
+        BiaNodePanelHitType HitType { get; }
+        BiaNodePanelLayer Layer { get; }
+
+        bool CanMoveByDragging(CanMoveByDraggingArgs args);
+    }
+
+    public class CanMoveByDraggingArgs
+    {
+        public readonly IEnumerable<IBiaNodeItem> SelectedNodes;
+        public object UserData;
+
+        public CanMoveByDraggingArgs(IEnumerable<IBiaNodeItem> selectedNodes)
+        {
+            SelectedNodes = selectedNodes;
+        }
     }
 
     public enum BiaNodePanelHitType

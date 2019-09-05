@@ -152,6 +152,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     case TargetType.NodePanel:
                         _opType = OpType.PanelMove;
+                        PanelBeginMoving?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case TargetType.NodeLink:
@@ -166,6 +167,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
+            if (_opType == OpType.PanelMove)
+                PanelEndMoving?.Invoke(this, EventArgs.Empty);
+
             _opType = OpType.None;
 
             if (_target.IsMouseCaptured)
@@ -223,6 +227,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             public Point MousePos { get; set; }
         }
 
+        internal event EventHandler PanelBeginMoving;
+        internal event EventHandler PanelEndMoving;
         internal event EventHandler<PanelMovingEventArgs> PanelMoving;
 
         internal event EventHandler<LinkMovingEventArgs> LinkMoving;

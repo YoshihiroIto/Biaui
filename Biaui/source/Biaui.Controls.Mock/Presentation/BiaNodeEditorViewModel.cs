@@ -459,6 +459,8 @@ namespace Biaui.Controls.Mock.Presentation
 
         public abstract BiaNodePanelLayer Layer { get; }
 
+        public bool CanMoveByDragging(CanMoveByDraggingArgs args) => true;
+
         #region Size
 
         private Size _Size;
