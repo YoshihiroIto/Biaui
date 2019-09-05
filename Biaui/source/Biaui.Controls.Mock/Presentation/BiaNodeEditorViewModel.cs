@@ -457,6 +457,8 @@ namespace Biaui.Controls.Mock.Presentation
 
         #endregion
 
+        public abstract BiaNodePanelLayer Layer { get; }
+
         #region Size
 
         private Size _Size;
@@ -495,6 +497,8 @@ namespace Biaui.Controls.Mock.Presentation
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
 
+        public override BiaNodePanelLayer Layer => BiaNodePanelLayer.Middle;
+
         public BasicNode()
         {
             Slots =
@@ -523,6 +527,8 @@ namespace Biaui.Controls.Mock.Presentation
     public class ColorNode : NodeBase
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Rectangle;
+
+        public override BiaNodePanelLayer Layer => BiaNodePanelLayer.Middle;
 
         public ColorNode()
         {
@@ -583,6 +589,8 @@ namespace Biaui.Controls.Mock.Presentation
     public class CircleNode : NodeBase
     {
         public override BiaNodePanelHitType HitType => BiaNodePanelHitType.Circle;
+
+        public override BiaNodePanelLayer Layer => BiaNodePanelLayer.Low;
 
         public CircleNode()
         {

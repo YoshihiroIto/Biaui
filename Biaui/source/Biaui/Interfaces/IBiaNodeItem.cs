@@ -15,6 +15,8 @@ namespace Biaui.Interfaces
 
         BiaNodePanelHitType HitType { get; }
 
+        BiaNodePanelLayer Layer { get; }
+
         Size Size { get; set; }
 
         IReadOnlyDictionary<int, BiaNodeSlot> Slots { get; set; }
@@ -27,5 +29,12 @@ namespace Biaui.Interfaces
         Rectangle,
         Circle,
         Visual
+    }
+
+    public enum BiaNodePanelLayer
+    {
+        Low = 0,
+        Middle = 1,
+        High = 2
     }
 }

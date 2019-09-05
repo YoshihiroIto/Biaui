@@ -50,6 +50,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         #endregion
 
         private readonly BiaNodeEditor _parent;
+        private readonly BiaNodePanelLayer _layer;
         private readonly MouseOperator _mouseOperator;
 
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict
@@ -67,10 +68,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal int IsEnableUpdateChildrenBagDepth;
 
-        internal NodeContainer(BiaNodeEditor parent, MouseOperator mouseOperator)
+        internal NodeContainer(BiaNodeEditor parent, BiaNodePanelLayer layer, MouseOperator mouseOperator)
             : base(parent)
         {
             _parent = parent;
+            _layer = layer;
             _mouseOperator = mouseOperator;
 
             _parent.SizeChanged += (_, __) => UpdateChildrenBag(true);
@@ -95,7 +97,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 NodesSourceProperty,
                 new Binding(nameof(NodesSource))
                 {
-                    Source = parent,
+                    Source = _parent,
                     Mode = BindingMode.OneWay
                 });
         }
@@ -162,11 +164,17 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void AddOrUpdate(IBiaNodeItem nodeItem, BiaNodePanel panel)
         {
+            if (nodeItem.Layer != _layer)
+                return;
+
             _nodeDict[nodeItem] = panel;
         }
 
         private void Remove(IBiaNodeItem nodeItem)
         {
+            if (nodeItem.Layer != _layer)
+                return;
+
             _nodeDict.Remove(nodeItem);
             _selectedNodes.Remove(nodeItem);
             _preSelectedNodes.Remove(nodeItem);
@@ -718,6 +726,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         private void NodeItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var node = (IBiaNodeItem) sender;
+
+            if (node.Layer != _layer)
+                return;
 
             switch (e.PropertyName)
             {
