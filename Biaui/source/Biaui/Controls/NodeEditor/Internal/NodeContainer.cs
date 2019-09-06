@@ -67,6 +67,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly DispatcherTimer _removeNodePanelTimer;
 
         internal IEnumerable<IBiaNodeItem> SelectedNodes => _selectedNodes;
+        internal IEnumerable<IBiaNodeItem> PreSelectedNodes => _preSelectedNodes;
 
         internal int IsEnableUpdateChildrenBagDepth;
 
@@ -136,19 +137,22 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void OnPreMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (_mouseOperator.IsBoxSelect)
+            if (_layer == BiaNodePanelLayer.Low)
             {
-                // クリック（面積のないボックス選択）は何もしない
-                if (_mouseOperator.SelectionRect.HasArea)
+                if (_mouseOperator.IsBoxSelect)
                 {
-                    SelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
-                    ClearPreSelectedNode();
+                    // クリック（面積のないボックス選択）は何もしない
+                    if (_mouseOperator.SelectionRect.HasArea)
+                    {
+                        SelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
+                        ClearPreSelectedNode();
+                    }
                 }
-            }
 
-            if (_mouseOperator.IsPanelMove)
-                if (_mouseOperator.IsMoved)
-                    AlignSelectedNodes();
+                if (_mouseOperator.IsPanelMove)
+                    if (_mouseOperator.IsMoved)
+                        AlignSelectedNodes();
+            }
 
             UpdateChildrenBag(true);
 
@@ -221,7 +225,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void ClearPreSelectedNode()
         {
-            foreach (var n in _preSelectedNodes.ToArray())
+            foreach (var n in _parent.NodeContainers.SelectMany(x => x.PreSelectedNodes).ToArray())
                 n.IsPreSelected = false;
         }
 
@@ -233,7 +237,9 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                     ClearSelectedNode();
 
-                foreach (var child in Children.ToArray())
+                //foreach (var child in Children.ToArray())
+
+                foreach (var child in _parent.NodeContainers.SelectMany(x => x.Children).ToArray())
                 {
                     if (child.IsActive == false)
                         continue;
@@ -280,7 +286,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             ++IsEnableUpdateChildrenBagDepth;
 
-            foreach (var n in _selectedNodes)
+            foreach (var n in _parent.NodeContainers.SelectMany(x => x.SelectedNodes))
                 n.Pos = n.AlignPos();
 
             --IsEnableUpdateChildrenBagDepth;
@@ -572,7 +578,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void ClearSelectedNode()
         {
-            foreach (var n in _selectedNodes.ToArray())
+            foreach (var n in _parent.NodeContainers.SelectMany(x => x.SelectedNodes).ToArray())
                 n.IsSelected = false;
         }
 
