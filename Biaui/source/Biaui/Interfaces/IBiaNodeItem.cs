@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using Biaui.Controls.NodeEditor;
@@ -21,6 +22,8 @@ namespace Biaui.Interfaces
 
         BiaNodePanelHitType HitType { get; }
         BiaNodePanelLayer Layer { get; }
+
+        Func<BiaNodeSlot, Point> MakeSlotPos{ get; }        // nullでデフォルト動作になる
 
         bool CanMoveByDragging(CanMoveByDraggingArgs args);
     }

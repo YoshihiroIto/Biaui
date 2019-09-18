@@ -18,7 +18,7 @@ namespace Biaui.Controls.NodeEditor
         public bool IsNull => Item == null;
         public bool IsNotNull => Item != null;
 
-        internal Point MakeSlotPos() => Item.MakeSlotPos(Slot);
+        internal Point MakeSlotPos() => Item.MakeSlotPosDefault(Slot);
 
         internal BiaNodeItemSlotIdPair ToItemSlotIdPair()
             => new BiaNodeItemSlotIdPair(Item, Slot.Id);

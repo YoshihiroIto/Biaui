@@ -38,8 +38,8 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
 
                 var item1 = link.ItemSlot1.Item;
                 var item2 = link.ItemSlot2.Item;
-                var pos1 = item1.MakeSlotPos(link.InternalData().Slot1);
-                var pos2 = item2.MakeSlotPos(link.InternalData().Slot2);
+                var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1);
+                var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2);
                 var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1.Dir);
                 var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2.Dir);
 

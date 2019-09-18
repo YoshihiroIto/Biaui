@@ -165,7 +165,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         nodeItem == _parent.SourceNodeSlotConnecting.Item)
                         continue;
 
-                    var slotPos = nodeItem.MakeSlotPos(slot);
+                    var slotPos = nodeItem.MakeSlotPosDefault(slot);
 
                     if (slot.HitCheck(slotPos, mousePos) == false)
                         continue;

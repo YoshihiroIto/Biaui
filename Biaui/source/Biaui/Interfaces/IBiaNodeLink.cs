@@ -53,8 +53,8 @@ namespace Biaui.Interfaces
         {
             var item1 = self.ItemSlot1.Item;
             var item2 = self.ItemSlot2.Item;
-            var pos1 = item1.MakeSlotPos(self.InternalData().Slot1);
-            var pos2 = item2.MakeSlotPos(self.InternalData().Slot2);
+            var pos1 = item1.MakeSlotPosDefault(self.InternalData().Slot1);
+            var pos2 = item2.MakeSlotPosDefault(self.InternalData().Slot2);
             var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, self.InternalData().Slot1.Dir);
             var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, self.InternalData().Slot2.Dir);
 
