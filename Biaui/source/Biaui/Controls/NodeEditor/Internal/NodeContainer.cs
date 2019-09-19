@@ -644,6 +644,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void UpdateSelectedNode(IBiaNodeItem node)
         {
+            if (node.Layer != _layer)
+                return;
+
             if (node.IsSelected)
                 _selectedNodes.Add(node);
             else
