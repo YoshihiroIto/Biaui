@@ -557,11 +557,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private (BiaNodePanel Panel, bool IsAdded) FindOrCreateNodePanel()
         {
-            // 削除候補から見つかれば、それを優先して返す。
-            // 返却候補はまだ、追加済み。
-
-            if (_removeNodePanelPool.Count != 0)
-                return (_removeNodePanelPool.Pop(), true);
+            //// 削除候補から見つかれば、それを優先して返す。
+            //// 返却候補はまだ、追加済み。
+            //
+            //if (_removeNodePanelPool.Count != 0)
+            //    return (_removeNodePanelPool.Pop(), true);
 
             if (_recycleNodePanelPool.Count != 0)
                 return (_recycleNodePanelPool.Pop(), false);
