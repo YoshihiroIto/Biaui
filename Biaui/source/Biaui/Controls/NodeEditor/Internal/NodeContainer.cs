@@ -952,6 +952,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
+        private static readonly Size MaxSize = new Size(double.MaxValue, double.MaxValue);
+
         protected override void MeasureChildren(IEnumerable<BiaNodePanel> children, Size availableSize)
         {
             foreach (var child in children)
@@ -961,9 +963,15 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 var nodeItem = (IBiaNodeItem) child.DataContext;
 
-                child.Measure(nodeItem.Size != default
-                    ? nodeItem.Size
-                    : availableSize);
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                if (nodeItem.Size.Width != 0)
+                    child.Width = nodeItem.Size.Width;
+
+                if (nodeItem.Size.Height != 0)
+                    child.Height = nodeItem.Size.Height;
+                // ReSharper restore CompareOfFloatsByEqualityOperator
+
+                child.Measure(MaxSize);
 
                 var desiredSize = child.DesiredSize;
 
