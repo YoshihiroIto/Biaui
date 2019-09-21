@@ -685,6 +685,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     foreach (IBiaNodeItem nodeItem in e.NewItems)
                     {
+                        if (nodeItem.Layer != _layer)
+                            continue;
+
                         nodeItem.PropertyChanged += NodeItemPropertyChanged;
 
                         AddOrUpdate(nodeItem, null);
@@ -700,6 +703,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     foreach (IBiaNodeItem nodeItem in e.OldItems)
                     {
+                        if (nodeItem.Layer != _layer)
+                            continue;
+
                         nodeItem.PropertyChanged -= NodeItemPropertyChanged;
 
                         var panel = FindPanel(nodeItem);
