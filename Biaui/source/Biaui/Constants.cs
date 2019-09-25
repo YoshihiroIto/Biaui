@@ -30,4 +30,10 @@ namespace Biaui
             Length = 19
         };
     }
+
+    public enum WindowCloseButtonBehavior
+    {
+        Normal,
+        DoNothing
+    }
 }

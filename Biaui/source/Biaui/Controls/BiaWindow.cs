@@ -323,9 +323,3 @@ namespace Biaui.Controls
         }
     }
 }
-
-public enum WindowCloseButtonBehavior
-{
-    Normal,
-    DoNothing
-}
