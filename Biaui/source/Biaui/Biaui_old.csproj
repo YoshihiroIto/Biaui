@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{242505BF-A389-4A70-ACBF-27A2DEBB5E70}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>Biaui</RootNamespace>
+    <AssemblyName>Biaui</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BiauiEnvironment.cs" />
+    <Compile Include="Controls\BiaColorSelector.cs" />
+    <Compile Include="Controls\BiaFlagBox.cs" />
+    <Compile Include="Controls\BiaEditableTextBlock.cs" />
+    <Compile Include="Controls\BiaEditableTextBlockEventHandler.cs" />
+    <Compile Include="Controls\BiaProgressPanel.cs" />
+    <Compile Include="Controls\BiaFilteringComboBox.cs" />
+    <Compile Include="Controls\BiaFilteringComboBoxEventHandler.cs" />
+    <Compile Include="Controls\BiaHighlightTextBlock.cs" />
+    <Compile Include="Controls\BiaTreeListView.cs" />
+    <Compile Include="Controls\Converters\DoubleColorToBrushConverter.cs" />
+    <Compile Include="Controls\Converters\TreeListViewItemMarginConverter.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\AxisAlignStyleNodeLinkGeomMaker.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\BezierCurveStyleMakeNodeGeomLink.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeLinkGeomMaker\INodeLinkGeomMaker.cs" />
+    <Compile Include="Environment\IBackgroundPanel.cs" />
+    <Compile Include="Environment\IBackgroundPanelGenerator.cs" />
+    <Compile Include="Interfaces\IBiaHasChildren.cs" />
+    <Compile Include="Internals\PropertyChangeNotifier.cs" />
+    <Compile Include="Internals\Converter\MultiplyConverter.cs" />
+    <Compile Include="StandardControls\ExpanderEventHandler.cs" />
+    <Compile Include="StandardControls\TabControlAttachedProperties.cs" />
+    <Compile Include="Types.cs" />
+    <Page Include="Controls\BiaColorSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaEditableTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaHighlightTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaTreeListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaTreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaProgressPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaWindowStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BiaFilteringComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StandardControls\ToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StandardControls\GridSplitter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StandardControls\AccessText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\Expander.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StandardControls\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaColorPickerStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Internals\SystemButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NodeEditor\BiaNodeEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaRadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaCheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaHsvBoxCursor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaColorBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaClippingBorder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BiaNumberEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\Decorator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Font.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\Slider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\Popup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StandardControls\ContextMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\TabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\TextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Controls\BiaHsvWheelBackground.cs" />
+    <Compile Include="Controls\BiaHsvWheelCursor.cs" />
+    <Compile Include="Controls\Internals\SystemButton.cs" />
+    <Compile Include="Controls\BiaTreeView.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodeSlotExtensions.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\LinkLineRenderer.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\Transposer.cs" />
+    <Compile Include="Controls\NodeEditor\BiaNodeEditor.cs" />
+    <Compile Include="Controls\BiaTextBox.cs" />
+    <Compile Include="Controls\BiaRadioButton.cs" />
+    <Compile Include="Controls\BiaCheckBox.cs" />
+    <Compile Include="Controls\BiaComboBox.cs" />
+    <Compile Include="Controls\BiaTextBlock.cs" />
+    <Compile Include="Controls\BiaToggleButton.cs" />
+    <Compile Include="Controls\BiaColorPicker.cs" />
+    <Compile Include="Controls\BiaColorBar.cs" />
+    <Compile Include="Controls\BiaHsvBoxCursor.cs" />
+    <Compile Include="Controls\BiaButton.cs" />
+    <Compile Include="Controls\BiaWindow.cs" />
+    <Page Include="StandardControls\ToolTip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StandardControls\TreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\BiaNumberEditor.cs" />
+    <Compile Include="Controls\Effects\HsvWheelBackgroundEffect.cs" />
+    <Compile Include="Controls\Effects\HsvBoxBackgroundEffect.cs" />
+    <Compile Include="Controls\BiaHsvBoxBackground.cs" />
+    <Compile Include="Controls\NodeEditor\BiaNodeItemSlotPair.cs" />
+    <Compile Include="Controls\NodeEditor\BiaNodePanel.cs" />
+    <Compile Include="Controls\NodeEditor\BiaNodeSlot.cs" />
+    <Compile Include="Controls\NodeEditor\IBiaNodeSlotEnabledChecker.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodeLinkExtensions.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeItemData.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\InternalBiaNodeLinkData.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeContainer.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\NodeSlotConnector.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BoxSelector.cs" />
+    <Compile Include="Controls\Internals\FrameworkElementBag.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs" />
+    <Compile Include="Controls\NodeEditor\BiaNodePanelSlots.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\DefaultBackgroundPanel.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\MouseOperator.cs" />
+    <Compile Include="Controls\NodeEditor\Internal\BiaNodeItemExtensions.cs" />
+    <Compile Include="Controls\NodeEditor\NodeLinkEventArgs.cs" />
+    <Compile Include="Controls\NodeEditor\NodeSlotId.cs" />
+    <Compile Include="Interfaces\IBiaHasPos.cs" />
+    <Compile Include="Controls\Internals\IHasTransform.cs" />
+    <Compile Include="Interfaces\IBiaNodeLink.cs" />
+    <Compile Include="Internals\Boxes.cs" />
+    <Compile Include="Controls\BiaClippingBorder.cs" />
+    <Compile Include="Internals\Caches.cs" />
+    <Compile Include="Internals\ColorHelper.cs" />
+    <Compile Include="Internals\ColorSpaceHelper.cs" />
+    <Compile Include="Internals\Constants.cs" />
+    <Compile Include="Internals\DependencyObjectExtensions.cs" />
+    <Compile Include="Internals\DrawingContextExtensions.cs" />
+    <Compile Include="Internals\Evaluator.cs" />
+    <Compile Include="Internals\FrameworkElementExtensions.cs" />
+    <Compile Include="Internals\GuiHelper.cs" />
+    <Compile Include="Internals\ImmutableRect.cs" />
+    <Compile Include="Internals\ImmutableCircle.cs" />
+    <Compile Include="Internals\ImmutableVec2.cs" />
+    <Compile Include="Internals\ItemsControlExtensions.cs" />
+    <Compile Include="Internals\KeyboardHelper.cs" />
+    <Compile Include="Internals\LazyRunner.cs" />
+    <Compile Include="Internals\Converter\IndentToMargin.cs" />
+    <Compile Include="Internals\LruCache.cs" />
+    <Compile Include="Internals\MouseSimulator.cs" />
+    <Compile Include="Internals\NumberHelper.cs" />
+    <Compile Include="Internals\RenderHelper.cs" />
+    <Compile Include="Internals\StreamGeometryContextExtensions.cs" />
+    <Compile Include="Internals\TextRenderer.cs" />
+    <Compile Include="Internals\TreeViewHelper.cs" />
+    <Compile Include="Internals\TreeViewItemExtensions.cs" />
+    <Compile Include="Internals\FrameworkElementHelper.cs" />
+    <Compile Include="Internals\Win32Helper.cs" />
+    <Compile Include="Internals\WindowAction.cs" />
+    <Compile Include="Internals\WpfHelper.cs" />
+    <Compile Include="Interfaces\IBiaNodeItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Resource Include="Assets\Fonts\RictyDiminished-Regular.ttf" />
+    <Resource Include="Assets\Fonts\GenMuli.ttf" />
+    <Resource Include="Controls\Effects\HsvBoxBackgroundEffect.ps" />
+    <Resource Include="Controls\Effects\HsvWheelBackgroundEffect.ps" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Settings.XamlStyler" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Controls\Effects\HsvBoxBackgroundEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Controls\Effects\HsvWheelBackgroundEffect.fx" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
