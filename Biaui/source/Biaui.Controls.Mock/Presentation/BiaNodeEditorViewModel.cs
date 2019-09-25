@@ -459,6 +459,8 @@ namespace Biaui.Controls.Mock.Presentation
 
         public abstract BiaNodePanelLayer Layer { get; }
 
+        public Func<BiaNodeSlot, Point> MakeSlotPos { get; } = null;
+
         public bool CanMoveByDragging(CanMoveByDraggingArgs args) => true;
 
         #region Size
