@@ -13,6 +13,7 @@
                     Title="Biaui.Controls.Mock"
                     Width="1000"
                     Height="800"
+                    Style="{StaticResource SpaceSavingWindowStyle}"
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
     <behaviors:Interaction.Behaviors>
