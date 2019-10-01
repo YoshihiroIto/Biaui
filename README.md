@@ -1,8 +1,9 @@
 # Biaui
 
-WPF dark theme and controls.
+WPF dark theme and controls for .NET Framework and .NET Core 3.0.
 
 ![Biaui](biaui.png)
+![Biaui](biaui2.png)
 
 
 ## Feature
