@@ -11,6 +11,7 @@ WPF dark theme and controls for .NET Framework and .NET Core 3.0.
 * Dark color
 * DPI aware
 * Some specialized controls
+    * Node editor
     * Number editor
     * Color picker
     * Multiple selectable treeview
