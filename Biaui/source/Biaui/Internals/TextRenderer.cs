@@ -71,6 +71,8 @@ namespace Biaui.Internals
             if (string.IsNullOrEmpty(text))
                 return 0;
 
+            maxWidth = Math.Ceiling(maxWidth);
+
             return Draw(
                 text,
                 0,
