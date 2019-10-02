@@ -225,7 +225,7 @@ namespace Biaui.StandardControls.Internal
             Dock tabAlignment = TabStripPlacement;
             bool isMultiRow = _numRows > 1;
             int activeRow = 0;
-            int[] solution = new int[0];
+            int[] solution;
             Vector childOffset = new Vector();
             double[] headerSize = GetHeadersSize();
 
@@ -242,6 +242,10 @@ namespace Biaui.StandardControls.Internal
 
                 if (tabAlignment == Dock.Bottom && activeRow != 0)
                     childOffset.Y = (_numRows - activeRow) * _rowHeight;
+            }
+            else
+            {
+                solution = Array.Empty<int>();
             }
 
             int childIndex = 0;
@@ -409,8 +413,7 @@ namespace Biaui.StandardControls.Internal
                     // if we cannot add next header - flow to next row
                     // Store current row before we go to the next
                     rowWidth[currentRowIndex] = currentRowWidth; // Store the current row width
-                    rowHeaderCount[currentRowIndex] =
-                        numberOfHeadersInCurrentRow; // For each row we store the number os headers inside
+                    rowHeaderCount[currentRowIndex] = numberOfHeadersInCurrentRow; // For each row we store the number os headers inside
                     currentAverageGap =
                         Math.Max(0d,
                             (rowWidthLimit - currentRowWidth) /
@@ -437,7 +440,7 @@ namespace Biaui.StandardControls.Internal
 
             // If everithing fit in 1 row then exit (no separators needed)
             if (currentRowIndex == 0)
-                return new int[0];
+                return Array.Empty<int>();
 
             // Add the last row
             rowWidth[currentRowIndex] = currentRowWidth;
