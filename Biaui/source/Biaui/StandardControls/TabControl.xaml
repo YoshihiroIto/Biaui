@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls"
+                    xmlns:internal="clr-namespace:Biaui.StandardControls.Internal"
                     xmlns:standardControls="clr-namespace:Biaui.StandardControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Button.xaml" />
@@ -60,12 +61,12 @@
                                    Grid.Column="0"
                                    Panel.ZIndex="1">
 
-                            <TabPanel x:Name="TabPanel"
-                                      HorizontalAlignment="Left"
-                                      Background="Transparent"
-                                      DockPanel.Dock="Left"
-                                      IsItemsHost="true"
-                                      KeyboardNavigation.TabIndex="1" />
+                            <internal:TabPanelInternal x:Name="TabPanel"
+                                                       HorizontalAlignment="Left"
+                                                       Background="Transparent"
+                                                       DockPanel.Dock="Left"
+                                                       IsItemsHost="true"
+                                                       KeyboardNavigation.TabIndex="1" />
 
                             <Button x:Name="AddButton"
                                     HorizontalAlignment="Left"
