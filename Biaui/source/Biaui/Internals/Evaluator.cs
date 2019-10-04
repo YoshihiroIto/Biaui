@@ -1,6 +1,4 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Reflection;
+﻿using System.Data;
 
 namespace Biaui.Internals
 {
@@ -10,13 +8,8 @@ namespace Biaui.Internals
         {
             try
             {
-                return _evaluatorType.InvokeMember(
-                    "Eval",
-                    BindingFlags.InvokeMethod,
-                    null,
-                    _evaluatorInstance,
-                    new object[] {statement}
-                ).ToString();
+                var result = _dataTable.Compute(statement,"");
+                return result.ToString();
             }
             catch
             {
@@ -24,30 +17,6 @@ namespace Biaui.Internals
             }
         }
 
-        static Evaluator()
-        {
-            const string source =
-                @"package Evaluator
-                {
-                   class Evaluator
-                   {
-                      public function Eval(expr : String) : String 
-                      { 
-                         return eval(expr); 
-                      }
-                   }
-                }";
-
-            var provider = CodeDomProvider.CreateProvider("JScript");
-            var parameters = new CompilerParameters {GenerateInMemory = true};
-            var results = provider.CompileAssemblyFromSource(parameters, source);
-            var assembly = results.CompiledAssembly;
-
-            _evaluatorType = assembly.GetType("Evaluator.Evaluator");
-            _evaluatorInstance = Activator.CreateInstance(_evaluatorType);
-        }
-
-        private static readonly Type _evaluatorType;
-        private static readonly object _evaluatorInstance;
+        private static readonly DataTable _dataTable = new DataTable();
     }
 }

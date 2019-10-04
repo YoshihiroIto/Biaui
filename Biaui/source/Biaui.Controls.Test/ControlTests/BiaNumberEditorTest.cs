@@ -196,18 +196,6 @@ namespace Biaui.Controls.Test.ControlTests
             Thread.Sleep(500);
             Assert.Equal(99, ctrl.Value);
 
-            // 関数を受け付ける
-            ctrl.Click(MouseButtonType.Left, x, y);
-            SendKeys.SendWait("pow{(}2,3{)}{ENTER}{ENTER}");
-            Thread.Sleep(200);
-            Assert.Equal(8, ctrl.Value);
-
-            // 定数を受け付ける
-            ctrl.Click(MouseButtonType.Left, x, y);
-            SendKeys.SendWait("PI{ENTER}{ENTER}");
-            Thread.Sleep(200);
-            Assert.Equal(3.142, ctrl.Value);
-
             // リードオンリーで編集できない
             ctrl.Value = 70;
             ctrl.IsReadOnly = true;
