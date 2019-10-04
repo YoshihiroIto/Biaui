@@ -367,7 +367,7 @@ namespace Biaui.Controls
         {
             var w = TextRenderer.Default.CalcWidth(Content);
 
-            _textWidth = Constants.ButtonPaddingX + w + Constants.ButtonPaddingX;
+            _textWidth = Math.Ceiling(Constants.ButtonPaddingX + w + Constants.ButtonPaddingX);
         }
     }
 }

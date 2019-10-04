@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using Biaui.Internals;
 
@@ -95,8 +96,7 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            // ※  1は誤差吸収するため。
-            _textWidth = + FrameworkElementHelper.RoundLayoutValue(TextRenderer.Default.CalcWidth(Text) + 1);
+            _textWidth = FrameworkElementHelper.RoundLayoutValue(Math.Ceiling(TextRenderer.Default.CalcWidth(Text)));
         }
     }
 }
