@@ -129,5 +129,54 @@ namespace Biaui.Internals
 
         public const double BorderWidth = 1.0;
         public const double BorderHalfWidth = BorderWidth * 0.5;
+
+        internal static double RoundLayoutValue(this Visual visual, double value)
+            => RoundLayoutValue(value, visual.PixelsPerDip());
+
+        internal static ImmutableRect RoundLayoutRect(this Visual visual, in ImmutableRect rect)
+        {
+            var dpi = visual.PixelsPerDip();
+
+            return new ImmutableRect(
+                RoundLayoutValue(rect.X, dpi),
+                RoundLayoutValue(rect.Y, dpi),
+                RoundLayoutValue(rect.Width, dpi),
+                RoundLayoutValue(rect.Height, dpi));
+        }
+
+        internal static Rect RoundLayoutRect(this Visual visual, double x, double y, double w, double h)
+        {
+            var dpi = visual.PixelsPerDip();
+
+            return new Rect(
+                RoundLayoutValue(x, dpi),
+                RoundLayoutValue(y, dpi),
+                RoundLayoutValue(w, dpi),
+                RoundLayoutValue(h, dpi));
+        }
+
+        private static double RoundLayoutValue(double value, double dpiScale)
+        {
+            double newValue;
+
+            if (NumberHelper.AreClose(dpiScale, 1.0) == false)
+            {
+                newValue = Math.Round(value * dpiScale) / dpiScale;
+
+                if (double.IsNaN(newValue) ||
+                    double.IsInfinity(newValue) ||
+                    NumberHelper.AreClose(newValue, double.MaxValue))
+                {
+                    newValue = value;
+                }
+            }
+            else
+            {
+                newValue = value;
+            }
+
+            return newValue;
+        }
+
     }
 }
