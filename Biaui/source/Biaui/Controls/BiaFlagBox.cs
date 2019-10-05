@@ -256,14 +256,35 @@ namespace Biaui.Controls
 
         #endregion
 
-        private (bool, bool, bool, bool, bool, bool, bool, bool) AllFlags
+        private uint AllFlags
         {
-            get => (Flag0, Flag1, Flag2, Flag3, Flag4, Flag5, Flag6, Flag7);
-            set =>
-                (Flag0, Flag1, Flag2, Flag3, Flag4, Flag5, Flag6, Flag7) =
-                (
-                    value.Item1, value.Item2, value.Item3, value.Item4,
-                    value.Item5, value.Item6, value.Item7, value.Item8);
+            get
+            {
+                uint f = 0;
+
+                if (Flag0) f |= 1 << 0;
+                if (Flag1) f |= 1 << 1;
+                if (Flag2) f |= 1 << 2;
+                if (Flag3) f |= 1 << 3;
+                if (Flag4) f |= 1 << 4;
+                if (Flag5) f |= 1 << 5;
+                if (Flag6) f |= 1 << 6;
+                if (Flag7) f |= 1 << 7;
+
+                return f;
+            }
+
+            set
+            {
+                Flag0 = (value & (1 << 0)) != 0;
+                Flag1 = (value & (1 << 1)) != 0;
+                Flag2 = (value & (1 << 2)) != 0;
+                Flag3 = (value & (1 << 3)) != 0;
+                Flag4 = (value & (1 << 4)) != 0;
+                Flag5 = (value & (1 << 5)) != 0;
+                Flag6 = (value & (1 << 6)) != 0;
+                Flag7 = (value & (1 << 7)) != 0;
+            }
         }
 
         #region StartedContinuousEditingCommand
@@ -599,7 +620,7 @@ namespace Biaui.Controls
         #endregion
 
         private bool _isContinuousEdited;
-        private (bool, bool, bool, bool, bool, bool, bool, bool) _ContinuousEditingStartValue;
+        private uint _ContinuousEditingStartValue;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
