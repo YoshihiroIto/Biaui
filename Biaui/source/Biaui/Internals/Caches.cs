@@ -100,7 +100,7 @@ namespace Biaui.Internals
             }
         }
 
-        internal static Geometry GetClipGeom(double w, double h, double cornerRadius, bool isWidthBorder)
+        internal static Geometry GetClipGeom(Visual visual, double w, double h, double cornerRadius, bool isWidthBorder)
         {
             unchecked
             {
@@ -118,7 +118,7 @@ namespace Biaui.Internals
                     {
                         RadiusX = cornerRadius,
                         RadiusY = cornerRadius,
-                        Rect = FrameworkElementHelper.RoundLayoutRect(
+                        Rect = visual.RoundLayoutRect(
                             FrameworkElementExtensions.BorderWidth * 0.5,
                             FrameworkElementExtensions.BorderWidth * 0.5,
                             w - FrameworkElementExtensions.BorderWidth,
@@ -131,7 +131,7 @@ namespace Biaui.Internals
                     {
                         RadiusX = cornerRadius,
                         RadiusY = cornerRadius,
-                        Rect = FrameworkElementHelper.RoundLayoutRect(0, 0, w, h)
+                        Rect = visual.RoundLayoutRect(0, 0, w, h)
                     };
                 }
 

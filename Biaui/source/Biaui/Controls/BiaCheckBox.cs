@@ -80,7 +80,7 @@ namespace Biaui.Controls
             dc.DrawRoundedRectangle(
                 Background,
                 this.GetBorderPen(BoxBorderColor),
-                FrameworkElementHelper.RoundLayoutRect(
+                this.RoundLayoutRect(
                     0 + FrameworkElementExtensions.BorderHalfWidth, 
                     2 + FrameworkElementExtensions.BorderHalfWidth,
                     16 - FrameworkElementExtensions.BorderWidth,
@@ -97,7 +97,7 @@ namespace Biaui.Controls
             }
 
             // キャプション
-            TextRenderer.Default.Draw(Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
+            TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
 
         private static readonly Geometry _markGeom =

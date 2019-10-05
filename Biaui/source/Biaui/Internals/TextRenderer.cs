@@ -60,6 +60,7 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal double Draw(
+            Visual visual,
             string text,
             double x,
             double y,
@@ -74,6 +75,7 @@ namespace Biaui.Internals
             maxWidth = Math.Ceiling(maxWidth);
 
             return Draw(
+                visual,
                 text,
                 0,
                 text.Length,
@@ -86,6 +88,7 @@ namespace Biaui.Internals
         }
 
         internal double Draw(
+            Visual visual,
             string text,
             int textStartIndex,
             int textLength,
@@ -105,7 +108,7 @@ namespace Biaui.Internals
             if (maxWidth <= 0)
                 return 0;
 
-            var gr = MakeGlyphRun(text, textStartIndex, textLength, x, y, maxWidth, align);
+            var gr = MakeGlyphRun(visual, text, textStartIndex, textLength, x, y, maxWidth, align);
             if (gr == default)
                 return 0;
 
@@ -146,6 +149,7 @@ namespace Biaui.Internals
             _fontLineSpacing * _fontSize;
 
         private (GlyphRun, double) MakeGlyphRun(
+            Visual visual,
             string text,
             int textStartIndex,
             int textLength,
@@ -154,6 +158,8 @@ namespace Biaui.Internals
             double maxWidth,
             TextAlignment align)
         {
+            var dpi = (float)visual.PixelsPerDip();
+
             int MakeHashCode()
             {
                 var hashCode = text.GetHashCode();
@@ -163,6 +169,7 @@ namespace Biaui.Internals
                 hashCode = (hashCode * 397) ^ offsetY.GetHashCode();
                 hashCode = (hashCode * 397) ^ maxWidth.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)align;
+                hashCode = (hashCode * 397) ^ dpi.GetHashCode();
                 return hashCode;
             }
 
@@ -237,7 +244,7 @@ namespace Biaui.Internals
                     0,
                     false,
                     _fontSize,
-                    (float) WpfHelper.PixelsPerDip,
+                    dpi,
                     glyphIndexes,
                     new Point(x, y),
                     advanceWidths,

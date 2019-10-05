@@ -5,8 +5,6 @@ using Biaui.Internals;
 
 namespace Biaui.Controls
 {
-    using static FrameworkElementHelper;
-
     public class BiaHsvWheelCursor : FrameworkElement
     {
         #region BorderColor
@@ -145,21 +143,22 @@ namespace Biaui.Controls
                 return;
 
             // Cursor
-            RenderHelper.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
+            this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
 
         private Point CursorRenderPos =>
-            MakeCursorRenderPos(ActualWidth, ActualHeight, Hue, Saturation);
+            MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
         internal static Point MakeCursorRenderPos(
+            Visual visual,
             double actualWidth,
             double actualHeight,
             double hue,
             double saturation)
         {
-            var bw = RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
-            var w = RoundLayoutValue(actualWidth - bw * 2);
-            var h = RoundLayoutValue(actualHeight - bw * 2);
+            var bw = visual.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var w = visual.RoundLayoutValue(actualWidth - bw * 2);
+            var h = visual.RoundLayoutValue(actualHeight - bw * 2);
 
             var r = hue * 2.0 * Math.PI;
 
@@ -168,7 +167,7 @@ namespace Biaui.Controls
             var x = bw + Math.Cos(r) * saturation * (w / 2) / cx + w / 2;
             var y = bw + Math.Sin(r) * saturation * (h / 2) / cy + h / 2;
 
-            return new Point(RoundLayoutValue(x), RoundLayoutValue(y));
+            return new Point(visual.RoundLayoutValue(x), visual.RoundLayoutValue(y));
         }
 
         internal static (double X, double Y) MakeAspectRatioCorrection(double actualWidth, double actualHeight)

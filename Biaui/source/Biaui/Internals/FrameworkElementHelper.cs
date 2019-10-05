@@ -1,27 +1,36 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 using static System.Double;
 
 namespace Biaui.Internals
 {
     internal static class FrameworkElementHelper
     {
-        internal static double RoundLayoutValue(double value)
-            => RoundLayoutValue(value, WpfHelper.PixelsPerDip);
+        internal static double RoundLayoutValue(this Visual visual, double value)
+            => RoundLayoutValue(value, visual.PixelsPerDip());
 
-        internal static ImmutableRect RoundLayoutRect(in ImmutableRect rect)
-            => new ImmutableRect(
-                RoundLayoutValue(rect.X, WpfHelper.PixelsPerDip),
-                RoundLayoutValue(rect.Y, WpfHelper.PixelsPerDip),
-                RoundLayoutValue(rect.Width, WpfHelper.PixelsPerDip),
-                RoundLayoutValue(rect.Height, WpfHelper.PixelsPerDip));
+        internal static ImmutableRect RoundLayoutRect(this Visual visual, in ImmutableRect rect)
+        {
+            var dpi = visual.PixelsPerDip();
 
-        internal static Rect RoundLayoutRect(double x, double y, double w, double h)
-            => new Rect(
-                RoundLayoutValue(x, WpfHelper.PixelsPerDip),
-                RoundLayoutValue(y, WpfHelper.PixelsPerDip),
-                RoundLayoutValue(w, WpfHelper.PixelsPerDip),
-                RoundLayoutValue(h, WpfHelper.PixelsPerDip));
+            return new ImmutableRect(
+                RoundLayoutValue(rect.X, dpi),
+                RoundLayoutValue(rect.Y, dpi),
+                RoundLayoutValue(rect.Width, dpi),
+                RoundLayoutValue(rect.Height, dpi));
+        }
+
+        internal static Rect RoundLayoutRect(this Visual visual, double x, double y, double w, double h)
+        {
+            var dpi = visual.PixelsPerDip();
+
+            return new Rect(
+                RoundLayoutValue(x, dpi),
+                RoundLayoutValue(y, dpi),
+                RoundLayoutValue(w, dpi),
+                RoundLayoutValue(h, dpi));
+        }
 
         private static double RoundLayoutValue(double value, double dpiScale)
         {

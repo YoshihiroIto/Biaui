@@ -372,7 +372,7 @@ namespace Biaui.Controls
 
             if (isCornerRadiusZero == false)
                 dc.PushClip(
-                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
+                    Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, true));
             {
                 var displayItem = ItemToStringConverter?.Convert(SelectedItem, typeof(string),
                                       ItemToStringConverterParameter, CultureInfo.CurrentUICulture)
@@ -380,6 +380,7 @@ namespace Biaui.Controls
 
                 if (displayItem != null)
                     TextRenderer.Default.Draw(
+                        this,
                         displayItem.ToString(),
                         4.5, 3.5,
                         Foreground,

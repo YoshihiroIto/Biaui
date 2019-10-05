@@ -288,7 +288,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            var bw = FrameworkElementHelper.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
             var width = ActualWidth - bw * 2;
             var height = ActualHeight - bw * 2;
@@ -365,7 +365,7 @@ namespace Biaui.Controls
             // マウス位置を補正する
             if (isOut)
             {
-                var pos = BiaHsvWheelCursor.MakeCursorRenderPos(ActualWidth, ActualHeight, Hue, Saturation);
+                var pos = BiaHsvWheelCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
                 var mousePos = PointToScreen(pos);
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
@@ -435,7 +435,7 @@ namespace Biaui.Controls
 
         private bool IsOutSide(Point pos)
         {
-            var bw = FrameworkElementHelper.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
             var width = ActualWidth - bw * 2;
             var height = ActualHeight - bw * 2;

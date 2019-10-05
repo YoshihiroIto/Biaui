@@ -109,7 +109,7 @@ namespace Biaui.Controls
             }
 
             // キャプション
-            TextRenderer.Default.Draw(Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
+            TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
 
         protected override void Clicked()

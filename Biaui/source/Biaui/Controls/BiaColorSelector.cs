@@ -70,7 +70,7 @@ namespace Biaui.Controls
                         var self = (BiaColorSelector) s;
                         self._BorderColor = (Color) e.NewValue;
 
-                        self._border = Caches.GetPen(self._BorderColor, FrameworkElementHelper.RoundLayoutValue(1));
+                        self._border = Caches.GetPen(self._BorderColor, self.RoundLayoutValue(1));
                     }));
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -516,7 +517,7 @@ namespace Biaui.Controls
 
             // 背景
             {
-                dc.PushClip(Caches.GetClipGeom(ActualWidth, ActualHeight, Constants.BasicCornerRadiusPrim, true));
+                dc.PushClip(Caches.GetClipGeom(this, ActualWidth, ActualHeight, Constants.BasicCornerRadiusPrim, true));
 
                 var index = 0;
                 var isEnabled = IsEnabled;
@@ -539,7 +540,7 @@ namespace Biaui.Controls
                 dc.Pop();
             }
 
-            var borderPen = Caches.GetPen(Color.FromRgb(0x2D, 0x2D, 0x30), FrameworkElementHelper.RoundLayoutValue(1));
+            var borderPen = Caches.GetPen(Color.FromRgb(0x2D, 0x2D, 0x30), this.RoundLayoutValue(1));
 
             dc.DrawRoundedRectangle(
                 null,
@@ -551,18 +552,18 @@ namespace Biaui.Controls
             // 境界線
             {
                 {
-                    var x = FrameworkElementHelper.RoundLayoutValue(Width);
-                    var y = FrameworkElementHelper.RoundLayoutValue(Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
+                    var x = this.RoundLayoutValue(Width);
+                    var y = this.RoundLayoutValue(Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
 
                     dc.DrawLine(borderPen, new Point(0, y), new Point(x, y));
                 }
 
                 {
-                    var y = FrameworkElementHelper.RoundLayoutValue(Height);
+                    var y = this.RoundLayoutValue(Height);
 
                     for (var column = 1; column != ColumnCount; ++column)
                     {
-                        var x = FrameworkElementHelper.RoundLayoutValue(column * ButtonWidth + FrameworkElementExtensions.BorderHalfWidth);
+                        var x = this.RoundLayoutValue(column * ButtonWidth + FrameworkElementExtensions.BorderHalfWidth);
                         dc.DrawLine(borderPen, new Point(x, 0), new Point(x, y));
                     }
                 }

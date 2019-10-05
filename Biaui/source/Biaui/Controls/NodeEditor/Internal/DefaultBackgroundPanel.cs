@@ -181,8 +181,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var pen =
                         (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(curve.Key.Color, LineWidth)
-                            : Caches.GetPen(curve.Key.Color, LineWidth);
+                            ? Caches.GetDashedPen(curve.Key.Color, this.RoundLayoutValue(LineWidth))
+                            : Caches.GetPen(curve.Key.Color, this.RoundLayoutValue(LineWidth));
 
                     ((IDisposable) curve.Value.Ctx).Dispose();
                     dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);

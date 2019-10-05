@@ -78,6 +78,7 @@ namespace Biaui.Controls
                 return;
 
             TextRenderer.Default.Draw(
+                this,
                 Text,
                 0, 0,
                 Foreground,
@@ -96,7 +97,7 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            _textWidth = FrameworkElementHelper.RoundLayoutValue(Math.Ceiling(TextRenderer.Default.CalcWidth(Text)));
+            _textWidth = this.RoundLayoutValue(Math.Ceiling(TextRenderer.Default.CalcWidth(Text)));
         }
     }
 }

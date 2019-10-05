@@ -10,11 +10,11 @@ namespace Biaui.Internals
         {
             if (isWithBorder)
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualWidth - BorderWidth);
+                return self.RoundLayoutValue(self.ActualWidth - BorderWidth);
             }
             else
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualWidth);
+                return self.RoundLayoutValue(self.ActualWidth);
             }
         }
 
@@ -23,11 +23,11 @@ namespace Biaui.Internals
         {
             if (isWithBorder)
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualHeight - BorderWidth);
+                return self.RoundLayoutValue(self.ActualHeight - BorderWidth);
             }
             else
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualHeight);
+                return self.RoundLayoutValue(self.ActualHeight);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Biaui.Internals
         }
 
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
-            => Caches.GetPen(color, FrameworkElementHelper.RoundLayoutValue(BorderWidth));
+            => Caches.GetPen(color, self.RoundLayoutValue(BorderWidth));
 
         internal static void SetMouseClipping(this FrameworkElement self)
         {

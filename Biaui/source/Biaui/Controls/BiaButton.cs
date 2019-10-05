@@ -281,6 +281,7 @@ namespace Biaui.Controls
             const double y = 4.0; // todo:正しく求める
 
             TextRenderer.Default.Draw(
+                this,
                 Content,
                 Constants.ButtonPaddingX,
                 y,

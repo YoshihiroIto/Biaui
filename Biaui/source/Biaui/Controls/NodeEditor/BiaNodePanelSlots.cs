@@ -81,7 +81,7 @@ namespace Biaui.Controls.NodeEditor
                 curve.Ctx.DrawEllipse(slotPos, r, r, true, true);
             }
 
-            var pen = Caches.GetPen(Colors.Black, 2);
+            var pen = Caches.GetPen(Colors.Black, this.RoundLayoutValue(2));
 
             foreach (var c in _ellipses)
             {

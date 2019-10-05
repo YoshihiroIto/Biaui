@@ -258,11 +258,12 @@ namespace Biaui.Controls
             var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
 
             if (isCornerRadiusZero == false)
-                dc.PushClip(Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
+                dc.PushClip(Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, true));
             {
                 if (_isEditing == false)
                     if (string.IsNullOrEmpty(TargetText))
                         TextRenderer.Default.Draw(
+                            this,
                             Watermark,
                             4.5, 3.5,
                             WatermarkForeground,
@@ -272,6 +273,7 @@ namespace Biaui.Controls
                         );
 
                 TextRenderer.Default.Draw(
+                    this,
                     TargetText,
                     4.5, 3.5,
                     Foreground,

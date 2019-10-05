@@ -279,7 +279,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            var s = FrameworkElementHelper.RoundLayoutValue(1);
+            var s = this.RoundLayoutValue(1);
             var x = (pos.X - s) / (ActualWidth - s * 2);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
 
@@ -348,7 +348,7 @@ namespace Biaui.Controls
 
             // マウス位置を補正する
             {
-                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(ActualWidth, ActualHeight, Hue, Saturation);
+                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
                 var mousePos = PointToScreen(pos);
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);

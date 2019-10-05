@@ -108,7 +108,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.Black, 5));
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 3));
 
-            var slotPen = Caches.GetPen(Colors.Black, 2);
+            var slotPen = Caches.GetPen(Colors.Black, this.RoundLayoutValue(2));
 
             // 接続元ポートの丸
             var srcRect = new ImmutableRect(

@@ -647,7 +647,7 @@ namespace Biaui.Controls
 
             if (isCornerRadiusZero == false)
                 dc.PushClip(
-                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
+                    Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
             {
                 if (Mode == BiaNumberEditorMode.Simple)
                     DrawSlider(dc);
@@ -715,7 +715,7 @@ namespace Biaui.Controls
                 : SliderBrush;
 
             var r = this.RoundLayoutActualRectangle(IsVisibleBorder);
-            r.Width = FrameworkElementHelper.RoundLayoutValue(w);
+            r.Width = this.RoundLayoutValue(w);
 
             dc.DrawRectangle(brush, null, r);
         }
@@ -727,6 +727,7 @@ namespace Biaui.Controls
             var offsetY = (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
             
             TextRenderer.Default.Draw(
+                this,
                 Caption,
                 Padding.Left + SpinWidth,
                 Padding.Top + offsetY,
@@ -737,6 +738,7 @@ namespace Biaui.Controls
             );
 
             TextRenderer.Default.Draw(
+                this,
                 UiValueString,
                 Padding.Left,
                 Padding.Top + offsetY,
