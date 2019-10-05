@@ -80,9 +80,13 @@ namespace Biaui.Controls
             dc.DrawRoundedRectangle(
                 Background,
                 this.GetBorderPen(BoxBorderColor),
-                FrameworkElementHelper.RoundLayoutRect(0, 2, 16, 16), null,
-                CornerRadius, null,
-                CornerRadius, null);
+                FrameworkElementHelper.RoundLayoutRect(
+                    0 + FrameworkElementExtensions.BorderHalfWidth, 
+                    2 + FrameworkElementExtensions.BorderHalfWidth,
+                    16 - FrameworkElementExtensions.BorderWidth,
+                    16 - FrameworkElementExtensions.BorderWidth),
+                CornerRadius, 
+                CornerRadius);
 
             // マーク
             if (IsChecked && IsPressed == false)

@@ -40,7 +40,7 @@ namespace Biaui.Internals
             }
             else
             {
-                newValue = Math.Round(value);
+                newValue = value;
             }
 
             return newValue;

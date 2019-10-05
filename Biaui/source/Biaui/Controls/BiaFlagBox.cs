@@ -539,22 +539,33 @@ namespace Biaui.Controls
                 dc.Pop();
             }
 
-            var borderPen = Caches.GetPen(Color.FromRgb(0x3F, 0x3F, 0x47), FrameworkElementHelper.RoundLayoutValue(1));
+            var borderPen = Caches.GetPen(Color.FromRgb(0x2D, 0x2D, 0x30), FrameworkElementHelper.RoundLayoutValue(1));
 
             dc.DrawRoundedRectangle(
                 null,
                 borderPen,
-                this.RoundLayoutActualRectangle(false),
+                this.RoundLayoutActualRectangle(true),
                 Constants.BasicCornerRadiusPrim,
                 Constants.BasicCornerRadiusPrim);
 
-
-            dc.DrawLine(borderPen, new Point(0, Height * 0.5), new Point(Width, Height * 0.5));
-
-            for (var column = 1; column != ColumnCount; ++column)
+            // 境界線
             {
-                var x = column * ButtonWidth;
-                dc.DrawLine(borderPen, new Point(x, 0), new Point(x, Height));
+                {
+                    var x = FrameworkElementHelper.RoundLayoutValue(Width);
+                    var y = FrameworkElementHelper.RoundLayoutValue(Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
+
+                    dc.DrawLine(borderPen, new Point(0, y), new Point(x, y));
+                }
+
+                {
+                    var y = FrameworkElementHelper.RoundLayoutValue(Height);
+
+                    for (var column = 1; column != ColumnCount; ++column)
+                    {
+                        var x = FrameworkElementHelper.RoundLayoutValue(column * ButtonWidth + FrameworkElementExtensions.BorderHalfWidth);
+                        dc.DrawLine(borderPen, new Point(x, 0), new Point(x, y));
+                    }
+                }
             }
         }
 

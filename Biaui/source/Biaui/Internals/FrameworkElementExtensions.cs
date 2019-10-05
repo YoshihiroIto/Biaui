@@ -37,8 +37,8 @@ namespace Biaui.Internals
             if (isWithBorder)
             {
                 return new Rect(
-                    RoundLayoutBorderWidth,
-                    RoundLayoutBorderWidth,
+                    BorderWidth * 0.5,
+                    BorderWidth * 0.5,
                     self.RoundLayoutActualWidth(isWithBorder),
                     self.RoundLayoutActualHeight(isWithBorder));
             }
@@ -127,9 +127,7 @@ namespace Biaui.Internals
                    pos.Y >= 0 && pos.Y <= self.ActualHeight;
         }
 
-        internal const double BorderWidth = 1.0;
-
-        private static readonly double RoundLayoutBorderWidth =
-            FrameworkElementHelper.RoundLayoutValue(BorderWidth * 0.5);
+        public const double BorderWidth = 1.0;
+        public const double BorderHalfWidth = BorderWidth * 0.5;
     }
 }
