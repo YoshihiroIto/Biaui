@@ -16,7 +16,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag0)
-                    SetValue(Flag0Property, value);
+                    SetValue(Flag0Property, Boxes.Bool(value));
             }
         }
 
@@ -47,7 +47,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag1)
-                    SetValue(Flag1Property, value);
+                    SetValue(Flag1Property, Boxes.Bool(value));
             }
         }
 
@@ -78,7 +78,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag2)
-                    SetValue(Flag2Property, value);
+                    SetValue(Flag2Property, Boxes.Bool(value));
             }
         }
 
@@ -109,7 +109,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag3)
-                    SetValue(Flag3Property, value);
+                    SetValue(Flag3Property, Boxes.Bool(value));
             }
         }
 
@@ -140,7 +140,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag4)
-                    SetValue(Flag4Property, value);
+                    SetValue(Flag4Property, Boxes.Bool(value));
             }
         }
 
@@ -171,7 +171,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag5)
-                    SetValue(Flag5Property, value);
+                    SetValue(Flag5Property, Boxes.Bool(value));
             }
         }
 
@@ -202,7 +202,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag6)
-                    SetValue(Flag6Property, value);
+                    SetValue(Flag6Property, Boxes.Bool(value));
             }
         }
 
@@ -233,7 +233,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag7)
-                    SetValue(Flag7Property, value);
+                    SetValue(Flag7Property, Boxes.Bool(value));
             }
         }
 
@@ -325,7 +325,7 @@ namespace Biaui.Controls
         #endregion
 
         #region StartedBatchEditingCommand
-        
+
         public ICommand StartedBatchEditingCommand
         {
             get => _StartedBatchEditingCommand;
@@ -335,9 +335,9 @@ namespace Biaui.Controls
                     SetValue(StartedBatchEditingCommandProperty, value);
             }
         }
-        
+
         private ICommand _StartedBatchEditingCommand;
-        
+
         public static readonly DependencyProperty StartedBatchEditingCommandProperty =
             DependencyProperty.Register(
                 nameof(StartedBatchEditingCommand),
@@ -348,13 +348,13 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFlagBox) s;
-                        self._StartedBatchEditingCommand = (ICommand)e.NewValue;
+                        self._StartedBatchEditingCommand = (ICommand) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region EndBatchEditingCommand
-        
+
         public ICommand EndBatchEditingCommand
         {
             get => _EndBatchEditingCommand;
@@ -364,9 +364,9 @@ namespace Biaui.Controls
                     SetValue(EndBatchEditingCommandProperty, value);
             }
         }
-        
+
         private ICommand _EndBatchEditingCommand;
-        
+
         public static readonly DependencyProperty EndBatchEditingCommandProperty =
             DependencyProperty.Register(
                 nameof(EndBatchEditingCommand),
@@ -377,9 +377,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFlagBox) s;
-                        self._EndBatchEditingCommand = (ICommand)e.NewValue;
+                        self._EndBatchEditingCommand = (ICommand) e.NewValue;
                     }));
-        
+
         #endregion
 
         private bool _isPressed;
@@ -537,8 +537,7 @@ namespace Biaui.Controls
             }
         }
 
-        private void DrawButton(DrawingContext dc, double x, double y, bool isEnabled, bool isChecked, bool isMouseOver,
-            bool isPressed)
+        private void DrawButton(DrawingContext dc, double x, double y, bool isEnabled, bool isChecked, bool isMouseOver, bool isPressed)
         {
             dc.DrawRectangle(
                 SelectBrush(isEnabled, isChecked, isMouseOver, isPressed),
@@ -600,7 +599,7 @@ namespace Biaui.Controls
         #endregion
 
         private bool _isContinuousEdited;
-        private (bool, bool, bool, bool, bool, bool, bool, bool)  _ContinuousEditingStartValue;
+        private (bool, bool, bool, bool, bool, bool, bool, bool) _ContinuousEditingStartValue;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
