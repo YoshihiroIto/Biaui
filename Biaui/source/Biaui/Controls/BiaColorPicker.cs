@@ -518,32 +518,31 @@ namespace Biaui.Controls
             _isConverting = false;
         }
 
+        private int _editingDepth;
+        private (double, double, double) _continuousEditingStartValue;
+
         private void SetContinuousEditingCommand()
         {
-            int editingDepth = 0;
-
-            (double, double, double) continuousEditingStartValue = default;
-
             var started = new DelegateCommand(() =>
             {
-                if (editingDepth == 0)
+                if (_editingDepth == 0)
                 {
-                    continuousEditingStartValue = (Red, Green, Blue);
+                    _continuousEditingStartValue = (Red, Green, Blue);
 
                     if (StartedContinuousEditingCommand != null)
                         if (StartedContinuousEditingCommand.CanExecute(null))
                             StartedContinuousEditingCommand.Execute(null);
                 }
 
-                ++editingDepth;
+                ++_editingDepth;
             });
 
             var end = new DelegateCommand(() =>
             {
-                Debug.Assert(editingDepth > 0);
+                Debug.Assert(_editingDepth > 0);
 
-                --editingDepth;
-                if (editingDepth == 0)
+                --_editingDepth;
+                if (_editingDepth == 0)
                 {
                     if (EndContinuousEditingCommand != null)
                     {
@@ -551,7 +550,7 @@ namespace Biaui.Controls
                         {
                             var changedValue = (Red, Green, Blue);
 
-                            (Red, Green, Blue) = continuousEditingStartValue;
+                            (Red, Green, Blue) = _continuousEditingStartValue;
 
                             EndContinuousEditingCommand.Execute(null);
 
