@@ -300,8 +300,8 @@ namespace Biaui.Controls
             var dy = y - 0.5;
 
             var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
-            dx = dx * cx;
-            dy = dy * cy;
+            dx *= cx;
+            dy *= cy;
 
             var h = (Math.Atan2(-dy, -dx) + Math.PI) / (2.0 * Math.PI);
             var s = Math.Sqrt(dx * dx + dy * dy) * 2;
@@ -447,8 +447,8 @@ namespace Biaui.Controls
             var dy = y - 0.5;
 
             var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
-            dx = dx * cx;
-            dy = dy * cy;
+            dx *= cx;
+            dy *= cy;
 
             var s = Math.Sqrt(dx * dx + dy * dy) * 2;
 
