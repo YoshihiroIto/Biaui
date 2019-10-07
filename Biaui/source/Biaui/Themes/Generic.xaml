@@ -12,6 +12,7 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHighlightTextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaIconButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaIconToggleButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaProgressPanel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaRadioButton.xaml" />

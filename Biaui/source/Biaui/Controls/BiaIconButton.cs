@@ -70,8 +70,6 @@ namespace Biaui.Controls
 
         #endregion
 
-
-
         #region Command
 
         public ICommand Command
