@@ -125,7 +125,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleAlphaEditor)
-                    SetValue(IsVisibleAlphaEditorProperty, value);
+                    SetValue(IsVisibleAlphaEditorProperty, Boxes.Bool(value));
             }
         }
 

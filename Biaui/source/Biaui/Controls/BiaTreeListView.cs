@@ -248,7 +248,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleItemExpanderButton)
-                    SetValue(IsVisibleItemExpanderButtonProperty, value);
+                    SetValue(IsVisibleItemExpanderButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -277,7 +277,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsSelectionEnabled)
-                    SetValue(IsSelectionEnabledProperty, value);
+                    SetValue(IsSelectionEnabledProperty, Boxes.Bool(value));
             }
         }
         
@@ -334,18 +334,22 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaTreeListView)));
         }
 
+        private ScrollViewer _headerSv;
+
         public BiaTreeListView()
         {
             Loaded += (_, __) =>
             {
                 var treeView = this.Descendants<BiaTreeView>().First();
                 var treeViewSv = treeView.Descendants<ScrollViewer>().First();
-                var headerSv = this.Descendants<ScrollViewer>().First(x => x.Name == "HeaderScrollViewer");
 
                 treeViewSv.ScrollChanged += (___, e) =>
                 {
-                    headerSv.Width = e.ViewportWidth;
-                    headerSv.ScrollToHorizontalOffset(e.HorizontalOffset);
+                    if (_headerSv == null)
+                        _headerSv = this.Descendants<ScrollViewer>().First(x => x.Name == "HeaderScrollViewer");
+
+                    _headerSv.Width = e.ViewportWidth;
+                    _headerSv.ScrollToHorizontalOffset(e.HorizontalOffset);
                 };
             };
         }

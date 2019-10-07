@@ -129,7 +129,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsInverseValue)
-                    SetValue(IsInverseValueProperty, value);
+                    SetValue(IsInverseValueProperty, Boxes.Bool(value));
             }
         }
 

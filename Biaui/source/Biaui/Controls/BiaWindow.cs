@@ -130,7 +130,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleMinimizeButton)
-                    SetValue(IsVisibleMinimizeButtonProperty, value);
+                    SetValue(IsVisibleMinimizeButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -159,7 +159,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleMaximizeButton)
-                    SetValue(IsVisibleMaximizeButtonProperty, value);
+                    SetValue(IsVisibleMaximizeButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -188,7 +188,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleNormalizeButton)
-                    SetValue(IsVisibleNormalizeButtonProperty, value);
+                    SetValue(IsVisibleNormalizeButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -217,7 +217,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleCloseButtonButton)
-                    SetValue(IsVisibleCloseButtonButtonProperty, value);
+                    SetValue(IsVisibleCloseButtonButtonProperty, Boxes.Bool(value));
             }
         }
 

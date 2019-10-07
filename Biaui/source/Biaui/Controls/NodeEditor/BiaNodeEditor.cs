@@ -206,7 +206,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (value != _NodeLinkStyle)
-                    SetValue(NodeLinkStyleProperty, value);
+                    SetValue(NodeLinkStyleProperty, Boxes.NodeEditorNodeLinkStyle(value));
             }
         }
 
@@ -216,7 +216,7 @@ namespace Biaui.Controls.NodeEditor
             DependencyProperty.Register(nameof(NodeLinkStyle), typeof(BiaNodeEditorNodeLinkStyle),
                 typeof(BiaNodeEditor),
                 new FrameworkPropertyMetadata(
-                    BiaNodeEditorNodeLinkStyle.AxisAlign,
+                    Boxes.NodeEditorNodeLinkStyleAxisAlign,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
@@ -344,7 +344,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (value != _CanConnectLink)
-                    SetValue(CanConnectLinkProperty, value);
+                    SetValue(CanConnectLinkProperty, Boxes.Bool(value));
             }
         }
 
@@ -430,14 +430,16 @@ namespace Biaui.Controls.NodeEditor
 
         internal readonly NodeContainer[] NodeContainers = new NodeContainer[3];
 
+        private readonly MouseOperator _mouseOperator;
+
         public BiaNodeEditor()
         {
-            var mouseOperator = new MouseOperator(this, this);
+            _mouseOperator = new MouseOperator(this, this);
 
             for(var i = 0;i != NodeContainers.Length;++ i)
-                NodeContainers[i] = new NodeContainer(this, (BiaNodePanelLayer)i, mouseOperator);
+                NodeContainers[i] = new NodeContainer(this, (BiaNodePanelLayer)i, _mouseOperator);
 
-            SetupPropertyEditCommand(mouseOperator);
+            SetupPropertyEditCommand();
 
             IBackgroundPanel backgroundPanel;
             var grid = new Grid();
@@ -449,8 +451,8 @@ namespace Biaui.Controls.NodeEditor
                 foreach (var nodeContainer in NodeContainers)
                     grid.Children.Add(nodeContainer);
 
-                grid.Children.Add(new BoxSelector(mouseOperator));
-                grid.Children.Add(new NodeSlotConnector(this, mouseOperator));
+                grid.Children.Add(new BoxSelector(_mouseOperator));
+                grid.Children.Add(new NodeSlotConnector(this, _mouseOperator));
                 grid.Children.Add(CreateScaleSlider());
             }
 
@@ -487,7 +489,7 @@ namespace Biaui.Controls.NodeEditor
                 NodeItemMoved += (_, __) => backgroundPanel.Invalidate();
                 LinksSourceChanging += (_, __) => backgroundPanel.Invalidate();
                 LinkChanged += (_, __) => backgroundPanel.Invalidate();
-                mouseOperator.PreMouseLeftButtonUp += (_, __) => backgroundPanel.Invalidate();
+                _mouseOperator.PreMouseLeftButtonUp += (_, __) => backgroundPanel.Invalidate();
             }
         }
 
@@ -560,32 +562,31 @@ namespace Biaui.Controls.NodeEditor
             return scaleSlider;
         }
 
-        private void SetupPropertyEditCommand(MouseOperator mouseOperator)
-        {
-            var isInEditing = false;
+        private bool _isInEditing;
 
-            mouseOperator.PostMouseLeftButtonDown += (_, __) =>
+        private void SetupPropertyEditCommand()
+        {
+            _mouseOperator.PostMouseLeftButtonDown += (_, __) =>
             {
                 // キー操作を受け付けるためにフォーカスをあてる
                 Focus();
 
-                isInEditing = mouseOperator.IsBoxSelect ||
-                              mouseOperator.IsPanelMove;
+                _isInEditing = _mouseOperator.IsBoxSelect ||
+                              _mouseOperator.IsPanelMove;
 
-                if (isInEditing == false)
+                if (_isInEditing == false)
                     return;
 
                 InvokePropertyEditStarting();
             };
 
-
-            mouseOperator.PostMouseLeftButtonUp += (_, __) =>
+            _mouseOperator.PostMouseLeftButtonUp += (_, __) =>
             {
-                if (isInEditing == false)
+                if (_isInEditing == false)
                     return;
 
                 InvokePropertyEditCompleted();
-                isInEditing = false;
+                _isInEditing = false;
             };
         }
 

@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 using Biaui.Controls;
+using Biaui.Controls.NodeEditor;
 
 namespace Biaui.Internals
 {
@@ -41,13 +44,45 @@ namespace Biaui.Internals
         internal static object Rect0 = new Rect(0,0,0,0);
         internal static object ImmutableRect0 = new ImmutableRect(0,0,0,0);
 
-        internal static object BiaNumberModeSimple = BiaNumberEditorMode.Simple;
+        internal static object NumberModeSimple = BiaNumberEditorMode.Simple;
+        internal static object NumberModeWideRange = BiaNumberEditorMode.WideRange;
+
+        internal static object NodeEditorNodeLinkStyleAxisAlign = BiaNodeEditorNodeLinkStyle.AxisAlign;
+        internal static object NodeEditorNodeLinkStyleBezierCurve = BiaNodeEditorNodeLinkStyle.BezierCurve;
 
         internal static object ConstantsBasicCornerRadiusPrim = Biaui.Constants.BasicCornerRadiusPrim;
 
         internal static object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static object Bool(bool i) => i ? BoolTrue : BoolFalse;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static object NumberEditorMode(BiaNumberEditorMode i)
+        {
+            switch (i)
+            {
+                case BiaNumberEditorMode.Simple:
+                    return NumberModeSimple;
+                case BiaNumberEditorMode.WideRange:
+                    return NumberModeWideRange;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(i), i, null);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static object NodeEditorNodeLinkStyle(BiaNodeEditorNodeLinkStyle i)
+        {
+            switch (i)
+            {
+                case BiaNodeEditorNodeLinkStyle.AxisAlign:
+                    return NodeEditorNodeLinkStyleAxisAlign;
+                case BiaNodeEditorNodeLinkStyle.BezierCurve:
+                    return NodeEditorNodeLinkStyleBezierCurve;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(i), i, null);
+            }
+        }
     }
 }

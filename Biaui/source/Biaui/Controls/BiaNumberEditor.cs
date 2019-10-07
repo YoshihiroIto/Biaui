@@ -458,7 +458,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Mode)
-                    SetValue(ModeProperty, value);
+                    SetValue(ModeProperty, Boxes.NumberEditorMode(value));
             }
         }
 
@@ -467,7 +467,7 @@ namespace Biaui.Controls
         public static readonly DependencyProperty ModeProperty =
             DependencyProperty.Register(nameof(Mode), typeof(BiaNumberEditorMode), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.BiaNumberModeSimple,
+                    Boxes.NumberModeSimple,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>

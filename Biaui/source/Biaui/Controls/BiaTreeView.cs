@@ -56,7 +56,7 @@ namespace Biaui.Controls
 
         public static void SetIsSelected(TreeViewItem target, bool value)
         {
-            target.SetValue(IsSelectedProperty, value);
+            target.SetValue(IsSelectedProperty, Boxes.Bool(value));
         }
 
         public event EventHandler ItemSelectionStarting;
@@ -99,7 +99,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleItemExpanderButton)
-                    SetValue(IsVisibleItemExpanderButtonProperty, value);
+                    SetValue(IsVisibleItemExpanderButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -128,7 +128,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsSelectionEnabled)
-                    SetValue(IsSelectionEnabledProperty, value);
+                    SetValue(IsSelectionEnabledProperty, Boxes.Bool(value));
             }
         }
         

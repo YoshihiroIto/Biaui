@@ -46,7 +46,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _isMouseWheelEnabled)
-                    SetValue(IsMouseWheelEnabledProperty, value);
+                    SetValue(IsMouseWheelEnabledProperty, Boxes.Bool(value));
             }
         }
 

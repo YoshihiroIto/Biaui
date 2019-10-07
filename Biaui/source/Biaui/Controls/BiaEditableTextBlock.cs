@@ -14,7 +14,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsEditing)
-                    SetValue(IsEditingProperty, value);
+                    SetValue(IsEditingProperty, Boxes.Bool(value));
             }
         }
         
