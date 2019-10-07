@@ -44,6 +44,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private static bool HitTestBezierInternal(Span<ImmutableVec2> bezierPoints, in ImmutableRect rect)
         {
+            Span<ImmutableVec2> cl = stackalloc ImmutableVec2[4];
+
             while (true)
             {
                 if (rect.Contains(bezierPoints[0]) || rect.Contains(bezierPoints[3]))
@@ -74,13 +76,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 var c = new ImmutableVec2((v0112.X + v1223.X) * 0.5, (v0112.Y + v1223.Y) * 0.5);
 
-                Span<ImmutableVec2> cl = new[]
-                {
-                    bezierPoints[0],
-                    v01,
-                    v0112,
-                    c
-                };
+                cl[0] = bezierPoints[0];
+                cl[1] = v01;
+                cl[2] = v0112;
+                cl[3] = c;
 
                 if (HitTestBezierInternal(cl, rect))
                     return true;
