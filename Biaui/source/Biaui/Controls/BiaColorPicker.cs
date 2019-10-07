@@ -450,9 +450,6 @@ namespace Biaui.Controls
                     case "ValueEditor":
                         _valueEditor = e;
                         break;
-
-                    default:
-                        throw new Exception();
                 }
             }
 
