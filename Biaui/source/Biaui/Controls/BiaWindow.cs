@@ -305,9 +305,7 @@ namespace Biaui.Controls
         {
             CloseButtonClicked?.Invoke(this, EventArgs.Empty);
 
-            if (CloseButtonClickedCommand != null)
-                if (CloseButtonClickedCommand.CanExecute(null))
-                    CloseButtonClickedCommand.Execute(null);
+            CloseButtonClickedCommand?.ExecuteIfCan(null);
         }
 
         // https://stackoverflow.com/questions/29207331/wpf-window-with-custom-chrome-has-unwanted-outline-on-right-and-bottom

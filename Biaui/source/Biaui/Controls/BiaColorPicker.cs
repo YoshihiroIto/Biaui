@@ -482,15 +482,11 @@ namespace Biaui.Controls
 
             _isConverting = true;
 
-            if (StartedBatchEditingCommand != null &&
-                StartedBatchEditingCommand.CanExecute(null))
-                StartedBatchEditingCommand.Execute(null);
+            StartedBatchEditingCommand?.ExecuteIfCan(null);
 
             (Hue, Saturation, Value) = ColorSpaceHelper.RgbToHsv(Red, Green, Blue);
 
-            if (EndBatchEditingCommand != null &&
-                EndBatchEditingCommand.CanExecute(null))
-                EndBatchEditingCommand.Execute(null);
+            EndBatchEditingCommand?.ExecuteIfCan(null);
 
             _isConverting = false;
         }
@@ -502,15 +498,11 @@ namespace Biaui.Controls
 
             _isConverting = true;
 
-            if (StartedBatchEditingCommand != null &&
-                StartedBatchEditingCommand.CanExecute(null))
-                StartedBatchEditingCommand.Execute(null);
+            StartedBatchEditingCommand?.ExecuteIfCan(null);
 
             (Red, Green, Blue) = ColorSpaceHelper.HsvToRgb(Hue, Saturation, Value);
 
-            if (EndBatchEditingCommand != null &&
-                EndBatchEditingCommand.CanExecute(null))
-                EndBatchEditingCommand.Execute(null);
+            EndBatchEditingCommand?.ExecuteIfCan(null);
 
             _isConverting = false;
         }
@@ -526,9 +518,7 @@ namespace Biaui.Controls
                 {
                     _continuousEditingStartValue = (Red, Green, Blue);
 
-                    if (StartedContinuousEditingCommand != null)
-                        if (StartedContinuousEditingCommand.CanExecute(null))
-                            StartedContinuousEditingCommand.Execute(null);
+                    StartedContinuousEditingCommand?.ExecuteIfCan(null);
                 }
 
                 ++_editingDepth;

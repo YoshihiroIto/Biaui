@@ -150,9 +150,7 @@ namespace Biaui.Controls
             _ContinuousEditingStartValue = SelectedItem;
             _dropDown = FindDropDown();
 
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             _dropDown.PreviewMouseDown += DropDownOnPreviewMouseDown;
             _dropDown.PreviewKeyDown += DropDownOnPreviewKeyDown;

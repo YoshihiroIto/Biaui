@@ -336,10 +336,8 @@ namespace Biaui.Controls
 
             _ContinuousEditingStartValue = (Hue, Saturation);
             _isContinuousEdited = true;
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
 
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             UpdateParams(e);
 
@@ -400,15 +398,11 @@ namespace Biaui.Controls
 
                         EndContinuousEditingCommand.Execute(null);
 
-                        if (StartedBatchEditingCommand != null &&
-                            StartedBatchEditingCommand.CanExecute(null))
-                            StartedBatchEditingCommand.Execute(null);
+                        StartedBatchEditingCommand?.ExecuteIfCan(null);
 
                         (Hue, Saturation) = changedValue;
 
-                        if (EndBatchEditingCommand != null &&
-                            EndBatchEditingCommand.CanExecute(null))
-                            EndBatchEditingCommand.Execute(null);
+                        EndBatchEditingCommand?.ExecuteIfCan(null);
                     }
                 }
 

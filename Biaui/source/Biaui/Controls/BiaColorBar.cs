@@ -321,9 +321,7 @@ namespace Biaui.Controls
 
             _ContinuousEditingStartValue = Value;
             _isContinuousEdited = true;
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             UpdateParams(e);
 

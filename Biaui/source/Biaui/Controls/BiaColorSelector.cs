@@ -341,9 +341,7 @@ namespace Biaui.Controls
                 item?.Focus();
             }
 
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)

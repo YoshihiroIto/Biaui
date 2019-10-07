@@ -584,9 +584,7 @@ namespace Biaui.Controls
             var listBoxBorder = _items.Descendants<Border>().First();
             listBoxBorder.BorderBrush = (Brush)FindResource("Item.SelectedActive.Border");
 
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
         }
 
         private void SetupListBoxItemTemplate()

@@ -346,9 +346,7 @@ namespace Biaui.Controls
         {
             RaiseEvent(new RoutedEventArgs(ClickEvent, this));
 
-            if (Command != null &&
-                Command.CanExecute(CommandParameter))
-                Command.Execute(CommandParameter);
+            Command?.ExecuteIfCan(CommandParameter);
         }
 
         private double _textWidth;

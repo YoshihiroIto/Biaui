@@ -641,9 +641,8 @@ namespace Biaui.Controls
 
             _ContinuousEditingStartValue = AllFlags;
             _isContinuousEdited = true;
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             CaptureMouse();
 
