@@ -194,7 +194,7 @@ namespace Biaui.Internals
                     if (_glyphDataCache.TryGetValue(text[textStartIndex + i], out var data) == false)
                     {
                         if (_toGlyphMap.TryGetValue(text[textStartIndex + i], out data.GlyphIndex) == false)
-                            throw new Exception();
+                            _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
 
                         data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
 
