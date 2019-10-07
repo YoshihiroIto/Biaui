@@ -9,8 +9,14 @@ namespace Biaui.Controls
     public class BiaIconButton : FrameworkElement
     {
         public static readonly RoutedEvent ClickEvent =
-            EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble,
+            EventManager.RegisterRoutedEvent(nameof(Click), RoutingStrategy.Bubble,
                 typeof(RoutedEventHandler), typeof(BiaIconButton));
+
+        public event RoutedEventHandler Click
+        {
+            add => AddHandler(ClickEvent, value);
+            remove => RemoveHandler(ClickEvent, value);
+        }
 
         #region Content
 
