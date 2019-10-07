@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -9,7 +11,7 @@ using Jewelry.Collections;
 
 namespace Biaui.Internals
 {
-    internal class TextRenderer
+    internal partial class TextRenderer
     {
         internal static readonly TextRenderer Default;
 
@@ -19,11 +21,13 @@ namespace Biaui.Internals
             var fontSize = (double) TextElement.FontSizeProperty.DefaultMetadata.DefaultValue;
 
             Default = new TextRenderer(
+                true,
                 fontFamily, fontSize,
                 FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
         }
 
         internal TextRenderer(
+            bool isDefault,
             FontFamily fontFamily,
             double fontSize,
             FontStyle style,
@@ -52,13 +56,26 @@ namespace Biaui.Internals
                     return;
             }
 
+            _isDefault = isDefault;
             _fontSize = fontSize;
 
-            _toGlyphMap = _glyphTypeface.CharacterToGlyphMap;
-            _advanceWidthsDict = _glyphTypeface.AdvanceWidths;
+            if (_isDefault)
+            {
+                _dotGlyphIndex = GlyphIndexArray['.'];
+                _dotAdvanceWidth = AdvanceWidthArray['.'];
+            }
+            else
+            {
+                _toGlyphMap = _glyphTypeface.CharacterToGlyphMap;
+                _advanceWidthsDict = _glyphTypeface.AdvanceWidths;
 
-            _glyphTypeface.CharacterToGlyphMap.TryGetValue('.', out _dotGlyphIndex);
-            _dotAdvanceWidth = _advanceWidthsDict[_dotGlyphIndex] * _fontSize;
+                _glyphTypeface.CharacterToGlyphMap.TryGetValue('.', out _dotGlyphIndex);
+                _dotAdvanceWidth = _advanceWidthsDict[_dotGlyphIndex] * _fontSize;
+            }
+
+            // グリフデータテーブルを作る
+            // 作ったものは、手動でソースコードに組み込む。
+            // MakeGlyphDataTable(_glyphTypeface, _fontSize);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -131,19 +148,27 @@ namespace Biaui.Internals
             if (_textWidthCache.TryGetValue(text, out var textWidth))
                 return textWidth;
 
-            for (var i = 0; i != text.Length; ++i)
+            if (_isDefault)
             {
-                if (_glyphDataCache.TryGetValue(text[i], out var data) == false)
+                for (var i = 0; i != text.Length; ++i)
+                    textWidth += AdvanceWidthArray[text[i]];
+            }
+            else
+            {
+                for (var i = 0; i != text.Length; ++i)
                 {
-                    if (_toGlyphMap.TryGetValue(text[i], out data.GlyphIndex) == false)
-                        _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
+                    if (_glyphDataCache.TryGetValue(text[i], out var data) == false)
+                    {
+                        if (_toGlyphMap.TryGetValue(text[i], out data.GlyphIndex) == false)
+                            _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
 
-                    data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
+                        data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
 
-                    _glyphDataCache.Add(text[i], data);
+                        _glyphDataCache.Add(text[i], data);
+                    }
+
+                    textWidth += data.AdvanceWidth;
                 }
-
-                textWidth += data.AdvanceWidth;
             }
 
             _textWidthCache.Add(text, textWidth);
@@ -151,8 +176,7 @@ namespace Biaui.Internals
             return textWidth;
         }
 
-        internal double FontHeight =>
-            _fontLineSpacing * _fontSize;
+        internal double FontHeight => _fontLineSpacing * _fontSize;
 
         private (GlyphRun, double) MakeGlyphRun(
             Visual visual,
@@ -191,20 +215,30 @@ namespace Biaui.Internals
             {
                 for (var i = 0; i != textLength; ++i)
                 {
-                    if (_glyphDataCache.TryGetValue(text[textStartIndex + i], out var data) == false)
+                    var targetChar = text[textStartIndex + i];
+
+                    if (_isDefault)
                     {
-                        if (_toGlyphMap.TryGetValue(text[textStartIndex + i], out data.GlyphIndex) == false)
-                            _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
-
-                        data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
-
-                        _glyphDataCache.Add(text[textStartIndex + i], data);
+                        glyphIndexes[i] = GlyphIndexArray[targetChar];
+                        advanceWidths[i] = AdvanceWidthArray[targetChar];
+                        textWidth += advanceWidths[i];
                     }
+                    else
+                    {
+                        if (_glyphDataCache.TryGetValue(targetChar, out var data) == false)
+                        {
+                            if (_toGlyphMap.TryGetValue(targetChar, out data.GlyphIndex) == false)
+                                _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
 
-                    glyphIndexes[i] = data.GlyphIndex;
-                    advanceWidths[i] = data.AdvanceWidth;
+                            data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
 
-                    textWidth += data.AdvanceWidth;
+                            _glyphDataCache.Add(targetChar, data);
+                        }
+
+                        glyphIndexes[i] = data.GlyphIndex;
+                        advanceWidths[i] = data.AdvanceWidth;
+                        textWidth += data.AdvanceWidth;
+                    }
 
                     if (textWidth > maxWidth)
                     {
@@ -289,6 +323,7 @@ namespace Biaui.Internals
 
             var newCount = glyphIndexes.Length - removeCount + 3;
             if (newCount < 3)
+                //#endif
                 return 0.0;
 
             // 文字列に ... を追加する
@@ -304,21 +339,68 @@ namespace Biaui.Internals
             return newTextWidth + dot3Width;
         }
 
+        #if DEBUG
+        // ReSharper disable once UnusedMember.Local
+        private static void MakeGlyphDataTable(GlyphTypeface glyphTypeface, double fontSize)
+        {
+            var toGlyphMap = glyphTypeface.CharacterToGlyphMap;
+            var advanceWidthsDict = glyphTypeface.AdvanceWidths;
+
+            toGlyphMap.TryGetValue(' ', out var dummyIndex);
+
+            var glyphIndexArray = new ushort[char.MaxValue];
+            var advanceWidthArray = new double[char.MaxValue];
+
+            for (var i = 0; i != char.MaxValue; ++i)
+            {
+                if (toGlyphMap.TryGetValue(i, out var glyphIndex) == false)
+                    glyphIndex = dummyIndex;
+
+                var advanceWidth = advanceWidthsDict[glyphIndex] * fontSize;
+
+                glyphIndexArray[i] = glyphIndex;
+                advanceWidthArray[i] = advanceWidth;
+            }
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("// ReSharper disable All");
+            sb.AppendLine("namespace Biaui.Internals");
+            sb.AppendLine("{");
+            sb.AppendLine("internal partial class TextRenderer");
+            sb.AppendLine("{");
+
+            sb.AppendLine("private static readonly ushort[] GlyphIndexArray = {");
+            sb.AppendLine(string.Join(",", glyphIndexArray));
+            sb.AppendLine("};");
+
+            sb.AppendLine("private static readonly double[] AdvanceWidthArray = {");
+            sb.AppendLine(string.Join(",", advanceWidthArray));
+            sb.AppendLine("};");
+
+            sb.AppendLine("}");
+            sb.AppendLine("}");
+
+            var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRendereri.table.cs");
+            File.WriteAllText(outputDir,sb.ToString());
+        }
+        #endif
 
         private readonly LruCache<int, (GlyphRun, double)> _textCache = new LruCache<int, (GlyphRun, double)>(10_0000, false);
+
+        private readonly LruCache<string, double> _textWidthCache = new LruCache<string, double>(10_1000, false);
+
+        private readonly IDictionary<int, ushort> _toGlyphMap;
+        private readonly IDictionary<ushort, double> _advanceWidthsDict;
 
         // 最大65536エントリ
         private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
 
-        private readonly LruCache<string, double> _textWidthCache = new LruCache<string, double>(10_1000, false);
-
+        private readonly bool _isDefault;
         private readonly GlyphTypeface _glyphTypeface;
         private readonly ushort _dotGlyphIndex;
         private readonly double _dotAdvanceWidth;
         private readonly double _fontSize;
         private readonly double _fontLineSpacing;
-
-        private readonly IDictionary<int, ushort> _toGlyphMap;
-        private readonly IDictionary<ushort, double> _advanceWidthsDict;
     }
 }
