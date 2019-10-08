@@ -677,12 +677,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle(IsVisibleBorder));
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder));
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle(IsVisibleBorder),
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
@@ -693,13 +693,13 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(IsVisibleBorder)
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder)
                 );
             else
                 dc.DrawRoundedRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(IsVisibleBorder),
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
@@ -709,12 +709,12 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutActualWidth(IsVisibleBorder) / SliderWidth;
+            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
             var brush = _isEditing
                 ? _textBox.Background
                 : SliderBrush;
 
-            var r = this.RoundLayoutActualRectangle(IsVisibleBorder);
+            var r = this.RoundLayoutRenderRectangle(IsVisibleBorder);
             r.Width = this.RoundLayoutValue(w);
 
             dc.DrawRectangle(brush, null, r);
@@ -1081,7 +1081,7 @@ namespace Biaui.Controls
         {
             // 自コントロール上であれば、終了させない
             var pos = e.GetPosition(this);
-            var rect = this.RoundLayoutActualRectangle(false);
+            var rect = this.RoundLayoutRenderRectangle(false);
             if (rect.Contains(pos))
                 return;
 
@@ -1190,6 +1190,9 @@ namespace Biaui.Controls
         {
             if (_isEditing)
                 _textBox.Measure(new Size(ActualWidth, ActualHeight));
+
+            // todo:DPI変更時に再描画が行われないため明示的に指示している。要調査。
+            InvalidateVisual();
 
             return base.MeasureOverride(availableSize);
         }

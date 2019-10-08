@@ -278,7 +278,7 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            var rect = this.RoundLayoutActualRectangle(true);
+            var rect = this.RoundLayoutRenderRectangle(true);
 
             dc.DrawRectangle(Brushes.Transparent, null, rect);
         }

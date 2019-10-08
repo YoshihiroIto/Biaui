@@ -296,12 +296,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true));
+                    this.RoundLayoutRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true),
+                    this.RoundLayoutRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }

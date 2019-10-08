@@ -69,8 +69,6 @@ namespace Biaui.Controls
                     {
                         var self = (BiaColorSelector) s;
                         self._BorderColor = (Color) e.NewValue;
-
-                        self._border = Caches.GetPen(self._BorderColor, self.RoundLayoutValue(1));
                     }));
 
         #endregion
@@ -227,7 +225,6 @@ namespace Biaui.Controls
 
         private static Brush _checker;
         private SolidColorBrush _background = Brushes.Transparent;
-        private Pen _border;
 
         protected override void OnRender(DrawingContext dc)
         {
@@ -235,7 +232,9 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            var rect = this.RoundLayoutActualRectangle(true);
+            var rect = this.RoundLayoutRenderRectangle(true);
+
+            var borderPen = this.GetBorderPen(BorderColor);
 
             if (IsEnabled)
             {
@@ -247,22 +246,22 @@ namespace Biaui.Controls
                     if (_background != null && _background.Color.A != 0xFF)
                         dc.DrawRectangle(_checker, null, rect);
 
-                    dc.DrawRectangle(_background, _border, rect);
+                    dc.DrawRectangle(_background, borderPen, rect);
                 }
                 else
                 {
                     if (_background != null && _background.Color.A != 0xFF)
                         dc.DrawRoundedRectangle(_checker, null, rect, CornerRadius, CornerRadius);
 
-                    dc.DrawRoundedRectangle(_background, _border, rect, CornerRadius, CornerRadius);
+                    dc.DrawRoundedRectangle(_background, borderPen, rect, CornerRadius, CornerRadius);
                 }
             }
             else
             {
                 if (NumberHelper.AreCloseZero(CornerRadius))
-                    dc.DrawRectangle(null, _border, rect);
+                    dc.DrawRectangle(null, borderPen, rect);
                 else
-                    dc.DrawRoundedRectangle(null, _border, rect, CornerRadius, CornerRadius);
+                    dc.DrawRoundedRectangle(null, borderPen, rect, CornerRadius, CornerRadius);
             }
         }
 
@@ -437,9 +436,16 @@ namespace Biaui.Controls
             if (done == false)
                 Value = _ContinuousEditingStartValue;
 
-
             Mouse.Capture(null);
             _popup.IsOpen = false;
+        }
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            // todo:DPI変更時に再描画が行われないため明示的に指示している。要調査。
+            InvalidateVisual();
+
+            return new Size(ActualWidth, ActualHeight);
         }
     }
 }

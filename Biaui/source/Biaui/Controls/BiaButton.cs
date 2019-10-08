@@ -273,12 +273,12 @@ namespace Biaui.Controls
                     dc.DrawRectangle(
                         Background,
                         null,
-                        this.RoundLayoutActualRectangle(false));
+                        this.RoundLayoutRenderRectangle(false));
                 else
                     dc.DrawRoundedRectangle(
                         Background,
                         null,
-                        this.RoundLayoutActualRectangle(false),
+                        this.RoundLayoutRenderRectangle(false),
                         CornerRadius,
                         CornerRadius);
             }

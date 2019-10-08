@@ -408,12 +408,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     Background,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true));
+                    this.RoundLayoutRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     Background,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true),
+                    this.RoundLayoutRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }

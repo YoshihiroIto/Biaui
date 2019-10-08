@@ -70,7 +70,7 @@ namespace Biaui.Controls
 
             // 自コントロール上であれば、終了させない
             var pos = e.GetPosition(textBox);
-            var rect = textBox.RoundLayoutActualRectangle(false);
+            var rect = textBox.RoundLayoutRenderRectangle(false);
             if (rect.Contains(pos))
                 return;
 

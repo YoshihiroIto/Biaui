@@ -263,7 +263,7 @@ namespace Biaui.Controls
                 UpdateBackgroundBrush();
             }
 
-            var rect = this.RoundLayoutActualRectangle(true);
+            var rect = this.RoundLayoutRenderRectangle(true);
             dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
 
             // Cursor

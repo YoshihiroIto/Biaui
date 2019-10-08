@@ -273,7 +273,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
                 dc.Pop();
 
-                //dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutActualRectangle(false));
+                //dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutRenderRectangle(false));
             }
 
             //TextRenderer.Default.Draw(isHit.ToString(), 0, 0, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Left);

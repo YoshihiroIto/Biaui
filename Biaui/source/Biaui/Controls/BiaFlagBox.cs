@@ -502,12 +502,6 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaFlagBox)));
         }
 
-        public BiaFlagBox()
-        {
-            Width = ColumnCount * ButtonWidth;
-            Height = RowCount * ButtonHeight;
-        }
-
         protected override void OnRender(DrawingContext dc)
         {
             if (ActualWidth <= 1 ||
@@ -516,7 +510,7 @@ namespace Biaui.Controls
 
             // 背景
             {
-                dc.PushClip(Caches.GetClipGeom(this, ActualWidth, ActualHeight, Constants.BasicCornerRadiusPrim, true));
+                dc.PushClip(Caches.GetClipGeom(this, RenderSize.Width, RenderSize.Height, Constants.BasicCornerRadiusPrim, false));
 
                 var index = 0;
                 var isEnabled = IsEnabled;
@@ -539,26 +533,19 @@ namespace Biaui.Controls
                 dc.Pop();
             }
 
-            var borderPen = Caches.GetPen(Color.FromRgb(0x2D, 0x2D, 0x30), this.RoundLayoutValue(1));
-
-            dc.DrawRoundedRectangle(
-                null,
-                borderPen,
-                this.RoundLayoutActualRectangle(true),
-                Constants.BasicCornerRadiusPrim,
-                Constants.BasicCornerRadiusPrim);
+            var borderPen = this.GetBorderPen(Color.FromRgb(0x2D, 0x2D, 0x30));
 
             // 境界線
             {
                 {
-                    var x = this.RoundLayoutValue(Width);
-                    var y = this.RoundLayoutValue(Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
+                    var x = this.RoundLayoutValue(RenderSize.Width);
+                    var y = this.RoundLayoutValue(RenderSize.Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
 
                     dc.DrawLine(borderPen, new Point(0, y), new Point(x, y));
                 }
 
                 {
-                    var y = this.RoundLayoutValue(Height);
+                    var y = this.RoundLayoutValue(RenderSize.Height + FrameworkElementExtensions.BorderHalfWidth);
 
                     for (var column = 1; column != ColumnCount; ++column)
                     {
@@ -574,7 +561,11 @@ namespace Biaui.Controls
             dc.DrawRectangle(
                 SelectBrush(isEnabled, isChecked, isMouseOver, isPressed),
                 null,
-                new Rect(x, y, ButtonWidth, ButtonHeight));
+                new Rect(
+                    this.RoundLayoutValue(x), 
+                    this.RoundLayoutValue(y),
+                    this.RoundLayoutValue(ButtonWidth),
+                    this.RoundLayoutValue(ButtonHeight)));
         }
 
         private static Brush SelectBrush(bool isEnabled, bool isChecked, bool isMouseOver, bool isPressed)
@@ -751,11 +742,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            return
-                pos.X >= 0.0 &&
-                pos.X <= ActualWidth &&
-                pos.Y >= 0.0 &&
-                pos.Y <= ActualHeight;
+            return this.IsInActualSize(pos);
         }
 
         private const double ButtonWidth = 16.0;
@@ -765,5 +752,13 @@ namespace Biaui.Controls
         private const int RowCount = 2;
 
         private const int ButtonCount = ColumnCount * RowCount;
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            // todo:DPI変更時に再描画が行われないため明示的に指示している。要調査。
+            InvalidateVisual();
+
+            return new Size(ColumnCount * ButtonWidth, RowCount * ButtonHeight);
+        }
     }
 }

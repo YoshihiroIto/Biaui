@@ -6,46 +6,46 @@ namespace Biaui.Internals
 {
     internal static class FrameworkElementExtensions
     {
-        internal static double RoundLayoutActualWidth(this FrameworkElement self, bool isWithBorder)
+        internal static double RoundLayoutRenderWidth(this FrameworkElement self, bool isWithBorder)
         {
             if (isWithBorder)
             {
-                return self.RoundLayoutValue(self.ActualWidth - BorderWidth);
+                return self.RoundLayoutValue(self.RenderSize.Width - BorderWidth);
             }
             else
             {
-                return self.RoundLayoutValue(self.ActualWidth);
+                return self.RoundLayoutValue(self.RenderSize.Width);
             }
         }
 
 
-        internal static double RoundLayoutActualHeight(this FrameworkElement self, bool isWithBorder)
+        internal static double RoundLayoutRenderHeight(this FrameworkElement self, bool isWithBorder)
         {
             if (isWithBorder)
             {
-                return self.RoundLayoutValue(self.ActualHeight - BorderWidth);
+                return self.RoundLayoutValue(self.RenderSize.Height - BorderWidth);
             }
             else
             {
-                return self.RoundLayoutValue(self.ActualHeight);
+                return self.RoundLayoutValue(self.RenderSize.Height);
             }
         }
 
-        internal static Rect RoundLayoutActualRectangle(this FrameworkElement self, bool isWithBorder)
+        internal static Rect RoundLayoutRenderRectangle(this FrameworkElement self, bool isWithBorder)
         {
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (isWithBorder)
             {
                 return new Rect(
-                    BorderWidth * 0.5,
-                    BorderWidth * 0.5,
-                    self.RoundLayoutActualWidth(isWithBorder),
-                    self.RoundLayoutActualHeight(isWithBorder));
+                    self.RoundLayoutValue(BorderHalfWidth),
+                    self.RoundLayoutValue(BorderHalfWidth),
+                    self.RoundLayoutRenderWidth(isWithBorder),
+                    self.RoundLayoutRenderHeight(isWithBorder));
             }
             else
             {
-                return new Rect(0, 0, self.RoundLayoutActualWidth(isWithBorder),
-                    self.RoundLayoutActualHeight(isWithBorder));
+                return new Rect(0, 0, self.RoundLayoutRenderWidth(isWithBorder),
+                    self.RoundLayoutRenderHeight(isWithBorder));
             }
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
         }
@@ -106,27 +106,6 @@ namespace Biaui.Internals
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
             => Caches.GetPen(color, self.RoundLayoutValue(BorderWidth));
 
-        internal static void SetMouseClipping(this FrameworkElement self)
-        {
-            var p0 = new Point(0, 0);
-            var p1 = new Point(self.ActualWidth + 1, self.ActualHeight + 1);
-            var dp0 = self.PointToScreen(p0);
-            var dp1 = self.PointToScreen(p1);
-            var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
-            Win32Helper.ClipCursor(ref cr);
-        }
-
-        internal static void ResetMouseClipping(this FrameworkElement self)
-        {
-            Win32Helper.ClipCursor(IntPtr.Zero);
-        }
-
-        internal static bool IsInActualSize(this FrameworkElement self, Point pos)
-        {
-            return pos.X >= 0 && pos.X <= self.ActualWidth &&
-                   pos.Y >= 0 && pos.Y <= self.ActualHeight;
-        }
-
         public const double BorderWidth = 1.0;
         public const double BorderHalfWidth = BorderWidth * 0.5;
 
@@ -178,5 +157,25 @@ namespace Biaui.Internals
             return newValue;
         }
 
+        internal static void SetMouseClipping(this FrameworkElement self)
+        {
+            var p0 = new Point(0, 0);
+            var p1 = new Point(self.ActualWidth + 1, self.ActualHeight + 1);
+            var dp0 = self.PointToScreen(p0);
+            var dp1 = self.PointToScreen(p1);
+            var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
+            Win32Helper.ClipCursor(ref cr);
+        }
+
+        internal static void ResetMouseClipping(this FrameworkElement self)
+        {
+            Win32Helper.ClipCursor(IntPtr.Zero);
+        }
+
+        internal static bool IsInActualSize(this FrameworkElement self, Point pos)
+        {
+            return pos.X >= 0 && pos.X <= self.ActualWidth &&
+                   pos.Y >= 0 && pos.Y <= self.ActualHeight;
+        }
     }
 }
