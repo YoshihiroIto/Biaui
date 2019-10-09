@@ -12,11 +12,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Test", "Biau
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Mock.Foundation", "Biaui.Controls.Mock.Foundation\Biaui.Controls.Mock.Foundation.csproj", "{6D462CD9-DE42-489C-B914-58CBA2D560F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui", "Biaui\Biaui.csproj", "{242505BF-A389-4A70-ACBF-27A2DEBB5E70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui", "Biaui\Biaui.csproj", "{242505BF-A389-4A70-ACBF-27A2DEBB5E70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Showcase", "Biaui.Showcase\Biaui.Showcase.csproj", "{DE520DBC-4796-430D-803B-D1BFA52E97CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Extension", "Biaui.Extension\Biaui.Extension.csproj", "{814DF7DE-879A-4375-B42F-559AB0A1730C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Extension", "Biaui.Extension\Biaui.Extension.csproj", "{814DF7DE-879A-4375-B42F-559AB0A1730C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
