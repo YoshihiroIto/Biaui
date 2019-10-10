@@ -12,7 +12,7 @@ namespace Biaui.StandardControls.Internal
     // Based on this code
     // https://github.com/dotnet/wpf/blob/master/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Primitives/TabPanel.cs
 
-    public class TabPanelInternal : Panel
+    public class TabPanelInternal : TabPanel
     {
         //-------------------------------------------------------------------
         //
