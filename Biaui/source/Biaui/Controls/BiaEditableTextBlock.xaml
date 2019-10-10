@@ -23,6 +23,8 @@
     </Style>
 
     <Style TargetType="{x:Type controls:BiaEditableTextBlock}">
+        <Setter Property="Cursor" Value="Hand" />
+
         <Style.Triggers>
             <Trigger Property="IsEditing" Value="True">
                 <Setter Property="Template">
