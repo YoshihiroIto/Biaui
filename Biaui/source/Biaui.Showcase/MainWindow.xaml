@@ -110,6 +110,8 @@
                 <controls:BiaTextBlock Text="オランダ" ToolTip="アムステルダム" />
                 <controls:BiaTextBlock Text="日本" ToolTip="東京" />
 
+                <controls:BiaEditableTextBlock Text="Editable" />
+
                 <controls:BiaButton Content="abc" />
                 <controls:BiaButton Content="1234" />
                 <controls:BiaButton Content="東京" IsEnabled="False" />

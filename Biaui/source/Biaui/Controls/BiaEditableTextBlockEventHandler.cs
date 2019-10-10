@@ -50,16 +50,19 @@ namespace Biaui.Controls
                 case Key.Tab:
                     parent.Text = textBox.Text;
                     FinishEditing(parent, textBox);
+                    e.Handled = true;
                     break;
 
                 case Key.Return:
                     parent.Text = textBox.Text;
                     FinishEditing(parent, textBox);
+                    e.Handled = true;
                     break;
 
                 case Key.Escape:
                     parent.Text = _startText;
                     FinishEditing(parent, textBox);
+                    e.Handled = true;
                     break;
             }
         }
