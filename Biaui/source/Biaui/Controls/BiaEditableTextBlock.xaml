@@ -14,12 +14,16 @@
         <EventSetter Event="LostFocus" Handler="TextBox_LostFocus" />
         <EventSetter Event="PreviewKeyDown" Handler="TextBox_PreviewKeyDown" />
         <EventSetter Event="PreviewMouseDown" Handler="TextBox_PreviewMouseDown" />
+
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Foreground}" />
     </Style>
 
     <Style x:Key="TextBlockStyle"
            BasedOn="{StaticResource {x:Type TextBlock}}"
            TargetType="{x:Type TextBlock}">
         <EventSetter Event="MouseDown" Handler="TextBlock_OnMouseDown" />
+
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Foreground}" />
     </Style>
 
     <Style TargetType="{x:Type controls:BiaEditableTextBlock}">
