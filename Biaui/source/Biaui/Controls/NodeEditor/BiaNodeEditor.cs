@@ -235,7 +235,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (NumberHelper.AreClose(value, Scale) == false)
-                    SetValue(ScaleProperty, value);
+                    SetValue(ScaleProperty, Boxes.Double(value));
             }
         }
 
@@ -272,7 +272,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (NumberHelper.AreClose(value, _TranslateX) == false)
-                    SetValue(TranslateXProperty, value);
+                    SetValue(TranslateXProperty, Boxes.Double(value));
             }
         }
 
@@ -308,7 +308,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (NumberHelper.AreClose(value, _TranslateY) == false)
-                    SetValue(TranslateYProperty, value);
+                    SetValue(TranslateYProperty, Boxes.Double(value));
             }
         }
 
@@ -373,7 +373,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (NumberHelper.AreClose(value, _OverlayHeaderHeight) == false)
-                    SetValue(OverlayHeaderHeightProperty, value);
+                    SetValue(OverlayHeaderHeightProperty, Boxes.Double(value));
             }
         }
 

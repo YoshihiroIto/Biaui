@@ -18,7 +18,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Red) == false)
-                    SetValue(RedProperty, value);
+                    SetValue(RedProperty, Boxes.Double(value));
             }
         }
 
@@ -45,7 +45,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Green) == false)
-                    SetValue(GreenProperty, value);
+                    SetValue(GreenProperty, Boxes.Double(value));
             }
         }
 
@@ -72,7 +72,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Blue) == false)
-                    SetValue(BlueProperty, value);
+                    SetValue(BlueProperty, Boxes.Double(value));
             }
         }
 
@@ -99,7 +99,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Alpha) == false)
-                    SetValue(AlphaProperty, value);
+                    SetValue(AlphaProperty, Boxes.Double(value));
             }
         }
 
@@ -154,7 +154,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Hue) == false)
-                    SetValue(HueProperty, value);
+                    SetValue(HueProperty, Boxes.Double(value));
             }
         }
 
@@ -181,7 +181,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Saturation) == false)
-                    SetValue(SaturationProperty, value);
+                    SetValue(SaturationProperty, Boxes.Double(value));
             }
         }
 
@@ -208,7 +208,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 

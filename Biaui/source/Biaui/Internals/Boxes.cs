@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
@@ -22,16 +23,26 @@ namespace Biaui.Internals
         internal static object Int5 = 5;
         internal static object Int6 = 6;
         internal static object Int7 = 7;
-
         internal static object IntMax = int.MaxValue;
 
         internal static object Float0 = 0.0f;
         internal static object Float1 = 1.0f;
+        internal static object Float2 = 2.0f;
+        internal static object Float3 = 3.0f;
+        internal static object Float4 = 4.0f;
+        internal static object Float5 = 5.0f;
+        internal static object Float6 = 6.0f;
+        internal static object Float7 = 7.0f;
 
         internal static object Double0 = 0.0;
         internal static object Double1 = 1.0;
+        internal static object Double2 = 2.0;
+        internal static object Double3 = 3.0;
+        internal static object Double4 = 4.0;
+        internal static object Double5 = 5.0;
+        internal static object Double6 = 6.0;
+        internal static object Double7 = 7.0;
         internal static object Double24 = 24.0;
-        internal static object Double100 = 100.0;
         internal static object DoubleMin = double.MinValue;
         internal static object DoubleMax = double.MaxValue;
 
@@ -64,6 +75,63 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static object Bool(bool i) => i ? BoolTrue : BoolFalse;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static object Int(int i)
+        {
+            switch (i)
+            {
+                case 0: return Int0;
+                case 1: return Int1;
+                case 2: return Int2;
+                case 3: return Int3;
+                case 4: return Int4;
+                case 5: return Int5;
+                case 6: return Int6;
+                case 7: return Int7;
+                default:
+                    Debug.WriteLine($"Boxes.Int:{i}");
+                    return i;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static object Float(float i)
+        {
+            switch (i)
+            {
+                case 0.0f: return Float0;
+                case 1.0f: return Float1;
+                case 2.0f: return Float2;
+                case 3.0f: return Float3;
+                case 4.0f: return Float4;
+                case 5.0f: return Float5;
+                case 6.0f: return Float6;
+                case 7.0f: return Float7;
+                default:
+                    Debug.WriteLine($"Boxes.Float:{i}");
+                    return i;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static object Double(double i)
+        {
+            switch (i)
+            {
+                case 0.0: return Double0;
+                case 1.0: return Double1;
+                case 2.0: return Double2;
+                case 3.0: return Double3;
+                case 4.0: return Double4;
+                case 5.0: return Double5;
+                case 6.0: return Double6;
+                case 7.0: return Double7;
+                default:
+                    Debug.WriteLine($"Boxes.Double:{i}");
+                    return i;
+            }
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static object NumberEditorMode(BiaNumberEditorMode i)

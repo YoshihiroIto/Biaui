@@ -15,7 +15,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 

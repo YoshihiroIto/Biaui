@@ -81,7 +81,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _CornerRadius) == false)
-                    SetValue(CornerRadiusProperty, value);
+                    SetValue(CornerRadiusProperty, Boxes.Double(value));
             }
         }
 
@@ -138,7 +138,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Columns)
-                    SetValue(ColumnsProperty, value);
+                    SetValue(ColumnsProperty, Boxes.Int(value));
             }
         }
 

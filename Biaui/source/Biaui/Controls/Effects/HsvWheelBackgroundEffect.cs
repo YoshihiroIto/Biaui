@@ -35,7 +35,7 @@ namespace Biaui.Controls.Effects
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 
@@ -63,7 +63,7 @@ namespace Biaui.Controls.Effects
             set
             {
                 if (NumberHelper.AreClose(value, _AspectRatioCorrectionX) == false)
-                    SetValue(AspectRatioCorrectionXProperty, value);
+                    SetValue(AspectRatioCorrectionXProperty, Boxes.Double(value));
             }
         }
 
@@ -92,7 +92,7 @@ namespace Biaui.Controls.Effects
             set
             {
                 if (NumberHelper.AreClose(value, _AspectRatioCorrectionY) == false)
-                    SetValue(AspectRatioCorrectionYProperty, value);
+                    SetValue(AspectRatioCorrectionYProperty, Boxes.Double(value));
             }
         }
 
@@ -150,7 +150,7 @@ namespace Biaui.Controls.Effects
             {
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (value != _IsEnabled)
-                    SetValue(IsEnabledProperty, value);
+                    SetValue(IsEnabledProperty, Boxes.Float(value));
             }
         }
 

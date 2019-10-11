@@ -110,7 +110,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 
@@ -170,7 +170,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _SliderMinimum) == false)
-                    SetValue(SliderMinimumProperty, value);
+                    SetValue(SliderMinimumProperty, Boxes.Double(value));
             }
         }
 
@@ -198,7 +198,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _SliderMaximum) == false)
-                    SetValue(SliderMaximumProperty, value);
+                    SetValue(SliderMaximumProperty, Boxes.Double(value));
             }
         }
 
@@ -226,7 +226,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Minimum) == false)
-                    SetValue(MinimumProperty, value);
+                    SetValue(MinimumProperty, Boxes.Double(value));
             }
         }
 
@@ -258,7 +258,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Maximum) == false)
-                    SetValue(MaximumProperty, value);
+                    SetValue(MaximumProperty, Boxes.Double(value));
             }
         }
 
@@ -486,7 +486,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Increment) == false)
-                    SetValue(IncrementProperty, value);
+                    SetValue(IncrementProperty, Boxes.Double(value));
             }
         }
 
@@ -514,7 +514,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _CornerRadius) == false)
-                    SetValue(CornerRadiusProperty, value);
+                    SetValue(CornerRadiusProperty, Boxes.Double(value));
             }
         }
 

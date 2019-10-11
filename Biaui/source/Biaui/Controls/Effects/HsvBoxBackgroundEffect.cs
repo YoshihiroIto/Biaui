@@ -31,7 +31,7 @@ namespace Biaui.Controls.Effects
             set
             {
                 if (NumberHelper.AreClose(value, Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 
@@ -60,7 +60,7 @@ namespace Biaui.Controls.Effects
             {
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (value != _IsEnabled)
-                    SetValue(IsEnabledProperty, value);
+                    SetValue(IsEnabledProperty, Boxes.Float(value));
             }
         }
 

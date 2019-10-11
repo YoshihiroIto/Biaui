@@ -156,9 +156,8 @@ namespace Biaui.Controls
             get => _IndentSize;
             set
             {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _IndentSize)
-                    SetValue(IndentSizeProperty, value);
+                if (NumberHelper.AreClose(value, _IndentSize) == false)
+                    SetValue(IndentSizeProperty, Boxes.Double(value));
             }
         }
         

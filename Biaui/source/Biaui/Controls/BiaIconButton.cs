@@ -44,7 +44,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _contentSize) == false)
-                    SetValue(ContentSizeProperty, value);
+                    SetValue(ContentSizeProperty, Boxes.Double(value));
             }
         }
 

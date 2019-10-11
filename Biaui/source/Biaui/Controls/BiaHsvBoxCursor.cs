@@ -42,7 +42,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Hue) == false)
-                    SetValue(HueProperty, value);
+                    SetValue(HueProperty, Boxes.Double(value));
             }
         }
 
@@ -70,7 +70,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Saturation) == false)
-                    SetValue(SaturationProperty, value);
+                    SetValue(SaturationProperty, Boxes.Double(value));
             }
         }
 
