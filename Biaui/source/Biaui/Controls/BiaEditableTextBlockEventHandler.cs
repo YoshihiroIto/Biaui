@@ -19,7 +19,7 @@ namespace Biaui.Controls
 
         private void TextBlock_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var parent = ((TextBlock)sender).GetParent<BiaEditableTextBlock>();
+            var parent = ((BiaTextBlock)sender).GetParent<BiaEditableTextBlock>();
 
             if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
             {

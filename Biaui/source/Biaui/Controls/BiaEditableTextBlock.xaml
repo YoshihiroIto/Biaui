@@ -3,7 +3,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -19,11 +19,12 @@
     </Style>
 
     <Style x:Key="TextBlockStyle"
-           BasedOn="{StaticResource {x:Type TextBlock}}"
-           TargetType="{x:Type TextBlock}">
+           BasedOn="{StaticResource {x:Type controls:BiaTextBlock}}"
+           TargetType="{x:Type controls:BiaTextBlock}">
         <EventSetter Event="MouseDown" Handler="TextBlock_OnMouseDown" />
 
         <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Foreground}" />
+        <Setter Property="IsHitTestVisible" Value="True" />
     </Style>
 
     <Style TargetType="{x:Type controls:BiaEditableTextBlock}">
@@ -46,7 +47,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <TextBlock Style="{StaticResource TextBlockStyle}" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=TwoWay, Path=Text}" />
+                            <controls:BiaTextBlock Style="{StaticResource TextBlockStyle}" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=TwoWay, Path=Text}" />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
