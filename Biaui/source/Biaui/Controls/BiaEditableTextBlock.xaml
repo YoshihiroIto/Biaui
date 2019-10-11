@@ -27,6 +27,8 @@
     </Style>
 
     <Style TargetType="{x:Type controls:BiaEditableTextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
+        <Setter Property="Margin" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
 
         <Style.Triggers>
