@@ -1,6 +1,6 @@
 ﻿namespace Biaui.Internals
 {
-    internal enum WindowAction
+    internal enum BiaWindowAction
     {
 		None,
 		Active,

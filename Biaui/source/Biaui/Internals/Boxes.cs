@@ -42,8 +42,8 @@ namespace Biaui.Internals
 
         internal static object Point00 = new Point(0, 0);
         internal static object Size11 = new Size(1, 1);
-        internal static object Rect0 = new Rect(0,0,0,0);
-        internal static object ImmutableRect0 = new ImmutableRect(0,0,0,0);
+        internal static object Rect0 = new Rect(0, 0, 0, 0);
+        internal static object ImmutableRect0 = new ImmutableRect(0, 0, 0, 0);
 
         internal static object NumberModeSimple = BiaNumberEditorMode.Simple;
         internal static object NumberModeWideRange = BiaNumberEditorMode.WideRange;
@@ -54,6 +54,13 @@ namespace Biaui.Internals
         internal static object ConstantsBasicCornerRadiusPrim = Biaui.Constants.BasicCornerRadiusPrim;
 
         internal static object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;
+
+        internal static object WindowAction_None = BiaWindowAction.None;
+        internal static object WindowAction_Active = BiaWindowAction.Active;
+        internal static object WindowAction_Close = BiaWindowAction.Close;
+        internal static object WindowAction_Normalize = BiaWindowAction.Normalize;
+        internal static object WindowAction_Maximize = BiaWindowAction.Maximize;
+        internal static object WindowAction_Minimize = BiaWindowAction.Minimize;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static object Bool(bool i) => i ? BoolTrue : BoolFalse;
@@ -83,6 +90,28 @@ namespace Biaui.Internals
                     return NodeEditorNodeLinkStyleBezierCurve;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(i), i, null);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static object WindowAction(BiaWindowAction a)
+        {
+            switch (a)
+            {
+                case BiaWindowAction.None:
+                    return WindowAction_None;
+                case BiaWindowAction.Active:
+                    return WindowAction_Active;
+                case BiaWindowAction.Close:
+                    return WindowAction_Close;
+                case BiaWindowAction.Normalize:
+                    return WindowAction_Normalize;
+                case BiaWindowAction.Maximize:
+                    return WindowAction_Maximize;
+                case BiaWindowAction.Minimize:
+                    return WindowAction_Minimize;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(a), a, null);
             }
         }
     }

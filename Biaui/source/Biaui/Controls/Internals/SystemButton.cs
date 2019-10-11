@@ -7,28 +7,28 @@ namespace Biaui.Controls.Internals
 {
     internal class SystemButton : Button
     {
-        #region WindowAction
+        #region BiaWindowAction
 
-        public WindowAction WindowAction
+        public BiaWindowAction WindowAction
         {
             get => _WindowAction;
             set
             {
                 if (value != _WindowAction)
-                    SetValue(WindowActionProperty, value);
+                    SetValue(WindowActionProperty, Boxes.WindowAction(value));
             }
         }
 
-        private WindowAction _WindowAction;
+        private BiaWindowAction _WindowAction;
 
         public static readonly DependencyProperty WindowActionProperty =
-            DependencyProperty.Register(nameof(WindowAction), typeof(WindowAction), typeof(SystemButton),
+            DependencyProperty.Register(nameof(WindowAction), typeof(BiaWindowAction), typeof(SystemButton),
                 new PropertyMetadata(
-                    default(WindowAction),
+                    Boxes.WindowAction_None,
                     (s, e) =>
                     {
                         var self = (SystemButton) s;
-                        self._WindowAction = (WindowAction) e.NewValue;
+                        self._WindowAction = (BiaWindowAction) e.NewValue;
                     }));
 
         #endregion
@@ -41,7 +41,7 @@ namespace Biaui.Controls.Internals
             set
             {
                 if (value != _IsVisibleButton)
-                    SetValue(IsVisibleButtonProperty, value);
+                    SetValue(IsVisibleButtonProperty, Boxes.Bool(value));
             }
         }
         
@@ -76,7 +76,6 @@ namespace Biaui.Controls.Internals
         {
             base.OnInitialized(e);
 
-
             _parentWindow = (BiaWindow)Window.GetWindow(this);
 
             if (_parentWindow != null)
@@ -96,14 +95,14 @@ namespace Biaui.Controls.Internals
 
             switch (WindowAction)
             {
-                case WindowAction.None:
+                case BiaWindowAction.None:
                     break;
 
-                case WindowAction.Active:
+                case BiaWindowAction.Active:
                     _parentWindow.Activate();
                     break;
 
-                case WindowAction.Close:
+                case BiaWindowAction.Close:
                     if (_parentWindow.CloseButtonBehavior == WindowCloseButtonBehavior.Normal)
                         _parentWindow.Close();
                     
@@ -111,15 +110,15 @@ namespace Biaui.Controls.Internals
 
                     break;
 
-                case WindowAction.Maximize:
+                case BiaWindowAction.Maximize:
                     _parentWindow.WindowState = WindowState.Maximized;
                     break;
 
-                case WindowAction.Minimize:
+                case BiaWindowAction.Minimize:
                     _parentWindow.WindowState = WindowState.Minimized;
                     break;
 
-                case WindowAction.Normalize:
+                case BiaWindowAction.Normalize:
                     _parentWindow.WindowState = WindowState.Normal;
                     break;
 
@@ -138,19 +137,19 @@ namespace Biaui.Controls.Internals
 
             switch (WindowAction)
             {
-                case WindowAction.Maximize:
+                case BiaWindowAction.Maximize:
                     Visibility = _parentWindow.WindowState != WindowState.Maximized
                         ? Visibility.Visible
                         : Visibility.Collapsed;
                     break;
 
-                case WindowAction.Minimize:
+                case BiaWindowAction.Minimize:
                     Visibility = _parentWindow.WindowState != WindowState.Minimized
                         ? Visibility.Visible
                         : Visibility.Collapsed;
                     break;
 
-                case WindowAction.Normalize:
+                case BiaWindowAction.Normalize:
                     Visibility = _parentWindow.WindowState != WindowState.Normal
                         ? Visibility.Visible
                         : Visibility.Collapsed;
