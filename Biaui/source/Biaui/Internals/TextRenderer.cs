@@ -37,8 +37,6 @@ namespace Biaui.Internals
             if (fontFamily == null)
                 return;
 
-            _fontLineSpacing = fontFamily.LineSpacing;
-
             var typeface = new Typeface(fontFamily, style, weight, stretch);
 
             if (typeface.TryGetGlyphTypeface(out _glyphTypeface) == false)
@@ -61,11 +59,15 @@ namespace Biaui.Internals
 
             if (_isDefault)
             {
-                _dotGlyphIndex = GlyphIndexArray['.'];
-                _dotAdvanceWidth = AdvanceWidthArray['.'];
+                _fontLineSpacing = DefaultFontLineSpacing;
+
+                _dotGlyphIndex = DefaultGlyphIndexArray['.'];
+                _dotAdvanceWidth = DefaultAdvanceWidthArray['.'];
             }
             else
             {
+                _fontLineSpacing = fontFamily.LineSpacing;
+
                 _toGlyphMap = _glyphTypeface.CharacterToGlyphMap;
                 _advanceWidthsDict = _glyphTypeface.AdvanceWidths;
 
@@ -75,7 +77,7 @@ namespace Biaui.Internals
 
             // グリフデータテーブルを作る
             // 作ったものは、手動でソースコードに組み込む。
-            // MakeGlyphDataTable(_glyphTypeface, _fontSize);
+            //MakeGlyphDataTable(fontFamily, _glyphTypeface, _fontSize);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -151,7 +153,7 @@ namespace Biaui.Internals
             if (_isDefault)
             {
                 for (var i = 0; i != text.Length; ++i)
-                    textWidth += AdvanceWidthArray[text[i]];
+                    textWidth += DefaultAdvanceWidthArray[text[i]];
             }
             else
             {
@@ -219,8 +221,8 @@ namespace Biaui.Internals
 
                     if (_isDefault)
                     {
-                        glyphIndexes[i] = GlyphIndexArray[targetChar];
-                        advanceWidths[i] = AdvanceWidthArray[targetChar];
+                        glyphIndexes[i] = DefaultGlyphIndexArray[targetChar];
+                        advanceWidths[i] = DefaultAdvanceWidthArray[targetChar];
                         textWidth += advanceWidths[i];
                     }
                     else
@@ -341,7 +343,7 @@ namespace Biaui.Internals
 
         #if DEBUG
         // ReSharper disable once UnusedMember.Local
-        private static void MakeGlyphDataTable(GlyphTypeface glyphTypeface, double fontSize)
+        private static void MakeGlyphDataTable(FontFamily fontFamily, GlyphTypeface glyphTypeface, double fontSize)
         {
             var toGlyphMap = glyphTypeface.CharacterToGlyphMap;
             var advanceWidthsDict = glyphTypeface.AdvanceWidths;
@@ -370,11 +372,13 @@ namespace Biaui.Internals
             sb.AppendLine("internal partial class TextRenderer");
             sb.AppendLine("{");
 
-            sb.AppendLine("private static readonly ushort[] GlyphIndexArray = {");
+            sb.AppendLine($"private static readonly double DefaultFontLineSpacing = {fontFamily.LineSpacing};");
+
+            sb.AppendLine("private static readonly ushort[] DefaultGlyphIndexArray = {");
             sb.AppendLine(string.Join(",", glyphIndexArray));
             sb.AppendLine("};");
 
-            sb.AppendLine("private static readonly double[] AdvanceWidthArray = {");
+            sb.AppendLine("private static readonly double[] DefaultAdvanceWidthArray = {");
             sb.AppendLine(string.Join(",", advanceWidthArray));
             sb.AppendLine("};");
 
