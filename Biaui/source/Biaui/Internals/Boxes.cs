@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
@@ -90,7 +89,7 @@ namespace Biaui.Internals
                 case 6: return Int6;
                 case 7: return Int7;
                 default:
-                    Debug.WriteLine($"Boxes.Int:{i}");
+                    //Debug.WriteLine($"Boxes.Int:{i}");
                     return i;
             }
         }
@@ -109,7 +108,7 @@ namespace Biaui.Internals
                 case 6.0f: return Float6;
                 case 7.0f: return Float7;
                 default:
-                    Debug.WriteLine($"Boxes.Float:{i}");
+                    //Debug.WriteLine($"Boxes.Float:{i}");
                     return i;
             }
         }
@@ -128,7 +127,7 @@ namespace Biaui.Internals
                 case 6.0: return Double6;
                 case 7.0: return Double7;
                 default:
-                    Debug.WriteLine($"Boxes.Double:{i}");
+                    //Debug.WriteLine($"Boxes.Double:{i}");
                     return i;
             }
         }
