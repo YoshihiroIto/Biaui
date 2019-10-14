@@ -4,6 +4,8 @@
     <TargetFrameworks>net48;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
 
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
     <AssemblyName>Biaui</AssemblyName>
     <RootNamespace>Biaui</RootNamespace>
   </PropertyGroup>
