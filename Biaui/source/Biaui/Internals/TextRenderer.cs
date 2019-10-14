@@ -208,6 +208,9 @@ namespace Biaui.Internals
 
         internal double FontHeight => _fontLineSpacing * _fontSize;
 
+        private ushort[] _glyphIndexesBuffer = new ushort[64];
+        private double[] _advanceWidthsBuffer = new double[64];
+
         private (GlyphRun GlyphRun, double Width) MakeGlyphRun(
             Visual visual,
             string text,
@@ -215,9 +218,17 @@ namespace Biaui.Internals
             int textLength,
             double maxWidth)
         {
-            var glyphIndexes = new ushort[textLength];
-            var advanceWidths = new double[textLength];
+            if (_glyphIndexesBuffer.Length < textLength)
+            {
+                _glyphIndexesBuffer = new ushort[textLength * 2];
+                _advanceWidthsBuffer = new double[textLength * 2];
+            }
+
+            var glyphIndexes = _glyphIndexesBuffer;
+            var advanceWidths = _advanceWidthsBuffer;
             var textWidth = 0.0;
+            var isTrimmed = false;
+            var newCount = 0;
             {
                 for (var i = 0; i != textLength; ++i)
                 {
@@ -248,9 +259,8 @@ namespace Biaui.Internals
 
                     if (textWidth > maxWidth)
                     {
-                        Array.Resize(ref glyphIndexes, i + 1);
-                        Array.Resize(ref advanceWidths, i + 1);
-                        textWidth = TrimGlyphRun(ref glyphIndexes, ref advanceWidths, textWidth, maxWidth);
+                        (textWidth, newCount) = TrimGlyphRun(glyphIndexes, advanceWidths, textWidth, maxWidth, i + 1);
+                        isTrimmed = true;
                         break;
                     }
                 }
@@ -266,16 +276,25 @@ namespace Biaui.Internals
             if (_textCache.TryGetValue(textKey, out var gr))
                 return gr;
 
+            if (isTrimmed)
+                textLength = newCount;
+
+            var newGlyphIndexes = new ushort[textLength];
+            var newAdvanceWidths = new double[textLength];
+
+            Buffer.BlockCopy(glyphIndexes, 0, newGlyphIndexes, 0, textLength * sizeof(short));
+            Buffer.BlockCopy(advanceWidths, 0, newAdvanceWidths, 0, textLength * sizeof(double));
+
             gr =
                 (new GlyphRun(
                     _glyphTypeface,
                     0,
                     false,
                     _fontSize,
-                    (float)dpi,
-                    glyphIndexes,
+                    (float) dpi,
+                    newGlyphIndexes,
                     new Point(0, _glyphTypeface.Baseline * _fontSize),
-                    advanceWidths,
+                    newAdvanceWidths,
                     null, null, null, null, null, null), textWidth);
 
             _textCache.Add(textKey, gr);
@@ -309,13 +328,13 @@ namespace Biaui.Internals
             }
         }
 
-        private double TrimGlyphRun(
-            ref ushort[] glyphIndexes,
-            ref double[] advanceWidths,
+        private (double Width, int NewCount) TrimGlyphRun(
+            ushort[] glyphIndexes,
+            double[] advanceWidths,
             double textWidth,
-            double maxWidth)
+            double maxWidth,
+            int bufferSize)
         {
-            Debug.Assert(glyphIndexes.Length == advanceWidths.Length);
             Debug.Assert(textWidth > maxWidth);
 
             // 文字列に ... を加える文を考慮して削る文字数を求める
@@ -324,7 +343,7 @@ namespace Biaui.Internals
             var removeCount = 1;
             var newTextWidth = textWidth;
             {
-                for (var i = glyphIndexes.Length - 1; i >= 0; --i)
+                for (var i = bufferSize - 1; i >= 0; --i)
                 {
                     newTextWidth -= advanceWidths[i];
 
@@ -335,21 +354,19 @@ namespace Biaui.Internals
                 }
             }
 
-            var newCount = glyphIndexes.Length - removeCount + 3;
+            var newCount = bufferSize - removeCount + 3;
             if (newCount < 3)
-                return 0.0;
+                return (0.0, 0);
 
             // 文字列に ... を追加する
-            Array.Resize(ref glyphIndexes, newCount);
-            Array.Resize(ref advanceWidths, newCount);
-            glyphIndexes[glyphIndexes.Length - 1 - 2] = _dotGlyphIndex;
-            glyphIndexes[glyphIndexes.Length - 1 - 1] = _dotGlyphIndex;
-            glyphIndexes[glyphIndexes.Length - 1 - 0] = _dotGlyphIndex;
-            advanceWidths[glyphIndexes.Length - 1 - 2] = _dotAdvanceWidth;
-            advanceWidths[glyphIndexes.Length - 1 - 1] = _dotAdvanceWidth;
-            advanceWidths[glyphIndexes.Length - 1 - 0] = _dotAdvanceWidth;
+            glyphIndexes[newCount - 1 - 2] = _dotGlyphIndex;
+            glyphIndexes[newCount - 1 - 1] = _dotGlyphIndex;
+            glyphIndexes[newCount - 1 - 0] = _dotGlyphIndex;
+            advanceWidths[newCount - 1 - 2] = _dotAdvanceWidth;
+            advanceWidths[newCount - 1 - 1] = _dotAdvanceWidth;
+            advanceWidths[newCount - 1 - 0] = _dotAdvanceWidth;
 
-            return newTextWidth + dot3Width;
+            return (newTextWidth + dot3Width, newCount);
         }
 
 #if DEBUG
