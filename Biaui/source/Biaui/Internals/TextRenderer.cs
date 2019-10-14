@@ -211,7 +211,6 @@ namespace Biaui.Internals
             var glyphIndexes = new ushort[textLength];
             var advanceWidths = new double[textLength];
             var textWidth = 0.0;
-            var isRequiredTrimming = false;
             {
                 for (var i = 0; i != textLength; ++i)
                 {
@@ -244,13 +243,10 @@ namespace Biaui.Internals
                     {
                         Array.Resize(ref glyphIndexes, i + 1);
                         Array.Resize(ref advanceWidths, i + 1);
-                        isRequiredTrimming = true;
+                        textWidth = TrimGlyphRun(ref glyphIndexes, ref advanceWidths, textWidth, maxWidth);
                         break;
                     }
                 }
-
-                if (isRequiredTrimming)
-                    textWidth = TrimGlyphRun(ref glyphIndexes, ref advanceWidths, textWidth, maxWidth);
             }
 
             if (NumberHelper.AreCloseZero(textWidth))
@@ -334,7 +330,6 @@ namespace Biaui.Internals
 
             var newCount = glyphIndexes.Length - removeCount + 3;
             if (newCount < 3)
-                //#endif
                 return 0.0;
 
             // 文字列に ... を追加する
