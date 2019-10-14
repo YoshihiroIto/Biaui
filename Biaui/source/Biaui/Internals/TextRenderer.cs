@@ -385,7 +385,7 @@ namespace Biaui.Internals
             sb.AppendLine("}");
             sb.AppendLine("}");
 
-            var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRendereri.table.cs");
+            var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRenderer.table.cs");
             File.WriteAllText(outputDir,sb.ToString());
         }
         #endif
