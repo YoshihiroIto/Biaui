@@ -73,6 +73,8 @@ namespace Biaui.Internals
 
                 _glyphTypeface.CharacterToGlyphMap.TryGetValue('.', out _dotGlyphIndex);
                 _dotAdvanceWidth = _advanceWidthsDict[_dotGlyphIndex] * _fontSize;
+
+                _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
             }
 
             // グリフデータテーブルを作る
@@ -398,7 +400,7 @@ namespace Biaui.Internals
         private readonly IDictionary<ushort, double> _advanceWidthsDict;
 
         // 最大65536エントリ
-        private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
+        private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache;
 
         private readonly bool _isDefault;
         private readonly GlyphTypeface _glyphTypeface;
