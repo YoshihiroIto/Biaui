@@ -132,13 +132,32 @@ namespace Biaui.Internals
             if (maxWidth <= 0)
                 return 0;
 
-            var gr = MakeGlyphRun(visual, text, textStartIndex, textLength, x, y, maxWidth, align);
+            var gr = MakeGlyphRun(visual, text, textStartIndex, textLength, maxWidth);
             if (gr == default)
                 return 0;
 
-            dc.DrawGlyphRun(brush, gr.Item1);
+            switch (align)
+            {
+                case TextAlignment.Left:
+                    break;
 
-            return gr.Item2;
+                case TextAlignment.Right:
+                    x += maxWidth - gr.Width;
+                    break;
+
+                case TextAlignment.Center:
+                    x += (maxWidth - gr.Width) / 2;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(align), align, null);
+            }
+
+            dc.PushTransform(new TranslateTransform(x, y));
+            dc.DrawGlyphRun(brush, gr.GlyphRun);
+            dc.Pop();
+
+            return gr.Width;
         }
 
         internal double CalcWidth(string text)
@@ -182,23 +201,13 @@ namespace Biaui.Internals
 
         internal double FontHeight => _fontLineSpacing * _fontSize;
 
-        private (GlyphRun, double) MakeGlyphRun(
+        private (GlyphRun GlyphRun, double Width) MakeGlyphRun(
             Visual visual,
             string text,
             int textStartIndex,
             int textLength,
-            double offsetX,
-            double offsetY,
-            double maxWidth,
-            TextAlignment align)
+            double maxWidth)
         {
-            var dpi = (float) visual.PixelsPerDip();
-
-            var textKey = MakeHashCode(text, textStartIndex, textLength, offsetX, offsetY, maxWidth, align, dpi);
-
-            if (_textCache.TryGetValue(textKey, out var gr))
-                return gr;
-
             var glyphIndexes = new ushort[textLength];
             var advanceWidths = new double[textLength];
             var textWidth = 0.0;
@@ -247,27 +256,12 @@ namespace Biaui.Internals
             if (NumberHelper.AreCloseZero(textWidth))
                 return default;
 
-            var x = offsetX;
-            var y = offsetY + _glyphTypeface.Baseline * _fontSize;
+            var dpi = visual.PixelsPerDip();
 
-            {
-                switch (align)
-                {
-                    case TextAlignment.Left:
-                        break;
+            var textKey = MakeHashCode(text, textStartIndex, textLength, textWidth, dpi);
 
-                    case TextAlignment.Right:
-                        x += maxWidth - textWidth;
-                        break;
-
-                    case TextAlignment.Center:
-                        x += (maxWidth - textWidth) / 2;
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(align), align, null);
-                }
-            }
+            if (_textCache.TryGetValue(textKey, out var gr))
+                return gr;
 
             gr =
                 (new GlyphRun(
@@ -275,9 +269,9 @@ namespace Biaui.Internals
                     0,
                     false,
                     _fontSize,
-                    dpi,
+                    (float)dpi,
                     glyphIndexes,
-                    new Point(x, y),
+                    new Point(0, _glyphTypeface.Baseline * _fontSize),
                     advanceWidths,
                     null, null, null, null, null, null), textWidth);
 
@@ -291,11 +285,8 @@ namespace Biaui.Internals
             string text,
             int textStartIndex,
             int textLength,
-            double offsetX,
-            double offsetY,
-            double maxWidth,
-            TextAlignment align,
-            float dpi)
+            double textWidth,
+            double dpi)
         {
             unchecked
             {
@@ -303,10 +294,7 @@ namespace Biaui.Internals
 
                 hashCode = (hashCode * 397) ^ textStartIndex;
                 hashCode = (hashCode * 397) ^ textLength;
-                hashCode = (hashCode * 397) ^ offsetX.GetHashCode();
-                hashCode = (hashCode * 397) ^ offsetY.GetHashCode();
-                hashCode = (hashCode * 397) ^ maxWidth.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int) align;
+                hashCode = (hashCode * 397) ^ textWidth.GetHashCode();
                 hashCode = (hashCode * 397) ^ dpi.GetHashCode();
 
                 return hashCode;
