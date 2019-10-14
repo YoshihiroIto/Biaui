@@ -153,9 +153,16 @@ namespace Biaui.Internals
                     throw new ArgumentOutOfRangeException(nameof(align), align, null);
             }
 
-            dc.PushTransform(new TranslateTransform(x, y));
-            dc.DrawGlyphRun(brush, gr.GlyphRun);
-            dc.Pop();
+            if (NumberHelper.AreCloseZero(x) && NumberHelper.AreCloseZero(y))
+            {
+                dc.DrawGlyphRun(brush, gr.GlyphRun);
+            }
+            else
+            {
+                dc.PushTransform(new TranslateTransform(x, y));
+                dc.DrawGlyphRun(brush, gr.GlyphRun);
+                dc.Pop();
+            }
 
             return gr.Width;
         }
