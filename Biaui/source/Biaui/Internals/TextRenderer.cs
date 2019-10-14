@@ -192,22 +192,9 @@ namespace Biaui.Internals
             double maxWidth,
             TextAlignment align)
         {
-            var dpi = (float)visual.PixelsPerDip();
+            var dpi = (float) visual.PixelsPerDip();
 
-            int MakeHashCode()
-            {
-                var hashCode = text.GetHashCode();
-                hashCode = (hashCode * 397) ^ textStartIndex.GetHashCode();
-                hashCode = (hashCode * 397) ^ textLength.GetHashCode();
-                hashCode = (hashCode * 397) ^ offsetX.GetHashCode();
-                hashCode = (hashCode * 397) ^ offsetY.GetHashCode();
-                hashCode = (hashCode * 397) ^ maxWidth.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)align;
-                hashCode = (hashCode * 397) ^ dpi.GetHashCode();
-                return hashCode;
-            }
-
-            var textKey = MakeHashCode();
+            var textKey = MakeHashCode(text, textStartIndex, textLength, offsetX, offsetY, maxWidth, align, dpi);
 
             if (_textCache.TryGetValue(textKey, out var gr))
                 return gr;
@@ -299,6 +286,33 @@ namespace Biaui.Internals
             return gr;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int MakeHashCode(
+            string text,
+            int textStartIndex,
+            int textLength,
+            double offsetX,
+            double offsetY,
+            double maxWidth,
+            TextAlignment align,
+            float dpi)
+        {
+            unchecked
+            {
+                var hashCode = text.GetHashCode();
+
+                hashCode = (hashCode * 397) ^ textStartIndex;
+                hashCode = (hashCode * 397) ^ textLength;
+                hashCode = (hashCode * 397) ^ offsetX.GetHashCode();
+                hashCode = (hashCode * 397) ^ offsetY.GetHashCode();
+                hashCode = (hashCode * 397) ^ maxWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) align;
+                hashCode = (hashCode * 397) ^ dpi.GetHashCode();
+
+                return hashCode;
+            }
+        }
+
         private double TrimGlyphRun(
             ref ushort[] glyphIndexes,
             ref double[] advanceWidths,
@@ -343,7 +357,7 @@ namespace Biaui.Internals
             return newTextWidth + dot3Width;
         }
 
-        #if DEBUG
+#if DEBUG
         // ReSharper disable once UnusedMember.Local
         private static void MakeGlyphDataTable(FontFamily fontFamily, GlyphTypeface glyphTypeface, double fontSize)
         {
@@ -388,9 +402,9 @@ namespace Biaui.Internals
             sb.AppendLine("}");
 
             var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRenderer.table.cs");
-            File.WriteAllText(outputDir,sb.ToString());
+            File.WriteAllText(outputDir, sb.ToString());
         }
-        #endif
+#endif
 
         private readonly LruCache<int, (GlyphRun, double)> _textCache = new LruCache<int, (GlyphRun, double)>(10_0000, false);
 
