@@ -319,9 +319,9 @@ namespace Biaui.Internals
 
                 hashCode = (hashCode * 397) ^ textStartIndex;
                 hashCode = (hashCode * 397) ^ textLength;
-                hashCode = (hashCode * 397) ^ (int) textWidth;
+                hashCode = (hashCode * 397) ^ (int) textWidthP;
                 hashCode = (hashCode * 397) ^ (int) (textWidthP >> 32);
-                hashCode = (hashCode * 397) ^ (int) dpi;
+                hashCode = (hashCode * 397) ^ (int) dpiP;
                 hashCode = (hashCode * 397) ^ (int) (dpiP >> 32);
 
                 return hashCode;
