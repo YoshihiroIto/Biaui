@@ -148,10 +148,10 @@ namespace Biaui.Extension
             {
                 // ブラシ取得
                 var resKey = sink.Key.GetHashCode();
-                if (ResCache.TryGetValue(resKey, out var brush) == false)
+                if (ResourceCache.TryGetValue(resKey, out var brush) == false)
                 {
-                    ResCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color));
-                    brush = ResCache[resKey];
+                    ResourceCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color));
+                    brush = ResourceCache[resKey];
                 }
 
                 // ハイライトがあれば、非ハイライトを表示しない
