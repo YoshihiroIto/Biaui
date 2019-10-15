@@ -12,7 +12,7 @@ namespace D2dControl
 {
     public abstract class D2dControl : System.Windows.Controls.Image
     {
-        protected readonly ResourceCache ResCache = new ResourceCache();
+        protected readonly ResourceCache ResourceCache = new ResourceCache();
 
         private SharpDX.Direct3D11.Device device;
         private Texture2D sharedTarget;
@@ -254,7 +254,7 @@ namespace D2dControl
                 });
             }
 
-            ResCache.RenderTarget = d2DRenderTarget;
+            ResourceCache.RenderTarget = d2DRenderTarget;
 
             d3DSurface.SetRenderTarget(sharedTarget);
 

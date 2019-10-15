@@ -52,9 +52,7 @@ namespace Biaui.Extension
         }
 
         private readonly Dictionary<(Color color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry arrowGeom, GeometrySink arrowSink)>
-            _sinks = new Dictionary<(Color color, bool isHighlight),
-                (PathGeometry curveGeom, GeometrySink curveSink,
-                PathGeometry arrowGeom, GeometrySink arrowSink)>();
+            _sinks = new Dictionary<(Color color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry arrowGeom, GeometrySink arrowSink)>();
 
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
@@ -149,7 +147,7 @@ namespace Biaui.Extension
             foreach (var sink in _sinks)
             {
                 // ブラシ取得
-                var resKey = sink.Key.ToString();
+                var resKey = sink.Key.GetHashCode();
                 if (ResCache.TryGetValue(resKey, out var brush) == false)
                 {
                     ResCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color));
@@ -163,7 +161,7 @@ namespace Biaui.Extension
                 // 接続線カーブ
                 {
                     sink.Value.curveSink.Close();
-                    target.DrawGeometry(sink.Value.curveGeom, (Brush)brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
+                    target.DrawGeometry(sink.Value.curveGeom, (Brush) brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
                     sink.Value.curveSink.Dispose();
                     sink.Value.curveGeom.Dispose();
                 }
