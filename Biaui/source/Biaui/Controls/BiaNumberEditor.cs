@@ -1204,8 +1204,6 @@ namespace Biaui.Controls
             Continue
         }
 
-        private static Regex _evalRegex;
-
         private (MakeValueResult Result, double Value) MakeValueFromString(string src)
         {
             if (double.TryParse(src, out var v))
@@ -1214,12 +1212,7 @@ namespace Biaui.Controls
             if (double.TryParse(Evaluator.Eval(src), out v))
                 return (MakeValueResult.Continue, ClampValue(v));
 
-            // Math.を補間
-            if (_evalRegex == null)
-                _evalRegex = new Regex("[A-Za-z_]+");
-
-            var rs = _evalRegex.Replace(src, "Math.$0");
-            if (double.TryParse(Evaluator.Eval(rs), out v))
+            if (double.TryParse(Evaluator.Eval(src), out v))
                 return (MakeValueResult.Continue, ClampValue(v));
 
             return (MakeValueResult.Cancel, default);
