@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using Biaui.Controls.Converters;
 
 namespace Biaui
@@ -29,6 +30,9 @@ namespace Biaui
         {
             Length = 19
         };
+
+        public static Brush CheckerBrush => _CheckerBrush ?? (_CheckerBrush = (Brush) Application.Current.FindResource("CheckerBrush"));
+        private static Brush _CheckerBrush;
     }
 
     public enum WindowCloseButtonBehavior

@@ -4,6 +4,7 @@
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaCheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaClippingBorder.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPanel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorSelector.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />

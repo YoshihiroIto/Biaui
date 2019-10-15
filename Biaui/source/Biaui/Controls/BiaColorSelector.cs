@@ -223,7 +223,6 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaColorSelector)));
         }
 
-        private static Brush _checker;
         private SolidColorBrush _background = Brushes.Transparent;
 
         protected override void OnRender(DrawingContext dc)
@@ -238,20 +237,17 @@ namespace Biaui.Controls
 
             if (IsEnabled)
             {
-                if (_checker == null)
-                    _checker = (Brush) Application.Current.FindResource("CheckerBrush");
-
                 if (NumberHelper.AreCloseZero(CornerRadius))
                 {
                     if (_background != null && _background.Color.A != 0xFF)
-                        dc.DrawRectangle(_checker, null, rect);
+                        dc.DrawRectangle(Constants.CheckerBrush, null, rect);
 
                     dc.DrawRectangle(_background, borderPen, rect);
                 }
                 else
                 {
                     if (_background != null && _background.Color.A != 0xFF)
-                        dc.DrawRoundedRectangle(_checker, null, rect, CornerRadius, CornerRadius);
+                        dc.DrawRoundedRectangle(Constants.CheckerBrush, null, rect, CornerRadius, CornerRadius);
 
                     dc.DrawRoundedRectangle(_background, borderPen, rect, CornerRadius, CornerRadius);
                 }
