@@ -773,7 +773,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 case nameof(IBiaNodeItem.Size):
                 {
                     _parent.InvokeNodeItemMoved();
-                    ChangeElementInternal(true);
+                    ChangeElementInternal(node, true);
                     break;
                 }
 
@@ -783,7 +783,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     _parent.InvokeNodeItemMoved();
                     UpdateSelectedNode(node);
-                    ChangeElementInternal(false);
+                    ChangeElementInternal(node, false);
 
                     if (e.PropertyName == nameof(IBiaNodeItem.IsSelected))
                         ToLast(_nodeDict[node]);
@@ -793,7 +793,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 case nameof(IBiaNodeItem.Slots):
                 {
-                    ChangeElementInternal(false);
+                    ChangeElementInternal(node, false);
 
                     UpdateNodeSlotEnabled(node);
 
@@ -809,18 +809,17 @@ namespace Biaui.Controls.NodeEditor.Internal
                     break;
                 }
             }
+        }
 
-            //////////////////////////////////////////////////////////////////////////////////////
-            void ChangeElementInternal(bool isPushRemove)
-            {
-                var panel = FindPanel(node);
+        //////////////////////////////////////////////////////////////////////////////////////
+        private void ChangeElementInternal(IBiaNodeItem node, bool isPushRemove)
+        {
+            var panel = FindPanel(node);
+            if (panel == null)
+                return;
 
-                if (panel != null)
-                {
-                    ChangeElement(panel);
-                    UpdateChildrenBag(isPushRemove);
-                }
-            }
+            ChangeElement(panel);
+            UpdateChildrenBag(isPushRemove);
         }
 
         #region NodePanel
