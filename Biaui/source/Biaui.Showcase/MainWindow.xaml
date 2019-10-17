@@ -127,146 +127,63 @@
                 </StackPanel>
 
                 <controls:BiaClippingBorder Margin="0,4,0,0">
-                    <Grid>
-                        <Grid.Resources>
+                    <controls:BiaUniformGrid Columns="3" Spacing="1">
+                        <controls:BiaUniformGrid.Resources>
                             <Style TargetType="{x:Type controls:BiaToggleButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
-                        </Grid.Resources>
+                        </controls:BiaUniformGrid.Resources>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <controls:BiaToggleButton Grid.Column="0" Content="Asia" />
-                        <controls:BiaToggleButton Grid.Column="1"
-                                                  Margin="1,0,0,0"
-                                                  Content="USA"
-                                                  IsChecked="True" />
-                        <controls:BiaToggleButton Grid.Column="2"
-                                                  Margin="1,0,0,0"
-                                                  Content="EU" />
-                    </Grid>
+                        <controls:BiaToggleButton Content="Asia" />
+                        <controls:BiaToggleButton Content="USA" IsChecked="True" />
+                        <controls:BiaToggleButton Content="EU" />
+                    </controls:BiaUniformGrid>
                 </controls:BiaClippingBorder>
 
                 <controls:BiaClippingBorder Margin="0,4,0,0">
-                    <Grid IsEnabled="False">
-                        <Grid.Resources>
+                    <controls:BiaUniformGrid Columns="3"
+                                             IsEnabled="False"
+                                             Spacing="1">
+                        <controls:BiaUniformGrid.Resources>
                             <Style TargetType="{x:Type controls:BiaToggleButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
-                        </Grid.Resources>
+                        </controls:BiaUniformGrid.Resources>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <controls:BiaToggleButton Grid.Column="0" Content="Asia" />
-                        <controls:BiaToggleButton Grid.Column="1"
-                                                  Margin="1,0,0,0"
-                                                  Content="USA"
-                                                  IsChecked="True" />
-                        <controls:BiaToggleButton Grid.Column="2"
-                                                  Margin="1,0,0,0"
-                                                  Content="EU" />
-                    </Grid>
+                        <controls:BiaToggleButton Content="Asia" />
+                        <controls:BiaToggleButton Content="USA" IsChecked="True" />
+                        <controls:BiaToggleButton Content="EU" />
+                    </controls:BiaUniformGrid>
                 </controls:BiaClippingBorder>
 
-
                 <controls:BiaClippingBorder Margin="0,4,0,0" CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                    <Grid>
-                        <Grid.Resources>
+                    <controls:BiaUniformGrid Columns="4" Spacing="1">
+                        <controls:BiaUniformGrid.Resources>
                             <Style TargetType="{x:Type controls:BiaToggleButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
-                        </Grid.Resources>
+                        </controls:BiaUniformGrid.Resources>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                        <controls:BiaToggleButton Content="A0" />
+                        <controls:BiaToggleButton Content="A1" />
+                        <controls:BiaToggleButton Content="A2" />
+                        <controls:BiaToggleButton Content="A3" />
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                        <controls:BiaToggleButton Content="B0" />
+                        <controls:BiaToggleButton Content="B1" />
+                        <controls:BiaToggleButton Content="B2" />
+                        <controls:BiaToggleButton Content="B3" />
 
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="0"
-                                                  Margin="0,0,0,0"
-                                                  Content="A0" />
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="1"
-                                                  Margin="1,0,0,0"
-                                                  Content="A1" />
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="2"
-                                                  Margin="1,0,0,0"
-                                                  Content="A2" />
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="3"
-                                                  Margin="1,0,0,0"
-                                                  Content="A3" />
+                        <controls:BiaToggleButton Content="C0" />
+                        <controls:BiaToggleButton Content="C1" />
+                        <controls:BiaToggleButton Content="C2" />
+                        <controls:BiaToggleButton Content="C3" />
 
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="0"
-                                                  Margin="0,1,0,0"
-                                                  Content="B0" />
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="1"
-                                                  Margin="1,1,0,0"
-                                                  Content="B1" />
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="2"
-                                                  Margin="1,1,0,0"
-                                                  Content="B2" />
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="3"
-                                                  Margin="1,1,0,0"
-                                                  Content="B3" />
-
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="0"
-                                                  Margin="0,1,0,0"
-                                                  Content="C0" />
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="1"
-                                                  Margin="1,1,0,0"
-                                                  Content="C1" />
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="2"
-                                                  Margin="1,1,0,0"
-                                                  Content="C2" />
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="3"
-                                                  Margin="1,1,0,0"
-                                                  Content="C3" />
-
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="0"
-                                                  Margin="0,1,0,0"
-                                                  Content="D0" />
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="1"
-                                                  Margin="1,1,0,0"
-                                                  Content="D1" />
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="2"
-                                                  Margin="1,1,0,0"
-                                                  Content="D2" />
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="3"
-                                                  Margin="1,1,0,0"
-                                                  Content="D3" />
-                    </Grid>
+                        <controls:BiaToggleButton Content="D0" />
+                        <controls:BiaToggleButton Content="D1" />
+                        <controls:BiaToggleButton Content="D2" />
+                        <controls:BiaToggleButton Content="D3" />
+                    </controls:BiaUniformGrid>
                 </controls:BiaClippingBorder>
 
                 <controls:BiaComboBox ItemsSource="{Binding ShortItems}" SelectedItem="{Binding SelectedShortItem}" />
@@ -302,62 +219,36 @@
                 <controls:BiaClippingBorder Margin="0,4,0,0"
                                             HorizontalAlignment="Left"
                                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
-                    <Grid>
-                        <Grid.Resources>
+                    <controls:BiaUniformGrid Columns="4" Spacing="1">
+                        <controls:BiaUniformGrid.Resources>
                             <Style TargetType="{x:Type controls:BiaIconButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
-                        </Grid.Resources>
+                        </controls:BiaUniformGrid.Resources>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <controls:BiaIconButton Grid.Column="0" Content="M12,21L15.6,16.2C14.6,15.45 13.35,15 12,15C10.65,15 9.4,15.45 8.4,16.2L12,21M12,3C7.95,3 4.21,4.34 1.2,6.6L3,9C5.5,7.12 8.62,6 12,6C15.38,6 18.5,7.12 21,9L22.8,6.6C19.79,4.34 16.05,3 12,3M12,9C9.3,9 6.81,9.89 4.8,11.4L6.6,13.8C8.1,12.67 9.97,12 12,12C14.03,12 15.9,12.67 17.4,13.8L19.2,11.4C17.19,9.89 14.7,9 12,9Z" />
-                        <controls:BiaIconButton Grid.Column="1"
-                                                Margin="1,0,0,0"
-                                                Content="M19.3,17.89C20.62,15.79 20,13 17.89,11.68C15.79,10.36 13,11 11.68,13.09C10.36,15.2 11,18 13.09,19.3C14.56,20.22 16.42,20.22 17.89,19.3L21,22.39L22.39,21L19.3,17.89M17.3,17.27C16.32,18.25 14.74,18.24 13.76,17.27C12.79,16.29 12.79,14.71 13.77,13.73C14.74,12.76 16.32,12.76 17.3,13.73C18.26,14.72 18.25,16.3 17.27,17.27H17.3M19,4H5A2,2 0 0,0 3,6V18A2,2 0 0,0 5,20H10.81C10.25,19.42 9.8,18.74 9.5,18H5V14H9.18C9.34,13.29 9.61,12.61 10,12H5V8H11V10.81C11.58,10.25 12.26,9.8 13,9.5V8H19V10C19.4,10.25 19.77,10.55 20.1,10.88C20.44,11.22 20.74,11.59 21,12V6A2,2 0 0,0 19,4Z" />
-                        <controls:BiaIconButton Grid.Column="2"
-                                                Margin="1,0,0,0"
-                                                Content="M2,2H6V4H4V20H6V22H2V2M20,4H18V2H22V22H18V20H20V4M9,5H10V10H11V11H8V10H9V6L8,6.5V5.5L9,5M15,13H16V18H17V19H14V18H15V14L14,14.5V13.5L15,13M9,13C10.1,13 11,14.34 11,16C11,17.66 10.1,19 9,19C7.9,19 7,17.66 7,16C7,14.34 7.9,13 9,13M9,14C8.45,14 8,14.9 8,16C8,17.1 8.45,18 9,18C9.55,18 10,17.1 10,16C10,14.9 9.55,14 9,14M15,5C16.1,5 17,6.34 17,8C17,9.66 16.1,11 15,11C13.9,11 13,9.66 13,8C13,6.34 13.9,5 15,5M15,6C14.45,6 14,6.9 14,8C14,9.1 14.45,10 15,10C15.55,10 16,9.1 16,8C16,6.9 15.55,6 15,6Z" />
-                        <controls:BiaIconButton Grid.Column="3"
-                                                Margin="1,0,0,0"
-                                                Content="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-                    </Grid>
+                        <controls:BiaIconButton Content="M12,21L15.6,16.2C14.6,15.45 13.35,15 12,15C10.65,15 9.4,15.45 8.4,16.2L12,21M12,3C7.95,3 4.21,4.34 1.2,6.6L3,9C5.5,7.12 8.62,6 12,6C15.38,6 18.5,7.12 21,9L22.8,6.6C19.79,4.34 16.05,3 12,3M12,9C9.3,9 6.81,9.89 4.8,11.4L6.6,13.8C8.1,12.67 9.97,12 12,12C14.03,12 15.9,12.67 17.4,13.8L19.2,11.4C17.19,9.89 14.7,9 12,9Z" />
+                        <controls:BiaIconButton Content="M19.3,17.89C20.62,15.79 20,13 17.89,11.68C15.79,10.36 13,11 11.68,13.09C10.36,15.2 11,18 13.09,19.3C14.56,20.22 16.42,20.22 17.89,19.3L21,22.39L22.39,21L19.3,17.89M17.3,17.27C16.32,18.25 14.74,18.24 13.76,17.27C12.79,16.29 12.79,14.71 13.77,13.73C14.74,12.76 16.32,12.76 17.3,13.73C18.26,14.72 18.25,16.3 17.27,17.27H17.3M19,4H5A2,2 0 0,0 3,6V18A2,2 0 0,0 5,20H10.81C10.25,19.42 9.8,18.74 9.5,18H5V14H9.18C9.34,13.29 9.61,12.61 10,12H5V8H11V10.81C11.58,10.25 12.26,9.8 13,9.5V8H19V10C19.4,10.25 19.77,10.55 20.1,10.88C20.44,11.22 20.74,11.59 21,12V6A2,2 0 0,0 19,4Z" />
+                        <controls:BiaIconButton Content="M2,2H6V4H4V20H6V22H2V2M20,4H18V2H22V22H18V20H20V4M9,5H10V10H11V11H8V10H9V6L8,6.5V5.5L9,5M15,13H16V18H17V19H14V18H15V14L14,14.5V13.5L15,13M9,13C10.1,13 11,14.34 11,16C11,17.66 10.1,19 9,19C7.9,19 7,17.66 7,16C7,14.34 7.9,13 9,13M9,14C8.45,14 8,14.9 8,16C8,17.1 8.45,18 9,18C9.55,18 10,17.1 10,16C10,14.9 9.55,14 9,14M15,5C16.1,5 17,6.34 17,8C17,9.66 16.1,11 15,11C13.9,11 13,9.66 13,8C13,6.34 13.9,5 15,5M15,6C14.45,6 14,6.9 14,8C14,9.1 14.45,10 15,10C15.55,10 16,9.1 16,8C16,6.9 15.55,6 15,6Z" />
+                        <controls:BiaIconButton Content="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+                    </controls:BiaUniformGrid>
                 </controls:BiaClippingBorder>
 
 
                 <controls:BiaClippingBorder Margin="0,4,0,0"
                                             HorizontalAlignment="Left"
                                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
-                    <Grid>
-                        <Grid.Resources>
+                    <controls:BiaUniformGrid Columns="4" Spacing="1">
+                        <controls:BiaUniformGrid.Resources>
                             <Style TargetType="{x:Type controls:BiaIconToggleButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
-                        </Grid.Resources>
+                        </controls:BiaUniformGrid.Resources>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <controls:BiaIconToggleButton Grid.Column="0" Content="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-                        <controls:BiaIconToggleButton Grid.Column="1"
-                                                      Margin="1,0,0,0"
-                                                      Content="M12,2C9,7 4,9 4,14C4,16 6,18 8,18C9,18 10,18 11,17C11,17 11.32,19 9,22H15C13,19 13,17 13,17C14,18 15,18 16,18C18,18 20,16 20,14C20,9 15,7 12,2Z" />
-                        <controls:BiaIconToggleButton Grid.Column="2"
-                                                      Margin="1,0,0,0"
-                                                      Content="M19,12L12,22L5,12L12,2" />
-                        <controls:BiaIconToggleButton Grid.Column="3"
-                                                      Margin="1,0,0,0"
-                                                      Content="M12,2C14.3,2 16.3,4 16.3,6.2C16.21,8.77 14.34,9.83 14.04,10C15.04,9.5 16.5,9.5 16.5,9.5C19,9.5 21,11.3 21,13.8C21,16.3 19,18 16.5,18C16.5,18 15,18 13,17C13,17 12.7,19 15,22H9C11.3,19 11,17 11,17C9,18 7.5,18 7.5,18C5,18 3,16.3 3,13.8C3,11.3 5,9.5 7.5,9.5C7.5,9.5 8.96,9.5 9.96,10C9.66,9.83 7.79,8.77 7.7,6.2C7.7,4 9.7,2 12,2Z" />
-                    </Grid>
+                        <controls:BiaIconToggleButton Content="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+                        <controls:BiaIconToggleButton Content="M12,2C9,7 4,9 4,14C4,16 6,18 8,18C9,18 10,18 11,17C11,17 11.32,19 9,22H15C13,19 13,17 13,17C14,18 15,18 16,18C18,18 20,16 20,14C20,9 15,7 12,2Z" />
+                        <controls:BiaIconToggleButton Content="M19,12L12,22L5,12L12,2" />
+                        <controls:BiaIconToggleButton Content="M12,2C14.3,2 16.3,4 16.3,6.2C16.21,8.77 14.34,9.83 14.04,10C15.04,9.5 16.5,9.5 16.5,9.5C19,9.5 21,11.3 21,13.8C21,16.3 19,18 16.5,18C16.5,18 15,18 13,17C13,17 12.7,19 15,22H9C11.3,19 11,17 11,17C9,18 7.5,18 7.5,18C5,18 3,16.3 3,13.8C3,11.3 5,9.5 7.5,9.5C7.5,9.5 8.96,9.5 9.96,10C9.66,9.83 7.79,8.77 7.7,6.2C7.7,4 9.7,2 12,2Z" />
+                    </controls:BiaUniformGrid>
                 </controls:BiaClippingBorder>
 
 

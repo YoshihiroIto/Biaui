@@ -292,95 +292,33 @@
                                             Margin="32,4,0,0"
                                             VerticalAlignment="Top"
                                             CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                    <Grid>
-                        <Grid.Resources>
+                    <controls:BiaUniformGrid Columns="4" Spacing="1">
+                        <controls:BiaUniformGrid.Resources>
                             <Style TargetType="{x:Type controls:BiaToggleButton}">
                                 <Setter Property="CornerRadius" Value="0" />
                             </Style>
-                        </Grid.Resources>
+                        </controls:BiaUniformGrid.Resources>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                        <controls:BiaToggleButton Content="A0" />
+                        <controls:BiaToggleButton Content="A1" />
+                        <controls:BiaToggleButton Content="A2" />
+                        <controls:BiaToggleButton Content="A3" />
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                        <controls:BiaToggleButton Content="B0" />
+                        <controls:BiaToggleButton Content="B1" />
+                        <controls:BiaToggleButton Content="B2" />
+                        <controls:BiaToggleButton Content="B3" />
 
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="0"
-                                                  Margin="0,0,0,0"
-                                                  Content="A0" />
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="1"
-                                                  Margin="1,0,0,0"
-                                                  Content="A1" />
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="2"
-                                                  Margin="1,0,0,0"
-                                                  Content="A2" />
-                        <controls:BiaToggleButton Grid.Row="0"
-                                                  Grid.Column="3"
-                                                  Margin="1,0,0,0"
-                                                  Content="A3" />
+                        <controls:BiaToggleButton Content="C0" />
+                        <controls:BiaToggleButton Content="C1" />
+                        <controls:BiaToggleButton Content="C2" />
+                        <controls:BiaToggleButton Content="C3" />
 
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="0"
-                                                  Margin="0,1,0,0"
-                                                  Content="B0" />
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="1"
-                                                  Margin="1,1,0,0"
-                                                  Content="B1" />
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="2"
-                                                  Margin="1,1,0,0"
-                                                  Content="B2" />
-                        <controls:BiaToggleButton Grid.Row="1"
-                                                  Grid.Column="3"
-                                                  Margin="1,1,0,0"
-                                                  Content="B3" />
-
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="0"
-                                                  Margin="0,1,0,0"
-                                                  Content="C0" />
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="1"
-                                                  Margin="1,1,0,0"
-                                                  Content="C1" />
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="2"
-                                                  Margin="1,1,0,0"
-                                                  Content="C2" />
-                        <controls:BiaToggleButton Grid.Row="2"
-                                                  Grid.Column="3"
-                                                  Margin="1,1,0,0"
-                                                  Content="C3" />
-
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="0"
-                                                  Margin="0,1,0,0"
-                                                  Content="D0" />
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="1"
-                                                  Margin="1,1,0,0"
-                                                  Content="D1" />
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="2"
-                                                  Margin="1,1,0,0"
-                                                  Content="D2" />
-                        <controls:BiaToggleButton Grid.Row="3"
-                                                  Grid.Column="3"
-                                                  Margin="1,1,0,0"
-                                                  Content="D3" />
-                    </Grid>
+                        <controls:BiaToggleButton Content="D0" />
+                        <controls:BiaToggleButton Content="D1" />
+                        <controls:BiaToggleButton Content="D2" />
+                        <controls:BiaToggleButton Content="D3" />
+                    </controls:BiaUniformGrid>
                 </controls:BiaClippingBorder>
 
                 <StackPanel Width="100"
