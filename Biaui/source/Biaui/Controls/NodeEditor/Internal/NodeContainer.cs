@@ -237,8 +237,6 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                     ClearSelectedNode();
 
-                //foreach (var child in Children.ToArray())
-
                 foreach (var child in _parent.NodeContainers.SelectMany(x => x.Children).ToArray())
                 {
                     if (child.IsActive == false)
