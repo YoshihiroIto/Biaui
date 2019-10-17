@@ -53,11 +53,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly BiaNodePanelLayer _layer;
         private readonly MouseOperator _mouseOperator;
 
-        private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict
-            = new Dictionary<IBiaNodeItem, BiaNodePanel>();
-
-        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate
-            = new List<(IBiaNodeItem, BiaNodePanel)>();
+        private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
+        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate = new List<(IBiaNodeItem, BiaNodePanel)>();
 
         private readonly Stack<BiaNodePanel> _removeNodePanelPool = new Stack<BiaNodePanel>();
         private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
