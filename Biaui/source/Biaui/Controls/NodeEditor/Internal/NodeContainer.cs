@@ -593,7 +593,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     _parent.SourceNodeSlotConnecting.Slot.Id
                 ));
 
-            foreach (var child in Children)
+            foreach (var child in _parent.NodeContainers.SelectMany(x => x.Children))
             {
                 if (child.IsActive == false)
                     continue;
