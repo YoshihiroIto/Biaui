@@ -661,13 +661,19 @@ namespace Biaui.Controls.NodeEditor.Internal
             INotifyCollectionChanged newSource)
         {
             if (oldSource != null)
+            {
+                // 全部削除として扱う
+                NodesSourceOnCollectionChanged(null,
+                    new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, (IList) oldSource, 0));
+
                 oldSource.CollectionChanged -= NodesSourceOnCollectionChanged;
+            }
 
             if (newSource != null)
             {
                 newSource.CollectionChanged += NodesSourceOnCollectionChanged;
 
-                // 最初は全部追加として扱う
+                // 全部追加として扱う
                 NodesSourceOnCollectionChanged(null,
                     new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, (IList) newSource, 0));
             }
