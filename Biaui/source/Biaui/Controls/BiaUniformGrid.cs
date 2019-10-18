@@ -98,6 +98,36 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region IsFillLastRow
+
+        public bool IsFillLastRow
+        {
+            get => _IsFillLastRow;
+            set
+            {
+                if (value != _IsFillLastRow)
+                    SetValue(IsFillLastRowProperty, Boxes.Bool(value));
+            }
+        }
+
+        private bool _IsFillLastRow = true;
+
+        public static readonly DependencyProperty IsFillLastRowProperty =
+            DependencyProperty.Register(
+                nameof(IsFillLastRow),
+                typeof(bool),
+                typeof(BiaUniformGrid),
+                new FrameworkPropertyMetadata(
+                    Boxes.BoolTrue,
+                    FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    (s, e) =>
+                    {
+                        var self = (BiaUniformGrid) s;
+                        self._IsFillLastRow = (bool) e.NewValue;
+                    }));
+
+        #endregion
+
         protected override Size MeasureOverride(Size constraint)
         {
             UpdateComputedValues();
@@ -131,21 +161,37 @@ namespace Biaui.Controls
             var xIndex = 0;
             var yIndex = 0;
 
-            var childWidth = Math.Floor(arrangeSize.Width / _columns);
+            var baseChildWidth = Math.Floor(arrangeSize.Width / _columns);
             var childHeight = Math.Floor(arrangeSize.Height / _rows);
 
             var dpiSpacing = Spacing * this.PixelsPerDip();
-
             var childBounds = new Rect();
+
+            var fillColumns = InternalChildren.Count % _columns;
+            var isLastFill = IsFillLastRow && (fillColumns == 0);
 
             for (var i = 0; i != InternalChildren.Count; ++i)
             {
                 var child = InternalChildren[i];
 
+                double childWidth;
+                int columns;
+
+                if (yIndex != _rows - 1 || isLastFill)
+                {
+                    childWidth = baseChildWidth;
+                    columns = _columns;
+                }
+                else
+                {
+                    childWidth = Math.Floor(arrangeSize.Width / fillColumns);
+                    columns = fillColumns;
+                }
+
                 childBounds.X = xIndex * childWidth;
                 childBounds.Y = yIndex * childHeight;
-                childBounds.Width = xIndex == _columns - 1
-                    ? childBounds.Width = arrangeSize.Width - childWidth * (_columns - 1)
+                childBounds.Width = xIndex == columns - 1
+                    ? childBounds.Width = arrangeSize.Width - childWidth * (columns - 1)
                     : Math.Max(0, childWidth - dpiSpacing);
 
                 childBounds.Height = yIndex == _rows - 1
