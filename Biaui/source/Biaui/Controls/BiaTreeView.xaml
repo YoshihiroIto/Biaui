@@ -8,31 +8,28 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Grid Width="15"
-                          Height="15"
-                          Background="Transparent">
-                        <Path x:Name="ExpandPath"
-                              Margin="1"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Center"
-                              Data="M 4 0 L 8 4 L 4 8 Z">
-                            <Path.Style>
-                                <Style TargetType="{x:Type Path}">
-                                    <Setter Property="Fill" Value="{DynamicResource ForegroundBrushKey}" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="Fill" Value="{DynamicResource InactiveForegroundBrushKey}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-                    </Grid>
+                    <Viewbox Width="15" Height="15">
+                        <Canvas Width="24"
+                                Height="24"
+                                Background="Transparent">
+                            <Path x:Name="ExpandPath" Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z">
+                                <Path.Style>
+                                    <Style TargetType="{x:Type Path}">
+                                        <Setter Property="Fill" Value="{DynamicResource ForegroundBrushKey}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Fill" Value="{DynamicResource InactiveForegroundBrushKey}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                        </Canvas>
+                    </Viewbox>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="ExpandPath" Property="Data" Value="M 0 4 L 8 4 L 4 8 Z" />
-                            <Setter TargetName="ExpandPath" Property="Margin" Value="3,-3,3,0" />
+                            <Setter TargetName="ExpandPath" Property="Data" Value="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
