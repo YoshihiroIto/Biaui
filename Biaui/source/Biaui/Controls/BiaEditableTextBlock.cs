@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -62,6 +63,62 @@ namespace Biaui.Controls
                         self._Text = (string)e.NewValue;
                     }));
         
+        #endregion
+
+        #region Watermark
+
+        public string Watermark
+        {
+            get => _Watermark;
+            set
+            {
+                if (value != _Watermark)
+                    SetValue(WatermarkProperty, value);
+            }
+        }
+
+        private string _Watermark;
+
+        public static readonly DependencyProperty WatermarkProperty =
+            DependencyProperty.Register(nameof(Watermark), typeof(string), typeof(BiaEditableTextBlock),
+                new FrameworkPropertyMetadata(
+                    default(string),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaEditableTextBlock) s;
+                        self._Watermark = (string) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region WatermarkForeground
+
+        public Brush WatermarkForeground
+        {
+            get => _WatermarkForeground;
+            set
+            {
+                if (value != _WatermarkForeground)
+                    SetValue(WatermarkForegroundProperty, value);
+            }
+        }
+
+        private Brush _WatermarkForeground;
+
+        public static readonly DependencyProperty WatermarkForegroundProperty =
+            DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaEditableTextBlock),
+                new FrameworkPropertyMetadata(
+                    default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaEditableTextBlock) s;
+                        self._WatermarkForeground = (Brush) e.NewValue;
+                    }));
+
         #endregion
 
         static BiaEditableTextBlock()

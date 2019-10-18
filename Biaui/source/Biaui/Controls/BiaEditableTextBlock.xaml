@@ -16,6 +16,7 @@
         <EventSetter Event="PreviewMouseDown" Handler="TextBox_PreviewMouseDown" />
 
         <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Foreground}" />
+        <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=TwoWay, Path=Text}" />
     </Style>
 
     <Style x:Key="TextBlockStyle"
@@ -23,12 +24,27 @@
            TargetType="{x:Type controls:BiaTextBlock}">
         <EventSetter Event="MouseDown" Handler="TextBlock_OnMouseDown" />
 
-        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Foreground}" />
         <Setter Property="IsHitTestVisible" Value="True" />
+
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Foreground}" />
+        <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Text}" />
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Text}" Value="{x:Null}">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=WatermarkForeground}" />
+                <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Watermark}" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Text}" Value="">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=WatermarkForeground}" />
+                <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=OneWay, Path=Watermark}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="{x:Type controls:BiaEditableTextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
+        <Setter Property="WatermarkForeground" Value="{DynamicResource TextBoxSubForegroundBrushKey}" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
 
@@ -37,7 +53,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <TextBox Style="{StaticResource TextBoxStyle}" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=TwoWay, Path=Text}" />
+                            <TextBox Style="{StaticResource TextBoxStyle}" />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -47,7 +63,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <controls:BiaTextBlock Style="{StaticResource TextBlockStyle}" Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaEditableTextBlock}}, Mode=TwoWay, Path=Text}" />
+                            <controls:BiaTextBlock Style="{StaticResource TextBlockStyle}" />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
