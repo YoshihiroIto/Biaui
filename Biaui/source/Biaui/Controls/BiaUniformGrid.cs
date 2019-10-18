@@ -143,8 +143,8 @@ namespace Biaui.Controls
                 var childBounds = new Rect(
                     xIndex * childWidth,
                     yIndex * childHeight,
-                    childWidth - dpiSpacing,
-                    childHeight - dpiSpacing);
+                    Math.Max(0, childWidth - dpiSpacing),
+                    Math.Max(0, childHeight - dpiSpacing));
 
                 if (xIndex == _columns - 1)
                     childBounds.Width = arrangeSize.Width - childWidth * (_columns - 1);
