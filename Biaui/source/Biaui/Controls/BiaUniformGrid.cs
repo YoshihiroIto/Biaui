@@ -39,7 +39,7 @@ namespace Biaui.Controls
         #endregion
 
         #region Columns
-        
+
         public int Columns
         {
             get => _Columns;
@@ -49,9 +49,9 @@ namespace Biaui.Controls
                     SetValue(ColumnsProperty, Boxes.Int(value));
             }
         }
-        
+
         private int _Columns;
-        
+
         public static readonly DependencyProperty ColumnsProperty =
             DependencyProperty.Register(
                 nameof(Columns),
@@ -63,13 +63,13 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._Columns = (int)e.NewValue;
+                        self._Columns = (int) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region Rows
-        
+
         public int Rows
         {
             get => _Rows;
@@ -79,9 +79,9 @@ namespace Biaui.Controls
                     SetValue(RowsProperty, Boxes.Int(value));
             }
         }
-        
+
         private int _Rows;
-        
+
         public static readonly DependencyProperty RowsProperty =
             DependencyProperty.Register(
                 nameof(Rows),
@@ -93,11 +93,11 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._Rows = (int)e.NewValue;
+                        self._Rows = (int) e.NewValue;
                     }));
-        
+
         #endregion
-        
+
         protected override Size MeasureOverride(Size constraint)
         {
             UpdateComputedValues();
@@ -136,21 +136,21 @@ namespace Biaui.Controls
 
             var dpiSpacing = Spacing * this.PixelsPerDip();
 
+            var childBounds = new Rect();
+
             for (var i = 0; i != InternalChildren.Count; ++i)
             {
                 var child = InternalChildren[i];
 
-                var childBounds = new Rect(
-                    xIndex * childWidth,
-                    yIndex * childHeight,
-                    Math.Max(0, childWidth - dpiSpacing),
-                    Math.Max(0, childHeight - dpiSpacing));
+                childBounds.X = xIndex * childWidth;
+                childBounds.Y = yIndex * childHeight;
+                childBounds.Width = xIndex == _columns - 1
+                    ? childBounds.Width = arrangeSize.Width - childWidth * (_columns - 1)
+                    : Math.Max(0, childWidth - dpiSpacing);
 
-                if (xIndex == _columns - 1)
-                    childBounds.Width = arrangeSize.Width - childWidth * (_columns - 1);
-
-                if (yIndex == _rows - 1)
-                    childBounds.Height = arrangeSize.Height - childHeight * (_rows - 1);
+                childBounds.Height = yIndex == _rows - 1
+                    ? childBounds.Height = arrangeSize.Height - childHeight * (_rows - 1)
+                    : Math.Max(0, childHeight - dpiSpacing);
 
                 child.Arrange(childBounds);
 
