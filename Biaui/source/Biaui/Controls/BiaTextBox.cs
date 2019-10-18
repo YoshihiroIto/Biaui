@@ -68,6 +68,34 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region WatermarkForeground
+
+        public Brush WatermarkForeground
+        {
+            get => _WatermarkForeground;
+            set
+            {
+                if (value != _WatermarkForeground)
+                    SetValue(WatermarkForegroundProperty, value);
+            }
+        }
+
+        private Brush _WatermarkForeground;
+
+        public static readonly DependencyProperty WatermarkForegroundProperty =
+            DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaTextBox),
+                new FrameworkPropertyMetadata(
+                    default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaTextBox) s;
+                        self._WatermarkForeground = (Brush) e.NewValue;
+                    }));
+
+        #endregion
+
         #region IsReadOnly
 
         public bool IsReadOnly
@@ -148,34 +176,6 @@ namespace Biaui.Controls
                     {
                         var self = (BiaTextBox) s;
                         self._Foreground = (Brush) e.NewValue;
-                    }));
-
-        #endregion
-
-        #region WatermarkForeground
-
-        public Brush WatermarkForeground
-        {
-            get => _WatermarkForeground;
-            set
-            {
-                if (value != _WatermarkForeground)
-                    SetValue(WatermarkForegroundProperty, value);
-            }
-        }
-
-        private Brush _WatermarkForeground;
-
-        public static readonly DependencyProperty WatermarkForegroundProperty =
-            DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaTextBox),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaTextBox) s;
-                        self._WatermarkForeground = (Brush) e.NewValue;
                     }));
 
         #endregion
