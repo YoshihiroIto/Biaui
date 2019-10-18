@@ -77,6 +77,9 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
+            if (IsHitTestVisible)
+                dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
+
             TextRenderer.Default.Draw(
                 this,
                 Text,
