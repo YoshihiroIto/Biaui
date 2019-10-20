@@ -209,25 +209,13 @@
                                                               DockPanel.Dock="Left"
                                                               Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaFilteringComboBox}}, Path=Foreground}" />
 
-                                                        <Button Width="24"
-                                                                Padding="0"
-                                                                VerticalAlignment="Stretch"
-                                                                Click="ClearButton_OnClick"
-                                                                DockPanel.Dock="Right"
-                                                                Loaded="ClearButton_OnLoaded"
-                                                                Style="{DynamicResource SharpButtonStyle}"
-                                                                Tag="{Binding ElementName=WordTextBox}">
-                                                            <Viewbox Width="16"
-                                                                     Height="16"
-                                                                     HorizontalAlignment="Center"
-                                                                     VerticalAlignment="Center">
-                                                                <Canvas Width="24" Height="24">
-                                                                    <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}" />
-                                                                </Canvas>
-                                                            </Viewbox>
-                                                        </Button>
-
-
+                                                        <controls:BiaIconButton VerticalAlignment="Stretch"
+                                                                                Click="ClearButton_OnClick"
+                                                                                Content="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                                                                CornerRadius="0"
+                                                                                DockPanel.Dock="Right"
+                                                                                Loaded="ClearButton_OnLoaded"
+                                                                                Tag="{Binding ElementName=WordTextBox}" />
 
                                                         <ScrollViewer x:Name="PART_ContentHost"
                                                                       Margin="{TemplateBinding Padding}"
