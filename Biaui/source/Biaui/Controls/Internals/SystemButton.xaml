@@ -15,18 +15,14 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type internals1:SystemButton}">
-                    <Viewbox>
-                        <Border Width="24"
-                                Height="24"
-                                Padding="8"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                SnapsToDevicePixels="True">
-                            <Path x:Name="Face"
-                                  Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource AncestorType=internals1:SystemButton}}"
-                                  Stretch="Uniform" />
-                        </Border>
-                    </Viewbox>
+                    <Border Padding="10"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            SnapsToDevicePixels="True">
+                        <Path x:Name="Face"
+                              Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource AncestorType=internals1:SystemButton}}"
+                              Stretch="Uniform" />
+                    </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowAction" Value="Minimize">
