@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using Biaui.Internals;
+using Jewelry.Collections;
 
 namespace Biaui.Controls
 {
@@ -95,22 +96,55 @@ namespace Biaui.Controls
 
             if (Content != null)
             {
-                const double padding = 5;
+                if (double.IsNaN(ContentSize) ||
+                    NumberHelper.AreCloseZero(ContentSize))
+                {
+                    dc.DrawGeometry(Foreground, null, Content);
+                }
+                else
+                {
+                    dc.PushTransform(GetScale());
 
-                var size = Math.Max(Math.Min(ActualWidth, ActualHeight) - padding * 2, 0);
-                _scale.ScaleX = size / ContentSize;
-                _scale.ScaleY = size / ContentSize;
-                _scale.CenterX = ActualWidth * 0.5;
-                _scale.CenterY = ActualHeight * 0.5;
+                    dc.DrawGeometry(Foreground, null, Content);
 
-                dc.PushTransform(_scale);
-
-                dc.DrawGeometry(Foreground, null, Content);
-
-                dc.Pop();
+                    dc.Pop();
+                }
             }
         }
 
-        private readonly ScaleTransform _scale = new ScaleTransform();
-   }
+        private ScaleTransform GetScale()
+        {
+            const double padding = 5;
+
+            var hash = MakeHashCode();
+
+            if (_scaleCache.TryGetValue(hash, out var scale) == false)
+            {
+                scale = new ScaleTransform();
+
+                var size = Math.Max(Math.Min(ActualWidth, ActualHeight) - padding * 2, 0);
+                scale.ScaleX = size / ContentSize;
+                scale.ScaleY = size / ContentSize;
+                scale.CenterX = ActualWidth * 0.5;
+                scale.CenterY = ActualHeight * 0.5;
+
+                _scaleCache.Add(hash, scale);
+            }
+
+            return scale;
+        }
+
+        private int MakeHashCode()
+        {
+            unchecked
+            {
+                var hashCode = ActualWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ ActualHeight.GetHashCode();
+                hashCode = (hashCode * 397) ^ ContentSize.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        private static readonly LruCache<int, ScaleTransform> _scaleCache = new LruCache<int, ScaleTransform>(16, false);
+    }
 }
