@@ -9,68 +9,70 @@ namespace Biaui.Internals
 {
     internal static class Boxes
     {
-        internal static object Thickness0 = new Thickness(0);
+        internal static readonly object Thickness0 = new Thickness(0);
 
-        internal static object BoolTrue = true;
-        internal static object BoolFalse = false;
+        internal static readonly object BoolTrue = true;
+        internal static readonly object BoolFalse = false;
 
-        internal static object Int0 = 0;
-        internal static object Int1 = 1;
-        internal static object Int2 = 2;
-        internal static object Int3 = 3;
-        internal static object Int4 = 4;
-        internal static object Int5 = 5;
-        internal static object Int6 = 6;
-        internal static object Int7 = 7;
-        internal static object IntMax = int.MaxValue;
+        internal static readonly object Int0 = 0;
+        internal static readonly object Int1 = 1;
+        internal static readonly object Int2 = 2;
+        internal static readonly object Int3 = 3;
+        internal static readonly object Int4 = 4;
+        internal static readonly object Int5 = 5;
+        internal static readonly object Int6 = 6;
+        internal static readonly object Int7 = 7;
+        internal static readonly object IntMax = int.MaxValue;
 
-        internal static object Float0 = 0.0f;
-        internal static object Float1 = 1.0f;
-        internal static object Float2 = 2.0f;
-        internal static object Float3 = 3.0f;
-        internal static object Float4 = 4.0f;
-        internal static object Float5 = 5.0f;
-        internal static object Float6 = 6.0f;
-        internal static object Float7 = 7.0f;
+        internal static readonly object Float0 = 0.0f;
+        internal static readonly object Float1 = 1.0f;
+        internal static readonly object Float2 = 2.0f;
+        internal static readonly object Float3 = 3.0f;
+        internal static readonly object Float4 = 4.0f;
+        internal static readonly object Float5 = 5.0f;
+        internal static readonly object Float6 = 6.0f;
+        internal static readonly object Float7 = 7.0f;
 
-        internal static object Double0 = 0.0;
-        internal static object Double1 = 1.0;
-        internal static object Double2 = 2.0;
-        internal static object Double3 = 3.0;
-        internal static object Double4 = 4.0;
-        internal static object Double5 = 5.0;
-        internal static object Double6 = 6.0;
-        internal static object Double7 = 7.0;
-        internal static object Double24 = 24.0;
-        internal static object DoubleMin = double.MinValue;
-        internal static object DoubleMax = double.MaxValue;
+        internal static readonly object Double0 = 0.0;
+        internal static readonly object Double1 = 1.0;
+        internal static readonly object Double2 = 2.0;
+        internal static readonly object Double3 = 3.0;
+        internal static readonly object Double4 = 4.0;
+        internal static readonly object Double5 = 5.0;
+        internal static readonly object Double6 = 6.0;
+        internal static readonly object Double7 = 7.0;
+        internal static readonly object Double24 = 24.0;
+        internal static readonly object DoubleMin = double.MinValue;
+        internal static readonly object DoubleMax = double.MaxValue;
 
-        internal static object ColorRed = Colors.Red;
-        internal static object ColorWhite = Colors.White;
-        internal static object ColorBlack = Colors.Black;
-        internal static object ColorTransparent = Colors.Transparent;
+        internal static readonly object ColorRed = Colors.Red;
+        internal static readonly object ColorWhite = Colors.White;
+        internal static readonly object ColorBlack = Colors.Black;
+        internal static readonly object ColorTransparent = Colors.Transparent;
 
-        internal static object Point00 = new Point(0, 0);
-        internal static object Size11 = new Size(1, 1);
-        internal static object Rect0 = new Rect(0, 0, 0, 0);
-        internal static object ImmutableRect0 = new ImmutableRect(0, 0, 0, 0);
+        internal static readonly object Point00 = new Point(0, 0);
+        internal static readonly object Size11 = new Size(1, 1);
+        internal static readonly object Rect0 = new Rect(0, 0, 0, 0);
+        internal static readonly object ImmutableRect0 = new ImmutableRect(0, 0, 0, 0);
 
-        internal static object NumberModeSimple = BiaNumberEditorMode.Simple;
-        internal static object NumberModeWideRange = BiaNumberEditorMode.WideRange;
+        internal static readonly object NumberModeSimple = BiaNumberEditorMode.Simple;
+        internal static readonly object NumberModeWideRange = BiaNumberEditorMode.WideRange;
 
-        internal static object NodeEditorNodeLinkStyleAxisAlign = BiaNodeEditorNodeLinkStyle.AxisAlign;
-        internal static object NodeEditorNodeLinkStyleBezierCurve = BiaNodeEditorNodeLinkStyle.BezierCurve;
+        internal static readonly object NodeEditorNodeLinkStyleAxisAlign = BiaNodeEditorNodeLinkStyle.AxisAlign;
+        internal static readonly object NodeEditorNodeLinkStyleBezierCurve = BiaNodeEditorNodeLinkStyle.BezierCurve;
 
-        internal static object ConstantsBasicCornerRadiusPrim = Biaui.Constants.BasicCornerRadiusPrim;
+        internal static readonly object ConstantsBasicCornerRadiusPrim = Biaui.Constants.BasicCornerRadiusPrim;
 
-        internal static object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;
+        // ReSharper disable InconsistentNaming
+        internal static readonly object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;
 
-        internal static object WindowAction_None = BiaWindowAction.None;
-        internal static object WindowAction_Active = BiaWindowAction.Active;
-        internal static object WindowAction_Close = BiaWindowAction.Close;
-        internal static object WindowAction_Normalize = BiaWindowAction.Normalize;
-        internal static object WindowAction_Maximize = BiaWindowAction.Maximize;
-        internal static object WindowAction_Minimize = BiaWindowAction.Minimize;
+        internal static readonly object WindowAction_None = BiaWindowAction.None;
+        internal static readonly object WindowAction_Active = BiaWindowAction.Active;
+        internal static readonly object WindowAction_Close = BiaWindowAction.Close;
+        internal static readonly object WindowAction_Normalize = BiaWindowAction.Normalize;
+        internal static readonly object WindowAction_Maximize = BiaWindowAction.Maximize;
+        internal static readonly object WindowAction_Minimize = BiaWindowAction.Minimize;
+        // ReSharper restore InconsistentNaming
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static object Bool(bool i) => i ? BoolTrue : BoolFalse;
