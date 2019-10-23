@@ -26,6 +26,10 @@ WPF dark theme and controls for .NET Framework and .NET Core 3.0.
     * https://github.com/dotnet/wpf
     * MIT License
 
+* LruCache.cs
+    * https://github.com/YoshihiroIto/Jewelry/blob/master/Jewelry/Collections/LruCache.cs
+    * MIT License
+
 * Material Design icons by Google
     * https://github.com/google/material-design-icons
     * Apache License 2.0
