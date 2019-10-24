@@ -363,6 +363,7 @@ namespace Biaui.Controls
 
                 _textBox.TextChanged += TextBox_OnTextChanged;
                 _textBox.PreviewKeyDown += TextBox_OnPreviewKeyDown;
+                _textBox.PreviewMouseDown += TextBox_OnPreviewMouseDown;
             }
 
             _textBox.Width = ActualWidth;
@@ -423,6 +424,18 @@ namespace Biaui.Controls
                     break;
                 }
             }
+        }
+
+        private void TextBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // 自コントロール上であれば、終了させない
+            var pos = e.GetPosition(this);
+            var rect = this.RoundLayoutRenderRectangle(false);
+            if (rect.Contains(pos))
+                return;
+
+            if (_isEditing)
+                FinishEditing(true);
         }
 
         private void FinishEditing(bool isEdit)
