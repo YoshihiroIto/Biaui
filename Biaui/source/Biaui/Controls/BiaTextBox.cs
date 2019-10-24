@@ -306,9 +306,9 @@ namespace Biaui.Controls
                     CornerRadius);
         }
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
+            base.OnMouseLeftButtonUp(e);
 
             if (IsEnabled == false)
                 return;
@@ -358,8 +358,7 @@ namespace Biaui.Controls
                     IsTabStop = false,
                     IsUndoEnabled = false,
                     FocusVisualStyle = null,
-                    FontFamily = Application.Current.FindResource("BiauiFontFamily") as FontFamily,
-                    SelectionLength = 0
+                    SelectionLength = 0,
                 };
 
                 _textBox.TextChanged += TextBox_OnTextChanged;
@@ -376,10 +375,9 @@ namespace Biaui.Controls
 
             _textBox.SelectAll();
             _textBox.Focus();
+            _textBox.CaptureMouse();
 
             _isEditing = true;
-
-            CaptureMouse();
         }
 
         private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
