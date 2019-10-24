@@ -927,7 +927,7 @@ namespace Biaui.Controls
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
+            base.OnMouseLeftButtonUp(e);
 
             if (IsReadOnly == false)
             {
@@ -1161,9 +1161,7 @@ namespace Biaui.Controls
                     Value = v.Value;
             }
 
-
             _textBox.ReleaseMouseCapture();
-
 
             RemoveVisualChild(_textBox);
             _isEditing = false;
