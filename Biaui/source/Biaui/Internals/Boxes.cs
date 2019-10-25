@@ -72,6 +72,9 @@ namespace Biaui.Internals
         internal static readonly object WindowAction_Normalize = BiaWindowAction.Normalize;
         internal static readonly object WindowAction_Maximize = BiaWindowAction.Maximize;
         internal static readonly object WindowAction_Minimize = BiaWindowAction.Minimize;
+
+        internal static readonly object ToggleButtonBehavior_Normal = BiaToggleButtonBehavior.Normal;
+        internal static readonly object ToggleButtonBehavior_RadioButton = BiaToggleButtonBehavior.RadioButton;
         // ReSharper restore InconsistentNaming
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -179,6 +182,19 @@ namespace Biaui.Internals
                     return WindowAction_Maximize;
                 case BiaWindowAction.Minimize:
                     return WindowAction_Minimize;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(a), a, null);
+            }
+        }
+
+        internal static object ToggleButtonBehavior(BiaToggleButtonBehavior a)
+        {
+            switch (a)
+            {
+                case BiaToggleButtonBehavior.Normal:
+                    return ToggleButtonBehavior_Normal;
+                case BiaToggleButtonBehavior.RadioButton:
+                    return ToggleButtonBehavior_RadioButton;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(a), a, null);
             }

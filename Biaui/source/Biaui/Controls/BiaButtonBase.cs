@@ -284,6 +284,11 @@ namespace Biaui.Controls
 
         protected virtual void Clicked()
         {
+            InvokeClicked();
+        }
+
+        protected virtual void InvokeClicked()
+        {
             RaiseEvent(new RoutedEventArgs(ClickEvent, this));
 
             Command?.ExecuteIfCan(CommandParameter);

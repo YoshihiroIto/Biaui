@@ -1,8 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Biaui.Internals;
 
 namespace Biaui.Controls
 {
+    public enum BiaToggleButtonBehavior
+    {
+        Normal,
+        RadioButton
+    }
+
     public class BiaToggleButton : BiaButton
     {
         #region IsChecked
@@ -38,6 +45,38 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region Behavior
+
+        public BiaToggleButtonBehavior Behavior
+        {
+            get => _Behavior;
+            set
+            {
+                if (value != _Behavior)
+                    SetValue(BehaviorProperty, Boxes.ToggleButtonBehavior(value));
+            }
+        }
+
+        private BiaToggleButtonBehavior _Behavior = BiaToggleButtonBehavior.Normal;
+
+        public static readonly DependencyProperty BehaviorProperty =
+            DependencyProperty.Register(
+                nameof(Behavior),
+                typeof(BiaToggleButtonBehavior),
+                typeof(BiaToggleButton),
+                new FrameworkPropertyMetadata(
+                    Boxes.ToggleButtonBehavior_Normal,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaToggleButton) s;
+                        self._Behavior = (BiaToggleButtonBehavior) e.NewValue;
+                    }));
+
+        #endregion
+
         static BiaToggleButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaToggleButton),
@@ -46,9 +85,44 @@ namespace Biaui.Controls
 
         protected override void Clicked()
         {
-            IsChecked = !IsChecked;
+            switch (Behavior)
+            {
+                case BiaToggleButtonBehavior.Normal:
+                    IsChecked = !IsChecked;
+                    base.InvokeClicked();
 
-            base.Clicked();
+                    break;
+
+                case BiaToggleButtonBehavior.RadioButton:
+                    if (IsChecked)
+                        return;
+
+                    IsChecked = true;
+
+                    base.InvokeClicked();
+
+                    if (IsChecked)
+                        UpdateSibling();
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void UpdateSibling()
+        {
+            var parent = Parent;
+            if (parent == null)
+                return;
+
+            foreach (var child in LogicalTreeHelper.GetChildren(parent))
+            {
+                if (child is BiaToggleButton toggleButton &&
+                    toggleButton != this)
+                    toggleButton.IsChecked = false;
+            }
         }
     }
 }
