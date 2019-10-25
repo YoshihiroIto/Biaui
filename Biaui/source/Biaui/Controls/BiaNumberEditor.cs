@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -1292,13 +1293,14 @@ namespace Biaui.Controls
                     v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
                         ? Concat(v.Value.ToString(DisplayFormat), UnitString)
                         : Concat(FormattedValueString, UnitString);
-
-                string Concat(string a, string b)
-                    => string.IsNullOrEmpty(b)
-                        ? a
-                        : a + b;
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string Concat(string a, string b)
+            => string.IsNullOrEmpty(b)
+                ? a
+                : a + b;
 
         private double UiValue
         {
