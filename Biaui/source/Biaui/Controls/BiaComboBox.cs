@@ -629,7 +629,9 @@ namespace Biaui.Controls
             Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
-        private Action FocusThis => () => Focus();
+        // ReSharper disable once ConvertToNullCoalescingCompoundAssignment
+        private Action FocusThis => _FocusThis ?? (_FocusThis = () => Focus());
+        private Action _FocusThis;
 
         private void ListBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -706,25 +708,42 @@ namespace Biaui.Controls
             if (ItemsSource == null)
                 return;
 
-            var ia = ItemsSource.Cast<object>().ToArray();
-            var i = Array.IndexOf(ia, SelectedItem);
-
-            if (i == -1)
+            IList items;
+            int itemsCount;
+            int selectedIndex;
             {
-                if (ia.Length > 0)
+                if (ItemsSource is IList list)
+                {
+                    itemsCount = list.Count;
+                    selectedIndex = list.IndexOf(SelectedItem);
+                    items = list;
+                }
+                else
+                {
+                    var itemsArray = ItemsSource.Cast<object>().ToArray();
+
+                    itemsCount = itemsArray.Length;
+                    selectedIndex = Array.IndexOf(itemsArray, SelectedItem);
+                    items = itemsArray;
+                }
+            }
+
+            if (selectedIndex == -1)
+            {
+                if (itemsCount > 0)
                 {
                     var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
                     item?.Focus();
 
-                    SelectedItem = ia[0];
+                    SelectedItem = items[0];
                 }
             }
             else
             {
-                i += dir;
-                i = (i, 0, ia.Length - 1).Clamp();
+                selectedIndex += dir;
+                selectedIndex = (selectedIndex, 0, itemsCount - 1).Clamp();
 
-                SelectedItem = ia[i];
+                SelectedItem = items[selectedIndex];
             }
         }
 

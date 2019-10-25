@@ -265,7 +265,9 @@ namespace Biaui.Controls
         private Popup _popup;
         private ScaleTransform _scale;
 
-        private Action FocusThis => () => Focus();
+        // ReSharper disable once ConvertToNullCoalescingCompoundAssignment
+        private Action FocusThis => _FocusThis ?? (_FocusThis = () => Focus());
+        private Action _FocusThis;
 
         private bool IsOpen => _popup != null && _popup.IsOpen;
 
