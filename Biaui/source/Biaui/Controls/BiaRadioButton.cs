@@ -74,7 +74,7 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutActualRectangle(false));
+            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
 
             if (IsEnabled)
             {
@@ -109,29 +109,7 @@ namespace Biaui.Controls
             }
 
             // キャプション
-            TextRenderer.Default.Draw(Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
-        }
-
-        protected override void Clicked()
-        {
-            base.Clicked();
-
-            if (IsChecked)
-                UpdateSibling();
-        }
-
-        private void UpdateSibling()
-        {
-            var parent = Parent;
-            if (parent == null)
-                return;
-
-            foreach (var child in LogicalTreeHelper.GetChildren(parent))
-            {
-                if (child is BiaRadioButton radioButton &&
-                    radioButton != this)
-                    radioButton.IsChecked = false;
-            }
+            TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
     }
 }

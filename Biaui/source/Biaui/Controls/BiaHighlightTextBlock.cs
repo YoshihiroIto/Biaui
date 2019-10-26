@@ -156,6 +156,7 @@ namespace Biaui.Controls
             var length = endIndex - startIndex + 1;
 
             var w = TextRenderer.Default.Draw(
+                this,
                 text,
                 startIndex,
                 length,

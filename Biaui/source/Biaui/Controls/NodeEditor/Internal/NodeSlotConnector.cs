@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,6 +30,11 @@ namespace Biaui.Controls.NodeEditor.Internal
         private const int ColumnCount = 8;
         private const int RowCount = 8;
 
+        // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
+        private readonly PropertyChangeNotifier _sourceNotifier;
+        private readonly PropertyChangeNotifier _targetNotifier;
+        // ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
+
         internal NodeSlotConnector(BiaNodeEditor parent, MouseOperator mouseOperator)
         {
             _parent = parent;
@@ -41,24 +45,13 @@ namespace Biaui.Controls.NodeEditor.Internal
             mouseOperator.LinkMoving += OnLinkMoving;
             SizeChanged += (_, e) => UpdateChildren(e.NewSize.Width, e.NewSize.Height);
 
-            var source = DependencyPropertyDescriptor.FromProperty(
-                BiaNodeEditor.SourceNodeSlotConnectingProperty, typeof(BiaNodeEditor));
-            var target = DependencyPropertyDescriptor.FromProperty(
-                BiaNodeEditor.TargetNodeSlotConnectingProperty, typeof(BiaNodeEditor));
-
             _parent.PreviewMouseUp += (_, __) => _mousePos = new Point(double.NaN, double.NaN);
 
-            Loaded += (_, __) =>
-            {
-                source.AddValueChanged(_parent, ConnectionChangedHandler);
-                target.AddValueChanged(_parent, ConnectionChangedHandler);
-            };
+            _sourceNotifier = new PropertyChangeNotifier(_parent, BiaNodeEditor.SourceNodeSlotConnectingProperty);
+            _targetNotifier = new PropertyChangeNotifier(_parent, BiaNodeEditor.TargetNodeSlotConnectingProperty);
 
-            Unloaded += (_, __) =>
-            {
-                source.RemoveValueChanged(_parent, ConnectionChangedHandler);
-                target.RemoveValueChanged(_parent, ConnectionChangedHandler);
-            };
+            _sourceNotifier.ValueChanged += ConnectionChangedHandler;
+            _targetNotifier.ValueChanged += ConnectionChangedHandler;
         }
 
         private void ConnectionChangedHandler(object sender, EventArgs e)
@@ -115,7 +108,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.Black, 5));
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 3));
 
-            var slotPen = Caches.GetPen(Colors.Black, 2);
+            var slotPen = Caches.GetPen(Colors.Black, this.RoundLayoutValue(2));
 
             // 接続元ポートの丸
             var srcRect = new ImmutableRect(
@@ -172,7 +165,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         nodeItem == _parent.SourceNodeSlotConnecting.Item)
                         continue;
 
-                    var slotPos = nodeItem.MakeSlotPos(slot);
+                    var slotPos = nodeItem.MakeSlotPosDefault(slot);
 
                     if (slot.HitCheck(slotPos, mousePos) == false)
                         continue;
@@ -280,7 +273,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 }
                 dc.Pop();
 
-                //dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutActualRectangle(false));
+                //dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutRenderRectangle(false));
             }
 
             //TextRenderer.Default.Draw(isHit.ToString(), 0, 0, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Left);

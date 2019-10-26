@@ -24,7 +24,7 @@ namespace Biaui.StandardControls
             var sv = (ScrollViewer) sender;
             var expander = sv.GetParent<Expander>();
 
-            sv.Tag = expander.IsExpanded ? 1.0 : 0.0;
+            sv.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
         }
     }
 }

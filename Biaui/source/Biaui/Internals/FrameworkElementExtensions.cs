@@ -6,46 +6,46 @@ namespace Biaui.Internals
 {
     internal static class FrameworkElementExtensions
     {
-        internal static double RoundLayoutActualWidth(this FrameworkElement self, bool isWithBorder)
+        internal static double RoundLayoutRenderWidth(this FrameworkElement self, bool isWithBorder)
         {
             if (isWithBorder)
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualWidth - BorderWidth);
+                return self.RoundLayoutValue(self.RenderSize.Width - BorderWidth);
             }
             else
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualWidth);
+                return self.RoundLayoutValue(self.RenderSize.Width);
             }
         }
 
 
-        internal static double RoundLayoutActualHeight(this FrameworkElement self, bool isWithBorder)
+        internal static double RoundLayoutRenderHeight(this FrameworkElement self, bool isWithBorder)
         {
             if (isWithBorder)
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualHeight - BorderWidth);
+                return self.RoundLayoutValue(self.RenderSize.Height - BorderWidth);
             }
             else
             {
-                return FrameworkElementHelper.RoundLayoutValue(self.ActualHeight);
+                return self.RoundLayoutValue(self.RenderSize.Height);
             }
         }
 
-        internal static Rect RoundLayoutActualRectangle(this FrameworkElement self, bool isWithBorder)
+        internal static Rect RoundLayoutRenderRectangle(this FrameworkElement self, bool isWithBorder)
         {
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (isWithBorder)
             {
                 return new Rect(
-                    RoundLayoutBorderWidth,
-                    RoundLayoutBorderWidth,
-                    self.RoundLayoutActualWidth(isWithBorder),
-                    self.RoundLayoutActualHeight(isWithBorder));
+                    self.RoundLayoutValue(BorderHalfWidth),
+                    self.RoundLayoutValue(BorderHalfWidth),
+                    self.RoundLayoutRenderWidth(isWithBorder),
+                    self.RoundLayoutRenderHeight(isWithBorder));
             }
             else
             {
-                return new Rect(0, 0, self.RoundLayoutActualWidth(isWithBorder),
-                    self.RoundLayoutActualHeight(isWithBorder));
+                return new Rect(0, 0, self.RoundLayoutRenderWidth(isWithBorder),
+                    self.RoundLayoutRenderHeight(isWithBorder));
             }
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
         }
@@ -104,7 +104,58 @@ namespace Biaui.Internals
         }
 
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
-            => Caches.GetPen(color, FrameworkElementHelper.RoundLayoutValue(BorderWidth));
+            => Caches.GetPen(color, self.RoundLayoutValue(BorderWidth));
+
+        public const double BorderWidth = 1.0;
+        public const double BorderHalfWidth = BorderWidth * 0.5;
+
+        internal static double RoundLayoutValue(this Visual visual, double value)
+            => RoundLayoutValue(value, visual.PixelsPerDip());
+
+        internal static ImmutableRect RoundLayoutRect(this Visual visual, in ImmutableRect rect)
+        {
+            var dpi = visual.PixelsPerDip();
+
+            return new ImmutableRect(
+                RoundLayoutValue(rect.X, dpi),
+                RoundLayoutValue(rect.Y, dpi),
+                RoundLayoutValue(rect.Width, dpi),
+                RoundLayoutValue(rect.Height, dpi));
+        }
+
+        internal static Rect RoundLayoutRect(this Visual visual, double x, double y, double w, double h)
+        {
+            var dpi = visual.PixelsPerDip();
+
+            return new Rect(
+                RoundLayoutValue(x, dpi),
+                RoundLayoutValue(y, dpi),
+                RoundLayoutValue(w, dpi),
+                RoundLayoutValue(h, dpi));
+        }
+
+        private static double RoundLayoutValue(double value, double dpiScale)
+        {
+            double newValue;
+
+            if (NumberHelper.AreClose(dpiScale, 1.0) == false)
+            {
+                newValue = Math.Round(value * dpiScale) / dpiScale;
+
+                if (double.IsNaN(newValue) ||
+                    double.IsInfinity(newValue) ||
+                    NumberHelper.AreClose(newValue, double.MaxValue))
+                {
+                    newValue = value;
+                }
+            }
+            else
+            {
+                newValue = value;
+            }
+
+            return newValue;
+        }
 
         internal static void SetMouseClipping(this FrameworkElement self)
         {
@@ -126,10 +177,5 @@ namespace Biaui.Internals
             return pos.X >= 0 && pos.X <= self.ActualWidth &&
                    pos.Y >= 0 && pos.Y <= self.ActualHeight;
         }
-
-        internal const double BorderWidth = 1.0;
-
-        private static readonly double RoundLayoutBorderWidth =
-            FrameworkElementHelper.RoundLayoutValue(BorderWidth * 0.5);
     }
 }

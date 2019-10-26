@@ -50,9 +50,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (Visibility != Visibility.Visible)
                 Visibility = Visibility.Visible;
 
-            var r = FrameworkElementHelper.RoundLayoutRect(_mouseOperator.SelectionRect);
+            var r = this.RoundLayoutRect(_mouseOperator.SelectionRect);
 
-            var borderWidth = FrameworkElementHelper.RoundLayoutValue(2);
+            var borderWidth = this.RoundLayoutValue(2);
 
             SetLeft(_left, r.X);
             SetTop(_left, r.Y);
@@ -85,14 +85,14 @@ namespace Biaui.Controls.NodeEditor.Internal
             _isVertical = isVertical;
         }
 
-        private static readonly Pen _pen = Caches.GetDashedPen(
-            Color.FromArgb(0xFF, 0x41, 0x69, 0xE1),
-            FrameworkElementHelper.RoundLayoutValue(2));
-
         protected override void OnRender(DrawingContext dc)
         {
+            var pen = Caches.GetDashedPen(
+                Color.FromArgb(0xFF, 0x41, 0x69, 0xE1),
+                this.RoundLayoutValue(2));
+
             dc.DrawLine(
-                _pen,
+                pen,
                 new Point(0, 0),
                 _isVertical
                     ? new Point(ActualWidth, 0)

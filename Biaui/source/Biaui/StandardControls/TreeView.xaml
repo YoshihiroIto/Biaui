@@ -54,14 +54,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Grid Width="15"
-                          Height="15"
-                          Background="Transparent">
-                        <Path x:Name="ExpandPath"
-                              Margin="1"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Center"
-                              Data="M 4 0 L 8 4 L 4 8 Z">
+                    <Canvas Width="15"
+                            Height="15"
+                            Background="Transparent">
+                        <Path x:Name="ExpandPath" Data="M 5.367188 10.363281 L 8.230469 7.5 L 5.367188 4.632812 L 6.25 3.75 L 10 7.5 L 6.25 11.25 Z M 5.367188 10.363281">
                             <Path.Style>
                                 <Style TargetType="{x:Type Path}">
                                     <Setter Property="Fill" Value="{DynamicResource ForegroundBrushKey}" />
@@ -73,12 +69,11 @@
                                 </Style>
                             </Path.Style>
                         </Path>
-                    </Grid>
+                    </Canvas>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="ExpandPath" Property="Data" Value="M 0 4 L 8 4 L 4 8 Z" />
-                            <Setter TargetName="ExpandPath" Property="Margin" Value="3,-3,3,0" />
+                            <Setter TargetName="ExpandPath" Property="Data" Value="M 4.632812 5.363281 L 7.5 8.230469 L 10.367188 5.363281 L 11.25 6.25 L 7.5 10 L 3.75 6.25 Z M 4.632812 5.363281"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

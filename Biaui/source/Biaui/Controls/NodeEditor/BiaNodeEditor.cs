@@ -206,7 +206,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (value != _NodeLinkStyle)
-                    SetValue(NodeLinkStyleProperty, value);
+                    SetValue(NodeLinkStyleProperty, Boxes.NodeEditorNodeLinkStyle(value));
             }
         }
 
@@ -216,7 +216,7 @@ namespace Biaui.Controls.NodeEditor
             DependencyProperty.Register(nameof(NodeLinkStyle), typeof(BiaNodeEditorNodeLinkStyle),
                 typeof(BiaNodeEditor),
                 new FrameworkPropertyMetadata(
-                    BiaNodeEditorNodeLinkStyle.AxisAlign,
+                    Boxes.NodeEditorNodeLinkStyleAxisAlign,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
@@ -235,7 +235,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (NumberHelper.AreClose(value, Scale) == false)
-                    SetValue(ScaleProperty, value);
+                    SetValue(ScaleProperty, Boxes.Double(value));
             }
         }
 
@@ -252,9 +252,153 @@ namespace Biaui.Controls.NodeEditor
                     {
                         var self = (BiaNodeEditor) s;
                         self._Scale = (double) e.NewValue;
+
+                        if (self._isInTransformChanging == false)
+                        {
+                            self._isInTransformChanging = true;
+                            self.ScaleTransform.ScaleX = self._Scale;
+                            self.ScaleTransform.ScaleY = self._Scale;
+                            self._isInTransformChanging = false;
+                        }
                     }));
 
         #endregion
+
+        #region TranslateX
+
+        public double TranslateX
+        {
+            get => _TranslateX;
+            set
+            {
+                if (NumberHelper.AreClose(value, _TranslateX) == false)
+                    SetValue(TranslateXProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _TranslateX;
+
+        public static readonly DependencyProperty TranslateXProperty =
+            DependencyProperty.Register(
+                nameof(TranslateX),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._TranslateX = (double) e.NewValue;
+
+                        if (self._isInTransformChanging == false)
+                        {
+                            self._isInTransformChanging = true;
+                            self.TranslateTransform.X = self._TranslateX;
+                            self._isInTransformChanging = false;
+                        }
+                    }));
+
+        #endregion
+
+        #region TranslateY
+
+        public double TranslateY
+        {
+            get => _TranslateY;
+            set
+            {
+                if (NumberHelper.AreClose(value, _TranslateY) == false)
+                    SetValue(TranslateYProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _TranslateY;
+
+        public static readonly DependencyProperty TranslateYProperty =
+            DependencyProperty.Register(
+                nameof(TranslateY),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._TranslateY = (double) e.NewValue;
+
+                        if (self._isInTransformChanging == false)
+                        {
+                            self._isInTransformChanging = true;
+                            self.TranslateTransform.Y = self._TranslateY;
+                            self._isInTransformChanging = false;
+                        }
+                    }));
+
+        #endregion
+
+        #region CanConnectLink
+
+        public bool CanConnectLink
+        {
+            get => _CanConnectLink;
+            set
+            {
+                if (value != _CanConnectLink)
+                    SetValue(CanConnectLinkProperty, Boxes.Bool(value));
+            }
+        }
+
+        private bool _CanConnectLink = true;
+
+        public static readonly DependencyProperty CanConnectLinkProperty =
+            DependencyProperty.Register(
+                nameof(CanConnectLink),
+                typeof(bool),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._CanConnectLink = (bool) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region OverlayHeaderHeight
+
+        public double OverlayHeaderHeight
+        {
+            get => _OverlayHeaderHeight;
+            set
+            {
+                if (NumberHelper.AreClose(value, _OverlayHeaderHeight) == false)
+                    SetValue(OverlayHeaderHeightProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _OverlayHeaderHeight;
+
+        public static readonly DependencyProperty OverlayHeaderHeightProperty =
+            DependencyProperty.Register(
+                nameof(OverlayHeaderHeight),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._OverlayHeaderHeight = (double) e.NewValue;
+                    }));
+
+        #endregion
+
+        public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
+
+        public TranslateTransform TranslateTransform { get; } = new TranslateTransform();
+
+        public bool IsNodeSlotDragging { get; internal set; }
 
         public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
 
@@ -264,11 +408,9 @@ namespace Biaui.Controls.NodeEditor
 
         public event EventHandler PropertyEditCompleted;
 
-        public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
+        public event EventHandler ScaleTransformChanged;
 
-        public TranslateTransform TranslateTransform { get; } = new TranslateTransform();
-
-        public bool IsNodeSlotDragging { get; internal set; }
+        public event EventHandler TranslateTransformChanged;
 
         internal event EventHandler NodeItemMoved;
 
@@ -278,21 +420,26 @@ namespace Biaui.Controls.NodeEditor
 
         internal event EventHandler LinkChanged;
 
+        private bool _isInTransformChanging;
+
         static BiaNodeEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNodeEditor),
                 new FrameworkPropertyMetadata(typeof(BiaNodeEditor)));
         }
 
-        private readonly NodeContainer _nodeContainer;
+        internal readonly NodeContainer[] NodeContainers = new NodeContainer[3];
+
+        private readonly MouseOperator _mouseOperator;
 
         public BiaNodeEditor()
         {
-            var mouseOperator = new MouseOperator(this, this);
+            _mouseOperator = new MouseOperator(this, this);
 
-            _nodeContainer = new NodeContainer(this, mouseOperator);
+            for(var i = 0;i != NodeContainers.Length;++ i)
+                NodeContainers[i] = new NodeContainer(this, (BiaNodePanelLayer)i, _mouseOperator);
 
-            SetupPropertyEditCommand(mouseOperator);
+            SetupPropertyEditCommand();
 
             IBackgroundPanel backgroundPanel;
             var grid = new Grid();
@@ -300,15 +447,40 @@ namespace Biaui.Controls.NodeEditor
                 backgroundPanel = BiauiEnvironment.BackgroundPanelGenerator.Generate(this);
 
                 grid.Children.Add((UIElement) backgroundPanel);
-                grid.Children.Add(_nodeContainer);
-                grid.Children.Add(new BoxSelector(mouseOperator));
-                grid.Children.Add(new NodeSlotConnector(this, mouseOperator));
+
+                foreach (var nodeContainer in NodeContainers)
+                    grid.Children.Add(nodeContainer);
+
+                grid.Children.Add(new BoxSelector(_mouseOperator));
+                grid.Children.Add(new NodeSlotConnector(this, _mouseOperator));
                 grid.Children.Add(CreateScaleSlider());
             }
 
             base.Child = grid;
 
-            ScaleTransform.Changed += (_, __) => Scale = ScaleTransform.ScaleX;
+            ScaleTransform.Changed += (_, __) =>
+            {
+                if (_isInTransformChanging == false)
+                {
+                    _isInTransformChanging = true;
+                    Scale = ScaleTransform.ScaleX;
+                    _isInTransformChanging = false;
+                }
+
+                ScaleTransformChanged?.Invoke(this, EventArgs.Empty);
+            };
+            TranslateTransform.Changed += (_, __) =>
+            {
+                if (_isInTransformChanging == false)
+                {
+                    _isInTransformChanging = true;
+                    TranslateX = TranslateTransform.X;
+                    TranslateY = TranslateTransform.Y;
+                    _isInTransformChanging = false;
+                }
+
+                TranslateTransformChanged?.Invoke(this, EventArgs.Empty);
+            };
 
             // backgroundPanel
             {
@@ -317,7 +489,7 @@ namespace Biaui.Controls.NodeEditor
                 NodeItemMoved += (_, __) => backgroundPanel.Invalidate();
                 LinksSourceChanging += (_, __) => backgroundPanel.Invalidate();
                 LinkChanged += (_, __) => backgroundPanel.Invalidate();
-                mouseOperator.PreMouseLeftButtonUp += (_, __) => backgroundPanel.Invalidate();
+                _mouseOperator.PreMouseLeftButtonUp += (_, __) => backgroundPanel.Invalidate();
             }
         }
 
@@ -390,47 +562,50 @@ namespace Biaui.Controls.NodeEditor
             return scaleSlider;
         }
 
-        private void SetupPropertyEditCommand(MouseOperator mouseOperator)
-        {
-            var isInEditing = false;
+        private bool _isInEditing;
 
-            mouseOperator.PostMouseLeftButtonDown += (_, __) =>
+        private void SetupPropertyEditCommand()
+        {
+            _mouseOperator.PostMouseLeftButtonDown += (_, __) =>
             {
                 // キー操作を受け付けるためにフォーカスをあてる
                 Focus();
 
-                isInEditing = mouseOperator.IsBoxSelect ||
-                              mouseOperator.IsPanelMove;
+                _isInEditing = _mouseOperator.IsBoxSelect ||
+                              _mouseOperator.IsPanelMove;
 
-                if (isInEditing == false)
+                if (_isInEditing == false)
                     return;
 
                 InvokePropertyEditStarting();
             };
 
-
-            mouseOperator.PostMouseLeftButtonUp += (_, __) =>
+            _mouseOperator.PostMouseLeftButtonUp += (_, __) =>
             {
-                if (isInEditing == false)
+                if (_isInEditing == false)
                     return;
 
                 InvokePropertyEditCompleted();
-                isInEditing = false;
+                _isInEditing = false;
             };
         }
 
         public void Sleep()
         {
-            ++_nodeContainer.IsEnableUpdateChildrenBagDepth;
+            foreach (var nodeContainer in NodeContainers)
+                ++nodeContainer.IsEnableUpdateChildrenBagDepth;
         }
 
         public void Wakeup()
         {
-            --_nodeContainer.IsEnableUpdateChildrenBagDepth;
-            Debug.Assert(_nodeContainer.IsEnableUpdateChildrenBagDepth >= 0);
+            foreach (var nodeContainer in NodeContainers)
+            {
+                --nodeContainer.IsEnableUpdateChildrenBagDepth;
+                Debug.Assert(nodeContainer.IsEnableUpdateChildrenBagDepth >= 0);
 
-            if (_nodeContainer.IsEnableUpdateChildrenBagDepth == 0)
-                _nodeContainer.UpdateChildrenBag(true);
+                if (nodeContainer.IsEnableUpdateChildrenBagDepth == 0)
+                    nodeContainer.UpdateChildrenBag(true);
+            }
         }
 
         #region Fit
@@ -482,19 +657,26 @@ namespace Biaui.Controls.NodeEditor
             var w = maxX - minX;
             var h = maxY - minY;
 
-            var scaleX = ActualWidth / w;
-            var scaleY = ActualHeight / h;
+            var width = ActualWidth;
+            var height = ActualHeight - OverlayHeaderHeight;
 
-            var viewCx = ActualWidth * 0.5;
-            var viewCy = ActualHeight * 0.5;
+            var scaleX = width / w;
+            var scaleY = height / h;
+
+            var viewCx = width * 0.5;
+            var viewCy = height * 0.5;
 
             var scale = (scaleX, scaleY).Min();
             scale = (scale, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
 
             TranslateTransform.X = -centerX * scale + viewCx;
-            TranslateTransform.Y = -centerY * scale + viewCy;
+            TranslateTransform.Y = -centerY * scale + viewCy + OverlayHeaderHeight;
             ScaleTransform.ScaleX = scale;
             ScaleTransform.ScaleY = scale;
+
+            // マウス状態を再評価
+            foreach (var nodeContainer in NodeContainers)
+                nodeContainer.RefreshMouseState();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

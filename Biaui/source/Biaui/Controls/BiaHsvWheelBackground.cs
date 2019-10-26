@@ -18,7 +18,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Hue) == false)
-                    SetValue(HueProperty, value);
+                    SetValue(HueProperty, Boxes.Double(value));
             }
         }
 
@@ -44,7 +44,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Saturation) == false)
-                    SetValue(SaturationProperty, value);
+                    SetValue(SaturationProperty, Boxes.Double(value));
             }
         }
 
@@ -70,7 +70,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 
@@ -278,7 +278,7 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            var rect = this.RoundLayoutActualRectangle(true);
+            var rect = this.RoundLayoutRenderRectangle(true);
 
             dc.DrawRectangle(Brushes.Transparent, null, rect);
         }
@@ -288,7 +288,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            var bw = FrameworkElementHelper.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
             var width = ActualWidth - bw * 2;
             var height = ActualHeight - bw * 2;
@@ -300,8 +300,8 @@ namespace Biaui.Controls
             var dy = y - 0.5;
 
             var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
-            dx = dx * cx;
-            dy = dy * cy;
+            dx *= cx;
+            dy *= cy;
 
             var h = (Math.Atan2(-dy, -dx) + Math.PI) / (2.0 * Math.PI);
             var s = Math.Sqrt(dx * dx + dy * dy) * 2;
@@ -336,10 +336,8 @@ namespace Biaui.Controls
 
             _ContinuousEditingStartValue = (Hue, Saturation);
             _isContinuousEdited = true;
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
 
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             UpdateParams(e);
 
@@ -365,7 +363,7 @@ namespace Biaui.Controls
             // マウス位置を補正する
             if (isOut)
             {
-                var pos = BiaHsvWheelCursor.MakeCursorRenderPos(ActualWidth, ActualHeight, Hue, Saturation);
+                var pos = BiaHsvWheelCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
                 var mousePos = PointToScreen(pos);
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
@@ -400,15 +398,11 @@ namespace Biaui.Controls
 
                         EndContinuousEditingCommand.Execute(null);
 
-                        if (StartedBatchEditingCommand != null &&
-                            StartedBatchEditingCommand.CanExecute(null))
-                            StartedBatchEditingCommand.Execute(null);
+                        StartedBatchEditingCommand?.ExecuteIfCan(null);
 
                         (Hue, Saturation) = changedValue;
 
-                        if (EndBatchEditingCommand != null &&
-                            EndBatchEditingCommand.CanExecute(null))
-                            EndBatchEditingCommand.Execute(null);
+                        EndBatchEditingCommand?.ExecuteIfCan(null);
                     }
                 }
 
@@ -435,7 +429,7 @@ namespace Biaui.Controls
 
         private bool IsOutSide(Point pos)
         {
-            var bw = FrameworkElementHelper.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
             var width = ActualWidth - bw * 2;
             var height = ActualHeight - bw * 2;
@@ -447,8 +441,8 @@ namespace Biaui.Controls
             var dy = y - 0.5;
 
             var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
-            dx = dx * cx;
-            dy = dy * cy;
+            dx *= cx;
+            dy *= cy;
 
             var s = Math.Sqrt(dx * dx + dy * dy) * 2;
 

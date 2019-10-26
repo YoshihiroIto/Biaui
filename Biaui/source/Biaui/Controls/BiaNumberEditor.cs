@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -110,7 +110,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 
@@ -170,7 +170,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _SliderMinimum) == false)
-                    SetValue(SliderMinimumProperty, value);
+                    SetValue(SliderMinimumProperty, Boxes.Double(value));
             }
         }
 
@@ -198,7 +198,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _SliderMaximum) == false)
-                    SetValue(SliderMaximumProperty, value);
+                    SetValue(SliderMaximumProperty, Boxes.Double(value));
             }
         }
 
@@ -226,7 +226,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Minimum) == false)
-                    SetValue(MinimumProperty, value);
+                    SetValue(MinimumProperty, Boxes.Double(value));
             }
         }
 
@@ -258,7 +258,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Maximum) == false)
-                    SetValue(MaximumProperty, value);
+                    SetValue(MaximumProperty, Boxes.Double(value));
             }
         }
 
@@ -458,7 +458,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Mode)
-                    SetValue(ModeProperty, value);
+                    SetValue(ModeProperty, Boxes.NumberEditorMode(value));
             }
         }
 
@@ -467,7 +467,7 @@ namespace Biaui.Controls
         public static readonly DependencyProperty ModeProperty =
             DependencyProperty.Register(nameof(Mode), typeof(BiaNumberEditorMode), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.BiaNumberModeSimple,
+                    Boxes.NumberModeSimple,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
@@ -486,7 +486,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Increment) == false)
-                    SetValue(IncrementProperty, value);
+                    SetValue(IncrementProperty, Boxes.Double(value));
             }
         }
 
@@ -514,7 +514,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _CornerRadius) == false)
-                    SetValue(CornerRadiusProperty, value);
+                    SetValue(CornerRadiusProperty, Boxes.Double(value));
             }
         }
 
@@ -647,7 +647,7 @@ namespace Biaui.Controls
 
             if (isCornerRadiusZero == false)
                 dc.PushClip(
-                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
+                    Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
             {
                 if (Mode == BiaNumberEditorMode.Simple)
                     DrawSlider(dc);
@@ -677,12 +677,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle(IsVisibleBorder));
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder));
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     null,
-                    this.RoundLayoutActualRectangle(IsVisibleBorder),
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
@@ -693,13 +693,13 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(IsVisibleBorder)
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder)
                 );
             else
                 dc.DrawRoundedRectangle(
                     Brushes.Transparent,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(IsVisibleBorder),
+                    this.RoundLayoutRenderRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
@@ -709,13 +709,13 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutActualWidth(IsVisibleBorder) / SliderWidth;
+            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
             var brush = _isEditing
                 ? _textBox.Background
                 : SliderBrush;
 
-            var r = this.RoundLayoutActualRectangle(IsVisibleBorder);
-            r.Width = FrameworkElementHelper.RoundLayoutValue(w);
+            var r = this.RoundLayoutRenderRectangle(IsVisibleBorder);
+            r.Width = this.RoundLayoutValue(w);
 
             dc.DrawRectangle(brush, null, r);
         }
@@ -727,6 +727,7 @@ namespace Biaui.Controls
             var offsetY = (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
             
             TextRenderer.Default.Draw(
+                this,
                 Caption,
                 Padding.Left + SpinWidth,
                 Padding.Top + offsetY,
@@ -737,6 +738,7 @@ namespace Biaui.Controls
             );
 
             TextRenderer.Default.Draw(
+                this,
                 UiValueString,
                 Padding.Left,
                 Padding.Top + offsetY,
@@ -855,7 +857,7 @@ namespace Biaui.Controls
 
             if (_isMouseDown == false)
             {
-                Cursor = _mouseOverType == MouseOverType.Slider ? Cursors.SizeWE : Cursors.Arrow;
+                Cursor = _mouseOverType == MouseOverType.Slider && IsReadOnly == false ? Cursors.SizeWE : Cursors.Arrow;
                 return;
             }
 
@@ -908,9 +910,7 @@ namespace Biaui.Controls
                 {
                     _isContinuousEdited = true;
 
-                    if(StartedContinuousEditingCommand != null)
-                        if (StartedContinuousEditingCommand.CanExecute(null))
-                            StartedContinuousEditingCommand.Execute(null);
+                    StartedContinuousEditingCommand?.ExecuteIfCan(null);
                 }
 
                 Value = newValue;
@@ -920,14 +920,14 @@ namespace Biaui.Controls
             _isMouseMoved = true;
             _oldPos = currentPos;
 
-            Cursor = _mouseOverType == MouseOverType.Slider ? Cursors.SizeWE : Cursors.Arrow;
+            Cursor = _mouseOverType == MouseOverType.Slider && IsReadOnly == false ? Cursors.SizeWE : Cursors.Arrow;
 
             e.Handled = true;
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
+            base.OnMouseLeftButtonUp(e);
 
             if (IsReadOnly == false)
             {
@@ -1081,7 +1081,7 @@ namespace Biaui.Controls
         {
             // 自コントロール上であれば、終了させない
             var pos = e.GetPosition(this);
-            var rect = this.RoundLayoutActualRectangle(false);
+            var rect = this.RoundLayoutRenderRectangle(false);
             if (rect.Contains(pos))
                 return;
 
@@ -1131,7 +1131,7 @@ namespace Biaui.Controls
                     else
                     {
                         FinishEditing(v.Result == MakeValueResult.Ok);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                        Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
                     }
 
                     e.Handled = true;
@@ -1143,7 +1143,7 @@ namespace Biaui.Controls
                     _textBox.Text = FormattedValueString;
                     FinishEditing(false);
 
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                    Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
                     break;
@@ -1161,9 +1161,7 @@ namespace Biaui.Controls
                     Value = v.Value;
             }
 
-
             _textBox.ReleaseMouseCapture();
-
 
             RemoveVisualChild(_textBox);
             _isEditing = false;
@@ -1191,6 +1189,9 @@ namespace Biaui.Controls
             if (_isEditing)
                 _textBox.Measure(new Size(ActualWidth, ActualHeight));
 
+            // todo:DPI変更時に再描画が行われないため明示的に指示している。要調査。
+            InvalidateVisual();
+
             return base.MeasureOverride(availableSize);
         }
 
@@ -1201,8 +1202,6 @@ namespace Biaui.Controls
             Continue
         }
 
-        private static Regex _evalRegex;
-
         private (MakeValueResult Result, double Value) MakeValueFromString(string src)
         {
             if (double.TryParse(src, out var v))
@@ -1211,12 +1210,7 @@ namespace Biaui.Controls
             if (double.TryParse(Evaluator.Eval(src), out v))
                 return (MakeValueResult.Continue, ClampValue(v));
 
-            // Math.を補間
-            if (_evalRegex == null)
-                _evalRegex = new Regex("[A-Za-z_]+");
-
-            var rs = _evalRegex.Replace(src, "Math.$0");
-            if (double.TryParse(Evaluator.Eval(rs), out v))
+            if (double.TryParse(Evaluator.Eval(src), out v))
                 return (MakeValueResult.Continue, ClampValue(v));
 
             return (MakeValueResult.Cancel, default);
@@ -1299,13 +1293,14 @@ namespace Biaui.Controls
                     v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
                         ? Concat(v.Value.ToString(DisplayFormat), UnitString)
                         : Concat(FormattedValueString, UnitString);
-
-                string Concat(string a, string b)
-                    => string.IsNullOrEmpty(b)
-                        ? a
-                        : a + b;
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string Concat(string a, string b)
+            => string.IsNullOrEmpty(b)
+                ? a
+                : a + b;
 
         private double UiValue
         {

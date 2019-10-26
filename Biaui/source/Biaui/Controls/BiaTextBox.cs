@@ -68,6 +68,34 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region WatermarkForeground
+
+        public Brush WatermarkForeground
+        {
+            get => _WatermarkForeground;
+            set
+            {
+                if (value != _WatermarkForeground)
+                    SetValue(WatermarkForegroundProperty, value);
+            }
+        }
+
+        private Brush _WatermarkForeground;
+
+        public static readonly DependencyProperty WatermarkForegroundProperty =
+            DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaTextBox),
+                new FrameworkPropertyMetadata(
+                    default(Brush),
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaTextBox) s;
+                        self._WatermarkForeground = (Brush) e.NewValue;
+                    }));
+
+        #endregion
+
         #region IsReadOnly
 
         public bool IsReadOnly
@@ -152,34 +180,6 @@ namespace Biaui.Controls
 
         #endregion
 
-        #region WatermarkForeground
-
-        public Brush WatermarkForeground
-        {
-            get => _WatermarkForeground;
-            set
-            {
-                if (value != _WatermarkForeground)
-                    SetValue(WatermarkForegroundProperty, value);
-            }
-        }
-
-        private Brush _WatermarkForeground;
-
-        public static readonly DependencyProperty WatermarkForegroundProperty =
-            DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaTextBox),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaTextBox) s;
-                        self._WatermarkForeground = (Brush) e.NewValue;
-                    }));
-
-        #endregion
-
         #region BorderColor
 
         public Color BorderColor
@@ -216,7 +216,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _CornerRadius) == false)
-                    SetValue(CornerRadiusProperty, value);
+                    SetValue(CornerRadiusProperty, Boxes.Double(value));
             }
         }
 
@@ -258,11 +258,12 @@ namespace Biaui.Controls
             var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
 
             if (isCornerRadiusZero == false)
-                dc.PushClip(Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
+                dc.PushClip(Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, true));
             {
                 if (_isEditing == false)
                     if (string.IsNullOrEmpty(TargetText))
                         TextRenderer.Default.Draw(
+                            this,
                             Watermark,
                             4.5, 3.5,
                             WatermarkForeground,
@@ -272,6 +273,7 @@ namespace Biaui.Controls
                         );
 
                 TextRenderer.Default.Draw(
+                    this,
                     TargetText,
                     4.5, 3.5,
                     Foreground,
@@ -294,19 +296,19 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true));
+                    this.RoundLayoutRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true),
+                    this.RoundLayoutRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
+            base.OnMouseLeftButtonUp(e);
 
             if (IsEnabled == false)
                 return;
@@ -356,12 +358,12 @@ namespace Biaui.Controls
                     IsTabStop = false,
                     IsUndoEnabled = false,
                     FocusVisualStyle = null,
-                    FontFamily = Application.Current.FindResource("BiauiFontFamily") as FontFamily,
-                    SelectionLength = 0
+                    SelectionLength = 0,
                 };
 
                 _textBox.TextChanged += TextBox_OnTextChanged;
                 _textBox.PreviewKeyDown += TextBox_OnPreviewKeyDown;
+                _textBox.PreviewMouseDown += TextBox_OnPreviewMouseDown;
             }
 
             _textBox.Width = ActualWidth;
@@ -374,10 +376,9 @@ namespace Biaui.Controls
 
             _textBox.SelectAll();
             _textBox.Focus();
+            _textBox.CaptureMouse();
 
             _isEditing = true;
-
-            CaptureMouse();
         }
 
         private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -407,7 +408,7 @@ namespace Biaui.Controls
                 {
                     FinishEditing(true);
 
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                    Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
                     break;
@@ -417,12 +418,24 @@ namespace Biaui.Controls
                 {
                     FinishEditing(false);
 
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
+                    Dispatcher?.BeginInvoke(DispatcherPriority.Input, (Action) (() => Focus()));
 
                     e.Handled = true;
                     break;
                 }
             }
+        }
+
+        private void TextBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // 自コントロール上であれば、終了させない
+            var pos = e.GetPosition(this);
+            var rect = this.RoundLayoutRenderRectangle(false);
+            if (rect.Contains(pos))
+                return;
+
+            if (_isEditing)
+                FinishEditing(true);
         }
 
         private void FinishEditing(bool isEdit)

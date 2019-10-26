@@ -108,7 +108,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _CornerRadius) == false)
-                    SetValue(CornerRadiusProperty, value);
+                    SetValue(CornerRadiusProperty, Boxes.Double(value));
             }
         }
 
@@ -372,7 +372,7 @@ namespace Biaui.Controls
 
             if (isCornerRadiusZero == false)
                 dc.PushClip(
-                    Caches.GetClipGeom(ActualWidth, ActualHeight, CornerRadius, true));
+                    Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, true));
             {
                 var displayItem = ItemToStringConverter?.Convert(SelectedItem, typeof(string),
                                       ItemToStringConverterParameter, CultureInfo.CurrentUICulture)
@@ -380,6 +380,7 @@ namespace Biaui.Controls
 
                 if (displayItem != null)
                     TextRenderer.Default.Draw(
+                        this,
                         displayItem.ToString(),
                         4.5, 3.5,
                         Foreground,
@@ -407,12 +408,12 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     Background,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true));
+                    this.RoundLayoutRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     Background,
                     this.GetBorderPen(BorderColor),
-                    this.RoundLayoutActualRectangle(true),
+                    this.RoundLayoutRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }
@@ -427,7 +428,7 @@ namespace Biaui.Controls
             if (IsOpen)
             {
                 Discard();
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+                Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
             }
             else
             {
@@ -453,7 +454,7 @@ namespace Biaui.Controls
             else if (e.Key == Key.Down)
                 MoveSelectedItem(+1);
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
         private bool _isDoesFindParent;
@@ -483,7 +484,7 @@ namespace Biaui.Controls
             else if (e.Delta < 0)
                 MoveSelectedItem(+1);
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
         private ListBox _items;
@@ -583,9 +584,7 @@ namespace Biaui.Controls
             var listBoxBorder = _items.Descendants<Border>().First();
             listBoxBorder.BorderBrush = (Brush)FindResource("Item.SelectedActive.Border");
 
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
         }
 
         private void SetupListBoxItemTemplate()
@@ -627,10 +626,12 @@ namespace Biaui.Controls
 
             SetValue();
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
-        private Action FocusThis => () => Focus();
+        // ReSharper disable once ConvertToNullCoalescingCompoundAssignment
+        private Action FocusThis => _FocusThis ?? (_FocusThis = () => Focus());
+        private Action _FocusThis;
 
         private void ListBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -707,25 +708,42 @@ namespace Biaui.Controls
             if (ItemsSource == null)
                 return;
 
-            var ia = ItemsSource.Cast<object>().ToArray();
-            var i = Array.IndexOf(ia, SelectedItem);
-
-            if (i == -1)
+            IList items;
+            int itemsCount;
+            int selectedIndex;
             {
-                if (ia.Length > 0)
+                if (ItemsSource is IList list)
+                {
+                    itemsCount = list.Count;
+                    selectedIndex = list.IndexOf(SelectedItem);
+                    items = list;
+                }
+                else
+                {
+                    var itemsArray = ItemsSource.Cast<object>().ToArray();
+
+                    itemsCount = itemsArray.Length;
+                    selectedIndex = Array.IndexOf(itemsArray, SelectedItem);
+                    items = itemsArray;
+                }
+            }
+
+            if (selectedIndex == -1)
+            {
+                if (itemsCount > 0)
                 {
                     var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
                     item?.Focus();
 
-                    SelectedItem = ia[0];
+                    SelectedItem = items[0];
                 }
             }
             else
             {
-                i += dir;
-                i = (i, 0, ia.Length - 1).Clamp();
+                selectedIndex += dir;
+                selectedIndex = (selectedIndex, 0, itemsCount - 1).Clamp();
 
-                SelectedItem = ia[i];
+                SelectedItem = items[selectedIndex];
             }
         }
 

@@ -15,32 +15,30 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type internals1:SystemButton}">
-                    <Border Background="{TemplateBinding Background}"
+                    <Border Padding="10"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             SnapsToDevicePixels="True">
                         <Path x:Name="Face"
-                              Width="12"
-                              Height="12"
                               Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource AncestorType=internals1:SystemButton}}"
                               Stretch="Uniform" />
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowAction" Value="Minimize">
-                            <Setter TargetName="Face" Property="Data" Value="M0,4 L10,4 L10,5 L0,5 z" />
-                            <Setter TargetName="Face" Property="Margin" Value="0,10.5,0,0" />
+                            <Setter TargetName="Face" Property="Data" Value="M20,14H4V10H20" />
                         </Trigger>
 
                         <Trigger Property="WindowAction" Value="Maximize">
-                            <Setter TargetName="Face" Property="Data" Value="M1,1 L1,9 L9,9 L9,1 z M0,0 L10,0 L10,10 L0,10 z" />
+                            <Setter TargetName="Face" Property="Data" Value="M4,4H20V20H4V4M6,8V18H18V8H6Z" />
                         </Trigger>
 
                         <Trigger Property="WindowAction" Value="Normalize">
-                            <Setter TargetName="Face" Property="Data" Value="M1,3 L1,9 L7,9 L7,3 z M3,1 L3,2 L8,2 L8,7 L9,7 L9,1 z M2,0 L10,0 L10,8 L8,8 L8,10 L0,10 L0,2 L2,2 z" />
+                            <Setter TargetName="Face" Property="Data" Value="M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z" />
                         </Trigger>
 
                         <Trigger Property="WindowAction" Value="Close">
-                            <Setter TargetName="Face" Property="Data" Value="M0.7,0 L5,4.3 L9.3,0 L10,0.7 L5.7,5 L10,9.3 L9.3,10 L5,5.7 L0.7,10 L0,9.3 L4.3,5 L0,0.7 z" />
+                            <Setter TargetName="Face" Property="Data" Value="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

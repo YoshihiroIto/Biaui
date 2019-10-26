@@ -48,6 +48,9 @@ namespace Biaui.Controls.Internals
             _childrenForSearch.Remove(child);
 
             RemoveVisualChild(child);
+
+            child.Width = double.NaN;
+            child.Height = double.NaN;
         }
 
         internal void ToLast(T child)

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls"
+                    xmlns:internal="clr-namespace:Biaui.StandardControls.Internal"
                     xmlns:standardControls="clr-namespace:Biaui.StandardControls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Button.xaml" />
@@ -60,12 +61,12 @@
                                    Grid.Column="0"
                                    Panel.ZIndex="1">
 
-                            <TabPanel x:Name="TabPanel"
-                                      HorizontalAlignment="Left"
-                                      Background="Transparent"
-                                      DockPanel.Dock="Left"
-                                      IsItemsHost="true"
-                                      KeyboardNavigation.TabIndex="1" />
+                            <internal:TabPanelInternal x:Name="TabPanel"
+                                                       HorizontalAlignment="Left"
+                                                       Background="Transparent"
+                                                       DockPanel.Dock="Left"
+                                                       IsItemsHost="true"
+                                                       KeyboardNavigation.TabIndex="1" />
 
                             <Button x:Name="AddButton"
                                     HorizontalAlignment="Left"
@@ -229,6 +230,31 @@
     </Style>
 
     <Style x:Key="TabItemBiaTextBlockStyle" TargetType="{x:Type controls:BiaTextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
+        <Setter Property="Margin" Value="0" />
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
+            </DataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
+                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+
+                <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
+            </MultiDataTrigger>
+
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TabItemBiaEditableTextBlockStyle" TargetType="{x:Type controls:BiaEditableTextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
         <Setter Property="Margin" Value="0" />
 

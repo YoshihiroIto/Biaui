@@ -6,10 +6,10 @@ namespace D2dControl
 {
     public class ResourceCache
     {
-        private readonly Dictionary<string, Func<RenderTarget, object>> generators =
-            new Dictionary<string, Func<RenderTarget, object>>();
+        private readonly Dictionary<int, Func<RenderTarget, object>> generators =
+            new Dictionary<int, Func<RenderTarget, object>>();
 
-        private readonly Dictionary<string, object> resources = new Dictionary<string, object>();
+        private readonly Dictionary<int, object> resources = new Dictionary<int, object>();
         private RenderTarget renderTarget;
 
         public RenderTarget RenderTarget
@@ -24,13 +24,13 @@ namespace D2dControl
 
         public int Count => resources.Count;
 
-        public object this[string key] => resources[key];
+        public object this[int key] => resources[key];
 
-        public Dictionary<string, object>.KeyCollection Keys => resources.Keys;
+        public Dictionary<int, object>.KeyCollection Keys => resources.Keys;
 
-        public Dictionary<string, object>.ValueCollection Values => resources.Values;
+        public Dictionary<int, object>.ValueCollection Values => resources.Values;
 
-        public void Add(string key, Func<RenderTarget, object> gen)
+        public void Add(int key, Func<RenderTarget, object> gen)
         {
             if (resources.TryGetValue(key, out var resOld))
             {
@@ -64,22 +64,17 @@ namespace D2dControl
             resources.Clear();
         }
 
-        public bool ContainsKey(string key)
+        public bool ContainsKey(int key)
         {
             return resources.ContainsKey(key);
         }
 
-        public bool ContainsValue(object val)
-        {
-            return resources.ContainsValue(val);
-        }
-
-        public Dictionary<string, object>.Enumerator GetEnumerator()
+        public Dictionary<int, object>.Enumerator GetEnumerator()
         {
             return resources.GetEnumerator();
         }
 
-        public bool Remove(string key)
+        public bool Remove(int key)
         {
             if (resources.TryGetValue(key, out var res))
             {
@@ -92,7 +87,7 @@ namespace D2dControl
             return false;
         }
 
-        public bool TryGetValue(string key, out object res)
+        public bool TryGetValue(int key, out object res)
         {
             return resources.TryGetValue(key, out res);
         }

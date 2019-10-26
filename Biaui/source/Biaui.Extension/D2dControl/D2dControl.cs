@@ -12,7 +12,7 @@ namespace D2dControl
 {
     public abstract class D2dControl : System.Windows.Controls.Image
     {
-        protected readonly ResourceCache ResCache = new ResourceCache();
+        protected readonly ResourceCache ResourceCache = new ResourceCache();
 
         private SharpDX.Direct3D11.Device device;
         private Texture2D sharedTarget;
@@ -64,6 +64,16 @@ namespace D2dControl
             protected set => SetValue(FrameTimePropertyKey, value);
         }
 
+        public static readonly DependencyPropertyKey IsAutoFrameUpdatePropertyKey =
+            DependencyProperty.RegisterReadOnly(nameof(IsAutoFrameUpdate), typeof(bool), typeof(D2dControl),
+                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.None));
+
+        public bool IsAutoFrameUpdate
+        {
+            get => (bool) GetValue(IsAutoFrameUpdatePropertyKey.DependencyProperty);
+            protected set => SetValue(IsAutoFrameUpdatePropertyKey, value);
+        }
+
         protected D2dControl()
         {
             Loaded += OnLoaded;
@@ -97,12 +107,21 @@ namespace D2dControl
             EndD3D();
         }
 
-        private void OnRendering(object sender, EventArgs e)
+        private bool _isRequestUpdate = true;
+
+        public void Invalidate()
         {
-            if (renderTimer.IsRunning == false)
+            if (IsAutoFrameUpdate)
                 return;
 
-            frameTimer.Restart();
+            _isRequestUpdate = true;
+        }
+
+        public void InvalidateInternal()
+        {
+            if (device == null)
+                return;
+
             PrepareAndCallRender();
 
             d3DSurface.Lock();
@@ -112,12 +131,32 @@ namespace D2dControl
 
             d3DSurface.Unlock();
 
+            device.ImmediateContext.Flush();
+        }
+
+        private void OnRendering(object sender, EventArgs e)
+        {
+            if (renderTimer.IsRunning == false)
+                return;
+
+            if (IsAutoFrameUpdate == false &&
+                _isRequestUpdate == false)
+                return;
+
+            _isRequestUpdate = false;
+
+            frameTimer.Restart();
+
+            InvalidateInternal();
+
             FrameTime = timeHelper.Push(frameTimer.Elapsed.TotalMilliseconds);
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             CreateAndBindTargets();
+            
+            Invalidate();
 
             base.OnRenderSizeChanged(sizeInfo);
         }
@@ -215,7 +254,7 @@ namespace D2dControl
                 });
             }
 
-            ResCache.RenderTarget = d2DRenderTarget;
+            ResourceCache.RenderTarget = d2DRenderTarget;
 
             d3DSurface.SetRenderTarget(sharedTarget);
 
@@ -258,8 +297,6 @@ namespace D2dControl
             d2DRenderTarget.EndDraw();
 
             CalcFps();
-
-            device.ImmediateContext.Flush();
         }
 
         private void CalcFps()

@@ -4,16 +4,16 @@ using Biaui.Internals;
 
 namespace Biaui.Controls.Internals
 {
-    internal interface IHasTransform
+    public interface IHasTransform
     {
         ScaleTransform ScaleTransform { get; }
 
         TranslateTransform TranslateTransform { get; }
     }
 
-    internal static class HasTransformExtensions
+    public static class HasTransformExtensions
     {
-        internal static Point TransformPos(this IHasTransform self, double x, double y)
+        public static Point TransformPos(this IHasTransform self, double x, double y)
         {
             var s = self.ScaleTransform.ScaleX;
 
@@ -22,7 +22,7 @@ namespace Biaui.Controls.Internals
                 (y - self.TranslateTransform.Y) / s);
         }
 
-        internal static ImmutableRect TransformRect(this IHasTransform self, double w, double h)
+        public static ImmutableRect TransformRect(this IHasTransform self, double w, double h)
         {
             var s = self.ScaleTransform.ScaleX;
 
@@ -33,7 +33,7 @@ namespace Biaui.Controls.Internals
                 h / s);
         }
 
-        internal static ImmutableRect TransformRect(this IHasTransform self, in ImmutableRect rect)
+        public static ImmutableRect TransformRect(this IHasTransform self, in ImmutableRect rect)
         {
             var s = self.ScaleTransform.ScaleX;
 
@@ -44,7 +44,7 @@ namespace Biaui.Controls.Internals
                 rect.Height / s);
         }
 
-        internal static void SetTransform(this IHasTransform self, double scale, double centerX, double centerY)
+        public static void SetTransform(this IHasTransform self, double scale, double centerX, double centerY)
         {
             var d0 = self.TransformPos(centerX, centerY);
 

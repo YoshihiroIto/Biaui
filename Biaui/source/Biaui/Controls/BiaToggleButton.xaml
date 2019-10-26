@@ -7,6 +7,7 @@
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
         <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
+        <Setter Property="Behavior" Value="{x:Static controls:BiaToggleButtonBehavior.Normal}" />
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

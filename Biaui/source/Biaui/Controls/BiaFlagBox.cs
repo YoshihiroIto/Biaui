@@ -16,7 +16,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag0)
-                    SetValue(Flag0Property, value);
+                    SetValue(Flag0Property, Boxes.Bool(value));
             }
         }
 
@@ -47,7 +47,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag1)
-                    SetValue(Flag1Property, value);
+                    SetValue(Flag1Property, Boxes.Bool(value));
             }
         }
 
@@ -78,7 +78,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag2)
-                    SetValue(Flag2Property, value);
+                    SetValue(Flag2Property, Boxes.Bool(value));
             }
         }
 
@@ -109,7 +109,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag3)
-                    SetValue(Flag3Property, value);
+                    SetValue(Flag3Property, Boxes.Bool(value));
             }
         }
 
@@ -140,7 +140,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag4)
-                    SetValue(Flag4Property, value);
+                    SetValue(Flag4Property, Boxes.Bool(value));
             }
         }
 
@@ -171,7 +171,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag5)
-                    SetValue(Flag5Property, value);
+                    SetValue(Flag5Property, Boxes.Bool(value));
             }
         }
 
@@ -202,7 +202,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag6)
-                    SetValue(Flag6Property, value);
+                    SetValue(Flag6Property, Boxes.Bool(value));
             }
         }
 
@@ -233,7 +233,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Flag7)
-                    SetValue(Flag7Property, value);
+                    SetValue(Flag7Property, Boxes.Bool(value));
             }
         }
 
@@ -256,14 +256,35 @@ namespace Biaui.Controls
 
         #endregion
 
-        private (bool, bool, bool, bool, bool, bool, bool, bool) AllFlags
+        private uint AllFlags
         {
-            get => (Flag0, Flag1, Flag2, Flag3, Flag4, Flag5, Flag6, Flag7);
-            set =>
-                (Flag0, Flag1, Flag2, Flag3, Flag4, Flag5, Flag6, Flag7) =
-                (
-                    value.Item1, value.Item2, value.Item3, value.Item4,
-                    value.Item5, value.Item6, value.Item7, value.Item8);
+            get
+            {
+                uint f = 0;
+
+                if (Flag0) f |= 1 << 0;
+                if (Flag1) f |= 1 << 1;
+                if (Flag2) f |= 1 << 2;
+                if (Flag3) f |= 1 << 3;
+                if (Flag4) f |= 1 << 4;
+                if (Flag5) f |= 1 << 5;
+                if (Flag6) f |= 1 << 6;
+                if (Flag7) f |= 1 << 7;
+
+                return f;
+            }
+
+            set
+            {
+                Flag0 = (value & (1 << 0)) != 0;
+                Flag1 = (value & (1 << 1)) != 0;
+                Flag2 = (value & (1 << 2)) != 0;
+                Flag3 = (value & (1 << 3)) != 0;
+                Flag4 = (value & (1 << 4)) != 0;
+                Flag5 = (value & (1 << 5)) != 0;
+                Flag6 = (value & (1 << 6)) != 0;
+                Flag7 = (value & (1 << 7)) != 0;
+            }
         }
 
         #region StartedContinuousEditingCommand
@@ -325,7 +346,7 @@ namespace Biaui.Controls
         #endregion
 
         #region StartedBatchEditingCommand
-        
+
         public ICommand StartedBatchEditingCommand
         {
             get => _StartedBatchEditingCommand;
@@ -335,9 +356,9 @@ namespace Biaui.Controls
                     SetValue(StartedBatchEditingCommandProperty, value);
             }
         }
-        
+
         private ICommand _StartedBatchEditingCommand;
-        
+
         public static readonly DependencyProperty StartedBatchEditingCommandProperty =
             DependencyProperty.Register(
                 nameof(StartedBatchEditingCommand),
@@ -348,13 +369,13 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFlagBox) s;
-                        self._StartedBatchEditingCommand = (ICommand)e.NewValue;
+                        self._StartedBatchEditingCommand = (ICommand) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region EndBatchEditingCommand
-        
+
         public ICommand EndBatchEditingCommand
         {
             get => _EndBatchEditingCommand;
@@ -364,9 +385,9 @@ namespace Biaui.Controls
                     SetValue(EndBatchEditingCommandProperty, value);
             }
         }
-        
+
         private ICommand _EndBatchEditingCommand;
-        
+
         public static readonly DependencyProperty EndBatchEditingCommandProperty =
             DependencyProperty.Register(
                 nameof(EndBatchEditingCommand),
@@ -377,9 +398,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFlagBox) s;
-                        self._EndBatchEditingCommand = (ICommand)e.NewValue;
+                        self._EndBatchEditingCommand = (ICommand) e.NewValue;
                     }));
-        
+
         #endregion
 
         private bool _isPressed;
@@ -481,12 +502,6 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaFlagBox)));
         }
 
-        public BiaFlagBox()
-        {
-            Width = ColumnCount * ButtonWidth;
-            Height = RowCount * ButtonHeight;
-        }
-
         protected override void OnRender(DrawingContext dc)
         {
             if (ActualWidth <= 1 ||
@@ -495,7 +510,7 @@ namespace Biaui.Controls
 
             // 背景
             {
-                dc.PushClip(Caches.GetClipGeom(ActualWidth, ActualHeight, Constants.BasicCornerRadiusPrim, true));
+                dc.PushClip(Caches.GetClipGeom(this, RenderSize.Width, RenderSize.Height, Constants.BasicCornerRadiusPrim, false));
 
                 var index = 0;
                 var isEnabled = IsEnabled;
@@ -518,32 +533,39 @@ namespace Biaui.Controls
                 dc.Pop();
             }
 
-            var borderPen = Caches.GetPen(Color.FromRgb(0x3F, 0x3F, 0x47), FrameworkElementHelper.RoundLayoutValue(1));
+            var borderPen = this.GetBorderPen(Color.FromRgb(0x2D, 0x2D, 0x30));
 
-            dc.DrawRoundedRectangle(
-                null,
-                borderPen,
-                this.RoundLayoutActualRectangle(false),
-                Constants.BasicCornerRadiusPrim,
-                Constants.BasicCornerRadiusPrim);
-
-
-            dc.DrawLine(borderPen, new Point(0, Height * 0.5), new Point(Width, Height * 0.5));
-
-            for (var column = 1; column != ColumnCount; ++column)
+            // 境界線
             {
-                var x = column * ButtonWidth;
-                dc.DrawLine(borderPen, new Point(x, 0), new Point(x, Height));
+                {
+                    var x = this.RoundLayoutValue(RenderSize.Width);
+                    var y = this.RoundLayoutValue(RenderSize.Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
+
+                    dc.DrawLine(borderPen, new Point(0, y), new Point(x, y));
+                }
+
+                {
+                    var y = this.RoundLayoutValue(RenderSize.Height + FrameworkElementExtensions.BorderHalfWidth);
+
+                    for (var column = 1; column != ColumnCount; ++column)
+                    {
+                        var x = this.RoundLayoutValue(column * ButtonWidth + FrameworkElementExtensions.BorderHalfWidth);
+                        dc.DrawLine(borderPen, new Point(x, 0), new Point(x, y));
+                    }
+                }
             }
         }
 
-        private void DrawButton(DrawingContext dc, double x, double y, bool isEnabled, bool isChecked, bool isMouseOver,
-            bool isPressed)
+        private void DrawButton(DrawingContext dc, double x, double y, bool isEnabled, bool isChecked, bool isMouseOver, bool isPressed)
         {
             dc.DrawRectangle(
                 SelectBrush(isEnabled, isChecked, isMouseOver, isPressed),
                 null,
-                new Rect(x, y, ButtonWidth, ButtonHeight));
+                new Rect(
+                    this.RoundLayoutValue(x), 
+                    this.RoundLayoutValue(y),
+                    this.RoundLayoutValue(ButtonWidth),
+                    this.RoundLayoutValue(ButtonHeight)));
         }
 
         private static Brush SelectBrush(bool isEnabled, bool isChecked, bool isMouseOver, bool isPressed)
@@ -600,7 +622,7 @@ namespace Biaui.Controls
         #endregion
 
         private bool _isContinuousEdited;
-        private (bool, bool, bool, bool, bool, bool, bool, bool)  _ContinuousEditingStartValue;
+        private uint _ContinuousEditingStartValue;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -610,9 +632,8 @@ namespace Biaui.Controls
 
             _ContinuousEditingStartValue = AllFlags;
             _isContinuousEdited = true;
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             CaptureMouse();
 
@@ -721,11 +742,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            return
-                pos.X >= 0.0 &&
-                pos.X <= ActualWidth &&
-                pos.Y >= 0.0 &&
-                pos.Y <= ActualHeight;
+            return this.IsInActualSize(pos);
         }
 
         private const double ButtonWidth = 16.0;
@@ -735,5 +752,13 @@ namespace Biaui.Controls
         private const int RowCount = 2;
 
         private const int ButtonCount = ColumnCount * RowCount;
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            // todo:DPI変更時に再描画が行われないため明示的に指示している。要調査。
+            InvalidateVisual();
+
+            return new Size(ColumnCount * ButtonWidth, RowCount * ButtonHeight);
+        }
     }
 }

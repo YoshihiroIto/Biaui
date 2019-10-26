@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
-    <Style TargetType="{x:Type controls:BiaButton}">
+    <Style TargetType="{x:Type controls:BiaButtonBase}">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
         <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
@@ -39,5 +39,12 @@
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type controls:BiaButtonBase}}" TargetType="{x:Type controls:BiaButton}" />
+
+    <Style BasedOn="{StaticResource {x:Type controls:BiaButtonBase}}" TargetType="{x:Type controls:BiaIconButton}">
+        <Setter Property="Width" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
     </Style>
 </ResourceDictionary>

@@ -71,7 +71,7 @@ namespace Biaui.Controls
         private static readonly Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry> _clipRectCache =
             new Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry>();
 
-        private Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius,
+        private static Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius,
             Thickness borderThickness)
         {
             var radius = (0.0, cornerRadius.TopLeft - borderThickness.Left * 0.5).Max();
@@ -89,7 +89,7 @@ namespace Biaui.Controls
         }
 
         // https://wpfspark.wordpress.com/2011/06/08/clipborder-a-wpf-border-that-clips/
-        private Geometry MakeRoundRectangleGeometry(Rect baseRect, CornerRadius cornerRadius, Thickness borderThickness)
+        private static Geometry MakeRoundRectangleGeometry(Rect baseRect, CornerRadius cornerRadius, Thickness borderThickness)
         {
             if (cornerRadius.TopLeft < double.Epsilon)
                 cornerRadius.TopLeft = 0.0;

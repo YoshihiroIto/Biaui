@@ -182,6 +182,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <colorPicker:BiaNumberEditor x:Name="HueEditor"
@@ -200,6 +201,21 @@
                                                              Margin="0,1,0,0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+
+                                <Canvas Grid.Row="3"
+                                        Height="{Binding ActualHeight, ElementName=HueEditor}"
+                                        Margin="0,1,0,0"
+                                        Background="{DynamicResource BackgroundBackgroundBrushKey}">
+                                    <Canvas.Style>
+                                        <Style TargetType="{x:Type Canvas}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Canvas.Style>
+                                </Canvas>
                             </Grid>
                         </colorPicker:BiaClippingBorder>
                     </Grid>

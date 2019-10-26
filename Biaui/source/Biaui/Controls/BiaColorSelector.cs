@@ -69,8 +69,6 @@ namespace Biaui.Controls
                     {
                         var self = (BiaColorSelector) s;
                         self._BorderColor = (Color) e.NewValue;
-
-                        self._border = Caches.GetPen(self._BorderColor, FrameworkElementHelper.RoundLayoutValue(1));
                     }));
 
         #endregion
@@ -83,7 +81,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _CornerRadius) == false)
-                    SetValue(CornerRadiusProperty, value);
+                    SetValue(CornerRadiusProperty, Boxes.Double(value));
             }
         }
 
@@ -140,7 +138,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _Columns)
-                    SetValue(ColumnsProperty, value);
+                    SetValue(ColumnsProperty, Boxes.Int(value));
             }
         }
 
@@ -225,9 +223,7 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaColorSelector)));
         }
 
-        private static Brush _checker;
         private SolidColorBrush _background = Brushes.Transparent;
-        private Pen _border;
 
         protected override void OnRender(DrawingContext dc)
         {
@@ -235,34 +231,33 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            var rect = this.RoundLayoutActualRectangle(true);
+            var rect = this.RoundLayoutRenderRectangle(true);
+
+            var borderPen = this.GetBorderPen(BorderColor);
 
             if (IsEnabled)
             {
-                if (_checker == null)
-                    _checker = (Brush) Application.Current.FindResource("CheckerBrush");
-
                 if (NumberHelper.AreCloseZero(CornerRadius))
                 {
                     if (_background != null && _background.Color.A != 0xFF)
-                        dc.DrawRectangle(_checker, null, rect);
+                        dc.DrawRectangle(Constants.CheckerBrush, null, rect);
 
-                    dc.DrawRectangle(_background, _border, rect);
+                    dc.DrawRectangle(_background, borderPen, rect);
                 }
                 else
                 {
                     if (_background != null && _background.Color.A != 0xFF)
-                        dc.DrawRoundedRectangle(_checker, null, rect, CornerRadius, CornerRadius);
+                        dc.DrawRoundedRectangle(Constants.CheckerBrush, null, rect, CornerRadius, CornerRadius);
 
-                    dc.DrawRoundedRectangle(_background, _border, rect, CornerRadius, CornerRadius);
+                    dc.DrawRoundedRectangle(_background, borderPen, rect, CornerRadius, CornerRadius);
                 }
             }
             else
             {
                 if (NumberHelper.AreCloseZero(CornerRadius))
-                    dc.DrawRectangle(null, _border, rect);
+                    dc.DrawRectangle(null, borderPen, rect);
                 else
-                    dc.DrawRoundedRectangle(null, _border, rect, CornerRadius, CornerRadius);
+                    dc.DrawRoundedRectangle(null, borderPen, rect, CornerRadius, CornerRadius);
             }
         }
 
@@ -270,7 +265,9 @@ namespace Biaui.Controls
         private Popup _popup;
         private ScaleTransform _scale;
 
-        private Action FocusThis => () => Focus();
+        // ReSharper disable once ConvertToNullCoalescingCompoundAssignment
+        private Action FocusThis => _FocusThis ?? (_FocusThis = () => Focus());
+        private Action _FocusThis;
 
         private bool IsOpen => _popup != null && _popup.IsOpen;
 
@@ -341,9 +338,7 @@ namespace Biaui.Controls
                 item?.Focus();
             }
 
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -356,7 +351,7 @@ namespace Biaui.Controls
             if (IsOpen)
             {
                 Discard();
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+                Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
             }
             else
             {
@@ -399,7 +394,7 @@ namespace Biaui.Controls
             SetValue();
 
             _popup.IsOpen = false;
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, FocusThis);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
         private DoubleColor _ContinuousEditingStartValue;
@@ -439,9 +434,16 @@ namespace Biaui.Controls
             if (done == false)
                 Value = _ContinuousEditingStartValue;
 
-
             Mouse.Capture(null);
             _popup.IsOpen = false;
+        }
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            // todo:DPI変更時に再描画が行われないため明示的に指示している。要調査。
+            InvalidateVisual();
+
+            return new Size(ActualWidth, ActualHeight);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Biaui.Controls
 
         private void TextBlock_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var parent = ((TextBlock)sender).GetParent<BiaEditableTextBlock>();
+            var parent = ((BiaTextBlock)sender).GetParent<BiaEditableTextBlock>();
 
             if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
             {
@@ -50,16 +50,19 @@ namespace Biaui.Controls
                 case Key.Tab:
                     parent.Text = textBox.Text;
                     FinishEditing(parent, textBox);
+                    e.Handled = true;
                     break;
 
                 case Key.Return:
                     parent.Text = textBox.Text;
                     FinishEditing(parent, textBox);
+                    e.Handled = true;
                     break;
 
                 case Key.Escape:
                     parent.Text = _startText;
                     FinishEditing(parent, textBox);
+                    e.Handled = true;
                     break;
             }
         }
@@ -70,7 +73,7 @@ namespace Biaui.Controls
 
             // 自コントロール上であれば、終了させない
             var pos = e.GetPosition(textBox);
-            var rect = textBox.RoundLayoutActualRectangle(false);
+            var rect = textBox.RoundLayoutRenderRectangle(false);
             if (rect.Contains(pos))
                 return;
 

@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-using Biaui.Controls.NodeEditor;
+﻿using Biaui.Controls.NodeEditor;
 using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Environment;
 

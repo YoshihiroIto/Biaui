@@ -74,15 +74,19 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutActualRectangle(false));
+            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
 
             // ボックス
             dc.DrawRoundedRectangle(
                 Background,
                 this.GetBorderPen(BoxBorderColor),
-                FrameworkElementHelper.RoundLayoutRect(0, 2, 16, 16), null,
-                CornerRadius, null,
-                CornerRadius, null);
+                this.RoundLayoutRect(
+                    0 + FrameworkElementExtensions.BorderHalfWidth, 
+                    2 + FrameworkElementExtensions.BorderHalfWidth,
+                    16 - FrameworkElementExtensions.BorderWidth,
+                    16 - FrameworkElementExtensions.BorderWidth),
+                CornerRadius, 
+                CornerRadius);
 
             // マーク
             if (IsChecked && IsPressed == false)
@@ -93,7 +97,7 @@ namespace Biaui.Controls
             }
 
             // キャプション
-            TextRenderer.Default.Draw(Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
+            TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
 
         private static readonly Geometry _markGeom =

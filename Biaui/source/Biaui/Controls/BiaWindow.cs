@@ -130,7 +130,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleMinimizeButton)
-                    SetValue(IsVisibleMinimizeButtonProperty, value);
+                    SetValue(IsVisibleMinimizeButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -159,7 +159,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleMaximizeButton)
-                    SetValue(IsVisibleMaximizeButtonProperty, value);
+                    SetValue(IsVisibleMaximizeButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -188,7 +188,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleNormalizeButton)
-                    SetValue(IsVisibleNormalizeButtonProperty, value);
+                    SetValue(IsVisibleNormalizeButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -217,7 +217,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsVisibleCloseButtonButton)
-                    SetValue(IsVisibleCloseButtonButtonProperty, value);
+                    SetValue(IsVisibleCloseButtonButtonProperty, Boxes.Bool(value));
             }
         }
 
@@ -305,9 +305,7 @@ namespace Biaui.Controls
         {
             CloseButtonClicked?.Invoke(this, EventArgs.Empty);
 
-            if (CloseButtonClickedCommand != null)
-                if (CloseButtonClickedCommand.CanExecute(null))
-                    CloseButtonClickedCommand.Execute(null);
+            CloseButtonClickedCommand?.ExecuteIfCan(null);
         }
 
         // https://stackoverflow.com/questions/29207331/wpf-window-with-custom-chrome-has-unwanted-outline-on-right-and-bottom
@@ -322,10 +320,4 @@ namespace Biaui.Controls
             SourceInitialized += WindowSourceInitialized;
         }
     }
-}
-
-public enum WindowCloseButtonBehavior
-{
-    Normal,
-    DoNothing
 }

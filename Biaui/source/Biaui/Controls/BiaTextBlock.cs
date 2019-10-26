@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using Biaui.Internals;
 
@@ -76,7 +77,11 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
+            if (IsHitTestVisible)
+                dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
+
             TextRenderer.Default.Draw(
+                this,
                 Text,
                 0, 0,
                 Foreground,
@@ -95,8 +100,7 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            // ※  1は誤差吸収するため。
-            _textWidth = + FrameworkElementHelper.RoundLayoutValue(TextRenderer.Default.CalcWidth(Text) + 1);
+            _textWidth = this.RoundLayoutValue(Math.Ceiling(TextRenderer.Default.CalcWidth(Text)));
         }
     }
 }

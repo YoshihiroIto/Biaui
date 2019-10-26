@@ -20,7 +20,7 @@ namespace Biaui.StandardControls
 
         public static void SetIsVisibleAddButton(DependencyObject target, bool value)
         {
-            target.SetValue(IsVisibleAddButtonProperty, value);
+            target.SetValue(IsVisibleAddButtonProperty, Boxes.Bool(value));
         }
 
 

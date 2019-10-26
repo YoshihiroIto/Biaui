@@ -17,7 +17,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Hue) == false)
-                    SetValue(HueProperty, value);
+                    SetValue(HueProperty, Boxes.Double(value));
             }
         }
 
@@ -43,7 +43,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Saturation) == false)
-                    SetValue(SaturationProperty, value);
+                    SetValue(SaturationProperty, Boxes.Double(value));
             }
         }
 
@@ -69,7 +69,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 
@@ -270,7 +270,7 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            var rect = this.RoundLayoutActualRectangle(true);
+            var rect = this.RoundLayoutRenderRectangle(true);
 
             dc.DrawRectangle(Brushes.Transparent, null, rect);
         }
@@ -279,7 +279,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            var s = FrameworkElementHelper.RoundLayoutValue(1);
+            var s = this.RoundLayoutValue(1);
             var x = (pos.X - s) / (ActualWidth - s * 2);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
 
@@ -307,10 +307,8 @@ namespace Biaui.Controls
 
             _ContinuousEditingStartValue = (Hue, Saturation);
             _isContinuousEdited = true;
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
 
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             UpdateParams(e);
 
@@ -348,7 +346,7 @@ namespace Biaui.Controls
 
             // マウス位置を補正する
             {
-                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(ActualWidth, ActualHeight, Hue, Saturation);
+                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
                 var mousePos = PointToScreen(pos);
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
@@ -370,15 +368,11 @@ namespace Biaui.Controls
 
                         EndContinuousEditingCommand.Execute(null);
 
-                        if (StartedBatchEditingCommand != null &&
-                            StartedBatchEditingCommand.CanExecute(null))
-                            StartedBatchEditingCommand.Execute(null);
+                        StartedBatchEditingCommand?.ExecuteIfCan(null);
 
                         (Hue, Saturation) = changedValue;
 
-                        if (EndBatchEditingCommand != null &&
-                            EndBatchEditingCommand.CanExecute(null))
-                            EndBatchEditingCommand.Execute(null);
+                        EndBatchEditingCommand?.ExecuteIfCan(null);
                     }
                 }
 

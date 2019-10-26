@@ -5,8 +5,6 @@ using Biaui.Internals;
 
 namespace Biaui.Controls
 {
-    using static FrameworkElementHelper;
-
     public class BiaColorBar : FrameworkElement
     {
         #region Value
@@ -17,7 +15,7 @@ namespace Biaui.Controls
             set
             {
                 if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, value);
+                    SetValue(ValueProperty, Boxes.Double(value));
             }
         }
 
@@ -131,7 +129,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _IsInverseValue)
-                    SetValue(IsInverseValueProperty, value);
+                    SetValue(IsInverseValueProperty, Boxes.Bool(value));
             }
         }
 
@@ -265,20 +263,20 @@ namespace Biaui.Controls
                 UpdateBackgroundBrush();
             }
 
-            var rect = this.RoundLayoutActualRectangle(true);
+            var rect = this.RoundLayoutRenderRectangle(true);
             dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
 
             // Cursor
-            RenderHelper.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
+            this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
 
         private Point CursorRenderPos
         {
             get
             {
-                var bw = RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+                var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
-                var h = RoundLayoutValue(ActualHeight - bw * 2);
+                var h = this.RoundLayoutValue(ActualHeight - bw * 2);
                 var y = Value * h;
 
                 if (IsInverseValue)
@@ -286,7 +284,7 @@ namespace Biaui.Controls
 
                 y += bw;
 
-                return new Point(RoundLayoutValue(ActualWidth / 2), RoundLayoutValue(y));
+                return new Point(this.RoundLayoutValue(ActualWidth / 2), this.RoundLayoutValue(y));
             }
         }
 
@@ -300,7 +298,7 @@ namespace Biaui.Controls
         {
             var pos = e.GetPosition(this);
 
-            var s = RoundLayoutValue(1);
+            var s = this.RoundLayoutValue(1);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
             y = NumberHelper.Clamp01(y);
 
@@ -323,9 +321,7 @@ namespace Biaui.Controls
 
             _ContinuousEditingStartValue = Value;
             _isContinuousEdited = true;
-            if (StartedContinuousEditingCommand != null)
-                if (StartedContinuousEditingCommand.CanExecute(null))
-                    StartedContinuousEditingCommand.Execute(null);
+            StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
             UpdateParams(e);
 

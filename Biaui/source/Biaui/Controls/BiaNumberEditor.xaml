@@ -9,11 +9,15 @@
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
-        <Setter Property="CaptionForeground" Value="{DynamicResource TextBoxSubForegroundBrushKey}" />
+        <Setter Property="CaptionForeground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey}" />
         <Setter Property="Focusable" Value="True" />
 
         <Style.Triggers>
+            <Trigger Property="Mode" Value="{x:Static controls:BiaNumberEditorMode.WideRange}">
+                <Setter Property="CaptionForeground" Value="{DynamicResource TextBoxSubForegroundBrushKey}" />
+            </Trigger>
+
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
