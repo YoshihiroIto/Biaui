@@ -129,6 +129,9 @@ namespace Biaui.Internals
             if (string.IsNullOrEmpty(text))
                 return 0;
 
+            if (string.IsNullOrWhiteSpace(text))
+                return CalcWidth(text);
+
             if (maxWidth <= 0)
                 return 0;
 
