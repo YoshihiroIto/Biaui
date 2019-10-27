@@ -1,6 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Biaui.Controls">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="{x:Type GridSplitter}">
         <Setter Property="ResizeDirection" Value="Columns" />
 
@@ -16,19 +14,18 @@
                             </Canvas.Style>
                         </Canvas>
 
-                        <controls:BiaTextBlock x:Name="Thumb"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Text="::" />
+                        <Path x:Name="Thumb"
+                              Margin="3"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Data="M0,0H2V2H0V0M4,0H6V2H4V0M0,4H2V6H0V4M4,4H6V6H4V4M0,8H2V10H0V8M4,8H6V10H4V8M0,12H2V14H0V12M4,12H6V14H4V12M0,16H2V18H0V16M4,16H6V18H4V16z"
+                              Fill="#ABABAB" />
+
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="ResizeDirection" Value="Rows">
-                            <Setter TargetName="Thumb" Property="LayoutTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="90" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter TargetName="Thumb" Property="Data" Value="M0,6V4H2V6H0M0,2V0H2V2H0M4,6V4H6V6H4M4,2V0H6V2H4M8,6V4H10V6H8M8,2V0H10V2H8M12,6V4H14V6H12M12,2V0H14V2H12M16,6V4H18V6H16M16,2V0H18V2H16z" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
