@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="{x:Type GridSplitter}">
         <Setter Property="ResizeDirection" Value="Columns" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -17,6 +18,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="ResizeDirection" Value="Rows">
                             <Setter TargetName="Thumb" Property="Data" Value="M0,6V4H2V6H0M0,2V0H2V2H0M4,6V4H6V6H4M4,2V0H6V2H4M8,6V4H10V6H8M8,2V0H10V2H8M12,6V4H14V6H12M12,2V0H14V2H12M16,6V4H18V6H16M16,2V0H18V2H16z" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
