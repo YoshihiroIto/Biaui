@@ -6,6 +6,8 @@
 
     <AssemblyName>Biaui.Extension</AssemblyName>
     <RootNamespace>Biaui.Extension</RootNamespace>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

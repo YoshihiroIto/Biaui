@@ -179,21 +179,33 @@ namespace Biaui.Extension
             _sinks.Clear();
         }
 
-        private static int MakeHashCode(in ValueTuple<Point, Point, Point, Point> src)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe int MakeHashCode(in ValueTuple<Point, Point, Point, Point> src)
         {
             unchecked
             {
-                var hashCode = src.Item1.X.GetHashCode();
+                // ReSharper disable InconsistentNaming
+                var p1x = src.Item1.X;
+                var p1y = src.Item1.Y;
+                var p2x = src.Item2.X;
+                var p2y = src.Item2.Y;
+                var p3x = src.Item3.X;
+                var p3y = src.Item3.Y;
+                var p4x = src.Item4.X;
+                var p4y = src.Item4.Y;
+                // ReSharper restore InconsistentNaming
 
-                hashCode = (hashCode * 397) ^ src.Item1.Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ src.Item2.X.GetHashCode();
-                hashCode = (hashCode * 397) ^ src.Item2.Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ src.Item3.X.GetHashCode();
-                hashCode = (hashCode * 397) ^ src.Item3.Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ src.Item4.X.GetHashCode();
-                hashCode = (hashCode * 397) ^ src.Item4.Y.GetHashCode();
+                var hashCode = *(long*) &p1x;
 
-                return hashCode;
+                hashCode = (hashCode * 397) ^ *(long*)&p1y;
+                hashCode = (hashCode * 397) ^ *(long*)&p2x;
+                hashCode = (hashCode * 397) ^ *(long*)&p2y;
+                hashCode = (hashCode * 397) ^ *(long*)&p3x;
+                hashCode = (hashCode * 397) ^ *(long*)&p3y;
+                hashCode = (hashCode * 397) ^ *(long*)&p4x;
+                hashCode = (hashCode * 397) ^ *(long*)&p4y;
+
+                return (int)(hashCode * 397) ^ (int) (hashCode >> 32);
             }
         }
 

@@ -314,7 +314,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe int MakeHashCode(
+        private static int MakeHashCode(
             string text,
             int textStartIndex,
             int textLength,
