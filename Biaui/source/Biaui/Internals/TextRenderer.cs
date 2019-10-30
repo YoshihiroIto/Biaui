@@ -162,7 +162,15 @@ namespace Biaui.Internals
             }
             else
             {
-                dc.PushTransform(new TranslateTransform(x, y));
+                var hash = MakeHashCode(x, y);
+
+                if (_translateCache.TryGetValue(hash, out var t) == false)
+                {
+                    t = new TranslateTransform(x, y);
+                    _translateCache.Add(hash, t);
+                }
+
+                dc.PushTransform(t);
                 dc.DrawGlyphRun(brush, gr.GlyphRun);
                 dc.Pop();
             }
@@ -331,6 +339,21 @@ namespace Biaui.Internals
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int MakeHashCode(
+            double x,
+            double y)
+        {
+            unchecked
+            {
+                var hashCode = x.GetHashCode();
+
+                hashCode = (hashCode * 397) ^ y.GetHashCode();
+
+                return hashCode;
+            }
+        }
+
         private (double Width, int NewCount) TrimGlyphRun(
             ushort[] glyphIndexes,
             double[] advanceWidths,
@@ -424,6 +447,8 @@ namespace Biaui.Internals
         private readonly LruCache<int, (GlyphRun, double)> _textCache = new LruCache<int, (GlyphRun, double)>(10_0000, false);
 
         private readonly LruCache<string, double> _textWidthCache = new LruCache<string, double>(10_1000, false);
+
+        private readonly LruCache<int, TranslateTransform> _translateCache = new LruCache<int, TranslateTransform>(1000, false);
 
         private readonly IDictionary<int, ushort> _toGlyphMap;
         private readonly IDictionary<ushort, double> _advanceWidthsDict;

@@ -761,7 +761,7 @@ namespace Biaui.Controls
                 if (_mouseOverType == MouseOverType.DecSpin)
                     dc.DrawRectangle(_SpinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
 
-                var key = (offsetX, offsetY);
+                var key = MakeHashCode(offsetX, offsetY);
 
                 if (_translateTransformCache.TryGetValue(key, out var tt) == false)
                 {
@@ -784,7 +784,7 @@ namespace Biaui.Controls
                     dc.DrawRectangle(_SpinBackground, null,
                         new Rect(ActualWidth - SpinWidth, 0, SpinWidth, ActualHeight));
 
-                var key = (offsetX, offsetY);
+                var key = MakeHashCode(offsetX, offsetY);
 
                 if (_translateTransformCache.TryGetValue(key, out var tt) == false)
                 {
@@ -1322,7 +1322,22 @@ namespace Biaui.Controls
         private static Geometry _IncSpinGeom;
         private static Brush _SpinBackground;
 
-        private static readonly Dictionary<(double X, double Y), TranslateTransform> _translateTransformCache =
-            new Dictionary<(double X, double Y), TranslateTransform>();
+        private static readonly Dictionary<int, TranslateTransform> _translateTransformCache =
+            new Dictionary<int, TranslateTransform>();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int MakeHashCode(
+            double x,
+            double y)
+        {
+            unchecked
+            {
+                var hashCode = x.GetHashCode();
+
+                hashCode = (hashCode * 397) ^ y.GetHashCode();
+
+                return hashCode;
+            }
+        }
     }
 }
