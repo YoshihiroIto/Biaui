@@ -10,11 +10,7 @@ namespace Biaui.Internals
         {
             unchecked
             {
-                var hashCode = (int) color.R;
-                hashCode = (hashCode * 397) ^ color.G;
-                hashCode = (hashCode * 397) ^ color.B;
-                hashCode = (hashCode * 397) ^ color.A;
-                hashCode = (hashCode * 397) ^ thickness.GetHashCode();
+                var hashCode = HashCodeMaker.Make(color, thickness);
 
                 if (_borderPens.TryGetValue(hashCode, out var p))
                     return p;
@@ -32,11 +28,7 @@ namespace Biaui.Internals
         {
             unchecked
             {
-                var hashCode = (int) color.R;
-                hashCode = (hashCode * 397) ^ color.G;
-                hashCode = (hashCode * 397) ^ color.B;
-                hashCode = (hashCode * 397) ^ color.A;
-                hashCode = (hashCode * 397) ^ thickness.GetHashCode();
+                var hashCode = HashCodeMaker.Make(color, thickness);
 
                 if (_capPens.TryGetValue(hashCode, out var p))
                     return p;
@@ -58,11 +50,7 @@ namespace Biaui.Internals
         {
             unchecked
             {
-                var hashCode = (int) color.R;
-                hashCode = (hashCode * 397) ^ color.G;
-                hashCode = (hashCode * 397) ^ color.B;
-                hashCode = (hashCode * 397) ^ color.A;
-                hashCode = (hashCode * 397) ^ thickness.GetHashCode();
+                var hashCode = HashCodeMaker.Make(color, thickness);
 
                 if (_dashedPens.TryGetValue(hashCode, out var p))
                     return p;
@@ -104,10 +92,7 @@ namespace Biaui.Internals
         {
             unchecked
             {
-                var hashCode = w.GetHashCode();
-                hashCode = (hashCode * 397) ^ h.GetHashCode();
-                hashCode = (hashCode * 397) ^ cornerRadius.GetHashCode();
-                hashCode = (hashCode * 397) ^ isWidthBorder.GetHashCode();
+                var hashCode = HashCodeMaker.Make(w, h, cornerRadius, isWidthBorder);
 
                 if (_clipGeoms.TryGetValue(hashCode, out var c))
                     return c;

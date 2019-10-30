@@ -116,7 +116,7 @@ namespace Biaui.Controls
         {
             const double padding = 5;
 
-            var hash = MakeHashCode();
+            var hash = HashCodeMaker.Make(ActualWidth, ActualHeight, ContentSize);
 
             if (_scaleCache.TryGetValue(hash, out var scale) == false)
             {
@@ -132,17 +132,6 @@ namespace Biaui.Controls
             }
 
             return scale;
-        }
-
-        private int MakeHashCode()
-        {
-            unchecked
-            {
-                var hashCode = ActualWidth.GetHashCode();
-                hashCode = (hashCode * 397) ^ ActualHeight.GetHashCode();
-                hashCode = (hashCode * 397) ^ ContentSize.GetHashCode();
-                return hashCode;
-            }
         }
 
         private static readonly LruCache<int, ScaleTransform> _scaleCache = new LruCache<int, ScaleTransform>(16, false);

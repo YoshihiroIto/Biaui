@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Biaui.Internals
 {
@@ -34,15 +35,8 @@ namespace Biaui.Internals
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = CenterX.GetHashCode();
-                hashCode = (hashCode * 397) ^ CenterY.GetHashCode();
-                hashCode = (hashCode * 397) ^ Radius.GetHashCode();
-                return hashCode;
-            }
-        }
+            => HashCodeMaker.Make(CenterX, CenterY, Radius);
     }
 }

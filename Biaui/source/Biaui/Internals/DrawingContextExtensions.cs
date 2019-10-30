@@ -16,18 +16,15 @@ namespace Biaui.Internals
 
         internal static void DrawBezier(this DrawingContext dc, Point pos1, Point pos1C, Point pos2C, Point pos2, Pen pen)
         {
-            int hashCode;
-            unchecked
-            {
-                hashCode = pos1.X.GetHashCode();
-                hashCode = (hashCode * 397) ^ pos1.Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ pos1C.X.GetHashCode();
-                hashCode = (hashCode * 397) ^ pos1C.Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ pos2C.X.GetHashCode();
-                hashCode = (hashCode * 397) ^ pos2C.Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ pos2.X.GetHashCode();
-                hashCode = (hashCode * 397) ^ pos2.Y.GetHashCode();
-            }
+            var hashCode = HashCodeMaker.Make(
+                pos1.X,
+                pos1.Y,
+                pos1C.X,
+                pos1C.Y,
+                pos2C.X,
+                pos2C.Y,
+                pos2.X,
+                pos2.Y);
 
             var c = _bezierCache.GetOrAdd(
                 hashCode,

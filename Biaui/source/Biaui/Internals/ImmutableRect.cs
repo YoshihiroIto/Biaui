@@ -377,16 +377,8 @@ namespace Biaui.Internals
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = X.GetHashCode();
-                hashCode = (hashCode * 397) ^ Y.GetHashCode();
-                hashCode = (hashCode * 397) ^ Width.GetHashCode();
-                hashCode = (hashCode * 397) ^ Height.GetHashCode();
-                return hashCode;
-            }
-        }
+            => HashCodeMaker.Make(X, Y, Width, Height);
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Windows.Media;
+﻿using System.Runtime.CompilerServices;
+using System.Windows.Media;
+using Biaui.Internals;
 
 namespace Biaui
 {
@@ -17,19 +19,12 @@ namespace Biaui
             return obj is DoubleColor other && Equals(other);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
         {
-            unchecked
-            {
-                // ReSharper disable NonReadonlyMemberInGetHashCode
-                var hashCode = R.GetHashCode();
-                hashCode = (hashCode * 397) ^ G.GetHashCode();
-                hashCode = (hashCode * 397) ^ B.GetHashCode();
-                hashCode = (hashCode * 397) ^ A.GetHashCode();
-                // ReSharper restore NonReadonlyMemberInGetHashCode
-
-                return hashCode;
-            }
+            // ReSharper disable NonReadonlyMemberInGetHashCode
+            return HashCodeMaker.Make(R, G, B, A);
+            // ReSharper restore NonReadonlyMemberInGetHashCode
         }
 
         public static readonly DoubleColor Zero = new DoubleColor

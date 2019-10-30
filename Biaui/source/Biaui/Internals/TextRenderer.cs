@@ -162,7 +162,7 @@ namespace Biaui.Internals
             }
             else
             {
-                var hash = MakeHashCode(x, y);
+                var hash = HashCodeMaker.Make(x, y);
 
                 if (_translateCache.TryGetValue(hash, out var t) == false)
                 {
@@ -323,34 +323,12 @@ namespace Biaui.Internals
         {
             unchecked
             {
-                var textWidthP = *(long*) &textWidth;
-                var dpiP = *(long*) &dpi;
-
                 var hashCode = text.GetHashCode();
 
                 hashCode = (hashCode * 397) ^ textStartIndex;
                 hashCode = (hashCode * 397) ^ textLength;
-                hashCode = (hashCode * 397) ^ (int) textWidthP;
-                hashCode = (hashCode * 397) ^ (int) (textWidthP >> 32);
-                hashCode = (hashCode * 397) ^ (int) dpiP;
-                hashCode = (hashCode * 397) ^ (int) (dpiP >> 32);
 
-                return hashCode;
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int MakeHashCode(
-            double x,
-            double y)
-        {
-            unchecked
-            {
-                var hashCode = x.GetHashCode();
-
-                hashCode = (hashCode * 397) ^ y.GetHashCode();
-
-                return hashCode;
+                return (hashCode * 397) ^ HashCodeMaker.Make(textWidth, dpi);
             }
         }
 
