@@ -42,7 +42,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1);
                 var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2);
 
-                var lines = LinkLineRenderer.MakeLines(ref pos1, ref pos2, item1, item2, link.InternalData(), work);
+                var lines = LinkLineRenderer.MakeLines(pos1, pos2, item1, item2, link.InternalData(), work);
 
                 // 線分ごとにバウンディングボックス判定、折れ丸は無視
                 if (IsHitLines(lineCullingRect, lines) == false)
@@ -75,7 +75,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                     DrawArrow(
                         curve.Ctx,
                         lines,
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1));
+                        pos1);
                 }
             }
         }

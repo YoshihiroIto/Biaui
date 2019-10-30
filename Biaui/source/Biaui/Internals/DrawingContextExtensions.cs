@@ -7,14 +7,20 @@ namespace Biaui.Internals
 {
     internal static class DrawingContextExtensions
     {
-        internal static void DrawBezier(this DrawingContext dc, Point[] bezierPoints, Pen pen)
+        internal static void DrawBezier(this DrawingContext dc, ImmutableVec2[] bezierPoints, Pen pen)
         {
             DrawBezier(dc, bezierPoints[0], bezierPoints[1], bezierPoints[2], bezierPoints[3], pen);
         }
 
         private static readonly LruCache<int, PathGeometry> _bezierCache = new LruCache<int, PathGeometry>(10000, false);
 
-        internal static void DrawBezier(this DrawingContext dc, Point pos1, Point pos1C, Point pos2C, Point pos2, Pen pen)
+        internal static void DrawBezier(
+            this DrawingContext dc,
+            in ImmutableVec2 pos1,
+            in ImmutableVec2 pos1C,
+            in ImmutableVec2 pos2C,
+            in ImmutableVec2 pos2,
+            Pen pen)
         {
             var hashCode = HashCodeMaker.Make(
                 pos1.X,
@@ -26,29 +32,31 @@ namespace Biaui.Internals
                 pos2.X,
                 pos2.Y);
 
-            var c = _bezierCache.GetOrAdd(
-                hashCode,
-                _ =>
+            if (_bezierCache.TryGetValue(hashCode, out var curve) == false)
+            {
+                var pf = new PathFigure
                 {
-                    var pf = new PathFigure
-                    {
-                        StartPoint = pos1
-                    };
+                    StartPoint = new Point(pos1.X, pos1.Y)
+                };
 
-                    var bs = new BezierSegment(pos1C, pos2C, pos2, true);
-                    bs.Freeze();
+                var bs = new BezierSegment(
+                    new Point(pos1C.X, pos1C.Y),
+                    new Point(pos2C.X, pos2C.Y),
+                    new Point(pos2.X, pos2.Y),
+                    true);
+                bs.Freeze();
 
-                    pf.Segments.Add(bs);
-                    pf.Freeze();
+                pf.Segments.Add(bs);
+                pf.Freeze();
 
-                    var curve = new PathGeometry();
-                    curve.Figures.Add(pf);
-                    curve.Freeze();
+                curve = new PathGeometry();
+                curve.Figures.Add(pf);
+                curve.Freeze();
 
-                    return curve;
-                });
+                _bezierCache.Add(hashCode, curve);
+            }
 
-            dc.DrawGeometry(null, pen, c);
+            dc.DrawGeometry(null, pen, curve);
         }
 
         internal static void DrawCircle(this DrawingContext dc, Brush brush, Pen pen, Point pos, double radius)

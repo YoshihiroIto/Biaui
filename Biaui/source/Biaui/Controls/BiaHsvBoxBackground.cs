@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -348,7 +349,7 @@ namespace Biaui.Controls
             {
                 var pos = BiaHsvBoxCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
-                var mousePos = PointToScreen(pos);
+                var mousePos = PointToScreen(Unsafe.As<ImmutableVec2, Point>(ref pos));
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
             }
 

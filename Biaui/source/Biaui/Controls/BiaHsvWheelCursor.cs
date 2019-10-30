@@ -146,10 +146,10 @@ namespace Biaui.Controls
             this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
 
-        private Point CursorRenderPos =>
+        private ImmutableVec2 CursorRenderPos =>
             MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
-        internal static Point MakeCursorRenderPos(
+        internal static ImmutableVec2 MakeCursorRenderPos(
             Visual visual,
             double actualWidth,
             double actualHeight,
@@ -167,7 +167,7 @@ namespace Biaui.Controls
             var x = bw + Math.Cos(r) * saturation * (w / 2) / cx + w / 2;
             var y = bw + Math.Sin(r) * saturation * (h / 2) / cy + h / 2;
 
-            return new Point(visual.RoundLayoutValue(x), visual.RoundLayoutValue(y));
+            return new ImmutableVec2(visual.RoundLayoutValue(x), visual.RoundLayoutValue(y));
         }
 
         internal static (double X, double Y) MakeAspectRatioCorrection(double actualWidth, double actualHeight)

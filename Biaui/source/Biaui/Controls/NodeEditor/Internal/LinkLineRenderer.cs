@@ -10,15 +10,15 @@ namespace Biaui.Controls.NodeEditor.Internal
     internal static class LinkLineRenderer
     {
         internal static Span<ImmutableVec2> MakeLines(
-            ref Point pos1,
-            ref Point pos2,
+            in ImmutableVec2 pos1,
+            in ImmutableVec2 pos2,
             IBiaNodeItem item1,
             IBiaNodeItem item2,
             InternalBiaNodeLinkData internalData,
             Span<ImmutableVec2> work)
         {
-            var u1 = new SlotUnit(Unsafe.As<Point, ImmutableVec2>(ref pos1), item1, internalData.Slot1);
-            var u2 = new SlotUnit(Unsafe.As<Point, ImmutableVec2>(ref pos2), item2, internalData.Slot2);
+            var u1 = new SlotUnit(pos1, item1, internalData.Slot1);
+            var u2 = new SlotUnit(pos2, item2, internalData.Slot2);
 
             if (u1.Slot.Dir != u2.Slot.Dir &&
                 u1.IsHorizontal &&

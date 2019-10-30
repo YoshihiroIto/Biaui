@@ -59,8 +59,10 @@ namespace Biaui.Internals
         // ReSharper restore InconsistentNaming
 
         // ReSharper disable IdentifierTypo
+        // ReSharper disable InconsistentNaming
         internal const int MOUSEEVENTF_LEFTDOWN = 0x2;
         internal const int MOUSEEVENTF_LEFTUP = 0x4;
+        // ReSharper restore InconsistentNaming
         // ReSharper restore IdentifierTypo
     }
 }

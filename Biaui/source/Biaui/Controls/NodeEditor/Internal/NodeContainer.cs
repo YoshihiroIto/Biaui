@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -889,7 +890,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                     nodeItem.IsSelected = false;
             }
 
-            var slot = nodeItem.FindSlotFromPos(e.GetPosition(panel));
+            var pos = e.GetPosition(panel);
+            var slot = nodeItem.FindSlotFromPos(Unsafe.As<Point, ImmutableVec2>(ref pos));
 
             // 元スロットが無効であればリンク処置は行わない
             if (slot != null)

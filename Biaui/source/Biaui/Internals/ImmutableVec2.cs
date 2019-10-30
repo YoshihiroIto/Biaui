@@ -25,6 +25,10 @@ namespace Biaui.Internals
         public ImmutableVec2(Size p)
             => (X, Y) = (p.Width, p.Height);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Point ToPoint()
+            => new Point(X, Y);
+
         // ReSharper disable CompareOfFloatsByEqualityOperator
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(in ImmutableVec2 source1, in ImmutableVec2 source2)

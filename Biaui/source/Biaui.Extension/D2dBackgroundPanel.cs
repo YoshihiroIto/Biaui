@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor;
@@ -112,10 +111,10 @@ namespace Biaui.Extension
                 var bb = _boundingBoxCache.GetOrAdd(
                     MakeHashCode(bezier),
                     x => BiaNodeEditorHelper.MakeBoundingBox(
-                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item1),
-                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item2),
-                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item3),
-                        Unsafe.As<Point, ImmutableVec2>(ref bezier.Item4)));
+                        bezier.Item1,
+                        bezier.Item2,
+                        bezier.Item3,
+                        bezier.Item4));
 
                 if (bb.IntersectsWith(lineCullingRect) == false)
                     continue;
@@ -180,7 +179,7 @@ namespace Biaui.Extension
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe int MakeHashCode(in ValueTuple<Point, Point, Point, Point> src)
+        private static unsafe int MakeHashCode(in ValueTuple<ImmutableVec2, ImmutableVec2, ImmutableVec2, ImmutableVec2> src)
         {
             unchecked
             {
@@ -214,7 +213,7 @@ namespace Biaui.Extension
 
         private static void DrawArrow(
             GeometrySink sink,
-            in (Point p1, Point c1, Point c2, Point p2) bezier)
+            in (ImmutableVec2 p1, ImmutableVec2 c1, ImmutableVec2 c2, ImmutableVec2 p2) bezier)
         {
             var b1X = BiaNodeEditorHelper.Bezier(bezier.p1.X, bezier.c1.X, bezier.c2.X, bezier.p2.X, 0.5001);
             var b1Y = BiaNodeEditorHelper.Bezier(bezier.p1.Y, bezier.c1.Y, bezier.c2.Y, bezier.p2.Y, 0.5001);

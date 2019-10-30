@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using Biaui.Controls.NodeEditor.Internal;
+﻿using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Interfaces;
+using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -18,7 +18,7 @@ namespace Biaui.Controls.NodeEditor
         public bool IsNull => Item == null;
         public bool IsNotNull => Item != null;
 
-        internal Point MakeSlotPos() => Item.MakeSlotPosDefault(Slot);
+        internal ImmutableVec2 MakeSlotPos() => Item.MakeSlotPosDefault(Slot);
 
         internal BiaNodeItemSlotIdPair ToItemSlotIdPair()
             => new BiaNodeItemSlotIdPair(Item, Slot.Id);

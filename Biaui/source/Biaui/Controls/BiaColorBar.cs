@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
@@ -270,7 +271,7 @@ namespace Biaui.Controls
             this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
 
-        private Point CursorRenderPos
+        private ImmutableVec2 CursorRenderPos
         {
             get
             {
@@ -284,7 +285,7 @@ namespace Biaui.Controls
 
                 y += bw;
 
-                return new Point(this.RoundLayoutValue(ActualWidth / 2), this.RoundLayoutValue(y));
+                return new ImmutableVec2(this.RoundLayoutValue(ActualWidth / 2), this.RoundLayoutValue(y));
             }
         }
 
@@ -359,7 +360,8 @@ namespace Biaui.Controls
 
             // マウス位置を補正する
             {
-                var p = PointToScreen(CursorRenderPos);
+                var cp = CursorRenderPos;
+                var p = PointToScreen(Unsafe.As<ImmutableVec2, Point>(ref cp));
                 Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
             }
 

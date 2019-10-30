@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Media;
 using Biaui.Controls.NodeEditor;
 using Biaui.Controls.NodeEditor.Internal;
+using Biaui.Internals;
 
 namespace Biaui.Interfaces
 {
@@ -49,7 +49,7 @@ namespace Biaui.Interfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValueTuple<Point, Point, Point, Point> MakeBezierCurve(this IBiaNodeLink self)
+        public static ValueTuple<ImmutableVec2, ImmutableVec2, ImmutableVec2, ImmutableVec2> MakeBezierCurve(this IBiaNodeLink self)
         {
             var item1 = self.ItemSlot1.Item;
             var item2 = self.ItemSlot2.Item;

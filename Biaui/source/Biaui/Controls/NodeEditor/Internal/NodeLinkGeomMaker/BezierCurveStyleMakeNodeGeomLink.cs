@@ -47,10 +47,10 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 var bb = _boundingBoxCache.GetOrAdd(
                     (pos1, pos2, link.InternalData().Slot1.Dir, link.InternalData().Slot2.Dir),
                     x => BiaNodeEditorHelper.MakeBoundingBox(
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1C),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos2C),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos2)));
+                        pos1,
+                        pos1C,
+                        pos2C,
+                        pos2));
                 // ReSharper restore AccessToModifiedClosure
 
                 if (bb.IntersectsWith(lineCullingRect) == false)
@@ -74,11 +74,11 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                     outputCurves.Add(key, curve);
                 }
 
-                curve.Ctx.BeginFigure(pos1, false, false);
+                curve.Ctx.BeginFigure(Unsafe.As<ImmutableVec2, Point>(ref pos1), false, false);
                 curve.Ctx.BezierTo(
-                    pos1C,
-                    pos2C,
-                    pos2,
+                    Unsafe.As<ImmutableVec2, Point>(ref pos1C),
+                    Unsafe.As<ImmutableVec2, Point>(ref pos2C),
+                    Unsafe.As<ImmutableVec2, Point>(ref pos2),
                     true,
                     true);
 
@@ -88,16 +88,16 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 {
                     DrawArrow(
                         curve.Ctx,
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos1C),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos2C),
-                        Unsafe.As<Point, ImmutableVec2>(ref pos2));
+                        pos1,
+                        pos1C,
+                        pos2C,
+                        pos2);
                 }
             }
         }
 
-        private static readonly LruCache<ValueTuple<Point, Point, BiaNodeSlotDir, BiaNodeSlotDir>, ImmutableRect> _boundingBoxCache =
-            new LruCache<(Point, Point, BiaNodeSlotDir, BiaNodeSlotDir), ImmutableRect>(10000, false);
+        private static readonly LruCache<ValueTuple<ImmutableVec2, ImmutableVec2, BiaNodeSlotDir, BiaNodeSlotDir>, ImmutableRect> _boundingBoxCache =
+            new LruCache<(ImmutableVec2, ImmutableVec2, BiaNodeSlotDir, BiaNodeSlotDir), ImmutableRect>(10000, false);
 
         private void DrawArrow(
             StreamGeometryContext ctx,

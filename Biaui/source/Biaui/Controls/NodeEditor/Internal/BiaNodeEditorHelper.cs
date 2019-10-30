@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
@@ -11,21 +10,21 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         private const double ControlPointLength = 200;
 
-        internal static Point MakeBezierControlPoint(Point src, BiaNodeSlotDir dir)
+        internal static ImmutableVec2 MakeBezierControlPoint(in ImmutableVec2 src, BiaNodeSlotDir dir)
         {
             switch (dir)
             {
                 case BiaNodeSlotDir.Left:
-                    return new Point(src.X - ControlPointLength, src.Y);
+                    return new ImmutableVec2(src.X - ControlPointLength, src.Y);
 
                 case BiaNodeSlotDir.Top:
-                    return new Point(src.X, src.Y - ControlPointLength);
+                    return new ImmutableVec2(src.X, src.Y - ControlPointLength);
 
                 case BiaNodeSlotDir.Right:
-                    return new Point(src.X + ControlPointLength, src.Y);
+                    return new ImmutableVec2(src.X + ControlPointLength, src.Y);
 
                 case BiaNodeSlotDir.Bottom:
-                    return new Point(src.X, src.Y + ControlPointLength);
+                    return new ImmutableVec2(src.X, src.Y + ControlPointLength);
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -91,7 +90,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ImmutableVec2 InterpolationBezier(Point p1, Point p2, Point p3, Point p4, double t)
+        internal static ImmutableVec2 InterpolationBezier(in ImmutableVec2 p1, in ImmutableVec2 p2, in ImmutableVec2 p3, in ImmutableVec2 p4, double t)
         {
             return new ImmutableVec2(
                 Bezier(p1.X, p2.X, p3.X, p4.X, t),

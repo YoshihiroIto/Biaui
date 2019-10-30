@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace Biaui.Internals
 {
     internal static class NumberHelper
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static double DistanceSq(in this ValueTuple<Point, Point> pos)
+        internal static double DistanceSq(in this ValueTuple<ImmutableVec2, ImmutableVec2> pos)
         {
             var w = pos.Item1.X - pos.Item2.X;
             var h = pos.Item1.Y - pos.Item2.Y;

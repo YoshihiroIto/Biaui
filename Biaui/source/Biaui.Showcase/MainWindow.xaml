@@ -37,7 +37,7 @@
             <controls:BiaTextBlock Text="{Binding Index}" />
         </DataTemplate>
         <DataTemplate x:Key="ItemNameTemplateStyle">
-            <!--  ReSharper disable once Xaml.BindingWGithContextNotResolved  -->
+            <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
             <controls:BiaTextBlock Text="{Binding Name}" />
         </DataTemplate>
     </controls:BiaWindow.Resources>

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -29,7 +30,8 @@ namespace Biaui.Controls.NodeEditor
 
             var slots = this.Descendants<BiaNodePanelSlots>().FirstOrDefault();
 
-            slots?.UpdateMousePos(e.GetPosition(this));
+            var pos = e.GetPosition(this);
+            slots?.UpdateMousePos(Unsafe.As<Point, ImmutableVec2>(ref pos));
             slots?.InvalidateVisual();
         }
     }
