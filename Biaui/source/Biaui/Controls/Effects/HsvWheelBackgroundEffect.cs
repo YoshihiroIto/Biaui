@@ -8,17 +8,21 @@ namespace Biaui.Controls.Effects
 {
     internal class HsvWheelBackgroundEffect : ShaderEffect
     {
-        internal HsvWheelBackgroundEffect()
+        static HsvWheelBackgroundEffect()
         {
-            var ps = new PixelShader
+            _PixelShader = new PixelShader
             {
-                UriSource = new Uri(
-                    "pack://application:,,,/Biaui;component/Controls/Effects/HsvWheelBackgroundEffect.ps")
+                UriSource = new Uri("pack://application:,,,/Biaui;component/Controls/Effects/HsvWheelBackgroundEffect.ps")
             };
 
-            ps.Freeze();
+            _PixelShader.Freeze();
+        }
 
-            PixelShader = ps;
+        private static readonly PixelShader _PixelShader;
+
+        internal HsvWheelBackgroundEffect()
+        {
+            PixelShader = _PixelShader;
             UpdateShaderValue(ValueProperty);
             UpdateShaderValue(AspectRatioCorrectionXProperty);
             UpdateShaderValue(AspectRatioCorrectionYProperty);

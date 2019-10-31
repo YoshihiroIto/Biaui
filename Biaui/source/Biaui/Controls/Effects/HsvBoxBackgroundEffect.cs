@@ -8,16 +8,21 @@ namespace Biaui.Controls.Effects
 {
     internal class HsvBoxBackgroundEffect : ShaderEffect
     {
-        internal HsvBoxBackgroundEffect()
+        static HsvBoxBackgroundEffect()
         {
-            var ps = new PixelShader
+            _PixelShader = new PixelShader
             {
                 UriSource = new Uri("pack://application:,,,/Biaui;component/Controls/Effects/HsvBoxBackgroundEffect.ps")
             };
 
-            ps.Freeze();
+            _PixelShader.Freeze();
+        }
 
-            PixelShader = ps;
+        private static readonly PixelShader _PixelShader;
+
+        internal HsvBoxBackgroundEffect()
+        {
+            PixelShader = _PixelShader;
             UpdateShaderValue(ValueProperty);
             UpdateShaderValue(IsEnabledProperty);
             UpdateShaderValue(DisableColorProperty);
