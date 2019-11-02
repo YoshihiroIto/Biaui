@@ -3,9 +3,10 @@
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:internal="clr-namespace:Biaui.StandardControls.Internal"
+                    xmlns:internals="clr-namespace:Biaui.Internals"
                     xmlns:standardControls="clr-namespace:Biaui.StandardControls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Button.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="TabAddButtonStyle"

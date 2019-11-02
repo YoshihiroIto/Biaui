@@ -1,9 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
-                    xmlns:colorPicker="clr-namespace:Biaui.Controls">
+                    xmlns:colorPicker="clr-namespace:Biaui.Controls"
+                    xmlns:internals="clr-namespace:Biaui.Internals">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type colorPicker:BiaColorPicker}">

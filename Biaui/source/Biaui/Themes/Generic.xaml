@@ -1,30 +1,31 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:internals="clr-namespace:Biaui.Internals">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaButtonBase.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaCheckBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaClippingBorder.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPanel.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorSelector.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaEditableTextBlock.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaFilteringComboBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHighlightTextBlock.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaIconToggleButton.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaProgressPanel.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaRadioButton.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBlock.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaToggleButton.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeListView.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeView.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindow.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaButtonBase.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaCheckBox.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaClippingBorder.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorBar.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPanel.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPicker.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorSelector.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaEditableTextBlock.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaFilteringComboBox.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHighlightTextBlock.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaIconToggleButton.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaProgressPanel.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaRadioButton.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBlock.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTextBox.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaToggleButton.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeListView.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeView.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindow.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
 
         <!--  Internals  -->
-        <ResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/SystemButton.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/SystemButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
