@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
@@ -88,8 +89,6 @@ namespace Biaui.Controls
                 RenderHighlight(dc, wordsArray);
         }
 
-        private static byte[] _textStates = new byte[64];
-
         private void RenderHighlight(DrawingContext dc, string[] words)
         {
             if (ActualWidth <= 1 ||
@@ -99,53 +98,59 @@ namespace Biaui.Controls
             if (string.IsNullOrEmpty(Text))
                 return;
 
-            if (_textStates.Length < Text.Length)
-                _textStates = new byte[Text.Length];
+            var textStates = ArrayPool<byte>.Shared.Rent(Text.Length);
 
-            Array.Clear(_textStates, 0, _textStates.Length);
-
-            foreach (var word in words)
+            try
             {
-                var stateOffset = 0;
+                Array.Clear(textStates, 0, Text.Length);
+
+                foreach (var word in words)
+                {
+                    var stateOffset = 0;
+
+                    while (true)
+                    {
+                        var wordIndex = Text.IndexOf(word, stateOffset, StringComparison.CurrentCultureIgnoreCase);
+                        if (wordIndex == -1)
+                            break;
+
+                        for (var i = 0; i != word.Length; ++i)
+                            textStates[wordIndex + i] = 1;
+
+                        stateOffset = wordIndex + word.Length;
+                    }
+                }
+
+                var state = textStates[0];
+                var index = 0;
+                var startIndex = 0;
+
+                var x = 0.0;
 
                 while (true)
                 {
-                    var wordIndex = Text.IndexOf(word, stateOffset, StringComparison.CurrentCultureIgnoreCase);
-                    if (wordIndex == -1)
+                    if (textStates[index] != state)
+                    {
+                        x = RenderText(dc, Text, startIndex, index - 1, x,
+                            textStates[startIndex] == 0 ? Foreground : Highlight);
+
+                        state = textStates[index];
+                        startIndex = index;
+                    }
+
+                    ++index;
+
+                    if (index == Text.Length)
+                    {
+                        RenderText(dc, Text, startIndex, index - 1, x,
+                            textStates[startIndex] == 0 ? Foreground : Highlight);
                         break;
-
-                    for (var i = 0; i != word.Length; ++i)
-                        _textStates[wordIndex + i] = 1;
-
-                    stateOffset = wordIndex + word.Length;
+                    }
                 }
             }
-
-            var state = _textStates[0];
-            var index = 0;
-            var startIndex = 0;
-
-            var x = 0.0;
-
-            while (true)
+            finally
             {
-                if (_textStates[index] != state)
-                {
-                    x = RenderText(dc, Text, startIndex, index - 1, x,
-                        _textStates[startIndex] == 0 ? Foreground : Highlight);
-
-                    state = _textStates[index];
-                    startIndex = index;
-                }
-
-                ++index;
-
-                if (index == Text.Length)
-                {
-                    RenderText(dc, Text, startIndex, index - 1, x,
-                        _textStates[startIndex] == 0 ? Foreground : Highlight);
-                    break;
-                }
+                ArrayPool<byte>.Shared.Return(textStates);
             }
         }
 
