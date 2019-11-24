@@ -18,6 +18,7 @@ namespace Biaui.Controls.Effects
             _PixelShader.Freeze();
         }
 
+        // ReSharper disable once InconsistentNaming
         private static readonly PixelShader _PixelShader;
 
         internal HsvWheelBackgroundEffect()
