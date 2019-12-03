@@ -105,7 +105,8 @@
     <Color x:Key="InactiveBorderColorKey">#FF3C3C41</Color>
     <SolidColorBrush x:Key="InactiveBorderBrushKey" Color="{StaticResource InactiveBorderColorKey}" />
 
-    <SolidColorBrush x:Key="InactiveForegroundBrushKey" Color="#FF787878" />
+    <Color x:Key="InactiveForegroundColorKey">#FF787878</Color>
+    <SolidColorBrush x:Key="InactiveForegroundBrushKey" Color="{StaticResource InactiveForegroundColorKey}" />
     <SolidColorBrush x:Key="InactiveControlBrushKey" Color="#505050" />
 
     <SolidColorBrush x:Key="LinkForegroundBrushKey" Color="#FF7AC1FF" />
