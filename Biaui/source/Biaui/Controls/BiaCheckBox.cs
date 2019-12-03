@@ -90,20 +90,12 @@ namespace Biaui.Controls
 
             // マーク
             if (IsChecked && IsPressed == false)
-            {
-                dc.PushTransform(_markOffset);
                 dc.DrawGeometry(MarkBrush, null, _markGeom);
-                dc.Pop();
-            }
 
             // キャプション
             TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
 
-        private static readonly Geometry _markGeom =
-            Geometry.Parse(
-                "F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z ");
-
-        private static readonly TranslateTransform _markOffset = new TranslateTransform(3, 6);
+        private static readonly Geometry _markGeom = Geometry.Parse("M7.7 15.1L7.52 15.1L3 11.19L4.28 9.52L7.26 12.09L11.33 6L12.97 7.22L7.7 15.1Z");
     }
 }
