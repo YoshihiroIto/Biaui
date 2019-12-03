@@ -74,7 +74,7 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
+            DrawBackground(dc);
 
             // ボックス
             dc.DrawRoundedRectangle(
@@ -93,8 +93,25 @@ namespace Biaui.Controls
                 dc.DrawGeometry(MarkBrush, null, _markGeom);
 
             // キャプション
-            TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
+            DrawCaption(dc);
         }
+
+        protected void DrawBackground(DrawingContext dc)
+        {
+            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
+        }
+
+        protected void DrawCaption(DrawingContext dc)
+        {
+            DrawCaption(dc, 16 + 4, 2);
+        }
+
+        protected void DrawCaption(DrawingContext dc, double x, double y)
+        {
+            TextRenderer.Default.Draw(this, Content, x, y, Foreground, dc, ActualWidth, TextAlignment.Left);
+        }
+
+        protected Brush BoxBorderBrush => Caches.GetSolidColorBrush(BoxBorderColor);
 
         private static readonly Geometry _markGeom = Geometry.Parse("M7.7 15.1L7.52 15.1L3 11.19L4.28 9.52L7.26 12.09L11.33 6L12.97 7.22L7.7 15.1Z");
     }
