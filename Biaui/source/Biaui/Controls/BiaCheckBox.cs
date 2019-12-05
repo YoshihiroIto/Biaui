@@ -111,8 +111,6 @@ namespace Biaui.Controls
             TextRenderer.Default.Draw(this, Content, x, y, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
 
-        protected Brush BoxBorderBrush => Caches.GetSolidColorBrush(BoxBorderColor);
-
         private static readonly Geometry _markGeom = Geometry.Parse("M7.7 15.1L7.52 15.1L3 11.19L4.28 9.52L7.26 12.09L11.33 6L12.97 7.22L7.7 15.1Z");
     }
 }
