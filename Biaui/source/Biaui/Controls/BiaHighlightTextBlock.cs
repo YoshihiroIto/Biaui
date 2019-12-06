@@ -110,7 +110,7 @@ namespace Biaui.Controls
 
                     while (true)
                     {
-                        var wordIndex = Text.IndexOf(word, stateOffset, StringComparison.CurrentCultureIgnoreCase);
+                        var wordIndex = Text.IndexOf(word, stateOffset, StringComparison.OrdinalIgnoreCase);
                         if (wordIndex == -1)
                             break;
 
