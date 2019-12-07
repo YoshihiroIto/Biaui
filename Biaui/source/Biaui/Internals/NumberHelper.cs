@@ -114,10 +114,6 @@ namespace Biaui.Internals
         internal static double Min(in this ValueTuple<double, double, double, double> value)
              => (((value.Item1, value.Item2).Min(), value.Item3).Min(), value.Item4).Min();
 
-
-        /// <summary>
-        /// value, min, max
-        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int Clamp(in this ValueTuple<int, int, int> value)
         {
@@ -131,8 +127,6 @@ namespace Biaui.Internals
 
             return value.Item1;
         }
-
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int Max(in this ValueTuple<int, int> value)
