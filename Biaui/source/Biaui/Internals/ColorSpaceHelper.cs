@@ -23,7 +23,7 @@ namespace Biaui.Internals
             }
 
             if (h < 0)
-                h = h + 1;
+                h += 1;
 
             return (h, s, v);
         }

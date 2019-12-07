@@ -66,8 +66,7 @@ namespace Biaui.Internals
                         {
                             foreach (var c in tg.Children)
                             {
-                                var sc = c as ScaleTransform;
-                                if (sc == null)
+                                if (!(c is ScaleTransform sc))
                                     continue;
 
                                 scale *= sc.ScaleX;
