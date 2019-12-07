@@ -50,10 +50,10 @@ namespace Biaui
 
         public Color Color =>
             Color.FromArgb(
-                (byte) (A * 0xFF),
-                (byte) (R * 0xFF),
-                (byte) (G * 0xFF),
-                (byte) (B * 0xFF)
+                (byte) (NumberHelper.Clamp01(A) * 0xFF),
+                (byte) (NumberHelper.Clamp01(R) * 0xFF),
+                (byte) (NumberHelper.Clamp01(G) * 0xFF),
+                (byte) (NumberHelper.Clamp01(B) * 0xFF)
             );
     }
 }
