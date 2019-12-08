@@ -66,7 +66,7 @@
         </Setter>
     </Style>
 
-    <converter:MultiplyConverter x:Key="Multiply" />
+    <converter:ExpanderMultiplyConverter x:Key="Multiply" />
 
     <Style TargetType="{x:Type Expander}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
@@ -83,10 +83,9 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="true">
+                            SnapsToDevicePixels="True">
                         <DockPanel PreviewMouseWheel="OnPreviewMouseWheel">
-                            <ToggleButton x:Name="HeaderSite"
-                                          MinWidth="0"
+                            <ToggleButton MinWidth="0"
                                           MinHeight="0"
                                           HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -102,32 +101,26 @@
                                           Foreground="{TemplateBinding Foreground}"
                                           IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           Style="{StaticResource ExpanderDownHeaderStyle}" />
-
-                            <ScrollViewer x:Name="ExpandSiteScrollView"
-                                          Padding="{TemplateBinding Padding}"
-                                          HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Bottom"
-                                          DockPanel.Dock="Bottom"
-                                          HorizontalScrollBarVisibility="Disabled"
-                                          Loaded="ExpandSiteScrollView_OnLoaded"
-                                          VerticalScrollBarVisibility="Hidden">
-                                <ScrollViewer.Tag>
+                            <ContentPresenter x:Name="ExpandSite"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              DockPanel.Dock="Bottom"
+                                              Focusable="false"
+                                              Loaded="ExpandSite_OnLoaded">
+                                <ContentPresenter.Tag>
                                     <system:Double>1.0</system:Double>
-                                </ScrollViewer.Tag>
+                                </ContentPresenter.Tag>
 
-                                <ScrollViewer.Height>
+                                <ContentPresenter.Height>
                                     <MultiBinding Converter="{StaticResource Multiply}">
-                                        <Binding ElementName="ExpandSite" Path="ActualHeight" />
+                                        <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+                                        <Binding Path="Content.ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="Content.Margin" RelativeSource="{RelativeSource Self}" />
                                         <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                        <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
                                     </MultiBinding>
-                                </ScrollViewer.Height>
-
-                                <ContentPresenter x:Name="ExpandSite"
-                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  DockPanel.Dock="Bottom"
-                                                  Focusable="false" />
-                            </ScrollViewer>
+                                </ContentPresenter.Height>
+                            </ContentPresenter>
                         </DockPanel>
                     </Border>
 
@@ -140,7 +133,7 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="ExpandSiteScrollView"
+                                        <DoubleAnimation Storyboard.TargetName="ExpandSite"
                                                          Storyboard.TargetProperty="Tag"
                                                          To="1"
                                                          Duration="0:0:0.3">
@@ -155,7 +148,7 @@
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="ExpandSiteScrollView"
+                                        <DoubleAnimation Storyboard.TargetName="ExpandSite"
                                                          Storyboard.TargetProperty="Tag"
                                                          To="0"
                                                          Duration="0:0:0.3">

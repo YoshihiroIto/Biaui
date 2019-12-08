@@ -19,12 +19,12 @@ namespace Biaui.StandardControls
             (sender as UIElement)?.RaiseEvent(e2);
         }
 
-        private void ExpandSiteScrollView_OnLoaded(object sender, RoutedEventArgs e)
+        private void ExpandSite_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var sv = (ScrollViewer) sender;
-            var expander = sv.GetParent<Expander>();
+            var c = (ContentPresenter) sender;
+            var expander = c.GetParent<Expander>();
 
-            sv.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
+            c.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
         }
     }
 }
