@@ -108,7 +108,7 @@
                                           HorizontalContentAlignment="Stretch"
                                           VerticalContentAlignment="Bottom"
                                           DockPanel.Dock="Bottom"
-                                          HorizontalScrollBarVisibility="Hidden"
+                                          HorizontalScrollBarVisibility="Disabled"
                                           Loaded="ExpandSiteScrollView_OnLoaded"
                                           VerticalScrollBarVisibility="Hidden">
                                 <ScrollViewer.Tag>
