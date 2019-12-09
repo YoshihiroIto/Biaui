@@ -30,7 +30,9 @@ namespace Biaui.Internals
 
         internal static (double Red, double Green, double Blue) HsvToRgb(double hue, double saturation, double value)
         {
-            var h = NumberHelper.AreClose(hue, 1) ? 0 : hue;
+            var h = NumberHelper.AreClose(hue, 1)
+                ? 0
+                : hue;
             var s = saturation;
             var v = value;
 
@@ -70,28 +72,28 @@ namespace Biaui.Internals
                         break;
 
                     case 3:
-                        r   = p;
+                        r = p;
                         g = q;
-                        b  = v;
+                        b = v;
                         break;
 
                     case 4:
-                        r   = t;
+                        r = t;
                         g = p;
-                        b  = v;
+                        b = v;
                         break;
 
                     case 5:
-                        r   = v;
+                        r = v;
                         g = p;
-                        b  = q;
+                        b = q;
                         break;
 
                     default:
                         throw new Exception();
                 }
             }
-            
+
             return (r, g, b);
         }
     }
