@@ -331,9 +331,6 @@ namespace Biaui.Controls
 
         #endregion
 
-
-
-
         #region IsVisibleAlphaEditor
 
         public bool IsVisibleAlphaEditor
@@ -717,7 +714,7 @@ namespace Biaui.Controls
 
             StartedBatchEditingCommand?.ExecuteIfCan(null);
 
-            (Red, Green, Blue) = ColorSpaceHelper.HsvToRgb(Hue, Saturation, Value);
+            (Red, Green, Blue) = ColorSpaceHelper.HsvToRgb(Hue, Saturation, NumberHelper.Clamp01(Value));
 
             EndBatchEditingCommand?.ExecuteIfCan(null);
 
