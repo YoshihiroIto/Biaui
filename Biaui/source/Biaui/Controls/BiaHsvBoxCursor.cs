@@ -179,6 +179,9 @@ namespace Biaui.Controls
             double hue,
             double saturation)
         {
+            hue = NumberHelper.Clamp01(hue);
+            saturation = NumberHelper.Clamp01(saturation);
+
             var bw = visual.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
             var w = visual.RoundLayoutValue(actualWidth - bw * 2);
             var h = visual.RoundLayoutValue(actualHeight - bw * 2);

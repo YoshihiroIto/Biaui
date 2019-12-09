@@ -362,22 +362,30 @@
 
                 <controls:BiaColorPicker Height="160"
                                          Margin="0,4,0,0"
+                                         AlphaMaximum="+10000"
+                                         AlphaMinimum="-10000"
                                          Blue="0.25"
+                                         BlueMaximum="+10000"
+                                         BlueMinimum="-10000"
                                          Green="0.5"
-                                         Red="1" />
+                                         GreenMaximum="+10000"
+                                         GreenMinimum="-10000"
+                                         Red="1"
+                                         RedMaximum="+10000"
+                                         RedMinimum="-10000" />
                 <controls:BiaColorPicker Height="240"
                                          Margin="0,16,0,0"
+                                         AlphaMaximum="+10000"
+                                         AlphaMinimum="-10000"
                                          Blue="0.125"
+                                         BlueMaximum="+10000"
+                                         BlueMinimum="-10000"
                                          Green="0.25"
+                                         GreenMaximum="+10000"
+                                         GreenMinimum="-10000"
                                          Red="0.5"
                                          RedMaximum="+10000"
                                          RedMinimum="-10000"
-                                         GreenMaximum="+10000"
-                                         GreenMinimum="-10000"
-                                         BlueMaximum="+10000"
-                                         BlueMinimum="-10000"
-                                         AlphaMaximum="+10000"
-                                         AlphaMinimum="-10000"
                                          Style="{StaticResource BiaColorPickerWheelStyle}" />
             </StackPanel>
 
