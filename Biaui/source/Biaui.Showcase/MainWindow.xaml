@@ -370,6 +370,14 @@
                                          Blue="0.125"
                                          Green="0.25"
                                          Red="0.5"
+                                         RedMaximum="+10000"
+                                         RedMinimum="-10000"
+                                         GreenMaximum="+10000"
+                                         GreenMinimum="-10000"
+                                         BlueMaximum="+10000"
+                                         BlueMinimum="-10000"
+                                         AlphaMaximum="+10000"
+                                         AlphaMinimum="-10000"
                                          Style="{StaticResource BiaColorPickerWheelStyle}" />
             </StackPanel>
 

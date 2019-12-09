@@ -117,6 +117,223 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region RedMaximum
+
+        public double RedMaximum
+        {
+            get => _RedMaximum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _RedMaximum) == false)
+                    SetValue(RedMaximumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _RedMaximum = 1.0;
+
+        public static readonly DependencyProperty RedMaximumProperty =
+            DependencyProperty.Register(nameof(RedMaximum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double1,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._RedMaximum = (double) e.NewValue;
+                        self.RgbToHsv();
+                    }));
+
+        #endregion
+
+        #region GreenMaximum
+
+        public double GreenMaximum
+        {
+            get => _GreenMaximum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _GreenMaximum) == false)
+                    SetValue(GreenMaximumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _GreenMaximum = 1.0;
+
+        public static readonly DependencyProperty GreenMaximumProperty =
+            DependencyProperty.Register(nameof(GreenMaximum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double1,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._GreenMaximum = (double) e.NewValue;
+                        self.RgbToHsv();
+                    }));
+
+        #endregion
+
+        #region BlueMaximum
+
+        public double BlueMaximum
+        {
+            get => _BlueMaximum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _BlueMaximum) == false)
+                    SetValue(BlueMaximumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _BlueMaximum = 1.0;
+
+        public static readonly DependencyProperty BlueMaximumProperty =
+            DependencyProperty.Register(nameof(BlueMaximum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double1,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._BlueMaximum = (double) e.NewValue;
+                        self.RgbToHsv();
+                    }));
+
+        #endregion
+
+        #region AlphaMaximum
+
+        public double AlphaMaximum
+        {
+            get => _AlphaMaximum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _AlphaMaximum) == false)
+                    SetValue(AlphaMaximumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _AlphaMaximum = 1.0;
+
+        public static readonly DependencyProperty AlphaMaximumProperty =
+            DependencyProperty.Register(nameof(AlphaMaximum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double1,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._AlphaMaximum = (double) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region RedMinimum
+
+        public double RedMinimum
+        {
+            get => _RedMinimum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _RedMinimum) == false)
+                    SetValue(RedMinimumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _RedMinimum;
+
+        public static readonly DependencyProperty RedMinimumProperty =
+            DependencyProperty.Register(nameof(RedMinimum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._RedMinimum = (double) e.NewValue;
+                        self.RgbToHsv();
+                    }));
+
+        #endregion
+
+        #region GreenMinimum
+
+        public double GreenMinimum
+        {
+            get => _GreenMinimum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _GreenMinimum) == false)
+                    SetValue(GreenMinimumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _GreenMinimum;
+
+        public static readonly DependencyProperty GreenMinimumProperty =
+            DependencyProperty.Register(nameof(GreenMinimum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._GreenMinimum = (double) e.NewValue;
+                        self.RgbToHsv();
+                    }));
+
+        #endregion
+
+        #region BlueMinimum
+
+        public double BlueMinimum
+        {
+            get => _BlueMinimum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _BlueMinimum) == false)
+                    SetValue(BlueMinimumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _BlueMinimum;
+
+        public static readonly DependencyProperty BlueMinimumProperty =
+            DependencyProperty.Register(nameof(BlueMinimum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._BlueMinimum = (double) e.NewValue;
+                        self.RgbToHsv();
+                    }));
+
+        #endregion
+
+        #region AlphaMinimum
+
+        public double AlphaMinimum
+        {
+            get => _AlphaMinimum;
+            set
+            {
+                if (NumberHelper.AreClose(value, _AlphaMinimum) == false)
+                    SetValue(AlphaMinimumProperty, Boxes.Double(value));
+            }
+        }
+
+        private double _AlphaMinimum;
+
+        public static readonly DependencyProperty AlphaMinimumProperty =
+            DependencyProperty.Register(nameof(AlphaMinimum), typeof(double), typeof(BiaColorPicker),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaColorPicker) s;
+                        self._AlphaMinimum = (double) e.NewValue;
+                    }));
+
+        #endregion
+
+
+
+
         #region IsVisibleAlphaEditor
 
         public bool IsVisibleAlphaEditor

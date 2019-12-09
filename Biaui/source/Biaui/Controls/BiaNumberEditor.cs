@@ -709,7 +709,7 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
+            var w = (NumberHelper.Clamp01(UiValue) - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
             var brush = _isEditing
                 ? _textBox.Background
                 : SliderBrush;

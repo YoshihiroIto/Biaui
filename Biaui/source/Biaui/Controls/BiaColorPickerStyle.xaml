@@ -100,8 +100,6 @@
                             <Grid>
                                 <Grid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
-                                        <Setter Property="Minimum" Value="0" />
-                                        <Setter Property="Maximum" Value="1" />
                                         <Setter Property="SliderMinimum" Value="0" />
                                         <Setter Property="SliderMaximum" Value="1" />
                                         <Setter Property="Increment" Value="0.1" />
@@ -120,24 +118,32 @@
                                 <colorPicker:BiaNumberEditor x:Name="RedEditor"
                                                              Grid.Row="0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Maximum="{Binding RedMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Minimum="{Binding RedMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="GreenEditor"
                                                              Grid.Row="1"
                                                              Margin="0,1,0,0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Maximum="{Binding GreenMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Minimum="{Binding GreenMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="BlueEditor"
                                                              Grid.Row="2"
                                                              Margin="0,1,0,0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Maximum="{Binding BlueMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Minimum="{Binding BlueMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="AlphaEditor"
                                                              Grid.Row="3"
                                                              Margin="0,1,0,0"
                                                              IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Maximum="{Binding AlphaMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Minimum="{Binding AlphaMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}">
                                     <colorPicker:BiaNumberEditor.Style>
                                         <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
