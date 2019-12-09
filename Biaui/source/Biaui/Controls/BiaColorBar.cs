@@ -278,7 +278,7 @@ namespace Biaui.Controls
                 var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
                 var h = this.RoundLayoutValue(ActualHeight - bw * 2);
-                var y = Value * h;
+                var y = NumberHelper.Clamp01(Value) * h;
 
                 if (IsInverseValue)
                     y = h - y;
