@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
+using Biaui.Internals;
 
-namespace Biaui.Internals.Converter
+namespace Biaui.StandardControls.Internal
 {
     internal class ExpanderMultiplyConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var height = (double)values[0];
-            var margin = (Thickness)values[1];
+            var headerSiteHeight = (double)values[0];
+            var expandSiteHeight = (double)values[1];
             var scale = (double)values[2];
 
-            var result = (height + margin.Top + margin.Bottom) * scale;
+            var result = headerSiteHeight + expandSiteHeight * scale;
 
             return Boxes.Double(result);
         }

@@ -19,9 +19,9 @@ namespace Biaui.StandardControls
             (sender as UIElement)?.RaiseEvent(e2);
         }
 
-        private void ExpandSite_OnLoaded(object sender, RoutedEventArgs e)
+        private void Frame_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var c = (ContentPresenter) sender;
+            var c = (StackPanel) sender;
             var expander = c.GetParent<Expander>();
 
             c.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
