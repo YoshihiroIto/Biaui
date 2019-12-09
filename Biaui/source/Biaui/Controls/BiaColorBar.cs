@@ -299,10 +299,11 @@ namespace Biaui.Controls
             }
         }
 
-        private static Brush _disabledBackground;
+        private static Brush _disabledBackgroundBrush;
 
         private void UpdateBackgroundBrush()
         {
+
             if (IsEnabled)
             {
                 _backgroundBrush = new LinearGradientBrush(Color1, Color0, 90);
@@ -310,10 +311,10 @@ namespace Biaui.Controls
             }
             else
             {
-                if (_disabledBackground == null)
-                    _disabledBackground = (Brush) FindResource("InactiveBackgroundBrushKey");
+                if (_disabledBackgroundBrush == null)
+                    _disabledBackgroundBrush = (Brush) FindResource("InactiveBackgroundBrushKey");
 
-                _backgroundBrush = _disabledBackground;
+                _backgroundBrush = _disabledBackgroundBrush;
             }
         }
 
