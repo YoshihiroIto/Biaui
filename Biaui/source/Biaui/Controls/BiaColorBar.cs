@@ -239,6 +239,9 @@ namespace Biaui.Controls
         private Brush _backgroundBrush;
         private bool _isRequestUpdateBackgroundBrush = true;
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly PropertyChangeNotifier _isEnabledChangeNotifier;
+
         static BiaColorBar()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaColorBar),
@@ -248,6 +251,13 @@ namespace Biaui.Controls
         public BiaColorBar()
         {
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+
+            _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
+            _isEnabledChangeNotifier.ValueChanged += (_, __) =>
+            {
+                _isRequestUpdateBackgroundBrush = true;
+                InvalidateVisual();
+            };
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -289,10 +299,22 @@ namespace Biaui.Controls
             }
         }
 
+        private static Brush _disabledBackground;
+
         private void UpdateBackgroundBrush()
         {
-            _backgroundBrush = new LinearGradientBrush(Color1, Color0, 90);
-            _backgroundBrush.Freeze();
+            if (IsEnabled)
+            {
+                _backgroundBrush = new LinearGradientBrush(Color1, Color0, 90);
+                _backgroundBrush.Freeze();
+            }
+            else
+            {
+                if (_disabledBackground == null)
+                    _disabledBackground = (Brush) FindResource("InactiveBackgroundBrushKey");
+
+                _backgroundBrush = _disabledBackground;
+            }
         }
 
         private void UpdateParams(MouseEventArgs e)
