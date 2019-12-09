@@ -88,7 +88,7 @@ namespace Biaui.Controls
                         var self = (BiaHsvWheelBackground) s;
                         self._Value = (double) e.NewValue;
 
-                        self._effect.Value = self._Value;
+                        self._effect.Value = NumberHelper.Clamp01(self._Value);
                     }));
 
         #endregion

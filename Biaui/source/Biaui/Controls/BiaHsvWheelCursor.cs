@@ -156,6 +156,9 @@ namespace Biaui.Controls
             double hue,
             double saturation)
         {
+            hue = NumberHelper.Clamp01(hue);
+            saturation = NumberHelper.Clamp01(saturation);
+
             var bw = visual.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
             var w = visual.RoundLayoutValue(actualWidth - bw * 2);
             var h = visual.RoundLayoutValue(actualHeight - bw * 2);
@@ -164,8 +167,8 @@ namespace Biaui.Controls
 
             var (cx, cy) = MakeAspectRatioCorrection(actualWidth, actualHeight);
 
-            var x = bw + Math.Cos(r) * saturation * (w / 2) / cx + w / 2;
-            var y = bw + Math.Sin(r) * saturation * (h / 2) / cy + h / 2;
+            var x = bw + Math.Cos(r) * saturation * (w * 0.5) / cx + w * 0.5;
+            var y = bw + Math.Sin(r) * saturation * (h * 0.5) / cy + h * 0.5;
 
             return new ImmutableVec2(visual.RoundLayoutValue(x), visual.RoundLayoutValue(y));
         }
