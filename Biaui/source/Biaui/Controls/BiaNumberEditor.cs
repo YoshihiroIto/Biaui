@@ -709,13 +709,13 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var w = (NumberHelper.Clamp01(UiValue) - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
+            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
             var brush = _isEditing
                 ? _textBox.Background
                 : SliderBrush;
 
             var r = this.RoundLayoutRenderRectangle(IsVisibleBorder);
-            r.Width = this.RoundLayoutValue(w);
+            r.Width = (this.RoundLayoutValue(w), 0.0).Max();
 
             dc.DrawRectangle(brush, null, r);
         }
