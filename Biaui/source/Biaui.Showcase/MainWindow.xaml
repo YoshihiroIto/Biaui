@@ -267,19 +267,7 @@
                     <Button Content="ABCDEFG" />
                 </controls:BiaUniformGrid>
 
-
-                <!--<UniformGrid Margin="0,4,0,0" HorizontalAlignment="Left">
-                    <Button Content="A" />
-                    <Button Content="ABCDE" />
-                </UniformGrid>
-
-
-                <UniformGrid Margin="0,4,0,0" HorizontalAlignment="Left">
-                    <controls:BiaButton Content="A" />
-                    <controls:BiaButton Content="ABCDE" />
-                </UniformGrid>-->
-
-
+                <controls:BiaToggleSwitch Margin="0,4,0,0" />
             </StackPanel>
 
             <StackPanel Margin="24,0,0,0"
