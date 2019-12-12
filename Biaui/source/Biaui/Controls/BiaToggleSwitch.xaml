@@ -9,32 +9,32 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:BiaToggleSwitch}">
-                    <controls:BiaClippingBorder CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
-                        <controls:BiaUniformGrid Columns="2" Spacing="1">
-                            <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
-                                                      Content="{Binding EnabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                      CornerRadius="0"
-                                                      IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                    <controls:BiaUniformGrid Columns="2"
+                                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
+                                             Spacing="1">
+                        <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
+                                                  Content="{Binding EnabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  CornerRadius="0"
+                                                  IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
 
-                            <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
-                                                      Content="{Binding DisabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                      CornerRadius="0">
-                                <controls:BiaToggleButton.Style>
-                                    <Style TargetType="{x:Type controls:BiaToggleButton}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                                <Setter Property="IsChecked" Value="False" />
-                                            </DataTrigger>
+                        <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
+                                                  Content="{Binding DisabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  CornerRadius="0">
+                            <controls:BiaToggleButton.Style>
+                                <Style TargetType="{x:Type controls:BiaToggleButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
 
-                                            <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
-                                                <Setter Property="IsChecked" Value="True" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </controls:BiaToggleButton.Style>
-                            </controls:BiaToggleButton>
-                        </controls:BiaUniformGrid>
-                    </controls:BiaClippingBorder>
+                                        <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                                            <Setter Property="IsChecked" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:BiaToggleButton.Style>
+                        </controls:BiaToggleButton>
+                    </controls:BiaUniformGrid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
