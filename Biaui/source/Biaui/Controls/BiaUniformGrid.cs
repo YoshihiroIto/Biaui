@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Biaui.Internals;
 
 namespace Biaui.Controls
@@ -128,6 +130,12 @@ namespace Biaui.Controls
 
         #endregion
 
+        static BiaUniformGrid()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaUniformGrid),
+                new FrameworkPropertyMetadata(typeof(BiaUniformGrid)));
+        }
+
         protected override Size MeasureOverride(Size constraint)
         {
             UpdateComputedValues();
@@ -253,5 +261,236 @@ namespace Biaui.Controls
 
         private int _rows;
         private int _columns;
+
+        #region 角丸用処理
+
+        #region CornerRadius
+        
+        public CornerRadius CornerRadius
+        {
+            get => _CornerRadius;
+            set
+            {
+                if (value != _CornerRadius)
+                    SetValue(CornerRadiusProperty, value);
+            }
+        }
+        
+        private CornerRadius _CornerRadius;
+        
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register(
+                nameof(CornerRadius),
+                typeof(CornerRadius),
+                typeof(BiaUniformGrid),
+                new FrameworkPropertyMetadata(
+                    default(CornerRadius),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaUniformGrid) s;
+                        self._CornerRadius = (CornerRadius)e.NewValue;
+                    }));
+        
+        #endregion
+
+        protected override void OnRender(DrawingContext dc)
+        {
+            OnApplyChildClip();
+            base.OnRender(dc);
+        }
+
+        protected virtual void OnApplyChildClip()
+        {
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            if (CornerRadius.BottomLeft == 0.0 &&
+                CornerRadius.BottomRight == 0.0 &&
+                CornerRadius.TopLeft == 0.0 &&
+                CornerRadius.TopRight == 0.0)
+            {
+                var parentClip = (Parent as UIElement)?.Clip;
+                if (parentClip != null)
+                    Clip = parentClip;
+                return;
+            }
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+
+            var rect = new Rect(RenderSize);
+            var key = (rect, CornerRadius);
+
+            if (_clipRectCache.TryGetValue(key, out var clipRect) == false)
+            {
+                var isSame =
+                    NumberHelper.AreClose(CornerRadius.TopLeft, CornerRadius.TopRight) &&
+                    NumberHelper.AreClose(CornerRadius.TopRight, CornerRadius.BottomRight) &&
+                    NumberHelper.AreClose(CornerRadius.BottomRight, CornerRadius.BottomLeft) &&
+                    NumberHelper.AreClose(CornerRadius.BottomLeft, CornerRadius.TopLeft);
+
+                clipRect = isSame
+                    ? MakeRoundRectangleGeometrySameCorner(new Rect(RenderSize), CornerRadius)
+                    : MakeRoundRectangleGeometry(new Rect(RenderSize), CornerRadius);
+
+                _clipRectCache.Add(key, clipRect);
+            }
+
+            Clip = clipRect;
+        }
+
+        private static readonly Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry> _clipRectCache =
+            new Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry>();
+
+        private static Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius)
+        {
+            var radius = (0.0, cornerRadius.TopLeft).Max();
+
+            var clipRect = new RectangleGeometry
+            {
+                RadiusX = radius,
+                RadiusY = radius,
+                Rect = baseRect
+            };
+
+            clipRect.Freeze();
+
+            return clipRect;
+        }
+
+        // https://wpfspark.wordpress.com/2011/06/08/clipborder-a-wpf-border-that-clips/
+        private static Geometry MakeRoundRectangleGeometry(Rect baseRect, CornerRadius cornerRadius)
+        {
+            if (cornerRadius.TopLeft < double.Epsilon)
+                cornerRadius.TopLeft = 0.0;
+
+            if (cornerRadius.TopRight < double.Epsilon)
+                cornerRadius.TopRight = 0.0;
+
+            if (cornerRadius.BottomLeft < double.Epsilon)
+                cornerRadius.BottomLeft = 0.0;
+
+            if (cornerRadius.BottomRight < double.Epsilon)
+                cornerRadius.BottomRight = 0.0;
+
+            var topLeftRect = new Rect(
+                baseRect.Location.X,
+                baseRect.Location.Y,
+                (0.0, cornerRadius.TopLeft).Max(),
+                (0.0, cornerRadius.TopLeft).Max());
+
+            var topRightRect = new Rect(
+                baseRect.Location.X + baseRect.Width - cornerRadius.TopRight,
+                baseRect.Location.Y,
+                (0.0, cornerRadius.TopRight).Max(),
+                (0.0, cornerRadius.TopRight).Max());
+
+            var bottomRightRect = new Rect(
+                baseRect.Location.X + baseRect.Width - cornerRadius.BottomRight,
+                baseRect.Location.Y + baseRect.Height - cornerRadius.BottomRight,
+                (0.0, cornerRadius.BottomRight).Max(),
+                (0.0, cornerRadius.BottomRight).Max());
+
+            var bottomLeftRect = new Rect(
+                baseRect.Location.X,
+                baseRect.Location.Y + baseRect.Height - cornerRadius.BottomLeft,
+                (0.0, cornerRadius.BottomLeft).Max(),
+                (0.0, cornerRadius.BottomLeft).Max());
+
+            if (topLeftRect.Right > topRightRect.Left)
+            {
+                var newWidth = topLeftRect.Width / (topLeftRect.Width + topRightRect.Width) * baseRect.Width;
+
+                topLeftRect = new Rect(
+                    topLeftRect.Location.X,
+                    topLeftRect.Location.Y,
+                    newWidth,
+                    topLeftRect.Height);
+
+                topRightRect = new Rect(
+                    baseRect.Left + newWidth,
+                    topRightRect.Location.Y,
+                    (0.0, baseRect.Width - newWidth).Max(),
+                    topRightRect.Height);
+            }
+
+            if (topRightRect.Bottom > bottomRightRect.Top)
+            {
+                var newHeight = topRightRect.Height / (topRightRect.Height + bottomRightRect.Height) * baseRect.Height;
+
+                topRightRect = new Rect(
+                    topRightRect.Location.X,
+                    topRightRect.Location.Y,
+                    topRightRect.Width,
+                    newHeight);
+
+                bottomRightRect = new Rect(
+                    bottomRightRect.Location.X,
+                    baseRect.Top + newHeight,
+                    bottomRightRect.Width,
+                    (0.0, baseRect.Height - newHeight).Max());
+            }
+
+            if (bottomRightRect.Left < bottomLeftRect.Right)
+            {
+                var newWidth = bottomLeftRect.Width / (bottomLeftRect.Width + bottomRightRect.Width) * baseRect.Width;
+
+                bottomLeftRect = new Rect(
+                    bottomLeftRect.Location.X,
+                    bottomLeftRect.Location.Y,
+                    newWidth,
+                    bottomLeftRect.Height);
+
+                bottomRightRect = new Rect(
+                    baseRect.Left + newWidth,
+                    bottomRightRect.Location.Y,
+                    (0.0, baseRect.Width - newWidth).Max(),
+                    bottomRightRect.Height);
+            }
+
+            if (bottomLeftRect.Top < topLeftRect.Bottom)
+            {
+                var newHeight = topLeftRect.Height / (topLeftRect.Height + bottomLeftRect.Height) * baseRect.Height;
+
+                topLeftRect = new Rect(
+                    topLeftRect.Location.X,
+                    topLeftRect.Location.Y,
+                    topLeftRect.Width,
+                    newHeight);
+
+                bottomLeftRect = new Rect(
+                    bottomLeftRect.Location.X,
+                    baseRect.Top + newHeight,
+                    bottomLeftRect.Width,
+                    (0.0, baseRect.Height - newHeight).Max());
+            }
+
+            var clipRect = new StreamGeometry();
+
+            using (var context = clipRect.Open())
+            {
+                context.BeginFigure(topLeftRect.BottomLeft, true, true);
+
+                context.ArcTo(topLeftRect.TopRight, topLeftRect.Size, 0, false, SweepDirection.Clockwise,
+                    true, true);
+
+                context.LineTo(topRightRect.TopLeft, true, true);
+                context.ArcTo(topRightRect.BottomRight, topRightRect.Size, 0, false, SweepDirection.Clockwise,
+                    true, true);
+
+                context.LineTo(bottomRightRect.TopRight, true, true);
+                context.ArcTo(bottomRightRect.BottomLeft, bottomRightRect.Size, 0, false, SweepDirection.Clockwise,
+                    true, true);
+
+                context.LineTo(bottomLeftRect.BottomRight, true, true);
+                context.ArcTo(bottomLeftRect.TopLeft, bottomLeftRect.Size, 0, false, SweepDirection.Clockwise,
+                    true, true);
+            }
+
+            clipRect.Freeze();
+
+            return clipRect;
+        }
+
+        #endregion
     }
 }
