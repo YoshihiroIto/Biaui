@@ -227,8 +227,9 @@ namespace Biaui.Internals
             int textLength,
             double maxWidth)
         {
-            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(textLength);
-            var advanceWidths = ArrayPool<double>.Shared.Rent(textLength);
+            // ※ +3 「...」 が増えることがあるためのバッファ
+            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(textLength + 3);
+            var advanceWidths = ArrayPool<double>.Shared.Rent(textLength + 3);
 
             try
             {
