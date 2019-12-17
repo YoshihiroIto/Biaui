@@ -48,6 +48,16 @@ namespace Biaui
                 AssociatedObject.Cursor = Cursors.SizeNS;
                 AssociatedObject.CaptureMouse();
 
+                // Disable ToolTip
+                if (_disableToolTipStyle == null)
+                {
+                    _disableToolTipStyle = new Style(typeof(ToolTip));
+                    _disableToolTipStyle.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));
+                    _disableToolTipStyle.Seal();
+                }
+                foreach (Window? window in Application.Current.Windows)
+                    window?.Resources.Add(typeof(ToolTip), _disableToolTipStyle);
+
                 e.Handled = true;
             }
         }
@@ -92,6 +102,10 @@ namespace Biaui
             AssociatedObject.ReleaseMouseCapture();
             AssociatedObject.Cursor = _cursor;
             _cursor = null;
+
+            // Enable ToolTip
+            foreach (Window? window in Application.Current.Windows)
+                window?.Resources.Remove(typeof(ToolTip));
         }
 
         private bool IsEnabled =>
@@ -104,5 +118,7 @@ namespace Biaui
         private bool _isInDragging;
         private Point _previousPos;
         private Cursor? _cursor;
+
+        private static Style? _disableToolTipStyle;
     }
 }
