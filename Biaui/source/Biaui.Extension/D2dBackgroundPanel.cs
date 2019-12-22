@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor;
-using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
@@ -34,7 +33,7 @@ namespace Biaui.Extension
 
         public override void Render(DeviceContext target)
         {
-            target.Clear(new RawColor4());
+            target.Clear(default(RawColor4));
 
             if (_parent.LinksSource == null)
                 return;
@@ -55,17 +54,16 @@ namespace Biaui.Extension
 
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
-            var inflate = ArrowSize * _parent.ScaleTransform.ScaleX;
+            var inflate = ArrowSize * (float) _parent.ScaleTransform.ScaleX;
             var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
-            var lineCullingRect = new ImmutableRect(
-                viewport.X - inflate,
-                viewport.Y - inflate,
-                viewport.Width + inflate * 2,
-                viewport.Height + inflate * 2
+            var lineCullingRect = new ImmutableRect_float(
+                (float) viewport.X - inflate,
+                (float) viewport.Y - inflate,
+                (float) viewport.Width + inflate * 2.0f,
+                (float) viewport.Height + inflate * 2.0f
             );
 
-            var bezierPos0 = new RawVector2();
-            var bezierSegment = new BezierSegment();
+            Span<ImmutableVec2_float> bezier = stackalloc ImmutableVec2_float[4];
 
             var hasHighlightCurves = false;
 
@@ -106,15 +104,15 @@ namespace Biaui.Extension
                     }
                 }
 
-                var bezier = link.MakeBezierCurve();
+                link.MakeBezierCurve(bezier);
                 var keyBezier = MakeHashCode(bezier);
                 if (_boundingBoxCache.TryGetValue(keyBezier, out var bb) == false)
                 {
                     bb = BiaNodeEditorHelper.MakeBoundingBox(
-                        bezier.Item1,
-                        bezier.Item2,
-                        bezier.Item3,
-                        bezier.Item4);
+                        bezier[0],
+                        bezier[1],
+                        bezier[2],
+                        bezier[3]);
 
                     _boundingBoxCache.Add(keyBezier, bb);
                 }
@@ -124,20 +122,8 @@ namespace Biaui.Extension
 
                 // 接続線
                 {
-                    bezierPos0.X = (float) bezier.Item1.X;
-                    bezierPos0.Y = (float) bezier.Item1.Y;
-
-                    curveSink.BeginFigure(bezierPos0, FigureBegin.Hollow);
-                    {
-                        bezierSegment.Point1.X = (float) bezier.Item2.X;
-                        bezierSegment.Point1.Y = (float) bezier.Item2.Y;
-                        bezierSegment.Point2.X = (float) bezier.Item3.X;
-                        bezierSegment.Point2.Y = (float) bezier.Item3.Y;
-                        bezierSegment.Point3.X = (float) bezier.Item4.X;
-                        bezierSegment.Point3.Y = (float) bezier.Item4.Y;
-
-                        curveSink.AddBezier(bezierSegment);
-                    }
+                    curveSink.BeginFigure(Unsafe.As<ImmutableVec2_float, RawVector2>(ref bezier[0]), FigureBegin.Hollow);
+                    curveSink.AddBezier(Unsafe.As<ImmutableVec2_float, BezierSegment>(ref bezier[1]));
                     curveSink.EndFigure(FigureEnd.Open);
                 }
 
@@ -182,70 +168,57 @@ namespace Biaui.Extension
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe int MakeHashCode(in ValueTuple<ImmutableVec2, ImmutableVec2, ImmutableVec2, ImmutableVec2> src)
+        private static int MakeHashCode(Span<ImmutableVec2_float> src)
         {
             unchecked
             {
-                // ReSharper disable InconsistentNaming
-                var p1x = src.Item1.X;
-                var p1y = src.Item1.Y;
-                var p2x = src.Item2.X;
-                var p2y = src.Item2.Y;
-                var p3x = src.Item3.X;
-                var p3y = src.Item3.Y;
-                var p4x = src.Item4.X;
-                var p4y = src.Item4.Y;
-                // ReSharper restore InconsistentNaming
+                var p0 = Unsafe.As<ImmutableVec2_float, long>(ref src[0]);
+                var p1 = Unsafe.As<ImmutableVec2_float, long>(ref src[1]);
+                var p2 = Unsafe.As<ImmutableVec2_float, long>(ref src[2]);
+                var p3 = Unsafe.As<ImmutableVec2_float, long>(ref src[3]);
 
-                var hashCode = *(long*) &p1x;
+                var hashCode = p0;
 
-                hashCode = (hashCode * 397) ^ *(long*)&p1y;
-                hashCode = (hashCode * 397) ^ *(long*)&p2x;
-                hashCode = (hashCode * 397) ^ *(long*)&p2y;
-                hashCode = (hashCode * 397) ^ *(long*)&p3x;
-                hashCode = (hashCode * 397) ^ *(long*)&p3y;
-                hashCode = (hashCode * 397) ^ *(long*)&p4x;
-                hashCode = (hashCode * 397) ^ *(long*)&p4y;
+                hashCode = (hashCode * 397) ^ p1;
+                hashCode = (hashCode * 397) ^ p2;
+                hashCode = (hashCode * 397) ^ p3;
 
-                return (int)(hashCode * 397) ^ (int) (hashCode >> 32);
+                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
             }
         }
 
-        private static readonly LruCache<int, ImmutableRect> _boundingBoxCache =
-            new LruCache<int, ImmutableRect>(10000, false);
-
         private static void DrawArrow(
             GeometrySink sink,
-            in (ImmutableVec2 p1, ImmutableVec2 c1, ImmutableVec2 c2, ImmutableVec2 p2) bezier)
+            Span<ImmutableVec2_float> bezier)
         {
-            var b1X = BiaNodeEditorHelper.Bezier(bezier.p1.X, bezier.c1.X, bezier.c2.X, bezier.p2.X, 0.5001);
-            var b1Y = BiaNodeEditorHelper.Bezier(bezier.p1.Y, bezier.c1.Y, bezier.c2.Y, bezier.p2.Y, 0.5001);
-            var b2X = BiaNodeEditorHelper.Bezier(bezier.p1.X, bezier.c1.X, bezier.c2.X, bezier.p2.X, 0.5);
-            var b2Y = BiaNodeEditorHelper.Bezier(bezier.p1.Y, bezier.c1.Y, bezier.c2.Y, bezier.p2.Y, 0.5);
+            var b1X = BiaNodeEditorHelper.Bezier(bezier[0].X, bezier[1].X, bezier[2].X, bezier[3].X, 0.5001f);
+            var b1Y = BiaNodeEditorHelper.Bezier(bezier[0].Y, bezier[1].Y, bezier[2].Y, bezier[3].Y, 0.5001f);
+            var b2X = BiaNodeEditorHelper.Bezier(bezier[0].X, bezier[1].X, bezier[2].X, bezier[3].X, 0.5f);
+            var b2Y = BiaNodeEditorHelper.Bezier(bezier[0].Y, bezier[1].Y, bezier[2].Y, bezier[3].Y, 0.5f);
 
             var sx = b1X - b2X;
             var sy = b1Y - b2Y;
             var r = Math.Atan2(sy, sx) + Math.PI * 0.5;
-            var m = (Math.Sin(r), Math.Cos(r));
+            var m = ((float) Math.Sin(r), (float) Math.Cos(r));
 
-            var l1 = new ImmutableVec2(ArrowSize / 1.732, ArrowSize / 1.732 * 2);
-            var l2 = new ImmutableVec2(-ArrowSize / 1.732, ArrowSize / 1.732 * 2);
+            var l1 = new ImmutableVec2_float(ArrowSize / 1.732f, ArrowSize / 1.732f * 2.0f);
+            var l2 = new ImmutableVec2_float(-ArrowSize / 1.732f, ArrowSize / 1.732f * 2.0f);
 
-            var t1X = (float) (bezier.p1.X + bezier.p2.X) * 0.5f;
-            var t1Y = (float) (bezier.p1.Y + bezier.p2.Y) * 0.5f;
+            var t1X = (bezier[0].X + bezier[3].X) * 0.5f;
+            var t1Y = (bezier[0].Y + bezier[3].Y) * 0.5f;
 
             var t2 = Rotate(m, l1);
             var t3 = Rotate(m, l2);
 
             sink.BeginFigure(new RawVector2(t1X, t1Y), FigureBegin.Filled);
-            sink.AddLine(new RawVector2((float) t2.X + t1X, (float) t2.Y + t1Y));
-            sink.AddLine(new RawVector2((float) t3.X + t1X, (float) t3.Y + t1Y));
+            sink.AddLine(new RawVector2(t2.X + t1X, t2.Y + t1Y));
+            sink.AddLine(new RawVector2(t3.X + t1X, t3.Y + t1Y));
             sink.EndFigure(FigureEnd.Closed);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ImmutableVec2 Rotate(in ValueTuple<double, double> m, in ImmutableVec2 pos)
-            => new ImmutableVec2(
+        private static ImmutableVec2_float Rotate(in ValueTuple<float, float> m, in ImmutableVec2_float pos)
+            => new ImmutableVec2_float(
                 pos.X * m.Item2 - pos.Y * m.Item1,
                 pos.X * m.Item1 + pos.Y * m.Item2);
 
@@ -253,6 +226,9 @@ namespace Biaui.Extension
         private SolidColorBrush ColorToBrushConv(RenderTarget t, Color src)
             => new SolidColorBrush(
                 t,
-                new RawColor4(src.R / 255.0f, src.G / 255.0f, src.B / 255.0f, 1.0f));
+                new RawColor4(src.R * (1.0f / 255.0f), src.G * (1.0f / 255.0f), src.B * (1.0f / 255.0f), 1.0f));
+
+        private static readonly LruCache<int, ImmutableRect_float> _boundingBoxCache =
+            new LruCache<int, ImmutableRect_float>(10000, false);
     }
 }
