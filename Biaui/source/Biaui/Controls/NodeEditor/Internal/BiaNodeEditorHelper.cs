@@ -152,10 +152,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         // ReSharper disable InconsistentNaming
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double _SolveP(double a_, double b_, double c_) => (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * +1d) / (2d * a_);
+        private static double SolveP(double a, double b, double c) => (-b + Math.Sqrt(b * b - 4d * a * c) * +1d) / (2d * a);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double _SolveM(double a_, double b_, double c_) => (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * -1d) / (2d * a_);
+        private static double SolveM(double a, double b, double c) => (-b + Math.Sqrt(b * b - 4d * a * c) * -1d) / (2d * a);
 
         private static int Solve(Span<double> result, double a, double b, double c)
         {
@@ -172,12 +172,12 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (NumberHelper.AreCloseZero(d))
             {
-                result[0] = _SolveP(a, b, c);
+                result[0] = SolveP(a, b, c);
                 return 1;
             }
 
-            result[0] = _SolveP(a, b, c);
-            result[1] = _SolveM(a, b, c);
+            result[0] = SolveP(a, b, c);
+            result[1] = SolveM(a, b, c);
             return 2;
         }
 
