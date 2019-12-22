@@ -18,9 +18,9 @@ namespace Biaui.Controls.NodeEditor
                 new FrameworkPropertyMetadata(typeof(BiaNodePanelSlots)));
         }
 
-        private ImmutableVec2 _mousePoint;
+        private ImmutableVec2_double _mousePoint;
 
-        internal void UpdateMousePos(in ImmutableVec2 point)
+        internal void UpdateMousePos(in ImmutableVec2_double point)
         {
             _mousePoint = point;
         }
@@ -79,7 +79,7 @@ namespace Biaui.Controls.NodeEditor
                     _ellipses.Add(color, curve);
                 }
 
-                curve.Ctx.DrawEllipse(Unsafe.As<ImmutableVec2, Point>(ref slotPos), r, r, true, true);
+                curve.Ctx.DrawEllipse(Unsafe.As<ImmutableVec2_double, Point>(ref slotPos), r, r, true, true);
             }
 
             var pen = Caches.GetPen(Colors.Black, this.RoundLayoutValue(2));

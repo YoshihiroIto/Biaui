@@ -7,7 +7,7 @@ namespace Biaui.Internals
 {
     internal static class DrawingContextExtensions
     {
-        internal static void DrawBezier(this DrawingContext dc, ImmutableVec2[] bezierPoints, Pen pen)
+        internal static void DrawBezier(this DrawingContext dc, ImmutableVec2_double[] bezierPoints, Pen pen)
         {
             DrawBezier(dc, bezierPoints[0], bezierPoints[1], bezierPoints[2], bezierPoints[3], pen);
         }
@@ -16,10 +16,10 @@ namespace Biaui.Internals
 
         internal static void DrawBezier(
             this DrawingContext dc,
-            in ImmutableVec2 pos1,
-            in ImmutableVec2 pos1C,
-            in ImmutableVec2 pos2C,
-            in ImmutableVec2 pos2,
+            in ImmutableVec2_double pos1,
+            in ImmutableVec2_double pos1C,
+            in ImmutableVec2_double pos2C,
+            in ImmutableVec2_double pos2,
             Pen pen)
         {
             var hashCode = HashCodeMaker.Make(

@@ -227,7 +227,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 n.IsPreSelected = false;
         }
 
-        private void SelectNodes(in ImmutableRect rect)
+        private void SelectNodes(in ImmutableRect_double rect)
         {
             ++IsEnableUpdateChildrenBagDepth;
             {
@@ -255,7 +255,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
         }
 
-        private void PreSelectNodes(in ImmutableRect rect)
+        private void PreSelectNodes(in ImmutableRect_double rect)
         {
             ++IsEnableUpdateChildrenBagDepth;
             {
@@ -289,7 +289,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
         }
 
-        private bool HitTest(IBiaNodeItem node, in ImmutableRect rect)
+        private bool HitTest(IBiaNodeItem node, in ImmutableRect_double rect)
         {
             switch (node.HitType)
             {
@@ -328,7 +328,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private readonly RectangleGeometry _rectGeom = new RectangleGeometry();
 
-        private bool IsHitVisual(in ImmutableRect rect, IBiaNodeItem node, Visual panel)
+        private bool IsHitVisual(in ImmutableRect_double rect, IBiaNodeItem node, Visual panel)
         {
             _rectGeom.Rect = new Rect(
                 rect.X - node.Pos.X,
@@ -436,7 +436,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private void UpdateChildrenBag(in ImmutableRect viewportRect, bool isPushRemove)
+        private void UpdateChildrenBag(in ImmutableRect_double viewportRect, bool isPushRemove)
         {
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
@@ -449,7 +449,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 Type nodeItemType = null;
 
-                ImmutableRect itemRect;
+                ImmutableRect_double itemRect;
                 {
                     var nodeItemPos = nodeItem.Pos;
                     var nodeItemSize = nodeItem.Size;
@@ -461,7 +461,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         // 同タイプのパネルが表示済みならその大きさを使う
                         if (_panelDefaultSizeDict.TryGetValue(nodeItemType, out var size))
                         {
-                            itemRect = new ImmutableRect(nodeItemPos.X, nodeItemPos.Y, size.Width, size.Height);
+                            itemRect = new ImmutableRect_double(nodeItemPos.X, nodeItemPos.Y, size.Width, size.Height);
                         }
                         else
                         {
@@ -469,13 +469,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                             const double tempWidth = 256.0;
                             const double tempHeight = 512.0;
 
-                            itemRect = new ImmutableRect(nodeItemPos.X, nodeItemPos.Y, tempWidth, tempHeight);
+                            itemRect = new ImmutableRect_double(nodeItemPos.X, nodeItemPos.Y, tempWidth, tempHeight);
                         }
                     }
                     else
                     {
                         var size = nodeItem.Size;
-                        itemRect = new ImmutableRect(nodeItemPos.X, nodeItemPos.Y, size.Width, size.Height);
+                        itemRect = new ImmutableRect_double(nodeItemPos.X, nodeItemPos.Y, size.Width, size.Height);
                     }
                 }
 
@@ -891,7 +891,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
 
             var pos = e.GetPosition(panel);
-            var slot = nodeItem.FindSlotFromPos(Unsafe.As<Point, ImmutableVec2>(ref pos));
+            var slot = nodeItem.FindSlotFromPos(Unsafe.As<Point, ImmutableVec2_double>(ref pos));
 
             // 元スロットが無効であればリンク処置は行わない
             if (slot != null)

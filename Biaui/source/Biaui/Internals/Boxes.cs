@@ -53,7 +53,7 @@ namespace Biaui.Internals
         internal static readonly object Point00 = new Point(0, 0);
         internal static readonly object Size11 = new Size(1, 1);
         internal static readonly object Rect0 = new Rect(0, 0, 0, 0);
-        internal static readonly object ImmutableRect0 = new ImmutableRect(0, 0, 0, 0);
+        internal static readonly object ImmutableRect0 = new ImmutableRect_double(0, 0, 0, 0);
 
         internal static readonly object NumberModeSimple = BiaNumberEditorMode.Simple;
         internal static readonly object NumberModeWideRange = BiaNumberEditorMode.WideRange;

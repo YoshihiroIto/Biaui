@@ -18,7 +18,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
     {
         void Make(
             IEnumerable linksSource,
-            in ImmutableRect lineCullingRect,
+            in ImmutableRect_double lineCullingRect,
             double alpha,
             Color backgroundColor,
             Color highlightLinkColor,

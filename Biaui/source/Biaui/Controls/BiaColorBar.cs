@@ -281,7 +281,7 @@ namespace Biaui.Controls
             this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
 
-        private ImmutableVec2 CursorRenderPos
+        private ImmutableVec2_double CursorRenderPos
         {
             get
             {
@@ -295,7 +295,7 @@ namespace Biaui.Controls
 
                 y += bw;
 
-                return new ImmutableVec2(this.RoundLayoutValue(ActualWidth / 2), this.RoundLayoutValue(y));
+                return new ImmutableVec2_double(this.RoundLayoutValue(ActualWidth / 2), this.RoundLayoutValue(y));
             }
         }
 
@@ -384,7 +384,7 @@ namespace Biaui.Controls
             // マウス位置を補正する
             {
                 var cp = CursorRenderPos;
-                var p = PointToScreen(Unsafe.As<ImmutableVec2, Point>(ref cp));
+                var p = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref cp));
                 Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
             }
 

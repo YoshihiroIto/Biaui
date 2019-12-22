@@ -8,14 +8,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal class MouseOperator
     {
-        internal ImmutableRect SelectionRect
+        internal ImmutableRect_double SelectionRect
         {
             get
             {
                 var (left, right) = (_mouseDownPos.X, _mouseMovePos.X).MinMax();
                 var (top, bottom) = (_mouseDownPos.Y, _mouseMovePos.Y).MinMax();
 
-                return new ImmutableRect(
+                return new ImmutableRect_double(
                     left,
                     top,
                     right - left,

@@ -5,7 +5,7 @@ namespace Biaui.Internals
 {
     internal static class RenderHelper
     {
-        internal static void DrawPointCursor(this Visual visual, DrawingContext dc, in ImmutableVec2 pos, bool isEnabled, bool isReadOnly)
+        internal static void DrawPointCursor(this Visual visual, DrawingContext dc, in ImmutableVec2_double pos, bool isEnabled, bool isReadOnly)
         {
             var pointIn = Caches.GetPen(Colors.White, visual.RoundLayoutValue(PointCursorRadius - 2));
             var pointInIsReadOnly = Caches.GetPen(Colors.Gray, visual.RoundLayoutValue(PointCursorRadius - 2));

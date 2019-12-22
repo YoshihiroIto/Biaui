@@ -20,14 +20,14 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
 
         public void Make(
             IEnumerable linksSource,
-            in ImmutableRect lineCullingRect,
+            in ImmutableRect_double lineCullingRect,
             double alpha,
             Color backgroundColor,
             Color highlightLinkColor,
             NodeLinkGeomMakerFlags flags,
             Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves)
         {
-            Span<ImmutableVec2> work = stackalloc ImmutableVec2[10];
+            Span<ImmutableVec2_double> work = stackalloc ImmutableVec2_double[10];
 
             foreach (IBiaNodeLink link in linksSource)
             {
@@ -82,8 +82,8 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
 
         private void DrawArrow(
             StreamGeometryContext ctx,
-            Span<ImmutableVec2> lines,
-            in ImmutableVec2 startPos)
+            Span<ImmutableVec2_double> lines,
+            in ImmutableVec2_double startPos)
         {
             if (lines.Length < 2)
                 return;
@@ -99,21 +99,21 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
 
             var pos = (edge1 + edge2) * 0.5;
 
-            var pv = ImmutableVec2.SetSize(edge1 - edge2, _arrowSize);
-            var sv = new ImmutableVec2(-pv.Y / 1.732, pv.X / 1.732);
+            var pv = ImmutableVec2_double.SetSize(edge1 - edge2, _arrowSize);
+            var sv = new ImmutableVec2_double(-pv.Y / 1.732, pv.X / 1.732);
 
             var t1 = pos + pv;
             var t2 = pos + sv;
             var t3 = pos - sv;
 
             ctx.DrawTriangle(
-                Unsafe.As<ImmutableVec2, Point>(ref t1),
-                Unsafe.As<ImmutableVec2, Point>(ref t2),
-                Unsafe.As<ImmutableVec2, Point>(ref t3),
+                Unsafe.As<ImmutableVec2_double, Point>(ref t1),
+                Unsafe.As<ImmutableVec2_double, Point>(ref t2),
+                Unsafe.As<ImmutableVec2_double, Point>(ref t3),
                 false, false);
         }
 
-        private static int FindLongestSpan(Span<ImmutableVec2> lines)
+        private static int FindLongestSpan(Span<ImmutableVec2_double> lines)
         {
             var maxLength = -1.0;
             var maxIndex = 1;
@@ -135,7 +135,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
             return maxIndex;
         }
 
-        private static bool IsHitLines(in ImmutableRect rect, Span<ImmutableVec2> points)
+        private static bool IsHitLines(in ImmutableRect_double rect, Span<ImmutableVec2_double> points)
         {
             if (points.Length <= 1)
                 return false;

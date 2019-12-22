@@ -143,7 +143,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var inflate = ArrowSize * _parent.ScaleTransform.ScaleX;
             var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
-            var lineCullingRect = new ImmutableRect(
+            var lineCullingRect = new ImmutableRect_double(
                 viewport.X - inflate,
                 viewport.Y - inflate,
                 viewport.Width + inflate * 2,

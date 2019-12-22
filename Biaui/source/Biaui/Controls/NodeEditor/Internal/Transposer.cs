@@ -20,13 +20,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                 : self.X;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static double X(this ImmutableVec2 self, bool isTrue)
+        internal static double X(this ImmutableVec2_double self, bool isTrue)
             => isTrue
                 ? self.X
                 : self.Y;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static double Y(this ImmutableVec2 self, bool isTrue)
+        internal static double Y(this ImmutableVec2_double self, bool isTrue)
             => isTrue
                 ? self.Y
                 : self.X;
@@ -69,9 +69,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ImmutableVec2 CreateImmutableVec2(double x, double y, bool isTrue)
+        internal static ImmutableVec2_double CreateImmutableVec2(double x, double y, bool isTrue)
             => isTrue
-                ? new ImmutableVec2(x, y)
-                : new ImmutableVec2(y, x);
+                ? new ImmutableVec2_double(x, y)
+                : new ImmutableVec2_double(y, x);
     }
 }

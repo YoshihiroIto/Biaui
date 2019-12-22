@@ -169,10 +169,10 @@ namespace Biaui.Controls
             this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
         }
 
-        private ImmutableVec2 CursorRenderPos =>
+        private ImmutableVec2_double CursorRenderPos =>
             MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
-        internal static ImmutableVec2 MakeCursorRenderPos(
+        internal static ImmutableVec2_double MakeCursorRenderPos(
             Visual visual,
             double actualWidth,
             double actualHeight,
@@ -189,7 +189,7 @@ namespace Biaui.Controls
             var x = hue * w + bw;
             var y = (1 - saturation) * h + bw;
 
-            return new ImmutableVec2(visual.RoundLayoutValue(x), visual.RoundLayoutValue(y));
+            return new ImmutableVec2_double(visual.RoundLayoutValue(x), visual.RoundLayoutValue(y));
         }
     }
 }

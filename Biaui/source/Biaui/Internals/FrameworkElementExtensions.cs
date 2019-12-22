@@ -111,11 +111,11 @@ namespace Biaui.Internals
         internal static double RoundLayoutValue(this Visual visual, double value)
             => RoundLayoutValue(value, visual.PixelsPerDip());
 
-        internal static ImmutableRect RoundLayoutRect(this Visual visual, in ImmutableRect rect)
+        internal static ImmutableRect_double RoundLayoutRect(this Visual visual, in ImmutableRect_double rect)
         {
             var dpi = visual.PixelsPerDip();
 
-            return new ImmutableRect(
+            return new ImmutableRect_double(
                 RoundLayoutValue(rect.X, dpi),
                 RoundLayoutValue(rect.Y, dpi),
                 RoundLayoutValue(rect.Width, dpi),

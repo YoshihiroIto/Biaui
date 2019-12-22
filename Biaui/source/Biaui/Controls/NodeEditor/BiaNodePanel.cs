@@ -31,7 +31,7 @@ namespace Biaui.Controls.NodeEditor
             var slots = this.Descendants<BiaNodePanelSlots>().FirstOrDefault();
 
             var pos = e.GetPosition(this);
-            slots?.UpdateMousePos(Unsafe.As<Point, ImmutableVec2>(ref pos));
+            slots?.UpdateMousePos(Unsafe.As<Point, ImmutableVec2_double>(ref pos));
             slots?.InvalidateVisual();
         }
     }

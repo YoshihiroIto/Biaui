@@ -329,7 +329,7 @@ namespace Biaui.Controls
                 return;
 
             var pos = e.GetPosition(this);
-            if (IsOutSide(Unsafe.As<Point, ImmutableVec2>(ref pos)))
+            if (IsOutSide(Unsafe.As<Point, ImmutableVec2_double>(ref pos)))
                 return;
 
             _isMouseDown = true;
@@ -367,7 +367,7 @@ namespace Biaui.Controls
             {
                 var pos = BiaHsvWheelCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
-                var mousePos = PointToScreen(Unsafe.As<ImmutableVec2, Point>(ref pos));
+                var mousePos = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref pos));
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
             }
 
@@ -429,7 +429,7 @@ namespace Biaui.Controls
             e.Handled = true;
         }
 
-        private bool IsOutSide(in ImmutableVec2 pos)
+        private bool IsOutSide(in ImmutableVec2_double pos)
         {
             var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 

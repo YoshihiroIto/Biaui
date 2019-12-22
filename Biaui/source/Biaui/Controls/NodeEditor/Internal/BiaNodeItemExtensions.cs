@@ -27,25 +27,25 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ImmutableRect MakeRect(this IBiaNodeItem self)
-            => new ImmutableRect(self.Pos, self.Size);
+        internal static ImmutableRect_double MakeRect(this IBiaNodeItem self)
+            => new ImmutableRect_double(self.Pos, self.Size);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ImmutableCircle MakeCircle(this IBiaNodeItem self)
+        internal static ImmutableCircle_double MakeCircle(this IBiaNodeItem self)
         {
             var size = self.Size;
-            return new ImmutableCircle(
+            return new ImmutableCircle_double(
                 self.Pos.X + size.Width * 0.5,
                 self.Pos.Y + size.Height * 0.5,
                 size.Width * 0.5);
         }
 
-        internal static ImmutableVec2 MakeSlotPosDefault(this IBiaNodeItem nodeItem, BiaNodeSlot slot)
+        internal static ImmutableVec2_double MakeSlotPosDefault(this IBiaNodeItem nodeItem, BiaNodeSlot slot)
         {
             if (nodeItem.MakeSlotPos != null)
             {
                 var p = nodeItem.MakeSlotPos(slot);
-                return Unsafe.As<Point, ImmutableVec2>(ref p);
+                return Unsafe.As<Point, ImmutableVec2_double>(ref p);
             }
 
             var itemSize = nodeItem.Size;
@@ -53,10 +53,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var slotLocalPos = slot.MakePos(itemSize.Width, itemSize.Height);
 
-            return new ImmutableVec2(itemPos.X + slotLocalPos.X, itemPos.Y + slotLocalPos.Y);
+            return new ImmutableVec2_double(itemPos.X + slotLocalPos.X, itemPos.Y + slotLocalPos.Y);
         }
 
-        internal static BiaNodeSlot FindSlotFromPos(this IBiaNodeItem nodeItem, in ImmutableVec2 pos)
+        internal static BiaNodeSlot FindSlotFromPos(this IBiaNodeItem nodeItem, in ImmutableVec2_double pos)
         {
             if (nodeItem.Slots == null)
                 return null;

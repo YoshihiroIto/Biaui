@@ -18,6 +18,47 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Internals\BezierHelper.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BezierHelper.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BiaNodeEditorHelper.tt</DependentUpon>
+    </None>
+    <None Include="Internals\BezierHelper.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BezierHelper.tt</DependentUpon>
+    </None>
+    <None Include="Internals\ImmutableCircle.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableCircle.tt</DependentUpon>
+    </None>
+    <None Include="Internals\ImmutableRect.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableRect.tt</DependentUpon>
+    </None>
+    <None Include="Internals\ImmutableVec2.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableVec2.tt</DependentUpon>
+    </None>
+    <None Include="Internals\NumberHelper.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NumberHelper.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Buffers" Version="4.5.0" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
@@ -27,6 +68,65 @@
     <Resource Include="Assets\Fonts\RictyDiminished-Regular.ttf" />
     <Resource Include="Controls\Effects\HsvBoxBackgroundEffect.ps" />
     <Resource Include="Controls\Effects\HsvWheelBackgroundEffect.ps" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Controls\NodeEditor\Internal\BiaNodeEditorHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BiaNodeEditorHelper.cs</LastGenOutput>
+    </None>
+    <None Update="Internals\ImmutableCircle.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ImmutableCircle.cs</LastGenOutput>
+    </None>
+    <None Update="Internals\ImmutableVec2.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ImmutableVec2.cs</LastGenOutput>
+    </None>
+    <None Update="Internals\BezierHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BezierHelper.txt</LastGenOutput>
+    </None>
+    <None Update="Internals\ImmutableRect.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ImmutableRect.cs</LastGenOutput>
+    </None>
+    <None Update="Internals\NumberHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NumberHelper.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BiaNodeEditorHelper.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internals\ImmutableCircle.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableCircle.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internals\ImmutableRect.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableRect.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internals\ImmutableVec2.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ImmutableVec2.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internals\NumberHelper.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NumberHelper.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

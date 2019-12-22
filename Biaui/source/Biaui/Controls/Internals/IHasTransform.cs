@@ -22,22 +22,22 @@ namespace Biaui.Controls.Internals
                 (y - self.TranslateTransform.Y) / s);
         }
 
-        public static ImmutableRect TransformRect(this IHasTransform self, double w, double h)
+        public static ImmutableRect_double TransformRect(this IHasTransform self, double w, double h)
         {
             var s = self.ScaleTransform.ScaleX;
 
-            return new ImmutableRect(
+            return new ImmutableRect_double(
                 -self.TranslateTransform.X / s,
                 -self.TranslateTransform.Y / s,
                 w / s,
                 h / s);
         }
 
-        public static ImmutableRect TransformRect(this IHasTransform self, in ImmutableRect rect)
+        public static ImmutableRect_double TransformRect(this IHasTransform self, in ImmutableRect_double rect)
         {
             var s = self.ScaleTransform.ScaleX;
 
-            return new ImmutableRect(
+            return new ImmutableRect_double(
                 (rect.X - self.TranslateTransform.X) / s,
                 (rect.Y - self.TranslateTransform.Y) / s,
                 rect.Width / s,

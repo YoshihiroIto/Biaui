@@ -349,7 +349,7 @@ namespace Biaui.Controls
             {
                 var pos = BiaHsvBoxCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
 
-                var mousePos = PointToScreen(Unsafe.As<ImmutableVec2, Point>(ref pos));
+                var mousePos = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref pos));
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
             }
 

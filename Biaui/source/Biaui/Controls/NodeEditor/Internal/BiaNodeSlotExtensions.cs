@@ -5,7 +5,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal static class BiaNodeSlotExtensions
     {
-        internal static bool HitCheck(this BiaNodeSlot slot, in ImmutableVec2 slotPos, in ImmutableVec2 mousePos)
+        internal static bool HitCheck(this BiaNodeSlot slot, in ImmutableVec2_double slotPos, in ImmutableVec2_double mousePos)
         {
             if (slot.TargetSlotHitChecker != null)
             {
@@ -20,14 +20,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ImmutableVec2 MakePos(this BiaNodeSlot slot, double panelWidth, double panelHeight)
+        internal static ImmutableVec2_double MakePos(this BiaNodeSlot slot, double panelWidth, double panelHeight)
         {
             var i = ((int) slot.Align << 2) | (int) slot.Dir;
 
             var x = AlignPosTable[i * 2 + 0];
             var y = AlignPosTable[i * 2 + 1];
 
-            return new ImmutableVec2(slot.Offset.X + x * panelWidth, slot.Offset.Y + y * panelHeight);
+            return new ImmutableVec2_double(slot.Offset.X + x * panelWidth, slot.Offset.Y + y * panelHeight);
         }
 
         private static readonly double[] AlignPosTable =

@@ -24,7 +24,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         public bool IsNodeSlotDragging => _parent.SourceNodeSlotConnecting.IsNotNull;
 
-        internal readonly ImmutableVec2[] BezierPoints = new ImmutableVec2[4];
+        internal readonly ImmutableVec2_double[] BezierPoints = new ImmutableVec2_double[4];
         private readonly BiaNodeEditor _parent;
 
         private const int ColumnCount = 8;
@@ -45,7 +45,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             mouseOperator.LinkMoving += OnLinkMoving;
             SizeChanged += (_, e) => UpdateChildren(e.NewSize.Width, e.NewSize.Height);
 
-            _parent.PreviewMouseUp += (_, __) => _mousePos = new ImmutableVec2(double.NaN, double.NaN);
+            _parent.PreviewMouseUp += (_, __) => _mousePos = new ImmutableVec2_double(double.NaN, double.NaN);
 
             _sourceNotifier = new PropertyChangeNotifier(_parent, BiaNodeEditor.SourceNodeSlotConnectingProperty);
             _targetNotifier = new PropertyChangeNotifier(_parent, BiaNodeEditor.TargetNodeSlotConnectingProperty);
@@ -59,12 +59,12 @@ namespace Biaui.Controls.NodeEditor.Internal
             Invalidate();
         }
 
-        private ImmutableVec2 _mousePos = new ImmutableVec2(double.NaN, double.NaN);
+        private ImmutableVec2_double _mousePos = new ImmutableVec2_double(double.NaN, double.NaN);
 
         internal void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e)
         {
             var p = _parent.TransformPos(e.MousePos.X, e.MousePos.Y);
-            _mousePos = Unsafe.As<Point, ImmutableVec2>(ref p);
+            _mousePos = Unsafe.As<Point, ImmutableVec2_double>(ref p);
 
             UpdateLinkTarget(_mousePos, (IEnumerable<IBiaNodeItem>)_parent.NodesSource);
 
@@ -95,7 +95,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        internal void Render(DrawingContext dc, in ImmutableRect rect, double scale)
+        internal void Render(DrawingContext dc, in ImmutableRect_double rect, double scale)
         {
             if (IsNodeSlotDragging == false)
                 return;
@@ -112,7 +112,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var slotPen = Caches.GetPen(Colors.Black, this.RoundLayoutValue(2));
 
             // 接続元ポートの丸
-            var srcRect = new ImmutableRect(
+            var srcRect = new ImmutableRect_double(
                 BezierPoints[0].X - radius, BezierPoints[0].Y - radius, radius * 2, radius * 2);
 
             if (rect.IntersectsWith(srcRect))
@@ -120,14 +120,14 @@ namespace Biaui.Controls.NodeEditor.Internal
                 dc.DrawCircle(
                     Caches.GetSolidColorBrush(_parent.SourceNodeSlotConnecting.Slot.Color),
                     slotPen,
-                    Unsafe.As<ImmutableVec2, Point>(ref BezierPoints[0]),
+                    Unsafe.As<ImmutableVec2_double, Point>(ref BezierPoints[0]),
                     Biaui.Internals.Constants.SlotMarkRadius_Highlight2);
             }
 
             // 接続先ポートの丸
             if (_parent.TargetNodeSlotConnecting.IsNotNull)
             {
-                var targetRect = new ImmutableRect(
+                var targetRect = new ImmutableRect_double(
                     BezierPoints[3].X - radius, BezierPoints[3].Y - radius, radius * 2, radius * 2);
 
                 if (rect.IntersectsWith(targetRect))
@@ -135,13 +135,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                     dc.DrawCircle(
                         Caches.GetSolidColorBrush(_parent.TargetNodeSlotConnecting.Slot.Color),
                         slotPen,
-                        Unsafe.As<ImmutableVec2, Point>(ref BezierPoints[3]),
+                        Unsafe.As<ImmutableVec2_double, Point>(ref BezierPoints[3]),
                         Biaui.Internals.Constants.SlotMarkRadius_Highlight2);
                 }
             }
         }
 
-        private void UpdateLinkTarget(in ImmutableVec2 mousePos, IEnumerable<IBiaNodeItem> nodeItems)
+        private void UpdateLinkTarget(in ImmutableVec2_double mousePos, IEnumerable<IBiaNodeItem> nodeItems)
         {
             _parent.TargetNodeSlotConnecting = default;
 
@@ -195,7 +195,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             _parent.InvokeLinkChanged();
         }
 
-        internal ImmutableRect Transform(in ImmutableRect rect) => _parent.TransformRect(rect);
+        internal ImmutableRect_double Transform(in ImmutableRect_double rect) => _parent.TransformRect(rect);
 
         private void UpdateChildren(double width, double height)
         {
@@ -247,10 +247,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                 return;
 
             var scale = _parent.Scale.ScaleX;
-            var rect = _parent.Transform(new ImmutableRect(0, 0, ActualWidth, ActualHeight));
-            rect = new ImmutableRect(rect.X + Pos.X / scale, rect.Y + Pos.Y / scale, rect.Width, rect.Height);
+            var rect = _parent.Transform(new ImmutableRect_double(0, 0, ActualWidth, ActualHeight));
+            rect = new ImmutableRect_double(rect.X + Pos.X / scale, rect.Y + Pos.Y / scale, rect.Width, rect.Height);
 
-            Span<ImmutableVec2> bezierPoints = stackalloc ImmutableVec2[4];
+            Span<ImmutableVec2_double> bezierPoints = stackalloc ImmutableVec2_double[4];
             var hitTestWork = bezierPoints;
 
             bezierPoints[0] = _parent.BezierPoints[0];

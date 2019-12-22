@@ -9,13 +9,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 {
     internal static class LinkLineRenderer
     {
-        internal static Span<ImmutableVec2> MakeLines(
-            in ImmutableVec2 pos1,
-            in ImmutableVec2 pos2,
+        internal static Span<ImmutableVec2_double> MakeLines(
+            in ImmutableVec2_double pos1,
+            in ImmutableVec2_double pos2,
             IBiaNodeItem item1,
             IBiaNodeItem item2,
             InternalBiaNodeLinkData internalData,
-            Span<ImmutableVec2> work)
+            Span<ImmutableVec2_double> work)
         {
             var u1 = new SlotUnit(pos1, item1, internalData.Slot1);
             var u2 = new SlotUnit(pos2, item2, internalData.Slot2);
@@ -41,7 +41,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return MakeHVLines(u1, u2, work);
         }
 
-        internal static void DrawLines(StreamGeometryContext ctx, Span<ImmutableVec2> points)
+        internal static void DrawLines(StreamGeometryContext ctx, Span<ImmutableVec2_double> points)
         {
             if (points.Length < 3)
                 return;
@@ -61,8 +61,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 var radius = (d * 0.5, 64.0).Min();
 
-                var v01 = ImmutableVec2.SetSize(p0 - p1, radius);
-                var v21 = ImmutableVec2.SetSize(p2 - p1, radius);
+                var v01 = ImmutableVec2_double.SetSize(p0 - p1, radius);
+                var v21 = ImmutableVec2_double.SetSize(p2 - p1, radius);
 
                 var p01 = p1 + v01;
                 var p21 = p1 + v21;
@@ -75,23 +75,23 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (isFirst)
                 {
                     isFirst = false;
-                    ctx.BeginFigure(Unsafe.As<ImmutableVec2, Point>(ref p0), false, false);
+                    ctx.BeginFigure(Unsafe.As<ImmutableVec2_double, Point>(ref p0), false, false);
                 }
 
-                ctx.LineTo(Unsafe.As<ImmutableVec2, Point>(ref p01), true, false);
+                ctx.LineTo(Unsafe.As<ImmutableVec2_double, Point>(ref p01), true, false);
 
                 ctx.BezierTo(
-                    Unsafe.As<ImmutableVec2, Point>(ref c0),
-                    Unsafe.As<ImmutableVec2, Point>(ref c1),
-                    Unsafe.As<ImmutableVec2, Point>(ref p21),
+                    Unsafe.As<ImmutableVec2_double, Point>(ref c0),
+                    Unsafe.As<ImmutableVec2_double, Point>(ref c1),
+                    Unsafe.As<ImmutableVec2_double, Point>(ref p21),
                     true,
                     true);
 
                 var isLastPoint = i == points.Length - 1;
                 ctx.LineTo(
                     isLastPoint
-                        ? Unsafe.As<ImmutableVec2, Point>(ref p2)
-                        : Unsafe.As<ImmutableVec2, Point>(ref hp12),
+                        ? Unsafe.As<ImmutableVec2_double, Point>(ref p2)
+                        : Unsafe.As<ImmutableVec2_double, Point>(ref hp12),
                     true,
                     false);
             }
@@ -99,11 +99,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private const double MinSlotOffset = 24.0;
 
-        private static Span<ImmutableVec2> MakeDifferenceLines(
+        private static Span<ImmutableVec2_double> MakeDifferenceLines(
             in SlotUnit unit1,
             in SlotUnit unit2,
             bool isHorizontal,
-            Span<ImmutableVec2> work)
+            Span<ImmutableVec2_double> work)
         {
             var b = isHorizontal;
 
@@ -150,11 +150,11 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private static Span<ImmutableVec2> MakeSameLines(
+        private static Span<ImmutableVec2_double> MakeSameLines(
             in SlotUnit unit1,
             in SlotUnit unit2,
             bool isHorizontal,
-            Span<ImmutableVec2> work)
+            Span<ImmutableVec2_double> work)
         {
             var b = isHorizontal;
 
@@ -181,10 +181,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             return work.Slice(0, 4);
         }
 
-        private static Span<ImmutableVec2> MakeHVLines(
+        private static Span<ImmutableVec2_double> MakeHVLines(
             in SlotUnit unit1,
             in SlotUnit unit2,
-            Span<ImmutableVec2> work)
+            Span<ImmutableVec2_double> work)
         {
             var (left, right) =
                 unit1.Pos.X < unit2.Pos.X
@@ -212,7 +212,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     // 交差している
                     work[0] = left.Pos;
-                    work[1] = new ImmutableVec2(right.Pos.X, left.Pos.Y);
+                    work[1] = new ImmutableVec2_double(right.Pos.X, left.Pos.Y);
                     work[2] = right.Pos;
 
                     return work.Slice(0, 3);
@@ -235,7 +235,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     // 交差している
                     work[0] = left.Pos;
-                    work[1] = new ImmutableVec2(left.Pos.X, right.Pos.Y);
+                    work[1] = new ImmutableVec2_double(left.Pos.X, right.Pos.Y);
                     work[2] = right.Pos;
 
                     return work.Slice(0, 3);
@@ -247,7 +247,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (left.IsRight)
                 {
                     var r = false;
-                    var c = new ImmutableVec2(right.Pos.X, left.Pos.Y);
+                    var c = new ImmutableVec2_double(right.Pos.X, left.Pos.Y);
 
                     if (right.IsBottom)
                         r = c.Y > rightOffset.OffsetPos.Y && c.X > leftOffset.OffsetPos.X;
@@ -268,7 +268,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (right.IsLeft)
                 {
                     var r = false;
-                    var c = new ImmutableVec2(left.Pos.X, right.Pos.Y);
+                    var c = new ImmutableVec2_double(left.Pos.X, right.Pos.Y);
 
                     if (left.IsBottom)
                         r = c.Y > leftOffset.OffsetPos.Y && c.X < rightOffset.OffsetPos.X;
@@ -290,8 +290,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             work[0] = left.Pos;
             work[1] = leftOffset.OffsetPos;
             work[2] = left.IsVertical
-                ? new ImmutableVec2(rightOffset.OffsetPos.X, leftOffset.OffsetPos.Y)
-                : new ImmutableVec2(leftOffset.OffsetPos.X, rightOffset.OffsetPos.Y);
+                ? new ImmutableVec2_double(rightOffset.OffsetPos.X, leftOffset.OffsetPos.Y)
+                : new ImmutableVec2_double(leftOffset.OffsetPos.X, rightOffset.OffsetPos.Y);
             work[3] = rightOffset.OffsetPos;
             work[4] = right.Pos;
 
@@ -300,7 +300,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal readonly struct SlotUnit
         {
-            internal readonly ImmutableVec2 Pos;
+            internal readonly ImmutableVec2_double Pos;
             internal readonly IBiaNodeItem Item;
             internal readonly BiaNodeSlot Slot;
 
@@ -316,14 +316,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             internal bool IsBottom => Slot.Dir == BiaNodeSlotDir.Bottom;
 
-            internal SlotUnit(in ImmutableVec2 pos, IBiaNodeItem item, BiaNodeSlot slot)
+            internal SlotUnit(in ImmutableVec2_double pos, IBiaNodeItem item, BiaNodeSlot slot)
             {
                 Pos = pos;
                 Item = item;
                 Slot = slot;
             }
 
-            internal (ImmutableVec2 OffsetPos, double FoldLength) MakeOffsetPos()
+            internal (ImmutableVec2_double OffsetPos, double FoldLength) MakeOffsetPos()
             {
                 double itemSlotOffset;
                 {
@@ -345,21 +345,21 @@ namespace Biaui.Controls.NodeEditor.Internal
                 return (Pos + foldOffset, foldLength);
             }
 
-            private ImmutableVec2 DirVector(double length)
+            private ImmutableVec2_double DirVector(double length)
             {
                 switch (Slot.Dir)
                 {
                     case BiaNodeSlotDir.Left:
-                        return new ImmutableVec2(-length, 0);
+                        return new ImmutableVec2_double(-length, 0);
 
                     case BiaNodeSlotDir.Top:
-                        return new ImmutableVec2(0, -length);
+                        return new ImmutableVec2_double(0, -length);
 
                     case BiaNodeSlotDir.Right:
-                        return new ImmutableVec2(+length, 0);
+                        return new ImmutableVec2_double(+length, 0);
 
                     case BiaNodeSlotDir.Bottom:
-                        return new ImmutableVec2(0, +length);
+                        return new ImmutableVec2_double(0, +length);
 
                     default:
                         throw new ArgumentOutOfRangeException(nameof(Slot.Dir), Slot.Dir, null);
