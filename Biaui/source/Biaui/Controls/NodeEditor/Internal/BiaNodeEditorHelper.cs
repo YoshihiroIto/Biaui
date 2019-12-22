@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Biaui.Internals;
 
@@ -119,21 +117,25 @@ namespace Biaui.Controls.NodeEditor.Internal
             var bY = B(p1.Y, c1.Y, c2.Y);
             var cY = C(p1.Y, c1.Y);
 
-            var resX = Solve(aX, bX, cX).Where(t => t >= 0 && t <= 1);
-            var resY = Solve(aY, bY, cY).Where(t => t >= 0 && t <= 1);
+            Span<ImmutableVec2> bBox = stackalloc ImmutableVec2[2 + 2 + 2];
+            bBox[0] = p1;
+            bBox[1] = p2;
+            var bBoxCount = 2;
 
-            var bBox = new List<ImmutableVec2> {p1, p2};
+            Span<double> res = stackalloc double[2 + 2];
 
-            foreach (var e in resX.Union(resY))
+            var resCount = Solve(res, aX, bX, cX);
+            resCount += Solve(res.Slice(resCount, res.Length - resCount), aY, bY, cY);
+
+            for (var i = 0; i != resCount; ++i)
             {
-                var x = Bezier(p1.X, c1.X, c2.X, p2.X, e);
-                var y = Bezier(p1.Y, c1.Y, c2.Y, p2.Y, e);
+                var x = Bezier(p1.X, c1.X, c2.X, p2.X, res[i]);
+                var y = Bezier(p1.Y, c1.Y, c2.Y, p2.Y, res[i]);
 
-                var p = new ImmutableVec2(x, y);
-                bBox.Add(p);
+                bBox[bBoxCount++] = new ImmutableVec2(x, y);
             }
 
-            return new ImmutableRect(bBox);
+            return new ImmutableRect(bBox.Slice(0, bBoxCount));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,25 +157,30 @@ namespace Biaui.Controls.NodeEditor.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double _SolveM(double a_, double b_, double c_) => (-b_ + Math.Sqrt(b_ * b_ - 4d * a_ * c_) * -1d) / (2d * a_);
 
-        private static double[] Solve(double a, double b, double c)
+        private static int Solve(Span<double> result, double a, double b, double c)
         {
             var d = Determinant(a, b, c);
 
             if (d < 0)
-                return Array.Empty<double>();
+                return 0;
 
             if (NumberHelper.AreCloseZero(a))
-                return new[] {-c / b};
+            {
+                result[0] = -c / b;
+                return 1;
+            }
 
             if (NumberHelper.AreCloseZero(d))
-                return new[] {_SolveP(a, b, c)};
-
-            return new[]
             {
-                _SolveP(a, b, c),
-                _SolveM(a, b, c)
-            };
+                result[0] = _SolveP(a, b, c);
+                return 1;
+            }
+
+            result[0] = _SolveP(a, b, c);
+            result[1] = _SolveM(a, b, c);
+            return 2;
         }
+
         // ReSharper restore InconsistentNaming
     }
 }

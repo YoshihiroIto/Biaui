@@ -107,14 +107,17 @@ namespace Biaui.Extension
                 }
 
                 var bezier = link.MakeBezierCurve();
-
-                var bb = _boundingBoxCache.GetOrAdd(
-                    MakeHashCode(bezier),
-                    x => BiaNodeEditorHelper.MakeBoundingBox(
+                var keyBezier = MakeHashCode(bezier);
+                if (_boundingBoxCache.TryGetValue(keyBezier, out var bb) == false)
+                {
+                    bb = BiaNodeEditorHelper.MakeBoundingBox(
                         bezier.Item1,
                         bezier.Item2,
                         bezier.Item3,
-                        bezier.Item4));
+                        bezier.Item4);
+
+                    _boundingBoxCache.Add(keyBezier, bb);
+                }
 
                 if (bb.IntersectsWith(lineCullingRect) == false)
                     continue;
