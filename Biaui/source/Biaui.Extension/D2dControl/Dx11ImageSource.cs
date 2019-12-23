@@ -6,8 +6,9 @@ namespace D2dControl
 {
     class Dx11ImageSource : D3DImage, IDisposable
     {
-        private Direct3DEx d3DContext;
-        private DeviceEx d3DDevice;
+        private static Direct3DEx d3DContext;
+        private static DeviceEx d3DDevice;
+
         private Texture renderTarget;
 
         public Dx11ImageSource()
@@ -69,6 +70,15 @@ namespace D2dControl
 
         private void StartD3D()
         {
+        }
+
+        private void EndD3D()
+        {
+            Disposer.SafeDispose(ref renderTarget);
+        }
+
+        internal static void Initialize()
+        {
             var presentParams = GetPresentParameters();
             var createFlags = CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded |
                               CreateFlags.FpuPreserve;
@@ -77,9 +87,8 @@ namespace D2dControl
             d3DDevice = new DeviceEx(d3DContext, 0, DeviceType.Hardware, IntPtr.Zero, createFlags, presentParams);
         }
 
-        private void EndD3D()
+        internal static void Destroy()
         {
-            Disposer.SafeDispose(ref renderTarget);
             Disposer.SafeDispose(ref d3DDevice);
             Disposer.SafeDispose(ref d3DContext);
         }

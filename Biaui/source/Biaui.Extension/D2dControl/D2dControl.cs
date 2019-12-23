@@ -14,7 +14,8 @@ namespace D2dControl
     {
         protected readonly ResourceCache ResourceCache = new ResourceCache();
 
-        private SharpDX.Direct3D11.Device device;
+        private static SharpDX.Direct3D11.Device device;
+
         private Texture2D sharedTarget;
         private Texture2D dx11Target;
         private Dx11ImageSource d3DSurface;
@@ -74,10 +75,28 @@ namespace D2dControl
             protected set => SetValue(IsAutoFrameUpdatePropertyKey, value);
         }
 
+        public static void Initialize()
+        {
+            device = new SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport |
+#if DEBUG
+                                                                        DeviceCreationFlags.Debug |
+#endif
+                                                                        DeviceCreationFlags.None);
+
+            Dx11ImageSource.Initialize();
+        }
+
+        public static void Destroy()
+        {
+            Dx11ImageSource.Destroy();
+
+            Disposer.SafeDispose(ref device);
+        }
+
         protected D2dControl()
         {
             Loaded += OnLoaded;
-            Unloaded += OnClosing;
+            Unloaded += OnUnloaded;
 
             Stretch = System.Windows.Media.Stretch.Fill;
         }
@@ -93,7 +112,7 @@ namespace D2dControl
             StartRendering();
         }
 
-        private void OnClosing(object sender, RoutedEventArgs e)
+        private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             if (IsInDesignMode)
                 return;
@@ -155,7 +174,7 @@ namespace D2dControl
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             CreateAndBindTargets();
-            
+
             Invalidate();
 
             base.OnRenderSizeChanged(sizeInfo);
@@ -171,12 +190,6 @@ namespace D2dControl
 
         private void StartD3D()
         {
-            device = new SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport |
-#if DEBUG
-                                                                        DeviceCreationFlags.Debug |
-#endif
-                                                                        DeviceCreationFlags.None);
-
             d3DSurface = new Dx11ImageSource();
             d3DSurface.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
 
@@ -194,7 +207,6 @@ namespace D2dControl
             Disposer.SafeDispose(ref d3DSurface);
             Disposer.SafeDispose(ref sharedTarget);
             Disposer.SafeDispose(ref dx11Target);
-            Disposer.SafeDispose(ref device);
         }
 
         private void CreateAndBindTargets()

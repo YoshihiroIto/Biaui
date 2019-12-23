@@ -7,5 +7,15 @@ namespace Biaui.Extension
     {
         public IBackgroundPanel Generate(BiaNodeEditor parent)
             => new D2dBackgroundPanel(parent);
+
+        public void Initialize()
+        {
+            D2dControl.D2dControl.Initialize();
+        }
+
+        public void Destroy()
+        {
+            D2dControl.D2dControl.Destroy();
+        }
     }
 }
