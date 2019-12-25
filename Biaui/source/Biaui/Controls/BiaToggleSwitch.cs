@@ -1,11 +1,14 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Biaui.Controls.Converters;
 using Biaui.Internals;
 
 namespace Biaui.Controls
 {
     public class BiaToggleSwitch : ContentControl
     {
+        public static BoolInverseConverter InverseConverter { get; } = new BoolInverseConverter();
+
         #region IsChecked
 
         public bool IsChecked

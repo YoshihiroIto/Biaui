@@ -19,21 +19,8 @@
 
                         <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
                                                   Content="{Binding DisabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                  CornerRadius="0">
-                            <controls:BiaToggleButton.Style>
-                                <Style TargetType="{x:Type controls:BiaToggleButton}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                            <Setter Property="IsChecked" Value="False" />
-                                        </DataTrigger>
-
-                                        <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
-                                            <Setter Property="IsChecked" Value="True" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </controls:BiaToggleButton.Style>
-                        </controls:BiaToggleButton>
+                                                  CornerRadius="0"
+                                                  IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static controls:BiaToggleSwitch.InverseConverter}}" />
                     </controls:BiaUniformGrid>
                 </ControlTemplate>
             </Setter.Value>
