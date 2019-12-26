@@ -26,7 +26,7 @@ namespace Biaui.Internals
             if (count == 0)
                 yield break;
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i != count; i++)
             {
                 var child = VisualTreeHelper.GetChild(obj, i);
                 yield return child;
@@ -41,6 +41,7 @@ namespace Biaui.Internals
             foreach (var child in obj.Children())
             {
                 yield return child;
+
                 foreach (var grandChild in child.Descendants())
                     yield return grandChild;
             }
