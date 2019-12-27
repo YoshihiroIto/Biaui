@@ -227,8 +227,7 @@ namespace Biaui.Controls
         }
 
         private FrameworkElement FindDropDown() =>
-            this.Descendants()
-                .OfType<FrameworkElement>()
+            this.Descendants<FrameworkElement>()
                 .First(x => x.Name == "dropdown");
     }
 }
