@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using Biaui.Internals;
+using Jewelry.Text;
 
 namespace Biaui.Controls
 {
@@ -77,27 +78,27 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaHighlightTextBlock)));
         }
 
-#if NETCOREAPP3_1
-#else
-        private static readonly char[] _sep = {' '};
-#endif
-
         protected override void OnRender(DrawingContext dc)
         {
-
+            var ss = new StringSplitter(
 #if NETCOREAPP3_1
-            var wordsArray = Words?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                stackalloc StringSplitter.StringSpan[32]
 #else
-            var wordsArray = Words?.Split(_sep, StringSplitOptions.RemoveEmptyEntries);
+                8
 #endif
+            );
 
-            if (wordsArray == null || wordsArray.Length == 0)
+            var wordsArray = ss.Split(Words, ' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (wordsArray.Length == 0)
                 base.OnRender(dc);
             else
-                RenderHighlight(dc, wordsArray);
+                RenderHighlight(dc, Words, wordsArray);
+
+            ss.Dispose();
         }
 
-        private void RenderHighlight(DrawingContext dc, string[] words)
+        private void RenderHighlight(DrawingContext dc, string words, ReadOnlySpan<StringSplitter.StringSpan> wordSpans)
         {
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
@@ -112,20 +113,33 @@ namespace Biaui.Controls
             {
                 Array.Clear(textStates, 0, Text.Length);
 
-                foreach (var word in words)
+                ReadOnlySpan<char> textSpan = 
+#if NETCOREAPP3_1
+                    Text;
+#else
+                    new ReadOnlySpan<char>(Text.ToCharArray());
+#endif
+
+                foreach (var wordSpan in wordSpans)
                 {
                     var stateOffset = 0;
 
                     while (true)
                     {
-                        var wordIndex = Text.IndexOf(word, stateOffset, StringComparison.OrdinalIgnoreCase);
+#if NETCOREAPP3_1
+                        var ws = wordSpan.ToSpan(words);
+#else
+                        var ws = new ReadOnlySpan<char>(words.Substring(wordSpan.Start, wordSpan.Length).ToCharArray());
+#endif
+
+                        var wordIndex = textSpan.Slice(stateOffset).IndexOf(ws, StringComparison.OrdinalIgnoreCase);
                         if (wordIndex == -1)
                             break;
 
-                        for (var i = 0; i != word.Length; ++i)
+                        for (var i = 0; i != wordSpan.Length; ++i)
                             textStates[wordIndex + i] = 1;
 
-                        stateOffset = wordIndex + word.Length;
+                        stateOffset += wordIndex + wordSpan.Length;
                     }
                 }
 
@@ -140,7 +154,9 @@ namespace Biaui.Controls
                     if (textStates[index] != state)
                     {
                         x = RenderText(dc, Text, startIndex, index - 1, x,
-                            textStates[startIndex] == 0 ? Foreground : Highlight);
+                            textStates[startIndex] == 0
+                                ? Foreground
+                                : Highlight);
 
                         state = textStates[index];
                         startIndex = index;
@@ -151,7 +167,9 @@ namespace Biaui.Controls
                     if (index == Text.Length)
                     {
                         RenderText(dc, Text, startIndex, index - 1, x,
-                            textStates[startIndex] == 0 ? Foreground : Highlight);
+                            textStates[startIndex] == 0
+                                ? Foreground
+                                : Highlight);
                         break;
                     }
                 }

@@ -9,7 +9,7 @@ WPF dark theme and controls for .NET Framework and .NET Core 3.0.
 ## Feature
 
 * Dark color
-* Per Monitor DPI aware 
+* Per Monitor DPI aware
 * Some specialized controls
     * Node editor
     * Number editor
@@ -22,12 +22,12 @@ WPF dark theme and controls for .NET Framework and .NET Core 3.0.
 
 ## Including External Assets
 
-* WPF 
+* WPF
     * https://github.com/dotnet/wpf
     * MIT License
 
-* LruCache.cs
-    * https://github.com/YoshihiroIto/Jewelry/blob/master/Jewelry/Collections/LruCache.cs
+* Jewelry
+    * https://github.com/YoshihiroIto/Jewelry
     * MIT License
 
 * Material Design icons by Google
@@ -48,7 +48,7 @@ WPF dark theme and controls for .NET Framework and .NET Core 3.0.
     * https://github.com/YoshihiroIto/D2dControl
     * MIT License
 
-* SharpDX 
+* SharpDX
     * https://github.com/sharpdx/SharpDX
     * MIT License
 
