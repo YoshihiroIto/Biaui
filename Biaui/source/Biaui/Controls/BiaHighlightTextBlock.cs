@@ -77,11 +77,19 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaHighlightTextBlock)));
         }
 
+#if NETCOREAPP3_1
+#else
         private static readonly char[] _sep = {' '};
+#endif
 
         protected override void OnRender(DrawingContext dc)
         {
+
+#if NETCOREAPP3_1
+            var wordsArray = Words?.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+#else
             var wordsArray = Words?.Split(_sep, StringSplitOptions.RemoveEmptyEntries);
+#endif
 
             if (wordsArray == null || wordsArray.Length == 0)
                 base.OnRender(dc);
