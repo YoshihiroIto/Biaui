@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace Jewelry.Text
 {
-    public ref struct StringSplitter
+    internal ref struct StringSplitter
     {
         public struct StringSpan
         {
