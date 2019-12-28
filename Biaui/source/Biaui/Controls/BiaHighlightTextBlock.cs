@@ -93,12 +93,12 @@ namespace Biaui.Controls
             if (wordsArray.Length == 0)
                 base.OnRender(dc);
             else
-                RenderHighlight(dc, Words, wordsArray);
+                RenderHighlight(dc, wordsArray, Words);
 
             ss.Dispose();
         }
 
-        private void RenderHighlight(DrawingContext dc, string words, ReadOnlySpan<StringSplitter.StringSpan> wordSpans)
+        private void RenderHighlight(DrawingContext dc, ReadOnlySpan<StringSplitter.StringSpan> wordsSpans, string words)
         {
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
@@ -113,31 +113,31 @@ namespace Biaui.Controls
             {
                 Array.Clear(textStates, 0, Text.Length);
 
-                ReadOnlySpan<char> textSpan = 
+                ReadOnlySpan<char> textSpan =
 #if NETCOREAPP3_1
                     Text;
 #else
                     new ReadOnlySpan<char>(Text.ToCharArray());
 #endif
 
-                foreach (var wordSpan in wordSpans)
+                foreach (var wordsSpan in wordsSpans)
                 {
                     var stateOffset = 0;
 
-                    while (true)
-                    {
 #if NETCOREAPP3_1
-                        var ws = wordSpan.ToSpan(words);
+                    var wordSpan = wordsSpan.ToSpan(words);
 #else
-                        var ws = new ReadOnlySpan<char>(words.Substring(wordSpan.Start, wordSpan.Length).ToCharArray());
+                    var wordSpan = new ReadOnlySpan<char>(words.Substring(wordsSpan.Start, wordsSpan.Length).ToCharArray());
 #endif
 
-                        var wordIndex = textSpan.Slice(stateOffset).IndexOf(ws, StringComparison.OrdinalIgnoreCase);
+                    while (true)
+                    {
+                        var wordIndex = textSpan.Slice(stateOffset).IndexOf(wordSpan, StringComparison.OrdinalIgnoreCase);
                         if (wordIndex == -1)
                             break;
 
                         for (var i = 0; i != wordSpan.Length; ++i)
-                            textStates[wordIndex + i] = 1;
+                            textStates[stateOffset + wordIndex + i] = 1;
 
                         stateOffset += wordIndex + wordSpan.Length;
                     }
@@ -181,8 +181,7 @@ namespace Biaui.Controls
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private double RenderText(
-            DrawingContext dc, string text, int startIndex, int endIndex, double x, Brush brush)
+        private double RenderText(DrawingContext dc, string text, int startIndex, int endIndex, double x, Brush brush)
         {
             var length = endIndex - startIndex + 1;
 
