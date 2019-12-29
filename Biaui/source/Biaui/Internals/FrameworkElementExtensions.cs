@@ -102,6 +102,21 @@ namespace Biaui.Internals
             return null;
         }
 
+        internal static DependencyObject GetParent(this FrameworkElement self, Type type)
+        {
+            var parent = self as DependencyObject;
+
+            do
+            {
+                if (parent.GetType().IsSubclassOf(type))
+                    return parent;
+
+                parent = VisualTreeHelper.GetParent(parent);
+            } while (parent != null);
+
+            return null;
+        }
+
         internal static Pen GetBorderPen(this FrameworkElement self, Color color)
             => Caches.GetPen(color, self.RoundLayoutValue(BorderWidth));
 
