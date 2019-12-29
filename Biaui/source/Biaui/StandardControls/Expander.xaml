@@ -62,7 +62,7 @@
 
     <internal:ExpanderMultiplyConverter x:Key="Multiply" />
 
-    <Style TargetType="{x:Type Expander}">
+    <Style x:Key="DefaultExpanderStyle" TargetType="{x:Type Expander}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -153,4 +153,6 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style BasedOn="{StaticResource DefaultExpanderStyle}" TargetType="{x:Type Expander}" />
 </ResourceDictionary>
