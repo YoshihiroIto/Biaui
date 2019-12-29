@@ -63,8 +63,15 @@ namespace Biaui
 
         private void AssociatedObjectOnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var (isOn, _) = IsOnIgnoreControls();
+            var (isOn, hitTestResult) = IsOnIgnoreControls();
             if (isOn)
+                return;
+
+            var expander = (hitTestResult?.VisualHit as FrameworkElement)?.GetParent<Expander>();
+            if (expander == null)
+                return;
+
+            if (IsOnHeader() == false)
                 return;
 
             AssociatedObject.IsExpanded = !AssociatedObject.IsExpanded;
@@ -83,6 +90,9 @@ namespace Biaui
 
             var (isOn, hitTestResult) = IsOnIgnoreControls();
             if (isOn)
+                return;
+
+            if (IsOnHeader() == false)
                 return;
 
             var otherExpander = (hitTestResult?.VisualHit as FrameworkElement)?.GetParent<Expander>();
@@ -119,6 +129,24 @@ namespace Biaui
             }
 
             return (false, hitTestResult);
+        }
+
+        private bool IsOnHeader()
+        {
+            var window = AssociatedObject.GetParent<Window>();
+            if (window == null)
+                return false;
+
+            var hitTestResult = VisualTreeHelper.HitTest(window, Mouse.GetPosition(window));
+
+            var header = (hitTestResult?.VisualHit as FrameworkElement)?.GetParent<ToggleButton>();
+            if (header == null)
+                return false;
+
+            if (header.Name != "HeaderSite")
+                return false;
+
+            return true;
         }
     }
 }
