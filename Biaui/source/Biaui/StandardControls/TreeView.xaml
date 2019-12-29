@@ -30,7 +30,7 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
+                        <ScrollViewer Focusable="False">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </controls:BiaClippingBorder>
@@ -73,7 +73,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="ExpandPath" Property="Data" Value="M 4.632812 5.363281 L 7.5 8.230469 L 10.367188 5.363281 L 11.25 6.25 L 7.5 10 L 3.75 6.25 Z M 4.632812 5.363281"/>
+                            <Setter TargetName="ExpandPath" Property="Data" Value="M 4.632812 5.363281 L 7.5 8.230469 L 10.367188 5.363281 L 11.25 6.25 L 7.5 10 L 3.75 6.25 Z M 4.632812 5.363281" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -101,7 +101,7 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Padding" Value="1" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
