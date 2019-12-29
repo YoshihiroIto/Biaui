@@ -105,6 +105,18 @@ namespace Biaui.Controls.NodeEditor.Internal
                 PostMouseLeftButtonUp?.Invoke(this, e);
             };
 
+            _target.MouseDown += (_, e) =>
+            {
+                if (e.ChangedButton == MouseButton.Middle)
+                    OnMouseMiddleButtonDown(e, TargetType.NodeEditor);
+            };
+
+            _target.MouseUp += (_, e) =>
+            {
+                if (e.ChangedButton == MouseButton.Middle)
+                    OnMouseMiddleButtonUp(e);
+            };
+
             _target.MouseMove += (_, e) =>
             {
                 PreMouseMove?.Invoke(this, e);
@@ -206,6 +218,35 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
 
             _mouseMovePos = e.GetPosition(_target);
+        }
+
+        internal void OnMouseMiddleButtonDown(MouseButtonEventArgs e, TargetType targetType)
+        {
+            _mouseDownScrollX = _transformTarget.TranslateTransform.X;
+            _mouseDownScrollY = _transformTarget.TranslateTransform.Y;
+            _mouseDownPos = e.GetPosition(_target);
+            _mouseMovePos = _mouseDownPos;
+
+            IsMoved = false;
+
+            _target.CaptureMouse();
+
+            // OpType
+            {
+                _opType = OpType.None;
+
+                switch (targetType)
+                {
+                    case TargetType.NodeEditor:
+                        _opType = OpType.EditorScroll;
+                        break;
+                }
+            }
+        }
+
+        internal void OnMouseMiddleButtonUp(MouseButtonEventArgs e)
+        {
+            OnMouseLeftButtonUp(e);
         }
 
         private void DoEditorScroll(MouseEventArgs e)
