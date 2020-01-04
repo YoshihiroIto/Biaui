@@ -4,7 +4,13 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Threading;
+using SharpDX;
+using Microsoft.Win32;
 
 namespace D2dControl
 {
@@ -29,12 +35,13 @@ namespace D2dControl
                 return _IsInDesignMode.Value;
             }
         }
+
         private bool? _IsInDesignMode;
 
         private bool _isRequestUpdate = true;
 
         #region IsAutoFrameUpdate
-        
+
         public bool IsAutoFrameUpdate
         {
             get => _IsAutoFrameUpdate;
@@ -44,9 +51,9 @@ namespace D2dControl
                     SetValue(IsAutoFrameUpdateProperty, value);
             }
         }
-        
+
         private bool _IsAutoFrameUpdate = true;
-        
+
         public static readonly DependencyProperty IsAutoFrameUpdateProperty =
             DependencyProperty.Register(
                 nameof(IsAutoFrameUpdate),
@@ -57,14 +64,14 @@ namespace D2dControl
                     (s, e) =>
                     {
                         var self = (D2dControl) s;
-                        self._IsAutoFrameUpdate = (bool)e.NewValue;
+                        self._IsAutoFrameUpdate = (bool) e.NewValue;
                     }));
-        
+
         #endregion
 
         public static void Initialize()
         {
-            device = new SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.None);
+            device = new SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport);
 
             Dx11ImageSource.Initialize();
         }
@@ -87,13 +94,15 @@ namespace D2dControl
         protected D2dControl()
         {
             Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
 
             Stretch = System.Windows.Media.Stretch.Fill;
         }
 
         public abstract void Render(SharpDX.Direct2D1.DeviceContext target);
 
+
+
+        private bool _isInitialized;
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             if (IsInDesignMode)
@@ -102,11 +111,33 @@ namespace D2dControl
             if (device == null)
                 throw new NullReferenceException("Not yet initialized. You need to call D2dControl.Initialize().");
 
+            if (_isInitialized)
+                return;
+
+            _isInitialized = true;
+
             StartD3D();
             StartRendering();
+
+            // event
+            {
+                SystemEvents.SessionSwitch += SystemEventsOnSessionSwitch;
+                Unloaded += OnUnloaded;
+
+                _parentWindow = GetParent<Window>();
+                if (_parentWindow != null)
+                    _parentWindow.Closed += OnUnloaded;
+
+                _parentPopup = GetParent<Popup>();
+                if (_parentPopup != null)
+                    _parentPopup.Closed += OnUnloaded;
+            }
         }
 
-        private void OnUnloaded(object sender, RoutedEventArgs e)
+        private Window _parentWindow;
+        private Popup _parentPopup;
+
+        private void OnUnloaded(object sender, EventArgs e)
         {
             if (IsInDesignMode)
                 return;
@@ -114,7 +145,45 @@ namespace D2dControl
             if (device == null)
                 throw new NullReferenceException("Not yet initialized. You need to call D2dControl.Initialize().");
 
+            if (_isInitialized == false)
+                return;
+
+            _isInitialized = false;
+
             Shutdown();
+
+            // event
+            {
+                SystemEvents.SessionSwitch -= SystemEventsOnSessionSwitch;
+                Unloaded -= OnUnloaded;
+
+                if (_parentWindow != null)
+                    _parentWindow.Closed -= OnUnloaded;
+
+                if (_parentPopup != null)
+                    _parentPopup.Closed -= OnUnloaded;
+            }
+        }
+    
+        private void SystemEventsOnSessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            // アンロック以降、描画されない。
+            // デバイスロスト時の振る舞いに似ているが、デバイスロストとしては検知されないため明示的に再描画している
+            if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                var timer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
+                timer.Interval = TimeSpan.FromMilliseconds(1000);
+                timer.Tick += (_, __) =>
+                {
+                    CreateAndBindTargets();
+                    Invalidate();
+
+                    timer.Stop();
+                    timer = null;
+                };
+
+                timer.Start();
+            }
         }
 
         protected void Shutdown()
@@ -128,16 +197,28 @@ namespace D2dControl
             if (device == null)
                 throw new NullReferenceException("Not yet initialized. You need to call D2dControl.Initialize().");
 
-            PrepareAndCallRender();
+            try
+            {
+                PrepareAndCallRender();
 
-            d3DSurface.Lock();
+                d3DSurface.Lock();
 
-            device.ImmediateContext.ResolveSubresource(dx11Target, 0, sharedTarget, 0, Format.B8G8R8A8_UNorm);
-            d3DSurface.InvalidateD3DImage();
+                device.ImmediateContext.ResolveSubresource(dx11Target, 0, sharedTarget, 0, Format.B8G8R8A8_UNorm);
+                d3DSurface.InvalidateD3DImage();
 
-            d3DSurface.Unlock();
+                d3DSurface.Unlock();
 
-            device.ImmediateContext.Flush();
+                device.ImmediateContext.Flush();
+            }
+            catch (SharpDXException ex)
+            {
+                if (ex.ResultCode == SharpDX.DXGI.ResultCode.DeviceRemoved ||
+                    ex.ResultCode == SharpDX.DXGI.ResultCode.DeviceReset)
+                {
+                    CreateAndBindTargets();
+                    Invalidate();
+                }
+            }
         }
 
         private void OnRendering(object sender, EventArgs e)
@@ -267,6 +348,22 @@ namespace D2dControl
             Render(d2DRenderTarget);
 
             d2DRenderTarget.EndDraw();
+        }
+
+        // codebase : Biaui
+        private T GetParent<T>() where T : class
+        {
+            var parent = this as DependencyObject;
+
+            do
+            {
+                if (parent is T tp)
+                    return tp;
+
+                parent = VisualTreeHelper.GetParent(parent);
+            } while (parent != null);
+
+            return null;
         }
     }
 }

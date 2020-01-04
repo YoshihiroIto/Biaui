@@ -131,6 +131,6 @@ namespace D2dControl
         }
 
         [DllImport("user32.dll", SetLastError = false)]
-        internal static extern IntPtr GetDesktopWindow();
+        private static extern IntPtr GetDesktopWindow();
     }
 }
