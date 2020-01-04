@@ -16,9 +16,14 @@ namespace Biaui.StandardControls
             var self = ((FrameworkElement) sender).GetParent<ScrollViewer>();
 
             var pos = e.GetPosition(self);
+            var posX = pos.X;
+            var posY = pos.Y;
 
             var width = (1.0, self.ActualWidth - BarWidth).Max();
             var height = (1.0, self.ActualHeight - BarWidth).Max();
+
+            if (ScrollViewerAttachedProperties.GetIsLeftVerticalScrollBar(self))
+                posX = width - posX;
 
             var xr = (Response, width).Min();
             var yr = (Response, height).Min();
@@ -26,22 +31,22 @@ namespace Biaui.StandardControls
             var xir = width - xr;
             var yir = height - yr;
 
-            var xd = NumberHelper.Clamp01((pos.X - xir) / xr);
-            var yd = NumberHelper.Clamp01((pos.Y - yir) / yr);
+            var xd = NumberHelper.Clamp01((posX - xir) / xr);
+            var yd = NumberHelper.Clamp01((posY - yir) / yr);
 
             var xo = xd * MaxOpacity;
             var yo = yd * MaxOpacity;
 
-            self.SetValue(ScrollViewerAttachedProperties.VerticalScrollBarOpacityProperty, xo);
-            self.SetValue(ScrollViewerAttachedProperties.HorizontalScrollBarOpacityProperty, yo);
+            ScrollViewerAttachedProperties.SetVerticalScrollBarOpacity(self, xo);
+            ScrollViewerAttachedProperties.SetHorizontalScrollBarOpacity(self, yo);
         }
 
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
             var self = ((FrameworkElement) sender).GetParent<ScrollViewer>();
 
-            self.SetValue(ScrollViewerAttachedProperties.VerticalScrollBarOpacityProperty, Boxes.Double0);
-            self.SetValue(ScrollViewerAttachedProperties.HorizontalScrollBarOpacityProperty, Boxes.Double0);
+            ScrollViewerAttachedProperties.SetVerticalScrollBarOpacity(self, 0.0);
+            ScrollViewerAttachedProperties.SetHorizontalScrollBarOpacity(self, 0.0);
         }
     }
 }

@@ -5,6 +5,8 @@ namespace Biaui.StandardControls
 {
     public class ScrollViewerAttachedProperties
     {
+        #region HorizontalScrollBarOpacity
+
         public static readonly DependencyProperty HorizontalScrollBarOpacityProperty =
             DependencyProperty.RegisterAttached(
                 "HorizontalScrollBarOpacity",
@@ -22,6 +24,10 @@ namespace Biaui.StandardControls
             target.SetValue(HorizontalScrollBarOpacityProperty, Boxes.Double(value));
         }
 
+        #endregion
+
+        #region VerticalScrollBarOpacity
+
         public static readonly DependencyProperty VerticalScrollBarOpacityProperty =
             DependencyProperty.RegisterAttached(
                 "VerticalScrollBarOpacity",
@@ -38,5 +44,28 @@ namespace Biaui.StandardControls
         {
             target.SetValue(VerticalScrollBarOpacityProperty, Boxes.Double(value));
         }
+
+        #endregion
+
+        #region IsLeftVerticalScrollBar
+
+        public static readonly DependencyProperty IsLeftVerticalScrollBarProperty =
+            DependencyProperty.RegisterAttached(
+                "IsLeftVerticalScrollBar",
+                typeof(bool),
+                typeof(ScrollViewerAttachedProperties),
+                new FrameworkPropertyMetadata(Boxes.BoolFalse));
+
+        public static bool GetIsLeftVerticalScrollBar(DependencyObject target)
+        {
+            return (bool) target.GetValue(IsLeftVerticalScrollBarProperty);
+        }
+
+        public static void SetIsLeftVerticalScrollBar(DependencyObject target, bool value)
+        {
+            target.SetValue(IsLeftVerticalScrollBarProperty, Boxes.Bool(value));
+        }
+
+        #endregion
     }
 }
