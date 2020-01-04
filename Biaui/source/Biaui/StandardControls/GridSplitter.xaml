@@ -8,7 +8,7 @@
                 <ControlTemplate TargetType="{x:Type GridSplitter}">
                     <Border x:Name="Background" Background="Transparent">
                         <Path x:Name="Thumb"
-                              Margin="3"
+                              Margin="2"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"
                               Data="M0,0H2V2H0V0M4,0H6V2H4V0M0,4H2V6H0V4M4,4H6V6H4V4M0,8H2V10H0V8M4,8H6V10H4V8M0,12H2V14H0V12M4,12H6V14H4V12M0,16H2V18H0V16M4,16H6V18H4V16z"
