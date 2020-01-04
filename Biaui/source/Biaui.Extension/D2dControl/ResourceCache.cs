@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 namespace D2dControl
-{
+{ 
     public class ResourceCache
     {
         private readonly Dictionary<int, Func<RenderTarget, object>> generators =
