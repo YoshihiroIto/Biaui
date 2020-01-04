@@ -9,10 +9,10 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -26,15 +26,6 @@
                             <ItemsPresenter />
                         </ScrollViewer>
                     </controls:BiaClippingBorder>
-                    <ControlTemplate.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="True" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-                        </MultiTrigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -55,10 +46,10 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -71,15 +62,6 @@
                             <ItemsPresenter />
                         </ScrollViewer>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="True" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-                        </MultiTrigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
