@@ -6,8 +6,12 @@ namespace Biaui
 {
     public static class BiauiEnvironment
     {
-        public static IBackgroundPanelGenerator BackgroundPanelGenerator { get; private set; }
-            = new DefaultBackgroundPanelGenerator();
+        public static IBackgroundPanelGenerator BackgroundPanelGenerator
+        {
+            get => _BackgroundPanelGenerator ?? (_BackgroundPanelGenerator = new DefaultBackgroundPanelGenerator());
+            private set => _BackgroundPanelGenerator = value;
+        }
+        private static IBackgroundPanelGenerator _BackgroundPanelGenerator;
 
         public static void RegisterBackgroundPanelGenerator(IBackgroundPanelGenerator generator)
         {
