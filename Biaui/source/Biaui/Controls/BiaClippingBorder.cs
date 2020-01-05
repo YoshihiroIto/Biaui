@@ -46,7 +46,7 @@ namespace Biaui.Controls
                 return;
 
             var rect = new Rect(Child.RenderSize);
-            var key = (rect, CornerRadius);
+            var key = (rect, CornerRadius).GetHashCode();
 
             if (_clipRectCache.TryGetValue(key, out var clipRect) == false)
             {
@@ -68,8 +68,7 @@ namespace Biaui.Controls
 
         private object _oldClip;
 
-        private static readonly Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry> _clipRectCache =
-            new Dictionary<(Rect Rect, CornerRadius CornerRadius), Geometry>();
+        private static readonly Dictionary<int, Geometry> _clipRectCache = new Dictionary<int, Geometry>();
 
         private static Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius,
             Thickness borderThickness)

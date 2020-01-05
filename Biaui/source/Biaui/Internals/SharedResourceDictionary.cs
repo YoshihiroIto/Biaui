@@ -7,7 +7,7 @@ namespace Biaui.Internals
 {
     public class SharedResourceDictionary : ResourceDictionary
     {
-        private static readonly Dictionary<Uri, ResourceDictionary> _sharedDictionaries = new Dictionary<Uri, ResourceDictionary>();
+        private static readonly Dictionary<int, ResourceDictionary> _sharedDictionaries = new Dictionary<int, ResourceDictionary>();
 
         private static readonly bool _isInDesignerMode;
 
@@ -32,11 +32,13 @@ namespace Biaui.Internals
                     return;
                 }
 
-                if (_sharedDictionaries.TryGetValue(value, out var v) == false)
+                var hashCode = value.GetHashCode();
+
+                if (_sharedDictionaries.TryGetValue(hashCode, out var v) == false)
                 {
                     base.Source = value;
 
-                    _sharedDictionaries.Add(value, this);
+                    _sharedDictionaries.Add(hashCode, this);
                 }
                 else
                 {
