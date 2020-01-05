@@ -259,9 +259,7 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 CornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=CornerRadius}">
-                        <ScrollViewer Margin="0,0,-1,0"
-                                      Padding="{TemplateBinding Padding}"
-                                      Focusable="False">
+                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </controls:BiaClippingBorder>

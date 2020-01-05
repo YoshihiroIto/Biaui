@@ -196,7 +196,6 @@
 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Width="8"
-                                   Margin="0,0,1,0"
                                    HorizontalAlignment="Right"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
@@ -207,7 +206,6 @@
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
                                    Height="8"
-                                   Margin="0,0,0,1"
                                    VerticalAlignment="Bottom"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
@@ -234,7 +232,6 @@
 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Width="8"
-                                   Margin="0,0,1,0"
                                    HorizontalAlignment="Right"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
@@ -264,7 +261,6 @@
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Width="8"
-                                   Margin="1,0,0,0"
                                    HorizontalAlignment="Left"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
@@ -275,7 +271,6 @@
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
                                    Height="8"
-                                   Margin="0,0,0,1"
                                    VerticalAlignment="Bottom"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
@@ -324,7 +319,7 @@
                         <!--  24はヘッダーの高さ  -->
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Width="8"
-                                   Margin="0,24,1,0"
+                                   Margin="0,24,0,0"
                                    HorizontalAlignment="Right"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
@@ -335,7 +330,6 @@
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
                                    Height="8"
-                                   Margin="0,0,0,1"
                                    VerticalAlignment="Bottom"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
