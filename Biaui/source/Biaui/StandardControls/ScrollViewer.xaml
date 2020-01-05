@@ -349,7 +349,8 @@
                         </DockPanel>
 
                         <!--  24はヘッダーの高さ  -->
-                        <ScrollBar Grid.Row="0"
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   Grid.Row="0"
                                    Grid.Column="1"
                                    Width="8"
                                    Margin="0,24,1,0"
@@ -360,7 +361,8 @@
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                    Value="{TemplateBinding VerticalOffset}" />
 
-                        <ScrollBar Grid.Row="1"
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                                   Grid.Row="1"
                                    Grid.Column="0"
                                    Height="8"
                                    Margin="0,0,0,1"
@@ -398,14 +400,16 @@
 
                         <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
 
-                        <ScrollBar Grid.Row="0"
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   Grid.Row="0"
                                    Grid.Column="1"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    ViewportSize="{TemplateBinding ViewportHeight}"
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                    Value="{TemplateBinding VerticalOffset}" />
 
-                        <ScrollBar Grid.Row="1"
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                                   Grid.Row="1"
                                    Grid.Column="0"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Orientation="Horizontal"
