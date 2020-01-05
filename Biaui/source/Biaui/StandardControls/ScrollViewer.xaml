@@ -108,26 +108,10 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Opacity" Value="0.9" />
-            </Trigger>
-            <Trigger Property="IsMouseOver" Value="False">
-                <Setter Property="Opacity" Value="0.4" />
-            </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.1" />
             </Trigger>
         </Style.Triggers>
-    </Style>
-
-    <Style x:Key="ScrollBarTrackStyle" TargetType="{x:Type RepeatButton}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type RepeatButton}">
-                    <Border Background="Transparent" />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style TargetType="{x:Type ScrollBar}">
@@ -143,7 +127,7 @@
                                IsDirectionReversed="True">
 
                             <Track.DecreaseRepeatButton>
-                                <RepeatButton x:Name="PageDecButton" Style="{StaticResource ScrollBarTrackStyle}" />
+                                <RepeatButton x:Name="PageDecButton" Background="Transparent" />
                             </Track.DecreaseRepeatButton>
 
                             <Track.Thumb>
@@ -153,7 +137,7 @@
                             </Track.Thumb>
 
                             <Track.IncreaseRepeatButton>
-                                <RepeatButton x:Name="PageIncButton" Style="{StaticResource ScrollBarTrackStyle}" />
+                                <RepeatButton x:Name="PageIncButton" Background="Transparent" />
                             </Track.IncreaseRepeatButton>
                         </Track>
                     </Border>
@@ -208,25 +192,12 @@
                     <Grid Background="Transparent"
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <ScrollContentPresenter Grid.RowSpan="2"
-                                                Grid.ColumnSpan="2"
-                                                CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
                                    Width="8"
                                    Margin="0,0,1,0"
+                                   HorizontalAlignment="Right"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
                                    Style="{StaticResource ThumbOnlyScrollBarStyle}"
@@ -235,10 +206,9 @@
                                    Value="{TemplateBinding VerticalOffset}" />
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
-                                   Grid.Row="1"
-                                   Grid.Column="0"
                                    Height="8"
                                    Margin="0,0,0,1"
+                                   VerticalAlignment="Bottom"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
                                    Orientation="Horizontal"
@@ -262,25 +232,14 @@
                     <Grid Background="Transparent"
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <ScrollContentPresenter Grid.RowSpan="2"
-                                                Grid.ColumnSpan="2"
-                                                CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Width="8"
                                    Margin="1,0,0,0"
+                                   HorizontalAlignment="Left"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
                                    Style="{StaticResource ThumbOnlyScrollBarStyle}"
@@ -289,10 +248,9 @@
                                    Value="{TemplateBinding VerticalOffset}" />
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
-                                   Grid.Row="1"
-                                   Grid.Column="0"
                                    Height="8"
                                    Margin="0,0,0,1"
+                                   VerticalAlignment="Bottom"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
                                    Orientation="Horizontal"
@@ -313,18 +271,7 @@
                     <Grid Background="Transparent"
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <DockPanel Grid.RowSpan="2"
-                                   Grid.ColumnSpan="2"
-                                   Margin="{TemplateBinding Padding}">
+                        <DockPanel Margin="{TemplateBinding Padding}">
                             <ScrollViewer DockPanel.Dock="Top"
                                           Focusable="false"
                                           HorizontalScrollBarVisibility="Hidden"
@@ -350,10 +297,9 @@
 
                         <!--  24はヘッダーの高さ  -->
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
                                    Width="8"
                                    Margin="0,24,1,0"
+                                   HorizontalAlignment="Right"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
                                    Style="{StaticResource ThumbOnlyScrollBarStyle}"
@@ -362,10 +308,9 @@
                                    Value="{TemplateBinding VerticalOffset}" />
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
-                                   Grid.Row="1"
-                                   Grid.Column="0"
                                    Height="8"
                                    Margin="0,0,0,1"
+                                   VerticalAlignment="Bottom"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
                                    Orientation="Horizontal"
