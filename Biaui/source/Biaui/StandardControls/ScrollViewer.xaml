@@ -222,6 +222,32 @@
         </Setter>
     </Style>
 
+    <Style x:Key="VerticalScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid Background="Transparent"
+                          MouseLeave="OnMouseLeave"
+                          PreviewMouseMove="OnPreviewMouseMove">
+                        <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
+
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   Width="8"
+                                   Margin="0,0,1,0"
+                                   HorizontalAlignment="Right"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
+                                   Style="{StaticResource ThumbOnlyScrollBarStyle}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                   Value="{TemplateBinding VerticalOffset}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="LeftScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="standardControls:ScrollViewerAttachedProperties.IsLeftVerticalScrollBar" Value="True" />
