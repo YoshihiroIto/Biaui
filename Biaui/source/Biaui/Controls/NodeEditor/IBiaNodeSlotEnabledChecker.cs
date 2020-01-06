@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using Biaui.Interfaces;
+﻿using Biaui.Interfaces;
+using Jewelry.Memory;
 
 namespace Biaui.Controls.NodeEditor
 {
     public interface IBiaNodeSlotEnabledChecker
     {
         bool IsEnableSlot(in BiaNodeItemSlotIdPair slot);
-        IEnumerable<int> Check(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args);
+        void Check(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args, ref TempBuffer<int> result);
     }
 
     public enum BiaNodeSlotEnableTiming

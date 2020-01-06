@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using Biaui.Controls.Internals;
 using Biaui.Interfaces;
 using Biaui.Internals;
+using Jewelry.Memory;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
@@ -613,18 +614,41 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             target.InternalData().EnableSlots.Clear();
 
-            var enabledSlotIds =
-                _parent.NodeSlotEnabledChecker == null
-                    ? target.Slots?.Keys ?? Enumerable.Empty<int>()
-                    : _parent.NodeSlotEnabledChecker.Check(target, args);
-
-            foreach (var enabledSlotId in enabledSlotIds)
+            if (_parent.NodeSlotEnabledChecker == null)
             {
-                Debug.Assert(target.Slots != null);
-                Debug.Assert(target.Slots.ContainsKey(enabledSlotId));
+                var enabledSlotIds = target.Slots?.Keys;
 
-                var slot = target.Slots[enabledSlotId];
-                target.InternalData().EnableSlots.Add(slot);
+                if (enabledSlotIds != null)
+                {
+                    foreach (var enabledSlotId in enabledSlotIds)
+                    {
+                        Debug.Assert(target.Slots != null);
+                        Debug.Assert(target.Slots.ContainsKey(enabledSlotId));
+
+                        var slot = target.Slots[enabledSlotId];
+                        target.InternalData().EnableSlots.Add(slot);
+                    }
+                }
+            }
+            else
+            {
+                Span<int> buffer = stackalloc int[16];
+
+                var enabledSlotIds = new TempBuffer<int>(buffer);
+                {
+                    _parent.NodeSlotEnabledChecker.Check(target, args, ref enabledSlotIds);
+
+                    var ids = enabledSlotIds.Buffer;
+                    for (var i = 0; i != ids.Length; ++i)
+                    {
+                        Debug.Assert(target.Slots != null);
+                        Debug.Assert(target.Slots.ContainsKey(ids[i]));
+
+                        var slot = target.Slots[ids[i]];
+                        target.InternalData().EnableSlots.Add(slot);
+                    }
+                }
+                enabledSlotIds.Dispose();
             }
         }
 
