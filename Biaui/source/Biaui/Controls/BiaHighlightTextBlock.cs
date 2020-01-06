@@ -81,7 +81,7 @@ namespace Biaui.Controls
         protected override void OnRender(DrawingContext dc)
         {
             var ss = new StringSplitter(
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NETCOREAPP3_0
                 stackalloc StringSplitter.StringSpan[32]
 #else
                 8
@@ -114,7 +114,7 @@ namespace Biaui.Controls
                 Array.Clear(textStates, 0, Text.Length);
 
                 ReadOnlySpan<char> textSpan =
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NETCOREAPP3_0
                     Text;
 #else
                     new ReadOnlySpan<char>(Text.ToCharArray());
@@ -124,7 +124,7 @@ namespace Biaui.Controls
                 {
                     var stateOffset = 0;
 
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NETCOREAPP3_0
                     var wordSpan = wordsSpan.ToSpan(words);
 #else
                     var wordSpan = new ReadOnlySpan<char>(words.Substring(wordsSpan.Start, wordsSpan.Length).ToCharArray());
