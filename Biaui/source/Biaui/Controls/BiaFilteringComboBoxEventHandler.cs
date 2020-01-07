@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Biaui.Internals;
+using Jewelry.Memory;
 
 namespace Biaui.Controls
 {
@@ -49,36 +50,45 @@ namespace Biaui.Controls
                 DispatcherPriority.Input,
                 new Action(() =>
                 {
-                    var items = textBox.Parent.Descendants<ComboBoxItem>().ToArray();
+                    var items = new TempBuffer<ComboBoxItem>(512);
 
-                    if (items.Length == 0)
-                        return;
-
-                    var selectedItem = items.FirstOrDefault(x => x.IsSelected);
-                    var isDown = e.Key == Key.Down;
-
-                    if (selectedItem == null)
+                    try
                     {
-                        var item = isDown
-                            ? items.FirstOrDefault()
-                            : items.LastOrDefault();
+                        items.AddFrom(textBox.Parent.Descendants<ComboBoxItem>());
 
-                        if (item != null)
-                            item.IsSelected = true;
+                        if (items.Length == 0)
+                            return;
+
+                        var selectedItem = items.FirstOrDefault(x => x.IsSelected);
+                        var isDown = e.Key == Key.Down;
+
+                        if (selectedItem == null)
+                        {
+                            var item = isDown
+                                ? items.FirstOrDefault()
+                                : items.LastOrDefault();
+
+                            if (item != null)
+                                item.IsSelected = true;
+                        }
+                        else
+                        {
+                            var selectedItemIndex = items.IndexOf(selectedItem);
+                            var nextIndex = selectedItemIndex + (isDown ? +1 : -1);
+
+                            nextIndex = Math.Max(nextIndex, 0);
+                            nextIndex = Math.Min(nextIndex, items.Length - 1);
+
+                            var nextItem = items[nextIndex];
+                            nextItem.IsSelected = true;
+                        }
+
+                        textBox.Focus();
                     }
-                    else
+                    finally
                     {
-                        var selectedItemIndex = Array.IndexOf(items, selectedItem);
-                        var nextIndex = selectedItemIndex + (isDown ? +1 : -1);
-
-                        nextIndex = Math.Max(nextIndex, 0);
-                        nextIndex = Math.Min(nextIndex, items.Length - 1);
-
-                        var nextItem = items[nextIndex];
-                        nextItem.IsSelected = true;
+                        items.Dispose();
                     }
-
-                    textBox.Focus();
                 }));
         }
 

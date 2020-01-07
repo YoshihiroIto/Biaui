@@ -87,6 +87,28 @@ namespace Jewelry.Memory
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T FirstOrDefault(Func<T, bool> predicate)
+        {
+            for (var i = 0; i != _pos; ++i)
+                if (predicate(_buffer[i]))
+                    return _buffer[i];
+
+            return default;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T FirstOrDefault()
+        {
+            return Length != 0 ? _buffer[0] : default;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T LastOrDefault()
+        {
+            return Length != 0 ? _buffer[_pos - 1] : default;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Glow()
         {
             var l = Math.Max(_buffer.Length, 16);
