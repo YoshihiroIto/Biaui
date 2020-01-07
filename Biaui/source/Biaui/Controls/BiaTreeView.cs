@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Biaui.Interfaces;
 using Biaui.Internals;
+using Jewelry.Memory;
 
 namespace Biaui.Controls
 {
@@ -121,7 +122,7 @@ namespace Biaui.Controls
         #endregion
 
         #region IsSelectionEnabled
-        
+
         public bool IsSelectionEnabled
         {
             get => _IsSelectionEnabled;
@@ -131,9 +132,9 @@ namespace Biaui.Controls
                     SetValue(IsSelectionEnabledProperty, Boxes.Bool(value));
             }
         }
-        
+
         private bool _IsSelectionEnabled = true;
-        
+
         public static readonly DependencyProperty IsSelectionEnabledProperty =
             DependencyProperty.Register(
                 nameof(IsSelectionEnabled),
@@ -144,13 +145,13 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaTreeView) s;
-                        self._IsSelectionEnabled = (bool)e.NewValue;
+                        self._IsSelectionEnabled = (bool) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region IndentSize
-        
+
         public double IndentSize
         {
             get => _IndentSize;
@@ -160,9 +161,9 @@ namespace Biaui.Controls
                     SetValue(IndentSizeProperty, Boxes.Double(value));
             }
         }
-        
+
         private double _IndentSize = 19.0;
-        
+
         public static readonly DependencyProperty IndentSizeProperty =
             DependencyProperty.Register(
                 nameof(IndentSize),
@@ -173,9 +174,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaTreeView) s;
-                        self._IndentSize = (double)e.NewValue;
+                        self._IndentSize = (double) e.NewValue;
                     }));
-        
+
         #endregion
 
         static BiaTreeView()
@@ -537,17 +538,27 @@ namespace Biaui.Controls
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            var items = this.EnumerateChildren<T>().ToArray();
-            var index = Array.IndexOf(items, item);
+            var items = new TempBuffer<T>(128);
 
-            if (index == -1)
+            try
+            {
+                items.AddFrom(this.EnumerateChildren<T>());
+
+                var index = items.IndexOf(item);
+
+                if (index == -1)
+                    return null;
+
+                var relativeIndex = index + relativePosition;
+                if (relativeIndex >= 0 && relativeIndex < items.Length)
+                    return items[relativeIndex];
+
                 return null;
-
-            var relativeIndex = index + relativePosition;
-            if (relativeIndex >= 0 && relativeIndex < items.Length)
-                return items[relativeIndex];
-
-            return null;
+            }
+            finally
+            {
+                items.Dispose();
+            }
         }
     }
 }
