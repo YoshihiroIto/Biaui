@@ -491,12 +491,16 @@ namespace Biaui.Controls.NodeEditor.Internal
                             style == null ||
                             nodePanel.Style.GetHashCode() != style.GetHashCode())
                         {
-                            nodePanel.DataContext = null;
+                            if (nodePanel.DataContext != null)
+                                nodePanel.DataContext = null;
+
                             nodePanel.Style = style;
                         }
 
                         nodePanel.DataContext = nodeItem;
-                        nodePanel.Opacity = 1.0;
+
+                        if (NumberHelper.AreClose(nodePanel.Opacity, 1.0) == false)
+                            nodePanel.Opacity = 1.0;
 
                         UpdateNodeSlotEnabled(nodeItem);
 
