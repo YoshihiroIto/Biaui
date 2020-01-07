@@ -455,6 +455,8 @@ namespace Biaui.Controls
                 MoveSelectedItem(+1);
 
             Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
+
+            e.Handled = true;
         }
 
         private bool _isDoesFindParent;
