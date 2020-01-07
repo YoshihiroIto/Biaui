@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -58,6 +60,30 @@ namespace Jewelry.Memory
 
             _buffer[_pos] = value;
             ++_pos;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void AddFrom(IEnumerable source)
+        {
+            foreach (var o in source)
+                Add((T)o);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void AddFrom(IEnumerable<T> source)
+        {
+            foreach (var o in source)
+                Add(o);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int IndexOf(T value)
+        {
+            for (var i = 0; i != _pos; ++i)
+                if (EqualityComparer<T>.Default.Equals(_buffer[i], value))
+                    return i;
+
+            return -1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

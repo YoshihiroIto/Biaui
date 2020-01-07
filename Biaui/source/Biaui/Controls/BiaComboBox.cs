@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using Biaui.Internals;
+using Jewelry.Memory;
 
 namespace Biaui.Controls
 {
@@ -501,7 +502,7 @@ namespace Biaui.Controls
                 {
                     IsTabStop = false,
                     FocusVisualStyle = null,
-                    Margin = new Thickness(0,0,3,3),
+                    Margin = new Thickness(0, 0, 3, 3),
                     Effect = new DropShadowEffect
                     {
                         ShadowDepth = 2,
@@ -584,7 +585,7 @@ namespace Biaui.Controls
             }
 
             var listBoxBorder = _items.Descendants<Border>().First();
-            listBoxBorder.BorderBrush = (Brush)FindResource("Item.SelectedActive.Border");
+            listBoxBorder.BorderBrush = (Brush) FindResource("Item.SelectedActive.Border");
 
             StartedContinuousEditingCommand?.ExecuteIfCan(null);
         }
@@ -710,42 +711,50 @@ namespace Biaui.Controls
             if (ItemsSource == null)
                 return;
 
-            IList items;
-            int itemsCount;
-            int selectedIndex;
+            var tempItems = new TempBuffer<object>(128);
+
+            try
             {
-                if (ItemsSource is IList list)
+                IList items = null;
+
+                int itemsCount;
+                int selectedIndex;
                 {
-                    itemsCount = list.Count;
-                    selectedIndex = list.IndexOf(SelectedItem);
-                    items = list;
+                    if (ItemsSource is IList list)
+                    {
+                        items = list;
+                        itemsCount = list.Count;
+                        selectedIndex = list.IndexOf(SelectedItem);
+                    }
+                    else
+                    {
+                        tempItems.AddFrom(ItemsSource);
+                        itemsCount = tempItems.Length;
+                        selectedIndex = tempItems.IndexOf(SelectedItem);
+                    }
+                }
+
+                if (selectedIndex == -1)
+                {
+                    if (itemsCount > 0)
+                    {
+                        var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
+                        item?.Focus();
+
+                        SelectedItem = items != null ? items[0] : tempItems[0];
+                    }
                 }
                 else
                 {
-                    var itemsArray = ItemsSource.Cast<object>().ToArray();
+                    selectedIndex += dir;
+                    selectedIndex = (selectedIndex, 0, itemsCount - 1).Clamp();
 
-                    itemsCount = itemsArray.Length;
-                    selectedIndex = Array.IndexOf(itemsArray, SelectedItem);
-                    items = itemsArray;
+                    SelectedItem = items != null ? items[selectedIndex] : tempItems[selectedIndex];
                 }
             }
-
-            if (selectedIndex == -1)
+            finally
             {
-                if (itemsCount > 0)
-                {
-                    var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
-                    item?.Focus();
-
-                    SelectedItem = items[0];
-                }
-            }
-            else
-            {
-                selectedIndex += dir;
-                selectedIndex = (selectedIndex, 0, itemsCount - 1).Clamp();
-
-                SelectedItem = items[selectedIndex];
+                tempItems.Dispose();
             }
         }
 
