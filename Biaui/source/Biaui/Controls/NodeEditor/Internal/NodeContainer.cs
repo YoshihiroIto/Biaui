@@ -144,7 +144,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     if (_mouseOperator.SelectionRect.HasArea)
                     {
                         SelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
-                        ClearPreSelectedNode();
+                        ClearPreSelectedNodes();
                     }
                 }
 
@@ -222,7 +222,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             _preSelectedNodes.Clear();
         }
 
-        private void ClearPreSelectedNode()
+        private void ClearPreSelectedNodes()
         {
             var preSelectedNodes = _parent.NodeContainers.SelectMany(x => x.PreSelectedNodes).ToTempBuffer(256);
 
@@ -243,7 +243,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 // [Ctrl]押下で追加する
                 if (KeyboardHelper.IsPressControl == false)
-                    ClearSelectedNode();
+                    ClearSelectedNodes();
 
                 var children = _parent.NodeContainers.SelectMany(x => x.Children).ToTempBuffer(256);
 
@@ -278,7 +278,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             ++IsEnableUpdateChildrenBagDepth;
             {
-                ClearPreSelectedNode();
+                ClearPreSelectedNodes();
 
                 foreach (var child in Children)
                 {
@@ -591,7 +591,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return (p, false);
         }
 
-        private void ClearSelectedNode()
+        private void ClearSelectedNodes()
         {
             var selectedNodes = _parent.NodeContainers.SelectMany(x => x.SelectedNodes).ToTempBuffer(256);
 
@@ -935,7 +935,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 {
                     _parent.InvokePropertyEditStarting();
 
-                    ClearSelectedNode();
+                    ClearSelectedNodes();
                     nodeItem.IsSelected = true;
 
                     _parent.InvokePropertyEditCompleted();
