@@ -417,10 +417,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void UpdateChildrenBag(in ImmutableRect_double viewportRect)
         {
-            var inflateX = viewportRect.X - viewportRect.Width * 0.5;
-            var inflateY = viewportRect.Y - viewportRect.Height * 0.5;
-            var inflateW = viewportRect.Width * 2.0;
-            var inflateH = viewportRect.Height * 2.0;
+            var inflateX = viewportRect.X - viewportRect.Width;
+            var inflateY = viewportRect.Y - viewportRect.Height;
+            var inflateW = viewportRect.Width * 3.0;
+            var inflateH = viewportRect.Height * 3.0;
             var inflateViewportRect = new ImmutableRect_double(inflateX, inflateY, inflateW, inflateH);
 
             var changedUpdate = new TempBuffer<(IBiaNodeItem, BiaNodePanel)>(_nodeDict.Count);
