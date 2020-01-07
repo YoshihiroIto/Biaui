@@ -55,7 +55,6 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly MouseOperator _mouseOperator;
 
         private readonly Dictionary<IBiaNodeItem, BiaNodePanel> _nodeDict = new Dictionary<IBiaNodeItem, BiaNodePanel>();
-        private readonly List<(IBiaNodeItem, BiaNodePanel)> _changedUpdate = new List<(IBiaNodeItem, BiaNodePanel)>();
 
         private readonly Stack<BiaNodePanel> _recycleNodePanelPool = new Stack<BiaNodePanel>();
         private readonly HashSet<IBiaNodeItem> _selectedNodes = new HashSet<IBiaNodeItem>();
@@ -422,8 +421,9 @@ namespace Biaui.Controls.NodeEditor.Internal
             var inflateY = viewportRect.Y - viewportRect.Height * 0.5;
             var inflateW = viewportRect.Width * 2.0;
             var inflateH = viewportRect.Height * 2.0;
-
             var inflateViewportRect = new ImmutableRect_double(inflateX, inflateY, inflateW, inflateH);
+
+            var changedUpdate = new TempBuffer<(IBiaNodeItem, BiaNodePanel)>(_nodeDict.Count);
 
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
@@ -500,7 +500,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                         UpdateNodeSlotEnabled(nodeItem);
 
-                        _changedUpdate.Add((nodeItem, nodePanel));
+                        changedUpdate.Add((nodeItem, nodePanel));
 
                         AddChild(nodePanel);
 
@@ -514,15 +514,15 @@ namespace Biaui.Controls.NodeEditor.Internal
                     {
                         RemoveNodePanel(nodePanel);
 
-                        _changedUpdate.Add((nodeItem, null));
+                        changedUpdate.Add((nodeItem, null));
                     }
                 }
             }
 
-            foreach (var c in _changedUpdate)
+            foreach (var c in changedUpdate.Buffer)
                 AddOrUpdate(c.Item1, c.Item2);
 
-            _changedUpdate.Clear();
+            changedUpdate.Dispose();
         }
 
         private BiaNodePanel FindOrCreateNodePanel()
