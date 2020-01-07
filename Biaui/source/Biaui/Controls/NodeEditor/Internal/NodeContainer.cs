@@ -418,6 +418,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void UpdateChildrenBag(in ImmutableRect_double viewportRect)
         {
+            var inflateX = viewportRect.X - viewportRect.Width * 0.5;
+            var inflateY = viewportRect.Y - viewportRect.Height * 0.5;
+            var inflateW = viewportRect.Width * 2.0;
+            var inflateH = viewportRect.Height * 2.0;
+
+            var inflateViewportRect = new ImmutableRect_double(inflateX, inflateY, inflateW, inflateH);
+
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
             // 対象のitemはまだ_nodeDictに登録されていないので問題ない(再入しない)。
@@ -458,7 +465,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     }
                 }
 
-                if (viewportRect.IntersectsWith(itemRect))
+                if (inflateViewportRect.IntersectsWith(itemRect))
                 {
                     if (nodePanel == null)
                     {
