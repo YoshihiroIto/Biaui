@@ -224,12 +224,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void ClearPreSelectedNode()
         {
-            var preSelectedNodes = new TempBuffer<IBiaNodeItem>(256);
+            var preSelectedNodes = _parent.NodeContainers.SelectMany(x => x.PreSelectedNodes).ToTempBuffer(256);
 
             try
             {
-                preSelectedNodes.AddFrom(_parent.NodeContainers.SelectMany(x => x.PreSelectedNodes));
-
                 foreach (var n in preSelectedNodes.Buffer)
                     n.IsPreSelected = false;
             }
@@ -247,12 +245,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                     ClearSelectedNode();
 
-                var children = new TempBuffer<BiaNodePanel>(256);
+                var children = _parent.NodeContainers.SelectMany(x => x.Children).ToTempBuffer(256);
 
                 try
                 {
-                    children.AddFrom(_parent.NodeContainers.SelectMany(x => x.Children));
-
                     foreach (var child in children.Buffer)
                     {
                         if (child.IsActive == false)
@@ -597,12 +593,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void ClearSelectedNode()
         {
-            var selectedNodes = new TempBuffer<IBiaNodeItem>(256);
+            var selectedNodes = _parent.NodeContainers.SelectMany(x => x.SelectedNodes).ToTempBuffer(256);
 
             try
             {
-                selectedNodes.AddFrom(_parent.NodeContainers.SelectMany(x => x.SelectedNodes));
-
                 foreach (var n in selectedNodes.Buffer)
                     n.IsSelected = false;
             }
@@ -782,14 +776,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 case NotifyCollectionChangedAction.Replace:
                 {
-                    var oldItems = new TempBuffer<IBiaNodeItem>(256);
-                    var newItems = new TempBuffer<IBiaNodeItem>(256);
+                    var oldItems = e.OldItems.Cast<IBiaNodeItem>().ToTempBuffer(256);
+                    var newItems = e.NewItems.Cast<IBiaNodeItem>().ToTempBuffer(256);
 
                     try
                     {
-                        oldItems.AddFrom(e.OldItems.Cast<IBiaNodeItem>());
-                        newItems.AddFrom(e.NewItems.Cast<IBiaNodeItem>());
-
                         if (oldItems.Length != newItems.Length)
                             throw new NotSupportedException();
 

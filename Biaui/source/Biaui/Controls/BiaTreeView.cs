@@ -539,12 +539,10 @@ namespace Biaui.Controls
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            var items = new TempBuffer<T>(128);
+            var items = this.EnumerateChildren<T>().ToTempBuffer(128);
 
             try
             {
-                items.AddFrom(this.EnumerateChildren<T>());
-
                 var index = items.IndexOf(item);
 
                 if (index == -1)

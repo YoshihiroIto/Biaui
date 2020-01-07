@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable CheckNamespace
@@ -125,6 +126,100 @@ namespace Jewelry.Memory
 
             if (toReturn != null)
                 ArrayPool<T>.Shared.Return(toReturn);
+        }
+    }
+
+    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+    public static class TempBufferExtensions
+    {
+        public static TempBuffer<T> ToTempBuffer<T>(this IEnumerable<T> source, Span<T> initialBuffer)
+        {
+            var initialLength = InitialLength(source);
+
+            if (initialLength == -1 || initialLength <= initialBuffer.Length)
+            {
+                var tb = new TempBuffer<T>(initialBuffer);
+
+                tb.AddFrom(source);
+
+                return tb;
+            }
+            else
+            {
+                var tb = new TempBuffer<T>(initialLength);
+
+                tb.AddFrom(source);
+
+                return tb;
+            }
+        }
+
+        public static TempBuffer<T> ToTempBuffer<T>(this IEnumerable<T> source, int initialCapacity = 64)
+        {
+            var maxLength = Math.Max(InitialLength(source), initialCapacity);
+
+            var tb = new TempBuffer<T>(maxLength);
+
+            tb.AddFrom(source);
+
+            return tb;
+        }
+
+        public static TempBuffer<T> ToTempBuffer<T>(this IEnumerable source, Span<T> initialBuffer)
+        {
+            var initialLength = InitialLength<T>(source);
+
+            if (initialLength == -1 || initialLength <= initialBuffer.Length)
+            {
+                var tb = new TempBuffer<T>(initialBuffer);
+
+                tb.AddFrom(source);
+
+                return tb;
+            }
+            else
+            {
+                var tb = new TempBuffer<T>(initialLength);
+
+                tb.AddFrom(source);
+
+                return tb;
+            }
+        }
+
+        public static TempBuffer<T> ToTempBuffer<T>(this IEnumerable source, int initialCapacity = 64)
+        {
+            var maxLength = Math.Max(InitialLength<T>(source), initialCapacity);
+
+            var tb = new TempBuffer<T>(maxLength);
+
+            tb.AddFrom(source);
+
+            return tb;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int InitialLength<T>(IEnumerable<T> source)
+        {
+            if (source is ICollection c1)
+                return c1.Count;
+
+            if (source is ICollection<T> c2)
+                return c2.Count;
+
+            return -1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int InitialLength<T>(IEnumerable source)
+        {
+            if (source is ICollection c1)
+                return c1.Count;
+
+            if (source is ICollection<T> c2)
+                return c2.Count;
+
+            return -1;
         }
     }
 }

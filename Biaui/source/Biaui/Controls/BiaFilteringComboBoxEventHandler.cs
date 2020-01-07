@@ -50,12 +50,10 @@ namespace Biaui.Controls
                 DispatcherPriority.Input,
                 new Action(() =>
                 {
-                    var items = new TempBuffer<ComboBoxItem>(512);
+                    var items = textBox.Parent.Descendants<ComboBoxItem>().ToTempBuffer(512);
 
                     try
                     {
-                        items.AddFrom(textBox.Parent.Descendants<ComboBoxItem>());
-
                         if (items.Length == 0)
                             return;
 
