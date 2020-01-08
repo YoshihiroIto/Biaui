@@ -126,8 +126,11 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 if (_mouseOperator.IsBoxSelect)
                 {
-                    // クリック（面積のないボックス選択）は何もしない
-                    if (_mouseOperator.SelectionRect.HasArea)
+                    if (_mouseOperator.SelectionRect.HasArea == false)
+                    {
+                        // クリック（面積のないボックス選択）は何もしない
+                    }
+                    else
                     {
                         SelectNodes(_parent.TransformRect(_mouseOperator.SelectionRect));
                         ClearPreSelectedNodes();
@@ -259,8 +262,6 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             ++IsEnableUpdateChildrenBagDepth;
             {
-                ClearPreSelectedNodes();
-
                 foreach (var child in Children)
                 {
                     if (child.IsActive == false)
@@ -268,13 +269,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var node = (IBiaNodeItem) child.DataContext;
 
-                    if (HitTest(node, rect) == false)
-                        continue;
-
-                    node.IsPreSelected = true;
+                    node.IsPreSelected = HitTest(node, rect);
                 }
             }
             --IsEnableUpdateChildrenBagDepth;
+
             Debug.Assert(IsEnableUpdateChildrenBagDepth >= 0);
         }
 
