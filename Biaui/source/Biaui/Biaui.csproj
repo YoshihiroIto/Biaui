@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
@@ -8,6 +7,8 @@
 
     <AssemblyName>Biaui</AssemblyName>
     <RootNamespace>Biaui</RootNamespace>
+
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

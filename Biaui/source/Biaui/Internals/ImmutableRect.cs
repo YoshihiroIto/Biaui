@@ -365,7 +365,7 @@ namespace Biaui.Internals
         public bool Equals(ImmutableRect_float other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableRect_float other)
                 return this == other;
@@ -733,7 +733,7 @@ namespace Biaui.Internals
         public bool Equals(ImmutableRect_double other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableRect_double other)
                 return this == other;

@@ -35,7 +35,7 @@ namespace Biaui.Controls.NodeEditor
         public bool Equals(BiaNodeItemSlotPair other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is BiaNodeItemSlotPair other)
                 return this == other;
@@ -86,7 +86,7 @@ namespace Biaui.Controls.NodeEditor
         public bool Equals(BiaNodeItemSlotIdPair other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is BiaNodeItemSlotIdPair other)
                 return this == other;

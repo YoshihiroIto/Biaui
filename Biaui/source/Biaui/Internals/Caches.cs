@@ -142,7 +142,7 @@ namespace Biaui.Internals
         internal static TraversalRequest NextTraversalRequest
             => _NextTraversalRequest ??= new TraversalRequest(FocusNavigationDirection.Next);
 
-        private static TraversalRequest _PreviousTraversalRequest;
-        private static TraversalRequest _NextTraversalRequest;
+        private static TraversalRequest? _PreviousTraversalRequest;
+        private static TraversalRequest? _NextTraversalRequest;
     }
 }
