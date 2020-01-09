@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
@@ -62,8 +63,8 @@ namespace Biaui.Internals
             {
                 _fontLineSpacing = DefaultFontLineSpacing;
 
-                _dotGlyphIndex = DefaultGlyphIndexArray['.'];
-                _dotAdvanceWidth = DefaultAdvanceWidthArray['.'];
+                _dotGlyphIndex = GetDefaultGlyphIndexTable()['.'];
+                _dotAdvanceWidth = GetDefaultAdvanceWidthTable()['.'];
             }
             else
             {
@@ -192,8 +193,10 @@ namespace Biaui.Internals
 
             if (_isDefault)
             {
+                var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
+
                 for (var i = 0; i != text.Length; ++i)
-                    textWidth += DefaultAdvanceWidthArray[text[i]];
+                    textWidth += defaultAdvanceWidthTable[text[i]];
             }
             else
             {
@@ -237,14 +240,17 @@ namespace Biaui.Internals
                 var isTrimmed = false;
                 var newCount = 0;
                 {
+                    var defaultGlyphIndexTable = GetDefaultGlyphIndexTable();
+                    var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
+
                     for (var i = 0; i != textLength; ++i)
                     {
                         var targetChar = text[textStartIndex + i];
 
                         if (_isDefault)
                         {
-                            glyphIndexes[i] = DefaultGlyphIndexArray[targetChar];
-                            advanceWidths[i] = DefaultAdvanceWidthArray[targetChar];
+                            glyphIndexes[i] = defaultGlyphIndexTable[targetChar];
+                            advanceWidths[i] = defaultAdvanceWidthTable[targetChar];
                             textWidth += advanceWidths[i];
                         }
                         else
@@ -398,9 +404,15 @@ namespace Biaui.Internals
                 advanceWidthArray[i] = advanceWidth;
             }
 
+            var glyphIndexByteArray = MemoryMarshal.Cast<ushort, byte>(glyphIndexArray).ToArray();
+            var advanceWidthByteArray = MemoryMarshal.Cast<double, byte>(advanceWidthArray).ToArray();
+
             var sb = new StringBuilder();
 
             sb.AppendLine("// ReSharper disable All");
+            sb.AppendLine("using System;");
+            sb.AppendLine("using System.Runtime.CompilerServices;");
+            sb.AppendLine("using System.Runtime.InteropServices;");            
             sb.AppendLine("namespace Biaui.Internals");
             sb.AppendLine("{");
             sb.AppendLine("internal partial class TextRenderer");
@@ -408,19 +420,47 @@ namespace Biaui.Internals
 
             sb.AppendLine($"private static readonly double DefaultFontLineSpacing = {fontFamily.LineSpacing};");
 
-            sb.AppendLine("private static readonly ushort[] DefaultGlyphIndexArray = {");
-            sb.AppendLine(string.Join(",", glyphIndexArray));
-            sb.AppendLine("};");
+            sb.AppendLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
+            sb.AppendLine("private static ReadOnlySpan<ushort> GetDefaultGlyphIndexTable(){");
+            sb.AppendLine("var byteTable = new ReadOnlySpan<byte>(new byte[] {");
+            sb.AppendLine(JoinStrings(glyphIndexByteArray));
+            sb.AppendLine("});");
+            sb.AppendLine("return MemoryMarshal.Cast<byte, ushort>(byteTable);");
+            sb.AppendLine("}");
 
-            sb.AppendLine("private static readonly double[] DefaultAdvanceWidthArray = {");
-            sb.AppendLine(string.Join(",", advanceWidthArray));
-            sb.AppendLine("};");
+            sb.AppendLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
+            sb.AppendLine("private static ReadOnlySpan<double> GetDefaultAdvanceWidthTable(){");
+            sb.AppendLine("var byteTable = new ReadOnlySpan<byte>(new byte[] {");
+            sb.AppendLine(JoinStrings(advanceWidthByteArray));
+            sb.AppendLine("});");
+            sb.AppendLine("return MemoryMarshal.Cast<byte, double>(byteTable);");
+            sb.AppendLine("}");
 
             sb.AppendLine("}");
             sb.AppendLine("}");
 
             var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRenderer.table.cs");
             File.WriteAllText(outputDir, sb.ToString());
+        }
+
+        private static string JoinStrings<T>(IEnumerable<T> source)
+        {
+            var sb = new StringBuilder();
+
+            var c = 0;
+            foreach (var v in source)
+            {
+               ++c;
+
+               sb.Append($"0x{v:x2}");
+
+                if (c > 0 && (c % 32 == 0))
+                    sb.AppendLine(",");
+                else
+                   sb.Append(',');
+            }
+
+            return sb.ToString();
         }
 #endif
 
