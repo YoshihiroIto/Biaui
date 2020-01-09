@@ -62,7 +62,6 @@ namespace Biaui.Controls.Mock
         private void SetupLog()
         {
             Trace.Listeners.Add(new WpfTraceListener("Trace", _serviceProvider.GetInstance<ILogger>()));
-            Debug.Listeners.Add(new WpfTraceListener("Debug", _serviceProvider.GetInstance<ILogger>()));
 
             PresentationTraceSources.Refresh();
             PresentationTraceSources.DataBindingSource.Listeners.Add(new WpfTraceListener("WPF", _serviceProvider.GetInstance<ILogger>()));

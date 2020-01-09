@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -634,6 +635,7 @@ namespace Biaui.Controls
 
         // ReSharper disable once ConvertToNullCoalescingCompoundAssignment
         private Action FocusThis => _FocusThis ?? (_FocusThis = () => Focus());
+
         private Action _FocusThis;
 
         private void ListBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -706,55 +708,53 @@ namespace Biaui.Controls
             _popup.IsOpen = false;
         }
 
+        [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
         private void MoveSelectedItem(int dir)
         {
             if (ItemsSource == null)
                 return;
 
-            var tempItems = new TempBuffer<object>(128);
+            using var tempItems = new TempBuffer<object>(128);
 
-            try
+            IList items = null;
+
+            int itemsCount;
+            int selectedIndex;
             {
-                IList items = null;
-
-                int itemsCount;
-                int selectedIndex;
+                if (ItemsSource is IList list)
                 {
-                    if (ItemsSource is IList list)
-                    {
-                        items = list;
-                        itemsCount = list.Count;
-                        selectedIndex = list.IndexOf(SelectedItem);
-                    }
-                    else
-                    {
-                        tempItems.AddFrom(ItemsSource);
-                        itemsCount = tempItems.Length;
-                        selectedIndex = tempItems.IndexOf(SelectedItem);
-                    }
-                }
-
-                if (selectedIndex == -1)
-                {
-                    if (itemsCount > 0)
-                    {
-                        var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
-                        item?.Focus();
-
-                        SelectedItem = items != null ? items[0] : tempItems[0];
-                    }
+                    items = list;
+                    itemsCount = list.Count;
+                    selectedIndex = list.IndexOf(SelectedItem);
                 }
                 else
                 {
-                    selectedIndex += dir;
-                    selectedIndex = (selectedIndex, 0, itemsCount - 1).Clamp();
-
-                    SelectedItem = items != null ? items[selectedIndex] : tempItems[selectedIndex];
+                    tempItems.AddFrom(ItemsSource);
+                    itemsCount = tempItems.Length;
+                    selectedIndex = tempItems.IndexOf(SelectedItem);
                 }
             }
-            finally
+
+            if (selectedIndex == -1)
             {
-                tempItems.Dispose();
+                if (itemsCount > 0)
+                {
+                    var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
+                    item?.Focus();
+
+                    SelectedItem = items != null
+                        ? items[0]
+                        : tempItems[0];
+                }
+            }
+            else
+            {
+                selectedIndex += dir;
+                selectedIndex = (selectedIndex, 0, itemsCount - 1).Clamp();
+
+                SelectedItem = items != null
+                    ? items[selectedIndex]
+                    : tempItems[selectedIndex];
             }
         }
 

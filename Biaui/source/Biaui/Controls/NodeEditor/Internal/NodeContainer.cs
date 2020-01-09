@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -208,17 +209,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void ClearPreSelectedNodes()
         {
-            var preSelectedNodes = _parent.NodeContainers.SelectMany(x => x.PreSelectedNodes).ToTempBuffer(256);
+            using var preSelectedNodes = _parent.NodeContainers.SelectMany(x => x.PreSelectedNodes).ToTempBuffer(256);
 
-            try
-            {
-                foreach (var n in preSelectedNodes.Buffer)
-                    n.IsPreSelected = false;
-            }
-            finally
-            {
-                preSelectedNodes.Dispose();
-            }
+            foreach (var n in preSelectedNodes.Buffer)
+                n.IsPreSelected = false;
         }
 
         private void SelectNodes(in ImmutableRect_double rect)
@@ -229,29 +223,22 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (KeyboardHelper.IsPressControl == false)
                     ClearSelectedNodes();
 
-                var children = _parent.NodeContainers.SelectMany(x => x.Children).ToTempBuffer(256);
+                using var children = _parent.NodeContainers.SelectMany(x => x.Children).ToTempBuffer(256);
 
-                try
+                foreach (var child in children.Buffer)
                 {
-                    foreach (var child in children.Buffer)
-                    {
-                        if (child.IsActive == false)
-                            continue;
+                    if (child.IsActive == false)
+                        continue;
 
-                        var node = (IBiaNodeItem) child.DataContext;
+                    var node = (IBiaNodeItem) child.DataContext;
 
-                        if (HitTest(node, rect) == false)
-                            continue;
+                    if (HitTest(node, rect) == false)
+                        continue;
 
-                        if (KeyboardHelper.IsPressControl)
-                            node.IsSelected = !node.IsSelected;
-                        else
-                            node.IsSelected = true;
-                    }
-                }
-                finally
-                {
-                    children.Dispose();
+                    if (KeyboardHelper.IsPressControl)
+                        node.IsSelected = !node.IsSelected;
+                    else
+                        node.IsSelected = true;
                 }
             }
             --IsEnableUpdateChildrenBagDepth;
@@ -414,6 +401,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
+        [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
         private void UpdateChildrenBag(in ImmutableRect_double viewportRect)
         {
             var inflateX = viewportRect.X - viewportRect.Width;
@@ -422,7 +410,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var inflateH = viewportRect.Height * 3.0;
             var inflateViewportRect = new ImmutableRect_double(inflateX, inflateY, inflateW, inflateH);
 
-            var changedUpdate = new TempBuffer<(IBiaNodeItem, BiaNodePanel)>(_nodeDict.Count);
+            using var changedUpdate = new TempBuffer<(IBiaNodeItem, BiaNodePanel)>(_nodeDict.Count);
 
             // メモ：
             // 一見、以降のループ内でitem.SizeのSetterを呼び出し変更通知経由でメソッドに再入するように見えるが、
@@ -524,8 +512,6 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var c in changedUpdate.Buffer)
                 AddOrUpdate(c.Item1, c.Item2);
-
-            changedUpdate.Dispose();
         }
 
         private BiaNodePanel FindOrCreateNodePanel()
@@ -550,17 +536,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void ClearSelectedNodes()
         {
-            var selectedNodes = _parent.NodeContainers.SelectMany(x => x.SelectedNodes).ToTempBuffer(256);
+            using var selectedNodes = _parent.NodeContainers.SelectMany(x => x.SelectedNodes).ToTempBuffer(256);
 
-            try
-            {
-                foreach (var n in selectedNodes.Buffer)
-                    n.IsSelected = false;
-            }
-            finally
-            {
-                selectedNodes.Dispose();
-            }
+            foreach (var n in selectedNodes.Buffer)
+                n.IsSelected = false;
         }
 
         private void UpdateNodeSlotEnabled(bool isStart)
@@ -619,6 +598,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                 Span<int> buffer = stackalloc int[16];
 
                 var enabledSlotIds = new TempBuffer<int>(buffer);
+
+                try
                 {
                     _parent.NodeSlotEnabledChecker.Check(target, args, ref enabledSlotIds);
 
@@ -632,7 +613,10 @@ namespace Biaui.Controls.NodeEditor.Internal
                         target.InternalData().EnableSlots.Add(slot);
                     }
                 }
-                enabledSlotIds.Dispose();
+                finally
+                {
+                    enabledSlotIds.Dispose();
+                }
             }
         }
 
@@ -733,36 +717,28 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 case NotifyCollectionChangedAction.Replace:
                 {
-                    var oldItems = e.OldItems.Cast<IBiaNodeItem>().ToTempBuffer(256);
-                    var newItems = e.NewItems.Cast<IBiaNodeItem>().ToTempBuffer(256);
+                    using var oldItems = e.OldItems.Cast<IBiaNodeItem>().ToTempBuffer(256);
+                    using var newItems = e.NewItems.Cast<IBiaNodeItem>().ToTempBuffer(256);
 
-                    try
+                    if (oldItems.Length != newItems.Length)
+                        throw new NotSupportedException();
+
+                    for (var i = 0; i != oldItems.Length; ++i)
                     {
-                        if (oldItems.Length != newItems.Length)
-                            throw new NotSupportedException();
+                        var oldItem = oldItems[i];
+                        var newItem = newItems[i];
 
-                        for (var i = 0; i != oldItems.Length; ++i)
-                        {
-                            var oldItem = oldItems[i];
-                            var newItem = newItems[i];
+                        var panel = FindPanel(oldItem);
 
-                            var panel = FindPanel(oldItem);
+                        oldItem.PropertyChanged -= NodeItemPropertyChanged;
+                        Remove(oldItem);
 
-                            oldItem.PropertyChanged -= NodeItemPropertyChanged;
-                            Remove(oldItem);
+                        newItem.PropertyChanged += NodeItemPropertyChanged;
+                        AddOrUpdate(newItem, null);
+                        UpdateSelectedNode(newItem);
 
-                            newItem.PropertyChanged += NodeItemPropertyChanged;
-                            AddOrUpdate(newItem, null);
-                            UpdateSelectedNode(newItem);
-
-                            if (panel != null)
-                                RemoveNodePanel(panel);
-                        }
-                    }
-                    finally
-                    {
-                        oldItems.Dispose();
-                        newItems.Dispose();
+                        if (panel != null)
+                            RemoveNodePanel(panel);
                     }
 
                     UpdateChildrenBag(true);

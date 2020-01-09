@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,6 +32,7 @@ namespace Biaui.Controls
             wordTextBox.Dispatcher?.BeginInvoke(new Action(() => wordTextBox.Focus()));
         }
 
+        [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
         private void WordTextBox_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Down &&
@@ -50,43 +52,36 @@ namespace Biaui.Controls
                 DispatcherPriority.Input,
                 new Action(() =>
                 {
-                    var items = textBox.Parent.Descendants<ComboBoxItem>().ToTempBuffer(512);
+                    using var items = textBox.Parent.Descendants<ComboBoxItem>().ToTempBuffer(512);
 
-                    try
+                    if (items.Length == 0)
+                        return;
+
+                    var selectedItem = items.FirstOrDefault(x => x.IsSelected);
+                    var isDown = e.Key == Key.Down;
+
+                    if (selectedItem == null)
                     {
-                        if (items.Length == 0)
-                            return;
+                        var item = isDown
+                            ? items.FirstOrDefault()
+                            : items.LastOrDefault();
 
-                        var selectedItem = items.FirstOrDefault(x => x.IsSelected);
-                        var isDown = e.Key == Key.Down;
-
-                        if (selectedItem == null)
-                        {
-                            var item = isDown
-                                ? items.FirstOrDefault()
-                                : items.LastOrDefault();
-
-                            if (item != null)
-                                item.IsSelected = true;
-                        }
-                        else
-                        {
-                            var selectedItemIndex = items.IndexOf(selectedItem);
-                            var nextIndex = selectedItemIndex + (isDown ? +1 : -1);
-
-                            nextIndex = Math.Max(nextIndex, 0);
-                            nextIndex = Math.Min(nextIndex, items.Length - 1);
-
-                            var nextItem = items[nextIndex];
-                            nextItem.IsSelected = true;
-                        }
-
-                        textBox.Focus();
+                        if (item != null)
+                            item.IsSelected = true;
                     }
-                    finally
+                    else
                     {
-                        items.Dispose();
+                        var selectedItemIndex = items.IndexOf(selectedItem);
+                        var nextIndex = selectedItemIndex + (isDown ? +1 : -1);
+
+                        nextIndex = Math.Max(nextIndex, 0);
+                        nextIndex = Math.Min(nextIndex, items.Length - 1);
+
+                        var nextItem = items[nextIndex];
+                        nextItem.IsSelected = true;
                     }
+
+                    textBox.Focus();
                 }));
         }
 

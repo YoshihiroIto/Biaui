@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -533,31 +534,25 @@ namespace Biaui.Controls
             ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
+        [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
         private T GetRelativeItem<T>(T item, int relativePosition)
             where T : ItemsControl
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            var items = this.EnumerateChildren<T>().ToTempBuffer(128);
+            using var items = this.EnumerateChildren<T>().ToTempBuffer(128);
 
-            try
-            {
-                var index = items.IndexOf(item);
+            var index = items.IndexOf(item);
 
-                if (index == -1)
-                    return null;
-
-                var relativeIndex = index + relativePosition;
-                if (relativeIndex >= 0 && relativeIndex < items.Length)
-                    return items[relativeIndex];
-
+            if (index == -1)
                 return null;
-            }
-            finally
-            {
-                items.Dispose();
-            }
+
+            var relativeIndex = index + relativePosition;
+            if (relativeIndex >= 0 && relativeIndex < items.Length)
+                return items[relativeIndex];
+
+            return null;
         }
     }
 }

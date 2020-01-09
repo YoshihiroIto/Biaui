@@ -3,20 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Controls.Mock", "Biaui.Controls.Mock\Biaui.Controls.Mock.csproj", "{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Test", "Biaui.Controls.Test\Biaui.Controls.Test.csproj", "{6B98094E-DB2C-4829-A3DF-0BF4072C027B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E} = {FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Mock.Foundation", "Biaui.Controls.Mock.Foundation\Biaui.Controls.Mock.Foundation.csproj", "{6D462CD9-DE42-489C-B914-58CBA2D560F9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui", "Biaui\Biaui.csproj", "{242505BF-A389-4A70-ACBF-27A2DEBB5E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Showcase", "Biaui.Showcase\Biaui.Showcase.csproj", "{DE520DBC-4796-430D-803B-D1BFA52E97CE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Extension", "Biaui.Extension\Biaui.Extension.csproj", "{814DF7DE-879A-4375-B42F-559AB0A1730C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Showcase", "Biaui.Showcase\Biaui.Showcase.csproj", "{6E37C028-A7B4-4BC6-97ED-2DC055F77BEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Mock", "Biaui.Controls.Mock\Biaui.Controls.Mock.csproj", "{3E71EEBB-C868-48D4-9282-EA990B9EF772}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Mock.Foundation", "Biaui.Controls.Mock.Foundation\Biaui.Controls.Mock.Foundation.csproj", "{269E844D-4581-49EF-A6BA-F6ED62070BCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,30 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD9EE7C3-7EFA-4FC2-941D-5FFBDA45A20E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B98094E-DB2C-4829-A3DF-0BF4072C027B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D462CD9-DE42-489C-B914-58CBA2D560F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{242505BF-A389-4A70-ACBF-27A2DEBB5E70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE520DBC-4796-430D-803B-D1BFA52E97CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{814DF7DE-879A-4375-B42F-559AB0A1730C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{814DF7DE-879A-4375-B42F-559AB0A1730C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{814DF7DE-879A-4375-B42F-559AB0A1730C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{814DF7DE-879A-4375-B42F-559AB0A1730C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E37C028-A7B4-4BC6-97ED-2DC055F77BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E37C028-A7B4-4BC6-97ED-2DC055F77BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E37C028-A7B4-4BC6-97ED-2DC055F77BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E37C028-A7B4-4BC6-97ED-2DC055F77BEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E71EEBB-C868-48D4-9282-EA990B9EF772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E71EEBB-C868-48D4-9282-EA990B9EF772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E71EEBB-C868-48D4-9282-EA990B9EF772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E71EEBB-C868-48D4-9282-EA990B9EF772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{269E844D-4581-49EF-A6BA-F6ED62070BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{269E844D-4581-49EF-A6BA-F6ED62070BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{269E844D-4581-49EF-A6BA-F6ED62070BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{269E844D-4581-49EF-A6BA-F6ED62070BCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
@@ -78,15 +79,10 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaHighlightTextBlock)));
         }
 
+        [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
         protected override void OnRender(DrawingContext dc)
         {
-            var ss = new StringSplitter(
-#if NETCOREAPP3_1 || NETCOREAPP3_0
-                stackalloc StringSplitter.StringSpan[32]
-#else
-                8
-#endif
-            );
+            using var ss = new StringSplitter(stackalloc StringSplitter.StringSpan[32]);
 
             var wordsArray = ss.Split(Words, ' ', StringSplitOptions.RemoveEmptyEntries);
 
@@ -94,8 +90,6 @@ namespace Biaui.Controls
                 base.OnRender(dc);
             else
                 RenderHighlight(dc, wordsArray, Words);
-
-            ss.Dispose();
         }
 
         private void RenderHighlight(DrawingContext dc, ReadOnlySpan<StringSplitter.StringSpan> wordsSpans, string words)
@@ -113,22 +107,13 @@ namespace Biaui.Controls
             {
                 Array.Clear(textStates, 0, Text.Length);
 
-                ReadOnlySpan<char> textSpan =
-#if NETCOREAPP3_1 || NETCOREAPP3_0
-                    Text;
-#else
-                    new ReadOnlySpan<char>(Text.ToCharArray());
-#endif
+                ReadOnlySpan<char> textSpan = Text;
 
                 foreach (var wordsSpan in wordsSpans)
                 {
                     var stateOffset = 0;
 
-#if NETCOREAPP3_1 || NETCOREAPP3_0
                     var wordSpan = wordsSpan.ToSpan(words);
-#else
-                    var wordSpan = new ReadOnlySpan<char>(words.Substring(wordsSpan.Start, wordsSpan.Length).ToCharArray());
-#endif
 
                     while (true)
                     {
