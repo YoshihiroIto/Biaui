@@ -384,10 +384,10 @@ namespace Biaui.Internals
 
             toGlyphMap.TryGetValue(' ', out var dummyIndex);
 
-            var glyphIndexArray = new ushort[char.MaxValue];
-            var advanceWidthArray = new double[char.MaxValue];
+            var glyphIndexArray = new ushort[char.MaxValue + 1];
+            var advanceWidthArray = new double[char.MaxValue + 1];
 
-            for (var i = 0; i != char.MaxValue; ++i)
+            for (var i = 0; i <= char.MaxValue; ++i)
             {
                 if (toGlyphMap.TryGetValue(i, out var glyphIndex) == false)
                     glyphIndex = dummyIndex;
