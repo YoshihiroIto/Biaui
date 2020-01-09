@@ -10,6 +10,7 @@ using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
 using Biaui.Controls.NodeEditor;
 using Biaui.Interfaces;
+using Jewelry.Memory;
 
 namespace Biaui.Controls.Mock.Presentation
 {
@@ -699,24 +700,26 @@ namespace Biaui.Controls.Mock.Presentation
             return true;
         }
 
-        public IEnumerable<int> Check(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args)
+        public void Check(IBiaNodeItem target, in BiaNodeSlotEnabledCheckerArgs args, ref TempBuffer<int> result)
         {
             switch (args.Timing)
             {
                 case BiaNodeSlotEnableTiming.Default:
-                    return target.Slots.Keys;
+                    result.AddFrom(target.Slots.Keys);
+                    return;
 
                 case BiaNodeSlotEnableTiming.ConnectionStarting:
 
                     // 開始ノードが CircleNodeの場合相手もCircleNodeに限る
                     if (args.Source.Item is CircleNode)
                     {
-                        return target is CircleNode
-                            ? target.Slots.Keys
-                            : Enumerable.Empty<int>();
+                        if (target is CircleNode)
+                            result.AddFrom(target.Slots.Keys);
                     }
                     else
-                        return target.Slots.Keys;
+                        result.AddFrom(target.Slots.Keys);
+
+                    return;
 
                 default:
                     throw new ArgumentOutOfRangeException();
