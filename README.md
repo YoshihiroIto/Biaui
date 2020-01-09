@@ -19,15 +19,17 @@ WPF dark theme and controls for .NET Core 3.1.
 * Some lightweight standard controls
     * Reimplementation. about x20-30 faster than standard WPF controls
 
+## Reference External Assets
+
+* Jewelry
+    * https://github.com/YoshihiroIto/Jewelry
+    * MIT License
+
 
 ## Including External Assets
 
 * WPF
     * https://github.com/dotnet/wpf
-    * MIT License
-
-* Jewelry
-    * https://github.com/YoshihiroIto/Jewelry
     * MIT License
 
 * Material Design icons by Google
@@ -38,7 +40,7 @@ WPF dark theme and controls for .NET Core 3.1.
     * https://fonts.google.com/specimen/Muli
     * SIL OPEN FONT LICENSE 1.1
 
-* 源真ゴシック
+* Genshin Gothic
     * http://jikasei.me/font/genshin
     * SIL OPEN FONT LICENSE 1.1
 
