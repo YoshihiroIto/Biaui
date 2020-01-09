@@ -16,14 +16,14 @@ namespace Biaui.Interfaces
 
         Size Size { get; set; }
 
-        IReadOnlyDictionary<int, BiaNodeSlot> Slots { get; set; }
+        IReadOnlyDictionary<int, BiaNodeSlot>? Slots { get; set; }
 
-        object InternalData { get; set; }
+        object? InternalData { get; set; }
 
         BiaNodePanelHitType HitType { get; }
         BiaNodePanelLayer Layer { get; }
 
-        Func<BiaNodeSlot, Point> MakeSlotPos{ get; }        // nullでデフォルト動作になる
+        Func<BiaNodeSlot, Point>? MakeSlotPos{ get; }        // nullでデフォルト動作になる
 
         bool CanMoveByDragging(CanMoveByDraggingArgs args);
     }
@@ -31,7 +31,7 @@ namespace Biaui.Interfaces
     public class CanMoveByDraggingArgs
     {
         public readonly IEnumerable<IBiaNodeItem> SelectedNodes;
-        public object UserData;
+        public object? UserData;
 
         public CanMoveByDraggingArgs(IEnumerable<IBiaNodeItem> selectedNodes)
         {

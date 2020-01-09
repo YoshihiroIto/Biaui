@@ -49,7 +49,7 @@ namespace Biaui.Internals
             => this == other;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableVec2_float other)
                 return this == other;
@@ -137,7 +137,7 @@ namespace Biaui.Internals
             => this == other;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableVec2_double other)
                 return this == other;

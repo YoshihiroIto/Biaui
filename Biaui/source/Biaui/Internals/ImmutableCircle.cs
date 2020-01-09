@@ -31,7 +31,7 @@ namespace Biaui.Internals
         public bool Equals(ImmutableCircle_float other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableCircle_float other)
                 return this == other;
@@ -67,7 +67,7 @@ namespace Biaui.Internals
         public bool Equals(ImmutableCircle_double other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableCircle_double other)
                 return this == other;

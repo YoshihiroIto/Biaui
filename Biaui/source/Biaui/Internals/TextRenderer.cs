@@ -19,7 +19,7 @@ namespace Biaui.Internals
 
         static TextRenderer()
         {
-            var fontFamily = Application.Current.FindResource("BiauiFontFamily") as FontFamily;
+            var fontFamily = (FontFamily)Application.Current.FindResource("BiauiFontFamily");
             var fontSize = (double) TextElement.FontSizeProperty.DefaultMetadata.DefaultValue;
 
             Default = new TextRenderer(
@@ -200,6 +200,10 @@ namespace Biaui.Internals
             }
             else
             {
+                Debug.Assert(_glyphDataCache != null);
+                Debug.Assert(_toGlyphMap != null);
+                Debug.Assert(_advanceWidthsDict != null);
+
                 for (var i = 0; i != text.Length; ++i)
                 {
                     if (_glyphDataCache.TryGetValue(text[i], out var data) == false)
@@ -255,6 +259,10 @@ namespace Biaui.Internals
                         }
                         else
                         {
+                            Debug.Assert(_glyphDataCache != null);
+                            Debug.Assert(_toGlyphMap != null);
+                            Debug.Assert(_advanceWidthsDict != null);
+
                             if (_glyphDataCache.TryGetValue(targetChar, out var data) == false)
                             {
                                 if (_toGlyphMap.TryGetValue(targetChar, out data.GlyphIndex) == false)
@@ -470,14 +478,14 @@ namespace Biaui.Internals
 
         private readonly LruCache<int, TranslateTransform> _translateCache = new LruCache<int, TranslateTransform>(1000, false);
 
-        private readonly IDictionary<int, ushort> _toGlyphMap;
-        private readonly IDictionary<ushort, double> _advanceWidthsDict;
+        private readonly IDictionary<int, ushort>? _toGlyphMap;
+        private readonly IDictionary<ushort, double>? _advanceWidthsDict;
 
         // 最大65536エントリ
-        private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)> _glyphDataCache;
+        private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>? _glyphDataCache;
 
         private readonly bool _isDefault;
-        private readonly GlyphTypeface _glyphTypeface;
+        private readonly GlyphTypeface? _glyphTypeface;
         private readonly ushort _dotGlyphIndex;
         private readonly double _dotAdvanceWidth;
         private readonly double _fontSize;

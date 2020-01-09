@@ -18,7 +18,7 @@ namespace Biaui.Interfaces
 
         BiaNodeLinkStyle Style { get; set; }
 
-        object InternalData { get; set; }
+        object? InternalData { get; set; }
 
         bool IsVisible { get; }
     }
