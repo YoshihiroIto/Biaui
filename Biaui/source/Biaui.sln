@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Mock", "Biau
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Mock.Foundation", "Biaui.Controls.Mock.Foundation\Biaui.Controls.Mock.Foundation.csproj", "{269E844D-4581-49EF-A6BA-F6ED62070BCB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Test", "Biaui.Controls.Test\Biaui.Controls.Test.csproj", "{534A675A-95A1-43C3-BDB9-CC4D43C15DE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{269E844D-4581-49EF-A6BA-F6ED62070BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{269E844D-4581-49EF-A6BA-F6ED62070BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{269E844D-4581-49EF-A6BA-F6ED62070BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{534A675A-95A1-43C3-BDB9-CC4D43C15DE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{534A675A-95A1-43C3-BDB9-CC4D43C15DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{534A675A-95A1-43C3-BDB9-CC4D43C15DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{534A675A-95A1-43C3-BDB9-CC4D43C15DE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
