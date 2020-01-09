@@ -61,7 +61,7 @@ namespace Biaui.Controls.Internals
             if (_children.Count == 0)
                 return;
 
-            if (Equals(_children[_children.Count - 1], child))
+            if (Equals(_children[^1], child))
                 return;
 
             _children.Remove(child);

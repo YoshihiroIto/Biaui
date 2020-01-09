@@ -26,8 +26,8 @@ namespace Biaui.Controls.Mock.Foundation
 
                 _logger.Info($"Read: {path}");
 
-                using (var s = new FileStream(path, FileMode.Open, FileAccess.Read))
-                    return await JsonSerializer.DeserializeAsync<T>(s).ConfigureAwait(false);
+                await using var s = new FileStream(path, FileMode.Open, FileAccess.Read);
+                return await JsonSerializer.DeserializeAsync<T>(s).ConfigureAwait(false);
             }
             catch (System.Exception e)
             {
@@ -44,8 +44,8 @@ namespace Biaui.Controls.Mock.Foundation
 
                 SetupDir(path);
 
-                using (var s = new FileStream(path, FileMode.Create, FileAccess.Write))
-                    await JsonSerializer.SerializeAsync(s, target).ConfigureAwait(false);
+                await using var s = new FileStream(path, FileMode.Create, FileAccess.Write);
+                await JsonSerializer.SerializeAsync(s, target).ConfigureAwait(false);
             }
             catch (System.Exception e)
             {

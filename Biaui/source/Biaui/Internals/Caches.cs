@@ -137,12 +137,10 @@ namespace Biaui.Internals
         private static readonly Dictionary<int, SolidColorBrush> _solidColorBrushes = new Dictionary<int, SolidColorBrush>();
 
         internal static TraversalRequest PreviousTraversalRequest
-            => _PreviousTraversalRequest ??
-               (_PreviousTraversalRequest = new TraversalRequest(FocusNavigationDirection.Previous));
+            => _PreviousTraversalRequest ??= new TraversalRequest(FocusNavigationDirection.Previous);
 
         internal static TraversalRequest NextTraversalRequest
-            => _NextTraversalRequest ??
-               (_NextTraversalRequest = new TraversalRequest(FocusNavigationDirection.Next));
+            => _NextTraversalRequest ??= new TraversalRequest(FocusNavigationDirection.Next);
 
         private static TraversalRequest _PreviousTraversalRequest;
         private static TraversalRequest _NextTraversalRequest;

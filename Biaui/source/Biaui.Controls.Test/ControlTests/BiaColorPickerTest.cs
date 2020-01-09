@@ -26,6 +26,7 @@ namespace Biaui.Controls.Test.ControlTests
             _mockApp.Check();
         }
 
+        // ReSharper disable once UnusedMember.Local
         private WPFBiaColorPicker FindControl(string name)
         {
             var ctrl = new WPFBiaColorPicker(_mockApp.MainWindow.LogicalTree().ByBinding(name).Single());

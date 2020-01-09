@@ -259,6 +259,7 @@
                                          HorizontalAlignment="Left"
                                          Spacing="8">
                     <controls:BiaButton Content="A" />
+                    <!--  ReSharper disable once MarkupAttributeTypo  -->
                     <controls:BiaButton Content="ABCDEFG" />
                 </controls:BiaUniformGrid>
 
@@ -266,6 +267,7 @@
                                          HorizontalAlignment="Left"
                                          Spacing="8">
                     <Button Content="A" />
+                    <!--  ReSharper disable once MarkupAttributeTypo  -->
                     <Button Content="ABCDEFG" />
                 </controls:BiaUniformGrid>
 

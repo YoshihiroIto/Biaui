@@ -32,8 +32,8 @@ namespace Biaui.Showcase
             TextArea.SelectionCornerRadius = 0;
             TextArea.SelectionBorder = null;
 
-            using (var reader = new XmlTextReader(new MemoryStream(Properties.Resources.CSharp_Mode)))
-                SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+            using var reader = new XmlTextReader(new MemoryStream(Properties.Resources.CSharp_Mode));
+            SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
         }
 
         protected override void OnTextChanged(EventArgs e)

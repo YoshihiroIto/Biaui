@@ -192,9 +192,9 @@ namespace Biaui.Controls.Mock.Presentation
                 if (Nodes.Count == 0)
                     return;
 
-                var removedNode = Nodes[Nodes.Count - 1];
+                var removedNode = Nodes[^1];
 
-                Nodes[Nodes.Count - 1] =
+                Nodes[^1] =
                     (replaceCount & 1) == 0
                         ? new ColorNode
                         {
