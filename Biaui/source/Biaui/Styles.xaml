@@ -28,7 +28,10 @@
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/TreeView.xaml" />
 
         <!--  Controls  -->
-        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerStyle.xaml" />
-        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerLightweightStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerWheelStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowDialogStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowTemplatedDialogStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowSpaceSavingStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
