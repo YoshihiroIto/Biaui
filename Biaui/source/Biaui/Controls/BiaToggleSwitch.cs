@@ -42,7 +42,7 @@ namespace Biaui.Controls
 
         #region EnabledLabel
         
-        public string EnabledLabel
+        public string? EnabledLabel
         {
             get => _EnabledLabel;
             set
@@ -52,7 +52,7 @@ namespace Biaui.Controls
             }
         }
         
-        private string _EnabledLabel;
+        private string? _EnabledLabel;
         
         public static readonly DependencyProperty EnabledLabelProperty =
             DependencyProperty.Register(
@@ -71,7 +71,7 @@ namespace Biaui.Controls
 
         #region DisabledLabel
         
-        public string DisabledLabel
+        public string? DisabledLabel
         {
             get => _DisabledLabel;
             set
@@ -81,7 +81,7 @@ namespace Biaui.Controls
             }
         }
         
-        private string _DisabledLabel;
+        private string? _DisabledLabel;
         
         public static readonly DependencyProperty DisabledLabelProperty =
             DependencyProperty.Register(

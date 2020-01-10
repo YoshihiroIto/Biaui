@@ -17,8 +17,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             InternalBiaNodeLinkData internalData,
             Span<ImmutableVec2_double> work)
         {
-            var u1 = new SlotUnit(pos1, item1, internalData.Slot1);
-            var u2 = new SlotUnit(pos2, item2, internalData.Slot2);
+            var u1 = new SlotUnit(pos1, item1, internalData.Slot1!);
+            var u2 = new SlotUnit(pos2, item2, internalData.Slot2!);
 
             if (u1.Slot.Dir != u2.Slot.Dir &&
                 u1.IsHorizontal &&
@@ -347,23 +347,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             private ImmutableVec2_double DirVector(double length)
             {
-                switch (Slot.Dir)
+                return Slot.Dir switch
                 {
-                    case BiaNodeSlotDir.Left:
-                        return new ImmutableVec2_double(-length, 0);
-
-                    case BiaNodeSlotDir.Top:
-                        return new ImmutableVec2_double(0, -length);
-
-                    case BiaNodeSlotDir.Right:
-                        return new ImmutableVec2_double(+length, 0);
-
-                    case BiaNodeSlotDir.Bottom:
-                        return new ImmutableVec2_double(0, +length);
-
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(Slot.Dir), Slot.Dir, null);
-                }
+                    BiaNodeSlotDir.Left => new ImmutableVec2_double(-length, 0),
+                    BiaNodeSlotDir.Top => new ImmutableVec2_double(0, -length),
+                    BiaNodeSlotDir.Right => new ImmutableVec2_double(+length, 0),
+                    BiaNodeSlotDir.Bottom => new ImmutableVec2_double(0, +length),
+                    _ => throw new ArgumentOutOfRangeException(nameof(Slot.Dir), Slot.Dir, null)
+                };
             }
         }
 

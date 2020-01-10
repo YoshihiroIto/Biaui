@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Biaui.Internals;
@@ -70,7 +71,7 @@ namespace Biaui.Controls.Internals
                 new FrameworkPropertyMetadata(typeof(SystemButton)));
         }
 
-        private BiaWindow _parentWindow;
+        private BiaWindow? _parentWindow;
 
         protected override void OnInitialized(EventArgs e)
         {
@@ -84,7 +85,7 @@ namespace Biaui.Controls.Internals
             MakeVisibility();
         }
 
-        private void ParentWindowOnStateChanged(object sender, EventArgs e)
+        private void ParentWindowOnStateChanged(object? sender, EventArgs e)
         {
             MakeVisibility();
         }
@@ -92,6 +93,8 @@ namespace Biaui.Controls.Internals
         protected override void OnClick()
         {
             base.OnClick();
+
+            Debug.Assert(_parentWindow != null);
 
             switch (WindowAction)
             {
@@ -134,6 +137,8 @@ namespace Biaui.Controls.Internals
                 Visibility = Visibility.Collapsed;
                 return;
             }
+
+            Debug.Assert(_parentWindow != null);
 
             switch (WindowAction)
             {

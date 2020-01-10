@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
+#nullable enable
+
 namespace Biaui.Internals
 {
     public readonly struct ImmutableRect_float : IEquatable<ImmutableRect_float>

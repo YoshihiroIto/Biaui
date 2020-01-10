@@ -54,23 +54,23 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal bool IsMoved { get; private set; }
 
-        internal event MouseButtonEventHandler PrePreviewMouseLeftButtonDown;
-        internal event MouseButtonEventHandler PostPreviewMouseLeftButtonDown;
+        internal event MouseButtonEventHandler? PrePreviewMouseLeftButtonDown;
+        internal event MouseButtonEventHandler? PostPreviewMouseLeftButtonDown;
 
-        internal event MouseButtonEventHandler PrePreviewMouseLeftButtonUp;
-        internal event MouseButtonEventHandler PostPreviewMouseLeftButtonUp;
+        internal event MouseButtonEventHandler? PrePreviewMouseLeftButtonUp;
+        internal event MouseButtonEventHandler? PostPreviewMouseLeftButtonUp;
 
-        internal event MouseButtonEventHandler PreMouseLeftButtonDown;
-        internal event MouseButtonEventHandler PostMouseLeftButtonDown;
+        internal event MouseButtonEventHandler? PreMouseLeftButtonDown;
+        internal event MouseButtonEventHandler? PostMouseLeftButtonDown;
 
-        internal event MouseButtonEventHandler PreMouseLeftButtonUp;
-        internal event MouseButtonEventHandler PostMouseLeftButtonUp;
+        internal event MouseButtonEventHandler? PreMouseLeftButtonUp;
+        internal event MouseButtonEventHandler? PostMouseLeftButtonUp;
 
-        internal event MouseEventHandler PreMouseMove;
-        internal event MouseEventHandler PostMouseMove;
+        internal event MouseEventHandler? PreMouseMove;
+        internal event MouseEventHandler? PostMouseMove;
 
-        internal event MouseWheelEventHandler PreMouseWheel;
-        internal event MouseWheelEventHandler PostMouseWheel;
+        internal event MouseWheelEventHandler? PreMouseWheel;
+        internal event MouseWheelEventHandler? PostMouseWheel;
 
         internal void InvokePostMouseLeftButtonDown(MouseButtonEventArgs e) => PostMouseLeftButtonDown?.Invoke(this, e);
 
@@ -268,11 +268,11 @@ namespace Biaui.Controls.NodeEditor.Internal
             public Point MousePos { get; set; }
         }
 
-        internal event EventHandler PanelBeginMoving;
-        internal event EventHandler PanelEndMoving;
-        internal event EventHandler<PanelMovingEventArgs> PanelMoving;
+        internal event EventHandler? PanelBeginMoving;
+        internal event EventHandler? PanelEndMoving;
+        internal event EventHandler<PanelMovingEventArgs>? PanelMoving;
 
-        internal event EventHandler<LinkMovingEventArgs> LinkMoving;
+        internal event EventHandler<LinkMovingEventArgs>? LinkMoving;
 
         private readonly PanelMovingEventArgs _PanelMovingEventArgs = new PanelMovingEventArgs();
         private readonly LinkMovingEventArgs _LinkMovingEventArgs = new LinkMovingEventArgs();

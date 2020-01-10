@@ -9,7 +9,7 @@ namespace Biaui.Controls
     {
         #region Text
 
-        public string Text
+        public string? Text
         {
             get => _Text;
             set
@@ -19,7 +19,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Text;
+        private string? _Text;
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(BiaTextBlock),
@@ -39,7 +39,7 @@ namespace Biaui.Controls
 
         #region Foreground
 
-        public Brush Foreground
+        public Brush? Foreground
         {
             get => _Foreground;
             set
@@ -49,7 +49,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground;
+        private Brush? _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaTextBlock),
@@ -80,15 +80,17 @@ namespace Biaui.Controls
             if (IsHitTestVisible)
                 dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
 
-            TextRenderer.Default.Draw(
-                this,
-                Text,
-                0, 0,
-                Foreground,
-                dc,
-                ActualWidth,
-                TextAlignment.Left
-            );
+            if (Text != null &&
+                Foreground != null)
+                TextRenderer.Default.Draw(
+                    this,
+                    Text,
+                    0, 0,
+                    Foreground,
+                    dc,
+                    ActualWidth,
+                    TextAlignment.Left
+                );
         }
 
         private double _textWidth;
@@ -100,7 +102,7 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            _textWidth = this.RoundLayoutValue(Math.Ceiling(TextRenderer.Default.CalcWidth(Text)));
+            _textWidth = string.IsNullOrEmpty(Text) ? 0 : this.RoundLayoutValue(Math.Ceiling(TextRenderer.Default.CalcWidth(Text)));
         }
     }
 }

@@ -6,6 +6,8 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
+#nullable enable
+
 namespace Biaui.Internals
 {
     [DebuggerDisplay("X:{CenterX}, Y:{CenterY}, Radius:{Radius}")]

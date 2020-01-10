@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using Biaui.Interfaces;
@@ -42,6 +44,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal static ImmutableVec2_double MakeSlotPosDefault(this IBiaNodeItem nodeItem, BiaNodeSlot slot)
         {
+            Debug.Assert(slot != null);
+
             if (nodeItem.MakeSlotPos != null)
             {
                 var p = nodeItem.MakeSlotPos(slot);
@@ -56,7 +60,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return new ImmutableVec2_double(itemPos.X + slotLocalPos.X, itemPos.Y + slotLocalPos.Y);
         }
 
-        internal static BiaNodeSlot FindSlotFromPos(this IBiaNodeItem nodeItem, in ImmutableVec2_double pos)
+        internal static BiaNodeSlot? FindSlotFromPos(this IBiaNodeItem nodeItem, in ImmutableVec2_double pos)
         {
             if (nodeItem.Slots == null)
                 return null;
@@ -75,7 +79,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             return null;
         }
 
-        internal static BiaNodeSlot FindSlotFromId(this IBiaNodeItem nodeItem, int slotId)
+        internal static BiaNodeSlot? FindSlotFromId(this IBiaNodeItem nodeItem, int slotId)
         {
             if (nodeItem.Slots == null)
                 return null;
@@ -88,9 +92,9 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal static IEnumerable<BiaNodeSlot> EnabledSlots(this IBiaNodeItem nodeItem)
         {
-            return nodeItem.InternalData().EnableSlots != null
-                ? nodeItem.InternalData().EnableSlots
-                : nodeItem.Slots.Values;
+            return nodeItem.InternalData().EnableSlots ??
+                   nodeItem.Slots?.Values ??
+                   Enumerable.Empty<BiaNodeSlot>();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Biaui.Controls.NodeEditor
     {
         #region NodesSource
 
-        public IEnumerable NodesSource
+        public IEnumerable? NodesSource
         {
             get => _NodesSource;
             set
@@ -36,7 +36,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private IEnumerable _NodesSource;
+        private IEnumerable? _NodesSource;
 
         public static readonly DependencyProperty NodesSourceProperty =
             DependencyProperty.Register(nameof(NodesSource), typeof(IEnumerable),
@@ -54,7 +54,7 @@ namespace Biaui.Controls.NodeEditor
 
         #region LinksSource
 
-        public IEnumerable LinksSource
+        public IEnumerable? LinksSource
         {
             get => _LinksSource;
             set
@@ -64,7 +64,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private IEnumerable _LinksSource;
+        private IEnumerable? _LinksSource;
 
         public static readonly DependencyProperty LinksSourceProperty =
             DependencyProperty.Register(nameof(LinksSource), typeof(IEnumerable),
@@ -142,7 +142,7 @@ namespace Biaui.Controls.NodeEditor
 
         #region NodeSlotEnabledChecker
 
-        public IBiaNodeSlotEnabledChecker NodeSlotEnabledChecker
+        public IBiaNodeSlotEnabledChecker? NodeSlotEnabledChecker
         {
             get => _nodeSlotEnabledChecker;
             set
@@ -152,7 +152,7 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private IBiaNodeSlotEnabledChecker _nodeSlotEnabledChecker;
+        private IBiaNodeSlotEnabledChecker? _nodeSlotEnabledChecker;
 
         public static readonly DependencyProperty NodeSlotEnabledCheckerProperty =
             DependencyProperty.Register(
@@ -400,25 +400,25 @@ namespace Biaui.Controls.NodeEditor
 
         public bool IsNodeSlotDragging { get; internal set; }
 
-        public event EventHandler<NodeLinkStartingEventArgs> NodeLinkStarting;
+        public event EventHandler<NodeLinkStartingEventArgs>? NodeLinkStarting;
 
-        public event EventHandler<NodeLinkCompletedEventArgs> NodeLinkCompleted;
+        public event EventHandler<NodeLinkCompletedEventArgs>? NodeLinkCompleted;
 
-        public event EventHandler PropertyEditStarting;
+        public event EventHandler? PropertyEditStarting;
 
-        public event EventHandler PropertyEditCompleted;
+        public event EventHandler? PropertyEditCompleted;
 
-        public event EventHandler ScaleTransformChanged;
+        public event EventHandler? ScaleTransformChanged;
 
-        public event EventHandler TranslateTransformChanged;
+        public event EventHandler? TranslateTransformChanged;
 
-        internal event EventHandler NodeItemMoved;
+        internal event EventHandler? NodeItemMoved;
 
-        internal event EventHandler NodesSourceChanging;
+        internal event EventHandler? NodesSourceChanging;
 
-        internal event EventHandler LinksSourceChanging;
+        internal event EventHandler? LinksSourceChanging;
 
-        internal event EventHandler LinkChanged;
+        internal event EventHandler? LinkChanged;
 
         private bool _isInTransformChanging;
 
@@ -494,18 +494,15 @@ namespace Biaui.Controls.NodeEditor
         }
 
         private void UpdateLinksSource(
-            IEnumerable oldSource,
-            IEnumerable newSource)
+            IEnumerable? oldSource,
+            IEnumerable? newSource)
         {
             LinksSourceChanging?.Invoke(this, EventArgs.Empty);
 
-            var observableOldSource = oldSource as INotifyCollectionChanged;
-            var observableNewSource = newSource as INotifyCollectionChanged;
-
-            if (observableOldSource != null)
+            if (oldSource is INotifyCollectionChanged observableOldSource)
                 observableOldSource.CollectionChanged -= LinksSourceOnCollectionChanged;
 
-            if (observableNewSource != null)
+            if (newSource is INotifyCollectionChanged observableNewSource)
                 observableNewSource.CollectionChanged += LinksSourceOnCollectionChanged;
 
             //////////////////////////////////////////////////////////////////////////////
@@ -604,7 +601,7 @@ namespace Biaui.Controls.NodeEditor
                 Debug.Assert(nodeContainer.IsEnableUpdateChildrenBagDepth >= 0);
 
                 if (nodeContainer.IsEnableUpdateChildrenBagDepth == 0)
-                    nodeContainer.UpdateChildrenBag(true);
+                    nodeContainer.UpdateChildrenBag();
             }
         }
 

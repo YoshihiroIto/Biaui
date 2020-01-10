@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace Biaui.Controls.NodeEditor
 {
@@ -17,10 +18,12 @@ namespace Biaui.Controls.NodeEditor
 
         public static string ToString(int id)
         {
-            if (IdToStringDic.TryGetValue(id, out var s) == false)
+            if (IdToStringDic.TryGetValue(id, out var v) == false)
                 throw new Exception();
 
-            return s;
+            Debug.Assert(v != null);
+
+            return v;
         }
 
         private static readonly ConcurrentDictionary<int, string> IdToStringDic = new ConcurrentDictionary<int, string>();

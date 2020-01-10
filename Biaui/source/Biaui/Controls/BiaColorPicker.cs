@@ -469,7 +469,7 @@ namespace Biaui.Controls
 
         #region StartedContinuousEditingCommand
 
-        public ICommand StartedContinuousEditingCommand
+        public ICommand? StartedContinuousEditingCommand
         {
             get => _StartedContinuousEditingCommand;
             set
@@ -479,7 +479,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedContinuousEditingCommand;
+        private ICommand? _StartedContinuousEditingCommand;
 
         public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -498,7 +498,7 @@ namespace Biaui.Controls
 
         #region EndContinuousEditingCommand
 
-        public ICommand EndContinuousEditingCommand
+        public ICommand? EndContinuousEditingCommand
         {
             get => _EndContinuousEditingCommand;
             set
@@ -508,7 +508,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndContinuousEditingCommand;
+        private ICommand? _EndContinuousEditingCommand;
 
         public static readonly DependencyProperty EndContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -527,7 +527,7 @@ namespace Biaui.Controls
 
         #region StartedBatchEditingCommand
 
-        public ICommand StartedBatchEditingCommand
+        public ICommand? StartedBatchEditingCommand
         {
             get => _StartedBatchEditingCommand;
             set
@@ -537,7 +537,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedBatchEditingCommand;
+        private ICommand? _StartedBatchEditingCommand;
 
         public static readonly DependencyProperty StartedBatchEditingCommandProperty =
             DependencyProperty.Register(
@@ -562,7 +562,7 @@ namespace Biaui.Controls
 
         #region EndBatchEditingCommand
 
-        public ICommand EndBatchEditingCommand
+        public ICommand? EndBatchEditingCommand
         {
             get => _EndBatchEditingCommand;
             set
@@ -572,7 +572,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndBatchEditingCommand;
+        private ICommand? _EndBatchEditingCommand;
 
         public static readonly DependencyProperty EndBatchEditingCommandProperty =
             DependencyProperty.Register(
@@ -610,23 +610,49 @@ namespace Biaui.Controls
 
                 if (e.NewSize.Width > 300)
                 {
-                    _redEditor.Caption = "Red";
-                    _greenEditor.Caption = "Green";
-                    _blueEditor.Caption = "Blue";
-                    _alphaEditor.Caption = "Alpha";
-                    _hueEditor.Caption = "Hue";
-                    _saturationEditor.Caption = "Saturation";
-                    _valueEditor.Caption = "Value";
+                    if (_redEditor != null)
+                        _redEditor.Caption = "Red";
+
+                    if (_greenEditor != null)
+                        _greenEditor.Caption = "Green";
+
+                    if (_blueEditor != null)
+                        _blueEditor.Caption = "Blue";
+
+                    if (_alphaEditor != null)
+                        _alphaEditor.Caption = "Alpha";
+
+                    if (_hueEditor != null)
+                        _hueEditor.Caption = "Hue";
+
+                    if (_saturationEditor != null)
+                        _saturationEditor.Caption = "Saturation";
+
+                    if (_valueEditor != null)
+                        _valueEditor.Caption = "Value";
                 }
                 else
                 {
-                    _redEditor.Caption = "R";
-                    _greenEditor.Caption = "G";
-                    _blueEditor.Caption = "B";
-                    _alphaEditor.Caption = "A";
-                    _hueEditor.Caption = "H";
-                    _saturationEditor.Caption = "S";
-                    _valueEditor.Caption = "V";
+                    if (_redEditor != null)
+                        _redEditor.Caption = "R";
+
+                    if (_greenEditor != null)
+                        _greenEditor.Caption = "G";
+
+                    if (_blueEditor != null)
+                        _blueEditor.Caption = "B";
+
+                    if (_alphaEditor != null)
+                        _alphaEditor.Caption = "A";
+
+                    if (_hueEditor != null)
+                        _hueEditor.Caption = "H";
+
+                    if (_saturationEditor != null)
+                        _saturationEditor.Caption = "S";
+
+                    if (_valueEditor != null)
+                        _valueEditor.Caption = "V";
                 }
             };
         }
@@ -674,18 +700,18 @@ namespace Biaui.Controls
             SetContinuousEditingCommand();
         }
 
-        private BiaNumberEditor _redEditor;
-        private BiaNumberEditor _greenEditor;
-        private BiaNumberEditor _blueEditor;
-        private BiaNumberEditor _alphaEditor;
+        private BiaNumberEditor? _redEditor;
+        private BiaNumberEditor? _greenEditor;
+        private BiaNumberEditor? _blueEditor;
+        private BiaNumberEditor? _alphaEditor;
 
-        private BiaNumberEditor _hueEditor;
-        private BiaNumberEditor _saturationEditor;
-        private BiaNumberEditor _valueEditor;
+        private BiaNumberEditor? _hueEditor;
+        private BiaNumberEditor? _saturationEditor;
+        private BiaNumberEditor? _valueEditor;
 
-        private BiaColorBar _valueBar;
-        private BiaHsvWheelBackground _wheelBackground;
-        private BiaHsvBoxBackground _boxBackground;
+        private BiaColorBar? _valueBar;
+        private BiaHsvWheelBackground? _wheelBackground;
+        private BiaHsvBoxBackground? _boxBackground;
 
         private bool _isConverting;
 

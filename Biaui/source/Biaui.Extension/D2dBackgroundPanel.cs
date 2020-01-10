@@ -49,11 +49,14 @@ namespace Biaui.Extension
             DrawCurves(target, isDrawArrow, lineWidth);
         }
 
-        private readonly Dictionary<(Color color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry arrowGeom, GeometrySink arrowSink)>
-            _sinks = new Dictionary<(Color color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry arrowGeom, GeometrySink arrowSink)>();
+        private readonly Dictionary<(Color color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>
+            _sinks = new Dictionary<(Color color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>();
 
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
+            if (_parent.LinksSource == null)
+                return;
+
             var inflate = ArrowSize * (float) _parent.ScaleTransform.ScaleX;
             var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
             var lineCullingRect = new ImmutableRect_float(
@@ -67,8 +70,11 @@ namespace Biaui.Extension
 
             var hasHighlightCurves = false;
 
-            foreach (IBiaNodeLink link in _parent.LinksSource)
+            foreach (IBiaNodeLink? link in _parent.LinksSource)
             {
+                if (link == null)
+                    continue;
+
                 if (link.IsVisible == false)
                     continue;
 
@@ -81,7 +87,7 @@ namespace Biaui.Extension
                     hasHighlightCurves = true;
 
                 GeometrySink curveSink;
-                GeometrySink arrowSink;
+                GeometrySink? arrowSink;
                 {
                     var key = (link.Color, isHighlight);
 
@@ -128,7 +134,7 @@ namespace Biaui.Extension
                 }
 
                 // 矢印
-                if (isDrawArrow)
+                if (arrowSink != null)
                     DrawArrow(arrowSink, bezier);
             }
 
@@ -149,7 +155,7 @@ namespace Biaui.Extension
                 // 接続線カーブ
                 {
                     sink.Value.curveSink.Close();
-                    target.DrawGeometry(sink.Value.curveGeom, (Brush) brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
+                    target.DrawGeometry(sink.Value.curveGeom, brush as Brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
                     sink.Value.curveSink.Dispose();
                     sink.Value.curveGeom.Dispose();
                 }
@@ -158,9 +164,9 @@ namespace Biaui.Extension
                 if (sink.Value.arrowSink != null)
                 {
                     sink.Value.arrowSink.Close();
-                    target.FillGeometry(sink.Value.arrowGeom, (Brush) brush);
+                    target.FillGeometry(sink.Value.arrowGeom, brush as Brush);
                     sink.Value.arrowSink.Dispose();
-                    sink.Value.arrowGeom.Dispose();
+                    sink.Value.arrowGeom?.Dispose();
                 }
             }
 

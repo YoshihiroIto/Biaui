@@ -7,6 +7,6 @@ namespace Biaui.Controls.NodeEditor.Internal
     {
         internal readonly HashSet<BiaNodeSlot> EnableSlots = new HashSet<BiaNodeSlot>();
 
-        internal Style Style;
+        internal Style? Style;
     }
 }

@@ -66,7 +66,7 @@ namespace Biaui.Controls
             child.Clip = clipRect;
         }
 
-        private object _oldClip;
+        private object? _oldClip;
 
         private static readonly Dictionary<int, Geometry> _clipRectCache = new Dictionary<int, Geometry>();
 

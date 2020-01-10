@@ -13,7 +13,7 @@ namespace Biaui.Controls
     {
         #region Highlight
 
-        public Brush Highlight
+        public Brush? Highlight
         {
             get => _Highlight;
             set
@@ -23,7 +23,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Highlight;
+        private Brush? _Highlight;
 
         public static readonly DependencyProperty HighlightProperty =
             DependencyProperty.Register(
@@ -44,7 +44,7 @@ namespace Biaui.Controls
 
         #region Words
 
-        public string Words
+        public string? Words
         {
             get => _Words;
             set
@@ -54,7 +54,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Words;
+        private string? _Words;
 
         public static readonly DependencyProperty WordsProperty =
             DependencyProperty.Register(
@@ -89,7 +89,10 @@ namespace Biaui.Controls
             if (wordsArray.Length == 0)
                 base.OnRender(dc);
             else
-                RenderHighlight(dc, wordsArray, Words);
+            {
+                if (Words != null)
+                    RenderHighlight(dc, wordsArray, Words);
+            }
         }
 
         private void RenderHighlight(DrawingContext dc, ReadOnlySpan<StringSplitter.StringSpan> wordsSpans, string words)
@@ -138,10 +141,13 @@ namespace Biaui.Controls
                 {
                     if (textStates[index] != state)
                     {
-                        x = RenderText(dc, Text, startIndex, index - 1, x,
+                        var brush =
                             textStates[startIndex] == 0
                                 ? Foreground
-                                : Highlight);
+                                : Highlight;
+
+                        if (brush != null)
+                            x = RenderText(dc, Text, startIndex, index - 1, x, brush);
 
                         state = textStates[index];
                         startIndex = index;
@@ -151,10 +157,14 @@ namespace Biaui.Controls
 
                     if (index == Text.Length)
                     {
-                        RenderText(dc, Text, startIndex, index - 1, x,
+                        var brush =
                             textStates[startIndex] == 0
                                 ? Foreground
-                                : Highlight);
+                                : Highlight;
+
+                        if (brush != null)
+                            RenderText(dc, Text, startIndex, index - 1, x, brush);
+
                         break;
                     }
                 }

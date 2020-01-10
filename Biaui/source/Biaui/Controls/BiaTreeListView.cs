@@ -10,7 +10,7 @@ namespace Biaui.Controls
     {
         #region ItemsSource
         
-        public IEnumerable ItemsSource
+        public IEnumerable? ItemsSource
         {
             get => _ItemsSource;
             set
@@ -20,7 +20,7 @@ namespace Biaui.Controls
             }
         }
         
-        private IEnumerable _ItemsSource;
+        private IEnumerable? _ItemsSource;
         
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register(
@@ -39,7 +39,7 @@ namespace Biaui.Controls
 
         #region Columns
         
-        public GridViewColumnCollection Columns
+        public GridViewColumnCollection? Columns
         {
             get => _Columns;
             set
@@ -49,7 +49,7 @@ namespace Biaui.Controls
             }
         }
         
-        private GridViewColumnCollection _Columns;
+        private GridViewColumnCollection? _Columns;
         
         public static readonly DependencyProperty ColumnsProperty =
             DependencyProperty.Register(
@@ -68,7 +68,7 @@ namespace Biaui.Controls
 
         #region ItemTemplate
         
-        public DataTemplate ItemTemplate
+        public DataTemplate? ItemTemplate
         {
             get => _ItemTemplate;
             set
@@ -78,7 +78,7 @@ namespace Biaui.Controls
             }
         }
         
-        private DataTemplate _ItemTemplate;
+        private DataTemplate? _ItemTemplate;
         
         public static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.Register(
@@ -97,7 +97,7 @@ namespace Biaui.Controls
 
         #region ItemContainerStyle
         
-        public Style ItemContainerStyle
+        public Style? ItemContainerStyle
         {
             get => _ItemContainerStyle;
             set
@@ -107,7 +107,7 @@ namespace Biaui.Controls
             }
         }
         
-        private Style _ItemContainerStyle;
+        private Style? _ItemContainerStyle;
         
         public static readonly DependencyProperty ItemContainerStyleProperty =
             DependencyProperty.Register(
@@ -126,7 +126,7 @@ namespace Biaui.Controls
 
         #region SelectedItem
         
-        public object SelectedItem
+        public object? SelectedItem
         {
             get => _SelectedItem;
             set
@@ -136,7 +136,7 @@ namespace Biaui.Controls
             }
         }
         
-        private object _SelectedItem;
+        private object? _SelectedItem;
         
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(
@@ -155,7 +155,7 @@ namespace Biaui.Controls
 
         #region SelectedItems
         
-        public IList SelectedItems
+        public IList? SelectedItems
         {
             get => _SelectedItems;
             set
@@ -165,7 +165,7 @@ namespace Biaui.Controls
             }
         }
         
-        private IList _SelectedItems;
+        private IList? _SelectedItems;
         
         public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.Register(
@@ -333,7 +333,7 @@ namespace Biaui.Controls
                 new FrameworkPropertyMetadata(typeof(BiaTreeListView)));
         }
 
-        private ScrollViewer _headerSv;
+        private ScrollViewer? _headerSv;
 
         public BiaTreeListView()
         {

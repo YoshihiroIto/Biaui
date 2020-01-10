@@ -11,7 +11,7 @@ namespace Biaui.Controls
     {
         #region Menu
 
-        public Menu Menu
+        public Menu? Menu
         {
             get => _Menu;
             set
@@ -21,7 +21,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Menu _Menu;
+        private Menu? _Menu;
 
         public static readonly DependencyProperty MenuProperty =
             DependencyProperty.Register(nameof(Menu), typeof(Menu), typeof(BiaWindow),
@@ -37,7 +37,7 @@ namespace Biaui.Controls
 
         #region MenuRight
 
-        public UIElement MenuRight
+        public UIElement? MenuRight
         {
             get => _MenuRight;
             set
@@ -47,7 +47,7 @@ namespace Biaui.Controls
             }
         }
 
-        private UIElement _MenuRight;
+        private UIElement? _MenuRight;
 
         public static readonly DependencyProperty MenuRightProperty =
             DependencyProperty.Register(
@@ -95,7 +95,7 @@ namespace Biaui.Controls
 
         #region CloseButtonClickedCommand
 
-        public ICommand CloseButtonClickedCommand
+        public ICommand? CloseButtonClickedCommand
         {
             get => _CloseButtonClickedCommand;
             set
@@ -105,7 +105,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _CloseButtonClickedCommand;
+        private ICommand? _CloseButtonClickedCommand;
 
         public static readonly DependencyProperty CloseButtonClickedCommandProperty =
             DependencyProperty.Register(
@@ -281,9 +281,9 @@ namespace Biaui.Controls
             }
         }
 
-        private static Brush _DefaultIcon;
+        private static Brush? _DefaultIcon;
 
-        public event EventHandler CloseButtonClicked;
+        public event EventHandler? CloseButtonClicked;
 
         static BiaWindow()
         {
@@ -311,7 +311,7 @@ namespace Biaui.Controls
         // https://stackoverflow.com/questions/29207331/wpf-window-with-custom-chrome-has-unwanted-outline-on-right-and-bottom
         protected void FixLayout()
         {
-            void WindowSourceInitialized(object sender, EventArgs e)
+            void WindowSourceInitialized(object? sender, EventArgs e)
             {
                 InvalidateMeasure();
                 SourceInitialized -= WindowSourceInitialized;

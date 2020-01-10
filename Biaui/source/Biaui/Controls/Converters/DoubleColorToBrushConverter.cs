@@ -10,7 +10,7 @@ namespace Biaui.Controls.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is DoubleColor item))
-                return null;
+                return null!;
 
             return Caches.GetSolidColorBrush(item.Color);
         }

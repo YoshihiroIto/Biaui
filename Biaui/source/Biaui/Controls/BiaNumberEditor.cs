@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -76,7 +77,7 @@ namespace Biaui.Controls
 
         #region SliderBrush
 
-        public Brush SliderBrush
+        public Brush? SliderBrush
         {
             get => _SliderBrush;
             set
@@ -86,7 +87,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _SliderBrush = Brushes.GreenYellow;
+        private Brush? _SliderBrush = Brushes.GreenYellow;
 
         public static readonly DependencyProperty SliderBrushProperty =
             DependencyProperty.Register(nameof(SliderBrush), typeof(Brush), typeof(BiaNumberEditor),
@@ -136,7 +137,7 @@ namespace Biaui.Controls
 
         #region Caption
 
-        public string Caption
+        public string? Caption
         {
             get => _Caption;
             set
@@ -146,7 +147,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Caption;
+        private string? _Caption;
 
         public static readonly DependencyProperty CaptionProperty =
             DependencyProperty.Register(nameof(Caption), typeof(string), typeof(BiaNumberEditor),
@@ -340,7 +341,7 @@ namespace Biaui.Controls
 
         #region Background
 
-        public Brush Background
+        public Brush? Background
         {
             get => _Background;
             set
@@ -350,7 +351,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background;
+        private Brush? _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaNumberEditor),
@@ -368,7 +369,7 @@ namespace Biaui.Controls
 
         #region Foreground
 
-        public Brush Foreground
+        public Brush? Foreground
         {
             get => _Foreground;
             set
@@ -378,7 +379,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground;
+        private Brush? _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaNumberEditor),
@@ -396,7 +397,7 @@ namespace Biaui.Controls
 
         #region CaptionForeground
 
-        public Brush CaptionForeground
+        public Brush? CaptionForeground
         {
             get => _CaptionForeground;
             set
@@ -406,7 +407,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _CaptionForeground;
+        private Brush? _CaptionForeground;
 
         public static readonly DependencyProperty CaptionForegroundProperty =
             DependencyProperty.Register(nameof(CaptionForeground), typeof(Brush), typeof(BiaNumberEditor),
@@ -563,8 +564,8 @@ namespace Biaui.Controls
         #endregion
 
         #region StartedContinuousEditingCommand
-        
-        public ICommand StartedContinuousEditingCommand
+
+        public ICommand? StartedContinuousEditingCommand
         {
             get => _StartedContinuousEditingCommand;
             set
@@ -573,9 +574,9 @@ namespace Biaui.Controls
                     SetValue(StartedContinuousEditingCommandProperty, value);
             }
         }
-        
-        private ICommand _StartedContinuousEditingCommand;
-        
+
+        private ICommand? _StartedContinuousEditingCommand;
+
         public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
             DependencyProperty.Register(
                 nameof(StartedContinuousEditingCommand),
@@ -586,14 +587,14 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._StartedContinuousEditingCommand = (ICommand)e.NewValue;
+                        self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region EndContinuousEditingCommand
-        
-        public ICommand EndContinuousEditingCommand
+
+        public ICommand? EndContinuousEditingCommand
         {
             get => _EndContinuousEditingCommand;
             set
@@ -602,9 +603,9 @@ namespace Biaui.Controls
                     SetValue(EndContinuousEditingCommandProperty, value);
             }
         }
-        
-        private ICommand _EndContinuousEditingCommand;
-        
+
+        private ICommand? _EndContinuousEditingCommand;
+
         public static readonly DependencyProperty EndContinuousEditingCommandProperty =
             DependencyProperty.Register(
                 nameof(EndContinuousEditingCommand),
@@ -615,12 +616,12 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._EndContinuousEditingCommand = (ICommand)e.NewValue;
+                        self._EndContinuousEditingCommand = (ICommand) e.NewValue;
                     }));
-        
+
         #endregion
 
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
 
         static BiaNumberEditor()
         {
@@ -670,8 +671,11 @@ namespace Biaui.Controls
         private void DrawBackground(DrawingContext dc)
         {
             var brush = _isEditing
-                ? _textBox.Background
+                ? _textBox?.Background
                 : Background;
+
+            if (brush == null)
+                return;
 
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
@@ -709,11 +713,14 @@ namespace Biaui.Controls
             if (SliderWidth <= 0.0f)
                 return;
 
-            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
             var brush = _isEditing
-                ? _textBox.Background
+                ? _textBox?.Background
                 : SliderBrush;
 
+            if (brush == null)
+                return;
+
+            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
             var r = this.RoundLayoutRenderRectangle(IsVisibleBorder);
             r.Width = (this.RoundLayoutValue(w), 0.0).Max();
 
@@ -725,35 +732,39 @@ namespace Biaui.Controls
         private void DrawText(DrawingContext dc)
         {
             var offsetY = (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
-            
-            TextRenderer.Default.Draw(
-                this,
-                Caption,
-                Padding.Left + SpinWidth,
-                Padding.Top + offsetY,
-                CaptionForeground,
-                dc,
-                ActualWidth - Padding.Left - Padding.Right,
-                TextAlignment.Left
-            );
 
-            TextRenderer.Default.Draw(
-                this,
-                UiValueString,
-                Padding.Left,
-                Padding.Top + offsetY,
-                Foreground,
-                dc,
-                ActualWidth - Padding.Left - Padding.Right - SpinWidth,
-                TextAlignment.Right
-            );
+            if (Caption != null &&
+                CaptionForeground != null)
+                TextRenderer.Default.Draw(
+                    this,
+                    Caption,
+                    Padding.Left + SpinWidth,
+                    Padding.Top + offsetY,
+                    CaptionForeground,
+                    dc,
+                    ActualWidth - Padding.Left - Padding.Right,
+                    TextAlignment.Left
+                );
+
+            if (UiValueString != null &&
+                Foreground != null)
+                TextRenderer.Default.Draw(
+                    this,
+                    UiValueString,
+                    Padding.Left,
+                    Padding.Top + offsetY,
+                    Foreground,
+                    dc,
+                    ActualWidth - Padding.Left - Padding.Right - SpinWidth,
+                    TextAlignment.Right
+                );
         }
 
-        private static readonly Brush _moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
+        private static readonly Brush? _moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
 
         private void DrawSpin(DrawingContext dc)
         {
-            var offsetY =  8 + (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
+            var offsetY = 8 + (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
 
             {
                 var offsetX = 5.0;
@@ -1017,9 +1028,9 @@ namespace Biaui.Controls
             return MouseOverType.Slider;
         }
 
-        private TextBox _textBox;
+        private TextBox? _textBox;
         private bool _isEditing;
-    
+
         private void AddValue(double i)
         {
             var v = Value + i;
@@ -1106,6 +1117,8 @@ namespace Biaui.Controls
             {
                 case Key.Tab:
                 {
+                    Debug.Assert(_textBox != null);
+
                     var v = MakeValueFromString(_textBox.Text);
 
                     if (v.Result == MakeValueResult.Continue)
@@ -1124,6 +1137,8 @@ namespace Biaui.Controls
 
                 case Key.Return:
                 {
+                    Debug.Assert(_textBox != null);
+
                     var v = MakeValueFromString(_textBox.Text);
 
                     if (v.Result == MakeValueResult.Continue)
@@ -1140,6 +1155,8 @@ namespace Biaui.Controls
 
                 case Key.Escape:
                 {
+                    Debug.Assert(_textBox != null);
+
                     _textBox.Text = FormattedValueString;
                     FinishEditing(false);
 
@@ -1153,6 +1170,8 @@ namespace Biaui.Controls
 
         private void FinishEditing(bool isEdit)
         {
+            Debug.Assert(_textBox != null);
+
             if (isEdit)
             {
                 var v = MakeValueFromString(_textBox.Text);
@@ -1174,12 +1193,12 @@ namespace Biaui.Controls
                 : 0;
 
         protected override Visual GetVisualChild(int index)
-            => _textBox;
+            => _textBox ?? throw new NullReferenceException();
 
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (_isEditing)
-                _textBox.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
+                _textBox?.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
 
             return base.ArrangeOverride(finalSize);
         }
@@ -1187,7 +1206,7 @@ namespace Biaui.Controls
         protected override Size MeasureOverride(Size availableSize)
         {
             if (_isEditing)
-                _textBox.Measure(new Size(ActualWidth, ActualHeight));
+                _textBox?.Measure(new Size(ActualWidth, ActualHeight));
 
             // todo:DPI変更時に再描画が行われないため明示的に指示している。要調査。
             InvalidateVisual();
@@ -1280,14 +1299,14 @@ namespace Biaui.Controls
 
         private double ActualMaximum => (Minimum, Maximum).Max();
 
-        private string UiValueString
+        private string? UiValueString
         {
             get
             {
                 if (_isEditing == false)
                     return Concat(FormattedValueString, UnitString);
 
-                var v = MakeValueFromString(_textBox.Text);
+                var v = MakeValueFromString(_textBox?.Text ?? "");
 
                 return
                     v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
@@ -1309,7 +1328,7 @@ namespace Biaui.Controls
                 if (_isEditing == false)
                     return Value;
 
-                var v = MakeValueFromString(_textBox.Text);
+                var v = MakeValueFromString(_textBox?.Text ?? "");
 
                 return
                     v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
@@ -1318,9 +1337,9 @@ namespace Biaui.Controls
             }
         }
 
-        private static Geometry _DecSpinGeom;
-        private static Geometry _IncSpinGeom;
-        private static Brush _SpinBackground;
+        private static Geometry? _DecSpinGeom;
+        private static Geometry? _IncSpinGeom;
+        private static Brush? _SpinBackground;
 
         private static readonly Dictionary<int, TranslateTransform> _translateTransformCache =
             new Dictionary<int, TranslateTransform>();

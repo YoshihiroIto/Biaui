@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
+#nullable enable
+
 namespace Biaui.Internals
 {
 <#
@@ -375,7 +377,7 @@ foreach (var typeName in new[]{"float", "double"})
         public bool Equals(ImmutableRect_<#= typeName #> other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableRect_<#= typeName #> other)
                 return this == other;

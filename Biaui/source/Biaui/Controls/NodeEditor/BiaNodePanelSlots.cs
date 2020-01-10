@@ -28,7 +28,7 @@ namespace Biaui.Controls.NodeEditor
         private static readonly Dictionary<Color, (StreamGeometry Geom, StreamGeometryContext Ctx)> _ellipses =
             new Dictionary<Color, (StreamGeometry, StreamGeometryContext)>();
 
-        private BiaNodeEditor _parent;
+        private BiaNodeEditor? _parent;
 
         protected override void OnRender(DrawingContext dc)
         {
@@ -41,7 +41,7 @@ namespace Biaui.Controls.NodeEditor
                 return;
 
             if (_parent == null)
-                _parent = this.GetParent<BiaNodeEditor>();
+                _parent = this.GetParent<BiaNodeEditor>() ?? throw new NullReferenceException();
 
             var canConnectLink = _parent.CanConnectLink;
             var isMouseOverNode = nodeItem.IsMouseOver && canConnectLink;

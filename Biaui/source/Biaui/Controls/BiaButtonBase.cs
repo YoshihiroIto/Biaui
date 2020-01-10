@@ -20,7 +20,7 @@ namespace Biaui.Controls
 
         #region Command
 
-        public ICommand Command
+        public ICommand? Command
         {
             get => _Command;
             set
@@ -30,7 +30,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _Command;
+        private ICommand? _Command;
 
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(BiaButtonBase),
@@ -48,10 +48,10 @@ namespace Biaui.Controls
                         if (self._Command != null)
                             self._Command.CanExecuteChanged += self.CommandOnCanExecuteChanged;
 
-                        self.CommandOnCanExecuteChanged(null, null);
+                        self.CommandOnCanExecuteChanged(null, EventArgs.Empty);
                     }));
 
-        private void CommandOnCanExecuteChanged(object sender, EventArgs e)
+        private void CommandOnCanExecuteChanged(object? sender, EventArgs e)
         {
             if (Command != null)
                 IsEnabled = Command.CanExecute(CommandParameter);
@@ -61,7 +61,7 @@ namespace Biaui.Controls
 
         #region CommandParameter
 
-        public object CommandParameter
+        public object? CommandParameter
         {
             get => _CommandParameter;
             set
@@ -71,7 +71,7 @@ namespace Biaui.Controls
             }
         }
 
-        private object _CommandParameter;
+        private object? _CommandParameter;
 
         public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(BiaButtonBase),
@@ -87,7 +87,7 @@ namespace Biaui.Controls
 
         #region Background
 
-        public Brush Background
+        public Brush? Background
         {
             get => _Background;
             set
@@ -97,7 +97,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background;
+        private Brush? _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaButtonBase),
@@ -115,7 +115,7 @@ namespace Biaui.Controls
 
         #region Foreground
 
-        public Brush Foreground
+        public Brush? Foreground
         {
             get => _Foreground;
             set
@@ -125,7 +125,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground;
+        private Brush? _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaButtonBase),

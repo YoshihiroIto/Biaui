@@ -36,7 +36,7 @@ namespace Biaui.Controls
 
         #region MarkBrush
 
-        public Brush MarkBrush
+        public Brush? MarkBrush
         {
             get => _MarkBrush;
             set
@@ -46,7 +46,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _MarkBrush;
+        private Brush? _MarkBrush;
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaRadioButton),
@@ -78,15 +78,17 @@ namespace Biaui.Controls
 
             if (IsEnabled)
             {
+                var color =
+                    IsMouseOver
+                        ? MarkBorderColor
+                        : (Background as SolidColorBrush)?.Color ?? MarkBorderColor;
+
+
                 dc.DrawEllipse(
                     IsPressed
                         ? MarkBrush
                         : Background,
-                    this.GetBorderPen(
-                        IsMouseOver
-                            ? MarkBorderColor
-                            : ((SolidColorBrush) Background).Color
-                    ),
+                    this.GetBorderPen(color),
                     new Point(8, 10),
                     7, 7);
             }
@@ -109,7 +111,9 @@ namespace Biaui.Controls
             }
 
             // キャプション
-            TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
+            if (Content != null &&
+                Foreground != null)
+                TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left);
         }
     }
 }

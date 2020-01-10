@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Biaui.Internals;
@@ -15,11 +16,13 @@ namespace Biaui.Controls
             textBox.Focus();
         }
 
-        private string _startText;
+        private string? _startText;
 
         private void TextBlock_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             var parent = ((BiaTextBlock)sender).GetParent<BiaEditableTextBlock>();
+
+            Debug.Assert(parent != null);
 
             if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
             {
@@ -37,6 +40,8 @@ namespace Biaui.Controls
             var textBox = (TextBox) sender;
             var parent = textBox.GetParent<BiaEditableTextBlock>();
 
+            Debug.Assert(parent != null);
+
             FinishEditing(parent, textBox);
         }
 
@@ -44,6 +49,8 @@ namespace Biaui.Controls
         {
             var textBox = (TextBox) sender;
             var parent = textBox.GetParent<BiaEditableTextBlock>();
+
+            Debug.Assert(parent != null);
 
             switch (e.Key)
             {
@@ -78,6 +85,9 @@ namespace Biaui.Controls
                 return;
 
             var parent = textBox.GetParent<BiaEditableTextBlock>();
+
+            Debug.Assert(parent != null);
+
             FinishEditing(parent, textBox);
         }
 

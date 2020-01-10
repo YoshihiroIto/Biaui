@@ -16,7 +16,7 @@ namespace Biaui.Controls.NodeEditor
 
         public Color Color { get; set; } = Colors.White;
 
-        public Func<Point /*スロット座標*/, Point /*マウス座標*/, bool> TargetSlotHitChecker;
+        public Func<Point /*スロット座標*/, Point /*マウス座標*/, bool>? TargetSlotHitChecker;
     }
 
     public enum BiaNodeSlotAlign

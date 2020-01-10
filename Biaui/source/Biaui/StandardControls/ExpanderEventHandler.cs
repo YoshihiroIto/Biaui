@@ -24,7 +24,8 @@ namespace Biaui.StandardControls
             var c = (StackPanel) sender;
             var expander = c.GetParent<Expander>();
 
-            c.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
+            if (expander != null)
+                c.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
         }
     }
 }

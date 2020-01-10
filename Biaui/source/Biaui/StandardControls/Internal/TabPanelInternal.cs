@@ -1,5 +1,7 @@
 ﻿// ReSharper disable All
 
+#nullable disable
+
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -198,7 +200,7 @@ namespace Biaui.StandardControls.Internal
         private Size GetDesiredSizeWithoutMargin(UIElement element)
         {
             Thickness margin = (Thickness) element.GetValue(MarginProperty);
-            Size desiredSizeWithoutMargin = new Size();
+            Size desiredSizeWithoutMargin = default;
             desiredSizeWithoutMargin.Height = Math.Max(0d, element.DesiredSize.Height - margin.Top - margin.Bottom);
             desiredSizeWithoutMargin.Width = Math.Max(0d, element.DesiredSize.Width - margin.Left - margin.Right);
             return desiredSizeWithoutMargin;
@@ -397,7 +399,7 @@ namespace Biaui.StandardControls.Internal
             int numSeparators = _numRows - 1;
             double currentRowWidth = 0;
             int numberOfHeadersInCurrentRow = 0;
-            double currentAverageGap = 0;
+            double currentAverageGap;
             int[] currentSolution = new int[numSeparators];
             int[] bestSolution = new int[numSeparators];
             int[] rowHeaderCount = new int[_numRows];
@@ -537,8 +539,7 @@ namespace Biaui.StandardControls.Internal
             get
             {
                 Dock placement = Dock.Top;
-                TabControl tc = TemplatedParent as TabControl;
-                if (tc != null)
+                if (TemplatedParent is TabControl tc)
                     placement = tc.TabStripPlacement;
                 return placement;
             }

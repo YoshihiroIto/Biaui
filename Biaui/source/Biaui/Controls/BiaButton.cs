@@ -9,7 +9,7 @@ namespace Biaui.Controls
     {
         #region Content
 
-        public string Content
+        public string? Content
         {
             get => _content;
             set
@@ -19,7 +19,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _content;
+        private string? _content;
 
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register(nameof(Content), typeof(string), typeof(BiaButton),
@@ -68,15 +68,17 @@ namespace Biaui.Controls
             // キャプション
             const double y = 4.0; // todo:正しく求める
 
-            TextRenderer.Default.Draw(
-                this,
-                Content,
-                Constants.ButtonPaddingX,
-                y,
-                Foreground,
-                dc,
-                ActualWidth - Constants.ButtonPaddingX * 2.0,
-                TextAlignment.Center);
+            if (Content != null)
+                if (Foreground != null)
+                    TextRenderer.Default.Draw(
+                        this,
+                        Content,
+                        Constants.ButtonPaddingX,
+                        y,
+                        Foreground,
+                        dc,
+                        ActualWidth - Constants.ButtonPaddingX * 2.0,
+                        TextAlignment.Center);
         }
 
         private double _textWidth;
@@ -94,7 +96,7 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            var w = TextRenderer.Default.CalcWidth(Content);
+            var w = Content == null ? 0.0 : TextRenderer.Default.CalcWidth(Content);
 
             _textWidth = Math.Ceiling(Constants.ButtonPaddingX + w + Constants.ButtonPaddingX);
         }

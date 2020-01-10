@@ -35,7 +35,7 @@ namespace Biaui.Internals
             BindingOperations.SetBinding(this, ValueProperty, binding);
         }
 
-        public DependencyObject PropertySource
+        public DependencyObject? PropertySource
         {
             get
             {
@@ -67,7 +67,7 @@ namespace Biaui.Internals
             set => SetValue(ValueProperty, value);
         }
 
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
 
         public void Dispose()
         {

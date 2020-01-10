@@ -10,7 +10,7 @@ namespace Biaui.Controls
     {
         #region Content
 
-        public Geometry Content
+        public Geometry? Content
         {
             get => _content;
             set
@@ -20,7 +20,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Geometry _content;
+        private Geometry? _content;
 
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register(nameof(Content), typeof(Geometry), typeof(BiaIconButton),

@@ -12,7 +12,7 @@ namespace Biaui.Controls
     {
         #region Text
 
-        public string Text
+        public string? Text
         {
             get => _Text;
             set
@@ -22,7 +22,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Text;
+        private string? _Text;
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(BiaTextBox),
@@ -41,7 +41,7 @@ namespace Biaui.Controls
 
         #region Watermark
 
-        public string Watermark
+        public string? Watermark
         {
             get => _Watermark;
             set
@@ -51,7 +51,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Watermark;
+        private string? _Watermark;
 
         public static readonly DependencyProperty WatermarkProperty =
             DependencyProperty.Register(nameof(Watermark), typeof(string), typeof(BiaTextBox),
@@ -70,7 +70,7 @@ namespace Biaui.Controls
 
         #region WatermarkForeground
 
-        public Brush WatermarkForeground
+        public Brush? WatermarkForeground
         {
             get => _WatermarkForeground;
             set
@@ -80,7 +80,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _WatermarkForeground;
+        private Brush? _WatermarkForeground;
 
         public static readonly DependencyProperty WatermarkForegroundProperty =
             DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaTextBox),
@@ -126,7 +126,7 @@ namespace Biaui.Controls
 
         #region Background
 
-        public Brush Background
+        public Brush? Background
         {
             get => _Background;
             set
@@ -136,7 +136,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background;
+        private Brush? _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaTextBox),
@@ -154,7 +154,7 @@ namespace Biaui.Controls
 
         #region Foreground
 
-        public Brush Foreground
+        public Brush? Foreground
         {
             get => _Foreground;
             set
@@ -164,7 +164,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground;
+        private Brush? _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaTextBox),
@@ -260,33 +260,37 @@ namespace Biaui.Controls
             if (isCornerRadiusZero == false)
                 dc.PushClip(Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, true));
             {
-                if (_isEditing == false)
-                    if (string.IsNullOrEmpty(TargetText))
-                        TextRenderer.Default.Draw(
-                            this,
-                            Watermark,
-                            4.5, 3.5,
-                            WatermarkForeground,
-                            dc,
-                            (1.0, ActualWidth - 9).Max(),
-                            TextAlignment.Left
-                        );
+                if (_isEditing == false &&
+                    string.IsNullOrEmpty(TargetText) &&
+                    Watermark != null &&
+                    WatermarkForeground != null)
+                    TextRenderer.Default.Draw(
+                        this,
+                        Watermark,
+                        4.5, 3.5,
+                        WatermarkForeground,
+                        dc,
+                        (1.0, ActualWidth - 9).Max(),
+                        TextAlignment.Left
+                    );
 
-                TextRenderer.Default.Draw(
-                    this,
-                    TargetText,
-                    4.5, 3.5,
-                    Foreground,
-                    dc,
-                    (1.0, ActualWidth - 9).Max(),
-                    TextAlignment.Left
-                );
+                if (TargetText != null &&
+                    Foreground != null)
+                    TextRenderer.Default.Draw(
+                        this,
+                        TargetText,
+                        4.5, 3.5,
+                        Foreground,
+                        dc,
+                        (1.0, ActualWidth - 9).Max(),
+                        TextAlignment.Left
+                    );
             }
             if (isCornerRadiusZero == false)
                 dc.Pop();
         }
 
-        private string TargetText => _isEditing ? _textBox.Text : Text;
+        private string? TargetText => _isEditing ? _textBox?.Text : Text;
 
         private void DrawBackground(DrawingContext dc)
         {
@@ -346,7 +350,7 @@ namespace Biaui.Controls
             }
         }
 
-        private TextBox _textBox;
+        private TextBox? _textBox;
         private bool _isEditing;
 
         private void ShowEditBox()
@@ -442,7 +446,7 @@ namespace Biaui.Controls
         {
             if (isEdit)
             {
-                Text = _textBox.Text;
+                Text = _textBox?.Text;
                 GetBindingExpression(TextProperty)?.UpdateSource();
             }
 
@@ -457,13 +461,13 @@ namespace Biaui.Controls
         protected override int VisualChildrenCount
             => _isEditing ? 1 : 0;
 
-        protected override Visual GetVisualChild(int index)
+        protected override Visual? GetVisualChild(int index)
             => _textBox;
 
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (_isEditing)
-                _textBox.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
+                _textBox?.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
 
             return base.ArrangeOverride(finalSize);
         }
@@ -471,7 +475,7 @@ namespace Biaui.Controls
         protected override Size MeasureOverride(Size availableSize)
         {
             if (_isEditing)
-                _textBox.Measure(new Size(ActualWidth, ActualHeight));
+                _textBox?.Measure(new Size(ActualWidth, ActualHeight));
 
             return base.MeasureOverride(availableSize);
         }

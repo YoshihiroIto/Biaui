@@ -10,7 +10,7 @@ namespace Biaui.Internals
         {
             try
             {
-                TreeViewItem parent;
+                TreeViewItem? parent;
                 while ((parent = GetParent(item)) != null)
                 {
                     return GetDepth(parent) + 1;
@@ -24,7 +24,7 @@ namespace Biaui.Internals
             return 0;
         }
 
-        private static TreeViewItem GetParent(TreeViewItem item)
+        private static TreeViewItem? GetParent(TreeViewItem item)
         {
             var parent = VisualTreeHelper.GetParent(item);
             while (!(parent is TreeViewItem || parent is TreeView))

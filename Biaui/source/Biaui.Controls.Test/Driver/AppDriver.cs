@@ -45,7 +45,7 @@ namespace Biaui.Controls.Test.Driver
         private readonly Killer _killer;
 
         public AppDriver()
-            : this(null, 10 * 60 * 1000)
+            : this("", 10 * 60 * 1000)
         {
         }
 

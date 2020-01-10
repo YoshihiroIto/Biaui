@@ -35,9 +35,9 @@ namespace Biaui.Controls
             self._selectedItem = e.NewValue;
         }
 
-        private object _selectedItem;
+        private object? _selectedItem;
 
-        public new object SelectedItem
+        public new object? SelectedItem
         {
             get => _selectedItem;
             set
@@ -61,8 +61,8 @@ namespace Biaui.Controls
             target.SetValue(IsSelectedProperty, Boxes.Bool(value));
         }
 
-        public event EventHandler ItemSelectionStarting;
-        public event EventHandler ItemSelectionCompleted;
+        public event EventHandler? ItemSelectionStarting;
+        public event EventHandler? ItemSelectionCompleted;
 
         #region CornerRadius
 
@@ -188,9 +188,9 @@ namespace Biaui.Controls
 
         private static void OnIsSelectedChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var treeViewItem = obj as TreeViewItem;
+            var treeViewItem = (TreeViewItem)obj;
 
-            var parent = treeViewItem?.GetParent<BiaTreeView>();
+            var parent = treeViewItem.GetParent<BiaTreeView>();
 
             if (parent == null)
                 return;
@@ -221,7 +221,7 @@ namespace Biaui.Controls
             }
         }
 
-        private INotifyCollectionChanged _oldItemsSource;
+        private INotifyCollectionChanged? _oldItemsSource;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly PropertyChangeNotifier _itemsSourceChangeNotifier;
@@ -232,7 +232,7 @@ namespace Biaui.Controls
             _itemsSourceChangeNotifier.ValueChanged += ItemsSourceChangedHandler;
         }
 
-        private void ItemsSourceChangedHandler(object sender, EventArgs e)
+        private void ItemsSourceChangedHandler(object? sender, EventArgs e)
         {
             if (_oldItemsSource != null)
                 RemoveCollectionChangedEvent(_oldItemsSource);
@@ -349,7 +349,7 @@ namespace Biaui.Controls
                 e.Handled = true;
             }
 
-            TreeViewItem targetItem = null;
+            TreeViewItem? targetItem = null;
 
             switch (e.Key)
             {
@@ -441,7 +441,7 @@ namespace Biaui.Controls
             {
                 var items = this.EnumerateChildren<TreeViewItem>();
 
-                TreeViewItem firstItem = null;
+                TreeViewItem? firstItem = null;
 
                 foreach (var item in items)
                 {
@@ -490,7 +490,7 @@ namespace Biaui.Controls
             ItemSelectionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
-        private object _multipleSelectionEdgeItemDataContext;
+        private object? _multipleSelectionEdgeItemDataContext;
 
         private void SelectMultipleItems(TreeViewItem edgeItem)
         {
@@ -535,7 +535,7 @@ namespace Biaui.Controls
         }
 
         [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
-        private T GetRelativeItem<T>(T item, int relativePosition)
+        private T? GetRelativeItem<T>(T item, int relativePosition)
             where T : ItemsControl
         {
             if (item == null)

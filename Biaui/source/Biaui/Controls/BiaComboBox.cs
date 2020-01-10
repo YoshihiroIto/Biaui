@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Biaui.Controls
     {
         #region Background
 
-        public Brush Background
+        public Brush? Background
         {
             get => _Background;
             set
@@ -30,7 +31,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Background;
+        private Brush? _Background;
 
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaComboBox),
@@ -48,7 +49,7 @@ namespace Biaui.Controls
 
         #region Foreground
 
-        public Brush Foreground
+        public Brush? Foreground
         {
             get => _Foreground;
             set
@@ -58,7 +59,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _Foreground;
+        private Brush? _Foreground;
 
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaComboBox),
@@ -132,7 +133,7 @@ namespace Biaui.Controls
 
         #region ItemsSource
 
-        public IEnumerable ItemsSource
+        public IEnumerable? ItemsSource
         {
             get => _ItemsSource;
             set
@@ -143,7 +144,7 @@ namespace Biaui.Controls
             }
         }
 
-        private IEnumerable _ItemsSource;
+        private IEnumerable? _ItemsSource;
 
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable), typeof(BiaComboBox),
@@ -161,7 +162,7 @@ namespace Biaui.Controls
 
         #region SelectedItem
 
-        public object SelectedItem
+        public object? SelectedItem
         {
             get => _SelectedItem;
             set
@@ -171,7 +172,7 @@ namespace Biaui.Controls
             }
         }
 
-        private object _SelectedItem;
+        private object? _SelectedItem;
 
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(nameof(SelectedItem), typeof(object), typeof(BiaComboBox),
@@ -190,7 +191,7 @@ namespace Biaui.Controls
 
         #region MarkBrush
 
-        public Brush MarkBrush
+        public Brush? MarkBrush
         {
             get => _MarkBrush;
             set
@@ -200,7 +201,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _MarkBrush;
+        private Brush? _MarkBrush;
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaComboBox),
@@ -244,7 +245,7 @@ namespace Biaui.Controls
 
         #region ItemToStringConverter
 
-        public IValueConverter ItemToStringConverter
+        public IValueConverter? ItemToStringConverter
         {
             get => _ItemToStringConverter;
             set
@@ -254,7 +255,7 @@ namespace Biaui.Controls
             }
         }
 
-        private IValueConverter _ItemToStringConverter;
+        private IValueConverter? _ItemToStringConverter;
 
         public static readonly DependencyProperty ItemToStringConverterProperty =
             DependencyProperty.Register(nameof(ItemToStringConverter), typeof(IValueConverter), typeof(BiaComboBox),
@@ -273,7 +274,7 @@ namespace Biaui.Controls
 
         #region ItemToStringConverterParameter
 
-        public object ItemToStringConverterParameter
+        public object? ItemToStringConverterParameter
         {
             get => _ItemToStringConverterParameter;
             set
@@ -283,7 +284,7 @@ namespace Biaui.Controls
             }
         }
 
-        private object _ItemToStringConverterParameter;
+        private object? _ItemToStringConverterParameter;
 
         public static readonly DependencyProperty ItemToStringConverterParameterProperty =
             DependencyProperty.Register(nameof(ItemToStringConverterParameter), typeof(object), typeof(BiaComboBox),
@@ -300,7 +301,7 @@ namespace Biaui.Controls
 
         #region StartedContinuousEditingCommand
 
-        public ICommand StartedContinuousEditingCommand
+        public ICommand? StartedContinuousEditingCommand
         {
             get => _StartedContinuousEditingCommand;
             set
@@ -310,7 +311,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedContinuousEditingCommand;
+        private ICommand? _StartedContinuousEditingCommand;
 
         public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -329,7 +330,7 @@ namespace Biaui.Controls
 
         #region EndContinuousEditingCommand
 
-        public ICommand EndContinuousEditingCommand
+        public ICommand? EndContinuousEditingCommand
         {
             get => _EndContinuousEditingCommand;
             set
@@ -339,7 +340,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndContinuousEditingCommand;
+        private ICommand? _EndContinuousEditingCommand;
 
         public static readonly DependencyProperty EndContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -381,15 +382,16 @@ namespace Biaui.Controls
                                   ?? SelectedItem;
 
                 if (displayItem != null)
-                    TextRenderer.Default.Draw(
-                        this,
-                        displayItem.ToString(),
-                        4.5, 3.5,
-                        Foreground,
-                        dc,
-                        (1.0, ActualWidth - 32).Max(), // ▼分の幅を引く
-                        TextAlignment.Left
-                    );
+                    if (Foreground != null)
+                        TextRenderer.Default.Draw(
+                            this,
+                            displayItem.ToString() ?? "",
+                            4.5, 3.5,
+                            Foreground,
+                            dc,
+                            (1.0, ActualWidth - 32).Max(), // ▼分の幅を引く
+                            TextAlignment.Left
+                        );
             }
             if (isCornerRadiusZero == false)
                 dc.Pop();
@@ -491,9 +493,9 @@ namespace Biaui.Controls
             Dispatcher?.BeginInvoke(DispatcherPriority.Input, FocusThis);
         }
 
-        private ListBox _items;
-        private Popup _popup;
-        private ScaleTransform _scale;
+        private ListBox? _items;
+        private Popup? _popup;
+        private ScaleTransform? _scale;
 
         private void ShowPopup()
         {
@@ -542,6 +544,9 @@ namespace Biaui.Controls
 
                 _popup.Closed += PopupOnClosed;
             }
+
+            Debug.Assert(_items != null);
+            Debug.Assert(_scale != null);
 
             if (_isReqUpdateListBoxItemTemplate)
             {
@@ -593,6 +598,8 @@ namespace Biaui.Controls
 
         private void SetupListBoxItemTemplate()
         {
+            Debug.Assert(_items != null);
+
             var itemTemplate = new DataTemplate();
             {
                 var textBlock = new FrameworkElementFactory(typeof(BiaTextBlock));
@@ -608,6 +615,7 @@ namespace Biaui.Controls
 
                 itemTemplate.VisualTree = textBlock;
             }
+
             _items.ItemTemplate = itemTemplate;
         }
 
@@ -636,7 +644,7 @@ namespace Biaui.Controls
         // ReSharper disable once ConvertToNullCoalescingCompoundAssignment
         private Action FocusThis => _FocusThis ?? (_FocusThis = () => Focus());
 
-        private Action _FocusThis;
+        private Action? _FocusThis;
 
         private void ListBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -659,15 +667,17 @@ namespace Biaui.Controls
             }
         }
 
-        private void PopupOnClosed(object sender, EventArgs e)
+        private void PopupOnClosed(object? sender, EventArgs e)
         {
             IsOpen = false;
         }
 
-        private object _ContinuousEditingStartValue;
+        private object? _ContinuousEditingStartValue;
 
         private void SetValue()
         {
+            Debug.Assert(_popup != null);
+
             if (EndContinuousEditingCommand != null)
             {
                 if (EndContinuousEditingCommand.CanExecute(null))
@@ -687,6 +697,8 @@ namespace Biaui.Controls
 
         private void Discard()
         {
+            Debug.Assert(_popup != null);
+
             var done = false;
 
             if (EndContinuousEditingCommand != null)
@@ -716,7 +728,7 @@ namespace Biaui.Controls
 
             using var tempItems = new TempBuffer<object>(128);
 
-            IList items = null;
+            IList? items = null;
 
             int itemsCount;
             int selectedIndex;
@@ -731,7 +743,7 @@ namespace Biaui.Controls
                 {
                     tempItems.AddFrom(ItemsSource);
                     itemsCount = tempItems.Length;
-                    selectedIndex = tempItems.IndexOf(SelectedItem);
+                    selectedIndex = tempItems.IndexOf(SelectedItem!);
                 }
             }
 
@@ -739,7 +751,7 @@ namespace Biaui.Controls
             {
                 if (itemsCount > 0)
                 {
-                    var item = _items.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
+                    var item = _items?.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
                     item?.Focus();
 
                     SelectedItem = items != null

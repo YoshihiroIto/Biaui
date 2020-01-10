@@ -11,7 +11,7 @@ namespace Biaui
             get => _BackgroundPanelGenerator ??= new DefaultBackgroundPanelGenerator();
             private set => _BackgroundPanelGenerator = value;
         }
-        private static IBackgroundPanelGenerator _BackgroundPanelGenerator;
+        private static IBackgroundPanelGenerator? _BackgroundPanelGenerator;
 
         public static void RegisterBackgroundPanelGenerator(IBackgroundPanelGenerator generator)
         {

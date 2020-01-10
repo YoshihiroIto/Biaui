@@ -36,7 +36,7 @@ namespace Biaui.Controls
 
         #region MarkBrush
 
-        public Brush MarkBrush
+        public Brush? MarkBrush
         {
             get => _MarkBrush;
             set
@@ -46,7 +46,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _MarkBrush;
+        private Brush? _MarkBrush;
 
         public static readonly DependencyProperty MarkBrushProperty =
             DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaCheckBox),
@@ -108,6 +108,12 @@ namespace Biaui.Controls
 
         protected void DrawCaption(DrawingContext dc, double x, double y)
         {
+            if (Content == null)
+                return;
+
+            if (Foreground == null)
+                return;
+
             TextRenderer.Default.Draw(this, Content, x, y, Foreground, dc, ActualWidth - x, TextAlignment.Left);
         }
 

@@ -79,9 +79,11 @@ namespace Biaui.Internals
                 _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
             }
 
+#if DEBUG
             // グリフデータテーブルを作る
             // 作ったものは、手動でソースコードに組み込む。
             //MakeGlyphDataTable(fontFamily, _glyphTypeface, _fontSize);
+#endif
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -126,7 +128,7 @@ namespace Biaui.Internals
             if (NumberHelper.AreCloseZero(_fontSize))
                 return 0;
 
-            if (string.IsNullOrEmpty(text))
+            if (text == "")
                 return 0;
 
             if (string.IsNullOrWhiteSpace(text))

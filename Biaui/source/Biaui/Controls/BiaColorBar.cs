@@ -180,7 +180,7 @@ namespace Biaui.Controls
 
         #region StartedContinuousEditingCommand
 
-        public ICommand StartedContinuousEditingCommand
+        public ICommand? StartedContinuousEditingCommand
         {
             get => _StartedContinuousEditingCommand;
             set
@@ -190,7 +190,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedContinuousEditingCommand;
+        private ICommand? _StartedContinuousEditingCommand;
 
         public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -209,7 +209,7 @@ namespace Biaui.Controls
 
         #region EndContinuousEditingCommand
 
-        public ICommand EndContinuousEditingCommand
+        public ICommand? EndContinuousEditingCommand
         {
             get => _EndContinuousEditingCommand;
             set
@@ -219,7 +219,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndContinuousEditingCommand;
+        private ICommand? _EndContinuousEditingCommand;
 
         public static readonly DependencyProperty EndContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -236,7 +236,7 @@ namespace Biaui.Controls
 
         #endregion
 
-        private Brush _backgroundBrush;
+        private Brush? _backgroundBrush;
         private bool _isRequestUpdateBackgroundBrush = true;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -299,7 +299,7 @@ namespace Biaui.Controls
             }
         }
 
-        private static Brush _disabledBackgroundBrush;
+        private static Brush? _disabledBackgroundBrush;
 
         private void UpdateBackgroundBrush()
         {

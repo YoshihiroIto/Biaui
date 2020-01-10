@@ -11,7 +11,7 @@ namespace Biaui.Internals
 
         private static readonly bool _isInDesignerMode;
 
-        private Uri _sourceUri;
+        private Uri? _sourceUri;
 
         static SharedResourceDictionary()
         {

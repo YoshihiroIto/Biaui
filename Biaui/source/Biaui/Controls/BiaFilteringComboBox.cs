@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,7 +12,7 @@ namespace Biaui.Controls
     {
         #region FilterWords
 
-        public string FilterWords
+        public string? FilterWords
         {
             get => _filterWords;
             set
@@ -21,7 +22,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _filterWords;
+        private string? _filterWords;
 
         public static readonly DependencyProperty FilterWordsProperty =
             DependencyProperty.Register(
@@ -69,7 +70,7 @@ namespace Biaui.Controls
 
         #region StartedContinuousEditingCommand
 
-        public ICommand StartedContinuousEditingCommand
+        public ICommand? StartedContinuousEditingCommand
         {
             get => _StartedContinuousEditingCommand;
             set
@@ -79,7 +80,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedContinuousEditingCommand;
+        private ICommand? _StartedContinuousEditingCommand;
 
         public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -98,7 +99,7 @@ namespace Biaui.Controls
 
         #region EndContinuousEditingCommand
 
-        public ICommand EndContinuousEditingCommand
+        public ICommand? EndContinuousEditingCommand
         {
             get => _EndContinuousEditingCommand;
             set
@@ -108,7 +109,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndContinuousEditingCommand;
+        private ICommand? _EndContinuousEditingCommand;
 
         public static readonly DependencyProperty EndContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -134,8 +135,8 @@ namespace Biaui.Controls
         private bool _isOpen;
         private bool _isDoneSetValue;
         private bool _isDoneDiscard;
-        private object _ContinuousEditingStartValue;
-        private FrameworkElement _dropDown;
+        private object? _ContinuousEditingStartValue;
+        private FrameworkElement? _dropDown;
 
         protected override void OnDropDownOpened(EventArgs e)
         {
@@ -159,6 +160,8 @@ namespace Biaui.Controls
         protected override void OnDropDownClosed(EventArgs e)
         {
             base.OnDropDownClosed(e);
+
+            Debug.Assert(_dropDown != null);
 
             _dropDown.PreviewMouseDown -= DropDownOnPreviewMouseDown;
             _dropDown.PreviewKeyDown -= DropDownOnPreviewKeyDown;

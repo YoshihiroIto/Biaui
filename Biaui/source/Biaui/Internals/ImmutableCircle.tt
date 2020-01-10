@@ -12,6 +12,8 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
+#nullable enable
+
 namespace Biaui.Internals
 {
 <#
@@ -41,7 +43,7 @@ foreach (var typeName in new[]{"float", "double"})
         public bool Equals(ImmutableCircle_<#= typeName #> other)
             => this == other;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableCircle_<#= typeName #> other)
                 return this == other;

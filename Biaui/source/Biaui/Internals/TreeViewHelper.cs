@@ -10,7 +10,7 @@ namespace Biaui.Internals
         //
         // The TreeViewItem that the mouse is currently directly over (or null).
         //
-        private static TreeViewItem _currentItem;
+        private static TreeViewItem? _currentItem;
 
         //
         // IsMouseDirectlyOverItem:  A DependencyProperty that will be true only on the 

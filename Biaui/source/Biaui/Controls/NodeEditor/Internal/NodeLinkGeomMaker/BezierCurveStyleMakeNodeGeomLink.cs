@@ -28,24 +28,27 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
             NodeLinkGeomMakerFlags flags,
             Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves)
         {
-            foreach (IBiaNodeLink link in linksSource)
+            foreach (IBiaNodeLink? link in linksSource)
             {
+                if (link == null)
+                    continue;
+
                 if (link.IsVisible == false)
                     continue;
 
                 if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
                     continue;
 
-                var item1 = link.ItemSlot1.Item;
-                var item2 = link.ItemSlot2.Item;
-                var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1);
-                var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2);
-                var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1.Dir);
-                var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2.Dir);
+                var item1 = link.ItemSlot1.Item ?? throw new NullReferenceException();
+                var item2 = link.ItemSlot2.Item ?? throw new NullReferenceException();
+                var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1!);
+                var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2!);
+                var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1!.Dir);
+                var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2!.Dir);
 
                 // ReSharper disable AccessToModifiedClosure
                 var bb = _boundingBoxCache.GetOrAdd(
-                    (pos1, pos2, link.InternalData().Slot1.Dir, link.InternalData().Slot2.Dir),
+                    (pos1, pos2, link.InternalData().Slot1!.Dir, link.InternalData().Slot2!.Dir),
                     x => BiaNodeEditorHelper.MakeBoundingBox(
                         pos1,
                         pos1C,

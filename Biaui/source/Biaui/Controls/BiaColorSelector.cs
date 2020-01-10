@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -103,7 +104,7 @@ namespace Biaui.Controls
 
         #region Choices
 
-        public IEnumerable Choices
+        public IEnumerable? Choices
         {
             get => _Choices;
             set
@@ -113,7 +114,7 @@ namespace Biaui.Controls
             }
         }
 
-        private IEnumerable _Choices;
+        private IEnumerable? _Choices;
 
         public static readonly DependencyProperty ChoicesProperty =
             DependencyProperty.Register(
@@ -161,7 +162,7 @@ namespace Biaui.Controls
 
         #region StartedContinuousEditingCommand
 
-        public ICommand StartedContinuousEditingCommand
+        public ICommand? StartedContinuousEditingCommand
         {
             get => _StartedContinuousEditingCommand;
             set
@@ -171,7 +172,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedContinuousEditingCommand;
+        private ICommand? _StartedContinuousEditingCommand;
 
         public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -190,7 +191,7 @@ namespace Biaui.Controls
 
         #region EndContinuousEditingCommand
 
-        public ICommand EndContinuousEditingCommand
+        public ICommand? EndContinuousEditingCommand
         {
             get => _EndContinuousEditingCommand;
             set
@@ -200,7 +201,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndContinuousEditingCommand;
+        private ICommand? _EndContinuousEditingCommand;
 
         public static readonly DependencyProperty EndContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -261,13 +262,13 @@ namespace Biaui.Controls
             }
         }
 
-        private ListBox _items;
-        private Popup _popup;
-        private ScaleTransform _scale;
+        private ListBox? _items;
+        private Popup? _popup;
+        private ScaleTransform? _scale;
 
         // ReSharper disable once ConvertToNullCoalescingCompoundAssignment
         private Action FocusThis => _FocusThis ?? (_FocusThis = () => Focus());
-        private Action _FocusThis;
+        private Action? _FocusThis;
 
         private bool IsOpen => _popup != null && _popup.IsOpen;
 
@@ -319,6 +320,9 @@ namespace Biaui.Controls
                 _items.PreviewKeyDown += ListBoxOnPreviewKeyDown;
                 _items.PreviewMouseLeftButtonDown += ListBoxOnPreviewMouseLeftButtonDown;
             }
+
+            Debug.Assert(_scale != null);
+            Debug.Assert(_items != null);
 
             Mouse.Capture(this, CaptureMode.SubTree);
 
@@ -381,6 +385,8 @@ namespace Biaui.Controls
 
         private void ListBoxOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Debug.Assert(_popup != null);
+
             var lb = (ListBox) sender;
 
             var pos = Mouse.GetPosition(lb);
@@ -417,6 +423,8 @@ namespace Biaui.Controls
 
         private void Discard()
         {
+            Debug.Assert(_popup != null);
+
             var done = false;
 
             if (EndContinuousEditingCommand != null)

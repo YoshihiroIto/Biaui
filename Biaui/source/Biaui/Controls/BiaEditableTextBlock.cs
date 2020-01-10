@@ -38,7 +38,7 @@ namespace Biaui.Controls
 
         #region Text
         
-        public string Text
+        public string? Text
         {
             get => _Text;
             set
@@ -48,7 +48,7 @@ namespace Biaui.Controls
             }
         }
         
-        private string _Text;
+        private string? _Text;
         
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(
@@ -67,7 +67,7 @@ namespace Biaui.Controls
 
         #region Watermark
 
-        public string Watermark
+        public string? Watermark
         {
             get => _Watermark;
             set
@@ -77,7 +77,7 @@ namespace Biaui.Controls
             }
         }
 
-        private string _Watermark;
+        private string? _Watermark;
 
         public static readonly DependencyProperty WatermarkProperty =
             DependencyProperty.Register(nameof(Watermark), typeof(string), typeof(BiaEditableTextBlock),
@@ -95,7 +95,7 @@ namespace Biaui.Controls
 
         #region WatermarkForeground
 
-        public Brush WatermarkForeground
+        public Brush? WatermarkForeground
         {
             get => _WatermarkForeground;
             set
@@ -105,7 +105,7 @@ namespace Biaui.Controls
             }
         }
 
-        private Brush _WatermarkForeground;
+        private Brush? _WatermarkForeground;
 
         public static readonly DependencyProperty WatermarkForegroundProperty =
             DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaEditableTextBlock),

@@ -54,19 +54,19 @@ namespace Biaui.Controls.NodeEditor.Internal
             _targetNotifier.ValueChanged += ConnectionChangedHandler;
         }
 
-        private void ConnectionChangedHandler(object sender, EventArgs e)
+        private void ConnectionChangedHandler(object? sender, EventArgs e)
         {
             Invalidate();
         }
 
         private ImmutableVec2_double _mousePos = new ImmutableVec2_double(double.NaN, double.NaN);
 
-        internal void OnLinkMoving(object sender, MouseOperator.LinkMovingEventArgs e)
+        internal void OnLinkMoving(object? sender, MouseOperator.LinkMovingEventArgs e)
         {
             var p = _parent.TransformPos(e.MousePos.X, e.MousePos.Y);
             _mousePos = Unsafe.As<Point, ImmutableVec2_double>(ref p);
 
-            UpdateLinkTarget(_mousePos, (IEnumerable<IBiaNodeItem>)_parent.NodesSource);
+            UpdateLinkTarget(_mousePos, (IEnumerable<IBiaNodeItem>?)_parent.NodesSource);
 
             Invalidate();
         }
@@ -141,7 +141,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private void UpdateLinkTarget(in ImmutableVec2_double mousePos, IEnumerable<IBiaNodeItem> nodeItems)
+        private void UpdateLinkTarget(in ImmutableVec2_double mousePos, IEnumerable<IBiaNodeItem>? nodeItems)
         {
             _parent.TargetNodeSlotConnecting = default;
 

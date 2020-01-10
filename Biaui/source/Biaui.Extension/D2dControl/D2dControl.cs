@@ -4,7 +4,6 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -18,12 +17,12 @@ namespace D2dControl
     {
         protected readonly ResourceCache ResourceCache = new ResourceCache();
 
-        private static SharpDX.Direct3D11.Device device;
+        private static SharpDX.Direct3D11.Device? _device;
 
-        private Texture2D sharedTarget;
-        private Texture2D dx11Target;
-        private Dx11ImageSource d3DSurface;
-        private SharpDX.Direct2D1.DeviceContext d2DRenderTarget;
+        private Texture2D? _sharedTarget;
+        private Texture2D? _dx11Target;
+        private Dx11ImageSource? _d3DSurface;
+        private SharpDX.Direct2D1.DeviceContext? _d2DRenderTarget;
 
         private bool IsInDesignMode
         {
@@ -32,7 +31,7 @@ namespace D2dControl
                 if (_IsInDesignMode.HasValue == false)
                     _IsInDesignMode = DesignerProperties.GetIsInDesignMode(this);
 
-                return _IsInDesignMode.Value;
+                return _IsInDesignMode == null ? false : _IsInDesignMode.Value;
             }
         }
 
@@ -71,7 +70,7 @@ namespace D2dControl
 
         public static void Initialize()
         {
-            device = new SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport);
+            _device = new SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport);
 
             Dx11ImageSource.Initialize();
         }
@@ -80,7 +79,7 @@ namespace D2dControl
         {
             Dx11ImageSource.Destroy();
 
-            Disposer.SafeDispose(ref device);
+            Disposer.SafeDispose(ref _device);
         }
 
         public void Invalidate()
@@ -95,12 +94,10 @@ namespace D2dControl
         {
             Loaded += OnLoaded;
 
-            Stretch = System.Windows.Media.Stretch.Fill;
+            Stretch = Stretch.Fill;
         }
 
         public abstract void Render(SharpDX.Direct2D1.DeviceContext target);
-
-
 
         private bool _isInitialized;
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -108,7 +105,7 @@ namespace D2dControl
             if (IsInDesignMode)
                 return;
 
-            if (device == null)
+            if (_device == null)
                 throw new NullReferenceException("Not yet initialized. You need to call D2dControl.Initialize().");
 
             if (_isInitialized)
@@ -134,15 +131,15 @@ namespace D2dControl
             }
         }
 
-        private Window _parentWindow;
-        private Popup _parentPopup;
+        private Window? _parentWindow;
+        private Popup? _parentPopup;
 
-        private void OnUnloaded(object sender, EventArgs e)
+        private void OnUnloaded(object? sender, EventArgs e)
         {
             if (IsInDesignMode)
                 return;
 
-            if (device == null)
+            if (_device == null)
                 throw new NullReferenceException("Not yet initialized. You need to call D2dControl.Initialize().");
 
             if (_isInitialized == false)
@@ -179,7 +176,6 @@ namespace D2dControl
                     Invalidate();
 
                     timer.Stop();
-                    timer = null;
                 };
 
                 timer.Start();
@@ -194,21 +190,24 @@ namespace D2dControl
 
         private void InvalidateInternal()
         {
-            if (device == null)
+            if (_device == null)
                 throw new NullReferenceException("Not yet initialized. You need to call D2dControl.Initialize().");
+
+            if (_d3DSurface == null)
+                return;
 
             try
             {
                 PrepareAndCallRender();
 
-                d3DSurface.Lock();
+                _d3DSurface.Lock();
 
-                device.ImmediateContext.ResolveSubresource(dx11Target, 0, sharedTarget, 0, Format.B8G8R8A8_UNorm);
-                d3DSurface.InvalidateD3DImage();
+                _device.ImmediateContext.ResolveSubresource(_dx11Target, 0, _sharedTarget, 0, Format.B8G8R8A8_UNorm);
+                _d3DSurface.InvalidateD3DImage();
 
-                d3DSurface.Unlock();
+                _d3DSurface.Unlock();
 
-                device.ImmediateContext.Flush();
+                _device.ImmediateContext.Flush();
             }
             catch (SharpDXException ex)
             {
@@ -221,7 +220,7 @@ namespace D2dControl
             }
         }
 
-        private void OnRendering(object sender, EventArgs e)
+        private void OnRendering(object? sender, EventArgs e)
         {
             if (IsAutoFrameUpdate == false &&
                 _isRequestUpdate == false)
@@ -243,7 +242,10 @@ namespace D2dControl
 
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (d3DSurface.IsFrontBufferAvailable)
+            if (_d3DSurface == null)
+                return;
+
+            if (_d3DSurface.IsFrontBufferAvailable)
                 StartRendering();
             else
                 StopRendering();
@@ -251,35 +253,40 @@ namespace D2dControl
 
         private void StartD3D()
         {
-            d3DSurface = new Dx11ImageSource();
-            d3DSurface.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
+            _d3DSurface = new Dx11ImageSource();
+            _d3DSurface.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
 
             CreateAndBindTargets();
 
-            Source = d3DSurface;
+            Source = _d3DSurface;
         }
 
         private void EndD3D()
         {
-            d3DSurface.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
+            if (_d3DSurface != null)
+                _d3DSurface.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
+
             Source = null;
 
-            Disposer.SafeDispose(ref d2DRenderTarget);
-            Disposer.SafeDispose(ref d3DSurface);
-            Disposer.SafeDispose(ref sharedTarget);
-            Disposer.SafeDispose(ref dx11Target);
+            Disposer.SafeDispose(ref _d2DRenderTarget);
+            Disposer.SafeDispose(ref _d3DSurface);
+            Disposer.SafeDispose(ref _sharedTarget);
+            Disposer.SafeDispose(ref _dx11Target);
         }
 
         private void CreateAndBindTargets()
         {
-            if (d3DSurface == null)
+            if (_d3DSurface == null)
                 return;
 
-            d3DSurface.SetRenderTarget(null);
+            if (_device == null)
+                throw new NullReferenceException("Not yet initialized. You need to call D2dControl.Initialize().");
 
-            Disposer.SafeDispose(ref d2DRenderTarget);
-            Disposer.SafeDispose(ref sharedTarget);
-            Disposer.SafeDispose(ref dx11Target);
+            _d3DSurface.SetRenderTarget(null);
+
+            Disposer.SafeDispose(ref _d2DRenderTarget);
+            Disposer.SafeDispose(ref _sharedTarget);
+            Disposer.SafeDispose(ref _dx11Target);
 
             var width = Math.Max((int) ActualWidth, 100);
             var height = Math.Max((int) ActualHeight, 100);
@@ -312,23 +319,23 @@ namespace D2dControl
                 ArraySize = 1
             };
 
-            sharedTarget = new Texture2D(device, frontDesc);
-            dx11Target = new Texture2D(device, backDesc);
+            _sharedTarget = new Texture2D(_device, frontDesc);
+            _dx11Target = new Texture2D(_device, backDesc);
 
-            using (var surface = dx11Target.QueryInterface<Surface>())
+            using (var surface = _dx11Target.QueryInterface<Surface>())
             {
-                d2DRenderTarget = new SharpDX.Direct2D1.DeviceContext(surface, new CreationProperties()
+                _d2DRenderTarget = new SharpDX.Direct2D1.DeviceContext(surface, new CreationProperties()
                 {
                     Options = DeviceContextOptions.EnableMultithreadedOptimizations,
                     ThreadingMode = ThreadingMode.SingleThreaded
                 });
             }
 
-            ResourceCache.RenderTarget = d2DRenderTarget;
+            ResourceCache.RenderTarget = _d2DRenderTarget;
 
-            d3DSurface.SetRenderTarget(sharedTarget);
+            _d3DSurface.SetRenderTarget(_sharedTarget);
 
-            device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height);
+            _device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height);
         }
 
         private void StartRendering()
@@ -343,15 +350,18 @@ namespace D2dControl
 
         private void PrepareAndCallRender()
         {
-            d2DRenderTarget.BeginDraw();
+            if (_d2DRenderTarget == null)
+                return;
 
-            Render(d2DRenderTarget);
+            _d2DRenderTarget.BeginDraw();
 
-            d2DRenderTarget.EndDraw();
+            Render(_d2DRenderTarget);
+
+            _d2DRenderTarget.EndDraw();
         }
 
         // codebase : Biaui
-        private T GetParent<T>() where T : class
+        private T? GetParent<T>() where T : class
         {
             var parent = this as DependencyObject;
 

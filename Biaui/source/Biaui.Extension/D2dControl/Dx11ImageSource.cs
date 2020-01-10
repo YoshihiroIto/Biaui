@@ -7,24 +7,24 @@ namespace D2dControl
 {
     internal class Dx11ImageSource : D3DImage, IDisposable
     {
-        private static Direct3DEx d3DContext;
-        private static DeviceEx d3DDevice;
+        private static Direct3DEx? _d3DContext;
+        private static DeviceEx? _d3DDevice;
 
-        private Texture renderTarget;
+        private Texture? _renderTarget;
 
         internal static void Initialize()
         {
             var presentParams = GetPresentParameters();
             var createFlags = CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve;
 
-            d3DContext = new Direct3DEx();
-            d3DDevice = new DeviceEx(d3DContext, 0, DeviceType.Hardware, IntPtr.Zero, createFlags, presentParams);
+            _d3DContext = new Direct3DEx();
+            _d3DDevice = new DeviceEx(_d3DContext, 0, DeviceType.Hardware, IntPtr.Zero, createFlags, presentParams);
         }
 
         internal static void Destroy()
         {
-            Disposer.SafeDispose(ref d3DDevice);
-            Disposer.SafeDispose(ref d3DContext);
+            Disposer.SafeDispose(ref _d3DDevice);
+            Disposer.SafeDispose(ref _d3DContext);
         }
 
         internal Dx11ImageSource()
@@ -36,26 +36,26 @@ namespace D2dControl
         {
             SetRenderTarget(null);
 
-            Disposer.SafeDispose(ref renderTarget);
+            Disposer.SafeDispose(ref _renderTarget);
 
             EndD3D();
         }
 
         internal void InvalidateD3DImage()
         {
-            if (renderTarget != null)
+            if (_renderTarget != null)
                 AddDirtyRect(new System.Windows.Int32Rect(0, 0, PixelWidth, PixelHeight));
         }
 
-        internal void SetRenderTarget(SharpDX.Direct3D11.Texture2D target)
+        internal void SetRenderTarget(SharpDX.Direct3D11.Texture2D? target)
         {
-            if (renderTarget != null)
+            if (_renderTarget != null)
             {
                 Lock();
                 SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
                 Unlock();
 
-                Disposer.SafeDispose(ref renderTarget);
+                Disposer.SafeDispose(ref _renderTarget);
             }
 
             if (target == null)
@@ -73,10 +73,10 @@ namespace D2dControl
             if (handle == IntPtr.Zero)
                 throw new ArgumentException("Invalid handle");
 
-            renderTarget = new Texture(d3DDevice, target.Description.Width, target.Description.Height, 1,
+            _renderTarget = new Texture(_d3DDevice, target.Description.Width, target.Description.Height, 1,
                 Usage.RenderTarget, format, Pool.Default, ref handle);
 
-            using (var surface = renderTarget.GetSurfaceLevel(0))
+            using (var surface = _renderTarget.GetSurfaceLevel(0))
             {
                 Lock();
                 SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer);
@@ -90,7 +90,7 @@ namespace D2dControl
 
         private void EndD3D()
         {
-            Disposer.SafeDispose(ref renderTarget);
+            Disposer.SafeDispose(ref _renderTarget);
         }
 
         private static PresentParameters GetPresentParameters()

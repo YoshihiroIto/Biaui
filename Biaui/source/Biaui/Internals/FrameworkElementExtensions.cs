@@ -87,7 +87,7 @@ namespace Biaui.Internals
             return scale;
         }
 
-        internal static T GetParent<T>(this FrameworkElement self) where T : class
+        internal static T? GetParent<T>(this FrameworkElement self) where T : class
         {
             var parent = self as DependencyObject;
 
@@ -102,7 +102,7 @@ namespace Biaui.Internals
             return null;
         }
 
-        internal static DependencyObject GetParent(this FrameworkElement self, Type type)
+        internal static DependencyObject? GetParent(this FrameworkElement self, Type type)
         {
             var parent = self as DependencyObject;
 

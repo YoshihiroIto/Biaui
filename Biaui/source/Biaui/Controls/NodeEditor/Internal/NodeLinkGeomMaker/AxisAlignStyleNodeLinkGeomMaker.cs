@@ -29,18 +29,21 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
         {
             Span<ImmutableVec2_double> work = stackalloc ImmutableVec2_double[10];
 
-            foreach (IBiaNodeLink link in linksSource)
+            foreach (IBiaNodeLink? link in linksSource)
             {
+                if (link == null)
+                    continue;
+
                 if (link.IsVisible == false)
                     continue;
 
                 if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
                     continue;
 
-                var item1 = link.ItemSlot1.Item;
-                var item2 = link.ItemSlot2.Item;
-                var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1);
-                var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2);
+                var item1 = link.ItemSlot1.Item ?? throw new NullReferenceException();
+                var item2 = link.ItemSlot2.Item ?? throw new NullReferenceException();
+                var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1!);
+                var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2!);
 
                 var lines = LinkLineRenderer.MakeLines(pos1, pos2, item1, item2, link.InternalData(), work);
 

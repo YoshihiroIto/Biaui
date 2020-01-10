@@ -54,18 +54,18 @@ namespace Biaui.Controls.NodeEditor
 
     public readonly struct BiaNodeItemSlotIdPair
     {
-        public readonly IBiaNodeItem Item;
+        public readonly IBiaNodeItem? Item;
         public readonly int SlotId;
 
-        public BiaNodeItemSlotIdPair(IBiaNodeItem item, int slotId)
+        public BiaNodeItemSlotIdPair(IBiaNodeItem? item, int slotId)
         {
             Item = item;
             SlotId = slotId;
         }
 
-        internal BiaNodeSlot FindSlot()
+        internal BiaNodeSlot? FindSlot()
         {
-            if (Item.Slots == null)
+            if (Item?.Slots == null)
                 return null;
 
             if (Item.Slots.TryGetValue(SlotId, out var slot))

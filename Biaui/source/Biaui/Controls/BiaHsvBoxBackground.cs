@@ -122,7 +122,7 @@ namespace Biaui.Controls
 
         #region StartedContinuousEditingCommand
 
-        public ICommand StartedContinuousEditingCommand
+        public ICommand? StartedContinuousEditingCommand
         {
             get => _StartedContinuousEditingCommand;
             set
@@ -132,7 +132,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedContinuousEditingCommand;
+        private ICommand? _StartedContinuousEditingCommand;
 
         public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -151,7 +151,7 @@ namespace Biaui.Controls
 
         #region EndContinuousEditingCommand
 
-        public ICommand EndContinuousEditingCommand
+        public ICommand? EndContinuousEditingCommand
         {
             get => _EndContinuousEditingCommand;
             set
@@ -161,7 +161,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndContinuousEditingCommand;
+        private ICommand? _EndContinuousEditingCommand;
 
         public static readonly DependencyProperty EndContinuousEditingCommandProperty =
             DependencyProperty.Register(
@@ -180,7 +180,7 @@ namespace Biaui.Controls
 
         #region StartedBatchEditingCommand
 
-        public ICommand StartedBatchEditingCommand
+        public ICommand? StartedBatchEditingCommand
         {
             get => _StartedBatchEditingCommand;
             set
@@ -190,7 +190,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _StartedBatchEditingCommand;
+        private ICommand? _StartedBatchEditingCommand;
 
         public static readonly DependencyProperty StartedBatchEditingCommandProperty =
             DependencyProperty.Register(
@@ -209,7 +209,7 @@ namespace Biaui.Controls
 
         #region EndBatchEditingCommand
 
-        public ICommand EndBatchEditingCommand
+        public ICommand? EndBatchEditingCommand
         {
             get => _EndBatchEditingCommand;
             set
@@ -219,7 +219,7 @@ namespace Biaui.Controls
             }
         }
 
-        private ICommand _EndBatchEditingCommand;
+        private ICommand? _EndBatchEditingCommand;
 
         public static readonly DependencyProperty EndBatchEditingCommandProperty =
             DependencyProperty.Register(

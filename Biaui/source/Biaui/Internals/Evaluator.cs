@@ -9,7 +9,7 @@ namespace Biaui.Internals
             try
             {
                 var result = _dataTable.Compute(statement,"");
-                return result.ToString();
+                return result?.ToString() ?? "";
             }
             catch
             {

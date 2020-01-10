@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Biaui.Internals;
@@ -14,6 +15,8 @@ namespace Biaui.StandardControls
         private void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
             var self = ((FrameworkElement) sender).GetParent<ScrollViewer>();
+
+            Debug.Assert(self != null);
 
             var pos = e.GetPosition(self);
             var posX = pos.X;
@@ -44,6 +47,8 @@ namespace Biaui.StandardControls
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
             var self = ((FrameworkElement) sender).GetParent<ScrollViewer>();
+
+            Debug.Assert(self != null);
 
             ScrollViewerAttachedProperties.SetVerticalScrollBarOpacity(self, 0.0);
             ScrollViewerAttachedProperties.SetHorizontalScrollBarOpacity(self, 0.0);

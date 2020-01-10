@@ -90,6 +90,9 @@ namespace Biaui.Controls
             var popup = (FrameworkElement) sender;
             var parent = popup.GetParent<BiaFilteringComboBox>();
 
+            if (parent == null)
+                return;
+
             parent.FilterWords = "";
 
             var expression = parent.GetBindingExpression(Selector.SelectedItemProperty);
@@ -125,11 +128,10 @@ namespace Biaui.Controls
             descriptor.RemoveValueChanged(parent, UpdateClearButtonHandler);
         }
 
-        private void UpdateClearButtonHandler(object sender, EventArgs e)
+        private void UpdateClearButtonHandler(object? sender, EventArgs e)
         {
-            var popup = (FrameworkElement) sender;
-
-            UpdateClearButton(popup);
+            if (sender is FrameworkElement popup)
+                UpdateClearButton(popup);
         }
 
         private void UpdateClearButton(FrameworkElement popup)
@@ -138,7 +140,7 @@ namespace Biaui.Controls
             var clearButton = popup.Descendants<Button>().FirstOrDefault();
 
             if (clearButton != null)
-                clearButton.IsEnabled = string.IsNullOrEmpty(parent.FilterWords) == false;
+                clearButton.IsEnabled = string.IsNullOrEmpty(parent?.FilterWords) == false;
         }
     }
 }

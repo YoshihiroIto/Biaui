@@ -13,6 +13,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
+#nullable enable
+
 namespace Biaui.Internals
 {
 <#
@@ -59,7 +61,7 @@ foreach (var typeName in new[]{"float", "double"})
             => this == other;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is ImmutableVec2_<#= typeName #> other)
                 return this == other;

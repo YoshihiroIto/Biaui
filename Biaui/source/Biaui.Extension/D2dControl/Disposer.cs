@@ -4,7 +4,7 @@ namespace D2dControl
 {
     internal static class Disposer
     {
-        internal static void SafeDispose<T>(ref T resource) where T : class
+        internal static void SafeDispose<T>(ref T? resource) where T : class
         {
             if (resource == null)
                 return;

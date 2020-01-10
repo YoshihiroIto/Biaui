@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
+#nullable enable
+
 namespace Biaui.Internals
 {
     [DebuggerDisplay("X:{X}, Y:{Y}")]
