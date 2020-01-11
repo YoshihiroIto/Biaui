@@ -140,26 +140,13 @@ namespace Biaui.Controls.Internals
 
             Debug.Assert(_parentWindow != null);
 
-            switch (WindowAction)
+            Visibility = WindowAction switch
             {
-                case BiaWindowAction.Maximize:
-                    Visibility = _parentWindow.WindowState != WindowState.Maximized
-                        ? Visibility.Visible
-                        : Visibility.Collapsed;
-                    break;
-
-                case BiaWindowAction.Minimize:
-                    Visibility = _parentWindow.WindowState != WindowState.Minimized
-                        ? Visibility.Visible
-                        : Visibility.Collapsed;
-                    break;
-
-                case BiaWindowAction.Normalize:
-                    Visibility = _parentWindow.WindowState != WindowState.Normal
-                        ? Visibility.Visible
-                        : Visibility.Collapsed;
-                    break;
-            }
+                BiaWindowAction.Maximize => _parentWindow.WindowState != WindowState.Maximized ? Visibility.Visible : Visibility.Collapsed,
+                BiaWindowAction.Minimize => _parentWindow.WindowState != WindowState.Minimized ? Visibility.Visible : Visibility.Collapsed,
+                BiaWindowAction.Normalize => _parentWindow.WindowState != WindowState.Normal ? Visibility.Visible : Visibility.Collapsed,
+                _ => Visibility
+            };
         }
     }
 }
