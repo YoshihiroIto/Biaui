@@ -1,0 +1,3 @@
+[submodule "Biaui/externals/D2dControl"]
+	path = Biaui/externals/D2dControl
+	url = https://github.com/YoshihiroIto/D2dControl/
