@@ -255,7 +255,7 @@ namespace Biaui.Controls
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
 
             _effect.BorderColor = (Color) FindResource("BackgroundBackgroundColorKey");
-            _effect.DisableColor = (Color) FindResource("InactiveBackgroundColorKey");
+            _effect.DisableColor = (Color) FindResource("InactiveColorPickerColorKey");
 
             SizeChanged += (_, __) =>
             {

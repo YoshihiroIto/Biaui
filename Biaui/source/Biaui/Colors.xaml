@@ -102,6 +102,8 @@
     <Color x:Key="InactiveBackgroundColorKey">#FF2D2D30</Color>
     <SolidColorBrush x:Key="InactiveBackgroundBrushKey" Color="{StaticResource InactiveBackgroundColorKey}" />
 
+    <Color x:Key="InactiveColorPickerColorKey">#FF303033</Color>
+
     <Color x:Key="InactiveBorderColorKey">#FF3C3C41</Color>
     <SolidColorBrush x:Key="InactiveBorderBrushKey" Color="{StaticResource InactiveBorderColorKey}" />
 

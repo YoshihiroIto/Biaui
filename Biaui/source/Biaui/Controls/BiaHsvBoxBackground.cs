@@ -253,7 +253,7 @@ namespace Biaui.Controls
 
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
 
-            _effect.DisableColor = (Color) FindResource("InactiveBackgroundColorKey");
+            _effect.DisableColor = (Color) FindResource("InactiveColorPickerColorKey");
 
             _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
             _isEnabledChangeNotifier.ValueChanged += (_, __) =>
