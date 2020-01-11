@@ -62,51 +62,35 @@
                                               TopLeft="0"
                                               TopRight="0" />
                             </colorPicker:BiaClippingBorder.CornerRadius>
-                            <Grid>
-                                <Grid.Resources>
+
+                            <colorPicker:BiaUniformGrid Columns="1" Spacing="1">
+                                <colorPicker:BiaUniformGrid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
                                         <Setter Property="SliderMinimum" Value="0" />
                                         <Setter Property="SliderMaximum" Value="1" />
                                         <Setter Property="Increment" Value="0.1" />
                                         <Setter Property="CornerRadius" Value="0" />
                                         <Setter Property="IsVisibleBorder" Value="False" />
+                                        <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
-                                </Grid.Resources>
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                                </colorPicker:BiaUniformGrid.Resources>
 
                                 <colorPicker:BiaNumberEditor x:Name="RedEditor"
-                                                             Grid.Row="0"
-                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding RedMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding RedMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="GreenEditor"
-                                                             Grid.Row="1"
-                                                             Margin="0,1,0,0"
-                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding GreenMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding GreenMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="BlueEditor"
-                                                             Grid.Row="2"
-                                                             Margin="0,1,0,0"
-                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding BlueMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding BlueMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="AlphaEditor"
-                                                             Grid.Row="3"
-                                                             Margin="0,1,0,0"
-                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding AlphaMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding AlphaMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}">
@@ -120,7 +104,7 @@
                                         </Style>
                                     </colorPicker:BiaNumberEditor.Style>
                                 </colorPicker:BiaNumberEditor>
-                            </Grid>
+                            </colorPicker:BiaUniformGrid>
                         </colorPicker:BiaClippingBorder>
 
                         <colorPicker:BiaClippingBorder Grid.Row="1"
@@ -136,8 +120,8 @@
                                               TopRight="0" />
                             </colorPicker:BiaClippingBorder.CornerRadius>
 
-                            <Grid>
-                                <Grid.Resources>
+                            <colorPicker:BiaUniformGrid Columns="1" Spacing="1">
+                                <colorPicker:BiaUniformGrid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
                                         <Setter Property="Minimum" Value="0" />
                                         <Setter Property="Maximum" Value="1" />
@@ -146,37 +130,15 @@
                                         <Setter Property="Increment" Value="0.1" />
                                         <Setter Property="CornerRadius" Value="0" />
                                         <Setter Property="IsVisibleBorder" Value="False" />
+                                        <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
-                                </Grid.Resources>
+                                </colorPicker:BiaUniformGrid.Resources>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                                <colorPicker:BiaNumberEditor x:Name="HueEditor" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                                <colorPicker:BiaNumberEditor x:Name="SaturationEditor" Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                                <colorPicker:BiaNumberEditor x:Name="ValueEditor" Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                                <colorPicker:BiaNumberEditor x:Name="HueEditor"
-                                                             Grid.Row="0"
-                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                             Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-
-                                <colorPicker:BiaNumberEditor x:Name="SaturationEditor"
-                                                             Grid.Row="1"
-                                                             Margin="0,1,0,0"
-                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                             Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-
-                                <colorPicker:BiaNumberEditor x:Name="ValueEditor"
-                                                             Grid.Row="2"
-                                                             Margin="0,1,0,0"
-                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                             Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-
-                                <Canvas Grid.Row="3"
-                                        Height="{Binding ActualHeight, ElementName=HueEditor}"
-                                        Margin="0,1,0,0"
-                                        Background="{DynamicResource BackgroundBackgroundBrushKey}">
+                                <Canvas Height="{Binding ActualHeight, ElementName=HueEditor}" Background="{DynamicResource BackgroundBackgroundBrushKey}">
                                     <Canvas.Style>
                                         <Style TargetType="{x:Type Canvas}">
                                             <Style.Triggers>
@@ -187,7 +149,7 @@
                                         </Style>
                                     </Canvas.Style>
                                 </Canvas>
-                            </Grid>
+                            </colorPicker:BiaUniformGrid>
                         </colorPicker:BiaClippingBorder>
                     </Grid>
                 </ControlTemplate>

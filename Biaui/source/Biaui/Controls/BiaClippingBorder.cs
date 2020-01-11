@@ -46,7 +46,12 @@ namespace Biaui.Controls
                 return;
 
             var rect = new Rect(Child.RenderSize);
-            var key = (rect, CornerRadius).GetHashCode();
+
+            var key = HashCodeMaker.Make(
+                rect.X, rect.Y,
+                rect.Width, rect.Height,
+                CornerRadius.BottomLeft, CornerRadius.BottomRight,
+                CornerRadius.TopLeft, CornerRadius.TopRight );
 
             if (_clipRectCache.TryGetValue(key, out var clipRect) == false)
             {
