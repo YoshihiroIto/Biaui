@@ -686,6 +686,12 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Orientation="Vertical">
+                <StackPanel.Resources>
+                    <FontFamily x:Key="BiauiMonoFontFamily">
+                        pack://application:,,,/Biaui;component/Assets/Fonts/RictyDiminished-Regular.ttf#Ricty Diminished,
+                    </FontFamily>
+                </StackPanel.Resources>
+
                 <showcase:TextEditor Height="300" Margin="0,4,0,0">
                     <showcase:TextEditor.Resources>
                         <Style TargetType="{x:Type avalon:TextArea}">

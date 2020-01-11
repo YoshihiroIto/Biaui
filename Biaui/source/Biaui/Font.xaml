@@ -3,10 +3,11 @@
         pack://application:,,,/Biaui;component/Assets/Fonts/GenMuli.ttf#Gen Muli Regular
     </FontFamily>
 
+    <!--
     <FontFamily x:Key="BiauiMonoFontFamily">
         pack://application:,,,/Biaui;component/Assets/Fonts/RictyDiminished-Regular.ttf#Ricty Diminished,
     </FontFamily>
-
+    -->
 
     <!--
         pack://application:,,,/Biaui;component/Assets/Fonts/Muli.ttf#Muli,
