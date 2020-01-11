@@ -2,47 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:colorPicker="clr-namespace:Biaui.Controls">
-    <Style x:Key="BiaColorPickerLightweightStyle" TargetType="{x:Type colorPicker:BiaColorPicker}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="4" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <colorPicker:BiaHsvBoxBackground Grid.Row="0"
-                                                         Grid.Column="0"
-                                                         Grid.ColumnSpan="3"
-                                                         Margin="0,0,28,0"
-                                                         Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                         IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                         Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                         Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-
-                        <colorPicker:BiaHsvBoxCursor Grid.Row="0"
-                                                     Grid.Column="0"
-                                                     Grid.ColumnSpan="3"
-                                                     Margin="0,0,28,0"
-                                                     Hue="{Binding Hue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                     IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                     Saturation="{Binding Saturation, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-
-                        <colorPicker:BiaColorBar Grid.Row="0"
-                                                 Grid.Column="2"
-                                                 Width="{x:Static biaui:Constants.BasicOneLineHeight}"
-                                                 HorizontalAlignment="Right"
-                                                 IsInverseValue="True"
-                                                 IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
-                                                 Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="BiaColorPickerWheelStyle" TargetType="{x:Type colorPicker:BiaColorPicker}">
         <Setter Property="MinHeight" Value="160" />
 
