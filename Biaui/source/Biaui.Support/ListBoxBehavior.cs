@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
@@ -11,7 +12,7 @@ namespace Biaui
 
         public ICommand ItemSelectionStartingCommand
         {
-            get => _ItemSelectionStartingCommand;
+            get => _ItemSelectionStartingCommand ?? throw new NullReferenceException();
             set
             {
                 if (value != _ItemSelectionStartingCommand)
@@ -19,7 +20,7 @@ namespace Biaui
             }
         }
 
-        private ICommand _ItemSelectionStartingCommand;
+        private ICommand? _ItemSelectionStartingCommand;
 
         public static readonly DependencyProperty ItemSelectionStartingCommandProperty =
             DependencyProperty.Register(
@@ -40,7 +41,7 @@ namespace Biaui
 
         public ICommand ItemSelectionCompletedCommand
         {
-            get => _ItemSelectionCompletedCommand;
+            get => _ItemSelectionCompletedCommand ?? throw new NullReferenceException();
             set
             {
                 if (value != _ItemSelectionCompletedCommand)
@@ -48,7 +49,7 @@ namespace Biaui
             }
         }
 
-        private ICommand _ItemSelectionCompletedCommand;
+        private ICommand? _ItemSelectionCompletedCommand;
 
         public static readonly DependencyProperty ItemSelectionCompletedCommandProperty =
             DependencyProperty.Register(
