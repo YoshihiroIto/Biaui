@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Biaui.Internals;
 
 namespace Biaui.Controls
 {
