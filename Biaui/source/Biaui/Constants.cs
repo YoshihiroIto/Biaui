@@ -41,4 +41,14 @@ namespace Biaui
         Normal,
         DoNothing
     }
+    
+    public enum BiaWindowAction
+    {
+		None,
+		Active,
+		Close,
+		Normalize,
+		Maximize,
+		Minimize
+    }
 }
