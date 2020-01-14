@@ -58,5 +58,35 @@ namespace Biaui.Internals
         {
             return obj.Descendants().OfType<T>();
         }
+
+        public static T? GetParent<T>(this DependencyObject self) where T : class
+        {
+            var parent = self;
+
+            do
+            {
+                if (parent is T tp)
+                    return tp;
+
+                parent = VisualTreeHelper.GetParent(parent);
+            } while (parent != null);
+
+            return null;
+        }
+
+        public static DependencyObject? GetParent(this DependencyObject self, Type type)
+        {
+            var parent = self;
+
+            do
+            {
+                if (parent.GetType().IsSubclassOf(type))
+                    return parent;
+
+                parent = VisualTreeHelper.GetParent(parent);
+            } while (parent != null);
+
+            return null;
+        }
     }
 }

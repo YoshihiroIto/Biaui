@@ -68,7 +68,7 @@ namespace Biaui
             if (isOn)
                 return;
 
-            var expander = (hitTestResult?.VisualHit as FrameworkElement)?.GetParent<Expander>();
+            var expander = (hitTestResult?.VisualHit as DependencyObject)?.GetParent<Expander>();
             if (expander == null)
                 return;
 
