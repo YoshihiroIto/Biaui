@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
+using Biaui.Internals;
 
-namespace Biaui.Internals
+namespace Biaui
 {
-    internal static class Caches
+    public static class Caches
     {
-        internal static Pen GetPen(Color color, double thickness)
+        public static Pen GetPen(Color color, double thickness)
         {
             unchecked
             {
@@ -24,7 +25,7 @@ namespace Biaui.Internals
             }
         }
 
-        internal static Pen GetCapPen(Color color, double thickness)
+        public static Pen GetCapPen(Color color, double thickness)
         {
             unchecked
             {
@@ -46,7 +47,7 @@ namespace Biaui.Internals
             }
         }
 
-        internal static Pen GetDashedPen(Color color, double thickness)
+        public static Pen GetDashedPen(Color color, double thickness)
         {
             unchecked
             {
@@ -67,7 +68,7 @@ namespace Biaui.Internals
             }
         }
 
-        internal static SolidColorBrush GetSolidColorBrush(Color color)
+        public static SolidColorBrush GetSolidColorBrush(Color color)
         {
             unchecked
             {
@@ -88,7 +89,7 @@ namespace Biaui.Internals
             }
         }
 
-        internal static Geometry GetClipGeom(Visual visual, double w, double h, double cornerRadius, bool isWidthBorder)
+        public static Geometry GetClipGeom(Visual visual, double w, double h, double cornerRadius, bool isWidthBorder)
         {
             unchecked
             {
@@ -136,10 +137,10 @@ namespace Biaui.Internals
         private static readonly Dictionary<int, Pen> _dashedPens = new Dictionary<int, Pen>();
         private static readonly Dictionary<int, SolidColorBrush> _solidColorBrushes = new Dictionary<int, SolidColorBrush>();
 
-        internal static TraversalRequest PreviousTraversalRequest
+        public static TraversalRequest PreviousTraversalRequest
             => _PreviousTraversalRequest ??= new TraversalRequest(FocusNavigationDirection.Previous);
 
-        internal static TraversalRequest NextTraversalRequest
+        public static TraversalRequest NextTraversalRequest
             => _NextTraversalRequest ??= new TraversalRequest(FocusNavigationDirection.Next);
 
         private static TraversalRequest? _PreviousTraversalRequest;
