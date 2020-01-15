@@ -154,11 +154,8 @@ namespace Biaui.Controls
 
                 var childDesiredSize = child.DesiredSize;
 
-                if (maxChildDesiredWidth < childDesiredSize.Width)
-                    maxChildDesiredWidth = childDesiredSize.Width;
-
-                if (maxChildDesiredHeight < childDesiredSize.Height)
-                    maxChildDesiredHeight = childDesiredSize.Height;
+                maxChildDesiredWidth = Math.Max(maxChildDesiredWidth, childDesiredSize.Width);
+                maxChildDesiredHeight = Math.Max(maxChildDesiredHeight, childDesiredSize.Height);
             }
 
             return new Size(maxChildDesiredWidth * _columns, maxChildDesiredHeight * _rows);
@@ -265,7 +262,7 @@ namespace Biaui.Controls
         #region 角丸用処理
 
         #region CornerRadius
-        
+
         public CornerRadius CornerRadius
         {
             get => _CornerRadius;
@@ -275,9 +272,9 @@ namespace Biaui.Controls
                     SetValue(CornerRadiusProperty, value);
             }
         }
-        
+
         private CornerRadius _CornerRadius;
-        
+
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(
                 nameof(CornerRadius),
@@ -291,9 +288,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._CornerRadius = (CornerRadius)e.NewValue;
+                        self._CornerRadius = (CornerRadius) e.NewValue;
                     }));
-        
+
         #endregion
 
         protected override void OnRender(DrawingContext dc)
