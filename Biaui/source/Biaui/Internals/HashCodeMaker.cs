@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows.Media;
 
 namespace Biaui.Internals
@@ -6,177 +7,177 @@ namespace Biaui.Internals
     internal static class HashCodeMaker
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(float x, float y)
+        internal static int Make(float x, float y)
         {
             unchecked
             {
-                var xp = *(int*) &x;
-                var yp = *(int*) &y;
+                var ix = Unsafe.As<float, int>(ref x);
+                var iy = Unsafe.As<float, int>(ref y);
 
-                var hashCode = xp;
+                var hashCode = ix;
 
-                hashCode = (hashCode * 397) ^ yp;
+                hashCode = (hashCode * 397) ^ iy;
 
                 return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(float x, float y, float z)
+        internal static int Make(float x, float y, float z)
         {
             unchecked
             {
-                var xp = *(int*) &x;
-                var yp = *(int*) &y;
-                var zp = *(int*) &z;
+                var ix = Unsafe.As<float, int>(ref x);
+                var iy = Unsafe.As<float, int>(ref y);
+                var iz = Unsafe.As<float, int>(ref z);
 
-                var hashCode = xp;
+                var hashCode = ix;
 
-                hashCode = (hashCode * 397) ^ yp;
-                hashCode = (hashCode * 397) ^ zp;
+                hashCode = (hashCode * 397) ^ iy;
+                hashCode = (hashCode * 397) ^ iz;
 
                 return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(float x, float y, float z, float w)
+        internal static int Make(float x, float y, float z, float w)
         {
             unchecked
             {
-                var xp = *(int*) &x;
-                var yp = *(int*) &y;
-                var zp = *(int*) &z;
-                var wp = *(int*) &w;
+                var ix = Unsafe.As<float, int>(ref x);
+                var iy = Unsafe.As<float, int>(ref y);
+                var iz = Unsafe.As<float, int>(ref z);
+                var iw = Unsafe.As<float, int>(ref w);
 
-                var hashCode = xp;
+                var hashCode = ix;
 
-                hashCode = (hashCode * 397) ^ yp;
-                hashCode = (hashCode * 397) ^ zp;
-                hashCode = (hashCode * 397) ^ wp;
+                hashCode = (hashCode * 397) ^ iy;
+                hashCode = (hashCode * 397) ^ iz;
+                hashCode = (hashCode * 397) ^ iw;
 
                 return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(double x, double y)
+        internal static int Make(double x, double y)
         {
             unchecked
             {
-                var xp = *(long*) &x;
-                var yp = *(long*) &y;
+                var ix = Unsafe.As<double, long>(ref x);
+                var iy = Unsafe.As<double, long>(ref y);
 
-                var hashCode = xp;
+                var hashCode = ix;
 
-                hashCode = (hashCode * 397) ^ yp;
+                hashCode = (hashCode * 397) ^ iy;
 
-                return (int)(hashCode * 397) ^ (int) (hashCode >> 32);
+                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(double x, double y, double z)
+        internal static int Make(double x, double y, double z)
         {
             unchecked
             {
-                var xp = *(long*) &x;
-                var yp = *(long*) &y;
-                var zp = *(long*) &z;
+                var ix = Unsafe.As<double, long>(ref x);
+                var iy = Unsafe.As<double, long>(ref y);
+                var iz = Unsafe.As<double, long>(ref z);
 
-                var hashCode = xp;
+                var hashCode = ix;
 
-                hashCode = (hashCode * 397) ^ yp;
-                hashCode = (hashCode * 397) ^ zp;
+                hashCode = (hashCode * 397) ^ iy;
+                hashCode = (hashCode * 397) ^ iz;
 
-                return (int)(hashCode * 397) ^ (int) (hashCode >> 32);
+                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(double x, double y, double z, double w)
+        internal static int Make(double x, double y, double z, double w)
         {
             unchecked
             {
-                var xp = *(long*) &x;
-                var yp = *(long*) &y;
-                var zp = *(long*) &z;
-                var wp = *(long*) &w;
+                var ix = Unsafe.As<double, long>(ref x);
+                var iy = Unsafe.As<double, long>(ref y);
+                var iz = Unsafe.As<double, long>(ref z);
+                var iw = Unsafe.As<double, long>(ref w);
 
-                var hashCode = xp;
+                var hashCode = ix;
 
-                hashCode = (hashCode * 397) ^ yp;
-                hashCode = (hashCode * 397) ^ zp;
-                hashCode = (hashCode * 397) ^ wp;
+                hashCode = (hashCode * 397) ^ iy;
+                hashCode = (hashCode * 397) ^ iz;
+                hashCode = (hashCode * 397) ^ iw;
 
-                return (int)(hashCode * 397) ^ (int) (hashCode >> 32);
+                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(double v0, double v1, double v2, double v3, double v4, double v5, double v6, double v7)
+        internal static int Make(double v0, double v1, double v2, double v3, double v4, double v5, double v6, double v7)
         {
             unchecked
             {
-                // ReSharper disable InconsistentNaming
-                var v0p = *(long*) &v0;
-                var v1p = *(long*) &v1;
-                var v2p = *(long*) &v2;
-                var v3p = *(long*) &v3;
-                var v4p = *(long*) &v4;
-                var v5p = *(long*) &v5;
-                var v6p = *(long*) &v6;
-                var v7p = *(long*) &v7;
-                // ReSharper restore InconsistentNaming
+                var iv0 = Unsafe.As<double, long>(ref v0);
+                var iv1 = Unsafe.As<double, long>(ref v1);
+                var iv2 = Unsafe.As<double, long>(ref v2);
+                var iv3 = Unsafe.As<double, long>(ref v3);
+                var iv4 = Unsafe.As<double, long>(ref v4);
+                var iv5 = Unsafe.As<double, long>(ref v5);
+                var iv6 = Unsafe.As<double, long>(ref v6);
+                var iv7 = Unsafe.As<double, long>(ref v7);
 
-                var hashCode = v0p;
+                var hashCode = iv0;
 
-                hashCode = (hashCode * 397) ^ v0p;
-                hashCode = (hashCode * 397) ^ v1p;
-                hashCode = (hashCode * 397) ^ v2p;
-                hashCode = (hashCode * 397) ^ v3p;
-                hashCode = (hashCode * 397) ^ v4p;
-                hashCode = (hashCode * 397) ^ v5p;
-                hashCode = (hashCode * 397) ^ v6p;
-                hashCode = (hashCode * 397) ^ v7p;
+                hashCode = (hashCode * 397) ^ iv1;
+                hashCode = (hashCode * 397) ^ iv2;
+                hashCode = (hashCode * 397) ^ iv3;
+                hashCode = (hashCode * 397) ^ iv4;
+                hashCode = (hashCode * 397) ^ iv5;
+                hashCode = (hashCode * 397) ^ iv6;
+                hashCode = (hashCode * 397) ^ iv7;
 
-                return (int)(hashCode * 397) ^ (int) (hashCode >> 32);
+                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(double x, double y, double z, bool i)
+        internal static int Make(double x, double y, double z, bool i)
         {
+            Debug.Assert(Unsafe.SizeOf<bool>() == 1);
+
             unchecked
             {
-                var xp = *(long*) &x;
-                var yp = *(long*) &y;
-                var zp = *(long*) &z;
+                var ix = Unsafe.As<double, long>(ref x);
+                var iy = Unsafe.As<double, long>(ref y);
+                var iz = Unsafe.As<double, long>(ref z);
+                var ii = (int) Unsafe.As<bool, byte>(ref i);
 
-                var hashCode = xp;
+                var hashCode = ix;
 
-                hashCode = (hashCode * 397) ^ yp;
-                hashCode = (hashCode * 397) ^ zp;
+                hashCode = (hashCode * 397) ^ iy;
+                hashCode = (hashCode * 397) ^ iz;
 
-                return (int)(hashCode * 397) ^ (int) (hashCode >> 32) ^ (i ? 1 : 0);
+                return (int) (hashCode * 397) ^ (int) (hashCode >> 32) ^ ii;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe int Make(in Color color, double x)
+        internal static int Make(in Color color, double x)
         {
             unchecked
             {
-                var xp = *(long*) &x;
+                var ix = Unsafe.As<double, long>(ref x);
 
-                var hashCode = (long) color.R;
+                var hashCode = ix;
 
+                hashCode = (hashCode * 397) ^ color.R;
                 hashCode = (hashCode * 397) ^ color.G;
                 hashCode = (hashCode * 397) ^ color.B;
                 hashCode = (hashCode * 397) ^ color.A;
-                hashCode = (hashCode * 397) ^ xp;
 
-                return (int)(hashCode * 397) ^ (int) (hashCode >> 32);
+                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
             }
         }
     }
