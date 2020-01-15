@@ -143,34 +143,6 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(double v0, double v1, double v2, double v3, double v4, double v5, double v6, double v7)
-        {
-            unchecked
-            {
-                var iv0 = Unsafe.As<double, long>(ref v0);
-                var iv1 = Unsafe.As<double, long>(ref v1);
-                var iv2 = Unsafe.As<double, long>(ref v2);
-                var iv3 = Unsafe.As<double, long>(ref v3);
-                var iv4 = Unsafe.As<double, long>(ref v4);
-                var iv5 = Unsafe.As<double, long>(ref v5);
-                var iv6 = Unsafe.As<double, long>(ref v6);
-                var iv7 = Unsafe.As<double, long>(ref v7);
-
-                var hashCode = iv0;
-
-                hashCode = (hashCode * 397) ^ iv1;
-                hashCode = (hashCode * 397) ^ iv2;
-                hashCode = (hashCode * 397) ^ iv3;
-                hashCode = (hashCode * 397) ^ iv4;
-                hashCode = (hashCode * 397) ^ iv5;
-                hashCode = (hashCode * 397) ^ iv6;
-                hashCode = (hashCode * 397) ^ iv7;
-
-                return hashCode;
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static long Make(double x, double y, double z, bool i)
         {
             Debug.Assert(Unsafe.SizeOf<bool>() == 1);
