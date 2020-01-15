@@ -13,6 +13,6 @@
         // ポートマークの半径で一番大きいもの
         internal const double SlotMarkRadius_Max = SlotMarkRadius_Highlight2;
 
-        internal static string TreeViewItemExpanderName = "Expander";
+        internal const string TreeViewItemExpanderName = "Expander";
     }
 }
