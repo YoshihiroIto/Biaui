@@ -174,7 +174,7 @@ namespace Biaui.Extension
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int MakeHashCode(Span<ImmutableVec2_float> src)
+        private static long MakeHashCode(Span<ImmutableVec2_float> src)
         {
             unchecked
             {
@@ -189,7 +189,7 @@ namespace Biaui.Extension
                 hashCode = (hashCode * 397) ^ p2;
                 hashCode = (hashCode * 397) ^ p3;
 
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
+                return hashCode;
             }
         }
 
@@ -229,12 +229,12 @@ namespace Biaui.Extension
                 pos.X * m.Item1 + pos.Y * m.Item2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private SolidColorBrush ColorToBrushConv(RenderTarget t, Color src)
+        private static SolidColorBrush ColorToBrushConv(RenderTarget t, Color src)
             => new SolidColorBrush(
                 t,
                 new RawColor4(src.R * (1.0f / 255.0f), src.G * (1.0f / 255.0f), src.B * (1.0f / 255.0f), 1.0f));
 
-        private static readonly LruCache<int, ImmutableRect_float> _boundingBoxCache =
-            new LruCache<int, ImmutableRect_float>(10000, false);
+        private static readonly LruCache<long, ImmutableRect_float> _boundingBoxCache =
+            new LruCache<long, ImmutableRect_float>(10000, false);
     }
 }
