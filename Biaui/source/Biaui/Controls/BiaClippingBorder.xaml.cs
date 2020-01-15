@@ -45,13 +45,10 @@ namespace Biaui.Controls
             if (child == null)
                 return;
 
-            var rect = new Rect(Child.RenderSize);
-
             var key = HashCodeMaker.Make(
-                rect.X, rect.Y,
-                rect.Width, rect.Height,
+                Child.RenderSize.Width, Child.RenderSize.Height,
                 CornerRadius.BottomLeft, CornerRadius.BottomRight,
-                CornerRadius.TopLeft, CornerRadius.TopRight );
+                CornerRadius.TopLeft, CornerRadius.TopRight);
 
             if (_clipRectCache.TryGetValue(key, out var clipRect) == false)
             {
