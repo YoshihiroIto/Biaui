@@ -349,18 +349,12 @@ namespace Biaui.Controls
                 e.Handled = true;
             }
 
-            TreeViewItem? targetItem = null;
-
-            switch (e.Key)
+            var targetItem = e.Key switch
             {
-                case Key.Down:
-                    targetItem = GetRelativeItem(treeViewItem, 1);
-                    break;
-
-                case Key.Up:
-                    targetItem = GetRelativeItem(treeViewItem, -1);
-                    break;
-            }
+                Key.Down => GetRelativeItem(treeViewItem, 1),
+                Key.Up => GetRelativeItem(treeViewItem, -1),
+                _ => null
+            };
 
             if (targetItem == null)
             {

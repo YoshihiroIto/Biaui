@@ -407,19 +407,18 @@ namespace Biaui.Controls
 
         private bool IsCheckedButton(int index)
         {
-            switch (index)
+            return index switch
             {
-                case 0: return Flag0;
-                case 1: return Flag1;
-                case 2: return Flag2;
-                case 3: return Flag3;
-                case 4: return Flag4;
-                case 5: return Flag5;
-                case 6: return Flag6;
-                case 7: return Flag7;
-            }
-
-            throw new NotImplementedException();
+                0 => Flag0,
+                1 => Flag1,
+                2 => Flag2,
+                3 => Flag3,
+                4 => Flag4,
+                5 => Flag5,
+                6 => Flag6,
+                7 => Flag7,
+                _ => throw new NotImplementedException()
+            };
         }
 
         private void SetIsCheckedButton(int index, bool i)
