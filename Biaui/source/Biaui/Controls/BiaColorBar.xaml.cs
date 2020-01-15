@@ -275,7 +275,7 @@ namespace Biaui.Controls
             }
 
             var rect = this.RoundLayoutRenderRectangle(true);
-            dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
+            dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor.ToImmutableByteColor()), rect);
 
             // Cursor
             this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);

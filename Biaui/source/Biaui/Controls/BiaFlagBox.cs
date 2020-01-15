@@ -532,7 +532,7 @@ namespace Biaui.Controls
                 dc.Pop();
             }
 
-            var borderPen = this.GetBorderPen(Color.FromRgb(0x2D, 0x2D, 0x30));
+            var borderPen = this.GetBorderPen(new ImmutableByteColor(0xFF, 0x2D, 0x2D, 0x30));
 
             // 境界線
             {

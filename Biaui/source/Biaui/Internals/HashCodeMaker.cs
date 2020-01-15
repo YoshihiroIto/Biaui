@@ -152,6 +152,7 @@ namespace Biaui.Internals
             return Make(x, y, z) ^ ii;
         }
 
+#if false
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static long Make(Color color)
         {
@@ -168,6 +169,21 @@ namespace Biaui.Internals
             var ix = Unsafe.As<double, long>(ref x);
 
             return ix ^ Make(color);
+        }
+#endif
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static long Make(ImmutableByteColor color)
+        {
+            return color.HashCode;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static long Make(ImmutableByteColor color, double x)
+        {
+            var ix = Unsafe.As<double, long>(ref x);
+
+            return ix ^ color.HashCode;
         }
     }
 }

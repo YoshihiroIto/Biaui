@@ -22,10 +22,10 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
             IEnumerable linksSource,
             in ImmutableRect_double lineCullingRect,
             double alpha,
-            Color backgroundColor,
-            Color highlightLinkColor,
+            ImmutableByteColor backgroundColor,
+            ImmutableByteColor highlightLinkColor,
             NodeLinkGeomMakerFlags flags,
-            Dictionary<(Color Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves)
+            Dictionary<(ImmutableByteColor Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves)
         {
             Span<ImmutableVec2_double> work = stackalloc ImmutableVec2_double[10];
 

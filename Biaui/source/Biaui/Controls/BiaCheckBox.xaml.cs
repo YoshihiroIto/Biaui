@@ -79,7 +79,7 @@ namespace Biaui.Controls
             // ボックス
             dc.DrawRoundedRectangle(
                 Background,
-                this.GetBorderPen(BoxBorderColor),
+                this.GetBorderPen(BoxBorderColor.ToImmutableByteColor()),
                 this.RoundLayoutRect(
                     0 + FrameworkElementExtensions.BorderHalfWidth, 
                     2 + FrameworkElementExtensions.BorderHalfWidth,

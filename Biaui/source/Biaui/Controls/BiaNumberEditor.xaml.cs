@@ -696,13 +696,13 @@ namespace Biaui.Controls
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     Brushes.Transparent,
-                    this.GetBorderPen(BorderColor),
+                    this.GetBorderPen(BorderColor.ToImmutableByteColor()),
                     this.RoundLayoutRenderRectangle(IsVisibleBorder)
                 );
             else
                 dc.DrawRoundedRectangle(
                     Brushes.Transparent,
-                    this.GetBorderPen(BorderColor),
+                    this.GetBorderPen(BorderColor.ToImmutableByteColor()),
                     this.RoundLayoutRenderRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);

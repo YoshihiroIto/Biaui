@@ -53,5 +53,13 @@ namespace Biaui
                 (byte) (NumberHelper.Clamp01(G) * 0xFF),
                 (byte) (NumberHelper.Clamp01(B) * 0xFF)
             );
+        
+        public ImmutableByteColor ByteColor =>
+            new ImmutableByteColor(
+                (byte) (NumberHelper.Clamp01(A) * 0xFF),
+                (byte) (NumberHelper.Clamp01(R) * 0xFF),
+                (byte) (NumberHelper.Clamp01(G) * 0xFF),
+                (byte) (NumberHelper.Clamp01(B) * 0xFF)
+            );
     }
 }

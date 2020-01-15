@@ -411,12 +411,12 @@ namespace Biaui.Controls
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     Background,
-                    this.GetBorderPen(BorderColor),
+                    this.GetBorderPen(BorderColor.ToImmutableByteColor()),
                     this.RoundLayoutRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     Background,
-                    this.GetBorderPen(BorderColor),
+                    this.GetBorderPen(BorderColor.ToImmutableByteColor()),
                     this.RoundLayoutRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);

@@ -106,10 +106,10 @@ namespace Biaui.Controls.NodeEditor.Internal
             var radius = Biaui.Internals.Constants.SlotMarkRadius_Highlight2 * scale;
 
             // 接続線
-            dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.Black, 5));
-            dc.DrawBezier(BezierPoints, Caches.GetCapPen(Colors.WhiteSmoke, 3));
+            dc.DrawBezier(BezierPoints, Caches.GetCapPen(ImmutableByteColor.Black, 5));
+            dc.DrawBezier(BezierPoints, Caches.GetCapPen(ImmutableByteColor.WhiteSmoke, 3));
 
-            var slotPen = Caches.GetPen(Colors.Black, this.RoundLayoutValue(2));
+            var slotPen = Caches.GetPen(ImmutableByteColor.Black, this.RoundLayoutValue(2));
 
             // 接続元ポートの丸
             var srcRect = new ImmutableRect_double(
