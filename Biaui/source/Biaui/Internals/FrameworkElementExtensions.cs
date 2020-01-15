@@ -87,7 +87,7 @@ namespace Biaui.Internals
             return scale;
         }
 
-        internal static Pen GetBorderPen(this FrameworkElement self, ImmutableByteColor color)
+        internal static Pen GetBorderPen(this FrameworkElement self, ByteColor color)
             => Caches.GetPen(color, self.RoundLayoutValue(BorderWidth));
 
         public const double BorderWidth = 1.0;

@@ -14,7 +14,7 @@ namespace Biaui.Controls.NodeEditor
 
         public BiaNodeSlotAlign Align { get; set; }
 
-        public ImmutableByteColor Color { get; set; } = ImmutableByteColor.White;
+        public ByteColor Color { get; set; } = ByteColor.White;
 
         public Func<Point /*スロット座標*/, Point /*マウス座標*/, bool>? TargetSlotHitChecker;
     }

@@ -49,8 +49,8 @@ namespace Biaui.Extension
             DrawCurves(target, isDrawArrow, lineWidth);
         }
 
-        private readonly Dictionary<(ImmutableByteColor color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>
-            _sinks = new Dictionary<(ImmutableByteColor color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>();
+        private readonly Dictionary<(ByteColor color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>
+            _sinks = new Dictionary<(ByteColor color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>();
 
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
@@ -229,7 +229,7 @@ namespace Biaui.Extension
                 pos.X * m.Item1 + pos.Y * m.Item2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static SolidColorBrush ColorToBrushConv(RenderTarget t, ImmutableByteColor src)
+        private static SolidColorBrush ColorToBrushConv(RenderTarget t, ByteColor src)
             => new SolidColorBrush(
                 t,
                 new RawColor4(src.R * (1.0f / 255.0f), src.G * (1.0f / 255.0f), src.B * (1.0f / 255.0f), 1.0f));

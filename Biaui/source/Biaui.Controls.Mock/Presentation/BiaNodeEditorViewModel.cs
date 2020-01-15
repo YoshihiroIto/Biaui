@@ -250,7 +250,7 @@ namespace Biaui.Controls.Mock.Presentation
                     {
                         ItemSlot1 = e.Source,
                         ItemSlot2 = e.Target,
-                        Color = ImmutableByteColor.LimeGreen,
+                        Color = ByteColor.LimeGreen,
                         Style = (connectedCount & 1) == 0
                             ? BiaNodeLinkStyle.None | BiaNodeLinkStyle.Arrow
                             : BiaNodeLinkStyle.DashedLine | BiaNodeLinkStyle.Arrow
@@ -383,7 +383,7 @@ namespace Biaui.Controls.Mock.Presentation
                         ItemSlot1 = new BiaNodeItemSlotIdPair(nodes[i - 1], NodeSlotId.Make("OutputA")),
                         ItemSlot2 = new BiaNodeItemSlotIdPair(nodes[i], NodeSlotId.Make("InputA")),
 
-                        Color = ImmutableByteColor.DeepPink,
+                        Color = ByteColor.DeepPink,
                         Style = (i & 1) == 0
                             ? BiaNodeLinkStyle.Arrow
                             : BiaNodeLinkStyle.None
@@ -546,7 +546,7 @@ namespace Biaui.Controls.Mock.Presentation
                             Offset = new Point(0, -28 * 4),
                             Dir = BiaNodeSlotDir.Right,
                             Align = BiaNodeSlotAlign.End,
-                            Color = ImmutableByteColor.Red
+                            Color = ByteColor.Red
                         }
                     },
                     {
@@ -556,7 +556,7 @@ namespace Biaui.Controls.Mock.Presentation
                             Offset = new Point(0, -28 * 3),
                             Dir = BiaNodeSlotDir.Right,
                             Align = BiaNodeSlotAlign.End,
-                            Color = ImmutableByteColor.LimeGreen
+                            Color = ByteColor.LimeGreen
                         }
                     },
                     {
@@ -566,7 +566,7 @@ namespace Biaui.Controls.Mock.Presentation
                             Offset = new Point(0, -28 * 2),
                             Dir = BiaNodeSlotDir.Right,
                             Align = BiaNodeSlotAlign.End,
-                            Color = ImmutableByteColor.DodgerBlue
+                            Color = ByteColor.DodgerBlue
                         }
                     },
                     {
@@ -657,9 +657,9 @@ namespace Biaui.Controls.Mock.Presentation
 
         #region Color
 
-        private ImmutableByteColor _Color;
+        private ByteColor _Color;
 
-        public ImmutableByteColor Color
+        public ByteColor Color
         {
             get => _Color;
             set => SetProperty(ref _Color, value);

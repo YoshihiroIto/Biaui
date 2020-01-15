@@ -7,9 +7,9 @@ namespace Biaui.Internals
     {
         internal static void DrawPointCursor(this Visual visual, DrawingContext dc, in ImmutableVec2_double pos, bool isEnabled, bool isReadOnly)
         {
-            var pointIn = Caches.GetPen(ImmutableByteColor.White, visual.RoundLayoutValue(PointCursorRadius - 2));
-            var pointInIsReadOnly = Caches.GetPen(ImmutableByteColor.Gray, visual.RoundLayoutValue(PointCursorRadius - 2));
-            var pointOut = Caches.GetPen(ImmutableByteColor.Black, visual.RoundLayoutValue(PointCursorRadius));
+            var pointIn = Caches.GetPen(ByteColor.White, visual.RoundLayoutValue(PointCursorRadius - 2));
+            var pointInIsReadOnly = Caches.GetPen(ByteColor.Gray, visual.RoundLayoutValue(PointCursorRadius - 2));
+            var pointOut = Caches.GetPen(ByteColor.Black, visual.RoundLayoutValue(PointCursorRadius));
  
             var s = visual.RoundLayoutValue(1);
 

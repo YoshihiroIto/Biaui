@@ -88,7 +88,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         protected override void OnRender(DrawingContext dc)
         {
             var pen = Caches.GetDashedPen(
-                new ImmutableByteColor(0xFF, 0x41, 0x69, 0xE1),
+                new ByteColor(0xFF, 0x41, 0x69, 0xE1),
                 this.RoundLayoutValue(2));
 
             dc.DrawLine(

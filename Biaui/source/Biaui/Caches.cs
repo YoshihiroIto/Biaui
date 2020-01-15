@@ -7,7 +7,7 @@ namespace Biaui
 {
     public static class Caches
     {
-        public static Pen GetPen(ImmutableByteColor color, double thickness)
+        public static Pen GetPen(ByteColor color, double thickness)
         {
             unchecked
             {
@@ -25,7 +25,7 @@ namespace Biaui
             }
         }
 
-        public static Pen GetCapPen(ImmutableByteColor color, double thickness)
+        public static Pen GetCapPen(ByteColor color, double thickness)
         {
             unchecked
             {
@@ -47,7 +47,7 @@ namespace Biaui
             }
         }
 
-        public static Pen GetDashedPen(ImmutableByteColor color, double thickness)
+        public static Pen GetDashedPen(ByteColor color, double thickness)
         {
             unchecked
             {
@@ -68,7 +68,7 @@ namespace Biaui
             }
         }
 
-        public static SolidColorBrush GetSolidColorBrush(ImmutableByteColor color)
+        public static SolidColorBrush GetSolidColorBrush(ByteColor color)
         {
             unchecked
             {
