@@ -134,6 +134,6 @@ namespace Biaui.Controls
             return scale;
         }
 
-        private static readonly LruCache<int, ScaleTransform> _scaleCache = new LruCache<int, ScaleTransform>(16, false);
+        private static readonly LruCache<long, ScaleTransform> _scaleCache = new LruCache<long, ScaleTransform>(16, false);
     }
 }

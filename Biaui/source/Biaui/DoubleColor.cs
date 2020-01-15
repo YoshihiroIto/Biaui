@@ -21,11 +21,9 @@ namespace Biaui
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-        {
             // ReSharper disable NonReadonlyMemberInGetHashCode
-            return HashCodeMaker.Make(R, G, B, A);
-            // ReSharper restore NonReadonlyMemberInGetHashCode
-        }
+            => HashCodeMaker.To32(HashCodeMaker.Make(R, G, B, A));
+        // ReSharper restore NonReadonlyMemberInGetHashCode
 
         public static readonly DoubleColor Zero = new DoubleColor
         {

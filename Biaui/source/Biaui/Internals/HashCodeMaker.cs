@@ -7,12 +7,16 @@ namespace Biaui.Internals
     internal static class HashCodeMaker
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(float x, float y)
+        internal static int To32(long h64)
+            => (int) ((h64 & 0xFFFFFFFF) ^ ((h64 >> 32) & 0xFFFFFFFF));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static long Make(float x, float y)
         {
             unchecked
             {
-                var ix = Unsafe.As<float, int>(ref x);
-                var iy = Unsafe.As<float, int>(ref y);
+                var ix = (long) Unsafe.As<float, int>(ref x);
+                var iy = (long) Unsafe.As<float, int>(ref y);
 
                 var hashCode = ix;
 
@@ -23,13 +27,13 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(float x, float y, float z)
+        internal static long Make(float x, float y, float z)
         {
             unchecked
             {
-                var ix = Unsafe.As<float, int>(ref x);
-                var iy = Unsafe.As<float, int>(ref y);
-                var iz = Unsafe.As<float, int>(ref z);
+                var ix = (long) Unsafe.As<float, int>(ref x);
+                var iy = (long) Unsafe.As<float, int>(ref y);
+                var iz = (long) Unsafe.As<float, int>(ref z);
 
                 var hashCode = ix;
 
@@ -41,14 +45,14 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(float x, float y, float z, float w)
+        internal static long Make(float x, float y, float z, float w)
         {
             unchecked
             {
-                var ix = Unsafe.As<float, int>(ref x);
-                var iy = Unsafe.As<float, int>(ref y);
-                var iz = Unsafe.As<float, int>(ref z);
-                var iw = Unsafe.As<float, int>(ref w);
+                var ix = (long) Unsafe.As<float, int>(ref x);
+                var iy = (long) Unsafe.As<float, int>(ref y);
+                var iz = (long) Unsafe.As<float, int>(ref z);
+                var iw = (long) Unsafe.As<float, int>(ref w);
 
                 var hashCode = ix;
 
@@ -61,7 +65,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(double x, double y)
+        internal static long Make(double x, double y)
         {
             unchecked
             {
@@ -72,12 +76,12 @@ namespace Biaui.Internals
 
                 hashCode = (hashCode * 397) ^ iy;
 
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
+                return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(double x, double y, double z)
+        internal static long Make(double x, double y, double z)
         {
             unchecked
             {
@@ -90,12 +94,12 @@ namespace Biaui.Internals
                 hashCode = (hashCode * 397) ^ iy;
                 hashCode = (hashCode * 397) ^ iz;
 
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
+                return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(double x, double y, double z, double w)
+        internal static long Make(double x, double y, double z, double w)
         {
             unchecked
             {
@@ -110,12 +114,12 @@ namespace Biaui.Internals
                 hashCode = (hashCode * 397) ^ iz;
                 hashCode = (hashCode * 397) ^ iw;
 
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
+                return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(double v0, double v1, double v2, double v3, double v4, double v5)
+        internal static long Make(double v0, double v1, double v2, double v3, double v4, double v5)
         {
             unchecked
             {
@@ -134,12 +138,12 @@ namespace Biaui.Internals
                 hashCode = (hashCode * 397) ^ iv4;
                 hashCode = (hashCode * 397) ^ iv5;
 
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
+                return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(double v0, double v1, double v2, double v3, double v4, double v5, double v6, double v7)
+        internal static long Make(double v0, double v1, double v2, double v3, double v4, double v5, double v6, double v7)
         {
             unchecked
             {
@@ -162,47 +166,36 @@ namespace Biaui.Internals
                 hashCode = (hashCode * 397) ^ iv6;
                 hashCode = (hashCode * 397) ^ iv7;
 
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
+                return hashCode;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(double x, double y, double z, bool i)
+        internal static long Make(double x, double y, double z, bool i)
         {
             Debug.Assert(Unsafe.SizeOf<bool>() == 1);
 
-            unchecked
-            {
-                var ix = Unsafe.As<double, long>(ref x);
-                var iy = Unsafe.As<double, long>(ref y);
-                var iz = Unsafe.As<double, long>(ref z);
-                var ii = (int) Unsafe.As<bool, byte>(ref i);
+            var ii = (long) Unsafe.As<bool, byte>(ref i);
 
-                var hashCode = ix;
-
-                hashCode = (hashCode * 397) ^ iy;
-                hashCode = (hashCode * 397) ^ iz;
-
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32) ^ ii;
-            }
+            return Make(x, y, z) ^ ii;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Make(in Color color, double x)
+        internal static long Make(Color color)
         {
-            unchecked
-            {
-                var ix = Unsafe.As<double, long>(ref x);
+            return
+                ((long) color.R << 0) |
+                ((long) color.G << 8) |
+                ((long) color.B << 16) |
+                ((long) color.A << 24);
+        }
 
-                var hashCode = ix;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static long Make(Color color, double x)
+        {
+            var ix = Unsafe.As<double, long>(ref x);
 
-                hashCode = (hashCode * 397) ^ color.R;
-                hashCode = (hashCode * 397) ^ color.G;
-                hashCode = (hashCode * 397) ^ color.B;
-                hashCode = (hashCode * 397) ^ color.A;
-
-                return (int) (hashCode * 397) ^ (int) (hashCode >> 32);
-            }
+            return ix ^ Make(color);
         }
     }
 }

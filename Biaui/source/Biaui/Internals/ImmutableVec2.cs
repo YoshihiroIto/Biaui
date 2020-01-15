@@ -61,7 +61,7 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(X, Y);
+            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_float SetSize(in ImmutableVec2_float v, float size)
@@ -149,7 +149,7 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(X, Y);
+            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_double SetSize(in ImmutableVec2_double v, double size)

@@ -377,7 +377,7 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(X, Y, Width, Height);
+            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y, Width, Height));
     }
     public readonly struct ImmutableRect_double : IEquatable<ImmutableRect_double>
     {
@@ -745,8 +745,7 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(X, Y, Width, Height);
+            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y, Width, Height));
     }
-
 }
 

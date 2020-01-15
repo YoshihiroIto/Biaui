@@ -68,7 +68,7 @@ foreach (var typeName in new[]{"float", "double"})
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(X, Y);
+            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_<#= typeName #> SetSize(in ImmutableVec2_<#= typeName #> v, <#= typeName #> size)

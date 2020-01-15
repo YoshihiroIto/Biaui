@@ -12,7 +12,7 @@ namespace Biaui.Internals
             DrawBezier(dc, bezierPoints[0], bezierPoints[1], bezierPoints[2], bezierPoints[3], pen);
         }
 
-        private static readonly LruCache<int, PathGeometry> _bezierCache = new LruCache<int, PathGeometry>(10000, false);
+        private static readonly LruCache<long, PathGeometry> _bezierCache = new LruCache<long, PathGeometry>(10000, false);
 
         internal static void DrawBezier(
             this DrawingContext dc,

@@ -43,7 +43,7 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(CenterX, CenterY, Radius);
+            => HashCodeMaker.To32(HashCodeMaker.Make(CenterX, CenterY, Radius));
     }
 
     [DebuggerDisplay("X:{CenterX}, Y:{CenterY}, Radius:{Radius}")]
@@ -79,7 +79,7 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(CenterX, CenterY, Radius);
+            => HashCodeMaker.To32(HashCodeMaker.Make(CenterX, CenterY, Radius));
     }
 
 }

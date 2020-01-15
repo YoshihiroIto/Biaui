@@ -1341,7 +1341,6 @@ namespace Biaui.Controls
         private static Geometry? _IncSpinGeom;
         private static Brush? _SpinBackground;
 
-        private static readonly Dictionary<int, TranslateTransform> _translateTransformCache =
-            new Dictionary<int, TranslateTransform>();
+        private static readonly Dictionary<long, TranslateTransform> _translateTransformCache = new Dictionary<long, TranslateTransform>();
     }
 }

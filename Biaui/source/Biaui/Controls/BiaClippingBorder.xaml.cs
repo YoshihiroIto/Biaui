@@ -70,7 +70,7 @@ namespace Biaui.Controls
 
         private object? _oldClip;
 
-        private static readonly Dictionary<int, Geometry> _clipRectCache = new Dictionary<int, Geometry>();
+        private static readonly Dictionary<long, Geometry> _clipRectCache = new Dictionary<long, Geometry>();
 
         private static Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius,
             Thickness borderThickness)

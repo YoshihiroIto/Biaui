@@ -72,10 +72,7 @@ namespace Biaui
         {
             unchecked
             {
-                var hashCode = (int)color.R;
-                hashCode = (hashCode * 397) ^ color.G;
-                hashCode = (hashCode * 397) ^ color.B;
-                hashCode = (hashCode * 397) ^ color.A;
+                var hashCode = HashCodeMaker.Make(color);
 
                 if (_solidColorBrushes.TryGetValue(hashCode, out var b))
                     return b;
@@ -129,13 +126,12 @@ namespace Biaui
             }
         }
 
-        private static readonly
-            Dictionary<int, RectangleGeometry> _clipGeoms = new Dictionary<int, RectangleGeometry>();
+        private static readonly Dictionary<long, RectangleGeometry> _clipGeoms = new Dictionary<long, RectangleGeometry>();
 
-        private static readonly Dictionary<int, Pen> _borderPens = new Dictionary<int, Pen>();
-        private static readonly Dictionary<int, Pen> _capPens = new Dictionary<int, Pen>();
-        private static readonly Dictionary<int, Pen> _dashedPens = new Dictionary<int, Pen>();
-        private static readonly Dictionary<int, SolidColorBrush> _solidColorBrushes = new Dictionary<int, SolidColorBrush>();
+        private static readonly Dictionary<long, Pen> _borderPens = new Dictionary<long, Pen>();
+        private static readonly Dictionary<long, Pen> _capPens = new Dictionary<long, Pen>();
+        private static readonly Dictionary<long, Pen> _dashedPens = new Dictionary<long, Pen>();
+        private static readonly Dictionary<long, SolidColorBrush> _solidColorBrushes = new Dictionary<long, SolidColorBrush>();
 
         public static TraversalRequest PreviousTraversalRequest
             => _PreviousTraversalRequest ??= new TraversalRequest(FocusNavigationDirection.Previous);

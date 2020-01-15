@@ -332,7 +332,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int MakeHashCode(
+        private static long MakeHashCode(
             string text,
             int textStartIndex,
             int textLength,
@@ -341,7 +341,7 @@ namespace Biaui.Internals
         {
             unchecked
             {
-                var hashCode = text.GetHashCode();
+                var hashCode = (long)text.GetHashCode();
 
                 hashCode = (hashCode * 397) ^ textStartIndex;
                 hashCode = (hashCode * 397) ^ textLength;
@@ -474,11 +474,10 @@ namespace Biaui.Internals
         }
 #endif
 
-        private readonly LruCache<int, (GlyphRun, double)> _textCache = new LruCache<int, (GlyphRun, double)>(10_0000, false);
-
+        private readonly LruCache<long, (GlyphRun, double)> _textCache = new LruCache<long, (GlyphRun, double)>(10_0000, false);
         private readonly LruCache<string, double> _textWidthCache = new LruCache<string, double>(10_1000, false);
 
-        private readonly LruCache<int, TranslateTransform> _translateCache = new LruCache<int, TranslateTransform>(1000, false);
+        private readonly LruCache<long, TranslateTransform> _translateCache = new LruCache<long, TranslateTransform>(1000, false);
 
         private readonly IDictionary<int, ushort>? _toGlyphMap;
         private readonly IDictionary<ushort, double>? _advanceWidthsDict;

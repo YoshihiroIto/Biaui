@@ -384,7 +384,7 @@ foreach (var typeName in new[]{"float", "double"})
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
-            => HashCodeMaker.Make(X, Y, Width, Height);
+            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y, Width, Height));
     }
 <#
 }
