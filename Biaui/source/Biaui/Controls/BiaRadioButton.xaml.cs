@@ -88,7 +88,7 @@ namespace Biaui.Controls
                     IsPressed
                         ? MarkBrush
                         : Background,
-                    this.GetBorderPen(color),
+                    this.GetBorderPen(color.ToImmutableByteColor()),
                     new Point(8, 10),
                     7, 7);
             }
@@ -96,7 +96,7 @@ namespace Biaui.Controls
             {
                 dc.DrawEllipse(
                     null,
-                    this.GetBorderPen(MarkBorderColor),
+                    this.GetBorderPen(MarkBorderColor.ToImmutableByteColor()),
                     new Point(8, 10),
                     7, 7);
             }

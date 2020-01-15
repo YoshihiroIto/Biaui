@@ -10,5 +10,14 @@ namespace Biaui.Internals
                 (byte)((c2.R - c1.R) * ratio + c1.R),
                 (byte)((c2.G - c1.G) * ratio + c1.G),
                 (byte)((c2.B - c1.B) * ratio + c1.B));
+        
+        
+        internal static ImmutableByteColor Lerp(double ratio, ImmutableByteColor c1, ImmutableByteColor c2)
+            => new ImmutableByteColor(
+                (byte)((c2.A - c1.A) * ratio + c1.A),
+                (byte)((c2.R - c1.R) * ratio + c1.R),
+                (byte)((c2.G - c1.G) * ratio + c1.G),
+                (byte)((c2.B - c1.B) * ratio + c1.B));
+        
     }
 }

@@ -171,7 +171,7 @@ namespace Biaui.Controls.NodeEditor
 
         #region HighlightLinkColor
 
-        public Color HighlightLinkColor
+        public ImmutableByteColor HighlightLinkColor
         {
             get => _HighlightLinkColor;
             set
@@ -181,19 +181,19 @@ namespace Biaui.Controls.NodeEditor
             }
         }
 
-        private Color _HighlightLinkColor = Colors.GhostWhite;
+        private ImmutableByteColor _HighlightLinkColor = ImmutableByteColor.GhostWhite;
 
         public static readonly DependencyProperty HighlightLinkColorProperty =
             DependencyProperty.Register(
                 nameof(HighlightLinkColor),
-                typeof(Color),
+                typeof(ImmutableByteColor),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    Colors.GhostWhite,
+                    ImmutableByteColor.GhostWhite,
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;
-                        self._HighlightLinkColor = (Color) e.NewValue;
+                        self._HighlightLinkColor = (ImmutableByteColor) e.NewValue;
                     }));
 
         #endregion

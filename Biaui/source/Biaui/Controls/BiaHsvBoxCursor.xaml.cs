@@ -143,7 +143,7 @@ namespace Biaui.Controls
 
             // Border
             {
-                var p = this.GetBorderPen(BorderColor);
+                var p = this.GetBorderPen(BorderColor.ToImmutableByteColor());
 
                 var w = this.RoundLayoutValue(ActualWidth - 0.5);
                 var h = this.RoundLayoutValue(ActualHeight - 0.5);

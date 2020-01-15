@@ -7,7 +7,7 @@ namespace Biaui
 {
     public static class Caches
     {
-        public static Pen GetPen(Color color, double thickness)
+        public static Pen GetPen(ImmutableByteColor color, double thickness)
         {
             unchecked
             {
@@ -25,7 +25,7 @@ namespace Biaui
             }
         }
 
-        public static Pen GetCapPen(Color color, double thickness)
+        public static Pen GetCapPen(ImmutableByteColor color, double thickness)
         {
             unchecked
             {
@@ -47,7 +47,7 @@ namespace Biaui
             }
         }
 
-        public static Pen GetDashedPen(Color color, double thickness)
+        public static Pen GetDashedPen(ImmutableByteColor color, double thickness)
         {
             unchecked
             {
@@ -68,7 +68,7 @@ namespace Biaui
             }
         }
 
-        public static SolidColorBrush GetSolidColorBrush(Color color)
+        public static SolidColorBrush GetSolidColorBrush(ImmutableByteColor color)
         {
             unchecked
             {
@@ -77,7 +77,7 @@ namespace Biaui
                 if (_solidColorBrushes.TryGetValue(hashCode, out var b))
                     return b;
 
-                b = new SolidColorBrush(color);
+                b = new SolidColorBrush(color.ToColor());
                 b.Freeze();
 
                 _solidColorBrushes.Add(hashCode, b);

@@ -234,7 +234,7 @@ namespace Biaui.Controls
 
             var rect = this.RoundLayoutRenderRectangle(true);
 
-            var borderPen = this.GetBorderPen(BorderColor);
+            var borderPen = this.GetBorderPen(BorderColor.ToImmutableByteColor());
 
             if (IsEnabled)
             {
