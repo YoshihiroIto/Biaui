@@ -20,9 +20,9 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
             IEnumerable linksSource,
             in ImmutableRect_double lineCullingRect,
             double alpha,
-            ImmutableByteColor backgroundColor,
-            ImmutableByteColor highlightLinkColor,
+            ByteColor backgroundColor,
+            ByteColor highlightLinkColor,
             NodeLinkGeomMakerFlags flags,
-            Dictionary<(ImmutableByteColor Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves);
+            Dictionary<(ByteColor Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> outputCurves);
     }
 }

@@ -173,13 +173,13 @@ namespace Biaui.Internals
 #endif
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(ImmutableByteColor color)
+        internal static long Make(ByteColor color)
         {
             return color.HashCode;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(ImmutableByteColor color, double x)
+        internal static long Make(ByteColor color, double x)
         {
             var ix = Unsafe.As<double, long>(ref x);
 

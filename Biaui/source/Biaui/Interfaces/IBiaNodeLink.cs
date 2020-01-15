@@ -14,7 +14,7 @@ namespace Biaui.Interfaces
 
         BiaNodeItemSlotIdPair ItemSlot2 { get; }
 
-        ImmutableByteColor Color { get; }
+        ByteColor Color { get; }
 
         BiaNodeLinkStyle Style { get; set; }
 

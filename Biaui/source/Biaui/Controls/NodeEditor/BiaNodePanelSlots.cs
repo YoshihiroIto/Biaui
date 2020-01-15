@@ -25,8 +25,8 @@ namespace Biaui.Controls.NodeEditor
             _mousePoint = point;
         }
 
-        private static readonly Dictionary<ImmutableByteColor, (StreamGeometry Geom, StreamGeometryContext Ctx)> _ellipses =
-            new Dictionary<ImmutableByteColor, (StreamGeometry, StreamGeometryContext)>();
+        private static readonly Dictionary<ByteColor, (StreamGeometry Geom, StreamGeometryContext Ctx)> _ellipses =
+            new Dictionary<ByteColor, (StreamGeometry, StreamGeometryContext)>();
 
         private BiaNodeEditor? _parent;
 
@@ -65,7 +65,7 @@ namespace Biaui.Controls.NodeEditor
                     }
                 }
 
-                var color = canConnectLink ? slot.Color : ImmutableByteColor.DimGray;
+                var color = canConnectLink ? slot.Color : ByteColor.DimGray;
 
                 if (_ellipses.TryGetValue(color, out var curve) == false)
                 {
@@ -82,7 +82,7 @@ namespace Biaui.Controls.NodeEditor
                 curve.Ctx.DrawEllipse(Unsafe.As<ImmutableVec2_double, Point>(ref slotPos), r, r, true, true);
             }
 
-            var pen = Caches.GetPen(ImmutableByteColor.Black, this.RoundLayoutValue(2));
+            var pen = Caches.GetPen(ByteColor.Black, this.RoundLayoutValue(2));
 
             foreach (var c in _ellipses)
             {

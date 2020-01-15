@@ -126,8 +126,8 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 #endif
 
-        private static readonly Dictionary<(ImmutableByteColor Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
-            = new Dictionary<(ImmutableByteColor, BiaNodeLinkStyle, bool), (StreamGeometry, StreamGeometryContext)>();
+        private static readonly Dictionary<(ByteColor Color, BiaNodeLinkStyle Style, bool IsHightlight), (StreamGeometry Geom, StreamGeometryContext Ctx)> _curves
+            = new Dictionary<(ByteColor, BiaNodeLinkStyle, bool), (StreamGeometry, StreamGeometryContext)>();
 
         private static readonly IReadOnlyDictionary<BiaNodeEditorNodeLinkStyle, INodeLinkGeomMaker> NodeLinkGeomMakers =
             new Dictionary<BiaNodeEditorNodeLinkStyle, INodeLinkGeomMaker>()
