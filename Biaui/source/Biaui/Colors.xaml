@@ -98,7 +98,6 @@
 
     <SolidColorBrush x:Key="ActiveForegroundBrushKey" Color="#FFFFFF" />
 
-    <Color x:Key="InactiveBackgroundColorKey">#FF2D2D30</Color>
     <SolidColorBrush x:Key="InactiveBackgroundBrushKey" Color="#FF2D2D30" />
 
     <Color x:Key="InactiveColorPickerColorKey">#FF303033</Color>
@@ -106,7 +105,6 @@
     <Color x:Key="InactiveBorderColorKey">#FF3C3C41</Color>
     <SolidColorBrush x:Key="InactiveBorderBrushKey" Color="#FF3C3C41" />
 
-    <Color x:Key="InactiveForegroundColorKey">#FF787878</Color>
     <SolidColorBrush x:Key="InactiveForegroundBrushKey" Color="#FF787878" />
     <SolidColorBrush x:Key="InactiveControlBrushKey" Color="#505050" />
 
