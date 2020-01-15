@@ -1,4 +1,5 @@
 ﻿{
+    "IndentSize": 4,
     "AttributesTolerance": 2,
     "KeepFirstAttributeOnSameLine": true,
     "MaxAttributeCharactersPerLine": 0,
