@@ -424,17 +424,14 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 ImmutableRect_double itemRect;
                 {
-                    var nodeItemPos = nodeItem.Pos;
-                    var nodeItemSize = nodeItem.Size;
-
-                    if (nodeItemSize == default)
+                    if (nodeItem.Size == default)
                     {
                         nodeItemType = nodeItem.GetType();
 
                         // 同タイプのパネルが表示済みならその大きさを使う
                         if (_panelDefaultSizeDict.TryGetValue(nodeItemType, out var size))
                         {
-                            itemRect = new ImmutableRect_double(nodeItemPos.X, nodeItemPos.Y, size.Width, size.Height);
+                            itemRect = new ImmutableRect_double(nodeItem.Pos.X, nodeItem.Pos.Y, size.Width, size.Height);
                         }
                         else
                         {
@@ -442,13 +439,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                             const double tempWidth = 256.0;
                             const double tempHeight = 512.0;
 
-                            itemRect = new ImmutableRect_double(nodeItemPos.X, nodeItemPos.Y, tempWidth, tempHeight);
+                            itemRect = new ImmutableRect_double(nodeItem.Pos.X, nodeItem.Pos.Y, tempWidth, tempHeight);
                         }
                     }
                     else
                     {
                         var size = nodeItem.Size;
-                        itemRect = new ImmutableRect_double(nodeItemPos.X, nodeItemPos.Y, size.Width, size.Height);
+                        itemRect = new ImmutableRect_double(nodeItem.Pos.X, nodeItem.Pos.Y, size.Width, size.Height);
                     }
                 }
 
@@ -841,7 +838,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             e.Handled = true;
         }
 
-        private void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
+        private static void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
 
