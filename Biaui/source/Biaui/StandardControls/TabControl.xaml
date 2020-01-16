@@ -21,13 +21,13 @@
 
         <Style.Triggers>
 
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Foreground" Value="{DynamicResource ButtonActiveForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
+            <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Foreground" Value="{DynamicResource ButtonPressedForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                 <Setter Property="Background" Value="Transparent" />
             </Trigger>
@@ -95,7 +95,7 @@
                     </Grid>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="True">
+                        <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="AddButton" Property="Visibility" Value="Visible" />
                         </Trigger>
 
@@ -178,13 +178,13 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="True">
+            <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Visibility" Value="Visible" />
             </Trigger>
         </Style.Triggers>
@@ -210,21 +210,21 @@
         <Setter Property="Padding" Value="0" />
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
+            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
             </DataTrigger>
 
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
-                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
-                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 </MultiDataTrigger.Conditions>
 
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
             </MultiDataTrigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
         </Style.Triggers>
@@ -235,21 +235,21 @@
         <Setter Property="Margin" Value="0" />
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
+            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
             </DataTrigger>
 
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
-                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
-                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 </MultiDataTrigger.Conditions>
 
                 <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
             </MultiDataTrigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
         </Style.Triggers>
@@ -260,21 +260,21 @@
         <Setter Property="Margin" Value="0" />
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False">
+            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey}" />
             </DataTrigger>
 
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="False" />
-                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
-                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="True" />
+                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 </MultiDataTrigger.Conditions>
 
                 <Setter Property="Foreground" Value="{DynamicResource SemiForegroundBrushKey.MouseOver}" />
             </MultiDataTrigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
         </Style.Triggers>
@@ -303,8 +303,8 @@
                                               HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                               VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                               ContentSource="Header"
-                                              Focusable="False"
-                                              RecognizesAccessKey="True"
+                                              Focusable="{x:Static biaui:Boxes.BoolFalse}"
+                                              RecognizesAccessKey="{x:Static biaui:Boxes.BoolTrue}"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <ContentPresenter.Resources>
                                     <Style BasedOn="{StaticResource TabItemTextBlockStyle}" TargetType="{x:Type TextBlock}" />
@@ -379,12 +379,12 @@
                             <Setter TargetName="SelectionBorder" Property="BorderThickness" Value="0,0,1,0" />
                         </Trigger>
 
-                        <Trigger Property="IsSelected" Value="True">
+                        <Trigger Property="IsSelected" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
                         </Trigger>
 
-                        <Trigger Property="IsSelected" Value="False">
+                        <Trigger Property="IsSelected" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderBrush" Value="Transparent" />
 
@@ -393,8 +393,8 @@
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsEnabled" Value="False" />
-                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                                <Condition Property="IsSelected" Value="{x:Static biaui:Boxes.BoolFalse}" />
                             </MultiTrigger.Conditions>
 
                             <Setter Property="Background" Value="Transparent" />
@@ -405,8 +405,8 @@
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsEnabled" Value="False" />
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                                <Condition Property="IsSelected" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiTrigger.Conditions>
 
                             <Setter Property="Background" Value="{DynamicResource BackgroundBackgroundBrushKey}" />

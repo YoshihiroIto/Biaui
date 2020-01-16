@@ -11,12 +11,12 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
 
-        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
         <Setter Property="VirtualizingStackPanel.ScrollUnit" Value="Pixel" />
         <Setter Property="VirtualizingStackPanel.CacheLength" Value="20,20" />
@@ -30,7 +30,7 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                        <ScrollViewer Focusable="False">
+                        <ScrollViewer Focusable="{x:Static biaui:Boxes.BoolFalse}">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </controls:BiaClippingBorder>
@@ -39,7 +39,7 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
@@ -50,7 +50,7 @@
     <!--  https://stackoverflow.com/questions/664632/highlight-whole-treeviewitem-line-in-wpf  -->
 
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
-        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
@@ -62,7 +62,7 @@
                                 <Style TargetType="{x:Type Path}">
                                     <Setter Property="Fill" Value="{DynamicResource ForegroundBrushKey}" />
                                     <Style.Triggers>
-                                        <Trigger Property="IsEnabled" Value="False">
+                                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                                             <Setter Property="Fill" Value="{DynamicResource InactiveForegroundBrushKey}" />
                                         </Trigger>
                                     </Style.Triggers>
@@ -72,7 +72,7 @@
                     </Canvas>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
+                        <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="ExpandPath" Property="Data" Value="M 4.632812 5.363281 L 7.5 8.230469 L 10.367188 5.363281 L 11.25 6.25 L 7.5 10 L 3.75 6.25 Z M 4.632812 5.363281" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -154,33 +154,33 @@
                     </StackPanel>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="True">
+                        <Trigger Property="internals:TreeViewHelper.IsMouseDirectlyOverItem" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                         </Trigger>
 
-                        <Trigger Property="IsExpanded" Value="False">
+                        <Trigger Property="IsExpanded" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="HasItems" Value="False">
+                        <Trigger Property="HasItems" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                         </Trigger>
 
-                        <Trigger Property="IsSelected" Value="True">
+                        <Trigger Property="IsSelected" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedInactive.Border}" />
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsSelected" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border.IsMouseOver}" />
                         </MultiTrigger>
 
-                        <Trigger Property="IsEnabled" Value="False">
+                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>

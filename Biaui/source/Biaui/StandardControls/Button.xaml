@@ -25,7 +25,7 @@
                             BorderThickness="0"
                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                            UseLayoutRounding="True">
+                            UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}">
                         <ContentPresenter Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -35,17 +35,17 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ButtonActiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonActiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ButtonActiveForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
+            <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ButtonPressedBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonPressedBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ButtonPressedForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource ButtonInactiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
@@ -63,7 +63,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                            UseLayoutRounding="True">
+                            UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}">
                         <ContentPresenter Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -78,21 +78,21 @@
            TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontSize" Value="16" />
-        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="IsTabStop" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource AccentBrushKey}" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
+            <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource AccentBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Opacity" Value="0.6" />
                 <Setter Property="Background" Value="Transparent" />
             </Trigger>

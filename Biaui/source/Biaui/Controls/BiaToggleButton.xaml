@@ -10,15 +10,15 @@
         <Setter Property="Behavior" Value="{x:Static controls:BiaToggleButtonBehavior.Normal}" />
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ButtonActiveBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
             </Trigger>
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsPressed" Value="True" />
-                    <Condition Property="IsPressedMouseOver" Value="True" />
+                    <Condition Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsPressedMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="Background" Value="{DynamicResource ButtonPressedBackgroundBrushKey}" />
@@ -27,27 +27,27 @@
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsPressed" Value="True" />
-                    <Condition Property="IsPressedMouseOver" Value="False" />
+                    <Condition Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsPressedMouseOver" Value="{x:Static biaui:Boxes.BoolFalse}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
             </MultiTrigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource ButtonInactiveBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsChecked" Value="True">
+            <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundBrushKey.IsChecked}" />
                 <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
             </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsChecked" Value="True" />
-                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundBrushKey.IsChecked.IsMouseOver}" />
@@ -55,8 +55,8 @@
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsChecked" Value="True" />
-                    <Condition Property="IsEnabled" Value="False" />
+                    <Condition Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="Background" Value="{DynamicResource ToggleButtonBackgroundBrushKey.IsChecked.IsDisabled}" />

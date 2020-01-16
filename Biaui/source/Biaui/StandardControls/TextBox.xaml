@@ -34,21 +34,21 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+            <Trigger Property="IsKeyboardFocusWithin" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsReadOnly" Value="True">
+            <Trigger Property="IsReadOnly" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />

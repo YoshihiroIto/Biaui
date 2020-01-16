@@ -17,19 +17,19 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonActiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ButtonActiveForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsPressed" Value="True">
+            <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonPressedBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ButtonPressedForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ButtonInactiveForegroundBrushKey}" />
             </Trigger>
-            <Trigger Property="IsChecked" Value="True">
+            <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="BorderBrush" Value="{DynamicResource ButtonInactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
             </Trigger>
@@ -37,8 +37,8 @@
     </Style>
 
     <Style x:Key="ComboBoxItemContainerStyle" TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="{x:Static biaui:Boxes.BoolTrue}" />
+        <Setter Property="OverridesDefaultStyle" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -53,13 +53,13 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter Property="Background" Value="{DynamicResource SubmenuItemBackgroundHighlighted}" />
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsSelected" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="{DynamicResource Item.SelectedActive.Background}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border}" />
@@ -67,8 +67,8 @@
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsSelected" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource Item.SelectedActive.Border.IsMouseOver}" />
@@ -81,7 +81,7 @@
 
     <Style TargetType="{x:Type ComboBox}">
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
         </Style.Triggers>
@@ -107,11 +107,11 @@
                             <Grid Margin="-1">
                                 <ToggleButton x:Name="toggleButton"
                                               ClickMode="Press"
-                                              Focusable="False"
+                                              Focusable="{x:Static biaui:Boxes.BoolFalse}"
                                               Foreground="{DynamicResource InactiveForegroundBrushKey}"
                                               IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                              IsTabStop="False"
-                                              OverridesDefaultStyle="True"
+                                              IsTabStop="{x:Static biaui:Boxes.BoolFalse}"
+                                              OverridesDefaultStyle="{x:Static biaui:Boxes.BoolTrue}"
                                               Style="{StaticResource DropDownToggleButtonStyle}">
                                     <ToggleButton.Template>
                                         <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -134,7 +134,7 @@
                                                   ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
                                                   ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                                   ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                  IsHitTestVisible="False"
+                                                  IsHitTestVisible="{x:Static biaui:Boxes.BoolFalse}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <ContentPresenter.Resources>
                                         <Style TargetType="{x:Type TextBlock}">
@@ -147,9 +147,9 @@
 
                         <Popup x:Name="PART_Popup"
                                MinWidth="{TemplateBinding ActualWidth}"
-                               AllowsTransparency="True"
+                               AllowsTransparency="{x:Static biaui:Boxes.BoolTrue}"
                                FocusVisualStyle="{x:Null}"
-                               Focusable="False"
+                               Focusable="{x:Static biaui:Boxes.BoolFalse}"
                                HorizontalOffset="-2"
                                IsOpen="{TemplateBinding IsDropDownOpen}"
                                Placement="Bottom"
@@ -161,7 +161,7 @@
                                                         Background="{DynamicResource SubmenuItemBackground}"
                                                         BorderBrush="{DynamicResource Item.SelectedActive.Border}"
                                                         BorderThickness="1"
-                                                        SnapsToDevicePixels="True">
+                                                        SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}">
                                 <controls:BiaClippingBorder.Effect>
                                     <DropShadowEffect ShadowDepth="2" Color="Black" />
                                 </controls:BiaClippingBorder.Effect>
@@ -177,20 +177,20 @@
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="dropdown" Property="MinHeight" Value="100" />
                         </Trigger>
-                        <Trigger Property="IsGrouping" Value="True">
+                        <Trigger Property="IsGrouping" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="toggleButton" Property="Foreground" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="toggleButton" Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="toggleButton" Property="Background" Value="{DynamicResource BackgroundBrushKey}" />
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                         </Trigger>
-                        <Trigger SourceName="PART_Popup" Property="IsOpen" Value="True">
+                        <Trigger SourceName="PART_Popup" Property="IsOpen" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="toggleButton" Property="Background" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="toggleButton" Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
+                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                         </Trigger>

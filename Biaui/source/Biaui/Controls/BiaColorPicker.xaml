@@ -46,7 +46,7 @@
                                                  Grid.Column="2"
                                                  Width="{x:Static biaui:Constants.BasicOneLineHeight}"
                                                  HorizontalAlignment="Right"
-                                                 IsInverseValue="True"
+                                                 IsInverseValue="{x:Static biaui:Boxes.BoolTrue}"
                                                  IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                  Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
@@ -70,7 +70,7 @@
                                         <Setter Property="SliderMaximum" Value="1" />
                                         <Setter Property="Increment" Value="0.1" />
                                         <Setter Property="CornerRadius" Value="0" />
-                                        <Setter Property="IsVisibleBorder" Value="False" />
+                                        <Setter Property="IsVisibleBorder" Value="{x:Static biaui:Boxes.BoolFalse}" />
                                         <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
                                 </colorPicker:BiaUniformGrid.Resources>
@@ -97,7 +97,7 @@
                                     <colorPicker:BiaNumberEditor.Style>
                                         <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="False">
+                                                <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -129,7 +129,7 @@
                                         <Setter Property="SliderMaximum" Value="1" />
                                         <Setter Property="Increment" Value="0.1" />
                                         <Setter Property="CornerRadius" Value="0" />
-                                        <Setter Property="IsVisibleBorder" Value="False" />
+                                        <Setter Property="IsVisibleBorder" Value="{x:Static biaui:Boxes.BoolFalse}" />
                                         <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
                                 </colorPicker:BiaUniformGrid.Resources>
@@ -142,7 +142,7 @@
                                     <Canvas.Style>
                                         <Style TargetType="{x:Type Canvas}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="False">
+                                                <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                             </Style.Triggers>

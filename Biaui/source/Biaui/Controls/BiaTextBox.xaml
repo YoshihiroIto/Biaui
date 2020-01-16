@@ -9,23 +9,23 @@
         <Setter Property="WatermarkForeground" Value="{DynamicResource TextBoxSubForegroundBrushKey}" />
         <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
-        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolTrue}" />
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+            <Trigger Property="IsKeyboardFocusWithin" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsReadOnly" Value="True">
+            <Trigger Property="IsReadOnly" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                 <Setter Property="WatermarkForeground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                 <Setter Property="WatermarkForeground" Value="{DynamicResource InactiveForegroundBrushKey}" />

@@ -11,11 +11,11 @@
         <Setter Property="Behavior" Value="{x:Static controls:BiaToggleButtonBehavior.RadioButton}" />
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="MarkBorderColor" Value="{DynamicResource AccentColorKey}" />
             </Trigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
 
                 <Setter Property="MarkBrush" Value="{DynamicResource InactiveForegroundBrushKey}" />

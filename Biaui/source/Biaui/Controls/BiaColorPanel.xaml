@@ -10,7 +10,7 @@
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
 
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="BorderColor" Value="{DynamicResource InactiveBorderColorKey}" />
             </Trigger>
         </Style.Triggers>

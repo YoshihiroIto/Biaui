@@ -11,9 +11,9 @@
         <Style.Triggers>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True" />
-                    <Condition Property="IsChecked" Value="False" />
-                    <Condition Property="IsPressed" Value="False" />
+                    <Condition Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                    <Condition Property="IsChecked" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                    <Condition Property="IsPressed" Value="{x:Static biaui:Boxes.BoolFalse}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="BoxBorderColor" Value="{DynamicResource AccentColorKey}" />
@@ -21,22 +21,22 @@
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True" />
-                    <Condition Property="IsChecked" Value="True" />
-                    <Condition Property="IsPressed" Value="False" />
+                    <Condition Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsPressed" Value="{x:Static biaui:Boxes.BoolFalse}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="BoxBorderColor" Value="{x:Static biaui:ByteColor.Transparent}">
                 </Setter>
             </MultiTrigger>
 
-            <Trigger Property="IsChecked" Value="True">
+            <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="MarkBrush" Value="{DynamicResource BackgroundBackgroundBrushKey}" />
                 <Setter Property="Background" Value="{DynamicResource AccentBrushKey}" />
                 <Setter Property="BoxBorderColor" Value="{DynamicResource AccentColorKey}" />
             </Trigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="MarkBrush" Value="{DynamicResource InactiveForegroundBrushKey}" />
                 <Setter Property="BoxBorderColor" Value="{DynamicResource InactiveBorderColorKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />

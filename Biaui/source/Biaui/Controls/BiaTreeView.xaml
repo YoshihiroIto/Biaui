@@ -2,9 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:converter="clr-namespace:Biaui.Internals.Converter"
-                    xmlns:internals="clr-namespace:Biaui.Internals">
+                    xmlns:internals="clr-namespace:Biaui.Internals"
+                    xmlns:biaui="clr-namespace:Biaui">
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
-        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
@@ -16,7 +17,7 @@
                                 <Style TargetType="{x:Type Path}">
                                     <Setter Property="Fill" Value="{DynamicResource ForegroundBrushKey}" />
                                     <Style.Triggers>
-                                        <Trigger Property="IsEnabled" Value="False">
+                                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                                             <Setter Property="Fill" Value="{DynamicResource InactiveForegroundBrushKey}" />
                                         </Trigger>
                                     </Style.Triggers>
@@ -26,7 +27,7 @@
                     </Canvas>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
+                        <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="ExpandPath" Property="Data" Value="M 4.632812 5.363281 L 7.5 8.230469 L 10.367188 5.363281 L 11.25 6.25 L 7.5 10 L 3.75 6.25 Z M 4.632812 5.363281" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -37,7 +38,7 @@
         <Setter Property="Visibility" Value="Visible" />
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsVisibleItemExpanderButton}" Value="False">
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsVisibleItemExpanderButton}" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Visibility" Value="Collapsed" />
             </DataTrigger>
         </Style.Triggers>
@@ -117,22 +118,22 @@
                     </StackPanel>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsExpanded" Value="False">
+                        <Trigger Property="IsExpanded" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
-                        <Trigger Property="HasItems" Value="False">
+                        <Trigger Property="HasItems" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                         </Trigger>
 
-                        <Trigger Property="IsEnabled" Value="False">
+                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiDataTrigger.Conditions>
 
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
@@ -141,8 +142,8 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiDataTrigger.Conditions>
 
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
@@ -151,10 +152,10 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsMouseOver}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiDataTrigger.Conditions>
 
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
@@ -183,14 +184,14 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
+                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiDataTrigger.Conditions>
 
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
@@ -199,8 +200,8 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiDataTrigger.Conditions>
 
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedInactive.Background}" />
@@ -209,10 +210,10 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="True" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(internals:TreeViewHelper.IsMouseDirectlyOverItem)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=(controls:BiaTreeView.IsSelected)}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsMouseOver}" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsSelectionEnabled}" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             </MultiDataTrigger.Conditions>
 
                             <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Item.SelectedActive.Background.IsMouseOver}" />
@@ -231,12 +232,12 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
 
-        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
         <Setter Property="VirtualizingStackPanel.CacheLength" Value="20,20" />
         <Setter Property="VirtualizingStackPanel.CacheLengthUnit" Value="Item" />
@@ -246,7 +247,7 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel CanVerticallyScroll="True" />
+                    <VirtualizingStackPanel CanVerticallyScroll="{x:Static biaui:Boxes.BoolTrue}" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -259,7 +260,7 @@
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 CornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=CornerRadius}">
-                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
+                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="{x:Static biaui:Boxes.BoolFalse}">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </controls:BiaClippingBorder>
@@ -268,7 +269,7 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />

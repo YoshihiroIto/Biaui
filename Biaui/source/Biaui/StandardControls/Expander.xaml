@@ -2,7 +2,8 @@
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:internal="clr-namespace:Biaui.StandardControls.Internal"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:biaui="clr-namespace:Biaui">
     <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Cursor" Value="Hand" />
 
@@ -12,7 +13,7 @@
                     <StackPanel x:Name="Background"
                                 Background="Transparent"
                                 Orientation="Horizontal"
-                                SnapsToDevicePixels="False">
+                                SnapsToDevicePixels="{x:Static biaui:Boxes.BoolFalse}">
                         <Path x:Name="arrow"
                               Width="10"
                               Height="10"
@@ -26,32 +27,32 @@
                         <ContentPresenter Margin="2,0,0,0"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          RecognizesAccessKey="True"
-                                          SnapsToDevicePixels="True" />
+                                          RecognizesAccessKey="{x:Static biaui:Boxes.BoolTrue}"
+                                          SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}" />
                     </StackPanel>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
+                        <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="arrow" Property="Data" Value="M 0 0 L 8 0 L 4 6.9 Z" />
                         </Trigger>
 
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="arrow" Property="Fill" Value="#B0B0B0" />
                         </Trigger>
 
-                        <Trigger Property="IsPressed" Value="True">
+                        <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="arrow" Property="Fill" Value="#C0C0C0" />
                         </Trigger>
 
-                        <Trigger Property="IsEnabled" Value="False">
+                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="arrow" Property="Fill" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                         </Trigger>
 
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="Background" Property="Background" Value="#14FFFFFF" />
                         </Trigger>
 
-                        <Trigger Property="IsMouseOver" Value="False">
+                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="Background" Property="Background" Value="#0CFFFFFF" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -117,7 +118,7 @@
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
 
-                        <Trigger Property="IsExpanded" Value="True">
+                        <Trigger Property="IsExpanded" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>

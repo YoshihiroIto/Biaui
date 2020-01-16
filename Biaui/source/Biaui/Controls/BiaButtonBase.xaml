@@ -9,15 +9,15 @@
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
 
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ButtonActiveBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
             </Trigger>
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsPressed" Value="True" />
-                    <Condition Property="IsPressedMouseOver" Value="True" />
+                    <Condition Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsPressedMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="Background" Value="{DynamicResource ButtonPressedBackgroundBrushKey}" />
@@ -26,15 +26,15 @@
 
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsPressed" Value="True" />
-                    <Condition Property="IsPressedMouseOver" Value="False" />
+                    <Condition Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                    <Condition Property="IsPressedMouseOver" Value="{x:Static biaui:Boxes.BoolFalse}" />
                 </MultiTrigger.Conditions>
 
                 <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
             </MultiTrigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource ButtonInactiveBackgroundBrushKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>

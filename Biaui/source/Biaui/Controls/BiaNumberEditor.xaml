@@ -11,30 +11,30 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="CaptionForeground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey}" />
-        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolTrue}" />
 
         <Style.Triggers>
             <Trigger Property="Mode" Value="{x:Static controls:BiaNumberEditorMode.WideRange}">
                 <Setter Property="CaptionForeground" Value="{DynamicResource TextBoxSubForegroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
                 <Setter Property="BorderColor" Value="{DynamicResource ActiveBorderColorKey}" />
                 <Setter Property="SliderBrush" Value="{DynamicResource AccentBrushKey.IsMouseOver}" />
             </Trigger>
 
-            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+            <Trigger Property="IsKeyboardFocusWithin" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsReadOnly" Value="True">
+            <Trigger Property="IsReadOnly" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                 <Setter Property="CaptionForeground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                 <Setter Property="SliderBrush" Value="{DynamicResource InactiveControlBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsEnabled" Value="False">
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
                 <Setter Property="BorderColor" Value="{DynamicResource InactiveBorderColorKey}" />
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />

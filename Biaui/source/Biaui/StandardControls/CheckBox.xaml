@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type CheckBox}">
-        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
@@ -16,7 +16,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
-                    <Grid Background="Transparent" SnapsToDevicePixels="True">
+                    <Grid Background="Transparent" SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -50,31 +50,31 @@
                                           Content="{TemplateBinding Content}"
                                           ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Focusable="False"
-                                          RecognizesAccessKey="True"
+                                          Focusable="{x:Static biaui:Boxes.BoolFalse}"
+                                          RecognizesAccessKey="{x:Static biaui:Boxes.BoolTrue}"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Grid>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="optionMark" Property="Opacity" Value="0" />
                             <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="1" />
                             <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrushKey}" />
                         </Trigger>
 
-                        <Trigger Property="IsMouseOver" Value="False">
+                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="0" />
                         </Trigger>
 
-                        <Trigger Property="IsChecked" Value="True">
+                        <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="optionMark" Property="Opacity" Value="1" />
                             <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource BackgroundBackgroundBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="0" />
                         </Trigger>
 
-                        <Trigger Property="IsEnabled" Value="False">
+                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource InactiveForegroundBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="Background" Value="Transparent" />
@@ -82,7 +82,7 @@
                             <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                         </Trigger>
 
-                        <Trigger Property="IsPressed" Value="True">
+                        <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="0" />

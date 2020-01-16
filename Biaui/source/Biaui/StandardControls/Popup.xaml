@@ -17,7 +17,7 @@
                                             CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
                     <ContentPresenter HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
-                                      SnapsToDevicePixels="True" />
+                                      SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}" />
 
                     <controls:BiaClippingBorder.Effect>
                         <DropShadowEffect ShadowDepth="2" Color="Black" />
