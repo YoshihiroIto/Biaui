@@ -97,10 +97,10 @@
                                 <StackPanel HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
                                             VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                             Orientation="Horizontal">
-                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
-                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
-                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="Normalize" />
-                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="Close" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="{x:Static biaui:Boxes.WindowActionMinimize}" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="{x:Static biaui:Boxes.WindowActionMaximize}" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleNormalizeButton}" WindowAction="{x:Static biaui:Boxes.WindowActionNormalize}" />
+                                    <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleCloseButtonButton}" WindowAction="{x:Static biaui:Boxes.WindowActionClose}" />
                                 </StackPanel>
                             </Grid>
                         </Border>

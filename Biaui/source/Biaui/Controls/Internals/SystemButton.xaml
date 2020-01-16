@@ -26,19 +26,19 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="WindowAction" Value="Minimize">
+                        <Trigger Property="WindowAction" Value="{x:Static biaui:Boxes.WindowActionMinimize}">
                             <Setter TargetName="Face" Property="Data" Value="M20,14H4V10H20" />
                         </Trigger>
 
-                        <Trigger Property="WindowAction" Value="Maximize">
+                        <Trigger Property="WindowAction" Value="{x:Static biaui:Boxes.WindowActionMaximize}">
                             <Setter TargetName="Face" Property="Data" Value="M4,4H20V20H4V4M6,8V18H18V8H6Z" />
                         </Trigger>
 
-                        <Trigger Property="WindowAction" Value="Normalize">
+                        <Trigger Property="WindowAction" Value="{x:Static biaui:Boxes.WindowActionNormalize}">
                             <Setter TargetName="Face" Property="Data" Value="M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z" />
                         </Trigger>
 
-                        <Trigger Property="WindowAction" Value="Close">
+                        <Trigger Property="WindowAction" Value="{x:Static biaui:Boxes.WindowActionClose}">
                             <Setter TargetName="Face" Property="Data" Value="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
                         </Trigger>
                     </ControlTemplate.Triggers>

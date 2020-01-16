@@ -113,15 +113,15 @@ namespace Biaui
         // ReSharper disable InconsistentNaming
         public static readonly object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;
 
-        public static readonly object WindowAction_None = BiaWindowAction.None;
-        public static readonly object WindowAction_Active = BiaWindowAction.Active;
-        public static readonly object WindowAction_Close = BiaWindowAction.Close;
-        public static readonly object WindowAction_Normalize = BiaWindowAction.Normalize;
-        public static readonly object WindowAction_Maximize = BiaWindowAction.Maximize;
-        public static readonly object WindowAction_Minimize = BiaWindowAction.Minimize;
+        public static readonly object WindowActionNone = BiaWindowAction.None;
+        public static readonly object WindowActionActive = BiaWindowAction.Active;
+        public static readonly object WindowActionClose = BiaWindowAction.Close;
+        public static readonly object WindowActionNormalize = BiaWindowAction.Normalize;
+        public static readonly object WindowActionMaximize = BiaWindowAction.Maximize;
+        public static readonly object WindowActionMinimize = BiaWindowAction.Minimize;
 
-        public static readonly object ToggleButtonBehavior_Normal = BiaToggleButtonBehavior.Normal;
-        public static readonly object ToggleButtonBehavior_RadioButton = BiaToggleButtonBehavior.RadioButton;
+        public static readonly object ToggleButtonBehaviorNormal = BiaToggleButtonBehavior.Normal;
+        public static readonly object ToggleButtonBehaviorRadioButton = BiaToggleButtonBehavior.RadioButton;
         // ReSharper restore InconsistentNaming
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -218,12 +218,12 @@ namespace Biaui
         {
             return a switch
             {
-                BiaWindowAction.None => WindowAction_None,
-                BiaWindowAction.Active => WindowAction_Active,
-                BiaWindowAction.Close => WindowAction_Close,
-                BiaWindowAction.Normalize => WindowAction_Normalize,
-                BiaWindowAction.Maximize => WindowAction_Maximize,
-                BiaWindowAction.Minimize => WindowAction_Minimize,
+                BiaWindowAction.None => WindowActionNone,
+                BiaWindowAction.Active => WindowActionActive,
+                BiaWindowAction.Close => WindowActionClose,
+                BiaWindowAction.Normalize => WindowActionNormalize,
+                BiaWindowAction.Maximize => WindowActionMaximize,
+                BiaWindowAction.Minimize => WindowActionMinimize,
                 _ => throw new ArgumentOutOfRangeException(nameof(a), a, null)
             };
         }
@@ -233,8 +233,8 @@ namespace Biaui
         {
             return a switch
             {
-                BiaToggleButtonBehavior.Normal => ToggleButtonBehavior_Normal,
-                BiaToggleButtonBehavior.RadioButton => ToggleButtonBehavior_RadioButton,
+                BiaToggleButtonBehavior.Normal => ToggleButtonBehaviorNormal,
+                BiaToggleButtonBehavior.RadioButton => ToggleButtonBehaviorRadioButton,
                 _ => throw new ArgumentOutOfRangeException(nameof(a), a, null)
             };
         }

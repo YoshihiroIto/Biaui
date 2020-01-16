@@ -64,7 +64,7 @@ namespace Biaui.Controls
                 typeof(BiaToggleButtonBehavior),
                 typeof(BiaToggleButton),
                 new FrameworkPropertyMetadata(
-                    Boxes.ToggleButtonBehavior_Normal,
+                    Boxes.ToggleButtonBehaviorNormal,
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,

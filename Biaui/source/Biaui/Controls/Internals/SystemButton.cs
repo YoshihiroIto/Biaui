@@ -24,7 +24,7 @@ namespace Biaui.Controls.Internals
         public static readonly DependencyProperty WindowActionProperty =
             DependencyProperty.Register(nameof(WindowAction), typeof(BiaWindowAction), typeof(SystemButton),
                 new PropertyMetadata(
-                    Boxes.WindowAction_None,
+                    Boxes.WindowActionNone,
                     (s, e) =>
                     {
                         var self = (SystemButton) s;
