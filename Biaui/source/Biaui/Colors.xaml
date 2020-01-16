@@ -85,7 +85,6 @@
     <SolidColorBrush x:Key="SemiForegroundBrushKey" Color="#687389" />
     <SolidColorBrush x:Key="SemiForegroundBrushKey.MouseOver" Color="#8B9AB7" />
 
-    <Color x:Key="BackgroundColorKey">#424956</Color>
     <SolidColorBrush x:Key="BackgroundBrushKey" Color="#424956" />
 
     <SolidColorBrush x:Key="BorderBrushKey" Color="#3F3F46" />
