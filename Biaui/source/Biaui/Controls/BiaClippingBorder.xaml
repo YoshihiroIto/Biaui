@@ -3,6 +3,6 @@
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type controls:BiaClippingBorder}">
-        <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadius}" />
+        <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.BasicCornerRadius}" />
     </Style>
 </ResourceDictionary>

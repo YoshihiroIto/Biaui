@@ -23,7 +23,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0"
-                            CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
+                            CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}">
                         <ContentPresenter Margin="{TemplateBinding Padding}"

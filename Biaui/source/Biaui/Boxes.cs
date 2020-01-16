@@ -71,10 +71,9 @@ namespace Biaui
         public static readonly object NodeEditorNodeLinkStyleAxisAlign = BiaNodeEditorNodeLinkStyle.AxisAlign;
         public static readonly object NodeEditorNodeLinkStyleBezierCurve = BiaNodeEditorNodeLinkStyle.BezierCurve;
 
-        public static readonly object ConstantsBasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
-
         public static readonly object BasicOneLineHeight = Constants.BasicOneLineHeight;
-        public static readonly object BasicCornerRadiusPrim = Constants.BasicOneLineHeight;
+        public static readonly object BasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
+        public static readonly object BasicCornerRadius = Constants.BasicCornerRadius;
 
         // ReSharper disable InconsistentNaming
         public static readonly object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;

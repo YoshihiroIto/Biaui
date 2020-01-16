@@ -10,7 +10,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:BiaToggleSwitch}">
                     <controls:BiaUniformGrid Columns="2"
-                                             CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}"
+                                             CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}"
                                              Spacing="1">
                         <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
                                                   Content="{Binding EnabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"

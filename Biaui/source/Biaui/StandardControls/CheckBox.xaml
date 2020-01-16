@@ -31,7 +31,7 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                                CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}">
 
                             <Path x:Name="optionMark"
                                   Margin="-1"

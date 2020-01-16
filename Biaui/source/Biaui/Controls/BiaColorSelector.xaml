@@ -96,7 +96,7 @@
                                                         Background="{DynamicResource SubmenuItemBackground}"
                                                         BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
                                                         BorderThickness="1"
-                                                        CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                                                        CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}">
                                 <ScrollViewer Focusable="{x:Static biaui:Boxes.BoolFalse}">
                                     <ItemsPresenter Margin="2" />
                                 </ScrollViewer>

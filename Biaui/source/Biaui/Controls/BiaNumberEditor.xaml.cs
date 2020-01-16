@@ -524,7 +524,7 @@ namespace Biaui.Controls
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.ConstantsBasicCornerRadiusPrim,
+                    Boxes.BasicCornerRadiusPrim,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>

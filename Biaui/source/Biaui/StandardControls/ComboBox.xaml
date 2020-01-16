@@ -103,7 +103,7 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{x:Static biaui:Constants.BasicCornerRadius}">
+                                CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}">
                             <Grid Margin="-1">
                                 <ToggleButton x:Name="toggleButton"
                                               ClickMode="Press"
