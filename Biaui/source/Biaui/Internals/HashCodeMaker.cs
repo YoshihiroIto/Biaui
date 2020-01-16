@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Windows.Media;
 
 namespace Biaui.Internals
 {

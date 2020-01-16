@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Media;
 using Biaui.Controls.NodeEditor;
 using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Internals;
