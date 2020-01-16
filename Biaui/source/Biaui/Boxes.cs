@@ -74,6 +74,7 @@ namespace Biaui
         public static readonly object BasicOneLineHeight = Constants.BasicOneLineHeight;
         public static readonly object BasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
         public static readonly object BasicCornerRadius = Constants.BasicCornerRadius;
+        public static readonly object GroupCornerRadius = Constants.GroupCornerRadius;
         public static readonly object GroupCornerRadiusPrim = Constants.GroupCornerRadiusPrim;
         public static readonly object ButtonPaddingX = Constants.ButtonPaddingX;
         public static readonly object ButtonPaddingY = Constants.ButtonPaddingY;

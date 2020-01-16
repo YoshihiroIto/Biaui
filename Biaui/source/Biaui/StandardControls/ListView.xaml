@@ -26,7 +26,7 @@
                                                 Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                                CornerRadius="{x:Static biaui:Boxes.GroupCornerRadius}">
                         <ScrollViewer Padding="{TemplateBinding Padding}" Style="{DynamicResource GridViewScrollViewerStyle}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>

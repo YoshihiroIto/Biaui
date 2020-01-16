@@ -14,7 +14,7 @@
                                             Background="{DynamicResource SemiactiveBackgroundBrushKey}"
                                             BorderBrush="{DynamicResource SemiactiveBorderBrushKey}"
                                             BorderThickness="1"
-                                            CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
+                                            CornerRadius="{x:Static biaui:Boxes.GroupCornerRadius}">
                     <ContentPresenter HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}" />
