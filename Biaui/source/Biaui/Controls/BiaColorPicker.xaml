@@ -57,7 +57,7 @@
                                                        BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
                                                        BorderThickness="1">
                             <colorPicker:BiaClippingBorder.CornerRadius>
-                                <CornerRadius BottomLeft="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                <CornerRadius BottomLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                               BottomRight="0"
                                               TopLeft="0"
                                               TopRight="0" />
@@ -115,7 +115,7 @@
                                                        BorderThickness="1">
                             <colorPicker:BiaClippingBorder.CornerRadius>
                                 <CornerRadius BottomLeft="0"
-                                              BottomRight="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                              BottomRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                               TopLeft="0"
                                               TopRight="0" />
                             </colorPicker:BiaClippingBorder.CornerRadius>

@@ -102,8 +102,8 @@
                         <Trigger Property="TabStripPlacement" Value="Top">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
-                                                  BottomRight="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
+                                                  BottomRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                                   TopLeft="0"
                                                   TopRight="0" />
                                 </Setter.Value>
@@ -115,8 +115,8 @@
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="0"
                                                   BottomRight="0"
-                                                  TopLeft="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
-                                                  TopRight="{x:Static biaui:Constants.GroupCornerRadiusPrim}" />
+                                                  TopLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
+                                                  TopRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="headerPanel" Property="Grid.Row" Value="1" />
@@ -131,9 +131,9 @@
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="0"
-                                                  BottomRight="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                                  BottomRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                                   TopLeft="0"
-                                                  TopRight="{x:Static biaui:Constants.GroupCornerRadiusPrim}" />
+                                                  TopRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="headerPanel" Property="Grid.Row" Value="0" />
@@ -153,9 +153,9 @@
                         <Trigger Property="TabStripPlacement" Value="Right">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                                   BottomRight="0"
-                                                  TopLeft="{x:Static biaui:Constants.GroupCornerRadiusPrim}"
+                                                  TopLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                                   TopRight="0" />
                                 </Setter.Value>
                             </Setter>
