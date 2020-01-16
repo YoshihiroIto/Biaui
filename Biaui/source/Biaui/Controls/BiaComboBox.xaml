@@ -7,7 +7,7 @@
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
-        <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
+        <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
         <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="MarkBrush" Value="{DynamicResource InactiveForegroundBrushKey}" />
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />

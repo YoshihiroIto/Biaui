@@ -322,8 +322,8 @@
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="0"
                                                   BottomRight="0"
-                                                  TopLeft="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
-                                                  TopRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
+                                                  TopLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
+                                                  TopRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="MainBorder" Property="BorderThickness" Value="1,1,1,0" />
@@ -336,8 +336,8 @@
                             <Setter Property="Padding" Value="10,3" />
                             <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
-                                                  BottomRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
+                                                  BottomRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
                                                   TopLeft="0"
                                                   TopRight="0" />
                                 </Setter.Value>
@@ -352,9 +352,9 @@
                             <Setter Property="Padding" Value="10,3" />
                             <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
                                                   BottomRight="0"
-                                                  TopLeft="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
+                                                  TopLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
                                                   TopRight="0" />
                                 </Setter.Value>
                             </Setter>
@@ -369,9 +369,9 @@
                             <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="0"
-                                                  BottomRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}"
+                                                  BottomRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
                                                   TopLeft="0"
-                                                  TopRight="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
+                                                  TopRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="MainBorder" Property="BorderThickness" Value="0,1,1,1" />
