@@ -73,6 +73,8 @@ namespace Biaui
 
         public static readonly object ConstantsBasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
 
+        public static readonly object BasicOneLineHeight = Constants.BasicOneLineHeight;
+
         // ReSharper disable InconsistentNaming
         public static readonly object WindowCloseButtonBehavior_Normal = WindowCloseButtonBehavior.Normal;
 

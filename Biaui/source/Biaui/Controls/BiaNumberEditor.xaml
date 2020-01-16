@@ -3,7 +3,7 @@
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type controls:BiaNumberEditor}">
-        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+        <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
         <Setter Property="Padding" Value="2,4" />
 
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />

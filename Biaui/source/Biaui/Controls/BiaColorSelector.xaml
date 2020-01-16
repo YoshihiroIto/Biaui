@@ -7,7 +7,7 @@
     <Style TargetType="{x:Type controls:BiaColorSelector}">
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
         <Setter Property="Width" Value="36" />
-        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+        <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
         <Setter Property="Cursor" Value="Hand" />
 

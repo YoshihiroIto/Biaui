@@ -50,7 +50,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
-        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+        <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
 
         <Setter Property="ItemContainerStyle">
             <Setter.Value>

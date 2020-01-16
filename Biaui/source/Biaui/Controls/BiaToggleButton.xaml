@@ -5,7 +5,7 @@
     <Style TargetType="{x:Type controls:BiaToggleButton}">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+        <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
         <Setter Property="Behavior" Value="{x:Static controls:BiaToggleButtonBehavior.Normal}" />
 

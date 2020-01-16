@@ -5,7 +5,7 @@
     <Style TargetType="{x:Type controls:BiaButtonBase}">
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+        <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadiusPrim}" />
 
         <Style.Triggers>
@@ -44,7 +44,7 @@
     <Style BasedOn="{StaticResource {x:Type controls:BiaButtonBase}}" TargetType="{x:Type controls:BiaButton}" />
 
     <Style BasedOn="{StaticResource {x:Type controls:BiaButtonBase}}" TargetType="{x:Type controls:BiaIconButton}">
-        <Setter Property="Width" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
-        <Setter Property="Height" Value="{x:Static biaui:Constants.BasicOneLineHeight}" />
+        <Setter Property="Width" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
+        <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
     </Style>
 </ResourceDictionary>
