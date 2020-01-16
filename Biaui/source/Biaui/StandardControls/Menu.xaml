@@ -11,45 +11,45 @@
                 <ControlTemplate TargetType="{x:Type MenuItem}">
                     <Border x:Name="Border"
                             Background="Transparent"
-                            BorderThickness="0">
+                            BorderThickness="{x:Static biaui:Boxes.Thickness0}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition x:Name="ColumnIcon"
-                                                  Width="Auto"
-                                                  MinWidth="20"
+                                                  Width="{x:Static biaui:Boxes.GridLengthAuto}"
+                                                  MinWidth="{x:Static biaui:Boxes.Double20}"
                                                   SharedSizeGroup="ColumnGroupIcon" />
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="ColumnGroupHeader" />
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="ColumnGroupInputGesture" />
+                                <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthAuto}" SharedSizeGroup="ColumnGroupHeader" />
+                                <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthAuto}" SharedSizeGroup="ColumnGroupInputGesture" />
                                 <ColumnDefinition x:Name="ColumnArrow" Width="14" />
                             </Grid.ColumnDefinitions>
 
                             <ContentPresenter x:Name="IconPresenter"
-                                              Grid.Column="0"
-                                              VerticalAlignment="Center"
+                                              Grid.Column="{x:Static biaui:Boxes.Int0}"
+                                              VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                               ContentSource="Icon" />
 
-                            <ContentPresenter Grid.Column="1"
+                            <ContentPresenter Grid.Column="{x:Static biaui:Boxes.Int1}"
                                               Margin="{TemplateBinding Padding}"
-                                              VerticalAlignment="Center"
+                                              VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                               ContentSource="Header"
                                               RecognizesAccessKey="{x:Static biaui:Boxes.BoolTrue}" />
 
                             <ContentPresenter x:Name="InputGesturePresenter"
-                                              Grid.Column="2"
+                                              Grid.Column="{x:Static biaui:Boxes.Int2}"
                                               Margin="24,1,8,1"
-                                              VerticalAlignment="Center"
+                                              VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                               ContentSource="InputGestureText" />
 
                             <Path x:Name="Arrow"
-                                  Grid.Column="3"
+                                  Grid.Column="{x:Static biaui:Boxes.Int3}"
                                   Margin="4,0,6,0"
-                                  HorizontalAlignment="Right"
-                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
+                                  VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                   Data="M 4 0 L 8 4 L 4 8 Z"
                                   Fill="{DynamicResource ForegroundBrushKey}" />
 
                             <Popup x:Name="SubMenuPopup"
-                                   Grid.Column="0"
+                                   Grid.Column="{x:Static biaui:Boxes.Int0}"
                                    AllowsTransparency="{x:Static biaui:Boxes.BoolTrue}"
                                    Focusable="{x:Static biaui:Boxes.BoolFalse}"
                                    HorizontalOffset="-1"
@@ -62,7 +62,7 @@
                                 <controls:BiaClippingBorder Margin="0,0,8,8"
                                                             Background="{DynamicResource SubmenuItemBackground}"
                                                             BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
-                                                            BorderThickness="1"
+                                                            BorderThickness="{x:Static biaui:Boxes.Thickness1}"
                                                             SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}"
                                                             UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}">
                                     <StackPanel Grid.IsSharedSizeScope="{x:Static biaui:Boxes.BoolTrue}"
@@ -70,7 +70,7 @@
                                                 KeyboardNavigation.DirectionalNavigation="Cycle" />
 
                                     <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="2" Color="Black" />
+                                        <DropShadowEffect ShadowDepth="{x:Static biaui:Boxes.Double2}" Color="Black" />
                                     </Border.Effect>
                                 </controls:BiaClippingBorder>
                             </Popup>
@@ -81,34 +81,34 @@
                         <Trigger Property="Role" Value="TopLevelHeader">
                             <Setter Property="Padding" Value="8,4,8,2" />
                             <Setter TargetName="SubMenuPopup" Property="Placement" Value="Bottom" />
-                            <Setter TargetName="ColumnIcon" Property="MinWidth" Value="0" />
+                            <Setter TargetName="ColumnIcon" Property="MinWidth" Value="{x:Static biaui:Boxes.Double0}" />
                             <Setter TargetName="ColumnArrow" Property="Width" Value="Auto" />
-                            <Setter TargetName="IconPresenter" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="InputGesturePresenter" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="IconPresenter" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
+                            <Setter TargetName="InputGesturePresenter" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
+                            <Setter TargetName="Arrow" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
                         </Trigger>
 
                         <Trigger Property="Role" Value="TopLevelItem">
                             <Setter Property="Padding" Value="8,4,8,2" />
-                            <Setter TargetName="ColumnIcon" Property="MinWidth" Value="0" />
+                            <Setter TargetName="ColumnIcon" Property="MinWidth" Value="{x:Static biaui:Boxes.Double0}" />
                             <Setter TargetName="ColumnArrow" Property="Width" Value="Auto" />
-                            <Setter TargetName="IconPresenter" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="InputGesturePresenter" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="IconPresenter" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
+                            <Setter TargetName="InputGesturePresenter" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
+                            <Setter TargetName="Arrow" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
                         </Trigger>
 
                         <Trigger Property="Role" Value="SubmenuHeader">
-                            <Setter Property="DockPanel.Dock" Value="Top" />
+                            <Setter Property="DockPanel.Dock" Value="{x:Static biaui:Boxes.DockTop}" />
                             <Setter Property="Padding" Value="12,4,0,4" />
-                            <Setter TargetName="Border" Property="MinHeight" Value="24" />
+                            <Setter TargetName="Border" Property="MinHeight" Value="{x:Static biaui:Boxes.Double24}" />
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubmenuItemBackground}" />
                         </Trigger>
 
                         <Trigger Property="Role" Value="SubmenuItem">
-                            <Setter Property="DockPanel.Dock" Value="Top" />
+                            <Setter Property="DockPanel.Dock" Value="{x:Static biaui:Boxes.DockTop}" />
                             <Setter Property="Padding" Value="12,4,0,4" />
-                            <Setter TargetName="Arrow" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="Border" Property="MinHeight" Value="24" />
+                            <Setter TargetName="Arrow" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
+                            <Setter TargetName="Border" Property="MinHeight" Value="{x:Static biaui:Boxes.Double24}" />
                             <Setter TargetName="Border" Property="Background" Value="{DynamicResource SubmenuItemBackground}" />
                         </Trigger>
 
@@ -163,7 +163,7 @@
                         </Trigger>
 
                         <Trigger Property="Icon" Value="{x:Null}">
-                            <Setter TargetName="IconPresenter" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="IconPresenter" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
@@ -181,7 +181,7 @@
 
         <Style.Resources>
             <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="{x:Type Separator}">
-                <Setter Property="Height" Value="1" />
+                <Setter Property="Height" Value="{x:Static biaui:Boxes.Double1}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Separator}">

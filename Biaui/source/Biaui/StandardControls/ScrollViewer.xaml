@@ -8,29 +8,29 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Border x:Name="ScrollBarMargin"
-                            Width="16"
+                            Width="{x:Static biaui:Boxes.Double16}"
                             Background="Transparent"
                             IsHitTestVisible="{x:Static biaui:Boxes.BoolTrue}">
                         <Rectangle x:Name="ScrollBarThumb"
-                                   Width="8"
+                                   Width="{x:Static biaui:Boxes.Double8}"
                                    Height="Auto"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Stretch"
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
+                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}"
                                    Fill="{TemplateBinding Background}"
-                                   RadiusX="4"
-                                   RadiusY="4"
+                                   RadiusX="{x:Static biaui:Boxes.Double4}"
+                                   RadiusY="{x:Static biaui:Boxes.Double4}"
                                    SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}" />
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="Tag" Value="Horizontal">
                             <Setter TargetName="ScrollBarThumb" Property="Width" Value="Auto" />
-                            <Setter TargetName="ScrollBarThumb" Property="Height" Value="8" />
-                            <Setter TargetName="ScrollBarThumb" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="ScrollBarThumb" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="ScrollBarThumb" Property="Height" Value="{x:Static biaui:Boxes.Double6}" />
+                            <Setter TargetName="ScrollBarThumb" Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+                            <Setter TargetName="ScrollBarThumb" Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
 
                             <Setter TargetName="ScrollBarMargin" Property="Width" Value="Auto" />
-                            <Setter TargetName="ScrollBarMargin" Property="Height" Value="16" />
+                            <Setter TargetName="ScrollBarMargin" Property="Height" Value="{x:Static biaui:Boxes.Double16}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -43,21 +43,21 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Rectangle x:Name="ScrollBarThumb"
-                               Width="8"
+                               Width="{x:Static biaui:Boxes.Double8}"
                                Height="Auto"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Stretch"
+                               HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
+                               VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}"
                                Fill="{TemplateBinding Background}"
-                               RadiusX="4"
-                               RadiusY="4"
+                               RadiusX="{x:Static biaui:Boxes.Double4}"
+                               RadiusY="{x:Static biaui:Boxes.Double4}"
                                SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}" />
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="Tag" Value="Horizontal">
                             <Setter TargetName="ScrollBarThumb" Property="Width" Value="Auto" />
-                            <Setter TargetName="ScrollBarThumb" Property="Height" Value="8" />
-                            <Setter TargetName="ScrollBarThumb" Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter TargetName="ScrollBarThumb" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="ScrollBarThumb" Property="Height" Value="{x:Static biaui:Boxes.Double8}" />
+                            <Setter TargetName="ScrollBarThumb" Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+                            <Setter TargetName="ScrollBarThumb" Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -69,8 +69,8 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="Foreground" Value="#ABABAB" />
         <Setter Property="Background" Value="{x:Null}" />
-        <Setter Property="MinWidth" Value="0" />
-        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="MinWidth" Value="{x:Static biaui:Boxes.Double0}" />
+        <Setter Property="MinHeight" Value="{x:Static biaui:Boxes.Double0}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -196,8 +196,8 @@
                         <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Width="8"
-                                   HorizontalAlignment="Right"
+                                   Width="{x:Static biaui:Boxes.Double8}"
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
                                    Style="{StaticResource ThumbOnlyScrollBarStyle}"
@@ -206,8 +206,8 @@
                                    Value="{TemplateBinding VerticalOffset}" />
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
-                                   Height="8"
-                                   VerticalAlignment="Bottom"
+                                   Height="{x:Static biaui:Boxes.Double8}"
+                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentBottom}"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
                                    Orientation="Horizontal"
@@ -232,8 +232,8 @@
                         <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Width="8"
-                                   HorizontalAlignment="Right"
+                                   Width="{x:Static biaui:Boxes.Double8}"
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
                                    Style="{StaticResource ThumbOnlyScrollBarStyle}"
@@ -259,10 +259,10 @@
                         <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Grid.Row="0"
-                                   Grid.Column="0"
-                                   Width="8"
-                                   HorizontalAlignment="Left"
+                                   Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                   Grid.Column="{x:Static biaui:Boxes.Int0}"
+                                   Width="{x:Static biaui:Boxes.Double8}"
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
                                    Style="{StaticResource ThumbOnlyScrollBarStyle}"
@@ -271,8 +271,8 @@
                                    Value="{TemplateBinding VerticalOffset}" />
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
-                                   Height="8"
-                                   VerticalAlignment="Bottom"
+                                   Height="{x:Static biaui:Boxes.Double8}"
+                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentBottom}"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
                                    Orientation="Horizontal"
@@ -294,8 +294,8 @@
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
                         <DockPanel Margin="{TemplateBinding Padding}">
-                            <ScrollViewer DockPanel.Dock="Top"
-                                          Focusable="false"
+                            <ScrollViewer DockPanel.Dock="{x:Static biaui:Boxes.DockTop}"
+                                          Focusable="{x:Static biaui:Boxes.BoolFalse}"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Hidden">
                                 <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
@@ -319,9 +319,9 @@
 
                         <!--  24はヘッダーの高さ  -->
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Width="8"
+                                   Width="{x:Static biaui:Boxes.Double8}"
                                    Margin="0,24,0,0"
-                                   HorizontalAlignment="Right"
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.VerticalScrollBarOpacity)}"
                                    Style="{StaticResource ThumbOnlyScrollBarStyle}"
@@ -330,8 +330,8 @@
                                    Value="{TemplateBinding VerticalOffset}" />
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
-                                   Height="8"
-                                   VerticalAlignment="Bottom"
+                                   Height="{x:Static biaui:Boxes.Double8}"
+                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentBottom}"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Opacity="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Mode=OneWay, Path=(standardControls:ScrollViewerAttachedProperties.HorizontalScrollBarOpacity)}"
                                    Orientation="Horizontal"
@@ -355,28 +355,28 @@
                 <ControlTemplate TargetType="{x:Type ScrollViewer}">
                     <Grid Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthStar}" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthAuto}" />
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{x:Static biaui:Boxes.GridLengthStar}" />
+                            <RowDefinition Height="{x:Static biaui:Boxes.GridLengthAuto}" />
                         </Grid.RowDefinitions>
 
                         <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
+                                   Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                   Grid.Column="{x:Static biaui:Boxes.Int1}"
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    ViewportSize="{TemplateBinding ViewportHeight}"
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                    Value="{TemplateBinding VerticalOffset}" />
 
                         <ScrollBar Name="PART_HorizontalScrollBar"
-                                   Grid.Row="1"
-                                   Grid.Column="0"
+                                   Grid.Row="{x:Static biaui:Boxes.Int1}"
+                                   Grid.Column="{x:Static biaui:Boxes.Int0}"
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    Orientation="Horizontal"
                                    ViewportSize="{TemplateBinding ViewportWidth}"

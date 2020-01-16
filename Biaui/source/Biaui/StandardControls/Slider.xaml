@@ -21,16 +21,16 @@
 
     <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
         <Rectangle x:Name="grip"
-                   Width="32"
-                   Height="8"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
+                   Width="{x:Static biaui:Boxes.Double32}"
+                   Height="{x:Static biaui:Boxes.Double8}"
+                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
+                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                    Fill="{DynamicResource AccentBrushKey}"
-                   RadiusX="4"
-                   RadiusY="4"
+                   RadiusX="{x:Static biaui:Boxes.Double4}"
+                   RadiusY="{x:Static biaui:Boxes.Double4}"
                    SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}"
                    Stretch="Fill"
-                   StrokeThickness="0"
+                   StrokeThickness="{x:Static biaui:Boxes.Double0}"
                    UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}" />
 
         <ControlTemplate.Triggers>
@@ -46,17 +46,17 @@
     <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
         <Grid>
             <Rectangle x:Name="TrackBackground"
-                       Height="4"
-                       VerticalAlignment="center"
+                       Height="{x:Static biaui:Boxes.Double4}"
+                       VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                        Fill="{DynamicResource PanelBackgroundBrushKey}" />
 
             <Track x:Name="PART_Track">
                 <Track.DecreaseRepeatButton>
                     <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource RepeatButtonTransparent}">
-                        <Rectangle Height="4"
+                        <Rectangle Height="{x:Static biaui:Boxes.Double4}"
                                    Margin="0,0,-4,0"
-                                   HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Center">
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
+                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}">
                             <Rectangle.Style>
                                 <Style TargetType="{x:Type Rectangle}">
                                     <Style.Triggers>
@@ -78,9 +78,9 @@
                 </Track.IncreaseRepeatButton>
 
                 <Track.Thumb>
-                    <Thumb Width="32"
-                           Height="8"
-                           VerticalAlignment="Center"
+                    <Thumb Width="{x:Static biaui:Boxes.Double32}"
+                           Height="{x:Static biaui:Boxes.Double8}"
+                           VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                            Focusable="{x:Static biaui:Boxes.BoolFalse}"
                            OverridesDefaultStyle="{x:Static biaui:Boxes.BoolTrue}"
                            Template="{StaticResource SliderThumbHorizontalDefault}" />
@@ -97,16 +97,16 @@
 
     <ControlTemplate x:Key="SliderThumbVerticalDefault" TargetType="{x:Type Thumb}">
         <Rectangle x:Name="grip"
-                   Width="8"
-                   Height="32"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
+                   Width="{x:Static biaui:Boxes.Double8}"
+                   Height="{x:Static biaui:Boxes.Double32}"
+                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
+                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                    Fill="{DynamicResource AccentBrushKey}"
-                   RadiusX="4"
-                   RadiusY="4"
+                   RadiusX="{x:Static biaui:Boxes.Double4}"
+                   RadiusY="{x:Static biaui:Boxes.Double4}"
                    SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}"
                    Stretch="Fill"
-                   StrokeThickness="0"
+                   StrokeThickness="{x:Static biaui:Boxes.Double0}"
                    UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}" />
 
         <ControlTemplate.Triggers>
@@ -125,17 +125,17 @@
     <ControlTemplate x:Key="SliderVertical" TargetType="{x:Type Slider}">
         <Grid>
             <Rectangle x:Name="TrackBackground"
-                       Width="4"
-                       HorizontalAlignment="center"
+                       Width="{x:Static biaui:Boxes.Double4}"
+                       HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
                        Fill="{DynamicResource PanelBackgroundBrushKey}" />
 
             <Track x:Name="PART_Track">
                 <Track.DecreaseRepeatButton>
                     <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource RepeatButtonTransparent}">
-                        <Rectangle Width="4"
+                        <Rectangle Width="{x:Static biaui:Boxes.Double4}"
                                    Margin="0,-4,0,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Stretch">
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
+                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}">
                             <Rectangle.Style>
                                 <Style TargetType="{x:Type Rectangle}">
                                     <Style.Triggers>
@@ -158,9 +158,9 @@
 
                 <Track.Thumb>
                     <Thumb x:Name="Thumb"
-                           Width="8"
-                           Height="32"
-                           VerticalAlignment="Top"
+                           Width="{x:Static biaui:Boxes.Double8}"
+                           Height="{x:Static biaui:Boxes.Double32}"
+                           VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                            Focusable="{x:Static biaui:Boxes.BoolFalse}"
                            OverridesDefaultStyle="{x:Static biaui:Boxes.BoolTrue}"
                            Template="{StaticResource SliderThumbVerticalDefault}" />

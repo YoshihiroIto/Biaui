@@ -5,9 +5,9 @@
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="1" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
+        <Setter Property="Padding" Value="{x:Static biaui:Boxes.Thickness1}" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
         <Setter Property="SelectionBrush" Value="{DynamicResource AccentBrushKey}" />
         <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />

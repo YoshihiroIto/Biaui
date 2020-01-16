@@ -36,14 +36,14 @@
             <Style TargetType="{x:Type ListBox}">
                 <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
                 <Setter Property="ScrollViewer.CanContentScroll" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 <Setter Property="ScrollViewer.PanningMode" Value="Both" />
                 <Setter Property="Stylus.IsFlicksEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
 
                 <Setter Property="VirtualizingPanel.IsVirtualizing" Value="{x:Static biaui:Boxes.BoolTrue}" />
                 <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
@@ -63,15 +63,15 @@
                             <Setter Property="OverridesDefaultStyle" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+                            <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
+                            <Setter Property="HorizontalContentAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+                            <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
 
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Border Padding="1"
+                                        <Border Padding="{x:Static biaui:Boxes.Thickness1}"
                                                 Background="{TemplateBinding Background}"
                                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                             <ContentPresenter Margin="4,0,0,0" />
@@ -118,7 +118,7 @@
                             <controls:BiaClippingBorder MaxHeight="414"
                                                         Background="{DynamicResource SubmenuItemBackground}"
                                                         BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
-                                                        BorderThickness="1"
+                                                        BorderThickness="{x:Static biaui:Boxes.Thickness1}"
                                                         CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}">
                                 <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="{x:Static biaui:Boxes.BoolFalse}">
                                     <ItemsPresenter />

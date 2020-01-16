@@ -9,17 +9,17 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:BiaToggleSwitch}">
-                    <controls:BiaUniformGrid Columns="2"
+                    <controls:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int2}"
                                              CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}"
-                                             Spacing="1">
+                                             Spacing="{x:Static biaui:Boxes.Double1}">
                         <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
                                                   Content="{Binding EnabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                  CornerRadius="0"
+                                                  CornerRadius="{x:Static biaui:Boxes.Double0}"
                                                   IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
 
                         <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
                                                   Content="{Binding DisabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                  CornerRadius="0"
+                                                  CornerRadius="{x:Static biaui:Boxes.Double0}"
                                                   IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static controls:BiaToggleSwitch.InverseConverter}}" />
                     </controls:BiaUniformGrid>
                 </ControlTemplate>

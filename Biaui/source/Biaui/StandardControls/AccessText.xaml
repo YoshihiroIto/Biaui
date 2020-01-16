@@ -2,7 +2,7 @@
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type AccessText}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
 
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">

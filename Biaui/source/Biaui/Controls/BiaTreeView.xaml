@@ -9,8 +9,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Canvas Width="15"
-                            Height="15"
+                    <Canvas Width="{x:Static biaui:Boxes.Double15}"
+                            Height="{x:Static biaui:Boxes.Double15}"
                             Background="Transparent">
                         <Path x:Name="ExpandPath" Data="M 5.367188 10.363281 L 8.230469 7.5 L 5.367188 4.632812 L 6.25 3.75 L 10 7.5 L 6.25 11.25 Z M 5.367188 10.363281">
                             <Path.Style>
@@ -35,11 +35,11 @@
             </Setter.Value>
         </Setter>
 
-        <Setter Property="Visibility" Value="Visible" />
+        <Setter Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityVisible}" />
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeView}}, Mode=OneWay, Path=IsVisibleItemExpanderButton}" Value="{x:Static biaui:Boxes.BoolFalse}">
-                <Setter Property="Visibility" Value="Collapsed" />
+                <Setter Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -49,11 +49,11 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Border>
-                        <Rectangle Margin="0,0,0,0"
-                                   Opacity="0"
+                        <Rectangle Margin="{x:Static biaui:Boxes.Thickness0}"
+                                   Opacity="{x:Static biaui:Boxes.Double0}"
                                    Stroke="White"
                                    StrokeDashArray="1 2"
-                                   StrokeThickness="5" />
+                                   StrokeThickness="{x:Static biaui:Boxes.Double5}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -63,8 +63,8 @@
     <Style x:Key="TreeViewItemContainerStyle" TargetType="{x:Type TreeViewItem}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="Padding" Value="1" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="{x:Static biaui:Boxes.Thickness1}" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness0}" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
@@ -109,7 +109,7 @@
                                               Style="{StaticResource ExpandCollapseToggleStyle}" />
 
                                 <ContentPresenter x:Name="PART_Header"
-                                                  Grid.Column="1"
+                                                  Grid.Column="{x:Static biaui:Boxes.Int1}"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   ContentSource="Header" />
                             </Grid>
@@ -119,11 +119,11 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsExpanded" Value="{x:Static biaui:Boxes.BoolFalse}">
-                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
                         </Trigger>
 
                         <Trigger Property="HasItems" Value="{x:Static biaui:Boxes.BoolFalse}">
-                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityHidden}" />
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
@@ -228,14 +228,14 @@
     <Style x:Key="DefaultTreeViewStyle" TargetType="{x:Type controls:BiaTreeView}">
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
 
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />

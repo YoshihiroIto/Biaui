@@ -10,14 +10,14 @@
     <Style TargetType="{x:Type ListView}">
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="ScrollViewer.PanningMode" Value="Both" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="{x:Static biaui:Boxes.BoolFalse}" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -34,10 +34,10 @@
                     <ControlTemplate.Triggers>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="true" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                                <Condition Property="IsGrouping" Value="{x:Static biaui:Boxes.BoolTrue}" />
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="{x:Static biaui:Boxes.BoolFalse}" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="{x:Static biaui:Boxes.BoolFalse}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -59,8 +59,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Border Padding="{TemplateBinding Padding}" Background="Transparent">
-                        <Rectangle Width="1"
-                                   HorizontalAlignment="Center"
+                        <Rectangle Width="{x:Static biaui:Boxes.Double1}"
+                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
                                    Fill="#303030"
                                    SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}" />
                     </Border>
@@ -74,9 +74,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewColumnHeader">
                     <Grid>
-                        <Button Margin="0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
+                        <Button Margin="{x:Static biaui:Boxes.Thickness0}"
+                                HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
+                                VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}"
                                 Style="{DynamicResource SharpButtonStyle}">
                             <ContentPresenter Name="HeaderContent"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -86,7 +86,7 @@
 
                         <Thumb x:Name="PART_HeaderGripper"
                                Margin="0,0,-9,0"
-                               HorizontalAlignment="Right"
+                               HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
                                Style="{DynamicResource GridViewColumnHeaderGripper}" />
                     </Grid>
                 </ControlTemplate>
@@ -97,12 +97,12 @@
     <Style TargetType="{x:Type ListViewItem}">
         <Setter Property="SnapsToDevicePixels" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="Padding" Value="4,0" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
 
         <Setter Property="Template">
@@ -113,7 +113,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="true">
+                            SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}">
                         <GridViewRowPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />

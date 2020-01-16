@@ -4,7 +4,7 @@
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type ToolTip}">
         <Setter Property="FontFamily" Value="{DynamicResource BiauiFontFamily}" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="{x:Static biaui:Boxes.Double13}" />
         <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
         <Setter Property="TextOptions.TextHintingMode" Value="Animated" />
@@ -18,13 +18,13 @@
                     <controls:BiaClippingBorder Margin="0,0,8,8"
                                                 Background="{DynamicResource PanelBackgroundBrushKey}"
                                                 BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                                BorderThickness="1">
+                                                BorderThickness="{x:Static biaui:Boxes.Thickness1}">
                         <ContentPresenter Margin="8,4"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Top" />
+                                          HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
+                                          VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
 
                         <Border.Effect>
-                            <DropShadowEffect ShadowDepth="2" Color="Black" />
+                            <DropShadowEffect ShadowDepth="{x:Static biaui:Boxes.Double2}" Color="Black" />
                         </Border.Effect>
                     </controls:BiaClippingBorder>
                 </ControlTemplate>

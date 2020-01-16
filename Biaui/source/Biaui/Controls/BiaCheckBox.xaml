@@ -4,14 +4,14 @@
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type controls:BiaCheckBox}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Height" Value="20" />
+        <Setter Property="Height" Value="{x:Static biaui:Boxes.Double20}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
 
         <Style.Triggers>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolFalse}" />
+                    <Condition Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}" />
                     <Condition Property="IsChecked" Value="{x:Static biaui:Boxes.BoolFalse}" />
                     <Condition Property="IsPressed" Value="{x:Static biaui:Boxes.BoolFalse}" />
                 </MultiTrigger.Conditions>

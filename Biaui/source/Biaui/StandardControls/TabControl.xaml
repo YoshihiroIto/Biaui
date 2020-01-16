@@ -16,8 +16,8 @@
         <Setter Property="FontSize" Value="18" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Padding" Value="6,-2,7,0" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="Visibility" Value="Collapsed" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
+        <Setter Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
 
         <Style.Triggers>
 
@@ -35,57 +35,57 @@
     </Style>
 
     <Style TargetType="{x:Type TabControl}">
-        <Setter Property="Padding" Value="2" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="{x:Static biaui:Boxes.Thickness2}" />
+        <Setter Property="HorizontalContentAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentCenter}" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
         <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
                     <Grid x:Name="templateRoot"
                           KeyboardNavigation.TabNavigation="Local"
-                          SnapsToDevicePixels="true">
+                          SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="ColumnDefinition0" />
                             <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition x:Name="RowDefinition0" Height="Auto" />
-                            <RowDefinition x:Name="RowDefinition1" Height="*" />
+                            <RowDefinition x:Name="RowDefinition0" Height="{x:Static biaui:Boxes.GridLengthAuto}" />
+                            <RowDefinition x:Name="RowDefinition1" Height="{x:Static biaui:Boxes.GridLengthStar}" />
                         </Grid.RowDefinitions>
 
                         <DockPanel x:Name="headerPanel"
-                                   Grid.Row="0"
-                                   Grid.Column="0"
-                                   Panel.ZIndex="1">
+                                   Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                   Grid.Column="{x:Static biaui:Boxes.Int0}"
+                                   Panel.ZIndex="{x:Static biaui:Boxes.Int1}">
 
                             <internal:TabPanelInternal x:Name="TabPanel"
-                                                       HorizontalAlignment="Left"
+                                                       HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
                                                        Background="Transparent"
-                                                       DockPanel.Dock="Left"
-                                                       IsItemsHost="true"
-                                                       KeyboardNavigation.TabIndex="1" />
+                                                       DockPanel.Dock="{x:Static biaui:Boxes.DockLeft}"
+                                                       IsItemsHost="{x:Static biaui:Boxes.BoolTrue}"
+                                                       KeyboardNavigation.TabIndex="{x:Static biaui:Boxes.Int1}" />
 
                             <Button x:Name="AddButton"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Bottom"
+                                    HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
+                                    VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentBottom}"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Mode=OneWay, Path=(standardControls:TabControlAttachedProperties.AddCommand)}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabControl}}, Mode=OneWay, Path=(standardControls:TabControlAttachedProperties.AddCommandParameter)}"
                                     Style="{StaticResource TabAddButtonStyle}" />
                         </DockPanel>
 
                         <controls:BiaClippingBorder x:Name="contentPanel"
-                                                    Grid.Row="1"
-                                                    Grid.Column="0"
+                                                    Grid.Row="{x:Static biaui:Boxes.Int1}"
+                                                    Grid.Column="{x:Static biaui:Boxes.Int0}"
                                                     Padding="4,0"
                                                     Background="{TemplateBinding Background}"
                                                     BorderBrush="{TemplateBinding BorderBrush}"
                                                     BorderThickness="{TemplateBinding BorderThickness}"
                                                     KeyboardNavigation.DirectionalNavigation="Contained"
-                                                    KeyboardNavigation.TabIndex="2"
+                                                    KeyboardNavigation.TabIndex="{x:Static biaui:Boxes.Int2}"
                                                     KeyboardNavigation.TabNavigation="Local">
                             <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="{TemplateBinding Padding}"
@@ -96,7 +96,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="{x:Static biaui:Boxes.BoolTrue}">
-                            <Setter TargetName="AddButton" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="AddButton" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityVisible}" />
                         </Trigger>
 
                         <Trigger Property="TabStripPlacement" Value="Top">
@@ -104,8 +104,8 @@
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                                   BottomRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
-                                                  TopLeft="0"
-                                                  TopRight="0" />
+                                                  TopLeft="{x:Static biaui:Boxes.Double0}"
+                                                  TopRight="{x:Static biaui:Boxes.Double0}" />
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
@@ -113,64 +113,64 @@
                         <Trigger Property="TabStripPlacement" Value="Bottom">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="0"
-                                                  BottomRight="0"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.Double0}"
+                                                  BottomRight="{x:Static biaui:Boxes.Double0}"
                                                   TopLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
                                                   TopRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="1" />
-                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
-                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
+                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="{x:Static biaui:Boxes.Int1}" />
+                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="{x:Static biaui:Boxes.Int0}" />
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="{x:Static biaui:Boxes.GridLengthStar}" />
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="{x:Static biaui:Boxes.GridLengthAuto}" />
 
-                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
                         </Trigger>
 
                         <Trigger Property="TabStripPlacement" Value="Left">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="0"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.Double0}"
                                                   BottomRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
-                                                  TopLeft="0"
+                                                  TopLeft="{x:Static biaui:Boxes.Double0}"
                                                   TopRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="headerPanel" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="contentPanel" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="{x:Static biaui:Boxes.Int0}" />
+                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="{x:Static biaui:Boxes.Int0}" />
+                            <Setter TargetName="headerPanel" Property="Grid.Column" Value="{x:Static biaui:Boxes.Int0}" />
+                            <Setter TargetName="contentPanel" Property="Grid.Column" Value="{x:Static biaui:Boxes.Int1}" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="{x:Static biaui:Boxes.GridLengthAuto}" />
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="{x:Static biaui:Boxes.GridLengthStar}" />
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="{x:Static biaui:Boxes.GridLengthStar}" />
                             <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
 
-                            <Setter TargetName="TabPanel" Property="DockPanel.Dock" Value="Top" />
-                            <Setter TargetName="AddButton" Property="HorizontalAlignment" Value="Right" />
-                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="TabPanel" Property="DockPanel.Dock" Value="{x:Static biaui:Boxes.DockTop}" />
+                            <Setter TargetName="AddButton" Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentRight}" />
+                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
                         </Trigger>
 
                         <Trigger Property="TabStripPlacement" Value="Right">
                             <Setter TargetName="contentPanel" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
-                                                  BottomRight="0"
+                                                  BottomRight="{x:Static biaui:Boxes.Double0}"
                                                   TopLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
-                                                  TopRight="0" />
+                                                  TopRight="{x:Static biaui:Boxes.Double0}" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="headerPanel" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="contentPanel" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
-                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
-                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="{x:Static biaui:Boxes.Int0}" />
+                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="{x:Static biaui:Boxes.Int0}" />
+                            <Setter TargetName="headerPanel" Property="Grid.Column" Value="{x:Static biaui:Boxes.Int1}" />
+                            <Setter TargetName="contentPanel" Property="Grid.Column" Value="{x:Static biaui:Boxes.Int0}" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="{x:Static biaui:Boxes.GridLengthStar}" />
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="{x:Static biaui:Boxes.GridLengthAuto}" />
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="{x:Static biaui:Boxes.GridLengthStar}" />
                             <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
 
-                            <Setter TargetName="TabPanel" Property="DockPanel.Dock" Value="Top" />
-                            <Setter TargetName="AddButton" Property="HorizontalAlignment" Value="Left" />
-                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="Top" />
+                            <Setter TargetName="TabPanel" Property="DockPanel.Dock" Value="{x:Static biaui:Boxes.DockTop}" />
+                            <Setter TargetName="AddButton" Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" />
+                            <Setter TargetName="AddButton" Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -185,7 +185,7 @@
             </Trigger>
 
             <Trigger Property="standardControls:TabControlAttachedProperties.IsVisibleAddButton" Value="{x:Static biaui:Boxes.BoolTrue}">
-                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityVisible}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -194,11 +194,11 @@
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Margin="2"
-                               SnapsToDevicePixels="true"
+                    <Rectangle Margin="{x:Static biaui:Boxes.Thickness2}"
+                               SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}"
                                Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
                                StrokeDashArray="1 2"
-                               StrokeThickness="1" />
+                               StrokeThickness="{x:Static biaui:Boxes.Double1}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -206,8 +206,8 @@
 
     <Style x:Key="TabItemTextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
+        <Setter Property="Padding" Value="{x:Static biaui:Boxes.Thickness0}" />
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
@@ -232,7 +232,7 @@
 
     <Style x:Key="TabItemBiaTextBlockStyle" TargetType="{x:Type controls:BiaTextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
@@ -257,7 +257,7 @@
 
     <Style x:Key="TabItemBiaEditableTextBlockStyle" TargetType="{x:Type controls:BiaEditableTextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
@@ -284,10 +284,10 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource TabItem.FocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
+        <Setter Property="Padding" Value="{x:Static biaui:Boxes.Thickness0}" />
+        <Setter Property="HorizontalContentAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -320,8 +320,8 @@
                             <Setter Property="Padding" Value="10,3" />
                             <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="0"
-                                                  BottomRight="0"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.Double0}"
+                                                  BottomRight="{x:Static biaui:Boxes.Double0}"
                                                   TopLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
                                                   TopRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
                                 </Setter.Value>
@@ -338,8 +338,8 @@
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
                                                   BottomRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
-                                                  TopLeft="0"
-                                                  TopRight="0" />
+                                                  TopLeft="{x:Static biaui:Boxes.Double0}"
+                                                  TopRight="{x:Static biaui:Boxes.Double0}" />
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="MainBorder" Property="BorderThickness" Value="1,0,1,1" />
@@ -353,9 +353,9 @@
                             <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
                                     <CornerRadius BottomLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
-                                                  BottomRight="0"
+                                                  BottomRight="{x:Static biaui:Boxes.Double0}"
                                                   TopLeft="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
-                                                  TopRight="0" />
+                                                  TopRight="{x:Static biaui:Boxes.Double0}" />
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="MainBorder" Property="BorderThickness" Value="1,1,0,1" />
@@ -368,9 +368,9 @@
                             <Setter Property="Padding" Value="10,3" />
                             <Setter TargetName="MainBorder" Property="CornerRadius">
                                 <Setter.Value>
-                                    <CornerRadius BottomLeft="0"
+                                    <CornerRadius BottomLeft="{x:Static biaui:Boxes.Double0}"
                                                   BottomRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}"
-                                                  TopLeft="0"
+                                                  TopLeft="{x:Static biaui:Boxes.Double0}"
                                                   TopRight="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
                                 </Setter.Value>
                             </Setter>

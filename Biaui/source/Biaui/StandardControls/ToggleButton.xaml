@@ -22,7 +22,7 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="0"
+                            BorderThickness="{x:Static biaui:Boxes.Thickness0}"
                             CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}">
@@ -84,7 +84,7 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="0"
+                            BorderThickness="{x:Static biaui:Boxes.Thickness0}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             UseLayoutRounding="{x:Static biaui:Boxes.BoolTrue}">
                         <ContentPresenter Margin="{TemplateBinding Padding}"
@@ -100,7 +100,7 @@
            BasedOn="{StaticResource SharpToggleButtonStyle}"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="{x:Static biaui:Boxes.Double16}" />
         <Setter Property="IsTabStop" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 

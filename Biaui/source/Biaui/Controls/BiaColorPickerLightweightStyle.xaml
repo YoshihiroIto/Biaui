@@ -8,32 +8,32 @@
                 <ControlTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthStar}" />
                             <ColumnDefinition Width="4" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthStar}" />
                         </Grid.ColumnDefinitions>
 
-                        <colorPicker:BiaHsvBoxBackground Grid.Row="0"
-                                                         Grid.Column="0"
-                                                         Grid.ColumnSpan="3"
+                        <colorPicker:BiaHsvBoxBackground Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                                         Grid.Column="{x:Static biaui:Boxes.Int0}"
+                                                         Grid.ColumnSpan="{x:Static biaui:Boxes.Int3}"
                                                          Margin="0,0,28,0"
                                                          Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                          IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                          Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                          Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                        <colorPicker:BiaHsvBoxCursor Grid.Row="0"
-                                                     Grid.Column="0"
-                                                     Grid.ColumnSpan="3"
+                        <colorPicker:BiaHsvBoxCursor Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                                     Grid.Column="{x:Static biaui:Boxes.Int0}"
+                                                     Grid.ColumnSpan="{x:Static biaui:Boxes.Int3}"
                                                      Margin="0,0,28,0"
                                                      Hue="{Binding Hue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                      IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                      Saturation="{Binding Saturation, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                        <colorPicker:BiaColorBar Grid.Row="0"
-                                                 Grid.Column="2"
+                        <colorPicker:BiaColorBar Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                                 Grid.Column="{x:Static biaui:Boxes.Int2}"
                                                  Width="{x:Static biaui:Boxes.BasicOneLineHeight}"
-                                                 HorizontalAlignment="Right"
+                                                 HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
                                                  IsInverseValue="{x:Static biaui:Boxes.BoolTrue}"
                                                  IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                  Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />

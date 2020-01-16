@@ -15,18 +15,18 @@
                                 Orientation="Horizontal"
                                 SnapsToDevicePixels="{x:Static biaui:Boxes.BoolFalse}">
                         <Path x:Name="arrow"
-                              Width="10"
-                              Height="10"
+                              Width="{x:Static biaui:Boxes.Double10}"
+                              Height="{x:Static biaui:Boxes.Double10}"
                               Margin="10,2,8,0"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"
+                              HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
+                              VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                               Data="M 0 0 L 6.9 4 L 0 8 Z"
                               Fill="#A0A0A0"
-                              SnapsToDevicePixels="false" />
+                              SnapsToDevicePixels="{x:Static biaui:Boxes.BoolFalse}" />
 
                         <ContentPresenter Margin="2,0,0,0"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
+                                          VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                           RecognizesAccessKey="{x:Static biaui:Boxes.BoolTrue}"
                                           SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}" />
                     </StackPanel>
@@ -66,10 +66,10 @@
     <Style x:Key="DefaultExpanderStyle" TargetType="{x:Type Expander}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="HorizontalContentAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness0}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
         <Setter Property="Template">
@@ -91,8 +91,8 @@
                         </StackPanel.Height>
 
                         <ToggleButton x:Name="HeaderSite"
-                                      MinWidth="0"
-                                      MinHeight="0"
+                                      MinWidth="{x:Static biaui:Boxes.Double0}"
+                                      MinHeight="{x:Static biaui:Boxes.Double0}"
                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       Content="{TemplateBinding Header}"
@@ -110,11 +110,11 @@
                         <ContentPresenter x:Name="ExpandSite"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Focusable="false" />
+                                          Focusable="{x:Static biaui:Boxes.BoolFalse}" />
                     </StackPanel>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
+                        <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
 
@@ -124,7 +124,7 @@
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Frame"
                                                          Storyboard.TargetProperty="Tag"
-                                                         To="1"
+                                                         To="{x:Static biaui:Boxes.Double1}"
                                                          Duration="0:0:0.3">
                                             <DoubleAnimation.EasingFunction>
                                                 <CubicEase EasingMode="EaseOut" />
@@ -139,7 +139,7 @@
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Frame"
                                                          Storyboard.TargetProperty="Tag"
-                                                         To="0"
+                                                         To="{x:Static biaui:Boxes.Double0}"
                                                          Duration="0:0:0.3">
                                             <DoubleAnimation.EasingFunction>
                                                 <CubicEase EasingMode="EaseOut" />

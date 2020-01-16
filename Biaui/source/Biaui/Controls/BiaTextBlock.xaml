@@ -4,7 +4,7 @@
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type controls:BiaTextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="Margin" Value="0" />
+        <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
         <Setter Property="IsHitTestVisible" Value="{x:Static biaui:Boxes.BoolFalse}" />
 
         <Style.Triggers>

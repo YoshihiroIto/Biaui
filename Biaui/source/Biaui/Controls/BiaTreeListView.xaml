@@ -8,22 +8,22 @@
                 <ControlTemplate TargetType="{x:Type controls:BiaTreeListView}">
                     <controls:BiaClippingBorder Background="{DynamicResource TextBoxBorderBrushKey}"
                                                 BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                                BorderThickness="1"
+                                                BorderThickness="{x:Static biaui:Boxes.Thickness1}"
                                                 CornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=CornerRadius, Mode=OneWay}">
                         <DockPanel>
                             <ScrollViewer x:Name="HeaderScrollViewer"
-                                          DockPanel.Dock="Top"
+                                          DockPanel.Dock="{x:Static biaui:Boxes.DockTop}"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Disabled">
-                                <GridViewHeaderRowPresenter HorizontalAlignment="Left" Columns="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=Columns, Mode=OneWay}" />
+                                <GridViewHeaderRowPresenter HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" Columns="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=Columns, Mode=OneWay}" />
                             </ScrollViewer>
 
                             <controls:BiaTreeView x:Name="TreeView"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Top"
+                                                  HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
+                                                  VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                                   AlternationCount="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=AlternationCount, Mode=OneWay}"
-                                                  BorderThickness="0"
-                                                  CornerRadius="0"
+                                                  BorderThickness="{x:Static biaui:Boxes.Thickness0}"
+                                                  CornerRadius="{x:Static biaui:Boxes.CornerRadius0}"
                                                   IndentSize="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=IndentSize, Mode=OneWay}"
                                                   IsSelectionEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=IsSelectionEnabled, Mode=OneWay}"
                                                   IsVisibleItemExpanderButton="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=IsVisibleItemExpanderButton, Mode=OneWay}"

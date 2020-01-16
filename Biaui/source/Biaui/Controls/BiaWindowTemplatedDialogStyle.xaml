@@ -12,9 +12,9 @@
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
         <Setter Property="TextOptions.TextHintingMode" Value="Animated" />
 
-        <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
+        <Setter Property="ToolTipService.InitialShowDelay" Value="{x:Static biaui:Boxes.Int0}" />
         <Setter Property="ToolTipService.ShowDuration" Value="100000" />
-        <Setter Property="ToolTipService.BetweenShowDelay" Value="0" />
+        <Setter Property="ToolTipService.BetweenShowDelay" Value="{x:Static biaui:Boxes.Int0}" />
 
         <Setter Property="IsVisibleMaximizeButton" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="IsVisibleMinimizeButton" Value="{x:Static biaui:Boxes.BoolFalse}" />
@@ -24,10 +24,10 @@
 
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome CaptionHeight="32"
-                              CornerRadius="0"
-                              GlassFrameThickness="1"
-                              ResizeBorderThickness="8" />
+                <WindowChrome CaptionHeight="{x:Static biaui:Boxes.Double32}"
+                              CornerRadius="{x:Static biaui:Boxes.CornerRadius0}"
+                              GlassFrameThickness="{x:Static biaui:Boxes.Thickness1}"
+                              ResizeBorderThickness="{x:Static biaui:Boxes.Thickness8}" />
             </Setter.Value>
         </Setter>
 
@@ -37,7 +37,7 @@
                     <AdornerDecorator>
                         <Border x:Name="Border"
                                 Background="{DynamicResource BackgroundBackgroundBrushKey}"
-                                BorderThickness="1">
+                                BorderThickness="{x:Static biaui:Boxes.Thickness1}">
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
@@ -52,13 +52,13 @@
 
                             <Grid>
                                 <ContentPresenter x:Name="ContentPresenter"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Stretch"
+                                                  HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
+                                                  VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}"
                                                   Content="{Binding Mode=OneWay}"
                                                   ContentTemplate="{DynamicResource ControlTemplateKey}" />
 
-                                <StackPanel HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
+                                <StackPanel HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
+                                            VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                             Orientation="Horizontal">
                                     <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
                                     <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
@@ -71,10 +71,10 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
-                            <Setter TargetName="Border" Property="BorderThickness" Value="8" />
+                            <Setter TargetName="Border" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness8}" />
                         </Trigger>
                         <Trigger Property="WindowState" Value="Normal">
-                            <Setter TargetName="Border" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="Border" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Trigger.EnterActions>
@@ -91,7 +91,7 @@
                                 <BeginStoryboard>
                                     <Storyboard TargetName="ContentPresenter">
                                         <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                         To="1"
+                                                         To="{x:Static biaui:Boxes.Double1}"
                                                          Duration="0:0:0.1" />
                                     </Storyboard>
                                 </BeginStoryboard>

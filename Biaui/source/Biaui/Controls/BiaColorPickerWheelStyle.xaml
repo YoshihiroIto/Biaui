@@ -10,60 +10,60 @@
                 <ControlTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthStar}" />
                             <ColumnDefinition Width="4" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthStar}" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{x:Static biaui:Boxes.GridLengthStar}" />
+                            <RowDefinition Height="{x:Static biaui:Boxes.GridLengthAuto}" />
                         </Grid.RowDefinitions>
 
-                        <colorPicker:BiaHsvWheelBackground Grid.Row="0"
-                                                           Grid.Column="0"
-                                                           Grid.ColumnSpan="3"
+                        <colorPicker:BiaHsvWheelBackground Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                                           Grid.Column="{x:Static biaui:Boxes.Int0}"
+                                                           Grid.ColumnSpan="{x:Static biaui:Boxes.Int3}"
                                                            Margin="0,0,28,0"
                                                            Hue="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                            IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                            Saturation="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                            Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                        <colorPicker:BiaHsvWheelCursor Grid.Row="0"
-                                                       Grid.Column="0"
-                                                       Grid.ColumnSpan="3"
+                        <colorPicker:BiaHsvWheelCursor Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                                       Grid.Column="{x:Static biaui:Boxes.Int0}"
+                                                       Grid.ColumnSpan="{x:Static biaui:Boxes.Int3}"
                                                        Margin="0,0,28,0"
                                                        Hue="{Binding Hue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                        IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                        Saturation="{Binding Saturation, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                        <colorPicker:BiaColorBar Grid.Row="0"
-                                                 Grid.Column="2"
+                        <colorPicker:BiaColorBar Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                                 Grid.Column="{x:Static biaui:Boxes.Int2}"
                                                  Width="{x:Static biaui:Boxes.BasicOneLineHeight}"
-                                                 HorizontalAlignment="Right"
+                                                 HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
                                                  IsInverseValue="{x:Static biaui:Boxes.BoolTrue}"
                                                  IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                  Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                        <colorPicker:BiaClippingBorder Grid.Row="1"
-                                                       Grid.Column="0"
+                        <colorPicker:BiaClippingBorder Grid.Row="{x:Static biaui:Boxes.Int1}"
+                                                       Grid.Column="{x:Static biaui:Boxes.Int0}"
                                                        Margin="0,4,0,0"
                                                        Background="{DynamicResource TextBoxBorderBrushKey}"
                                                        BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                                       BorderThickness="1">
+                                                       BorderThickness="{x:Static biaui:Boxes.Thickness1}">
                             <colorPicker:BiaClippingBorder.CornerRadius>
                                 <CornerRadius BottomLeft="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
-                                              BottomRight="0"
-                                              TopLeft="0"
-                                              TopRight="0" />
+                                              BottomRight="{x:Static biaui:Boxes.Double0}"
+                                              TopLeft="{x:Static biaui:Boxes.Double0}"
+                                              TopRight="{x:Static biaui:Boxes.Double0}" />
                             </colorPicker:BiaClippingBorder.CornerRadius>
 
-                            <colorPicker:BiaUniformGrid Columns="1" Spacing="1">
+                            <colorPicker:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int1}" Spacing="{x:Static biaui:Boxes.Double1}">
                                 <colorPicker:BiaUniformGrid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
-                                        <Setter Property="SliderMinimum" Value="0" />
-                                        <Setter Property="SliderMaximum" Value="1" />
+                                        <Setter Property="SliderMinimum" Value="{x:Static biaui:Boxes.Double0}" />
+                                        <Setter Property="SliderMaximum" Value="{x:Static biaui:Boxes.Double1}" />
                                         <Setter Property="Increment" Value="0.1" />
-                                        <Setter Property="CornerRadius" Value="0" />
+                                        <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.Double0}" />
                                         <Setter Property="IsVisibleBorder" Value="{x:Static biaui:Boxes.BoolFalse}" />
                                         <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
@@ -92,7 +92,7 @@
                                         <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Setter Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -101,28 +101,28 @@
                             </colorPicker:BiaUniformGrid>
                         </colorPicker:BiaClippingBorder>
 
-                        <colorPicker:BiaClippingBorder Grid.Row="1"
-                                                       Grid.Column="2"
+                        <colorPicker:BiaClippingBorder Grid.Row="{x:Static biaui:Boxes.Int1}"
+                                                       Grid.Column="{x:Static biaui:Boxes.Int2}"
                                                        Margin="0,4,0,0"
                                                        Background="{DynamicResource TextBoxBorderBrushKey}"
                                                        BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                                       BorderThickness="1">
+                                                       BorderThickness="{x:Static biaui:Boxes.Thickness1}">
                             <colorPicker:BiaClippingBorder.CornerRadius>
-                                <CornerRadius BottomLeft="0"
+                                <CornerRadius BottomLeft="{x:Static biaui:Boxes.Double0}"
                                               BottomRight="{x:Static biaui:Boxes.GroupCornerRadiusPrim}"
-                                              TopLeft="0"
-                                              TopRight="0" />
+                                              TopLeft="{x:Static biaui:Boxes.Double0}"
+                                              TopRight="{x:Static biaui:Boxes.Double0}" />
                             </colorPicker:BiaClippingBorder.CornerRadius>
 
-                            <colorPicker:BiaUniformGrid Columns="1" Spacing="1">
+                            <colorPicker:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int1}" Spacing="{x:Static biaui:Boxes.Double1}">
                                 <colorPicker:BiaUniformGrid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
-                                        <Setter Property="Minimum" Value="0" />
-                                        <Setter Property="Maximum" Value="1" />
-                                        <Setter Property="SliderMinimum" Value="0" />
-                                        <Setter Property="SliderMaximum" Value="1" />
+                                        <Setter Property="Minimum" Value="{x:Static biaui:Boxes.Double0}" />
+                                        <Setter Property="Maximum" Value="{x:Static biaui:Boxes.Double1}" />
+                                        <Setter Property="SliderMinimum" Value="{x:Static biaui:Boxes.Double0}" />
+                                        <Setter Property="SliderMaximum" Value="{x:Static biaui:Boxes.Double1}" />
                                         <Setter Property="Increment" Value="0.1" />
-                                        <Setter Property="CornerRadius" Value="0" />
+                                        <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.Double0}" />
                                         <Setter Property="IsVisibleBorder" Value="{x:Static biaui:Boxes.BoolFalse}" />
                                         <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
@@ -137,7 +137,7 @@
                                         <Style TargetType="{x:Type Canvas}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsVisibleAlphaEditor, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" Value="{x:Static biaui:Boxes.BoolFalse}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Setter Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

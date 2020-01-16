@@ -2,10 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
-
     <Style TargetType="{x:Type controls:BiaColorPanel}">
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
-        <Setter Property="Width" Value="36" />
+        <Setter Property="Width" Value="{x:Static biaui:Boxes.Double36}" />
         <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
 

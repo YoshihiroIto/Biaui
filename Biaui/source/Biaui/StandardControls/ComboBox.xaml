@@ -40,13 +40,13 @@
         <Setter Property="SnapsToDevicePixels" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="OverridesDefaultStyle" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                    <Border Padding="1"
+                    <Border Padding="{x:Static biaui:Boxes.Thickness1}"
                             Background="{TemplateBinding Background}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <ContentPresenter Margin="4,0,0,0" />
@@ -89,8 +89,8 @@
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrushKey}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemContainerStyle}" />
 
@@ -117,8 +117,8 @@
                                         <ControlTemplate TargetType="{x:Type ToggleButton}">
                                             <Border Background="Transparent">
                                                 <Path Width="{x:Static SystemParameters.VerticalScrollBarWidth}"
-                                                      HorizontalAlignment="Right"
-                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
+                                                      VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                                       Data="M 0.0,0.0 L 3.5,4.0 7.0,0.0 z"
                                                       Fill="{TemplateBinding Foreground}" />
                                             </Border>
@@ -126,7 +126,7 @@
                                     </ToggleButton.Template>
                                 </ToggleButton>
 
-                                <ContentPresenter Grid.Column="0"
+                                <ContentPresenter Grid.Column="{x:Static biaui:Boxes.Int0}"
                                                   Margin="4.5,2.25,26,2.25"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -154,16 +154,16 @@
                                IsOpen="{TemplateBinding IsDropDownOpen}"
                                Placement="Bottom"
                                PopupAnimation="None"
-                               VerticalOffset="1">
+                               VerticalOffset="{x:Static biaui:Boxes.Double1}">
                             <controls:BiaClippingBorder x:Name="dropdown"
                                                         MaxHeight="414"
                                                         Margin="0,0,3,3"
                                                         Background="{DynamicResource SubmenuItemBackground}"
                                                         BorderBrush="{DynamicResource Item.SelectedActive.Border}"
-                                                        BorderThickness="1"
+                                                        BorderThickness="{x:Static biaui:Boxes.Thickness1}"
                                                         SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}">
                                 <controls:BiaClippingBorder.Effect>
-                                    <DropShadowEffect ShadowDepth="2" Color="Black" />
+                                    <DropShadowEffect ShadowDepth="{x:Static biaui:Boxes.Double2}" Color="Black" />
                                 </controls:BiaClippingBorder.Effect>
 
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -174,11 +174,11 @@
                     </Grid>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="HasItems" Value="false">
+                        <Trigger Property="HasItems" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="dropdown" Property="MinHeight" Value="100" />
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="{x:Static biaui:Boxes.BoolTrue}">
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="{x:Static biaui:Boxes.BoolFalse}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="toggleButton" Property="Foreground" Value="{DynamicResource AccentBrushKey}" />

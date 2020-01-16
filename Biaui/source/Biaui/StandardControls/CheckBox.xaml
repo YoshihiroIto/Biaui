@@ -6,10 +6,10 @@
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
+        <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
+        <Setter Property="HorizontalContentAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" />
+        <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
         <Setter Property="Padding" Value="4,0,0,0" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
 
@@ -18,16 +18,16 @@
                 <ControlTemplate TargetType="{x:Type CheckBox}">
                     <Grid Background="Transparent" SnapsToDevicePixels="{x:Static biaui:Boxes.BoolTrue}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthAuto}" />
+                            <ColumnDefinition Width="{x:Static biaui:Boxes.GridLengthStar}" />
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="checkBoxBorder"
-                                Width="16"
-                                Height="16"
+                                Width="{x:Static biaui:Boxes.Double16}"
+                                Height="{x:Static biaui:Boxes.Double16}"
                                 Margin="0,2"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -35,18 +35,18 @@
 
                             <Path x:Name="optionMark"
                                   Margin="-1"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
+                                  VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                   Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z "
                                   Fill="{DynamicResource AccentBrushKey}"
-                                  Opacity="0"
+                                  Opacity="{x:Static biaui:Boxes.Double0}"
                                   Stretch="None" />
                         </Border>
 
-                        <ContentPresenter Grid.Column="1"
+                        <ContentPresenter Grid.Column="{x:Static biaui:Boxes.Int1}"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="Center"
+                                          VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                           Content="{TemplateBinding Content}"
                                           ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -57,35 +57,35 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
-                            <Setter TargetName="optionMark" Property="Opacity" Value="0" />
+                            <Setter TargetName="optionMark" Property="Opacity" Value="{x:Static biaui:Boxes.Double0}" />
                             <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
-                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
                             <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrushKey}" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolFalse}">
-                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness0}" />
                         </Trigger>
 
                         <Trigger Property="IsChecked" Value="{x:Static biaui:Boxes.BoolTrue}">
-                            <Setter TargetName="optionMark" Property="Opacity" Value="1" />
+                            <Setter TargetName="optionMark" Property="Opacity" Value="{x:Static biaui:Boxes.Double1}" />
                             <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource BackgroundBackgroundBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource AccentBrushKey}" />
-                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness0}" />
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                             <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource InactiveForegroundBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{DynamicResource InactiveBorderBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="Background" Value="Transparent" />
-                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
                             <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
                             <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource AccentBrushKey}" />
                             <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource AccentBrushKey}" />
-                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="0" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness0}" />
                             <Setter Property="Foreground" Value="{DynamicResource AccentBrushKey}" />
                         </Trigger>
                     </ControlTemplate.Triggers>

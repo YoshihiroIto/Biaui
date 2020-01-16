@@ -6,7 +6,7 @@
 
     <Style TargetType="{x:Type controls:BiaColorSelector}">
         <Setter Property="BorderColor" Value="{DynamicResource TextBoxBorderColorKey}" />
-        <Setter Property="Width" Value="36" />
+        <Setter Property="Width" Value="{x:Static biaui:Boxes.Double36}" />
         <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
         <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.BasicCornerRadiusPrim}" />
         <Setter Property="Cursor" Value="Hand" />
@@ -25,7 +25,7 @@
             <converters:DoubleColorToBrushConverter x:Key="ToBrush" />
 
             <DataTemplate DataType="{x:Type biaui:DoubleColor}">
-                <Grid Width="48" Height="32">
+                <Grid Width="48" Height="{x:Static biaui:Boxes.Double32}">
                     <Border Background="{DynamicResource CheckerBrush}" />
                     <Border Background="{Binding Converter={StaticResource ToBrush}, Mode=OneWay}" />
                 </Grid>
@@ -34,7 +34,7 @@
             <Style TargetType="{x:Type ListBox}">
                 <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                 <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
 
@@ -53,11 +53,11 @@
                             <Setter Property="OverridesDefaultStyle" Value="{x:Static biaui:Boxes.BoolTrue}" />
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
-                            <Setter Property="BorderThickness" Value="1" />
-                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            <Setter Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
+                            <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+                            <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
+                            <Setter Property="HorizontalContentAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentStretch}" />
+                            <Setter Property="VerticalContentAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
                             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
                             <Setter Property="Cursor" Value="Hand" />
@@ -95,10 +95,10 @@
                             <controls:BiaClippingBorder MaxHeight="414"
                                                         Background="{DynamicResource SubmenuItemBackground}"
                                                         BorderBrush="{DynamicResource MenuItemHighlightedBackground}"
-                                                        BorderThickness="1"
+                                                        BorderThickness="{x:Static biaui:Boxes.Thickness1}"
                                                         CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}">
                                 <ScrollViewer Focusable="{x:Static biaui:Boxes.BoolFalse}">
-                                    <ItemsPresenter Margin="2" />
+                                    <ItemsPresenter Margin="{x:Static biaui:Boxes.Thickness2}" />
                                 </ScrollViewer>
                             </controls:BiaClippingBorder>
                         </ControlTemplate>

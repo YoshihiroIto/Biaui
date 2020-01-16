@@ -12,16 +12,16 @@
         <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
         <Setter Property="TextOptions.TextHintingMode" Value="Animated" />
 
-        <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
+        <Setter Property="ToolTipService.InitialShowDelay" Value="{x:Static biaui:Boxes.Int0}" />
         <Setter Property="ToolTipService.ShowDuration" Value="100000" />
-        <Setter Property="ToolTipService.BetweenShowDelay" Value="0" />
+        <Setter Property="ToolTipService.BetweenShowDelay" Value="{x:Static biaui:Boxes.Int0}" />
 
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome CaptionHeight="32"
-                              CornerRadius="0"
-                              GlassFrameThickness="1"
-                              ResizeBorderThickness="8" />
+                <WindowChrome CaptionHeight="{x:Static biaui:Boxes.Double32}"
+                              CornerRadius="{x:Static biaui:Boxes.CornerRadius0}"
+                              GlassFrameThickness="{x:Static biaui:Boxes.Thickness1}"
+                              ResizeBorderThickness="{x:Static biaui:Boxes.Thickness8}" />
             </Setter.Value>
         </Setter>
 
@@ -31,7 +31,7 @@
                     <AdornerDecorator>
                         <Border x:Name="Border"
                                 Background="{DynamicResource BackgroundBackgroundBrushKey}"
-                                BorderThickness="1">
+                                BorderThickness="{x:Static biaui:Boxes.Thickness1}">
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="BorderBrush" Value="{DynamicResource AccentBrushKey}" />
@@ -48,29 +48,29 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="24" />
                                     <RowDefinition Height="24" />
-                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="{x:Static biaui:Boxes.GridLengthStar}" />
                                 </Grid.RowDefinitions>
 
                                 <!--  タイトル下地  -->
-                                <Rectangle Grid.Row="0"
-                                           Grid.RowSpan="2"
-                                           Margin="0,0,0,0"
+                                <Rectangle Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                           Grid.RowSpan="{x:Static biaui:Boxes.Int2}"
+                                           Margin="{x:Static biaui:Boxes.Thickness0}"
                                            Fill="#303038"
-                                           StrokeThickness="0" />
+                                           StrokeThickness="{x:Static biaui:Boxes.Double0}" />
 
                                 <!--  Icon  -->
-                                <Rectangle Grid.Row="0"
-                                           Grid.RowSpan="2"
-                                           Width="36"
-                                           Height="36"
+                                <Rectangle Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                           Grid.RowSpan="{x:Static biaui:Boxes.Int2}"
+                                           Width="{x:Static biaui:Boxes.Double36}"
+                                           Height="{x:Static biaui:Boxes.Double36}"
                                            Margin="6,6,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
+                                           HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
+                                           VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                            Fill="{Binding Icon, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}" />
 
                                 <!--  Title  -->
-                                <TextBlock Grid.Row="0"
-                                           Grid.RowSpan="2"
+                                <TextBlock Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                           Grid.RowSpan="{x:Static biaui:Boxes.Int2}"
                                            Margin="47,1,0,0"
                                            FontSize="18"
                                            Text="{TemplateBinding Title}">
@@ -88,25 +88,25 @@
                                 </TextBlock>
 
                                 <!--  Menu  -->
-                                <ContentControl Grid.Row="1"
-                                                Grid.RowSpan="2"
+                                <ContentControl Grid.Row="{x:Static biaui:Boxes.Int1}"
+                                                Grid.RowSpan="{x:Static biaui:Boxes.Int2}"
                                                 Margin="47,1,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
+                                                VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                                 Content="{Binding Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}"
                                                 WindowChrome.IsHitTestVisibleInChrome="{x:Static biaui:Boxes.BoolTrue}" />
 
                                 <ContentPresenter x:Name="ContentPresenter"
-                                                  Grid.Row="2"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Stretch" />
+                                                  Grid.Row="{x:Static biaui:Boxes.Int2}"
+                                                  HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
+                                                  VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
 
                                 <!--  影  -->
-                                <Rectangle Grid.Row="0"
-                                           Grid.RowSpan="3"
-                                           Height="5"
+                                <Rectangle Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                           Grid.RowSpan="{x:Static biaui:Boxes.Int3}"
+                                           Height="{x:Static biaui:Boxes.Double5}"
                                            Margin="0,48,0,0"
-                                           VerticalAlignment="Top"
+                                           VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                            IsHitTestVisible="{x:Static biaui:Boxes.BoolFalse}">
                                     <Rectangle.Fill>
                                         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -117,10 +117,10 @@
                                 </Rectangle>
 
                                 <!--  System Button  -->
-                                <StackPanel Grid.Row="0"
-                                            Grid.RowSpan="2"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
+                                <StackPanel Grid.Row="{x:Static biaui:Boxes.Int0}"
+                                            Grid.RowSpan="{x:Static biaui:Boxes.Int2}"
+                                            HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
+                                            VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                             Orientation="Horizontal">
                                     <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMinimizeButton}" WindowAction="Minimize" />
                                     <internals:SystemButton IsVisibleButton="{TemplateBinding IsVisibleMaximizeButton}" WindowAction="Maximize" />
@@ -133,10 +133,10 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
-                            <Setter TargetName="Border" Property="BorderThickness" Value="8" />
+                            <Setter TargetName="Border" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness8}" />
                         </Trigger>
                         <Trigger Property="WindowState" Value="Normal">
-                            <Setter TargetName="Border" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="Border" Property="BorderThickness" Value="{x:Static biaui:Boxes.Thickness1}" />
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
@@ -154,7 +154,7 @@
                                 <BeginStoryboard>
                                     <Storyboard TargetName="ContentPresenter">
                                         <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                         To="1"
+                                                         To="{x:Static biaui:Boxes.Double1}"
                                                          Duration="0:0:0.1" />
                                     </Storyboard>
                                 </BeginStoryboard>
