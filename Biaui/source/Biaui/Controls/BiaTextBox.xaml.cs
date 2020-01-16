@@ -182,7 +182,7 @@ namespace Biaui.Controls
 
         #region BorderColor
 
-        public Color BorderColor
+        public ByteColor BorderColor
         {
             get => _BorderColor;
             set
@@ -192,18 +192,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _BorderColor = Colors.Red;
+        private ByteColor _BorderColor = ByteColor.Red;
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaTextBox),
+            DependencyProperty.Register(nameof(BorderColor), typeof(ByteColor), typeof(BiaTextBox),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorRed,
+                    Boxes.ByteColorRed,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
-                        self._BorderColor = (Color) e.NewValue;
+                        self._BorderColor = (ByteColor) e.NewValue;
                     }));
 
         #endregion
@@ -299,12 +299,12 @@ namespace Biaui.Controls
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     brush,
-                    this.GetBorderPen(BorderColor.ToImmutableByteColor()),
+                    this.GetBorderPen(BorderColor),
                     this.RoundLayoutRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     brush,
-                    this.GetBorderPen(BorderColor.ToImmutableByteColor()),
+                    this.GetBorderPen(BorderColor),
                     this.RoundLayoutRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);

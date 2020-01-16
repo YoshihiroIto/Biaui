@@ -165,7 +165,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 _parent.LinksSource,
                 lineCullingRect,
                 alpha,
-                backgroundColor.ToImmutableByteColor(),
+                backgroundColor.ToByteColor(),
                 _parent.HighlightLinkColor,
                 flags,
                 _curves);

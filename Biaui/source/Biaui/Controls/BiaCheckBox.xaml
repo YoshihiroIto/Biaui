@@ -26,7 +26,8 @@
                     <Condition Property="IsPressed" Value="False" />
                 </MultiTrigger.Conditions>
 
-                <Setter Property="BoxBorderColor" Value="Transparent" />
+                <Setter Property="BoxBorderColor" Value="{x:Static biaui:ByteColor.Transparent}">
+                </Setter>
             </MultiTrigger>
 
             <Trigger Property="IsChecked" Value="True">

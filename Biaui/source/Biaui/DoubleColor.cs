@@ -33,14 +33,6 @@ namespace Biaui
             A = 0.0
         };
 
-        public static readonly DoubleColor White = new DoubleColor
-        {
-            R = 1.0,
-            G = 1.0,
-            B = 1.0,
-            A = 1.0
-        };
-
         public double R { get; set; }
         public double G { get; set; }
         public double B { get; set; }

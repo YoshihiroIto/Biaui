@@ -38,7 +38,7 @@ namespace Biaui.Controls
 
         #region Color0
 
-        public Color Color0
+        public ByteColor Color0
         {
             get => _Color0;
             set
@@ -48,18 +48,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _Color0 = Colors.Black;
+        private ByteColor _Color0 = ByteColor.Black;
 
         public static readonly DependencyProperty Color0Property =
-            DependencyProperty.Register(nameof(Color0), typeof(Color), typeof(BiaColorBar),
+            DependencyProperty.Register(nameof(Color0), typeof(ByteColor), typeof(BiaColorBar),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorBlack,
+                    Boxes.ByteColorBlack,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
-                        self._Color0 = (Color) e.NewValue;
+                        self._Color0 = (ByteColor) e.NewValue;
                         self._isRequestUpdateBackgroundBrush = true;
                     }));
 
@@ -67,7 +67,7 @@ namespace Biaui.Controls
 
         #region Color1
 
-        public Color Color1
+        public ByteColor Color1
         {
             get => _Color1;
             set
@@ -77,18 +77,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _Color1 = Colors.White;
+        private ByteColor _Color1 = ByteColor.White;
 
         public static readonly DependencyProperty Color1Property =
-            DependencyProperty.Register(nameof(Color1), typeof(Color), typeof(BiaColorBar),
+            DependencyProperty.Register(nameof(Color1), typeof(ByteColor), typeof(BiaColorBar),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorWhite,
+                    Boxes.ByteColorWhite,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
-                        self._Color1 = (Color) e.NewValue;
+                        self._Color1 = (ByteColor) e.NewValue;
                         self._isRequestUpdateBackgroundBrush = true;
                     }));
 
@@ -96,7 +96,7 @@ namespace Biaui.Controls
 
         #region BorderColor
 
-        public Color BorderColor
+        public ByteColor BorderColor
         {
             get => _BorderColor;
             set
@@ -106,18 +106,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _BorderColor = Colors.Red;
+        private ByteColor _BorderColor = ByteColor.Red;
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaColorBar),
+            DependencyProperty.Register(nameof(BorderColor), typeof(ByteColor), typeof(BiaColorBar),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorRed,
+                    Boxes.ByteColorRed,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorBar) s;
-                        self._BorderColor = (Color) e.NewValue;
+                        self._BorderColor = (ByteColor) e.NewValue;
                     }));
 
         #endregion
@@ -275,7 +275,7 @@ namespace Biaui.Controls
             }
 
             var rect = this.RoundLayoutRenderRectangle(true);
-            dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor.ToImmutableByteColor()), rect);
+            dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
 
             // Cursor
             this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
@@ -303,10 +303,9 @@ namespace Biaui.Controls
 
         private void UpdateBackgroundBrush()
         {
-
             if (IsEnabled)
             {
-                _backgroundBrush = new LinearGradientBrush(Color1, Color0, 90);
+                _backgroundBrush = new LinearGradientBrush(Color1.ToColor(), Color0.ToColor(), 90);
                 _backgroundBrush.Freeze();
             }
             else

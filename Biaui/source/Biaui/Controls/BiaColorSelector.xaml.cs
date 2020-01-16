@@ -48,7 +48,7 @@ namespace Biaui.Controls
 
         #region BorderColor
 
-        public Color BorderColor
+        public ByteColor BorderColor
         {
             get => _BorderColor;
             set
@@ -58,18 +58,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _BorderColor = Colors.Transparent;
+        private ByteColor _BorderColor = ByteColor.Transparent;
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaColorSelector),
+            DependencyProperty.Register(nameof(BorderColor), typeof(ByteColor), typeof(BiaColorSelector),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorTransparent,
+                    Boxes.ByteColorTransparent,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorSelector) s;
-                        self._BorderColor = (Color) e.NewValue;
+                        self._BorderColor = (ByteColor) e.NewValue;
                     }));
 
         #endregion
@@ -234,7 +234,7 @@ namespace Biaui.Controls
 
             var rect = this.RoundLayoutRenderRectangle(true);
 
-            var borderPen = this.GetBorderPen(BorderColor.ToImmutableByteColor());
+            var borderPen = this.GetBorderPen(BorderColor);
 
             if (IsEnabled)
             {

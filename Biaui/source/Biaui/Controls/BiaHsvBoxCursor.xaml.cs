@@ -8,7 +8,7 @@ namespace Biaui.Controls
     {
         #region BorderColor
 
-        public Color BorderColor
+        public ByteColor BorderColor
         {
             get => _BorderColor;
             set
@@ -18,18 +18,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _BorderColor = Colors.Red;
+        private ByteColor _BorderColor = ByteColor.Red;
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaHsvBoxCursor),
+            DependencyProperty.Register(nameof(BorderColor), typeof(ByteColor), typeof(BiaHsvBoxCursor),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorRed,
+                    Boxes.ByteColorRed,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaHsvBoxCursor) s;
-                        self._BorderColor = (Color) e.NewValue;
+                        self._BorderColor = (ByteColor) e.NewValue;
                     }));
 
         #endregion
@@ -143,7 +143,7 @@ namespace Biaui.Controls
 
             // Border
             {
-                var p = this.GetBorderPen(BorderColor.ToImmutableByteColor());
+                var p = this.GetBorderPen(BorderColor);
 
                 var w = this.RoundLayoutValue(ActualWidth - 0.5);
                 var h = this.RoundLayoutValue(ActualHeight - 0.5);

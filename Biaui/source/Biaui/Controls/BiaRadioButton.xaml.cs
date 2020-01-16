@@ -8,7 +8,7 @@ namespace Biaui.Controls
     {
         #region MarkBorderColor
 
-        public Color MarkBorderColor
+        public ByteColor MarkBorderColor
         {
             get => _markBorderColor;
             set
@@ -18,18 +18,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _markBorderColor;
+        private ByteColor _markBorderColor;
 
         public static readonly DependencyProperty MarkBorderColorProperty =
-            DependencyProperty.Register(nameof(MarkBorderColor), typeof(Color), typeof(BiaRadioButton),
+            DependencyProperty.Register(nameof(MarkBorderColor), typeof(ByteColor), typeof(BiaRadioButton),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorTransparent,
+                    Boxes.ByteColorTransparent,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaRadioButton) s;
-                        self._markBorderColor = (Color) e.NewValue;
+                        self._markBorderColor = (ByteColor) e.NewValue;
                     }));
 
         #endregion
@@ -81,14 +81,14 @@ namespace Biaui.Controls
                 var color =
                     IsMouseOver
                         ? MarkBorderColor
-                        : (Background as SolidColorBrush)?.Color ?? MarkBorderColor;
+                        : (Background as SolidColorBrush)?.Color.ToByteColor() ?? MarkBorderColor;
 
 
                 dc.DrawEllipse(
                     IsPressed
                         ? MarkBrush
                         : Background,
-                    this.GetBorderPen(color.ToImmutableByteColor()),
+                    this.GetBorderPen(color),
                     new Point(8, 10),
                     7, 7);
             }
@@ -96,7 +96,7 @@ namespace Biaui.Controls
             {
                 dc.DrawEllipse(
                     null,
-                    this.GetBorderPen(MarkBorderColor.ToImmutableByteColor()),
+                    this.GetBorderPen(MarkBorderColor),
                     new Point(8, 10),
                     7, 7);
             }

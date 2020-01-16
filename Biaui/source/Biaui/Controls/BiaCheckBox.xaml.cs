@@ -8,7 +8,7 @@ namespace Biaui.Controls
     {
         #region BoxBorderColor
 
-        public Color BoxBorderColor
+        public ByteColor BoxBorderColor
         {
             get => _boxBorderColor;
             set
@@ -18,18 +18,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _boxBorderColor = Colors.Transparent;
+        private ByteColor _boxBorderColor = ByteColor.Transparent;
 
         public static readonly DependencyProperty BoxBorderColorProperty =
-            DependencyProperty.Register(nameof(BoxBorderColor), typeof(Color), typeof(BiaCheckBox),
+            DependencyProperty.Register(nameof(BoxBorderColor), typeof(ByteColor), typeof(BiaCheckBox),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorTransparent,
+                    Boxes.ByteColorTransparent,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaCheckBox) s;
-                        self._boxBorderColor = (Color) e.NewValue;
+                        self._boxBorderColor = (ByteColor) e.NewValue;
                     }));
 
         #endregion
@@ -79,7 +79,7 @@ namespace Biaui.Controls
             // ボックス
             dc.DrawRoundedRectangle(
                 Background,
-                this.GetBorderPen(BoxBorderColor.ToImmutableByteColor()),
+                this.GetBorderPen(BoxBorderColor),
                 this.RoundLayoutRect(
                     0 + FrameworkElementExtensions.BorderHalfWidth, 
                     2 + FrameworkElementExtensions.BorderHalfWidth,

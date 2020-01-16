@@ -8,7 +8,7 @@ namespace Biaui.Controls
     {
         #region Value
 
-        public Color Value
+        public ByteColor Value
         {
             get => _Value;
             set
@@ -18,25 +18,25 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _Value = Colors.White;
+        private ByteColor _Value = ByteColor.White;
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(nameof(Value), typeof(Color), typeof(BiaColorPanel),
+            DependencyProperty.Register(nameof(Value), typeof(ByteColor), typeof(BiaColorPanel),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorWhite,
+                    Boxes.ByteColorWhite,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorPanel) s;
-                        self._Value = (Color) e.NewValue;
+                        self._Value = (ByteColor) e.NewValue;
                     }));
 
         #endregion
 
         #region BorderColor
 
-        public Color BorderColor
+        public ByteColor BorderColor
         {
             get => _BorderColor;
             set
@@ -46,18 +46,18 @@ namespace Biaui.Controls
             }
         }
 
-        private Color _BorderColor = Colors.Transparent;
+        private ByteColor _BorderColor = ByteColor.Transparent;
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaColorPanel),
+            DependencyProperty.Register(nameof(BorderColor), typeof(ByteColor), typeof(BiaColorPanel),
                 new FrameworkPropertyMetadata(
-                    Boxes.ColorTransparent,
+                    Boxes.ByteColorTransparent,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaColorPanel) s;
-                        self._BorderColor = (Color) e.NewValue;
+                        self._BorderColor = (ByteColor) e.NewValue;
                     }));
 
         #endregion
@@ -104,11 +104,11 @@ namespace Biaui.Controls
 
             var rect = this.RoundLayoutRenderRectangle(true);
 
-            var borderPen = this.GetBorderPen(BorderColor.ToImmutableByteColor());
+            var borderPen = this.GetBorderPen(BorderColor);
 
             if (IsEnabled)
             {
-                var brush = Caches.GetSolidColorBrush(Value.ToImmutableByteColor());
+                var brush = Caches.GetSolidColorBrush(Value);
 
                 if (NumberHelper.AreCloseZero(CornerRadius))
                 {

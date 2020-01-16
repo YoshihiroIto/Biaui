@@ -53,6 +53,11 @@ namespace Biaui
         public static readonly object ColorBlack = Colors.Black;
         public static readonly object ColorTransparent = Colors.Transparent;
         
+        public static readonly object ByteColorRed = ByteColor.Red;
+        public static readonly object ByteColorWhite = ByteColor.White;
+        public static readonly object ByteColorBlack = ByteColor.Black;
+        public static readonly object ByteColorTransparent = ByteColor.Transparent;
+        
         public static readonly object Point3dRed = new Point3D(1.0, 0.0, 0.0);
 
         public static readonly object Point00 = new Point(0, 0);

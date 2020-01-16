@@ -7,34 +7,6 @@ namespace Biaui.Controls
 {
     public class BiaHsvWheelCursor : FrameworkElement
     {
-        #region BorderColor
-
-        public Color BorderColor
-        {
-            get => _BorderColor;
-            set
-            {
-                if (value != _BorderColor)
-                    SetValue(BorderColorProperty, value);
-            }
-        }
-
-        private Color _BorderColor = Colors.Red;
-
-        public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(BiaHsvWheelCursor),
-                new FrameworkPropertyMetadata(
-                    Boxes.ColorRed,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvWheelCursor) s;
-                        self._BorderColor = (Color) e.NewValue;
-                    }));
-
-        #endregion
-
         #region Hue
 
         public double Hue
