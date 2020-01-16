@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Media3D;
 using Biaui.Internals;
 
 namespace Biaui.Controls.Effects
@@ -88,7 +88,7 @@ namespace Biaui.Controls.Effects
 
         #region DisableColor
 
-        public Color DisableColor
+        public Point3D DisableColor
         {
             get => _DisableColor;
             set
@@ -98,16 +98,16 @@ namespace Biaui.Controls.Effects
             }
         }
 
-        private Color _DisableColor = Colors.Red;
+        private Point3D _DisableColor = new Point3D(1.0, 0.0, 0.0);
 
         public static readonly DependencyProperty DisableColorProperty =
-            DependencyProperty.Register(nameof(DisableColor), typeof(Color), typeof(HsvBoxBackgroundEffect),
+            DependencyProperty.Register(nameof(DisableColor), typeof(Point3D), typeof(HsvBoxBackgroundEffect),
                 new PropertyMetadata(
-                    Boxes.ColorRed,
+                    Boxes.Point3dRed,
                     (s, e) =>
                     {
                         var self = (HsvBoxBackgroundEffect) s;
-                        self._DisableColor = (Color) e.NewValue;
+                        self._DisableColor = (Point3D) e.NewValue;
 
                         PixelShaderConstantCallback(7)(s, e);
                     }));

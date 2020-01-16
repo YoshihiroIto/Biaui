@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using Biaui.Controls;
 using Biaui.Controls.NodeEditor;
 using Biaui.Internals;
@@ -51,6 +52,8 @@ namespace Biaui
         public static readonly object ColorWhite = Colors.White;
         public static readonly object ColorBlack = Colors.Black;
         public static readonly object ColorTransparent = Colors.Transparent;
+        
+        public static readonly object Point3dRed = new Point3D(1.0, 0.0, 0.0);
 
         public static readonly object Point00 = new Point(0, 0);
         public static readonly object Size11 = new Size(1, 1);

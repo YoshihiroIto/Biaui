@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace Biaui
 {
@@ -48,6 +49,8 @@ namespace Biaui
         }
 
         public Color ToColor() => Color.FromArgb(_A, _R, _G, _B);
+        public Point3D ToPoint3D() => new Point3D(_R * (1.0 / 255.0), _G * (1.0 / 255.0), _B * (1.0 / 255.0));
+        public Point4D ToPoint4D() => new Point4D(_R * (1.0 / 255.0), _G * (1.0 / 255.0), _B * (1.0 / 255.0), _A  * (1.0 / 255.0));
 
         public static bool operator ==(ByteColor color1, ByteColor color2) => color1._argb == color2._argb;
         public static bool operator !=(ByteColor color1, ByteColor color2) => color1._argb != color2._argb;

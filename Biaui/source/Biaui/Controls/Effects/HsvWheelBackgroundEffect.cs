@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Media3D;
 using Biaui.Internals;
 
 namespace Biaui.Controls.Effects
@@ -120,7 +121,7 @@ namespace Biaui.Controls.Effects
 
         #region BorderColor
 
-        public Color BorderColor
+        public Point3D BorderColor
         {
             get => _BorderColor;
             set
@@ -130,16 +131,16 @@ namespace Biaui.Controls.Effects
             }
         }
 
-        private Color _BorderColor = Colors.Red;
+        private Point3D _BorderColor = new Point3D(1.0, 0.0, 0.0);
 
         public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Color), typeof(HsvWheelBackgroundEffect),
+            DependencyProperty.Register(nameof(BorderColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),
                 new PropertyMetadata(
-                    Boxes.ColorRed,
+                    Boxes.Point3dRed,
                     (s, e) =>
                     {
                         var self = (HsvWheelBackgroundEffect) s;
-                        self._BorderColor = (Color) e.NewValue;
+                        self._BorderColor = (Point3D) e.NewValue;
 
                         PixelShaderConstantCallback(3)(s, e);
                     }));
@@ -177,7 +178,7 @@ namespace Biaui.Controls.Effects
 
         #region DisableColor
 
-        public Color DisableColor
+        public Point3D DisableColor
         {
             get => _DisableColor;
             set
@@ -187,16 +188,16 @@ namespace Biaui.Controls.Effects
             }
         }
 
-        private Color _DisableColor = Colors.Red;
+        private Point3D _DisableColor = new Point3D(1.0, 0.0, 0.0);
 
         public static readonly DependencyProperty DisableColorProperty =
-            DependencyProperty.Register(nameof(DisableColor), typeof(Color), typeof(HsvWheelBackgroundEffect),
+            DependencyProperty.Register(nameof(DisableColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),
                 new PropertyMetadata(
-                    Boxes.ColorRed,
+                    Boxes.Point3dRed,
                     (s, e) =>
                     {
                         var self = (HsvWheelBackgroundEffect) s;
-                        self._DisableColor = (Color) e.NewValue;
+                        self._DisableColor = (Point3D) e.NewValue;
 
                         PixelShaderConstantCallback(7)(s, e);
                     }));
