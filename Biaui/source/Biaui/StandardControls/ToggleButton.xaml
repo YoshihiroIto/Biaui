@@ -7,10 +7,10 @@
         <Setter Property="Foreground" Value="{DynamicResource ForegroundBrushKey}" />
         <Setter Property="Padding">
             <Setter.Value>
-                <Thickness Bottom="{x:Static biaui:Constants.ButtonPaddingY}"
-                           Left="{x:Static biaui:Constants.ButtonPaddingX}"
-                           Right="{x:Static biaui:Constants.ButtonPaddingX}"
-                           Top="{x:Static biaui:Constants.ButtonPaddingY}" />
+                <Thickness Bottom="{x:Static biaui:Boxes.ButtonPaddingY}"
+                           Left="{x:Static biaui:Boxes.ButtonPaddingX}"
+                           Right="{x:Static biaui:Boxes.ButtonPaddingX}"
+                           Top="{x:Static biaui:Boxes.ButtonPaddingY}" />
             </Setter.Value>
         </Setter>
 
