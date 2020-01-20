@@ -627,8 +627,6 @@ namespace Biaui.Controls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaNumberEditor),
                 new FrameworkPropertyMetadata(typeof(BiaNumberEditor)));
-
-            SetupSpinGeom();
         }
 
         public BiaNumberEditor()
@@ -764,13 +762,18 @@ namespace Biaui.Controls
 
         private void DrawSpin(DrawingContext dc)
         {
+            if (_DecSpinGeom == null)
+                SetupSpinGeom();
+            
+            var spinBackground = Caches.GetSolidColorBrush(new ByteColor(0x40, 0x00, 0x00, 0x00));
+            
             var offsetY = 8 + (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
 
             {
                 var offsetX = 5.0;
 
                 if (_mouseOverType == MouseOverType.DecSpin)
-                    dc.DrawRectangle(_SpinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
+                    dc.DrawRectangle(spinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
 
                 var key = HashCodeMaker.Make(offsetX, offsetY);
 
@@ -792,7 +795,7 @@ namespace Biaui.Controls
                 var offsetX = ActualWidth - 5.0 * 2 + 1;
 
                 if (_mouseOverType == MouseOverType.IncSpin)
-                    dc.DrawRectangle(_SpinBackground, null,
+                    dc.DrawRectangle(spinBackground, null,
                         new Rect(ActualWidth - SpinWidth, 0, SpinWidth, ActualHeight));
 
                 var key = HashCodeMaker.Make(offsetX, offsetY);
@@ -1238,50 +1241,36 @@ namespace Biaui.Controls
         private static void SetupSpinGeom()
         {
             {
-                var start = new Point(0, 4);
+                _DecSpinGeom = new StreamGeometry();
 
-                var segments = new[]
+                using (var ctx = _DecSpinGeom.Open())
                 {
-                    new LineSegment(new Point(4, 0), true),
-                    new LineSegment(new Point(4, 8), true)
-                };
-
-                segments[0].Freeze();
-                segments[1].Freeze();
-
-                var figure = new PathFigure(start, segments, true);
-                figure.Freeze();
-
-                _DecSpinGeom = new PathGeometry(new[]
-                {
-                    figure
-                });
+                    ctx.DrawTriangle(
+                        new Point(0, 4),
+                        new Point(4, 0),
+                        new Point(4, 8),
+                        true,
+                        true);
+                }
+                
                 _DecSpinGeom.Freeze();
             }
-
+            
             {
-                var start = new Point(4, 4);
+                _IncSpinGeom = new StreamGeometry();
 
-                var segments = new[]
+                using (var ctx = _IncSpinGeom.Open())
                 {
-                    new LineSegment(new Point(0, 0), true),
-                    new LineSegment(new Point(0, 8), true)
-                };
-
-                segments[0].Freeze();
-                segments[1].Freeze();
-
-                var figure = new PathFigure(start, segments, true);
-                figure.Freeze();
-
-                _IncSpinGeom = new PathGeometry(new[]
-                {
-                    figure
-                });
+                    ctx.DrawTriangle(
+                        new Point(4, 4),
+                        new Point(0, 0),
+                        new Point(0, 8),
+                        true,
+                        true);
+                }
+                
                 _IncSpinGeom.Freeze();
             }
-
-            _SpinBackground = new SolidColorBrush(Color.FromArgb(0x40, 0x00, 0x00, 0x00));
         }
 
         private double ClampValue(double v)
@@ -1337,9 +1326,8 @@ namespace Biaui.Controls
             }
         }
 
-        private static Geometry? _DecSpinGeom;
-        private static Geometry? _IncSpinGeom;
-        private static Brush? _SpinBackground;
+        private static StreamGeometry? _DecSpinGeom;
+        private static StreamGeometry? _IncSpinGeom;
 
         private static readonly Dictionary<long, TranslateTransform> _translateTransformCache = new Dictionary<long, TranslateTransform>();
     }
