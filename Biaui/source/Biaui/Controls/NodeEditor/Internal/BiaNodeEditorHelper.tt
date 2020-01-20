@@ -60,7 +60,6 @@ foreach (var typeName in new[]{"float", "double"})
                 if (rect.Contains(bezierPoints[0]) || rect.Contains(bezierPoints[3]))
                     return true;
 
-                // ReSharper disable once RedundantCast
                 var area = new ImmutableRect_<#= typeName #>(bezierPoints, (ImmutableRect_<#= typeName #>.CtorPoint4) 0);
 
                 if (rect.IntersectsWith(area) == false)
@@ -131,6 +130,37 @@ foreach (var typeName in new[]{"float", "double"})
             return new ImmutableRect_<#= typeName #>(bBox.Slice(0, bBoxCount));
         }
 
+        public static ImmutableRect_<#= typeName #> MakeBoundingBox(ReadOnlySpan<ImmutableVec2_<#= typeName #>> p)
+        {
+            var aX = A(p[0].X, p[1].X, p[2].X, p[3].X);
+            var bX = B(p[0].X, p[1].X, p[2].X);
+            var cX = C(p[0].X, p[1].X);
+
+            var aY = A(p[0].Y, p[1].Y, p[2].Y, p[3].Y);
+            var bY = B(p[0].Y, p[1].Y, p[2].Y);
+            var cY = C(p[0].Y, p[1].Y);
+
+            Span<ImmutableVec2_<#= typeName #>> bBox = stackalloc ImmutableVec2_<#= typeName #>[2 + 2 + 2];
+            bBox[0] = p[0];
+            bBox[1] = p[3];
+            var bBoxCount = 2;
+
+            Span<<#= typeName #>> res = stackalloc <#= typeName #>[2 + 2];
+
+            var resCount = Solve(res, aX, bX, cX);
+            resCount += Solve(res.Slice(resCount, res.Length - resCount), aY, bY, cY);
+
+            for (var i = 0; i != resCount; ++i)
+            {
+                var x = Bezier(p[0].X, p[1].X, p[2].X, p[3].X, res[i]);
+                var y = Bezier(p[0].Y, p[1].Y, p[2].Y, p[3].Y, res[i]);
+
+                bBox[bBoxCount++] = new ImmutableVec2_<#= typeName #>(x, y);
+            }
+
+            return new ImmutableRect_<#= typeName #>(bBox.Slice(0, bBoxCount));
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static <#= typeName #> Bezier(<#= typeName #> x1, <#= typeName #> x2, <#= typeName #> x3, <#= typeName #> x4, <#= typeName #> t)
         {
@@ -143,29 +173,28 @@ foreach (var typeName in new[]{"float", "double"})
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static <#= typeName #> A(<#= typeName #> p0, <#= typeName #> p1, <#= typeName #> p2, <#= typeName #> p3) => (<#= typeName #>)3 * p3 - (<#= typeName #>)9 * p2 + (<#= typeName #>)9 * p1 - (<#= typeName #>)3 * p0;
+        private static <#= typeName #> A(<#= typeName #> p0, <#= typeName #> p1, <#= typeName #> p2, <#= typeName #> p3) => (<#= typeName #>)3 * (p3 - p0) + (<#= typeName #>)9 * (p1 - p2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static <#= typeName #> B(<#= typeName #> p0, <#= typeName #> p1, <#= typeName #> p2) => (<#= typeName #>)6 * p2 - (<#= typeName #>)12 * p1 + (<#= typeName #>)6 * p0;
+        private static <#= typeName #> B(<#= typeName #> p0, <#= typeName #> p1, <#= typeName #> p2) => (<#= typeName #>)6 * (p2 - p1 - p1 + p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static <#= typeName #> C(<#= typeName #> p0, <#= typeName #> p1) => (<#= typeName #>)3 * p1 - (<#= typeName #>)3 * p0;
+        private static <#= typeName #> C(<#= typeName #> p0, <#= typeName #> p1) => (<#= typeName #>)3 * (p1 - p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static <#= typeName #> Determinant(<#= typeName #> a, <#= typeName #> b, <#= typeName #> c) => (<#= typeName #>)Math.Pow(b, 2) - (<#= typeName #>)4 * a * c;
-
-        // ReSharper disable InconsistentNaming
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static <#= typeName #> SolveP(<#= typeName #> a, <#= typeName #> b, <#= typeName #> c) => (-b + (<#= typeName #>)Math.Sqrt(b * b - (<#= typeName #>)4 * a * c)) / ((<#= typeName #>)2 * a);
+        private static <#= typeName #> Determinant(<#= typeName #> a, <#= typeName #> b, <#= typeName #> c) => b * b - (<#= typeName #>)4 * a * c;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static <#= typeName #> SolveM(<#= typeName #> a, <#= typeName #> b, <#= typeName #> c) => (-b + (<#= typeName #>)Math.Sqrt(b * b - (<#= typeName #>)4 * a * c) * (<#= typeName #>)-1) / ((<#= typeName #>)2 * a);
+        private static <#= typeName #> SolveP(<#= typeName #> a, <#= typeName #> b, <#= typeName #> sqrtD) => (-b + sqrtD) / ((<#= typeName #>)2 * a);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static <#= typeName #> SolveM(<#= typeName #> a, <#= typeName #> b, <#= typeName #> sqrtD) => (-b - sqrtD) / ((<#= typeName #>)2 * a);
 
         private static int Solve(Span<<#= typeName #>> result, <#= typeName #> a, <#= typeName #> b, <#= typeName #> c)
         {
             var d = Determinant(a, b, c);
 
-            if (d <= (<#= typeName #>)0)
+            if (d < (<#= typeName #>)0)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))
@@ -174,15 +203,19 @@ foreach (var typeName in new[]{"float", "double"})
                 return 1;
             }
 
+            var sqrtD = (<#= typeName #>)Math.Sqrt(d);
+
             if (NumberHelper.AreCloseZero(d))
             {
-                result[0] = SolveP(a, b, c);
+                result[0] = SolveP(a, b, sqrtD);
                 return 1;
             }
-
-            result[0] = SolveP(a, b, c);
-            result[1] = SolveM(a, b, c);
-            return 2;
+            else
+            {
+                result[0] = SolveP(a, b, sqrtD);
+                result[1] = SolveM(a, b, sqrtD);
+                return 2;
+            }
         }
 <#
        }

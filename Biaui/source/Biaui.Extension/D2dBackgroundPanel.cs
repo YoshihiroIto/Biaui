@@ -113,11 +113,7 @@ namespace Biaui.Extension
                 var keyBezier = MakeHashCode(bezier);
                 if (_boundingBoxCache.TryGetValue(keyBezier, out var bb) == false)
                 {
-                    bb = BiaNodeEditorHelper.MakeBoundingBox(
-                        bezier[0],
-                        bezier[1],
-                        bezier[2],
-                        bezier[3]);
+                    bb = BiaNodeEditorHelper.MakeBoundingBox(bezier);
 
                     _boundingBoxCache.Add(keyBezier, bb);
                 }
@@ -194,7 +190,7 @@ namespace Biaui.Extension
 
         private static void DrawArrow(
             GeometrySink sink,
-            Span<ImmutableVec2_float> bezier)
+            ReadOnlySpan<ImmutableVec2_float> bezier)
         {
             var b1X = BiaNodeEditorHelper.Bezier(bezier[0].X, bezier[1].X, bezier[2].X, bezier[3].X, 0.5001f);
             var b1Y = BiaNodeEditorHelper.Bezier(bezier[0].Y, bezier[1].Y, bezier[2].Y, bezier[3].Y, 0.5001f);

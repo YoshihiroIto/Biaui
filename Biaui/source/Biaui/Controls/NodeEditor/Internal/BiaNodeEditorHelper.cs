@@ -53,7 +53,6 @@ namespace Biaui.Internals
                 if (rect.Contains(bezierPoints[0]) || rect.Contains(bezierPoints[3]))
                     return true;
 
-                // ReSharper disable once RedundantCast
                 var area = new ImmutableRect_float(bezierPoints, (ImmutableRect_float.CtorPoint4) 0);
 
                 if (rect.IntersectsWith(area) == false)
@@ -124,6 +123,37 @@ namespace Biaui.Internals
             return new ImmutableRect_float(bBox.Slice(0, bBoxCount));
         }
 
+        public static ImmutableRect_float MakeBoundingBox(ReadOnlySpan<ImmutableVec2_float> p)
+        {
+            var aX = A(p[0].X, p[1].X, p[2].X, p[3].X);
+            var bX = B(p[0].X, p[1].X, p[2].X);
+            var cX = C(p[0].X, p[1].X);
+
+            var aY = A(p[0].Y, p[1].Y, p[2].Y, p[3].Y);
+            var bY = B(p[0].Y, p[1].Y, p[2].Y);
+            var cY = C(p[0].Y, p[1].Y);
+
+            Span<ImmutableVec2_float> bBox = stackalloc ImmutableVec2_float[2 + 2 + 2];
+            bBox[0] = p[0];
+            bBox[1] = p[3];
+            var bBoxCount = 2;
+
+            Span<float> res = stackalloc float[2 + 2];
+
+            var resCount = Solve(res, aX, bX, cX);
+            resCount += Solve(res.Slice(resCount, res.Length - resCount), aY, bY, cY);
+
+            for (var i = 0; i != resCount; ++i)
+            {
+                var x = Bezier(p[0].X, p[1].X, p[2].X, p[3].X, res[i]);
+                var y = Bezier(p[0].Y, p[1].Y, p[2].Y, p[3].Y, res[i]);
+
+                bBox[bBoxCount++] = new ImmutableVec2_float(x, y);
+            }
+
+            return new ImmutableRect_float(bBox.Slice(0, bBoxCount));
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Bezier(float x1, float x2, float x3, float x4, float t)
         {
@@ -136,29 +166,28 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float A(float p0, float p1, float p2, float p3) => (float)3 * p3 - (float)9 * p2 + (float)9 * p1 - (float)3 * p0;
+        private static float A(float p0, float p1, float p2, float p3) => (float)3 * (p3 - p0) + (float)9 * (p1 - p2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float B(float p0, float p1, float p2) => (float)6 * p2 - (float)12 * p1 + (float)6 * p0;
+        private static float B(float p0, float p1, float p2) => (float)6 * (p2 - p1 - p1 + p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float C(float p0, float p1) => (float)3 * p1 - (float)3 * p0;
+        private static float C(float p0, float p1) => (float)3 * (p1 - p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float Determinant(float a, float b, float c) => (float)Math.Pow(b, 2) - (float)4 * a * c;
-
-        // ReSharper disable InconsistentNaming
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float SolveP(float a, float b, float c) => (-b + (float)Math.Sqrt(b * b - (float)4 * a * c)) / ((float)2 * a);
+        private static float Determinant(float a, float b, float c) => b * b - (float)4 * a * c;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float SolveM(float a, float b, float c) => (-b + (float)Math.Sqrt(b * b - (float)4 * a * c) * (float)-1) / ((float)2 * a);
+        private static float SolveP(float a, float b, float sqrtD) => (-b + sqrtD) / ((float)2 * a);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float SolveM(float a, float b, float sqrtD) => (-b - sqrtD) / ((float)2 * a);
 
         private static int Solve(Span<float> result, float a, float b, float c)
         {
             var d = Determinant(a, b, c);
 
-            if (d <= (float)0)
+            if (d < (float)0)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))
@@ -167,15 +196,19 @@ namespace Biaui.Internals
                 return 1;
             }
 
+            var sqrtD = (float)Math.Sqrt(d);
+
             if (NumberHelper.AreCloseZero(d))
             {
-                result[0] = SolveP(a, b, c);
+                result[0] = SolveP(a, b, sqrtD);
                 return 1;
             }
-
-            result[0] = SolveP(a, b, c);
-            result[1] = SolveM(a, b, c);
-            return 2;
+            else
+            {
+                result[0] = SolveP(a, b, sqrtD);
+                result[1] = SolveM(a, b, sqrtD);
+                return 2;
+            }
         }
 
         private const double ControlPointLength_double = (double)200;
@@ -220,7 +253,6 @@ namespace Biaui.Internals
                 if (rect.Contains(bezierPoints[0]) || rect.Contains(bezierPoints[3]))
                     return true;
 
-                // ReSharper disable once RedundantCast
                 var area = new ImmutableRect_double(bezierPoints, (ImmutableRect_double.CtorPoint4) 0);
 
                 if (rect.IntersectsWith(area) == false)
@@ -291,6 +323,37 @@ namespace Biaui.Internals
             return new ImmutableRect_double(bBox.Slice(0, bBoxCount));
         }
 
+        public static ImmutableRect_double MakeBoundingBox(ReadOnlySpan<ImmutableVec2_double> p)
+        {
+            var aX = A(p[0].X, p[1].X, p[2].X, p[3].X);
+            var bX = B(p[0].X, p[1].X, p[2].X);
+            var cX = C(p[0].X, p[1].X);
+
+            var aY = A(p[0].Y, p[1].Y, p[2].Y, p[3].Y);
+            var bY = B(p[0].Y, p[1].Y, p[2].Y);
+            var cY = C(p[0].Y, p[1].Y);
+
+            Span<ImmutableVec2_double> bBox = stackalloc ImmutableVec2_double[2 + 2 + 2];
+            bBox[0] = p[0];
+            bBox[1] = p[3];
+            var bBoxCount = 2;
+
+            Span<double> res = stackalloc double[2 + 2];
+
+            var resCount = Solve(res, aX, bX, cX);
+            resCount += Solve(res.Slice(resCount, res.Length - resCount), aY, bY, cY);
+
+            for (var i = 0; i != resCount; ++i)
+            {
+                var x = Bezier(p[0].X, p[1].X, p[2].X, p[3].X, res[i]);
+                var y = Bezier(p[0].Y, p[1].Y, p[2].Y, p[3].Y, res[i]);
+
+                bBox[bBoxCount++] = new ImmutableVec2_double(x, y);
+            }
+
+            return new ImmutableRect_double(bBox.Slice(0, bBoxCount));
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Bezier(double x1, double x2, double x3, double x4, double t)
         {
@@ -303,29 +366,28 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double A(double p0, double p1, double p2, double p3) => (double)3 * p3 - (double)9 * p2 + (double)9 * p1 - (double)3 * p0;
+        private static double A(double p0, double p1, double p2, double p3) => (double)3 * (p3 - p0) + (double)9 * (p1 - p2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double B(double p0, double p1, double p2) => (double)6 * p2 - (double)12 * p1 + (double)6 * p0;
+        private static double B(double p0, double p1, double p2) => (double)6 * (p2 - p1 - p1 + p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double C(double p0, double p1) => (double)3 * p1 - (double)3 * p0;
+        private static double C(double p0, double p1) => (double)3 * (p1 - p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double Determinant(double a, double b, double c) => (double)Math.Pow(b, 2) - (double)4 * a * c;
-
-        // ReSharper disable InconsistentNaming
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double SolveP(double a, double b, double c) => (-b + (double)Math.Sqrt(b * b - (double)4 * a * c)) / ((double)2 * a);
+        private static double Determinant(double a, double b, double c) => b * b - (double)4 * a * c;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double SolveM(double a, double b, double c) => (-b + (double)Math.Sqrt(b * b - (double)4 * a * c) * (double)-1) / ((double)2 * a);
+        private static double SolveP(double a, double b, double sqrtD) => (-b + sqrtD) / ((double)2 * a);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double SolveM(double a, double b, double sqrtD) => (-b - sqrtD) / ((double)2 * a);
 
         private static int Solve(Span<double> result, double a, double b, double c)
         {
             var d = Determinant(a, b, c);
 
-            if (d <= (double)0)
+            if (d < (double)0)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))
@@ -334,15 +396,19 @@ namespace Biaui.Internals
                 return 1;
             }
 
+            var sqrtD = (double)Math.Sqrt(d);
+
             if (NumberHelper.AreCloseZero(d))
             {
-                result[0] = SolveP(a, b, c);
+                result[0] = SolveP(a, b, sqrtD);
                 return 1;
             }
-
-            result[0] = SolveP(a, b, c);
-            result[1] = SolveM(a, b, c);
-            return 2;
+            else
+            {
+                result[0] = SolveP(a, b, sqrtD);
+                result[1] = SolveM(a, b, sqrtD);
+                return 2;
+            }
         }
     }
 }
