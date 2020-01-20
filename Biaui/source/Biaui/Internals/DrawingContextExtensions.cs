@@ -15,28 +15,24 @@ namespace Biaui.Internals
 
             if (_bezierCache.TryGetValue(hashCode, out var curve) == false)
             {
-                ref var pos1 = ref bezierPoints[0];
-                ref var pos1C = ref bezierPoints[1];
-                ref var pos2C = ref bezierPoints[2];
-                ref var pos2 = ref bezierPoints[3];
+                curve = new StreamGeometry();
 
-                var pf = new PathFigure
+                using (var ctx = curve.Open())
                 {
-                    StartPoint = Unsafe.As<ImmutableVec2_double, Point>(ref pos1)
-                };
+                    ctx.BeginFigure(
+                        Unsafe.As<ImmutableVec2_double, Point>(ref bezierPoints[0]),
+                        false,
+                        false
+                    );
 
-                var bs = new BezierSegment(
-                    Unsafe.As<ImmutableVec2_double, Point>(ref pos1C),
-                    Unsafe.As<ImmutableVec2_double, Point>(ref pos2C),
-                    Unsafe.As<ImmutableVec2_double, Point>(ref pos2),
-                    true);
-                bs.Freeze();
+                    ctx.BezierTo(
+                        Unsafe.As<ImmutableVec2_double, Point>(ref bezierPoints[1]),
+                        Unsafe.As<ImmutableVec2_double, Point>(ref bezierPoints[2]),
+                        Unsafe.As<ImmutableVec2_double, Point>(ref bezierPoints[3]),
+                        true,
+                        false);
+                }
 
-                pf.Segments.Add(bs);
-                pf.Freeze();
-
-                curve = new PathGeometry();
-                curve.Figures.Add(pf);
                 curve.Freeze();
 
                 _bezierCache.Add(hashCode, curve);
@@ -82,7 +78,7 @@ namespace Biaui.Internals
                 FillRule = FillRule.Nonzero
             };
 
-            var ctx = geom.Open();
+            using (var ctx = geom.Open())
             {
                 ctx.DrawEllipse(
                     pos,
@@ -91,11 +87,10 @@ namespace Biaui.Internals
                     true,
                     true);
             }
-            ((IDisposable) ctx).Dispose();
 
             dc.DrawGeometry(brush, pen, geom);
         }
 
-        private static readonly LruCache<long, PathGeometry> _bezierCache = new LruCache<long, PathGeometry>(10000, false);
+        private static readonly LruCache<long, StreamGeometry> _bezierCache = new LruCache<long, StreamGeometry>(10000, false);
     }
 }
