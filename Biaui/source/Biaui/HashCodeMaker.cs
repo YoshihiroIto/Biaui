@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Biaui.Internals
+namespace Biaui
 {
-    internal static class HashCodeMaker
+    public static class HashCodeMaker
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int To32(long h64)
+        public static int To32(long h64)
             => (int) ((h64 & 0xFFFFFFFF) ^ ((h64 >> 32) & 0xFFFFFFFF));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(float x, float y)
+        public static long Make(float x, float y)
         {
             unchecked
             {
@@ -26,7 +26,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(float x, float y, float z)
+        public static long Make(float x, float y, float z)
         {
             unchecked
             {
@@ -44,7 +44,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(float x, float y, float z, float w)
+        public static long Make(float x, float y, float z, float w)
         {
             unchecked
             {
@@ -64,7 +64,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(double x, double y)
+        public static long Make(double x, double y)
         {
             unchecked
             {
@@ -80,7 +80,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(double x, double y, double z)
+        public static long Make(double x, double y, double z)
         {
             unchecked
             {
@@ -98,7 +98,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(double x, double y, double z, double w)
+        public static long Make(double x, double y, double z, double w)
         {
             unchecked
             {
@@ -118,7 +118,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(double v0, double v1, double v2, double v3, double v4, double v5)
+        public static long Make(double v0, double v1, double v2, double v3, double v4, double v5)
         {
             unchecked
             {
@@ -142,7 +142,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(double x, double y, double z, bool i)
+        public static long Make(double x, double y, double z, bool i)
         {
             Debug.Assert(Unsafe.SizeOf<bool>() == 1);
 
@@ -152,17 +152,27 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(ByteColor color)
+        public static long Make(ByteColor color)
         {
             return color.HashCode;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static long Make(ByteColor color, double x)
+        public static long Make(ByteColor color, double x)
         {
             var ix = Unsafe.As<double, long>(ref x);
 
             return ix ^ color.HashCode;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static long Make(ByteColor color, bool i)
+        {
+            Debug.Assert(Unsafe.SizeOf<bool>() == 1);
+
+            var ii = (long) Unsafe.As<bool, byte>(ref i);
+
+            return ii ^ color.HashCode;
         }
     }
 }
