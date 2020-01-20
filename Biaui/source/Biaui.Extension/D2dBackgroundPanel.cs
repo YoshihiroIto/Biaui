@@ -48,8 +48,8 @@ namespace Biaui.Extension
             DrawCurves(target, isDrawArrow, lineWidth);
         }
 
-        private readonly Dictionary<(ByteColor color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>
-            _sinks = new Dictionary<(ByteColor color, bool isHighlight), (PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>();
+        private readonly Dictionary<long, (ByteColor color, bool isHighlight, PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>
+            _sinks = new Dictionary<long, (ByteColor color, bool isHighlight, PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>();
 
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
@@ -88,7 +88,7 @@ namespace Biaui.Extension
                 GeometrySink curveSink;
                 GeometrySink? arrowSink;
                 {
-                    var key = (link.Color, isHighlight);
+                    var key = HashCodeMaker.Make(link.Color, isHighlight);
 
                     if (_sinks.TryGetValue(key, out var p))
                     {
@@ -105,7 +105,7 @@ namespace Biaui.Extension
                         arrowSink = arrowGeom?.Open();
                         arrowSink?.SetFillMode(FillMode.Winding);
 
-                        _sinks[key] = (curveGeom, curveSink, arrowGeom, arrowSink);
+                        _sinks[key] = (link.Color, isHighlight, curveGeom, curveSink, arrowGeom, arrowSink);
                     }
                 }
 
@@ -136,21 +136,18 @@ namespace Biaui.Extension
             foreach (var sink in _sinks)
             {
                 // ブラシ取得
-                var resKey = sink.Key.GetHashCode();
+                var resKey = HashCodeMaker.To32(sink.Key);
                 if (ResourceCache.TryGetValue(resKey, out var brush) == false)
-                {
-                    ResourceCache.Add(resKey, t => ColorToBrushConv(t, sink.Key.color));
-                    brush = ResourceCache[resKey];
-                }
+                    brush = ResourceCache.Add(resKey, t => ColorToBrushConv(t, sink.Value.color));
 
                 // ハイライトがあれば、非ハイライトを表示しない
-                if (hasHighlightCurves && sink.Key.isHighlight == false)
+                if (hasHighlightCurves && sink.Value.isHighlight == false)
                     continue;
 
                 // 接続線カーブ
                 {
                     sink.Value.curveSink.Close();
-                    target.DrawGeometry(sink.Value.curveGeom, brush as Brush, sink.Key.isHighlight ? lineWidth * 2.0f : lineWidth);
+                    target.DrawGeometry(sink.Value.curveGeom, brush as Brush, sink.Value.isHighlight ? lineWidth * 2.0f : lineWidth);
                     sink.Value.curveSink.Dispose();
                     sink.Value.curveGeom.Dispose();
                 }
