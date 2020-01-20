@@ -273,7 +273,7 @@ namespace Biaui.Controls
             {
                 if (_DefaultIcon == null)
                 {
-                    _DefaultIcon = new SolidColorBrush(Color.FromRgb(0x53, 0x7C, 0xCE));
+                    _DefaultIcon = Caches.GetSolidColorBrush(new ByteColor(0xFF, 0x53, 0x7C, 0xCE));
                     _DefaultIcon.Freeze();
                 }
 

@@ -40,7 +40,7 @@ namespace Biaui.Controls
                         var self = (BiaColorSelector) s;
                         self._Value = (DoubleColor) e.NewValue;
 
-                        self._background = new SolidColorBrush(self._Value.Color);
+                        self._background = Caches.GetSolidColorBrush(self._Value.ByteColor);
                         self._background.Freeze();
                     }));
 
