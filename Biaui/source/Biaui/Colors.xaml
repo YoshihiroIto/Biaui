@@ -5,6 +5,7 @@
     <SolidColorBrush x:Key="AccentBrushKey" Color="#4A6DB5" />
     <SolidColorBrush x:Key="AccentBrushKey.IsMouseOver" Color="#537CCE" />
     <SolidColorBrush x:Key="AccentBrushKey.SliderRail" Color="#70537CCE" />
+    <SolidColorBrush x:Key="AccentBrushKey.Dark" Color="#303D56" />
 
     <SolidColorBrush x:Key="AccentForegroundBrushKey" Color="#D8D8D8" />
 
