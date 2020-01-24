@@ -196,8 +196,8 @@ namespace Biaui.Extension
 
             var sx = b1X - b2X;
             var sy = b1Y - b2Y;
-            var r = Math.Atan2(sy, sx) + Math.PI * 0.5;
-            var m = ((float) Math.Sin(r), (float) Math.Cos(r));
+            var r = MathF.Atan2(sy, sx) + MathF.PI * 0.5f;
+            var m = (MathF.Sin(r), MathF.Cos(r));
 
             var l1 = new ImmutableVec2_float(ArrowSize / 1.732f, ArrowSize / 1.732f * 2.0f);
             var l2 = new ImmutableVec2_float(-ArrowSize / 1.732f, ArrowSize / 1.732f * 2.0f);
