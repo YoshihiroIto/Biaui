@@ -22,11 +22,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BiaNodeEditorHelper.tt</DependentUpon>
     </None>
-    <None Include="Internals\BezierHelper.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BezierHelper.tt</DependentUpon>
-    </None>
     <None Include="Internals\ImmutableCircle.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -73,10 +68,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ImmutableVec2.cs</LastGenOutput>
     </None>
-    <None Update="Internals\BezierHelper.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BezierHelper.cs</LastGenOutput>
-    </None>
     <None Update="Internals\ImmutableRect.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ImmutableRect.cs</LastGenOutput>
@@ -96,11 +87,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>BiaNodeEditorHelper.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Internals\BezierHelper.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BezierHelper.tt</DependentUpon>
     </Compile>
     <Compile Update="Internals\ImmutableCircle.cs">
       <DesignTime>True</DesignTime>
