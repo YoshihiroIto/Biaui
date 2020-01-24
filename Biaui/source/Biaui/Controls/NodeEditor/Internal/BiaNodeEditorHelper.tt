@@ -170,7 +170,7 @@ foreach (var typeName in new[]{"float", "double"})
             var pt2 = t * t;
             var pt3 = pt2 * t;
 
-            return mt3 * x1 + (<#= typeName #>)3 * mt2 * t * x2 + (<#= typeName #>)3 * ((<#= typeName #>)1 - t) * pt2 * x3 + pt3 * x4;
+            return mt3 * x1 + (<#= typeName #>)3 * (mt2 * t * x2 + ((<#= typeName #>)1 - t) * pt2 * x3) + pt3 * x4;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

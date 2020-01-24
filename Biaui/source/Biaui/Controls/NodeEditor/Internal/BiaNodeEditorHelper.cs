@@ -162,7 +162,7 @@ namespace Biaui.Internals
             var pt2 = t * t;
             var pt3 = pt2 * t;
 
-            return mt3 * x1 + (float)3 * mt2 * t * x2 + (float)3 * ((float)1 - t) * pt2 * x3 + pt3 * x4;
+            return mt3 * x1 + (float)3 * (mt2 * t * x2 + ((float)1 - t) * pt2 * x3) + pt3 * x4;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -362,7 +362,7 @@ namespace Biaui.Internals
             var pt2 = t * t;
             var pt3 = pt2 * t;
 
-            return mt3 * x1 + (double)3 * mt2 * t * x2 + (double)3 * ((double)1 - t) * pt2 * x3 + pt3 * x4;
+            return mt3 * x1 + (double)3 * (mt2 * t * x2 + ((double)1 - t) * pt2 * x3) + pt3 * x4;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
