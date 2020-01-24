@@ -17,6 +17,7 @@ namespace Biaui.Internals
 <#
 foreach (var typeName in new[]{"float", "double"})
 {
+    var mathClass = typeName == "float" ? "MathF" : "Math";
 #>
     [DebuggerDisplay("X:{X}, Y:{Y}")]
     public readonly struct ImmutableVec2_<#= typeName #> : IEquatable<ImmutableVec2_<#= typeName #>>
@@ -24,7 +25,7 @@ foreach (var typeName in new[]{"float", "double"})
         public readonly <#= typeName #> X;
         public readonly <#= typeName #> Y;
 
-        public <#= typeName #> Length => (<#= typeName #>)Math.Sqrt(X * X + Y * Y);
+        public <#= typeName #> Length => <#= mathClass #>.Sqrt(X * X + Y * Y);
         public <#= typeName #> LengthSq => X * X + Y * Y;
 
         public static ImmutableVec2_<#= typeName #> Zero = new ImmutableVec2_<#= typeName #>();
@@ -78,7 +79,7 @@ foreach (var typeName in new[]{"float", "double"})
             if (NumberHelper.AreCloseZero(n))
                 return new ImmutableVec2_<#= typeName #>(0, 0);
 
-            var l = (<#= typeName #>)1 / (<#= typeName #>)Math.Sqrt(n);
+            var l = (<#= typeName #>)1 / <#= mathClass #>.Sqrt(n);
 
             return new ImmutableVec2_<#= typeName #>(size * v.X * l, size * v.Y * l);
         }

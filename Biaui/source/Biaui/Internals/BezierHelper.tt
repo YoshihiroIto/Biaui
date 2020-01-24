@@ -13,6 +13,7 @@ namespace Biaui.Internals
 <#
 foreach (var typeName in new[]{"float", "double"})
 {
+    var mathClass = typeName == "float" ? "MathF" : "Math";
 #>
     public static class BezierHelper_<#= typeName #>
     {
@@ -41,16 +42,16 @@ foreach (var typeName in new[]{"float", "double"})
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static <#= typeName #> Determinant(<#= typeName #> a, <#= typeName #> b, <#= typeName #> c)
-            => (<#= typeName #>)Math.Pow(b, (<#= typeName #>)2) - (<#= typeName #>)4 * a * c;
+            => <#= mathClass #>.Pow(b, (<#= typeName #>)2) - (<#= typeName #>)4 * a * c;
 
         // ReSharper disable InconsistentNaming
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static <#= typeName #> SolveP(<#= typeName #> a, <#= typeName #> b, <#= typeName #> c)
-            => (<#= typeName #>)(-b + (<#= typeName #>)Math.Sqrt(b * b - (<#= typeName #>)4 * a * c)) / ((<#= typeName #>)2 * a);
+            => (<#= typeName #>)(-b + <#= mathClass #>.Sqrt(b * b - (<#= typeName #>)4 * a * c)) / ((<#= typeName #>)2 * a);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static <#= typeName #> SolveM(<#= typeName #> a, <#= typeName #> b, <#= typeName #> c)
-            => (<#= typeName #>)(-b + (<#= typeName #>)Math.Sqrt(b * b - (<#= typeName #>)4 * a * c) * (<#= typeName #>)-1) / ((<#= typeName #>)2 * a);
+            => (<#= typeName #>)(-b + <#= mathClass #>.Sqrt(b * b - (<#= typeName #>)4 * a * c) * (<#= typeName #>)-1) / ((<#= typeName #>)2 * a);
 
         private static int Solve(Span<<#= typeName #>> result, <#= typeName #> a, <#= typeName #> b, <#= typeName #> c)
         {

@@ -34,16 +34,16 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float Determinant(float a, float b, float c)
-            => (float)Math.Pow(b, (float)2) - (float)4 * a * c;
+            => MathF.Pow(b, (float)2) - (float)4 * a * c;
 
         // ReSharper disable InconsistentNaming
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float SolveP(float a, float b, float c)
-            => (float)(-b + (float)Math.Sqrt(b * b - (float)4 * a * c)) / ((float)2 * a);
+            => (float)(-b + MathF.Sqrt(b * b - (float)4 * a * c)) / ((float)2 * a);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float SolveM(float a, float b, float c)
-            => (float)(-b + (float)Math.Sqrt(b * b - (float)4 * a * c) * (float)-1) / ((float)2 * a);
+            => (float)(-b + MathF.Sqrt(b * b - (float)4 * a * c) * (float)-1) / ((float)2 * a);
 
         private static int Solve(Span<float> result, float a, float b, float c)
         {
@@ -97,16 +97,16 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double Determinant(double a, double b, double c)
-            => (double)Math.Pow(b, (double)2) - (double)4 * a * c;
+            => Math.Pow(b, (double)2) - (double)4 * a * c;
 
         // ReSharper disable InconsistentNaming
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double SolveP(double a, double b, double c)
-            => (double)(-b + (double)Math.Sqrt(b * b - (double)4 * a * c)) / ((double)2 * a);
+            => (double)(-b + Math.Sqrt(b * b - (double)4 * a * c)) / ((double)2 * a);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double SolveM(double a, double b, double c)
-            => (double)(-b + (double)Math.Sqrt(b * b - (double)4 * a * c) * (double)-1) / ((double)2 * a);
+            => (double)(-b + Math.Sqrt(b * b - (double)4 * a * c) * (double)-1) / ((double)2 * a);
 
         private static int Solve(Span<double> result, double a, double b, double c)
         {

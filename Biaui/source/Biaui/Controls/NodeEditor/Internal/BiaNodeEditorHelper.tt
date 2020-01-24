@@ -16,6 +16,7 @@ namespace Biaui.Internals
 <#
 foreach (var typeName in new[]{"float", "double"})
 {
+    var mathClass = typeName == "float" ? "MathF" : "Math";
 #>
 
         private const <#= typeName #> ControlPointLength_<#= typeName #> = (<#= typeName #>)200;
@@ -203,7 +204,7 @@ foreach (var typeName in new[]{"float", "double"})
                 return 1;
             }
 
-            var sqrtD = (<#= typeName #>)Math.Sqrt(d);
+            var sqrtD = <#= mathClass #>.Sqrt(d);
 
             if (NumberHelper.AreCloseZero(d))
             {

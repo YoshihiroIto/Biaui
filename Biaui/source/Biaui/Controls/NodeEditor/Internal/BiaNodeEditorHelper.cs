@@ -196,7 +196,7 @@ namespace Biaui.Internals
                 return 1;
             }
 
-            var sqrtD = (float)Math.Sqrt(d);
+            var sqrtD = MathF.Sqrt(d);
 
             if (NumberHelper.AreCloseZero(d))
             {
@@ -396,7 +396,7 @@ namespace Biaui.Internals
                 return 1;
             }
 
-            var sqrtD = (double)Math.Sqrt(d);
+            var sqrtD = Math.Sqrt(d);
 
             if (NumberHelper.AreCloseZero(d))
             {

@@ -17,7 +17,7 @@ namespace Biaui.Internals
         public readonly float X;
         public readonly float Y;
 
-        public float Length => (float)Math.Sqrt(X * X + Y * Y);
+        public float Length => MathF.Sqrt(X * X + Y * Y);
         public float LengthSq => X * X + Y * Y;
 
         public static ImmutableVec2_float Zero = new ImmutableVec2_float();
@@ -71,7 +71,7 @@ namespace Biaui.Internals
             if (NumberHelper.AreCloseZero(n))
                 return new ImmutableVec2_float(0, 0);
 
-            var l = (float)1 / (float)Math.Sqrt(n);
+            var l = (float)1 / MathF.Sqrt(n);
 
             return new ImmutableVec2_float(size * v.X * l, size * v.Y * l);
         }
@@ -105,7 +105,7 @@ namespace Biaui.Internals
         public readonly double X;
         public readonly double Y;
 
-        public double Length => (double)Math.Sqrt(X * X + Y * Y);
+        public double Length => Math.Sqrt(X * X + Y * Y);
         public double LengthSq => X * X + Y * Y;
 
         public static ImmutableVec2_double Zero = new ImmutableVec2_double();
@@ -159,7 +159,7 @@ namespace Biaui.Internals
             if (NumberHelper.AreCloseZero(n))
                 return new ImmutableVec2_double(0, 0);
 
-            var l = (double)1 / (double)Math.Sqrt(n);
+            var l = (double)1 / Math.Sqrt(n);
 
             return new ImmutableVec2_double(size * v.X * l, size * v.Y * l);
         }
