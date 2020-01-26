@@ -7,6 +7,24 @@
     <RootNamespace>Biaui</RootNamespace>
 
     <Nullable>enable</Nullable>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <Title>WPF dark theme and controls for .NET Core 3.1.</Title>
+
+    <Authors>Yoshihiro Ito</Authors>
+
+    <Copyright>Copyright (c) 2019 copyright Yoshihiro Ito (yo.i.jewelry.bab@gmail.com)</Copyright>
+
+    <PackageProjectUrl>https://github.com/YoshihiroIto/Biaui</PackageProjectUrl>
+
+    <PackageLicenseUrl></PackageLicenseUrl>
+
+    <RepositoryUrl>https://github.com/YoshihiroIto/Biaui</RepositoryUrl>
+
+    <PackageTags>wpf dark-theme dark ui theme csharp dotnet wpf-dark-theme </PackageTags>
+
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +32,10 @@
     <None Remove="Assets\Fonts\RictyDiminished-Regular.ttf" />
     <None Remove="Controls\Effects\HsvBoxBackgroundEffect.ps" />
     <None Remove="Controls\Effects\HsvWheelBackgroundEffect.ps" />
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
