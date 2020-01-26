@@ -31,15 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Biaui" Version="1.0.0" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
     <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Biaui\Biaui.csproj" />
   </ItemGroup>
 
   <ItemGroup>
