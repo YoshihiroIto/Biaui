@@ -25,6 +25,8 @@
     <PackageTags>wpf dark-theme dark ui theme csharp dotnet wpf-dark-theme </PackageTags>
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+
+    <PackageVersion>1.0.1</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
