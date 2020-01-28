@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using BenchmarkDotNet.Attributes;
 using Biaui.Internals;
 
@@ -10,17 +8,17 @@ namespace Biaui.Benchmark
     [MemoryDiagnoser]
     public class BiaNodeEditorHelperTest
     {
-        public ImmutableVec2_float[] _data;
+        public ImmutableVec2_float[]? Data;
 
         [GlobalSetup]
         public void Setup()
         {
             var r = new Random();
             
-            _data = new ImmutableVec2_float[4 * 1000000];
+            Data = new ImmutableVec2_float[4 * 1000000];
 
-            for (var i = 0; i != _data.Length; ++i)
-                _data[i] = new ImmutableVec2_float((float) r.NextDouble(), (float) r.NextDouble());
+            for (var i = 0; i != Data.Length; ++i)
+                Data[i] = new ImmutableVec2_float((float) r.NextDouble(), (float) r.NextDouble());
         }
 
         [Benchmark(Baseline = true)]
@@ -29,9 +27,9 @@ namespace Biaui.Benchmark
             var x = 0.0f;
             var y = 0.0f;
 
-            for (var i = 0; i < _data.Length; i += 4)
+            for (var i = 0; i < Data!.Length; i += 4)
             {
-                var r = BiaNodeEditorHelper.MakeBoundingBox(_data[i + 0], _data[i + 1], _data[i + 2], _data[i + 3]);
+                var r = BiaNodeEditorHelper.MakeBoundingBox(Data[i + 0], Data[i + 1], Data[i + 2], Data[i + 3]);
 
                 x += r.X + r.Width;
                 y += r.Y + r.Height;
@@ -46,9 +44,9 @@ namespace Biaui.Benchmark
             var x = 0.0f;
             var y = 0.0f;
 
-            for (var i = 0; i < _data.Length; i += 4)
+            for (var i = 0; i < Data!.Length; i += 4)
             {
-                var r = BiaNodeEditorHelper.MakeBoundingBox(_data.AsSpan(i, 4));
+                var r = BiaNodeEditorHelper.MakeBoundingBox(Data.AsSpan(i, 4));
 
                 x += r.X + r.Width;
                 y += r.Y + r.Height;
