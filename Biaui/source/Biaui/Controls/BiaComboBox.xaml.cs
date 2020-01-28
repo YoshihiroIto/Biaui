@@ -356,6 +356,39 @@ namespace Biaui.Controls
                     }));
 
         #endregion
+        
+
+        #region TextTrimming
+
+        public TextTrimmingMode TextTrimming
+        {
+            get => _TextTrimming;
+            set
+            {
+                if (value != _TextTrimming)
+                    SetValue(TextTrimmingProperty, value);
+            }
+        }
+
+        private TextTrimmingMode _TextTrimming = TextTrimmingMode.Standard;
+
+        public static readonly DependencyProperty TextTrimmingProperty =
+            DependencyProperty.Register(
+                nameof(TextTrimming),
+                typeof(TextTrimmingMode),
+                typeof(BiaComboBox),
+                new FrameworkPropertyMetadata(
+                    Boxes.TextTrimmingModeStandard,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaComboBox) s;
+                        self._TextTrimming = (TextTrimmingMode) e.NewValue;
+                    }));
+
+        #endregion
 
         static BiaComboBox()
         {
@@ -390,8 +423,8 @@ namespace Biaui.Controls
                             Foreground,
                             dc,
                             (1.0, ActualWidth - 32).Max(), // ▼分の幅を引く
-                            TextAlignment.Left
-                        );
+                            TextAlignment.Left,
+                            TextTrimming);
             }
             if (isCornerRadiusZero == false)
                 dc.Pop();

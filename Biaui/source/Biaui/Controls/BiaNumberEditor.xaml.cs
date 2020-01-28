@@ -620,6 +620,38 @@ namespace Biaui.Controls
                     }));
 
         #endregion
+        
+        #region TextTrimming
+
+        public TextTrimmingMode TextTrimming
+        {
+            get => _TextTrimming;
+            set
+            {
+                if (value != _TextTrimming)
+                    SetValue(TextTrimmingProperty, value);
+            }
+        }
+
+        private TextTrimmingMode _TextTrimming = TextTrimmingMode.Standard;
+
+        public static readonly DependencyProperty TextTrimmingProperty =
+            DependencyProperty.Register(
+                nameof(TextTrimming),
+                typeof(TextTrimmingMode),
+                typeof(BiaNumberEditor),
+                new FrameworkPropertyMetadata(
+                    Boxes.TextTrimmingModeStandard,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._TextTrimming = (TextTrimmingMode) e.NewValue;
+                    }));
+
+        #endregion
 
         public event EventHandler? ValueChanged;
 
@@ -741,8 +773,8 @@ namespace Biaui.Controls
                     CaptionForeground,
                     dc,
                     ActualWidth - Padding.Left - Padding.Right,
-                    TextAlignment.Left
-                );
+                    TextAlignment.Left,
+                    TextTrimming);
 
             if (UiValueString != null &&
                 Foreground != null)
@@ -754,8 +786,8 @@ namespace Biaui.Controls
                     Foreground,
                     dc,
                     ActualWidth - Padding.Left - Padding.Right - SpinWidth,
-                    TextAlignment.Right
-                );
+                    TextAlignment.Right,
+                    TextTrimming);
         }
 
         private static readonly Brush? _moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;

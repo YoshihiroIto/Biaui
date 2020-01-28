@@ -37,6 +37,38 @@ namespace Biaui.Controls
 
         #endregion
 
+        #region TextTrimming
+
+        public TextTrimmingMode TextTrimming
+        {
+            get => _TextTrimming;
+            set
+            {
+                if (value != _TextTrimming)
+                    SetValue(TextTrimmingProperty, value);
+            }
+        }
+
+        private TextTrimmingMode _TextTrimming = TextTrimmingMode.Standard;
+
+        public static readonly DependencyProperty TextTrimmingProperty =
+            DependencyProperty.Register(
+                nameof(TextTrimming),
+                typeof(TextTrimmingMode),
+                typeof(BiaButton),
+                new FrameworkPropertyMetadata(
+                    Boxes.TextTrimmingModeStandard,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaButton) s;
+                        self._TextTrimming = (TextTrimmingMode) e.NewValue;
+                    }));
+
+        #endregion
+
         static BiaButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaButton),
@@ -78,7 +110,8 @@ namespace Biaui.Controls
                         Foreground,
                         dc,
                         ActualWidth - Constants.ButtonPaddingX * 2.0,
-                        TextAlignment.Center);
+                        TextAlignment.Center,
+                        TextTrimming);
         }
 
         private double _textWidth;
@@ -96,7 +129,9 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            var w = Content == null ? 0.0 : TextRenderer.Default.CalcWidth(Content);
+            var w = Content == null
+                ? 0.0
+                : TextRenderer.Default.CalcWidth(Content);
 
             _textWidth = Math.Ceiling(Constants.ButtonPaddingX + w + Constants.ButtonPaddingX);
         }

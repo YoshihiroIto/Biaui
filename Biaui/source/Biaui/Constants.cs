@@ -51,4 +51,11 @@ namespace Biaui
 		Maximize,
 		Minimize
     }
+    
+    public enum TextTrimmingMode
+    {
+        None,
+        Standard,
+        Filepath
+    }
 }

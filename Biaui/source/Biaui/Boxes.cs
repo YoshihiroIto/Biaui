@@ -122,6 +122,10 @@ namespace Biaui
 
         public static readonly object ToggleButtonBehaviorNormal = BiaToggleButtonBehavior.Normal;
         public static readonly object ToggleButtonBehaviorRadioButton = BiaToggleButtonBehavior.RadioButton;
+
+        public static readonly object TextTrimmingModeNone = TextTrimmingMode.None;
+        public static readonly object TextTrimmingModeStandard = TextTrimmingMode.Standard;
+        public static readonly object TextTrimmingModeFilepath = TextTrimmingMode.Filepath;
         // ReSharper restore InconsistentNaming
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -247,6 +251,18 @@ namespace Biaui
                 System.Windows.Visibility.Visible => VisibilityVisible,
                 System.Windows.Visibility.Hidden => VisibilityHidden,
                 System.Windows.Visibility.Collapsed => VisibilityCollapsed,
+                _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static object TextTrimming(TextTrimmingMode v)
+        {
+            return v switch
+            {
+                TextTrimmingMode.None => TextTrimmingModeNone,
+                TextTrimmingMode.Standard => TextTrimmingModeStandard,
+                TextTrimmingMode.Filepath => TextTrimmingModeFilepath,
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }

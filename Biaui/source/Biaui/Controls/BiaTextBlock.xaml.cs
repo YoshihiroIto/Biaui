@@ -64,6 +64,38 @@ namespace Biaui.Controls
                     }));
 
         #endregion
+        
+        #region TextTrimming
+
+        public TextTrimmingMode TextTrimming
+        {
+            get => _TextTrimming;
+            set
+            {
+                if (value != _TextTrimming)
+                    SetValue(TextTrimmingProperty, value);
+            }
+        }
+
+        private TextTrimmingMode _TextTrimming = TextTrimmingMode.Standard;
+
+        public static readonly DependencyProperty TextTrimmingProperty =
+            DependencyProperty.Register(
+                nameof(TextTrimming),
+                typeof(TextTrimmingMode),
+                typeof(BiaTextBlock),
+                new FrameworkPropertyMetadata(
+                    Boxes.TextTrimmingModeStandard,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaTextBlock) s;
+                        self._TextTrimming = (TextTrimmingMode) e.NewValue;
+                    }));
+
+        #endregion
 
         static BiaTextBlock()
         {
@@ -89,8 +121,8 @@ namespace Biaui.Controls
                     Foreground,
                     dc,
                     ActualWidth,
-                    TextAlignment.Left
-                );
+                    TextAlignment.Left,
+                    TextTrimming);
         }
 
         private double _textWidth;

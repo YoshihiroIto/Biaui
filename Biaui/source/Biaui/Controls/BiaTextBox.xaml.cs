@@ -235,6 +235,38 @@ namespace Biaui.Controls
                     }));
 
         #endregion
+        
+        #region TextTrimming
+
+        public TextTrimmingMode TextTrimming
+        {
+            get => _TextTrimming;
+            set
+            {
+                if (value != _TextTrimming)
+                    SetValue(TextTrimmingProperty, value);
+            }
+        }
+
+        private TextTrimmingMode _TextTrimming = TextTrimmingMode.Standard;
+
+        public static readonly DependencyProperty TextTrimmingProperty =
+            DependencyProperty.Register(
+                nameof(TextTrimming),
+                typeof(TextTrimmingMode),
+                typeof(BiaTextBox),
+                new FrameworkPropertyMetadata(
+                    Boxes.TextTrimmingModeStandard,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaTextBox) s;
+                        self._TextTrimming = (TextTrimmingMode) e.NewValue;
+                    }));
+
+        #endregion
 
         static BiaTextBox()
         {
@@ -271,8 +303,8 @@ namespace Biaui.Controls
                         WatermarkForeground,
                         dc,
                         (1.0, ActualWidth - 9).Max(),
-                        TextAlignment.Left
-                    );
+                        TextAlignment.Left,
+                        TextTrimming);
 
                 if (TargetText != null &&
                     Foreground != null)
@@ -283,9 +315,10 @@ namespace Biaui.Controls
                         Foreground,
                         dc,
                         (1.0, ActualWidth - 9).Max(),
-                        TextAlignment.Left
-                    );
+                        TextAlignment.Left,
+                        TextTrimming);
             }
+            
             if (isCornerRadiusZero == false)
                 dc.Pop();
         }

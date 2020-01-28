@@ -189,8 +189,8 @@ namespace Biaui.Controls
                 brush,
                 dc,
                 ActualWidth - x,
-                TextAlignment.Left
-            );
+                TextAlignment.Left,
+                TextTrimming);
 
             return x + w;
         }
