@@ -55,7 +55,7 @@ WPF dark theme and controls for .NET Core 3.1.
     - Change ```<Window``` to ```<controls:BiaWindow```
     - Change ```</Window>``` to ```</controls:BiaWindow>```
 
-```
+```xml
 <controls:BiaWindow x:Class="first_biaui.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -74,7 +74,7 @@ WPF dark theme and controls for .NET Core 3.1.
 - Open MainWindow.xaml.cs
     - Remove ```: Window```
 
-```
+```C#
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,7 +105,7 @@ namespace first_biaui
 }
 ```
 
-### Run
+### Step4. Build and Run
 ```
 > dotnet run
 ```
