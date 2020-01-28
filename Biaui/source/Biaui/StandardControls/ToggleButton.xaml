@@ -96,7 +96,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="BacklessToggleButton"
+    <Style x:Key="BacklessToggleButtonStyle"
            BasedOn="{StaticResource SharpToggleButtonStyle}"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="Background" Value="Transparent" />

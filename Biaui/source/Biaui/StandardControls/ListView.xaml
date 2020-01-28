@@ -53,7 +53,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
+    <Style x:Key="GridViewColumnHeaderGripperStyle" TargetType="Thumb">
         <Setter Property="Width" Value="18" />
         <Setter Property="Template">
             <Setter.Value>
@@ -87,7 +87,7 @@
                         <Thumb x:Name="PART_HeaderGripper"
                                Margin="0,0,-9,0"
                                HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"
-                               Style="{DynamicResource GridViewColumnHeaderGripper}" />
+                               Style="{DynamicResource GridViewColumnHeaderGripperStyle}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

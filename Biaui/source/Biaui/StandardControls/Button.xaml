@@ -73,7 +73,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="BacklessButton"
+    <Style x:Key="BacklessButtonStyle"
            BasedOn="{StaticResource SharpButtonStyle}"
            TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />

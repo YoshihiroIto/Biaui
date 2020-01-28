@@ -3,7 +3,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:standardControls="clr-namespace:Biaui.StandardControls">
-    <Style x:Key="ScrollBarTrackThumb" TargetType="{x:Type Thumb}">
+    <Style x:Key="ScrollBarTrackThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
@@ -47,7 +47,7 @@
                             <Track.Thumb>
                                 <Thumb x:Name="Thumb"
                                        Background="{TemplateBinding Foreground}"
-                                       Style="{StaticResource ScrollBarTrackThumb}" />
+                                       Style="{StaticResource ScrollBarTrackThumbStyle}" />
                             </Track.Thumb>
                         </Track>
                     </Border>
@@ -95,7 +95,7 @@
                             <Track.Thumb>
                                 <Thumb x:Name="Thumb"
                                        Background="{TemplateBinding Foreground}"
-                                       Style="{StaticResource ScrollBarTrackThumb}" />
+                                       Style="{StaticResource ScrollBarTrackThumbStyle}" />
                             </Track.Thumb>
                         </Track>
                     </Border>
@@ -153,7 +153,7 @@
                             <Track.Thumb>
                                 <Thumb x:Name="Thumb"
                                        Background="{TemplateBinding Foreground}"
-                                       Style="{StaticResource ScrollBarTrackThumb}" />
+                                       Style="{StaticResource ScrollBarTrackThumbStyle}" />
                             </Track.Thumb>
 
                             <Track.IncreaseRepeatButton>

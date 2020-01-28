@@ -190,7 +190,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="TabItem.FocusVisual">
+    <Style x:Key="TabItemFocusVisualStyle">
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -281,7 +281,7 @@
     </Style>
 
     <Style TargetType="{x:Type TabItem}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource TabItem.FocusVisual}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusVisualStyle}" />
         <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrushKey}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrushKey}" />
         <Setter Property="Margin" Value="{x:Static biaui:Boxes.Thickness0}" />
