@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Biaui
 {
@@ -164,7 +166,7 @@ namespace Biaui
 
             return ix ^ color.HashCode;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long Make(ByteColor color, bool i)
         {
@@ -173,6 +175,70 @@ namespace Biaui
             var ii = (long) Unsafe.As<bool, byte>(ref i);
 
             return ii ^ color.HashCode;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static long Make(ReadOnlySpan<char> x)
+            => Make(MemoryMarshal.Cast<char, byte>(x));
+
+        public static long Make(ReadOnlySpan<byte> x)
+        {
+            unchecked
+            {
+                long hashCode = 0;
+
+                var i8Span = MemoryMarshal.Cast<byte, long>(x);
+
+                foreach (var v in i8Span)
+                    hashCode = (hashCode * 397) ^ v;
+                
+                var remainingLength = x.Length & 7;
+
+                var i1Span = x.Slice(x.Length - remainingLength, remainingLength);
+                var i2Span = MemoryMarshal.Cast<byte, ushort>(i1Span);
+                var i4Span = MemoryMarshal.Cast<byte, uint>(i1Span);
+
+                switch (remainingLength)
+                {
+                    case 0:
+                        break;
+                    
+                    case 1:
+                        hashCode = (hashCode * 397) ^ i1Span[0];
+                        break;
+                    
+                    case 2:
+                        hashCode = (hashCode * 397) ^ i2Span[0];
+                        break;
+                    
+                    case 3:
+                        hashCode = (hashCode * 397) ^ i2Span[0];
+                        hashCode = (hashCode * 397) ^ i1Span[2];
+                        break;
+                    
+                    case 4:
+                        hashCode = (hashCode * 397) ^ i4Span[0];
+                        break;
+                    
+                    case 5:
+                        hashCode = (hashCode * 397) ^ i4Span[0];
+                        hashCode = (hashCode * 397) ^ i1Span[4];
+                        break;
+                    
+                    case 6:
+                        hashCode = (hashCode * 397) ^ i4Span[0];
+                        hashCode = (hashCode * 397) ^ i2Span[2];
+                        break;
+                    
+                    case 7:
+                        hashCode = (hashCode * 397) ^ i4Span[0];
+                        hashCode = (hashCode * 397) ^ i2Span[2];
+                        hashCode = (hashCode * 397) ^ i1Span[6];
+                        break;
+                }
+
+                return hashCode;
+            }
         }
     }
 }

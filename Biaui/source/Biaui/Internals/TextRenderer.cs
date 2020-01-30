@@ -86,40 +86,9 @@ namespace Biaui.Internals
 #endif
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal double Draw(
             Visual visual,
-            string text,
-            double x,
-            double y,
-            Brush brush,
-            DrawingContext dc,
-            double maxWidth,
-            TextAlignment align,
-            TextTrimmingMode trimming)
-        {
-            if (string.IsNullOrEmpty(text))
-                return 0;
-
-            return Draw(
-                visual,
-                text,
-                0,
-                text.Length,
-                x,
-                y,
-                brush,
-                dc,
-                maxWidth,
-                align,
-                trimming);
-        }
-
-        internal double Draw(
-            Visual visual,
-            string text,
-            int textStartIndex,
-            int textLength,
+            ReadOnlySpan<char> text,
             double x,
             double y,
             Brush brush,
@@ -131,11 +100,8 @@ namespace Biaui.Internals
             if (NumberHelper.AreCloseZero(_fontSize))
                 return 0;
 
-            if (text == "")
+            if (text.Length == 0)
                 return 0;
-
-            if (string.IsNullOrWhiteSpace(text))
-                return CalcWidth(text);
 
             maxWidth = Math.Ceiling(maxWidth);
 
@@ -144,9 +110,9 @@ namespace Biaui.Internals
 
             var gr = trimming switch
             {
-                TextTrimmingMode.None => MakeGlyphRunNone(visual, text, textStartIndex, textLength, maxWidth),
-                TextTrimmingMode.Standard => MakeGlyphRunStandard(visual, text, textStartIndex, textLength, maxWidth),
-                TextTrimmingMode.Filepath => MakeGlyphRunFilepath(visual, text, textStartIndex, textLength, maxWidth),
+                TextTrimmingMode.None => MakeGlyphRunNone(visual, text, maxWidth),
+                TextTrimmingMode.Standard => MakeGlyphRunStandard(visual, text, maxWidth),
+                TextTrimmingMode.Filepath => MakeGlyphRunFilepath(visual, text, maxWidth),
                 _ => throw new ArgumentOutOfRangeException(nameof(trimming), trimming, null)
             };
 
@@ -192,23 +158,25 @@ namespace Biaui.Internals
             return gr.Width;
         }
 
-        internal double CalcWidth(string text)
+        internal double CalcWidth(ReadOnlySpan<char> text)
         {
             if (NumberHelper.AreCloseZero(_fontSize))
                 return 0;
 
-            if (string.IsNullOrEmpty(text))
+            if (text.Length == 0)
                 return 0;
 
-            if (_textWidthCache.TryGetValue(text, out var textWidth))
+            var textHashCode = HashCodeMaker.Make(text);
+
+            if (_textWidthCache.TryGetValue(textHashCode, out var textWidth))
                 return textWidth;
 
             if (_isDefault)
             {
                 var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
 
-                for (var i = 0; i != text.Length; ++i)
-                    textWidth += defaultAdvanceWidthTable[text[i]];
+                foreach (var c in text)
+                    textWidth += defaultAdvanceWidthTable[c];
             }
             else
             {
@@ -216,38 +184,33 @@ namespace Biaui.Internals
                 Debug.Assert(_toGlyphMap != null);
                 Debug.Assert(_advanceWidthsDict != null);
 
-                for (var i = 0; i != text.Length; ++i)
+                foreach (var c in text)
                 {
-                    if (_glyphDataCache.TryGetValue(text[i], out var data) == false)
+                    if (_glyphDataCache.TryGetValue(c, out var data) == false)
                     {
-                        if (_toGlyphMap.TryGetValue(text[i], out data.GlyphIndex) == false)
+                        if (_toGlyphMap.TryGetValue(c, out data.GlyphIndex) == false)
                             _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
 
                         data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
 
-                        _glyphDataCache.Add(text[i], data);
+                        _glyphDataCache.Add(c, data);
                     }
 
                     textWidth += data.AdvanceWidth;
                 }
             }
 
-            _textWidthCache.Add(text, textWidth);
+            _textWidthCache.Add(textHashCode, textWidth);
 
             return textWidth;
         }
 
         internal double FontHeight => _fontLineSpacing * _fontSize;
 
-        private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(
-            Visual visual,
-            string text,
-            int textStartIndex,
-            int textLength,
-            double maxWidth)
+        private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth)
         {
-            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(textLength);
-            var advanceWidths = ArrayPool<double>.Shared.Rent(textLength);
+            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(text.Length);
+            var advanceWidths = ArrayPool<double>.Shared.Rent(text.Length);
 
             try
             {
@@ -258,9 +221,9 @@ namespace Biaui.Internals
                     var defaultGlyphIndexTable = GetDefaultGlyphIndexTable();
                     var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
 
-                    for (var i = 0; i != textLength; ++i)
+                    for (var i = 0; i != text.Length; ++i)
                     {
-                        var targetChar = text[textStartIndex + i];
+                        var targetChar = text[i];
 
                         var oldTextWidth = textWidth;
 
@@ -309,13 +272,14 @@ namespace Biaui.Internals
 
                 var dpi = visual.PixelsPerDip();
 
-                var textKey = MakeHashCode(text, textStartIndex, textLength, textWidth, dpi, TextTrimmingMode.None);
+                var textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.None);
 
                 if (_textCache.TryGetValue(textKey, out var gr))
                     return gr;
 
-                if (isTrimmed)
-                    textLength = newCount;
+                var textLength = isTrimmed
+                    ? newCount
+                    : text.Length;
 
                 var newGlyphIndexes = new ushort[textLength];
                 var newAdvanceWidths = new double[textLength];
@@ -346,16 +310,11 @@ namespace Biaui.Internals
             }
         }
 
-        private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(
-            Visual visual,
-            string text,
-            int textStartIndex,
-            int textLength,
-            double maxWidth)
+        private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth)
         {
             // ※ +3 「...」 が増えることがあるためのバッファ
-            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(textLength + 3);
-            var advanceWidths = ArrayPool<double>.Shared.Rent(textLength + 3);
+            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(text.Length + 3);
+            var advanceWidths = ArrayPool<double>.Shared.Rent(text.Length + 3);
 
             try
             {
@@ -366,9 +325,9 @@ namespace Biaui.Internals
                     var defaultGlyphIndexTable = GetDefaultGlyphIndexTable();
                     var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
 
-                    for (var i = 0; i != textLength; ++i)
+                    for (var i = 0; i != text.Length; ++i)
                     {
-                        var targetChar = text[textStartIndex + i];
+                        var targetChar = text[i];
 
                         if (_isDefault)
                         {
@@ -412,13 +371,14 @@ namespace Biaui.Internals
 
                 var dpi = visual.PixelsPerDip();
 
-                var textKey = MakeHashCode(text, textStartIndex, textLength, textWidth, dpi, TextTrimmingMode.Standard);
+                var textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.Standard);
 
                 if (_textCache.TryGetValue(textKey, out var gr))
                     return gr;
 
-                if (isTrimmed)
-                    textLength = newCount;
+                var textLength = isTrimmed
+                    ? newCount
+                    : text.Length;
 
                 var newGlyphIndexes = new ushort[textLength];
                 var newAdvanceWidths = new double[textLength];
@@ -458,7 +418,7 @@ namespace Biaui.Internals
         {
             Debug.Assert(textWidth > maxWidth);
 
-            // 文字列に ... を加える文を考慮して削る文字数を求める
+            // 文字列に ... を加える分を考慮して削る文字数を求める
             var dot3Width = _dotAdvanceWidth * 3.0;
 
             var removeCount = 1;
@@ -490,67 +450,85 @@ namespace Biaui.Internals
             return (newTextWidth + dot3Width, newCount);
         }
 
-        private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(
-            Visual visual,
-            string text,
-            int textStartIndex,
-            int textLength,
-            double maxWidth)
+        private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(Visual visual, ReadOnlySpan<char> text, double maxWidth)
         {
-            text = text.Substring(textStartIndex, textLength);
+            var buffer = ArrayPool<char>.Shared.Rent(text.Length);
 
-            if (CalcWidth(text) > maxWidth)
-                text = TrimmingFilepathText(text, maxWidth);
+            try
+            {
+                if (CalcWidth(text) > maxWidth)
+                    text = TrimmingFilepathText(text, maxWidth, buffer);
 
-            return MakeGlyphRunStandard(visual, text, 0, text.Length, maxWidth);
+                return MakeGlyphRunStandard(visual, text, maxWidth);
+            }
+            finally
+            {
+                ArrayPool<char>.Shared.Return(buffer);
+            }
         }
 
-        private string TrimmingFilepathText(string text, double maxWidth)
+        private ReadOnlySpan<char> TrimmingFilepathText(ReadOnlySpan<char> text, double maxWidth, char[] buffer)
         {
             // ref: https://www.codeproject.com/Tips/467054/WPF-PathTrimmingTextBlock
 
             bool widthOk;
             var filename = Path.GetFileName(text);
-            var directory = Path.GetDirectoryName(text) ?? "";
+            var directory = Path.GetDirectoryName(text);
 
             var changedWidth = false;
 
+            ReadOnlySpan<char> sepSpan = "...\\";
+
+            var sepWidth = CalcWidth(sepSpan);
+            var filepathWidth = CalcWidth(filename);
+
             do
             {
-                var path = directory + "...\\" + filename;
-                var pathWidth = CalcWidth(path);
+                var directoryWidth = CalcWidth(directory);
+                var pathWidth = directoryWidth + sepWidth + filepathWidth;
 
                 widthOk = pathWidth < maxWidth;
 
                 if (widthOk == false)
                 {
                     changedWidth = true;
-                    directory = directory.Substring(0, directory.Length - 1);
+                    directory = directory.Slice(0, directory.Length - 1);
+
                     if (directory.Length == 0)
-                        return "...\\" + filename;
+                    {
+                        // "...\\" + new string(filename);
+                        sepSpan.CopyTo(buffer);
+                        filename.CopyTo(buffer.AsSpan(sepSpan.Length));
+
+                        return buffer.AsSpan(0, sepSpan.Length + filename.Length);
+                    }
                 }
             } while (widthOk == false);
 
-            return changedWidth
-                ? directory + "...\\" + filename 
-                : text;
+            if (changedWidth)
+            {
+                // new string(directory) + "...\\" + new string(filename);
+                directory.CopyTo(buffer);
+                sepSpan.CopyTo(buffer.AsSpan(directory.Length));
+                filename.CopyTo(buffer.AsSpan(directory.Length + sepSpan.Length));
+
+                return buffer.AsSpan(0, directory.Length + sepSpan.Length + filename.Length);
+            }
+            else
+                return text;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static long MakeHashCode(
-            string text,
-            int textStartIndex,
-            int textLength,
+            ReadOnlySpan<char> text,
             double textWidth,
             double dpi,
             TextTrimmingMode textTrimming)
         {
             unchecked
             {
-                var hashCode = (long) text.GetHashCode();
+                var hashCode = HashCodeMaker.Make(text);
 
-                hashCode = (hashCode * 397) ^ textStartIndex;
-                hashCode = (hashCode * 397) ^ textLength;
                 hashCode = (hashCode * 397) ^ (long) textTrimming;
 
                 return (hashCode * 397) ^ HashCodeMaker.Make(textWidth, dpi);
@@ -558,7 +536,7 @@ namespace Biaui.Internals
         }
 
         private readonly LruCache<long, (GlyphRun, double)> _textCache = new LruCache<long, (GlyphRun, double)>(10_0000, false);
-        private readonly LruCache<string, double> _textWidthCache = new LruCache<string, double>(10_1000, false);
+        private readonly LruCache<long, double> _textWidthCache = new LruCache<long, double>(10_1000, false);
 
         private readonly LruCache<long, TranslateTransform> _translateCache = new LruCache<long, TranslateTransform>(1000, false);
 

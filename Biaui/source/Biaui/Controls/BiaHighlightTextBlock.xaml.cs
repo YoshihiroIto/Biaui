@@ -182,9 +182,7 @@ namespace Biaui.Controls
 
             var w = TextRenderer.Default.Draw(
                 this,
-                text,
-                startIndex,
-                length,
+                text.AsSpan(startIndex, length),
                 x, 0,
                 brush,
                 dc,
