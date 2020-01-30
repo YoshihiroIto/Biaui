@@ -502,7 +502,7 @@ namespace Biaui.Internals
             if (CalcWidth(text) > maxWidth)
                 text = TrimmingFilepathText(text, maxWidth);
 
-            return MakeGlyphRunNone(visual, text, 0, text.Length, maxWidth);
+            return MakeGlyphRunStandard(visual, text, 0, text.Length, maxWidth);
         }
 
         private string TrimmingFilepathText(string text, double maxWidth)
