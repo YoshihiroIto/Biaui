@@ -191,49 +191,48 @@ namespace Biaui
 
                 foreach (var v in i8Span)
                     hashCode = (hashCode * 397) ^ v;
-                
+
                 var remainingLength = x.Length & 7;
 
                 var i1Span = x.Slice(x.Length - remainingLength, remainingLength);
-                var i2Span = MemoryMarshal.Cast<byte, ushort>(i1Span);
-                var i4Span = MemoryMarshal.Cast<byte, uint>(i1Span);
+                ref var i1Ref = ref MemoryMarshal.GetReference(i1Span);
 
                 switch (remainingLength)
                 {
                     case 0:
                         break;
-                    
+
                     case 1:
-                        hashCode = (hashCode * 397) ^ i1Span[0];
+                        hashCode = (hashCode * 397) ^ i1Ref;
                         break;
-                    
+
                     case 2:
-                        hashCode = (hashCode * 397) ^ i2Span[0];
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<ushort>(ref i1Ref);
                         break;
-                    
+
                     case 3:
-                        hashCode = (hashCode * 397) ^ i2Span[0];
-                        hashCode = (hashCode * 397) ^ i1Span[2];
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<ushort>(ref i1Ref);
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<byte>(ref Unsafe.AddByteOffset(ref i1Ref, (IntPtr) 2));
                         break;
-                    
+
                     case 4:
-                        hashCode = (hashCode * 397) ^ i4Span[0];
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<uint>(ref i1Ref);
                         break;
-                    
+
                     case 5:
-                        hashCode = (hashCode * 397) ^ i4Span[0];
-                        hashCode = (hashCode * 397) ^ i1Span[4];
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<uint>(ref i1Ref);
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<byte>(ref Unsafe.AddByteOffset(ref i1Ref, (IntPtr) 4));
                         break;
-                    
+
                     case 6:
-                        hashCode = (hashCode * 397) ^ i4Span[0];
-                        hashCode = (hashCode * 397) ^ i2Span[2];
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<uint>(ref i1Ref);
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<ushort>(ref Unsafe.AddByteOffset(ref i1Ref, (IntPtr) 4));
                         break;
-                    
+
                     case 7:
-                        hashCode = (hashCode * 397) ^ i4Span[0];
-                        hashCode = (hashCode * 397) ^ i2Span[2];
-                        hashCode = (hashCode * 397) ^ i1Span[6];
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<uint>(ref i1Ref);
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<ushort>(ref Unsafe.AddByteOffset(ref i1Ref, (IntPtr) 4));
+                        hashCode = (hashCode * 397) ^ Unsafe.ReadUnaligned<byte>(ref Unsafe.AddByteOffset(ref i1Ref, (IntPtr) 6));
                         break;
                 }
 
