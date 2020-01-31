@@ -16,7 +16,7 @@ namespace Biaui.Internals
     internal partial class TextRenderer
     {
         internal static readonly TextRenderer Default;
-
+        
         static TextRenderer()
         {
             var fontFamily = (FontFamily) Application.Current.FindResource("BiauiFontFamily");
@@ -63,8 +63,14 @@ namespace Biaui.Internals
             {
                 _fontLineSpacing = DefaultFontLineSpacing;
 
-                _dotGlyphIndex = GetDefaultGlyphIndexTable()['.'];
-                _dotAdvanceWidth = GetDefaultAdvanceWidthTable()['.'];
+                ref var defaultGlyphIndexTableRef = ref GetDefaultGlyphIndexTable();
+                ref var defaultAdvanceWidthTableRef = ref GetDefaultAdvanceWidthTable();
+
+                ref var glyphIndexRef = ref Unsafe.AddByteOffset(ref defaultGlyphIndexTableRef, (IntPtr) ('.' * Unsafe.SizeOf<ushort>()));
+                ref var advanceWidthRef = ref Unsafe.AddByteOffset(ref defaultAdvanceWidthTableRef, (IntPtr) ('.' * Unsafe.SizeOf<double>()));
+
+                _dotGlyphIndex = Unsafe.ReadUnaligned<ushort>(ref glyphIndexRef);
+                _dotAdvanceWidth = Unsafe.ReadUnaligned<double>(ref advanceWidthRef);
             }
             else
             {
@@ -173,10 +179,14 @@ namespace Biaui.Internals
 
             if (_isDefault)
             {
-                var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
+                ref var defaultAdvanceWidthTableRef = ref GetDefaultAdvanceWidthTable();
 
                 foreach (var c in text)
-                    textWidth += defaultAdvanceWidthTable[c];
+                {
+                    ref var advanceWidthRef = ref Unsafe.AddByteOffset(ref defaultAdvanceWidthTableRef, (IntPtr) (c * Unsafe.SizeOf<double>()));
+                    
+                    textWidth += Unsafe.ReadUnaligned<double>(ref advanceWidthRef);
+                }
             }
             else
             {
@@ -218,8 +228,8 @@ namespace Biaui.Internals
                 var isTrimmed = false;
                 var newCount = 0;
                 {
-                    var defaultGlyphIndexTable = GetDefaultGlyphIndexTable();
-                    var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
+                    ref var defaultGlyphIndexTableRef = ref GetDefaultGlyphIndexTable();
+                    ref var defaultAdvanceWidthTableRef = ref GetDefaultAdvanceWidthTable();
 
                     for (var i = 0; i != text.Length; ++i)
                     {
@@ -229,8 +239,12 @@ namespace Biaui.Internals
 
                         if (_isDefault)
                         {
-                            glyphIndexes[i] = defaultGlyphIndexTable[targetChar];
-                            advanceWidths[i] = defaultAdvanceWidthTable[targetChar];
+                            ref var glyphIndexRef = ref Unsafe.AddByteOffset(ref defaultGlyphIndexTableRef, (IntPtr) (targetChar * Unsafe.SizeOf<ushort>()));
+                            ref var advanceWidthRef = ref Unsafe.AddByteOffset(ref defaultAdvanceWidthTableRef, (IntPtr) (targetChar * Unsafe.SizeOf<double>()));
+                            
+                            glyphIndexes[i] = Unsafe.ReadUnaligned<ushort>(ref glyphIndexRef);
+                            advanceWidths[i] = Unsafe.ReadUnaligned<double>(ref advanceWidthRef);
+
                             textWidth += advanceWidths[i];
                         }
                         else
@@ -322,8 +336,8 @@ namespace Biaui.Internals
                 var isTrimmed = false;
                 var newCount = 0;
                 {
-                    var defaultGlyphIndexTable = GetDefaultGlyphIndexTable();
-                    var defaultAdvanceWidthTable = GetDefaultAdvanceWidthTable();
+                    ref var defaultGlyphIndexTableRef = ref GetDefaultGlyphIndexTable();
+                    ref var defaultAdvanceWidthTableRef = ref GetDefaultAdvanceWidthTable();
 
                     for (var i = 0; i != text.Length; ++i)
                     {
@@ -331,8 +345,12 @@ namespace Biaui.Internals
 
                         if (_isDefault)
                         {
-                            glyphIndexes[i] = defaultGlyphIndexTable[targetChar];
-                            advanceWidths[i] = defaultAdvanceWidthTable[targetChar];
+                            ref var glyphIndexRef = ref Unsafe.AddByteOffset(ref defaultGlyphIndexTableRef, (IntPtr) (targetChar * Unsafe.SizeOf<ushort>()));
+                            ref var advanceWidthRef = ref Unsafe.AddByteOffset(ref defaultAdvanceWidthTableRef, (IntPtr) (targetChar * Unsafe.SizeOf<double>()));
+                            
+                            glyphIndexes[i] = Unsafe.ReadUnaligned<ushort>(ref glyphIndexRef);
+                            advanceWidths[i] = Unsafe.ReadUnaligned<double>(ref advanceWidthRef);
+
                             textWidth += advanceWidths[i];
                         }
                         else
@@ -593,19 +611,19 @@ namespace Biaui.Internals
             sb.AppendLine($"private static readonly double DefaultFontLineSpacing = {fontFamily.LineSpacing};");
 
             sb.AppendLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
-            sb.AppendLine("private static ReadOnlySpan<ushort> GetDefaultGlyphIndexTable(){");
+            sb.AppendLine("private static ref byte GetDefaultGlyphIndexTable(){");
             sb.AppendLine("var byteTable = new ReadOnlySpan<byte>(new byte[] {");
             sb.AppendLine(JoinStrings(glyphIndexByteArray));
             sb.AppendLine("});");
-            sb.AppendLine("return MemoryMarshal.Cast<byte, ushort>(byteTable);");
+            sb.AppendLine("return ref MemoryMarshal.GetReference(byteTable);");
             sb.AppendLine("}");
 
             sb.AppendLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
-            sb.AppendLine("private static ReadOnlySpan<double> GetDefaultAdvanceWidthTable(){");
+            sb.AppendLine("private static ref byte GetDefaultAdvanceWidthTable(){");
             sb.AppendLine("var byteTable = new ReadOnlySpan<byte>(new byte[] {");
             sb.AppendLine(JoinStrings(advanceWidthByteArray));
             sb.AppendLine("});");
-            sb.AppendLine("return MemoryMarshal.Cast<byte, double>(byteTable);");
+            sb.AppendLine("return ref MemoryMarshal.GetReference(byteTable);");
             sb.AppendLine("}");
 
             sb.AppendLine("}");
