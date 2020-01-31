@@ -10,11 +10,11 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-    <Title>WPF dark theme and controls for .NET Core 3.1.</Title>
+    <Description>WPF dark theme and controls for .NET Core 3.1.</Description>
 
     <Authors>Yoshihiro Ito</Authors>
 
-    <Copyright>Copyright (c) 2019 copyright Yoshihiro Ito (yo.i.jewelry.bab@gmail.com)</Copyright>
+    <Copyright>Copyright (c) 2019-2020 copyright Yoshihiro Ito (yo.i.jewelry.bab@gmail.com)</Copyright>
 
     <PackageProjectUrl>https://github.com/YoshihiroIto/Biaui</PackageProjectUrl>
 
@@ -26,7 +26,7 @@
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
-    <PackageVersion>1.0.5</PackageVersion>
+    <PackageVersion>1.0.6</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
