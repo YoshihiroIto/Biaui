@@ -40,7 +40,7 @@ namespace Biaui.Controls
                 return;
 
             var textBox = (FrameworkElement) sender;
-            var sv = textBox.Parent.Descendants<ScrollViewer>().First();
+            var sv = textBox.Parent.Descendants().OfType<ScrollViewer>().First();
 
             if (e.Key == Key.Down)
                 sv.ScrollToHome();
@@ -52,7 +52,7 @@ namespace Biaui.Controls
                 DispatcherPriority.Input,
                 new Action(() =>
                 {
-                    using var items = textBox.Parent.Descendants<ComboBoxItem>().ToTempBuffer(512);
+                    using var items = textBox.Parent.Descendants().OfType<ComboBoxItem>().ToTempBuffer(512);
 
                     if (items.Length == 0)
                         return;
@@ -137,7 +137,7 @@ namespace Biaui.Controls
         private void UpdateClearButton(FrameworkElement popup)
         {
             var parent = popup.GetParent<BiaFilteringComboBox>();
-            var clearButton = popup.Descendants<Button>().FirstOrDefault();
+            var clearButton = popup.Descendants().OfType<Button>().FirstOrDefault();
 
             if (clearButton != null)
                 clearButton.IsEnabled = string.IsNullOrEmpty(parent?.FilterWords) == false;

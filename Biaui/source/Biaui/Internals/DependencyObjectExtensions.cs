@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -45,18 +44,6 @@ namespace Biaui.Internals
                 foreach (var grandChild in child.Descendants())
                     yield return grandChild;
             }
-        }
-
-        public static IEnumerable<T> Children<T>(this DependencyObject obj)
-            where T : DependencyObject
-        {
-            return obj.Children().OfType<T>();
-        }
-
-        public static IEnumerable<T> Descendants<T>(this DependencyObject obj)
-            where T : DependencyObject
-        {
-            return obj.Descendants().OfType<T>();
         }
 
         public static T? GetParent<T>(this DependencyObject self) where T : class

@@ -19,7 +19,7 @@ namespace Biaui.Controls.NodeEditor
 
         internal void InvalidateSlots()
         {
-            var slots = this.Descendants<BiaNodePanelSlots>().FirstOrDefault();
+            var slots = this.Descendants().OfType<BiaNodePanelSlots>().FirstOrDefault();
 
             slots?.InvalidateVisual();
         }
@@ -28,7 +28,7 @@ namespace Biaui.Controls.NodeEditor
         {
             base.OnMouseMove(e);
 
-            var slots = this.Descendants<BiaNodePanelSlots>().FirstOrDefault();
+            var slots = this.Descendants().OfType<BiaNodePanelSlots>().FirstOrDefault();
 
             var pos = e.GetPosition(this);
             slots?.UpdateMousePos(Unsafe.As<Point, ImmutableVec2_double>(ref pos));

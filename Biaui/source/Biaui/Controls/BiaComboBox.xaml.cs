@@ -609,7 +609,7 @@ namespace Biaui.Controls
 
                 // 選択アイテム位置にスクロール
                 {
-                    var sv = _items.Descendants<ScrollViewer>().FirstOrDefault();
+                    var sv = _items.Descendants().OfType<ScrollViewer>().FirstOrDefault();
 
                     if (sv != null)
                     {
@@ -623,7 +623,7 @@ namespace Biaui.Controls
                 }
             }
 
-            var listBoxBorder = _items.Descendants<Border>().First();
+            var listBoxBorder = _items.Descendants().OfType<Border>().First();
             listBoxBorder.BorderBrush = (Brush) FindResource("Item.SelectedActive.Border");
 
             StartedContinuousEditingCommand?.ExecuteIfCan(null);

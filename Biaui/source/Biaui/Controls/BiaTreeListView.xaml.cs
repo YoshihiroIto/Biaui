@@ -339,13 +339,13 @@ namespace Biaui.Controls
         {
             Loaded += (_, __) =>
             {
-                var treeView = this.Descendants<BiaTreeView>().First();
-                var treeViewSv = treeView.Descendants<ScrollViewer>().First();
+                var treeView = this.Descendants().OfType<BiaTreeView>().First();
+                var treeViewSv = treeView.Descendants().OfType<ScrollViewer>().First();
 
                 treeViewSv.ScrollChanged += (___, e) =>
                 {
                     if (_headerSv == null)
-                        _headerSv = this.Descendants<ScrollViewer>().First(x => x.Name == "HeaderScrollViewer");
+                        _headerSv = this.Descendants().OfType<ScrollViewer>().First(x => x.Name == "HeaderScrollViewer");
 
                     _headerSv.Width = e.ViewportWidth;
                     _headerSv.ScrollToHorizontalOffset(e.HorizontalOffset);

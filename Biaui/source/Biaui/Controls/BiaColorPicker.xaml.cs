@@ -659,7 +659,7 @@ namespace Biaui.Controls
 
         public override void OnApplyTemplate()
         {
-            foreach (var e in this.Descendants<BiaNumberEditor>())
+            foreach (var e in this.Descendants().OfType<BiaNumberEditor>())
             {
                 switch (e.Name)
                 {
@@ -693,9 +693,9 @@ namespace Biaui.Controls
                 }
             }
 
-            _valueBar = this.Descendants<BiaColorBar>().First();
-            _wheelBackground = this.Descendants<BiaHsvWheelBackground>().FirstOrDefault();
-            _boxBackground = this.Descendants<BiaHsvBoxBackground>().FirstOrDefault();
+            _valueBar = this.Descendants().OfType<BiaColorBar>().First();
+            _wheelBackground = this.Descendants().OfType<BiaHsvWheelBackground>().FirstOrDefault();
+            _boxBackground = this.Descendants().OfType<BiaHsvBoxBackground>().FirstOrDefault();
 
             SetContinuousEditingCommand();
         }
