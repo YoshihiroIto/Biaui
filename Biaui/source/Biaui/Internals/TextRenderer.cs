@@ -184,6 +184,7 @@ namespace Biaui.Internals
             return gr.Width;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         internal double CalcWidth(ReadOnlySpan<char> text)
         {
             if (NumberHelper.AreCloseZero(_fontSize))
@@ -264,6 +265,7 @@ namespace Biaui.Internals
 
         internal double FontHeight => _fontLineSpacing * _fontSize;
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth)
         {
             var glyphIndexes = ArrayPool<ushort>.Shared.Rent(text.Length);
@@ -338,6 +340,7 @@ namespace Biaui.Internals
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth)
         {
             // ※ +3 「...」 が増えることがあるためのバッファ
@@ -450,6 +453,7 @@ namespace Biaui.Internals
             return (newTextWidth + dot3Width, newCount);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(Visual visual, ReadOnlySpan<char> text, double maxWidth)
         {
             var buffer = ArrayPool<char>.Shared.Rent(text.Length);
@@ -467,6 +471,7 @@ namespace Biaui.Internals
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         private ReadOnlySpan<char> TrimmingFilepathText(ReadOnlySpan<char> text, double maxWidth, char[] buffer)
         {
             // ref: https://www.codeproject.com/Tips/467054/WPF-PathTrimmingTextBlock
