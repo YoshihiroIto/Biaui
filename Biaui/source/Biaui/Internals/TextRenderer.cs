@@ -39,7 +39,7 @@ namespace Biaui.Internals
                 fontFamily, fontSize,
                 FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
         }
-        
+
         internal DefaultTextRenderer(
             FontFamily fontFamily,
             double fontSize,
@@ -121,7 +121,8 @@ namespace Biaui.Internals
             DrawingContext dc,
             double maxWidth,
             TextAlignment align,
-            TextTrimmingMode trimming)
+            TextTrimmingMode trimming,
+            bool isUseCache)
         {
             if (NumberHelper.AreCloseZero(_fontSize))
                 return 0;
@@ -136,9 +137,9 @@ namespace Biaui.Internals
 
             var gr = trimming switch
             {
-                TextTrimmingMode.None => MakeGlyphRunNone(visual, text, maxWidth),
-                TextTrimmingMode.Standard => MakeGlyphRunStandard(visual, text, maxWidth),
-                TextTrimmingMode.Filepath => MakeGlyphRunFilepath(visual, text, maxWidth),
+                TextTrimmingMode.None => MakeGlyphRunNone(visual, text, maxWidth, isUseCache),
+                TextTrimmingMode.Standard => MakeGlyphRunStandard(visual, text, maxWidth, isUseCache),
+                TextTrimmingMode.Filepath => MakeGlyphRunFilepath(visual, text, maxWidth, isUseCache),
                 _ => throw new ArgumentOutOfRangeException(nameof(trimming), trimming, null)
             };
 
@@ -266,7 +267,7 @@ namespace Biaui.Internals
         internal double FontHeight => _fontLineSpacing * _fontSize;
 
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth)
+        private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
             var glyphIndexes = ArrayPool<ushort>.Shared.Rent(text.Length);
             var advanceWidths = ArrayPool<double>.Shared.Rent(text.Length);
@@ -280,7 +281,7 @@ namespace Biaui.Internals
                     for (var i = 0; i != text.Length; ++i)
                     {
                         (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(text[i]);
-                        
+
                         var oldTextWidth = textWidth;
                         textWidth += advanceWidths[i];
 
@@ -302,10 +303,15 @@ namespace Biaui.Internals
 
                 var dpi = visual.PixelsPerDip();
 
-                var textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.None);
+                long textKey = default;
 
-                if (_textCache.TryGetValue(textKey, out var gr))
-                    return gr;
+                if (isUseCache)
+                {
+                    textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.None);
+
+                    if (_textCache.TryGetValue(textKey, out var cachedGr))
+                        return cachedGr;
+                }
 
                 var textLength = isTrimmed
                     ? newCount
@@ -317,7 +323,7 @@ namespace Biaui.Internals
                 Buffer.BlockCopy(glyphIndexes, 0, newGlyphIndexes, 0, textLength * sizeof(short));
                 Buffer.BlockCopy(advanceWidths, 0, newAdvanceWidths, 0, textLength * sizeof(double));
 
-                gr =
+                var gr =
                     (new GlyphRun(
                         _glyphTypeface,
                         0,
@@ -329,7 +335,8 @@ namespace Biaui.Internals
                         newAdvanceWidths,
                         null, null, null, null, null, null), textWidth);
 
-                _textCache.Add(textKey, gr);
+                if (isUseCache)
+                    _textCache.Add(textKey, gr);
 
                 return gr;
             }
@@ -341,7 +348,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth)
+        private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
             // ※ +3 「...」 が増えることがあるためのバッファ
             var glyphIndexes = ArrayPool<ushort>.Shared.Rent(text.Length + 3);
@@ -356,7 +363,7 @@ namespace Biaui.Internals
                     for (var i = 0; i != text.Length; ++i)
                     {
                         (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(text[i]);
-                        
+
                         textWidth += advanceWidths[i];
 
                         if (textWidth > maxWidth)
@@ -374,10 +381,15 @@ namespace Biaui.Internals
 
                 var dpi = visual.PixelsPerDip();
 
-                var textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.Standard);
+                long textKey = default;
 
-                if (_textCache.TryGetValue(textKey, out var gr))
-                    return gr;
+                if (isUseCache)
+                {
+                    textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.None);
+
+                    if (_textCache.TryGetValue(textKey, out var cachedGr))
+                        return cachedGr;
+                }
 
                 var textLength = isTrimmed
                     ? newCount
@@ -389,7 +401,7 @@ namespace Biaui.Internals
                 Buffer.BlockCopy(glyphIndexes, 0, newGlyphIndexes, 0, textLength * sizeof(short));
                 Buffer.BlockCopy(advanceWidths, 0, newAdvanceWidths, 0, textLength * sizeof(double));
 
-                gr =
+                var gr =
                     (new GlyphRun(
                         _glyphTypeface,
                         0,
@@ -401,7 +413,8 @@ namespace Biaui.Internals
                         newAdvanceWidths,
                         null, null, null, null, null, null), textWidth);
 
-                _textCache.Add(textKey, gr);
+                if (isUseCache)
+                    _textCache.Add(textKey, gr);
 
                 return gr;
             }
@@ -454,7 +467,7 @@ namespace Biaui.Internals
         }
 
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(Visual visual, ReadOnlySpan<char> text, double maxWidth)
+        private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
             var buffer = ArrayPool<char>.Shared.Rent(text.Length);
 
@@ -463,7 +476,7 @@ namespace Biaui.Internals
                 if (CalcWidth(text) > maxWidth)
                     text = TrimmingFilepathText(text, maxWidth, buffer);
 
-                return MakeGlyphRunStandard(visual, text, maxWidth);
+                return MakeGlyphRunStandard(visual, text, maxWidth, isUseCache);
             }
             finally
             {
@@ -543,7 +556,7 @@ namespace Biaui.Internals
         }
 
         private readonly LruCache<long, (GlyphRun, double)> _textCache = new LruCache<long, (GlyphRun, double)>(10_0000, false);
-        private readonly LruCache<long, double> _textWidthCache = new LruCache<long, double>(10_1000, false);
+        private readonly LruCache<long, double> _textWidthCache = new LruCache<long, double>(10_0000, false);
 
         private readonly LruCache<long, TranslateTransform> _translateCache = new LruCache<long, TranslateTransform>(1000, false);
 

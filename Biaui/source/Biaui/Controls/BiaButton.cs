@@ -111,7 +111,8 @@ namespace Biaui.Controls
                         dc,
                         ActualWidth - Constants.ButtonPaddingX * 2.0,
                         TextAlignment.Center,
-                        TextTrimming);
+                        TextTrimming,
+                        true);
         }
 
         private double _textWidth;

@@ -188,7 +188,8 @@ namespace Biaui.Controls
                 dc,
                 ActualWidth - x,
                 TextAlignment.Left,
-                TextTrimming);
+                TextTrimming,
+                true);
 
             return x + w;
         }

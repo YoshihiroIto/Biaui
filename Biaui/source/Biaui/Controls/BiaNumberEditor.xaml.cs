@@ -774,7 +774,8 @@ namespace Biaui.Controls
                     dc,
                     ActualWidth - Padding.Left - Padding.Right,
                     TextAlignment.Left,
-                    TextTrimming);
+                    TextTrimming,
+                    false);
 
             if (UiValueString != null &&
                 Foreground != null)
@@ -787,7 +788,8 @@ namespace Biaui.Controls
                     dc,
                     ActualWidth - Padding.Left - Padding.Right - SpinWidth,
                     TextAlignment.Right,
-                    TextTrimming);
+                    TextTrimming,
+                    false);
         }
 
         private static readonly Brush? _moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;

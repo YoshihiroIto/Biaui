@@ -424,7 +424,8 @@ namespace Biaui.Controls
                             dc,
                             (1.0, ActualWidth - 32).Max(), // ▼分の幅を引く
                             TextAlignment.Left,
-                            TextTrimming);
+                            TextTrimming,
+                            true);
             }
             if (isCornerRadiusZero == false)
                 dc.Pop();

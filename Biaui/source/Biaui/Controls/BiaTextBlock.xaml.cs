@@ -122,7 +122,8 @@ namespace Biaui.Controls
                     dc,
                     ActualWidth,
                     TextAlignment.Left,
-                    TextTrimming);
+                    TextTrimming,
+                    true);
         }
 
         private double _textWidth;

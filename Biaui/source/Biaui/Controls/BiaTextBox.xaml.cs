@@ -304,7 +304,8 @@ namespace Biaui.Controls
                         dc,
                         (1.0, ActualWidth - 9).Max(),
                         TextAlignment.Left,
-                        TextTrimming);
+                        TextTrimming,
+                        true);
 
                 if (TargetText != null &&
                     Foreground != null)
@@ -316,7 +317,8 @@ namespace Biaui.Controls
                         dc,
                         (1.0, ActualWidth - 9).Max(),
                         TextAlignment.Left,
-                        TextTrimming);
+                        TextTrimming,
+                        true);
             }
             
             if (isCornerRadiusZero == false)
