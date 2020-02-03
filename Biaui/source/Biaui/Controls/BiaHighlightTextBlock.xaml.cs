@@ -180,7 +180,7 @@ namespace Biaui.Controls
         {
             var length = endIndex - startIndex + 1;
 
-            var w = TextRenderer.Default.Draw(
+            var w = DefaultTextRenderer.Instance.Draw(
                 this,
                 text.AsSpan(startIndex, length),
                 x, 0,

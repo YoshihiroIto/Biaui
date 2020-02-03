@@ -113,7 +113,7 @@ namespace Biaui.Controls
             // キャプション
             if (Content != null &&
                 Foreground != null)
-                TextRenderer.Default.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left, TextTrimming);
+                DefaultTextRenderer.Instance.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left, TextTrimming);
         }
     }
 }

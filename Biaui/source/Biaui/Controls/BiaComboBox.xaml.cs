@@ -416,7 +416,7 @@ namespace Biaui.Controls
 
                 if (displayItem != null)
                     if (Foreground != null)
-                        TextRenderer.Default.Draw(
+                        DefaultTextRenderer.Instance.Draw(
                             this,
                             displayItem.ToString() ?? "",
                             4.5, 3.5,

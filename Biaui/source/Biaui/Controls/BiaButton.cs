@@ -102,7 +102,7 @@ namespace Biaui.Controls
 
             if (Content != null)
                 if (Foreground != null)
-                    TextRenderer.Default.Draw(
+                    DefaultTextRenderer.Instance.Draw(
                         this,
                         Content,
                         Constants.ButtonPaddingX,
@@ -131,7 +131,7 @@ namespace Biaui.Controls
         {
             var w = Content == null
                 ? 0.0
-                : TextRenderer.Default.CalcWidth(Content);
+                : DefaultTextRenderer.Instance.CalcWidth(Content);
 
             _textWidth = Math.Ceiling(Constants.ButtonPaddingX + w + Constants.ButtonPaddingX);
         }

@@ -296,7 +296,7 @@ namespace Biaui.Controls
                     string.IsNullOrEmpty(TargetText) &&
                     Watermark != null &&
                     WatermarkForeground != null)
-                    TextRenderer.Default.Draw(
+                    DefaultTextRenderer.Instance.Draw(
                         this,
                         Watermark,
                         4.5, 3.5,
@@ -308,7 +308,7 @@ namespace Biaui.Controls
 
                 if (TargetText != null &&
                     Foreground != null)
-                    TextRenderer.Default.Draw(
+                    DefaultTextRenderer.Instance.Draw(
                         this,
                         TargetText,
                         4.5, 3.5,

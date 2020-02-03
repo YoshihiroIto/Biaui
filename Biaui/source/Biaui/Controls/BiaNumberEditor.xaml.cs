@@ -765,7 +765,7 @@ namespace Biaui.Controls
 
             if (Caption != null &&
                 CaptionForeground != null)
-                TextRenderer.Default.Draw(
+                DefaultTextRenderer.Instance.Draw(
                     this,
                     Caption,
                     Padding.Left + SpinWidth,
@@ -778,7 +778,7 @@ namespace Biaui.Controls
 
             if (UiValueString != null &&
                 Foreground != null)
-                TextRenderer.Default.Draw(
+                DefaultTextRenderer.Instance.Draw(
                     this,
                     UiValueString,
                     Padding.Left,

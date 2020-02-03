@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 namespace Biaui.Internals
 {
-internal partial class TextRenderer
+internal partial class TextRendererImpl<TIsDefault>
 {
 private static readonly double DefaultFontLineSpacing = 1.4853515625;
 [MethodImpl(MethodImplOptions.AggressiveInlining)]

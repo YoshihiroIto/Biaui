@@ -13,23 +13,55 @@ using Jewelry.Collections;
 
 namespace Biaui.Internals
 {
-    internal partial class TextRenderer
+    internal class TextRenderer : TextRendererImpl<IsNotDefaultTextureRenderer>
     {
-        internal static readonly TextRenderer Default;
+        internal TextRenderer(
+            FontFamily fontFamily,
+            double fontSize,
+            FontStyle style,
+            FontWeight weight,
+            FontStretch stretch)
+            : base(fontFamily, fontSize, style, weight, stretch)
+        {
+        }
+    }
 
-        static TextRenderer()
+    internal class DefaultTextRenderer : TextRendererImpl<IsDefaultTextureRenderer>
+    {
+        internal static readonly DefaultTextRenderer Instance;
+
+        static DefaultTextRenderer()
         {
             var fontFamily = (FontFamily) Application.Current.FindResource("BiauiFontFamily");
             var fontSize = (double) TextElement.FontSizeProperty.DefaultMetadata.DefaultValue;
 
-            Default = new TextRenderer(
-                true,
+            Instance = new DefaultTextRenderer(
                 fontFamily, fontSize,
                 FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
         }
+        
+        internal DefaultTextRenderer(
+            FontFamily fontFamily,
+            double fontSize,
+            FontStyle style,
+            FontWeight weight,
+            FontStretch stretch)
+            : base(fontFamily, fontSize, style, weight, stretch)
+        {
+        }
+    }
 
-        internal TextRenderer(
-            bool isDefault,
+    internal struct IsDefaultTextureRenderer
+    {
+    }
+
+    internal struct IsNotDefaultTextureRenderer
+    {
+    }
+
+    internal partial class TextRendererImpl<TIsDefault>
+    {
+        internal TextRendererImpl(
             FontFamily fontFamily,
             double fontSize,
             FontStyle style,
@@ -56,10 +88,9 @@ namespace Biaui.Internals
                     return;
             }
 
-            _isDefault = isDefault;
             _fontSize = fontSize;
 
-            if (_isDefault)
+            if (typeof(TIsDefault) == typeof(IsDefaultTextureRenderer))
             {
                 _fontLineSpacing = DefaultFontLineSpacing;
             }
@@ -174,9 +205,10 @@ namespace Biaui.Internals
             return textWidth;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal double CalcWidth(char c)
         {
-            if (_isDefault)
+            if (typeof(TIsDefault) == typeof(IsDefaultTextureRenderer))
             {
                 return Unsafe.Add(ref GetDefaultAdvanceWidthTable(), (IntPtr) c);
             }
@@ -200,9 +232,10 @@ namespace Biaui.Internals
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal (ushort GlyphIndex, double AdvanceWidth) CalcGlyphIndexAndWidth(char c)
         {
-            if (_isDefault)
+            if (typeof(TIsDefault) == typeof(IsDefaultTextureRenderer))
             {
                 var glyphIndex = Unsafe.Add(ref GetDefaultGlyphIndexTable(), (IntPtr) c);
                 var advanceWidth = Unsafe.Add(ref GetDefaultAdvanceWidthTable(), (IntPtr) c);
@@ -244,11 +277,9 @@ namespace Biaui.Internals
                 {
                     for (var i = 0; i != text.Length; ++i)
                     {
-                        var targetChar = text[i];
-
+                        (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(text[i]);
+                        
                         var oldTextWidth = textWidth;
-
-                        (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(targetChar);
                         textWidth += advanceWidths[i];
 
                         if (textWidth > maxWidth)
@@ -321,9 +352,8 @@ namespace Biaui.Internals
                 {
                     for (var i = 0; i != text.Length; ++i)
                     {
-                        var targetChar = text[i];
-
-                        (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(targetChar);
+                        (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(text[i]);
+                        
                         textWidth += advanceWidths[i];
 
                         if (textWidth > maxWidth)
@@ -452,7 +482,7 @@ namespace Biaui.Internals
             var sepWidth = CalcWidth(sepSpan);
             var filepathWidth = CalcWidth(filename);
             var directoryWidth = CalcWidth(directory);
-            
+
             do
             {
                 var pathWidth = directoryWidth + sepWidth + filepathWidth;
@@ -518,7 +548,6 @@ namespace Biaui.Internals
         // 最大65536エントリ
         private readonly Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>? _glyphDataCache;
 
-        private readonly bool _isDefault;
         private readonly GlyphTypeface? _glyphTypeface;
         private readonly ushort _dotGlyphIndex;
         private readonly double _dotAdvanceWidth;
@@ -559,7 +588,7 @@ namespace Biaui.Internals
             sb.AppendLine("using System.Runtime.InteropServices;");
             sb.AppendLine("namespace Biaui.Internals");
             sb.AppendLine("{");
-            sb.AppendLine("internal partial class TextRenderer");
+            sb.AppendLine("internal partial class TextRendererImpl<TIsDefault>");
             sb.AppendLine("{");
 
             sb.AppendLine($"private static readonly double DefaultFontLineSpacing = {fontFamily.LineSpacing};");
@@ -583,7 +612,7 @@ namespace Biaui.Internals
             sb.AppendLine("}");
             sb.AppendLine("}");
 
-            var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRenderer.table.cs");
+            var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRendererImpl.table.cs");
             File.WriteAllText(outputDir, sb.ToString());
         }
 

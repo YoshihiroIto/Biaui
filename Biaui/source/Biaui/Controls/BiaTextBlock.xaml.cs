@@ -114,7 +114,7 @@ namespace Biaui.Controls
 
             if (Text != null &&
                 Foreground != null)
-                TextRenderer.Default.Draw(
+                DefaultTextRenderer.Instance.Draw(
                     this,
                     Text,
                     0, 0,
@@ -129,12 +129,12 @@ namespace Biaui.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            return new Size((constraint.Width, _textWidth).Min(), TextRenderer.Default.FontHeight);
+            return new Size((constraint.Width, _textWidth).Min(), DefaultTextRenderer.Instance.FontHeight);
         }
 
         private void UpdateSize()
         {
-            _textWidth = string.IsNullOrEmpty(Text) ? 0 : this.RoundLayoutValue(Math.Ceiling(TextRenderer.Default.CalcWidth(Text)));
+            _textWidth = string.IsNullOrEmpty(Text) ? 0 : this.RoundLayoutValue(Math.Ceiling(DefaultTextRenderer.Instance.CalcWidth(Text)));
         }
     }
 }
