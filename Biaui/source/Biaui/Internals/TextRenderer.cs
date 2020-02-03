@@ -451,10 +451,10 @@ namespace Biaui.Internals
 
             var sepWidth = CalcWidth(sepSpan);
             var filepathWidth = CalcWidth(filename);
-
+            var directoryWidth = CalcWidth(directory);
+            
             do
             {
-                var directoryWidth = CalcWidth(directory);
                 var pathWidth = directoryWidth + sepWidth + filepathWidth;
 
                 widthOk = pathWidth < maxWidth;
@@ -462,6 +462,8 @@ namespace Biaui.Internals
                 if (widthOk == false)
                 {
                     changedWidth = true;
+
+                    directoryWidth -= CalcWidth(directory[^1]);
                     directory = directory.Slice(0, directory.Length - 1);
 
                     if (directory.Length == 0)
