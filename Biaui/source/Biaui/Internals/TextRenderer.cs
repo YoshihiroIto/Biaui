@@ -62,22 +62,17 @@ namespace Biaui.Internals
             if (_isDefault)
             {
                 _fontLineSpacing = DefaultFontLineSpacing;
-
-                _dotGlyphIndex = Unsafe.Add(ref GetDefaultGlyphIndexTable(), (IntPtr) '.');
-                _dotAdvanceWidth = Unsafe.Add(ref GetDefaultAdvanceWidthTable(), (IntPtr) '.');
             }
             else
             {
                 _fontLineSpacing = fontFamily.LineSpacing;
 
+                _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
                 _toGlyphMap = _glyphTypeface.CharacterToGlyphMap;
                 _advanceWidthsDict = _glyphTypeface.AdvanceWidths;
-
-                _glyphTypeface.CharacterToGlyphMap.TryGetValue('.', out _dotGlyphIndex);
-                _dotAdvanceWidth = _advanceWidthsDict[_dotGlyphIndex] * _fontSize;
-
-                _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
             }
+
+            (_dotGlyphIndex, _dotAdvanceWidth) = CalcGlyphIndexAndWidth('.');
 
 #if DEBUG
             // グリフデータテーブルを作る
@@ -171,12 +166,19 @@ namespace Biaui.Internals
             if (_textWidthCache.TryGetValue(textHashCode, out var textWidth))
                 return textWidth;
 
+            foreach (var c in text)
+                textWidth += CalcWidth(c);
+
+            _textWidthCache.Add(textHashCode, textWidth);
+
+            return textWidth;
+        }
+
+        internal double CalcWidth(char c)
+        {
             if (_isDefault)
             {
-                ref var defaultAdvanceWidthTableRef = ref GetDefaultAdvanceWidthTable();
-
-                foreach (var c in text)
-                    textWidth += Unsafe.Add(ref defaultAdvanceWidthTableRef, (IntPtr) c);
+                return Unsafe.Add(ref GetDefaultAdvanceWidthTable(), (IntPtr) c);
             }
             else
             {
@@ -184,25 +186,47 @@ namespace Biaui.Internals
                 Debug.Assert(_toGlyphMap != null);
                 Debug.Assert(_advanceWidthsDict != null);
 
-                foreach (var c in text)
+                if (_glyphDataCache.TryGetValue(c, out var data) == false)
                 {
-                    if (_glyphDataCache.TryGetValue(c, out var data) == false)
-                    {
-                        if (_toGlyphMap.TryGetValue(c, out data.GlyphIndex) == false)
-                            _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
+                    if (_toGlyphMap.TryGetValue(c, out data.GlyphIndex) == false)
+                        _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
 
-                        data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
+                    data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
 
-                        _glyphDataCache.Add(c, data);
-                    }
-
-                    textWidth += data.AdvanceWidth;
+                    _glyphDataCache.Add(c, data);
                 }
+
+                return data.AdvanceWidth;
             }
+        }
 
-            _textWidthCache.Add(textHashCode, textWidth);
+        internal (ushort GlyphIndex, double AdvanceWidth) CalcGlyphIndexAndWidth(char c)
+        {
+            if (_isDefault)
+            {
+                var glyphIndex = Unsafe.Add(ref GetDefaultGlyphIndexTable(), (IntPtr) c);
+                var advanceWidth = Unsafe.Add(ref GetDefaultAdvanceWidthTable(), (IntPtr) c);
 
-            return textWidth;
+                return (glyphIndex, advanceWidth);
+            }
+            else
+            {
+                Debug.Assert(_glyphDataCache != null);
+                Debug.Assert(_toGlyphMap != null);
+                Debug.Assert(_advanceWidthsDict != null);
+
+                if (_glyphDataCache.TryGetValue(c, out var data) == false)
+                {
+                    if (_toGlyphMap.TryGetValue(c, out data.GlyphIndex) == false)
+                        _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
+
+                    data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
+
+                    _glyphDataCache.Add(c, data);
+                }
+
+                return (data.GlyphIndex, data.AdvanceWidth);
+            }
         }
 
         internal double FontHeight => _fontLineSpacing * _fontSize;
@@ -218,42 +242,14 @@ namespace Biaui.Internals
                 var isTrimmed = false;
                 var newCount = 0;
                 {
-                    ref var defaultGlyphIndexTableRef = ref GetDefaultGlyphIndexTable();
-                    ref var defaultAdvanceWidthTableRef = ref GetDefaultAdvanceWidthTable();
-
                     for (var i = 0; i != text.Length; ++i)
                     {
                         var targetChar = text[i];
 
                         var oldTextWidth = textWidth;
 
-                        if (_isDefault)
-                        {
-                            glyphIndexes[i] = Unsafe.Add(ref defaultGlyphIndexTableRef, (IntPtr) targetChar);
-                            advanceWidths[i] = Unsafe.Add(ref defaultAdvanceWidthTableRef, (IntPtr) targetChar);
-
-                            textWidth += advanceWidths[i];
-                        }
-                        else
-                        {
-                            Debug.Assert(_glyphDataCache != null);
-                            Debug.Assert(_toGlyphMap != null);
-                            Debug.Assert(_advanceWidthsDict != null);
-
-                            if (_glyphDataCache.TryGetValue(targetChar, out var data) == false)
-                            {
-                                if (_toGlyphMap.TryGetValue(targetChar, out data.GlyphIndex) == false)
-                                    _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
-
-                                data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
-
-                                _glyphDataCache.Add(targetChar, data);
-                            }
-
-                            glyphIndexes[i] = data.GlyphIndex;
-                            advanceWidths[i] = data.AdvanceWidth;
-                            textWidth += data.AdvanceWidth;
-                        }
+                        (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(targetChar);
+                        textWidth += advanceWidths[i];
 
                         if (textWidth > maxWidth)
                         {
@@ -323,40 +319,12 @@ namespace Biaui.Internals
                 var isTrimmed = false;
                 var newCount = 0;
                 {
-                    ref var defaultGlyphIndexTableRef = ref GetDefaultGlyphIndexTable();
-                    ref var defaultAdvanceWidthTableRef = ref GetDefaultAdvanceWidthTable();
-
                     for (var i = 0; i != text.Length; ++i)
                     {
                         var targetChar = text[i];
 
-                        if (_isDefault)
-                        {
-                            glyphIndexes[i] = Unsafe.Add(ref defaultGlyphIndexTableRef, (IntPtr) targetChar);
-                            advanceWidths[i] = Unsafe.Add(ref defaultAdvanceWidthTableRef, (IntPtr) targetChar);
-
-                            textWidth += advanceWidths[i];
-                        }
-                        else
-                        {
-                            Debug.Assert(_glyphDataCache != null);
-                            Debug.Assert(_toGlyphMap != null);
-                            Debug.Assert(_advanceWidthsDict != null);
-
-                            if (_glyphDataCache.TryGetValue(targetChar, out var data) == false)
-                            {
-                                if (_toGlyphMap.TryGetValue(targetChar, out data.GlyphIndex) == false)
-                                    _toGlyphMap.TryGetValue(' ', out data.GlyphIndex);
-
-                                data.AdvanceWidth = _advanceWidthsDict[data.GlyphIndex] * _fontSize;
-
-                                _glyphDataCache.Add(targetChar, data);
-                            }
-
-                            glyphIndexes[i] = data.GlyphIndex;
-                            advanceWidths[i] = data.AdvanceWidth;
-                            textWidth += data.AdvanceWidth;
-                        }
+                        (glyphIndexes[i], advanceWidths[i]) = CalcGlyphIndexAndWidth(targetChar);
+                        textWidth += advanceWidths[i];
 
                         if (textWidth > maxWidth)
                         {
