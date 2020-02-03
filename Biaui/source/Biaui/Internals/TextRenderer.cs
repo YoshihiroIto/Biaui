@@ -360,7 +360,7 @@ namespace Biaui.Internals
 
                         if (textWidth > maxWidth)
                         {
-                            (textWidth, newCount) = TrimGlyphRun(glyphIndexes, advanceWidths, textWidth, maxWidth, i + 1);
+                            (textWidth, newCount) = TrimGlyphRunStandard(glyphIndexes, advanceWidths, textWidth, maxWidth, i + 1);
 
                             isTrimmed = true;
                             break;
@@ -411,7 +411,7 @@ namespace Biaui.Internals
             }
         }
 
-        private (double Width, int NewCount) TrimGlyphRun(
+        private (double Width, int NewCount) TrimGlyphRunStandard(
             ushort[] glyphIndexes,
             double[] advanceWidths,
             double textWidth,
