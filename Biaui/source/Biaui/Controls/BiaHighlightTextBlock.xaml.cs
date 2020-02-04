@@ -104,11 +104,20 @@ namespace Biaui.Controls
             if (string.IsNullOrEmpty(Text))
                 return;
 
-            var textStates = ArrayPool<byte>.Shared.Rent(Text.Length);
+            var textStatesArray =
+                Text.Length >= 512
+                    ? ArrayPool<byte>.Shared.Rent(Text.Length)
+                    : null;
+
+            // ReSharper disable once MergeConditionalExpression
+            var textStates =
+                textStatesArray != null
+                    ? textStatesArray.AsSpan(0, Text.Length)
+                    : stackalloc byte[Text.Length];
 
             try
             {
-                Array.Clear(textStates, 0, Text.Length);
+                textStates.Fill(0);
 
                 ReadOnlySpan<char> textSpan = Text;
 
@@ -171,7 +180,8 @@ namespace Biaui.Controls
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(textStates);
+                if (textStatesArray != null)
+                    ArrayPool<byte>.Shared.Return(textStatesArray);
             }
         }
 
