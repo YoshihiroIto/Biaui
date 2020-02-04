@@ -1,8 +1,9 @@
-﻿// ReSharper disable All
-
 #nullable disable
 
 using System;
+using System.Buffers;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -16,52 +17,11 @@ namespace Biaui.StandardControls.Internal
 
     public class TabPanelInternal : TabPanel
     {
-        //-------------------------------------------------------------------
-        //
-        //  Constructors
-        //
-        //-------------------------------------------------------------------
-
-        #region Constructors
-
-        /// <summary>
-        ///     Default DependencyObject constructor
-        /// </summary>
-        /// <remarks>
-        ///     Automatic determination of current Dispatcher. Use alternative constructor
-        ///     that accepts a Dispatcher for best performance.
-        /// </remarks>
-        public TabPanelInternal() : base()
-        {
-        }
-
         static TabPanelInternal()
         {
-            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(TabPanelInternal),
-                new FrameworkPropertyMetadata(KeyboardNavigationMode.Once));
-            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(TabPanelInternal),
-                new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
+            KeyboardNavigation.TabNavigationProperty.OverrideMetadata(typeof(TabPanelInternal), new FrameworkPropertyMetadata(KeyboardNavigationMode.Once));
+            KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(TabPanelInternal), new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
         }
-
-        #endregion
-
-        //-------------------------------------------------------------------
-        //
-        //  Public Methods
-        //
-        //-------------------------------------------------------------------
-
-        #region Public Methods
-
-        #endregion
-
-        //-------------------------------------------------------------------
-        //
-        //  Protected Methods
-        //
-        //-------------------------------------------------------------------
-
-        #region Protected Methods
 
         /// <summary>
         /// Updates DesiredSize of the TabPanelInternal.  Called by parent UIElement.  This is the first pass of layout.
@@ -73,85 +33,97 @@ namespace Biaui.StandardControls.Internal
         /// <returns>TabPanelInternal' desired size.</returns>
         protected override Size MeasureOverride(Size constraint)
         {
-            Size contentSize = new Size();
-            Dock tabAlignment = TabStripPlacement;
+            var contentSize = new Size();
+            var tabAlignment = TabStripPlacement;
 
             _numRows = 1;
             _numHeaders = 0;
             _rowHeight = 0;
 
-            // For top and bottom placement the panel flow its children to calculate the number of rows and
-            // desired vertical size
-            if (tabAlignment == Dock.Top || tabAlignment == Dock.Bottom)
+            switch (tabAlignment)
             {
-                int numInCurrentRow = 0;
-                double currentRowWidth = 0;
-                double maxRowWidth = 0;
-
-                foreach (UIElement child in InternalChildren)
+                // For top and bottom placement the panel flow its children to calculate the number of rows and
+                // desired vertical size
+                case Dock.Top:
+                case Dock.Bottom:
                 {
-                    if (child.Visibility == Visibility.Collapsed)
-                        continue;
+                    var numInCurrentRow = 0;
+                    var currentRowWidth = 0.0;
+                    var maxRowWidth = 0.0;
 
-                    _numHeaders++;
-
-                    // Helper measures child, and deals with Min, Max, and base Width & Height properties.
-                    // Helper returns the size a child needs to take up (DesiredSize or property specified size).
-                    child.Measure(constraint);
-                    Size childSize = GetDesiredSizeWithoutMargin(child);
-
-                    if (_rowHeight < childSize.Height)
-                        _rowHeight = childSize.Height;
-
-                    if (currentRowWidth + childSize.Width > constraint.Width && numInCurrentRow > 0)
+                    foreach (UIElement child in InternalChildren)
                     {
-                        // If child does not fit in the current row - create a new row
-                        if (maxRowWidth < currentRowWidth)
-                            maxRowWidth = currentRowWidth;
+                        if (child.Visibility == Visibility.Collapsed)
+                            continue;
 
-                        currentRowWidth = childSize.Width;
-                        numInCurrentRow = 1;
-                        _numRows++;
+                        _numHeaders++;
+
+                        // Helper measures child, and deals with Min, Max, and base Width & Height properties.
+                        // Helper returns the size a child needs to take up (DesiredSize or property specified size).
+                        child.Measure(constraint);
+                        var childSize = GetDesiredSizeWithoutMargin(child);
+
+                        if (_rowHeight < childSize.Height)
+                            _rowHeight = childSize.Height;
+
+                        if (currentRowWidth + childSize.Width > constraint.Width && numInCurrentRow > 0)
+                        {
+                            // If child does not fit in the current row - create a new row
+                            if (maxRowWidth < currentRowWidth)
+                                maxRowWidth = currentRowWidth;
+
+                            currentRowWidth = childSize.Width;
+                            numInCurrentRow = 1;
+                            _numRows++;
+                        }
+                        else
+                        {
+                            currentRowWidth += childSize.Width;
+                            numInCurrentRow++;
+                        }
                     }
+
+                    if (maxRowWidth < currentRowWidth)
+                        maxRowWidth = currentRowWidth;
+
+                    contentSize.Height = _rowHeight * _numRows;
+
+                    // If we don't have constraint or content width is smaller than constraint width then size to content
+                    if (double.IsInfinity(contentSize.Width) || double.IsNaN(contentSize.Width) ||
+                        maxRowWidth < constraint.Width)
+                        contentSize.Width = maxRowWidth;
                     else
-                    {
-                        currentRowWidth += childSize.Width;
-                        numInCurrentRow++;
-                    }
+                        contentSize.Width = constraint.Width;
+                    break;
                 }
 
-                if (maxRowWidth < currentRowWidth)
-                    maxRowWidth = currentRowWidth;
-
-                contentSize.Height = _rowHeight * _numRows;
-
-                // If we don't have constraint or content wisth is smaller than constraint width then size to content
-                if (double.IsInfinity(contentSize.Width) || double.IsNaN(contentSize.Width) ||
-                    maxRowWidth < constraint.Width)
-                    contentSize.Width = maxRowWidth;
-                else
-                    contentSize.Width = constraint.Width;
-            }
-            else if (tabAlignment == Dock.Left || tabAlignment == Dock.Right)
-            {
-                foreach (UIElement child in InternalChildren)
+                case Dock.Left:
+                case Dock.Right:
                 {
-                    if (child.Visibility == Visibility.Collapsed)
-                        continue;
+                    foreach (UIElement child in InternalChildren)
+                    {
+                        if (child.Visibility == Visibility.Collapsed)
+                            continue;
 
-                    _numHeaders++;
+                        _numHeaders++;
 
-                    // Helper measures child, and deals with Min, Max, and base Width & Height properties.
-                    // Helper returns the size a child needs to take up (DesiredSize or property specified size).
-                    child.Measure(constraint);
+                        // Helper measures child, and deals with Min, Max, and base Width & Height properties.
+                        // Helper returns the size a child needs to take up (DesiredSize or property specified size).
+                        child.Measure(constraint);
 
-                    Size childSize = GetDesiredSizeWithoutMargin(child);
+                        var childSize = GetDesiredSizeWithoutMargin(child);
 
-                    if (contentSize.Width < childSize.Width)
-                        contentSize.Width = childSize.Width;
+                        if (contentSize.Width < childSize.Width)
+                            contentSize.Width = childSize.Width;
 
-                    contentSize.Height += childSize.Height;
+                        contentSize.Height += childSize.Height;
+                    }
+
+                    break;
                 }
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             // Returns our minimum size & sets DesiredSize.
@@ -164,15 +136,22 @@ namespace Biaui.StandardControls.Internal
         /// <param name="arrangeSize">Size that TabPanelInternal will assume to position children.</param>
         protected override Size ArrangeOverride(Size arrangeSize)
         {
-            Dock tabAlignment = TabStripPlacement;
+            var tabAlignment = TabStripPlacement;
 
-            if (tabAlignment == Dock.Top || tabAlignment == Dock.Bottom)
+            switch (tabAlignment)
             {
-                ArrangeHorizontal(arrangeSize);
-            }
-            else if (tabAlignment == Dock.Left || tabAlignment == Dock.Right)
-            {
-                ArrangeVertical(arrangeSize);
+                case Dock.Top:
+                case Dock.Bottom:
+                    ArrangeHorizontal(arrangeSize);
+                    break;
+
+                case Dock.Left:
+                case Dock.Right:
+                    ArrangeVertical(arrangeSize);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             return arrangeSize;
@@ -187,132 +166,134 @@ namespace Biaui.StandardControls.Internal
             return null;
         }
 
-        #endregion Protected Methods
-
-        //-------------------------------------------------------------------
-        //
-        //  Private Methods
-        //
-        //-------------------------------------------------------------------
-
-        #region Private Methods
-
-        private Size GetDesiredSizeWithoutMargin(UIElement element)
+        private static Size GetDesiredSizeWithoutMargin(UIElement element)
         {
-            Thickness margin = (Thickness) element.GetValue(MarginProperty);
+            var margin = (Thickness) element.GetValue(MarginProperty);
             Size desiredSizeWithoutMargin = default;
             desiredSizeWithoutMargin.Height = Math.Max(0d, element.DesiredSize.Height - margin.Top - margin.Bottom);
             desiredSizeWithoutMargin.Width = Math.Max(0d, element.DesiredSize.Width - margin.Left - margin.Right);
             return desiredSizeWithoutMargin;
         }
 
-        private double[] GetHeadersSize()
+        private void GetHeadersSize(Span<double> headerSize)
         {
-            double[] headerSize = new double[_numHeaders];
-            int childIndex = 0;
+            var childIndex = 0;
 
             foreach (UIElement child in InternalChildren)
             {
                 if (child.Visibility == Visibility.Collapsed)
                     continue;
 
-                Size childSize = GetDesiredSizeWithoutMargin(child);
+                var childSize = GetDesiredSizeWithoutMargin(child);
                 headerSize[childIndex] = Math.Floor(childSize.Width);
                 childIndex++;
             }
-
-            return headerSize;
         }
 
         private void ArrangeHorizontal(Size arrangeSize)
         {
-            Dock tabAlignment = TabStripPlacement;
-            bool isMultiRow = _numRows > 1;
-            int activeRow = 0;
-            int[] solution;
-            Vector childOffset = new Vector();
-            double[] headerSize = GetHeadersSize();
+            var numSeparators = _numRows - 1;
+        
+            var buffer = ArrayPool<byte>.Shared.Rent(
+                Unsafe.SizeOf<double>() * _numHeaders +
+                Unsafe.SizeOf<int>() + numSeparators);
 
-            // If we have multirows, then calculate the best header distribution
-            if (isMultiRow)
+            var headerSize = MemoryMarshal.Cast<byte, double>(buffer.AsSpan(0, Unsafe.SizeOf<double>() *_numHeaders));
+            var solution = MemoryMarshal.Cast<byte, int>(buffer.AsSpan(Unsafe.SizeOf<double>() *_numHeaders, Unsafe.SizeOf<int>() * numSeparators));
+            
+            try
             {
-                solution = CalculateHeaderDistribution(arrangeSize.Width, headerSize);
-                activeRow = GetActiveRow(solution);
+                var tabAlignment = TabStripPlacement;
+                var isMultiRow = _numRows > 1;
+                var activeRow = 0;
+                var childOffset = new Vector();
 
-                // TabPanelInternal starts to layout children depend on activeRow which should be always on bottom (top)
-                // The first row should start from Y = (_numRows - 1 - activeRow) * _rowHeight
-                if (tabAlignment == Dock.Top)
-                    childOffset.Y = (_numRows - 1 - activeRow) * _rowHeight;
+                GetHeadersSize(headerSize);
 
-                if (tabAlignment == Dock.Bottom && activeRow != 0)
-                    childOffset.Y = (_numRows - activeRow) * _rowHeight;
-            }
-            else
-            {
-                solution = Array.Empty<int>();
-            }
-
-            int childIndex = 0;
-            int separatorIndex = 0;
-
-            foreach (UIElement child in InternalChildren)
-            {
-                if (child.Visibility == Visibility.Collapsed)
-                    continue;
-
-                Thickness margin = (Thickness) child.GetValue(MarginProperty);
-                double leftOffset = margin.Left;
-                double rightOffset = margin.Right;
-                double topOffset = margin.Top;
-                double bottomOffset = margin.Bottom;
-
-                bool lastHeaderInRow = isMultiRow &&
-                                       (separatorIndex < solution.Length && solution[separatorIndex] == childIndex ||
-                                        childIndex == _numHeaders - 1);
-
-                //Length left, top, right, bottom;
-                Size cellSize = new Size(headerSize[childIndex], _rowHeight);
-
-                // Align the last header in the row; If headers are not aligned directional nav would not work correctly
-                if (lastHeaderInRow)
+                // If we have multirows, then calculate the best header distribution
+                if (isMultiRow)
                 {
-                    cellSize.Width = arrangeSize.Width - childOffset.X;
+                    solution = CalculateHeaderDistribution(arrangeSize.Width, headerSize, solution);
+                    activeRow = GetActiveRow(solution);
+
+                    childOffset.Y = tabAlignment switch
+                    {
+                        // TabPanelInternal starts to layout children depend on activeRow which should be always on bottom (top)
+                        // The first row should start from Y = (_numRows - 1 - activeRow) * _rowHeight
+                        Dock.Top => ((_numRows - 1 - activeRow) * _rowHeight),
+                        Dock.Bottom when activeRow != 0 => ((_numRows - activeRow) * _rowHeight),
+                        _ => childOffset.Y
+                    };
+                }
+                else
+                {
+                    solution = Array.Empty<int>();
                 }
 
-                child.Arrange(new Rect(childOffset.X, childOffset.Y, cellSize.Width, cellSize.Height));
+                var childIndex = 0;
+                var separatorIndex = 0;
 
-                Size childSize = cellSize;
-                childSize.Height = Math.Max(0d, childSize.Height - topOffset - bottomOffset);
-                childSize.Width = Math.Max(0d, childSize.Width - leftOffset - rightOffset);
-
-                // Calculate the offset for the next child
-                childOffset.X += cellSize.Width;
-
-                if (lastHeaderInRow)
+                foreach (UIElement child in InternalChildren)
                 {
-                    if ((separatorIndex == activeRow && tabAlignment == Dock.Top) ||
-                        (separatorIndex == activeRow - 1 && tabAlignment == Dock.Bottom))
-                        childOffset.Y = 0d;
-                    else
-                        childOffset.Y += _rowHeight;
+                    if (child.Visibility == Visibility.Collapsed)
+                        continue;
 
-                    childOffset.X = 0d;
-                    separatorIndex++;
+                    var margin = (Thickness) child.GetValue(MarginProperty);
+                    var leftOffset = margin.Left;
+                    var rightOffset = margin.Right;
+                    var topOffset = margin.Top;
+                    var bottomOffset = margin.Bottom;
+
+                    var lastHeaderInRow = isMultiRow &&
+                                          (separatorIndex < solution.Length && solution[separatorIndex] == childIndex ||
+                                           childIndex == _numHeaders - 1);
+
+                    //Length left, top, right, bottom;
+                    var cellSize = new Size(headerSize[childIndex], _rowHeight);
+
+                    // Align the last header in the row; If headers are not aligned directional nav would not work correctly
+                    if (lastHeaderInRow)
+                        cellSize.Width = arrangeSize.Width - childOffset.X;
+
+                    child.Arrange(new Rect(childOffset.X, childOffset.Y, cellSize.Width, cellSize.Height));
+
+                    var childSize = cellSize;
+                    childSize.Height = Math.Max(0d, childSize.Height - topOffset - bottomOffset);
+                    childSize.Width = Math.Max(0d, childSize.Width - leftOffset - rightOffset);
+
+                    // Calculate the offset for the next child
+                    childOffset.X += cellSize.Width;
+
+                    if (lastHeaderInRow)
+                    {
+                        if ((separatorIndex == activeRow && tabAlignment == Dock.Top) ||
+                            (separatorIndex == activeRow - 1 && tabAlignment == Dock.Bottom))
+                            childOffset.Y = 0d;
+                        else
+                            childOffset.Y += _rowHeight;
+
+                        childOffset.X = 0d;
+                        separatorIndex++;
+                    }
+
+                    childIndex++;
                 }
-
-                childIndex++;
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
 
         private void ArrangeVertical(Size arrangeSize)
         {
-            double childOffsetY = 0d;
+            var childOffsetY = 0d;
 
             foreach (UIElement child in InternalChildren)
             {
                 if (child.Visibility != Visibility.Collapsed)
                 {
-                    Size childSize = GetDesiredSizeWithoutMargin(child);
+                    var childSize = GetDesiredSizeWithoutMargin(child);
                     child.Arrange(new Rect(0, childOffsetY, arrangeSize.Width, childSize.Height));
 
                     // Calculate the offset for the next child
@@ -322,10 +303,10 @@ namespace Biaui.StandardControls.Internal
         }
 
         // Returns the row which contain the child with IsSelected==true
-        private int GetActiveRow(int[] solution)
+        private int GetActiveRow(Span<int> solution)
         {
-            int activeRow = 0;
-            int childIndex = 0;
+            var activeRow = 0;
+            var childIndex = 0;
 
             if (solution.Length > 0)
             {
@@ -334,27 +315,21 @@ namespace Biaui.StandardControls.Internal
                     if (child.Visibility == Visibility.Collapsed)
                         continue;
 
-                    bool isActiveTab = (bool) child.GetValue(Selector.IsSelectedProperty);
+                    var isActiveTab = (bool) child.GetValue(Selector.IsSelectedProperty);
 
                     if (isActiveTab)
-                    {
                         return activeRow;
-                    }
 
                     if (activeRow < solution.Length && solution[activeRow] == childIndex)
-                    {
                         activeRow++;
-                    }
 
                     childIndex++;
                 }
             }
 
-            // If the is no selected element and aligment is Top  - then the active row is the last row 
+            // If the is no selected element and alignment is Top  - then the active row is the last row 
             if (TabStripPlacement == Dock.Top)
-            {
                 activeRow = _numRows - 1;
-            }
 
             return activeRow;
         }
@@ -385,180 +360,169 @@ namespace Biaui.StandardControls.Internal
         Current state rowAverageGap = MAX (rowAverageGap[1..numSeparators+1]).
         Our goal is to find the solution with MIN (rowAverageGap).
         On each iteration step we move a header from a previous row to the row with maximum rowAverageGap.
-        We countinue the itterations only if we move to better solution, i.e. rowAverageGap is smaller.
+        We continue the iterations only if we move to better solution, i.e. rowAverageGap is smaller.
         Maximum iteration steps are less the number of headers.
 
         */
         // Input: Row width and width of all headers
         // Output: int array which size is the number of separators and contains each separator position
-        private int[] CalculateHeaderDistribution(double rowWidthLimit, double[] headerWidth)
+        private Span<int> CalculateHeaderDistribution(double rowWidthLimit, Span<double> headerWidth, Span<int> bestSolution)
         {
-            double bestSolutionMaxRowAverageGap = 0;
-            int numHeaders = headerWidth.Length;
+            var numSeparators = _numRows - 1;
 
-            int numSeparators = _numRows - 1;
-            double currentRowWidth = 0;
-            int numberOfHeadersInCurrentRow = 0;
-            double currentAverageGap;
-            int[] currentSolution = new int[numSeparators];
-            int[] bestSolution = new int[numSeparators];
-            int[] rowHeaderCount = new int[_numRows];
-            double[] rowWidth = new double[_numRows];
-            double[] rowAverageGap = new double[_numRows];
-            double[] bestSolutionRowAverageGap = new double[_numRows];
+            var doubleArray = ArrayPool<double>.Shared.Rent(_numRows + _numRows + _numRows);
+            var intArray = ArrayPool<int>.Shared.Rent(numSeparators + _numRows);
 
-            // Initialize the current state; Do the initial flow of the headers
-            int currentRowIndex = 0;
+            var rowWidth = doubleArray.AsSpan(0, _numRows);
+            var rowAverageGap = doubleArray.AsSpan(_numRows, _numRows);
+            var bestSolutionRowAverageGap = doubleArray.AsSpan(_numRows + _numRows, _numRows);
+            var currentSolution = intArray.AsSpan(0, numSeparators);
+            var rowHeaderCount = intArray.AsSpan(numSeparators, _numRows);
 
-            for (int index = 0; index < numHeaders; index++)
+            try
             {
-                if (currentRowWidth + headerWidth[index] > rowWidthLimit && numberOfHeadersInCurrentRow > 0)
+                var bestSolutionMaxRowAverageGap = 0.0;
+                var numHeaders = headerWidth.Length;
+                var currentRowWidth = 0.0;
+                var numberOfHeadersInCurrentRow = 0;
+                double currentAverageGap;
+
+                // Initialize the current state; Do the initial flow of the headers
+                var currentRowIndex = 0;
+
+                for (var index = 0; index < numHeaders; index++)
                 {
-                    // if we cannot add next header - flow to next row
-                    // Store current row before we go to the next
-                    rowWidth[currentRowIndex] = currentRowWidth; // Store the current row width
-                    rowHeaderCount[currentRowIndex] = numberOfHeadersInCurrentRow; // For each row we store the number os headers inside
-                    currentAverageGap =
-                        Math.Max(0d,
-                            (rowWidthLimit - currentRowWidth) /
-                            numberOfHeadersInCurrentRow); // The amout of width that should be added to justify the header
-                    rowAverageGap[currentRowIndex] = currentAverageGap;
-                    currentSolution[currentRowIndex] = index - 1; // Separator points to the last header in the row
-                    if (bestSolutionMaxRowAverageGap < currentAverageGap
-                    ) // Remember the maximum of all currentAverageGap
-                        bestSolutionMaxRowAverageGap = currentAverageGap;
-
-                    // Iterate to next row
-                    currentRowIndex++;
-                    currentRowWidth = headerWidth[index]; // Accumulate header widths on the same row
-                    numberOfHeadersInCurrentRow = 1;
-                }
-                else
-                {
-                    currentRowWidth += headerWidth[index]; // Accumulate header widths on the same row
-                    // Increase the number of headers only if they are not collapsed (width=0)
-                    if (headerWidth[index] != 0)
-                        numberOfHeadersInCurrentRow++;
-                }
-            }
-
-            // If everithing fit in 1 row then exit (no separators needed)
-            if (currentRowIndex == 0)
-                return Array.Empty<int>();
-
-            // Add the last row
-            rowWidth[currentRowIndex] = currentRowWidth;
-            rowHeaderCount[currentRowIndex] = numberOfHeadersInCurrentRow;
-            currentAverageGap = (rowWidthLimit - currentRowWidth) / numberOfHeadersInCurrentRow;
-            rowAverageGap[currentRowIndex] = currentAverageGap;
-            if (bestSolutionMaxRowAverageGap < currentAverageGap)
-                bestSolutionMaxRowAverageGap = currentAverageGap;
-
-            currentSolution.CopyTo(bestSolution, 0); // Remember the first solution as initial bestSolution
-            rowAverageGap.CopyTo(bestSolutionRowAverageGap,
-                0); // bestSolutionRowAverageGap is used in ArrangeOverride to calculate header sizes
-
-            // Search for the best solution
-            // The exit condition if when we cannot move header to the next row 
-            while (true)
-            {
-                // Find the row with maximum AverageGap
-                int worstRowIndex = 0; // Keep the row index with maximum AverageGap
-                double maxAG = 0;
-
-                for (int i = 0; i < _numRows; i++) // for all rows
-                {
-                    if (maxAG < rowAverageGap[i])
+                    if (currentRowWidth + headerWidth[index] > rowWidthLimit && numberOfHeadersInCurrentRow > 0)
                     {
-                        maxAG = rowAverageGap[i];
-                        worstRowIndex = i;
+                        // if we cannot add next header - flow to next row
+                        // Store current row before we go to the next
+                        rowWidth[currentRowIndex] = currentRowWidth; // Store the current row width
+                        rowHeaderCount[currentRowIndex] = numberOfHeadersInCurrentRow; // For each row we store the number os headers inside
+                        currentAverageGap =
+                            Math.Max(0d,
+                                (rowWidthLimit - currentRowWidth) /
+                                numberOfHeadersInCurrentRow); // The amount  of width that should be added to justify the header
+                        rowAverageGap[currentRowIndex] = currentAverageGap;
+                        currentSolution[currentRowIndex] = index - 1; // Separator points to the last header in the row
+                        if (bestSolutionMaxRowAverageGap < currentAverageGap
+                        ) // Remember the maximum of all currentAverageGap
+                            bestSolutionMaxRowAverageGap = currentAverageGap;
+
+                        // Iterate to next row
+                        currentRowIndex++;
+                        currentRowWidth = headerWidth[index]; // Accumulate header widths on the same row
+                        numberOfHeadersInCurrentRow = 1;
+                    }
+                    else
+                    {
+                        currentRowWidth += headerWidth[index]; // Accumulate header widths on the same row
+                        // Increase the number of headers only if they are not collapsed (width=0)
+                        // ReSharper disable once CompareOfFloatsByEqualityOperator
+                        if (headerWidth[index] != 0)
+                            numberOfHeadersInCurrentRow++;
                     }
                 }
 
-                // If we are on the first row - cannot move from previous
-                if (worstRowIndex == 0)
-                    break;
+                // If everything  fit in 1 row then exit (no separators needed)
+                if (currentRowIndex == 0)
+                    return bestSolution.Slice(0, 0);
 
-                // From the row with maximum AverageGap we try to move a header from previous row
-                int moveToRow = worstRowIndex;
-                int moveFromRow = moveToRow - 1;
-                int moveHeader = currentSolution[moveFromRow];
-                double movedHeaderWidth = headerWidth[moveHeader];
+                // Add the last row
+                rowWidth[currentRowIndex] = currentRowWidth;
+                rowHeaderCount[currentRowIndex] = numberOfHeadersInCurrentRow;
+                currentAverageGap = (rowWidthLimit - currentRowWidth) / numberOfHeadersInCurrentRow;
+                rowAverageGap[currentRowIndex] = currentAverageGap;
+                if (bestSolutionMaxRowAverageGap < currentAverageGap)
+                    bestSolutionMaxRowAverageGap = currentAverageGap;
 
-                rowWidth[moveToRow] += movedHeaderWidth;
+                currentSolution.CopyTo(bestSolution); // Remember the first solution as initial bestSolution
+                rowAverageGap.CopyTo(bestSolutionRowAverageGap); // bestSolutionRowAverageGap is used in ArrangeOverride to calculate header sizes
 
-                // If the moved header cannot fit - exit. We have the best solution already.
-                if (rowWidth[moveToRow] > rowWidthLimit)
-                    break;
-
-                // If header is moved successfully to the worst row
-                // we update the arrays keeping the row state
-                currentSolution[moveFromRow]--;
-                rowHeaderCount[moveToRow]++;
-                rowWidth[moveFromRow] -= movedHeaderWidth;
-                rowHeaderCount[moveFromRow]--;
-                rowAverageGap[moveFromRow] = (rowWidthLimit - rowWidth[moveFromRow]) / rowHeaderCount[moveFromRow];
-                rowAverageGap[moveToRow] = (rowWidthLimit - rowWidth[moveToRow]) / rowHeaderCount[moveToRow];
-
-                // EvaluateSolution:
-                // If the current solution is better than bestSolution - keep it in bestSolution
-                maxAG = 0;
-
-                for (int i = 0; i < _numRows; i++) // for all rows
+                // Search for the best solution
+                // The exit condition if when we cannot move header to the next row 
+                while (true)
                 {
-                    if (maxAG < rowAverageGap[i])
+                    // Find the row with maximum AverageGap
+                    var worstRowIndex = 0; // Keep the row index with maximum AverageGap
+                    var maxAg = 0.0;
+
+                    for (var i = 0; i < _numRows; i++) // for all rows
                     {
-                        maxAG = rowAverageGap[i];
+                        if (maxAg < rowAverageGap[i])
+                        {
+                            maxAg = rowAverageGap[i];
+                            worstRowIndex = i;
+                        }
+                    }
+
+                    // If we are on the first row - cannot move from previous
+                    if (worstRowIndex == 0)
+                        break;
+
+                    // From the row with maximum AverageGap we try to move a header from previous row
+                    var moveToRow = worstRowIndex;
+                    var moveFromRow = moveToRow - 1;
+                    var moveHeader = currentSolution[moveFromRow];
+                    var movedHeaderWidth = headerWidth[moveHeader];
+
+                    rowWidth[moveToRow] += movedHeaderWidth;
+
+                    // If the moved header cannot fit - exit. We have the best solution already.
+                    if (rowWidth[moveToRow] > rowWidthLimit)
+                        break;
+
+                    // If header is moved successfully to the worst row
+                    // we update the arrays keeping the row state
+                    currentSolution[moveFromRow]--;
+                    rowHeaderCount[moveToRow]++;
+                    rowWidth[moveFromRow] -= movedHeaderWidth;
+                    rowHeaderCount[moveFromRow]--;
+                    rowAverageGap[moveFromRow] = (rowWidthLimit - rowWidth[moveFromRow]) / rowHeaderCount[moveFromRow];
+                    rowAverageGap[moveToRow] = (rowWidthLimit - rowWidth[moveToRow]) / rowHeaderCount[moveToRow];
+
+                    // EvaluateSolution:
+                    // If the current solution is better than bestSolution - keep it in bestSolution
+                    maxAg = 0;
+
+                    for (var i = 0; i < _numRows; i++) // for all rows
+                    {
+                        if (maxAg < rowAverageGap[i])
+                        {
+                            maxAg = rowAverageGap[i];
+                        }
+                    }
+
+                    if (maxAg < bestSolutionMaxRowAverageGap)
+                    {
+                        bestSolutionMaxRowAverageGap = maxAg;
+                        currentSolution.CopyTo(bestSolution);
+                        rowAverageGap.CopyTo(bestSolutionRowAverageGap);
                     }
                 }
 
-                if (maxAG < bestSolutionMaxRowAverageGap)
+                // Each header size should be increased so headers in the row stretch to fit the row
+                currentRowIndex = 0;
+
+                for (var index = 0; index < numHeaders; index++)
                 {
-                    bestSolutionMaxRowAverageGap = maxAG;
-                    currentSolution.CopyTo(bestSolution, 0);
-                    rowAverageGap.CopyTo(bestSolutionRowAverageGap, 0);
+                    headerWidth[index] += bestSolutionRowAverageGap[currentRowIndex];
+                    if (currentRowIndex < numSeparators && bestSolution[currentRowIndex] == index)
+                        currentRowIndex++;
                 }
             }
-
-            // Each header size should be increased so headers in the row stretch to fit the row
-            currentRowIndex = 0;
-
-            for (int index = 0; index < numHeaders; index++)
+            finally
             {
-                headerWidth[index] += bestSolutionRowAverageGap[currentRowIndex];
-                if (currentRowIndex < numSeparators && bestSolution[currentRowIndex] == index)
-                    currentRowIndex++;
+                ArrayPool<int>.Shared.Return(intArray);
+                ArrayPool<double>.Shared.Return(doubleArray);
             }
 
-            // Use the best solution bestSolution[0..numSeparators-1] to layout
             return bestSolution;
         }
 
-        private Dock TabStripPlacement
-        {
-            get
-            {
-                Dock placement = Dock.Top;
-                if (TemplatedParent is TabControl tc)
-                    placement = tc.TabStripPlacement;
-                return placement;
-            }
-        }
+        private Dock TabStripPlacement => (TemplatedParent is TabControl tc) ? tc.TabStripPlacement : Dock.Top;
 
-        #endregion
-
-        //-------------------------------------------------------------------
-        //
-        //  Private Data
-        //
-        //-------------------------------------------------------------------
-
-        #region Private data
-
-        private int _numRows = 1; // Nubmer of row calculated in measure and used in arrange
-        private int _numHeaders = 0; // Number of headers excluding the collapsed items
-        private double _rowHeight = 0; // Maximum of all headers height
-
-        #endregion
+        private int _numRows = 1; // Number of row calculated in measure and used in arrange
+        private int _numHeaders; // Number of headers excluding the collapsed items
+        private double _rowHeight; // Maximum of all headers height
     }
 }
