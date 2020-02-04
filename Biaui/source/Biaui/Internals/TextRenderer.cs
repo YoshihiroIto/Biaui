@@ -269,8 +269,29 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
-            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(text.Length);
-            var advanceWidths = ArrayPool<double>.Shared.Rent(text.Length);
+            var srcTextLength = text.Length;
+
+            // ReSharper disable MergeConditionalExpression
+            var glyphIndexesArray =
+                text.Length >= 128
+                    ? ArrayPool<ushort>.Shared.Rent(srcTextLength)
+                    : null;
+
+            var advanceWidthsArray =
+                text.Length >= 128
+                    ? ArrayPool<double>.Shared.Rent(srcTextLength)
+                    : null;
+
+            var glyphIndexes =
+                glyphIndexesArray != null
+                    ? glyphIndexesArray.AsSpan(0, srcTextLength)
+                    : stackalloc ushort[srcTextLength];
+
+            var advanceWidths =
+                advanceWidthsArray != null
+                    ? advanceWidthsArray.AsSpan(0, srcTextLength)
+                    : stackalloc double[srcTextLength];
+            // ReSharper restore MergeConditionalExpression
 
             try
             {
@@ -320,8 +341,8 @@ namespace Biaui.Internals
                 var newGlyphIndexes = new ushort[textLength];
                 var newAdvanceWidths = new double[textLength];
 
-                Buffer.BlockCopy(glyphIndexes, 0, newGlyphIndexes, 0, textLength * sizeof(short));
-                Buffer.BlockCopy(advanceWidths, 0, newAdvanceWidths, 0, textLength * sizeof(double));
+                glyphIndexes.Slice(0, textLength).CopyTo(newGlyphIndexes.AsSpan());
+                advanceWidths.Slice(0, textLength).CopyTo(newAdvanceWidths.AsSpan());
 
                 var gr =
                     (new GlyphRun(
@@ -342,8 +363,11 @@ namespace Biaui.Internals
             }
             finally
             {
-                ArrayPool<ushort>.Shared.Return(glyphIndexes);
-                ArrayPool<double>.Shared.Return(advanceWidths);
+                if (glyphIndexesArray != null)
+                    ArrayPool<ushort>.Shared.Return(glyphIndexesArray);
+
+                if (advanceWidthsArray != null)
+                    ArrayPool<double>.Shared.Return(advanceWidthsArray);
             }
         }
 
@@ -351,8 +375,29 @@ namespace Biaui.Internals
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
             // ※ +3 「...」 が増えることがあるためのバッファ
-            var glyphIndexes = ArrayPool<ushort>.Shared.Rent(text.Length + 3);
-            var advanceWidths = ArrayPool<double>.Shared.Rent(text.Length + 3);
+            var srcTextLength = text.Length + 3;
+
+            // ReSharper disable MergeConditionalExpression
+            var glyphIndexesArray =
+                text.Length >= 128
+                    ? ArrayPool<ushort>.Shared.Rent(srcTextLength)
+                    : null;
+
+            var advanceWidthsArray =
+                text.Length >= 128
+                    ? ArrayPool<double>.Shared.Rent(srcTextLength)
+                    : null;
+
+            var glyphIndexes =
+                glyphIndexesArray != null
+                    ? glyphIndexesArray.AsSpan(0, srcTextLength)
+                    : stackalloc ushort[srcTextLength];
+
+            var advanceWidths =
+                advanceWidthsArray != null
+                    ? advanceWidthsArray.AsSpan(0, srcTextLength)
+                    : stackalloc double[srcTextLength];
+            // ReSharper restore MergeConditionalExpression
 
             try
             {
@@ -398,8 +443,8 @@ namespace Biaui.Internals
                 var newGlyphIndexes = new ushort[textLength];
                 var newAdvanceWidths = new double[textLength];
 
-                Buffer.BlockCopy(glyphIndexes, 0, newGlyphIndexes, 0, textLength * sizeof(short));
-                Buffer.BlockCopy(advanceWidths, 0, newAdvanceWidths, 0, textLength * sizeof(double));
+                glyphIndexes.Slice(0, textLength).CopyTo(newGlyphIndexes.AsSpan());
+                advanceWidths.Slice(0, textLength).CopyTo(newAdvanceWidths.AsSpan());
 
                 var gr =
                     (new GlyphRun(
@@ -420,14 +465,17 @@ namespace Biaui.Internals
             }
             finally
             {
-                ArrayPool<ushort>.Shared.Return(glyphIndexes);
-                ArrayPool<double>.Shared.Return(advanceWidths);
+                if (glyphIndexesArray != null)
+                    ArrayPool<ushort>.Shared.Return(glyphIndexesArray);
+
+                if (advanceWidthsArray != null)
+                    ArrayPool<double>.Shared.Return(advanceWidthsArray);
             }
         }
 
         private (double Width, int NewCount) TrimGlyphRunStandard(
-            ushort[] glyphIndexes,
-            double[] advanceWidths,
+            Span<ushort> glyphIndexes,
+            Span<double> advanceWidths,
             double textWidth,
             double maxWidth,
             int bufferSize)
