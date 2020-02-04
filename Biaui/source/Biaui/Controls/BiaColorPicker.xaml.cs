@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -659,43 +658,50 @@ namespace Biaui.Controls
 
         public override void OnApplyTemplate()
         {
-            foreach (var e in this.Descendants().OfType<BiaNumberEditor>())
+            foreach (var e in this.Descendants())
             {
-                switch (e.Name)
+                if (e is BiaNumberEditor numberEditor)
                 {
-                    case "RedEditor":
-                        _redEditor = e;
-                        break;
+                    switch (numberEditor.Name)
+                    {
+                        case "RedEditor":
+                            _redEditor = numberEditor;
+                            break;
 
-                    case "GreenEditor":
-                        _greenEditor = e;
-                        break;
+                        case "GreenEditor":
+                            _greenEditor = numberEditor;
+                            break;
 
-                    case "BlueEditor":
-                        _blueEditor = e;
-                        break;
+                        case "BlueEditor":
+                            _blueEditor = numberEditor;
+                            break;
 
-                    case "AlphaEditor":
-                        _alphaEditor = e;
-                        break;
+                        case "AlphaEditor":
+                            _alphaEditor = numberEditor;
+                            break;
 
-                    case "HueEditor":
-                        _hueEditor = e;
-                        break;
+                        case "HueEditor":
+                            _hueEditor = numberEditor;
+                            break;
 
-                    case "SaturationEditor":
-                        _saturationEditor = e;
-                        break;
+                        case "SaturationEditor":
+                            _saturationEditor = numberEditor;
+                            break;
 
-                    case "ValueEditor":
-                        _valueEditor = e;
-                        break;
+                        case "ValueEditor":
+                            _valueEditor = numberEditor;
+                            break;
+                    }
                 }
+                else if (_valueBar == null && e is BiaColorBar colorBar)
+                    _valueBar = colorBar;
+                
+                else if (_wheelBackground == null && e is BiaHsvWheelBackground hsvWheelBackground)
+                    _wheelBackground = hsvWheelBackground;
+                
+                else if (_boxBackground == null && e is BiaHsvBoxBackground hsvBoxBackground)
+                    _boxBackground = hsvBoxBackground;
             }
-
-            _valueBar = this.Descendants().OfType<BiaColorBar>().First();
-            _wheelBackground = this.Descendants().OfType<BiaHsvWheelBackground>().FirstOrDefault();
-            _boxBackground = this.Descendants().OfType<BiaHsvBoxBackground>().FirstOrDefault();
 
             SetContinuousEditingCommand();
         }
