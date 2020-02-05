@@ -16,6 +16,12 @@ namespace Biaui.Internals
 <#
 foreach (var typeName in new[]{"float", "double", "int"})
 {
+    var suffix = typeName switch
+    {
+        "float" => "f",
+        "double" => "d",
+        _ => ""
+    };
 #>
 <# if (typeName != "int") { #>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -39,7 +45,7 @@ foreach (var typeName in new[]{"float", "double", "int"})
             if (value1 == value2)
                 return true;
 
-            var eps = (Abs(value1) + Abs(value2) + (<#= typeName #>)10.0) * EPSILON;
+            var eps = (Abs(value1) + Abs(value2) + 10.0<#= suffix #>) * EPSILON;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -54,10 +60,10 @@ foreach (var typeName in new[]{"float", "double", "int"})
             const <#= typeName #> EPSILON = 2.2204460492503131e-016;
 <# } #>
 
-            if (value1 == (<#= typeName #>)0)
+            if (value1 == 0<#= suffix #>)
                 return true;
 
-            var eps = (Abs(value1) + (<#= typeName #>)10.0) * EPSILON;
+            var eps = (Abs(value1) + 10.0<#= suffix #>) * EPSILON;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
@@ -66,18 +72,18 @@ foreach (var typeName in new[]{"float", "double", "int"})
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static <#= typeName #> Abs(<#= typeName #> value)
-            => value > (<#= typeName #>)0
+            => value > 0<#= suffix #>
                 ? value
                 : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static <#= typeName #> Clamp01(<#= typeName #> value)
         {
-            if (value <= (<#= typeName #>)0)
-                return (<#= typeName #>)0;
+            if (value <= 0<#= suffix #>)
+                return 0<#= suffix #>;
 
-            if (value >= (<#= typeName #>)1)
-                return (<#= typeName #>)1;
+            if (value >= 1<#= suffix #>)
+                return 1<#= suffix #>;
 
             return value;
         }

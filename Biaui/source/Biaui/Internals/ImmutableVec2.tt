@@ -18,6 +18,7 @@ namespace Biaui.Internals
 foreach (var typeName in new[]{"float", "double"})
 {
     var mathClass = typeName == "float" ? "MathF" : "Math";
+    var suffix = typeName == "float" ? "f" : "d";
 #>
     [DebuggerDisplay("X:{X}, Y:{Y}")]
     public readonly struct ImmutableVec2_<#= typeName #> : IEquatable<ImmutableVec2_<#= typeName #>>
@@ -77,9 +78,9 @@ foreach (var typeName in new[]{"float", "double"})
             var n = v.LengthSq;
 
             if (NumberHelper.AreCloseZero(n))
-                return new ImmutableVec2_<#= typeName #>(0, 0);
+                return new ImmutableVec2_<#= typeName #>(0<#= suffix #>, 0<#= suffix #>);
 
-            var l = (<#= typeName #>)1 / <#= mathClass #>.Sqrt(n);
+            var l = 1<#= suffix #> / <#= mathClass #>.Sqrt(n);
 
             return new ImmutableVec2_<#= typeName #>(size * v.X * l, size * v.Y * l);
         }

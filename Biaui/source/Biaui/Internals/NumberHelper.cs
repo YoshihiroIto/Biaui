@@ -27,7 +27,7 @@ namespace Biaui.Internals
             if (value1 == value2)
                 return true;
 
-            var eps = (Abs(value1) + Abs(value2) + (float)10.0) * EPSILON;
+            var eps = (Abs(value1) + Abs(value2) + 10.0f) * EPSILON;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -38,10 +38,10 @@ namespace Biaui.Internals
         {
             const float EPSILON = (float)1.4e-45;
 
-            if (value1 == (float)0)
+            if (value1 == 0f)
                 return true;
 
-            var eps = (Abs(value1) + (float)10.0) * EPSILON;
+            var eps = (Abs(value1) + 10.0f) * EPSILON;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
@@ -49,18 +49,18 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static float Abs(float value)
-            => value > (float)0
+            => value > 0f
                 ? value
                 : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static float Clamp01(float value)
         {
-            if (value <= (float)0)
-                return (float)0;
+            if (value <= 0f)
+                return 0f;
 
-            if (value >= (float)1)
-                return (float)1;
+            if (value >= 1f)
+                return 1f;
 
             return value;
         }
@@ -132,7 +132,7 @@ namespace Biaui.Internals
             if (value1 == value2)
                 return true;
 
-            var eps = (Abs(value1) + Abs(value2) + (double)10.0) * EPSILON;
+            var eps = (Abs(value1) + Abs(value2) + 10.0d) * EPSILON;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -143,10 +143,10 @@ namespace Biaui.Internals
         {
             const double EPSILON = 2.2204460492503131e-016;
 
-            if (value1 == (double)0)
+            if (value1 == 0d)
                 return true;
 
-            var eps = (Abs(value1) + (double)10.0) * EPSILON;
+            var eps = (Abs(value1) + 10.0d) * EPSILON;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
@@ -154,18 +154,18 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Abs(double value)
-            => value > (double)0
+            => value > 0d
                 ? value
                 : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Clamp01(double value)
         {
-            if (value <= (double)0)
-                return (double)0;
+            if (value <= 0d)
+                return 0d;
 
-            if (value >= (double)1)
-                return (double)1;
+            if (value >= 1d)
+                return 1d;
 
             return value;
         }
@@ -223,18 +223,18 @@ namespace Biaui.Internals
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int Abs(int value)
-            => value > (int)0
+            => value > 0
                 ? value
                 : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int Clamp01(int value)
         {
-            if (value <= (int)0)
-                return (int)0;
+            if (value <= 0)
+                return 0;
 
-            if (value >= (int)1)
-                return (int)1;
+            if (value >= 1)
+                return 1;
 
             return value;
         }

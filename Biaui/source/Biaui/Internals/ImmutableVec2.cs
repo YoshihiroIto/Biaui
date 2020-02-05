@@ -69,9 +69,9 @@ namespace Biaui.Internals
             var n = v.LengthSq;
 
             if (NumberHelper.AreCloseZero(n))
-                return new ImmutableVec2_float(0, 0);
+                return new ImmutableVec2_float(0f, 0f);
 
-            var l = (float)1 / MathF.Sqrt(n);
+            var l = 1f / MathF.Sqrt(n);
 
             return new ImmutableVec2_float(size * v.X * l, size * v.Y * l);
         }
@@ -157,9 +157,9 @@ namespace Biaui.Internals
             var n = v.LengthSq;
 
             if (NumberHelper.AreCloseZero(n))
-                return new ImmutableVec2_double(0, 0);
+                return new ImmutableVec2_double(0d, 0d);
 
-            var l = (double)1 / Math.Sqrt(n);
+            var l = 1d / Math.Sqrt(n);
 
             return new ImmutableVec2_double(size * v.X * l, size * v.Y * l);
         }

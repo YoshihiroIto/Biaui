@@ -18,7 +18,7 @@ namespace Biaui.Internals
         public readonly float Width;
         public readonly float Height;
 
-        public bool HasArea => Width > (float)0 && Height > (float)0;
+        public bool HasArea => Width > 0f && Height > 0f;
 
         public float Left => X;
         public float Top => Y;
@@ -66,7 +66,7 @@ namespace Biaui.Internals
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((float)0, (float)0, (float)0, (float)0);
+                (X, Y, Width, Height) = (0f, 0f, 0f, 0f);
                 return;
             }
 
@@ -96,7 +96,7 @@ namespace Biaui.Internals
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = (0, 0, 0, 0);
+                (X, Y, Width, Height) = (0f, 0f, 0f, 0f);
                 return;
             }
 
@@ -150,14 +150,14 @@ namespace Biaui.Internals
                     (float)(maxY - minY)
                 );
             else
-                (X, Y, Width, Height) = ((float)0, (float)0, (float)0, (float)0);
+                (X, Y, Width, Height) = (0f, 0f, 0f, 0f);
         }
 
         public ImmutableRect_float(Span<ImmutableVec2_float> points)
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((float)0, (float)0, (float)0, (float)0);
+                (X, Y, Width, Height) = (0f, 0f, 0f, 0f);
                 return;
             }
 
@@ -187,7 +187,7 @@ namespace Biaui.Internals
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((float)0, (float)0, (float)0, (float)0);
+                (X, Y, Width, Height) = (0f, 0f, 0f, 0f);
                 return;
             }
 
@@ -241,7 +241,7 @@ namespace Biaui.Internals
                     maxY - minY
                 );
             else
-                (X, Y, Width, Height) = ((float)0, (float)0, (float)0, (float)0);
+                (X, Y, Width, Height) = (0f, 0f, 0f, 0f);
         }
 
         public enum CtorPoint4
@@ -386,7 +386,7 @@ namespace Biaui.Internals
         public readonly double Width;
         public readonly double Height;
 
-        public bool HasArea => Width > (double)0 && Height > (double)0;
+        public bool HasArea => Width > 0d && Height > 0d;
 
         public double Left => X;
         public double Top => Y;
@@ -434,7 +434,7 @@ namespace Biaui.Internals
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((double)0, (double)0, (double)0, (double)0);
+                (X, Y, Width, Height) = (0d, 0d, 0d, 0d);
                 return;
             }
 
@@ -464,7 +464,7 @@ namespace Biaui.Internals
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = (0, 0, 0, 0);
+                (X, Y, Width, Height) = (0d, 0d, 0d, 0d);
                 return;
             }
 
@@ -518,14 +518,14 @@ namespace Biaui.Internals
                     (double)(maxY - minY)
                 );
             else
-                (X, Y, Width, Height) = ((double)0, (double)0, (double)0, (double)0);
+                (X, Y, Width, Height) = (0d, 0d, 0d, 0d);
         }
 
         public ImmutableRect_double(Span<ImmutableVec2_double> points)
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((double)0, (double)0, (double)0, (double)0);
+                (X, Y, Width, Height) = (0d, 0d, 0d, 0d);
                 return;
             }
 
@@ -555,7 +555,7 @@ namespace Biaui.Internals
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((double)0, (double)0, (double)0, (double)0);
+                (X, Y, Width, Height) = (0d, 0d, 0d, 0d);
                 return;
             }
 
@@ -609,7 +609,7 @@ namespace Biaui.Internals
                     maxY - minY
                 );
             else
-                (X, Y, Width, Height) = ((double)0, (double)0, (double)0, (double)0);
+                (X, Y, Width, Height) = (0d, 0d, 0d, 0d);
         }
 
         public enum CtorPoint4
@@ -747,5 +747,6 @@ namespace Biaui.Internals
         public override int GetHashCode()
             => HashCodeMaker.To32(HashCodeMaker.Make(X, Y, Width, Height));
     }
+
 }
 

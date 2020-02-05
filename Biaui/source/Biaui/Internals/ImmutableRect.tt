@@ -17,6 +17,7 @@ namespace Biaui.Internals
 <#
 foreach (var typeName in new[]{"float", "double"})
 {
+    var suffix = typeName == "float" ? "f" : "d";
 #>
     public readonly struct ImmutableRect_<#= typeName #> : IEquatable<ImmutableRect_<#= typeName #>>
     {
@@ -25,7 +26,7 @@ foreach (var typeName in new[]{"float", "double"})
         public readonly <#= typeName #> Width;
         public readonly <#= typeName #> Height;
 
-        public bool HasArea => Width > (<#= typeName #>)0 && Height > (<#= typeName #>)0;
+        public bool HasArea => Width > 0<#= suffix #> && Height > 0<#= suffix #>;
 
         public <#= typeName #> Left => X;
         public <#= typeName #> Top => Y;
@@ -73,7 +74,7 @@ foreach (var typeName in new[]{"float", "double"})
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0);
+                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
                 return;
             }
 
@@ -103,7 +104,7 @@ foreach (var typeName in new[]{"float", "double"})
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = (0, 0, 0, 0);
+                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
                 return;
             }
 
@@ -157,14 +158,14 @@ foreach (var typeName in new[]{"float", "double"})
                     (<#= typeName #>)(maxY - minY)
                 );
             else
-                (X, Y, Width, Height) = ((<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0);
+                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
         }
 
         public ImmutableRect_<#= typeName #>(Span<ImmutableVec2_<#= typeName #>> points)
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0);
+                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
                 return;
             }
 
@@ -194,7 +195,7 @@ foreach (var typeName in new[]{"float", "double"})
         {
             if (points.Length == 0)
             {
-                (X, Y, Width, Height) = ((<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0);
+                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
                 return;
             }
 
@@ -248,7 +249,7 @@ foreach (var typeName in new[]{"float", "double"})
                     maxY - minY
                 );
             else
-                (X, Y, Width, Height) = ((<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0, (<#= typeName #>)0);
+                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
         }
 
         public enum CtorPoint4

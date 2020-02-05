@@ -11,7 +11,7 @@ namespace Biaui.Internals
     public static class BiaNodeEditorHelper
     {
 
-        private const float ControlPointLength_float = (float)200;
+        private const float ControlPointLength_float = 200f;
 
         internal static ImmutableVec2_float MakeBezierControlPoint(in ImmutableVec2_float src, BiaNodeSlotDir dir)
         {
@@ -59,23 +59,23 @@ namespace Biaui.Internals
                     return false;
 
                 var v01 = new ImmutableVec2_float(
-                    (bezierPoints[0].X + bezierPoints[1].X) * (float)0.5,
-                    (bezierPoints[0].Y + bezierPoints[1].Y) * (float)0.5);
+                    (bezierPoints[0].X + bezierPoints[1].X) * 0.5f,
+                    (bezierPoints[0].Y + bezierPoints[1].Y) * 0.5f);
                 var v12 = new ImmutableVec2_float(
-                    (bezierPoints[1].X + bezierPoints[2].X) * (float)0.5,
-                    (bezierPoints[1].Y + bezierPoints[2].Y) * (float)0.5);
+                    (bezierPoints[1].X + bezierPoints[2].X) * 0.5f,
+                    (bezierPoints[1].Y + bezierPoints[2].Y) * 0.5f);
                 var v23 = new ImmutableVec2_float(
-                    (bezierPoints[2].X + bezierPoints[3].X) * (float)0.5,
-                    (bezierPoints[2].Y + bezierPoints[3].Y) * (float)0.5);
+                    (bezierPoints[2].X + bezierPoints[3].X) * 0.5f,
+                    (bezierPoints[2].Y + bezierPoints[3].Y) * 0.5f);
 
-                var v0112 = new ImmutableVec2_float((v01.X + v12.X) * (float)0.5, (v01.Y + v12.Y) * (float)0.5);
-                var v1223 = new ImmutableVec2_float((v12.X + v23.X) * (float)0.5, (v12.Y + v23.Y) * (float)0.5);
+                var v0112 = new ImmutableVec2_float((v01.X + v12.X) * 0.5f, (v01.Y + v12.Y) * 0.5f);
+                var v1223 = new ImmutableVec2_float((v12.X + v23.X) * 0.5f, (v12.Y + v23.Y) * 0.5f);
 
-                if (NumberHelper.Abs(v0112.X - v1223.X) < (float)0.00001 &&
-                    NumberHelper.Abs(v0112.Y - v1223.Y) < (float)0.00001)
+                if (NumberHelper.Abs(v0112.X - v1223.X) < 0.00001f &&
+                    NumberHelper.Abs(v0112.Y - v1223.Y) < 0.00001f)
                     return rect.IntersectsWith(v0112);
 
-                var c = new ImmutableVec2_float((v0112.X + v1223.X) * (float)0.5, (v0112.Y + v1223.Y) * (float)0.5);
+                var c = new ImmutableVec2_float((v0112.X + v1223.X) * 0.5f, (v0112.Y + v1223.Y) * 0.5f);
 
                 cl[0] = bezierPoints[0];
                 cl[1] = v01;
@@ -91,7 +91,7 @@ namespace Biaui.Internals
             }
         }
 
-        // 参考： https://floris.briolas.nl/floris/2009/10/bounding-box-of-cubic-bezier/ 
+        // 参考： https://floris.briolas.nl/floris/2009/10/bounding-box-of-cubic-bezier/
         public static ImmutableRect_float MakeBoundingBox(in ImmutableVec2_float p1, in ImmutableVec2_float c1, in ImmutableVec2_float c2, in ImmutableVec2_float p2)
         {
             var aX = A(p1.X, c1.X, c2.X, p2.X);
@@ -157,37 +157,37 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Bezier(float x1, float x2, float x3, float x4, float t)
         {
-            var mt2 = ((float)1 - t) * ((float)1 - t);
-            var mt3 = mt2 * ((float)1 - t);
+            var mt2 = (1f - t) * (1f - t);
+            var mt3 = mt2 * (1f - t);
             var pt2 = t * t;
             var pt3 = pt2 * t;
 
-            return mt3 * x1 + (float)3 * (mt2 * t * x2 + ((float)1 - t) * pt2 * x3) + pt3 * x4;
+            return mt3 * x1 + 3f * (mt2 * t * x2 + (1f - t) * pt2 * x3) + pt3 * x4;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float A(float p0, float p1, float p2, float p3) => (float)3 * (p3 - p0) + (float)9 * (p1 - p2);
+        private static float A(float p0, float p1, float p2, float p3) => 3f * (p3 - p0) + 9f * (p1 - p2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float B(float p0, float p1, float p2) => (float)6 * (p2 - p1 - p1 + p0);
+        private static float B(float p0, float p1, float p2) => 6f * (p2 - p1 - p1 + p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float C(float p0, float p1) => (float)3 * (p1 - p0);
+        private static float C(float p0, float p1) => 3f * (p1 - p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float Determinant(float a, float b, float c) => b * b - (float)4 * a * c;
+        private static float Determinant(float a, float b, float c) => b * b - 4f * a * c;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float SolveP(float a, float b, float sqrtD) => (-b + sqrtD) / ((float)2 * a);
+        private static float SolveP(float a, float b, float sqrtD) => (-b + sqrtD) / (2f * a);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float SolveM(float a, float b, float sqrtD) => (-b - sqrtD) / ((float)2 * a);
+        private static float SolveM(float a, float b, float sqrtD) => (-b - sqrtD) / (2f * a);
 
         private static int Solve(Span<float> result, float a, float b, float c)
         {
             var d = Determinant(a, b, c);
 
-            if (d <= (float)0)
+            if (d <= 0f)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))
@@ -211,7 +211,7 @@ namespace Biaui.Internals
             }
         }
 
-        private const double ControlPointLength_double = (double)200;
+        private const double ControlPointLength_double = 200d;
 
         internal static ImmutableVec2_double MakeBezierControlPoint(in ImmutableVec2_double src, BiaNodeSlotDir dir)
         {
@@ -259,23 +259,23 @@ namespace Biaui.Internals
                     return false;
 
                 var v01 = new ImmutableVec2_double(
-                    (bezierPoints[0].X + bezierPoints[1].X) * (double)0.5,
-                    (bezierPoints[0].Y + bezierPoints[1].Y) * (double)0.5);
+                    (bezierPoints[0].X + bezierPoints[1].X) * 0.5d,
+                    (bezierPoints[0].Y + bezierPoints[1].Y) * 0.5d);
                 var v12 = new ImmutableVec2_double(
-                    (bezierPoints[1].X + bezierPoints[2].X) * (double)0.5,
-                    (bezierPoints[1].Y + bezierPoints[2].Y) * (double)0.5);
+                    (bezierPoints[1].X + bezierPoints[2].X) * 0.5d,
+                    (bezierPoints[1].Y + bezierPoints[2].Y) * 0.5d);
                 var v23 = new ImmutableVec2_double(
-                    (bezierPoints[2].X + bezierPoints[3].X) * (double)0.5,
-                    (bezierPoints[2].Y + bezierPoints[3].Y) * (double)0.5);
+                    (bezierPoints[2].X + bezierPoints[3].X) * 0.5d,
+                    (bezierPoints[2].Y + bezierPoints[3].Y) * 0.5d);
 
-                var v0112 = new ImmutableVec2_double((v01.X + v12.X) * (double)0.5, (v01.Y + v12.Y) * (double)0.5);
-                var v1223 = new ImmutableVec2_double((v12.X + v23.X) * (double)0.5, (v12.Y + v23.Y) * (double)0.5);
+                var v0112 = new ImmutableVec2_double((v01.X + v12.X) * 0.5d, (v01.Y + v12.Y) * 0.5d);
+                var v1223 = new ImmutableVec2_double((v12.X + v23.X) * 0.5d, (v12.Y + v23.Y) * 0.5d);
 
-                if (NumberHelper.Abs(v0112.X - v1223.X) < (double)0.00001 &&
-                    NumberHelper.Abs(v0112.Y - v1223.Y) < (double)0.00001)
+                if (NumberHelper.Abs(v0112.X - v1223.X) < 0.00001d &&
+                    NumberHelper.Abs(v0112.Y - v1223.Y) < 0.00001d)
                     return rect.IntersectsWith(v0112);
 
-                var c = new ImmutableVec2_double((v0112.X + v1223.X) * (double)0.5, (v0112.Y + v1223.Y) * (double)0.5);
+                var c = new ImmutableVec2_double((v0112.X + v1223.X) * 0.5d, (v0112.Y + v1223.Y) * 0.5d);
 
                 cl[0] = bezierPoints[0];
                 cl[1] = v01;
@@ -291,7 +291,7 @@ namespace Biaui.Internals
             }
         }
 
-        // 参考： https://floris.briolas.nl/floris/2009/10/bounding-box-of-cubic-bezier/ 
+        // 参考： https://floris.briolas.nl/floris/2009/10/bounding-box-of-cubic-bezier/
         public static ImmutableRect_double MakeBoundingBox(in ImmutableVec2_double p1, in ImmutableVec2_double c1, in ImmutableVec2_double c2, in ImmutableVec2_double p2)
         {
             var aX = A(p1.X, c1.X, c2.X, p2.X);
@@ -357,37 +357,37 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Bezier(double x1, double x2, double x3, double x4, double t)
         {
-            var mt2 = ((double)1 - t) * ((double)1 - t);
-            var mt3 = mt2 * ((double)1 - t);
+            var mt2 = (1d - t) * (1d - t);
+            var mt3 = mt2 * (1d - t);
             var pt2 = t * t;
             var pt3 = pt2 * t;
 
-            return mt3 * x1 + (double)3 * (mt2 * t * x2 + ((double)1 - t) * pt2 * x3) + pt3 * x4;
+            return mt3 * x1 + 3d * (mt2 * t * x2 + (1d - t) * pt2 * x3) + pt3 * x4;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double A(double p0, double p1, double p2, double p3) => (double)3 * (p3 - p0) + (double)9 * (p1 - p2);
+        private static double A(double p0, double p1, double p2, double p3) => 3d * (p3 - p0) + 9d * (p1 - p2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double B(double p0, double p1, double p2) => (double)6 * (p2 - p1 - p1 + p0);
+        private static double B(double p0, double p1, double p2) => 6d * (p2 - p1 - p1 + p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double C(double p0, double p1) => (double)3 * (p1 - p0);
+        private static double C(double p0, double p1) => 3d * (p1 - p0);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double Determinant(double a, double b, double c) => b * b - (double)4 * a * c;
+        private static double Determinant(double a, double b, double c) => b * b - 4d * a * c;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double SolveP(double a, double b, double sqrtD) => (-b + sqrtD) / ((double)2 * a);
+        private static double SolveP(double a, double b, double sqrtD) => (-b + sqrtD) / (2d * a);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static double SolveM(double a, double b, double sqrtD) => (-b - sqrtD) / ((double)2 * a);
+        private static double SolveM(double a, double b, double sqrtD) => (-b - sqrtD) / (2d * a);
 
         private static int Solve(Span<double> result, double a, double b, double c)
         {
             var d = Determinant(a, b, c);
 
-            if (d <= (double)0)
+            if (d <= 0d)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))
