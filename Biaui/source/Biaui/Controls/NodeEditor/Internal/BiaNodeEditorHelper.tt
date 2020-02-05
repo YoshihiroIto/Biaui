@@ -195,7 +195,7 @@ foreach (var typeName in new[]{"float", "double"})
         {
             var d = Determinant(a, b, c);
 
-            if (d < (<#= typeName #>)0)
+            if (d <= (<#= typeName #>)0)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))

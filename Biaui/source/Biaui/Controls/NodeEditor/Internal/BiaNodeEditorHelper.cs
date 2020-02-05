@@ -187,7 +187,7 @@ namespace Biaui.Internals
         {
             var d = Determinant(a, b, c);
 
-            if (d < (float)0)
+            if (d <= (float)0)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))
@@ -387,7 +387,7 @@ namespace Biaui.Internals
         {
             var d = Determinant(a, b, c);
 
-            if (d < (double)0)
+            if (d <= (double)0)
                 return 0;
 
             if (NumberHelper.AreCloseZero(a))
