@@ -193,14 +193,26 @@ namespace Biaui.StandardControls.Internal
         private void ArrangeHorizontal(Size arrangeSize)
         {
             var numSeparators = _numRows - 1;
-        
-            var buffer = ArrayPool<byte>.Shared.Rent(
-                Unsafe.SizeOf<double>() * _numHeaders +
-                Unsafe.SizeOf<int>() + numSeparators);
 
-            var headerSize = MemoryMarshal.Cast<byte, double>(buffer.AsSpan(0, Unsafe.SizeOf<double>() *_numHeaders));
-            var solution = MemoryMarshal.Cast<byte, int>(buffer.AsSpan(Unsafe.SizeOf<double>() *_numHeaders, Unsafe.SizeOf<int>() * numSeparators));
-            
+            // ReSharper disable MergeConditionalExpression
+            var bufferSize =
+                Unsafe.SizeOf<double>() * _numHeaders +
+                Unsafe.SizeOf<int>() + numSeparators;
+
+            var bufferArray =
+                bufferSize >= 512
+                    ? ArrayPool<byte>.Shared.Rent(bufferSize)
+                    : null;
+
+            var buffer =
+                bufferArray != null
+                    ? bufferArray.AsSpan(0, bufferSize)
+                    : stackalloc byte[bufferSize];
+            // ReSharper restore MergeConditionalExpression
+
+            var headerSize = MemoryMarshal.Cast<byte, double>(buffer.Slice(0, Unsafe.SizeOf<double>() * _numHeaders));
+            var solution = MemoryMarshal.Cast<byte, int>(buffer.Slice(Unsafe.SizeOf<double>() * _numHeaders, Unsafe.SizeOf<int>() * numSeparators));
+
             try
             {
                 var tabAlignment = TabStripPlacement;
@@ -281,7 +293,8 @@ namespace Biaui.StandardControls.Internal
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(buffer);
+                if (bufferArray != null)
+                    ArrayPool<byte>.Shared.Return(bufferArray);
             }
         }
 
@@ -370,14 +383,36 @@ namespace Biaui.StandardControls.Internal
         {
             var numSeparators = _numRows - 1;
 
-            var doubleArray = ArrayPool<double>.Shared.Rent(_numRows + _numRows + _numRows);
-            var intArray = ArrayPool<int>.Shared.Rent(numSeparators + _numRows);
+            // ReSharper disable MergeConditionalExpression
+            var doubleArraySize = _numRows + _numRows + _numRows;
+            var intArraySize = numSeparators + _numRows;
 
-            var rowWidth = doubleArray.AsSpan(0, _numRows);
-            var rowAverageGap = doubleArray.AsSpan(_numRows, _numRows);
-            var bestSolutionRowAverageGap = doubleArray.AsSpan(_numRows + _numRows, _numRows);
-            var currentSolution = intArray.AsSpan(0, numSeparators);
-            var rowHeaderCount = intArray.AsSpan(numSeparators, _numRows);
+            var doubleArray =
+                doubleArraySize > 128
+                    ? ArrayPool<double>.Shared.Rent(_numRows + _numRows + _numRows)
+                    : null;
+
+            var intArray =
+                intArraySize > 128
+                    ? ArrayPool<int>.Shared.Rent(numSeparators + _numRows)
+                    : null;
+
+            var doubleBuffer =
+                doubleArray != null
+                    ? doubleArray
+                    : stackalloc double[doubleArraySize];
+
+            var intBuffer =
+                intArray != null
+                    ? intArray
+                    : stackalloc int[intArraySize];
+            // ReSharper restore MergeConditionalExpression
+
+            var rowWidth = doubleBuffer.Slice(0, _numRows);
+            var rowAverageGap = doubleBuffer.Slice(_numRows, _numRows);
+            var bestSolutionRowAverageGap = doubleBuffer.Slice(_numRows + _numRows, _numRows);
+            var currentSolution = intBuffer.Slice(0, numSeparators);
+            var rowHeaderCount = intBuffer.Slice(numSeparators, _numRows);
 
             try
             {
@@ -512,14 +547,19 @@ namespace Biaui.StandardControls.Internal
             }
             finally
             {
-                ArrayPool<int>.Shared.Return(intArray);
-                ArrayPool<double>.Shared.Return(doubleArray);
+                if (doubleArray != null)
+                    ArrayPool<double>.Shared.Return(doubleArray);
+                
+                if (intArray != null)
+                    ArrayPool<int>.Shared.Return(intArray);
             }
 
             return bestSolution;
         }
 
-        private Dock TabStripPlacement => (TemplatedParent is TabControl tc) ? tc.TabStripPlacement : Dock.Top;
+        private Dock TabStripPlacement => (TemplatedParent is TabControl tc)
+            ? tc.TabStripPlacement
+            : Dock.Top;
 
         private int _numRows = 1; // Number of row calculated in measure and used in arrange
         private int _numHeaders; // Number of headers excluding the collapsed items
