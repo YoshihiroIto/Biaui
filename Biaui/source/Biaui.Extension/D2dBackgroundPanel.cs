@@ -9,6 +9,7 @@ using Biaui.Internals;
 using Jewelry.Collections;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
+
 using BezierSegment = SharpDX.Direct2D1.BezierSegment;
 using Brush = SharpDX.Direct2D1.Brush;
 using SolidColorBrush = SharpDX.Direct2D1.SolidColorBrush;
@@ -68,7 +69,7 @@ namespace Biaui.Extension
             Span<ImmutableVec2_float> bezier = stackalloc ImmutableVec2_float[4];
 
             var hasHighlightCurves = false;
-
+            
             foreach (IBiaNodeLink? link in _parent.LinksSource)
             {
                 if (link == null)
@@ -84,6 +85,20 @@ namespace Biaui.Extension
 
                 if (isHighlight)
                     hasHighlightCurves = true;
+                
+                // ハイライトがあれば、非ハイライトを表示しない
+                if (hasHighlightCurves && isHighlight == false)
+                    continue;
+                
+                link.MakeBezierCurve(bezier);
+                var keyBezier = MakeHashCode(bezier);
+                if (_boundingBoxCache.TryGetValue(keyBezier, out var bb) == false)
+                {
+                    bb = BiaNodeEditorHelper.MakeBoundingBox(bezier);
+                    _boundingBoxCache.Add(keyBezier, bb);
+                }
+                if (bb.IntersectsWith(lineCullingRect) == false)
+                    continue;
 
                 GeometrySink curveSink;
                 GeometrySink? arrowSink;
@@ -109,18 +124,6 @@ namespace Biaui.Extension
                     }
                 }
 
-                link.MakeBezierCurve(bezier);
-                var keyBezier = MakeHashCode(bezier);
-                if (_boundingBoxCache.TryGetValue(keyBezier, out var bb) == false)
-                {
-                    bb = BiaNodeEditorHelper.MakeBoundingBox(bezier);
-
-                    _boundingBoxCache.Add(keyBezier, bb);
-                }
-
-                if (bb.IntersectsWith(lineCullingRect) == false)
-                    continue;
-
                 // 接続線
                 {
                     curveSink.BeginFigure(Unsafe.As<ImmutableVec2_float, RawVector2>(ref bezier[0]), FigureBegin.Hollow);
@@ -135,14 +138,14 @@ namespace Biaui.Extension
 
             foreach (var sink in _sinks)
             {
+                // ハイライトがあれば、非ハイライトを表示しない
+                if (hasHighlightCurves && sink.Value.isHighlight == false)
+                    continue;
+                
                 // ブラシ取得
                 var resKey = HashCodeMaker.To32(sink.Key);
                 if (ResourceCache.TryGetValue(resKey, out var brush) == false)
                     brush = ResourceCache.Add(resKey, t => ColorToBrushConv(t, sink.Value.color));
-
-                // ハイライトがあれば、非ハイライトを表示しない
-                if (hasHighlightCurves && sink.Value.isHighlight == false)
-                    continue;
 
                 // 接続線カーブ
                 {
