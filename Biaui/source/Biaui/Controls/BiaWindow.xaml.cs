@@ -84,7 +84,7 @@ namespace Biaui.Controls
                 typeof(WindowCloseButtonBehavior),
                 typeof(BiaWindow),
                 new PropertyMetadata(
-                    Boxes.WindowCloseButtonBehavior_Normal,
+                    Boxes.WindowCloseButtonBehaviorNormal,
                     (s, e) =>
                     {
                         var self = (BiaWindow) s;

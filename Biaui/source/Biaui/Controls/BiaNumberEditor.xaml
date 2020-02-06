@@ -14,7 +14,7 @@
         <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolTrue}" />
 
         <Style.Triggers>
-            <Trigger Property="Mode" Value="{x:Static controls:BiaNumberEditorMode.WideRange}">
+            <Trigger Property="Mode" Value="{x:Static biaui:Boxes.NumberModeWideRange}">
                 <Setter Property="CaptionForeground" Value="{DynamicResource TextBoxSubForegroundBrushKey}" />
             </Trigger>
 

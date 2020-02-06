@@ -12,12 +12,12 @@
                     <controls:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int2}"
                                              CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}"
                                              Spacing="{x:Static biaui:Boxes.Double1}">
-                        <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
+                        <controls:BiaToggleButton Behavior="{x:Static biaui:Boxes.ToggleButtonBehaviorRadioButton}"
                                                   Content="{Binding EnabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                   CornerRadius="{x:Static biaui:Boxes.Double0}"
                                                   IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
 
-                        <controls:BiaToggleButton Behavior="{x:Static controls:BiaToggleButtonBehavior.RadioButton}"
+                        <controls:BiaToggleButton Behavior="{x:Static biaui:Boxes.ToggleButtonBehaviorRadioButton}"
                                                   Content="{Binding DisabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                   CornerRadius="{x:Static biaui:Boxes.Double0}"
                                                   IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static controls:BiaToggleSwitch.InverseConverter}}" />
