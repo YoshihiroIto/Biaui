@@ -357,7 +357,6 @@ namespace Biaui.Controls
 
         #endregion
         
-
         #region TextTrimming
 
         public TextTrimmingMode TextTrimming
@@ -366,7 +365,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _TextTrimming)
-                    SetValue(TextTrimmingProperty, value);
+                    SetValue(TextTrimmingProperty, Boxes.TextTrimming(value));
             }
         }
 

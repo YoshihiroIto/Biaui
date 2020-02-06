@@ -72,7 +72,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _CloseButtonBehavior)
-                    SetValue(CloseButtonBehaviorProperty, value);
+                    SetValue(CloseButtonBehaviorProperty, Boxes.WindowCloseButton(value));
             }
         }
 

@@ -629,7 +629,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _TextTrimming)
-                    SetValue(TextTrimmingProperty, value);
+                    SetValue(TextTrimmingProperty, Boxes.TextTrimming(value));
             }
         }
 
@@ -788,7 +788,7 @@ namespace Biaui.Controls
                     dc,
                     ActualWidth - Padding.Left - Padding.Right - SpinWidth,
                     TextAlignment.Right,
-                    TextTrimming,
+                    TextTrimmingMode.None,
                     false);
         }
 

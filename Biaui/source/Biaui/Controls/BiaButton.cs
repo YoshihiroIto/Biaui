@@ -45,7 +45,7 @@ namespace Biaui.Controls
             set
             {
                 if (value != _TextTrimming)
-                    SetValue(TextTrimmingProperty, value);
+                    SetValue(TextTrimmingProperty, Boxes.TextTrimming(value));
             }
         }
 
