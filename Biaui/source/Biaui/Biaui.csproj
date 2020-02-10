@@ -26,7 +26,7 @@
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
-    <PackageVersion>1.0.7</PackageVersion>
+    <PackageVersion>1.0.8</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
