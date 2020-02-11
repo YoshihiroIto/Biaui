@@ -1,6 +1,6 @@
 # Biaui
 
-***WPF dark theme and controls for .NET Core 3.1 or .NET Framework***
+***WPF dark theme and controls for .NET Core and .NET Framework***
 
 [Biaui.Showcase.csproj](https://github.com/YoshihiroIto/Biaui/tree/master/Biaui/source/Biaui.Showcase)
 ![Biaui.Showcase.csproj](biaui.png)
