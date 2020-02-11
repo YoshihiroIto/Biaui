@@ -197,7 +197,7 @@ namespace Biaui.StandardControls.Internal
             // ReSharper disable MergeConditionalExpression
             var bufferSize =
                 Unsafe.SizeOf<double>() * _numHeaders +
-                Unsafe.SizeOf<int>() + numSeparators;
+                Unsafe.SizeOf<int>() * numSeparators;
 
             var bufferArray =
                 bufferSize >= 512
