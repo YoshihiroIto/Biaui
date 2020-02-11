@@ -1,6 +1,6 @@
 # Biaui
 
-***WPF dark theme and controls for .NET Core 3.1.***
+***WPF dark theme and controls for .NET Core 3.1 or .NET Framework***
 
 [Biaui.Showcase.csproj](https://github.com/YoshihiroIto/Biaui/tree/master/Biaui/source/Biaui.Showcase)
 ![Biaui.Showcase.csproj](biaui.png)
@@ -13,7 +13,7 @@
 
 
 
-## Feature
+## Features
 
 * Dark color
 * Per Monitor DPI aware
@@ -26,6 +26,11 @@
 * Some lightweight standard controls
     * Reimplementation. about x20-30 faster than standard WPF controls
 
+
+## Target Frameworks
+
+* .NET Core 3.1
+* .NET Framework 4.7 or 4.7.2 or 4.8
 
 
 ## Quick Start
