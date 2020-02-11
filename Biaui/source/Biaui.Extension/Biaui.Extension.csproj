@@ -6,15 +6,17 @@
     <RootNamespace>Biaui.Extension</RootNamespace>
 
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
     <Nullable>enable</Nullable>
+    <Nullable Condition="'$(TargetFramework)' != 'netcoreapp3.1'">annotations</Nullable>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-    <Title>WPF dark theme and controls for .NET Core 3.1.</Title>
+    <Description>WPF dark theme and controls for .NET Core and .NET Framework</Description>
 
     <Authors>Yoshihiro Ito</Authors>
 
-    <Copyright>Copyright (c) 2019 copyright Yoshihiro Ito (yo.i.jewelry.bab@gmail.com)</Copyright>
+    <Copyright>Copyright (c) 2018-2020 copyright Yoshihiro Ito (yo.i.jewelry.bab@gmail.com)</Copyright>
 
     <PackageProjectUrl>https://github.com/YoshihiroIto/Biaui</PackageProjectUrl>
 
@@ -24,18 +26,21 @@
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.10</PackageVersion>
 
     <LangVersion>8</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\..\externals\D2dControl\D2dControl\*.cs" LinkBase="D2dControl" />
+    <Compile Include="..\Biaui\Internals\MathF.cs">
+      <Link>MathF.cs</Link>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Biaui" Version="1.0.8" />
+    <PackageReference Include="Biaui" Version="1.0.9" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
