@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
 
     <AssemblyName>Biaui.Extension</AssemblyName>
@@ -26,6 +25,9 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
     <PackageVersion>1.0.1</PackageVersion>
+
+    <LangVersion>8</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

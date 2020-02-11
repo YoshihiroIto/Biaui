@@ -26,7 +26,8 @@ namespace Biaui.Controls.Mock.Foundation
 
                 _logger.Info($"Read: {path}");
 
-                await using var s = new FileStream(path, FileMode.Open, FileAccess.Read);
+                // ReSharper disable once UseAwaitUsing
+                using var s = new FileStream(path, FileMode.Open, FileAccess.Read);
                 return await JsonSerializer.DeserializeAsync<T>(s).ConfigureAwait(false);
             }
             catch (System.Exception e)
@@ -44,7 +45,8 @@ namespace Biaui.Controls.Mock.Foundation
 
                 SetupDir(path);
 
-                await using var s = new FileStream(path, FileMode.Create, FileAccess.Write);
+                // ReSharper disable once UseAwaitUsing
+                using var s = new FileStream(path, FileMode.Create, FileAccess.Write);
                 await JsonSerializer.SerializeAsync(s, target).ConfigureAwait(false);
             }
             catch (System.Exception e)

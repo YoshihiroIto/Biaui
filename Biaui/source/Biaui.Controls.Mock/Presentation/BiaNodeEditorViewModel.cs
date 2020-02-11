@@ -192,9 +192,11 @@ namespace Biaui.Controls.Mock.Presentation
                 if (Nodes.Count == 0)
                     return;
 
-                var removedNode = Nodes[^1];
+                // ReSharper disable once UseIndexFromEndExpression
+                var removedNode = Nodes[Nodes.Count - 1];
 
-                Nodes[^1] =
+                // ReSharper disable once UseIndexFromEndExpression
+                Nodes[Nodes.Count - 1] =
                     (replaceCount & 1) == 0
                         ? new ColorNode
                         {

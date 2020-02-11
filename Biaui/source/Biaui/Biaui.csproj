@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
 
     <AssemblyName>Biaui</AssemblyName>
     <RootNamespace>Biaui</RootNamespace>
 
     <Nullable>enable</Nullable>
+    <Nullable Condition="'$(TargetFramework)' != 'netcoreapp3.1'" >annotations</Nullable>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
@@ -18,7 +18,6 @@
 
     <PackageProjectUrl>https://github.com/YoshihiroIto/Biaui</PackageProjectUrl>
 
-    <PackageLicenseUrl></PackageLicenseUrl>
 
     <RepositoryUrl>https://github.com/YoshihiroIto/Biaui</RepositoryUrl>
 
@@ -27,6 +26,9 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
     <PackageVersion>1.0.8</PackageVersion>
+
+    <LangVersion>8</LangVersion>
+    <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

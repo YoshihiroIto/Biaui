@@ -1,7 +1,13 @@
-﻿namespace Biaui.Internals
+﻿using System;
+using System.Runtime.CompilerServices;
+
+namespace Biaui.Internals
 {
-    public class MathF
+#if !NETCOREAPP3_1
+    internal static class MathF
     {
-        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Sqrt(float v) => (float) Math.Sqrt(v);
     }
+#endif
 }

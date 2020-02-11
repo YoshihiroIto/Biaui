@@ -112,6 +112,44 @@ namespace Biaui.Internals
 #endif
         }
 
+#if !NETCOREAPP3_1
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal double Draw(
+            Visual visual,
+            string text,
+            double x,
+            double y,
+            Brush brush,
+            DrawingContext dc,
+            double maxWidth,
+            TextAlignment align,
+            TextTrimmingMode trimming,
+            bool isUseCache)
+        {
+            if (text == null)
+                return 0d;
+            
+            return Draw(
+                visual,
+                text.AsSpan(),
+                x,
+                y,
+                brush,
+                dc,
+                maxWidth,
+                align,
+                trimming,
+                isUseCache);
+        }
+
+        internal double CalcWidth(string text)
+        {
+            return text == null
+                ? 0d
+                : CalcWidth(text.AsSpan());
+        }
+#endif
+
         internal double Draw(
             Visual visual,
             ReadOnlySpan<char> text,
@@ -185,7 +223,9 @@ namespace Biaui.Internals
             return gr.Width;
         }
 
+#if NETCOREAPP3_1
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
         internal double CalcWidth(ReadOnlySpan<char> text)
         {
             if (NumberHelper.AreCloseZero(_fontSize))
@@ -266,7 +306,9 @@ namespace Biaui.Internals
 
         internal double FontHeight => _fontLineSpacing * _fontSize;
 
+#if NETCOREAPP3_1
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
             var srcTextLength = text.Length;
@@ -371,7 +413,9 @@ namespace Biaui.Internals
             }
         }
 
+#if NETCOREAPP3_1
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
             // ※ +3 「...」 が増えることがあるためのバッファ
@@ -514,7 +558,9 @@ namespace Biaui.Internals
             return (newTextWidth + dot3Width, newCount);
         }
 
+#if NETCOREAPP3_1
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
         {
             var buffer = ArrayPool<char>.Shared.Rent(text.Length);
@@ -532,18 +578,27 @@ namespace Biaui.Internals
             }
         }
 
+#if NETCOREAPP3_1
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+#endif
         private ReadOnlySpan<char> TrimmingFilepathText(ReadOnlySpan<char> text, double maxWidth, char[] buffer)
         {
             // ref: https://www.codeproject.com/Tips/467054/WPF-PathTrimmingTextBlock
-
+            
             bool widthOk;
+            
+#if NETCOREAPP3_1
             var filename = Path.GetFileName(text);
             var directory = Path.GetDirectoryName(text);
+#else
+            var textString = text.ToString();
+            var filename = Path.GetFileName(textString).AsSpan();
+            var directory = Path.GetDirectoryName(textString).AsSpan();
+#endif
 
             var changedWidth = false;
 
-            ReadOnlySpan<char> sepSpan = "...\\";
+            var sepSpan = "...\\".AsSpan();
 
             var sepWidth = CalcWidth(sepSpan);
             var filepathWidth = CalcWidth(filename);
@@ -559,7 +614,7 @@ namespace Biaui.Internals
                 {
                     changedWidth = true;
 
-                    directoryWidth -= CalcWidth(directory[^1]);
+                    directoryWidth -= CalcWidth(directory[directory.Length - 1]);
                     directory = directory.Slice(0, directory.Length - 1);
 
                     if (directory.Length == 0)
