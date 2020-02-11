@@ -65,26 +65,29 @@
                                         <Setter Property="Increment" Value="0.1" />
                                         <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.Double0}" />
                                         <Setter Property="IsVisibleBorder" Value="{x:Static biaui:Boxes.BoolFalse}" />
-                                        <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
                                 </colorPicker:BiaUniformGrid.Resources>
 
                                 <colorPicker:BiaNumberEditor x:Name="RedEditor"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding RedMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding RedMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="GreenEditor"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding GreenMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding GreenMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="BlueEditor"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding BlueMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding BlueMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <colorPicker:BiaNumberEditor x:Name="AlphaEditor"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Maximum="{Binding AlphaMaximum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Minimum="{Binding AlphaMinimum, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                              Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}">
@@ -124,13 +127,18 @@
                                         <Setter Property="Increment" Value="0.1" />
                                         <Setter Property="CornerRadius" Value="{x:Static biaui:Boxes.Double0}" />
                                         <Setter Property="IsVisibleBorder" Value="{x:Static biaui:Boxes.BoolFalse}" />
-                                        <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
                                     </Style>
                                 </colorPicker:BiaUniformGrid.Resources>
 
-                                <colorPicker:BiaNumberEditor x:Name="HueEditor" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-                                <colorPicker:BiaNumberEditor x:Name="SaturationEditor" Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
-                                <colorPicker:BiaNumberEditor x:Name="ValueEditor" Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                                <colorPicker:BiaNumberEditor x:Name="HueEditor"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                                <colorPicker:BiaNumberEditor x:Name="SaturationEditor"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
+                                <colorPicker:BiaNumberEditor x:Name="ValueEditor"
+                                                             IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
+                                                             Value="{Binding Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
                                 <Canvas Height="{Binding ActualHeight, ElementName=HueEditor}" Background="{DynamicResource BackgroundBackgroundBrushKey}">
                                     <Canvas.Style>
