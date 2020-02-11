@@ -1,6 +1,6 @@
 # Biaui
-
-***WPF dark theme and controls for .NET Core and .NET Framework***
+[![Biaui NuGet package](https://img.shields.io/nuget/v/Biaui.svg)](https://www.nuget.org/packages/Biaui) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)  
+WPF dark theme and controls for .NET Core and .NET Framework
 
 [Biaui.Showcase.csproj](https://github.com/YoshihiroIto/Biaui/tree/master/Biaui/source/Biaui.Showcase)
 ![Biaui.Showcase.csproj](biaui.png)
@@ -32,6 +32,11 @@
 * .NET Core 3.1
 * .NET Framework 4.7 or 4.7.2 or 4.8
 
+
+## Install
+```
+PM> Install-Package Biaui
+```
 
 ## Quick Start
 
