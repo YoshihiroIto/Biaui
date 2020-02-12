@@ -29,6 +29,10 @@
 
     <LangVersion>8</LangVersion>
     <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
+
+    <IsPackable Condition="'$(biaui_build_nuget)' == '1'">true</IsPackable>
+    <IsPackable Condition="'$(biaui_build_nuget)' != '1'">false</IsPackable>
+    <PackageOutputPath>../../nupkg</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

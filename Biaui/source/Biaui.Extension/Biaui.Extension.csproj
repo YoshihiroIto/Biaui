@@ -30,6 +30,10 @@
 
     <LangVersion>8</LangVersion>
     <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
+
+    <IsPackable Condition="'$(biaui_build_nuget)' == '1'">true</IsPackable>
+    <IsPackable Condition="'$(biaui_build_nuget)' != '1'">false</IsPackable>
+    <PackageOutputPath>../../nupkg</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,8 +43,15 @@
     </Compile>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(biaui_build_nuget)' == '1'">
     <PackageReference Include="Biaui" Version="1.0.13" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(biaui_build_nuget)' != '1'">
+    <ProjectReference Include="..\Biaui\Biaui.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
@@ -54,5 +65,4 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-
 </Project>
