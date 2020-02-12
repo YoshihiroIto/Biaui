@@ -26,7 +26,7 @@
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
-    <PackageVersion>1.0.12</PackageVersion>
+    <PackageVersion>1.0.13</PackageVersion>
 
     <LangVersion>8</LangVersion>
     <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Biaui" Version="1.0.12" />
+    <PackageReference Include="Biaui" Version="1.0.13" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
