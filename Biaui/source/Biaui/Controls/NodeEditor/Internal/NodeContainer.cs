@@ -404,12 +404,6 @@ namespace Biaui.Controls.NodeEditor.Internal
         [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
         private void UpdateChildrenBag(in ImmutableRect_double viewportRect)
         {
-            var inflateX = viewportRect.X - viewportRect.Width;
-            var inflateY = viewportRect.Y - viewportRect.Height;
-            var inflateW = viewportRect.Width * 3.0;
-            var inflateH = viewportRect.Height * 3.0;
-            var inflateViewportRect = new ImmutableRect_double(inflateX, inflateY, inflateW, inflateH);
-
             using var changedUpdate = new TempBuffer<(IBiaNodeItem, BiaNodePanel?)>(_nodeDict.Count);
 
             // メモ：
@@ -449,7 +443,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     }
                 }
 
-                if (inflateViewportRect.IntersectsWith(itemRect))
+                if (viewportRect.IntersectsWith(itemRect))
                 {
                     if (nodePanel == null)
                     {
