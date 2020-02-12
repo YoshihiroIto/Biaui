@@ -870,7 +870,7 @@ namespace Biaui.Controls
             }
 
             bool ICommand.CanExecute(object parameter) => true;
-            void ICommand.Execute(object parameter) => _execute?.Invoke();
+            void ICommand.Execute(object parameter) => _execute();
         }
     }
 }
