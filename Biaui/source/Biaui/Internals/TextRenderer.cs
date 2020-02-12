@@ -32,7 +32,7 @@ namespace Biaui.Internals
 
         static DefaultTextRenderer()
         {
-            var fontFamily = (FontFamily) Application.Current.FindResource("BiauiFontFamily");
+            var fontFamily = (FontFamily) Application.Current.TryFindResource("BiauiFontFamily");
             var fontSize = (double) TextElement.FontSizeProperty.DefaultMetadata.DefaultValue;
 
             Instance = new DefaultTextRenderer(

@@ -31,7 +31,7 @@ namespace Biaui
             Length = 19
         };
 
-        public static Brush CheckerBrush => _CheckerBrush ??= (Brush) Application.Current.FindResource("CheckerBrush");
+        public static Brush CheckerBrush => _CheckerBrush ??= (Brush) Application.Current.TryFindResource("CheckerBrush");
 
         private static Brush? _CheckerBrush;
     }

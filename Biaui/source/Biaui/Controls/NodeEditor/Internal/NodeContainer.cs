@@ -458,7 +458,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                             if (_styleDict.TryGetValue(nodeItemType, out style) == false)
                             {
-                                style = FindResource(nodeItemType) as Style;
+                                style = TryFindResource(nodeItemType) as Style;
                                 _styleDict.Add(nodeItemType, style);
                             }
 

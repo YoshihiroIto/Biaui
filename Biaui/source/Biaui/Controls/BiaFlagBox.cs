@@ -598,25 +598,25 @@ namespace Biaui.Controls
         #region Brush
 
         private static readonly Brush _buttonInactiveBackgroundBrushKey =
-            (Brush) Application.Current.FindResource("ButtonInactiveBackgroundBrushKey");
+            (Brush) Application.Current.TryFindResource("ButtonInactiveBackgroundBrushKey");
 
         private static readonly Brush _toggleButtonBackgroundBrushKeyIsCheckedIsDisabled =
-            (Brush) Application.Current.FindResource("ToggleButtonBackgroundBrushKey.IsChecked.IsDisabled");
+            (Brush) Application.Current.TryFindResource("ToggleButtonBackgroundBrushKey.IsChecked.IsDisabled");
 
         private static readonly Brush _toggleButtonBackgroundBrushKeyIsCheckedIsMouseOver =
-            (Brush) Application.Current.FindResource("ToggleButtonBackgroundBrushKey.IsChecked.IsMouseOver");
+            (Brush) Application.Current.TryFindResource("ToggleButtonBackgroundBrushKey.IsChecked.IsMouseOver");
 
         private static readonly Brush _toggleButtonBackgroundBrushKeyIsChecked =
-            (Brush) Application.Current.FindResource("ToggleButtonBackgroundBrushKey.IsChecked");
+            (Brush) Application.Current.TryFindResource("ToggleButtonBackgroundBrushKey.IsChecked");
 
         private static readonly Brush _buttonPressedBackgroundBrushKey =
-            (Brush) Application.Current.FindResource("ButtonPressedBackgroundBrushKey");
+            (Brush) Application.Current.TryFindResource("ButtonPressedBackgroundBrushKey");
 
         private static readonly Brush _buttonActiveBackgroundBrushKey =
-            (Brush) Application.Current.FindResource("ButtonActiveBackgroundBrushKey");
+            (Brush) Application.Current.TryFindResource("ButtonActiveBackgroundBrushKey");
 
         private static readonly Brush _buttonBackgroundBrushKey =
-            (Brush) Application.Current.FindResource("ButtonBackgroundBrushKey");
+            (Brush) Application.Current.TryFindResource("ButtonBackgroundBrushKey");
 
         #endregion
 

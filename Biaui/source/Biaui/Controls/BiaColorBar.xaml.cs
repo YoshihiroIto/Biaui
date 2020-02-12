@@ -311,7 +311,7 @@ namespace Biaui.Controls
             else
             {
                 if (_disabledBackgroundBrush == null)
-                    _disabledBackgroundBrush = (Brush) FindResource("InactiveBackgroundBrushKey");
+                    _disabledBackgroundBrush = (Brush) TryFindResource("InactiveBackgroundBrushKey");
 
                 _backgroundBrush = _disabledBackgroundBrush;
             }

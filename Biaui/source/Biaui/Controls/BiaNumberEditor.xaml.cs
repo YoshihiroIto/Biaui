@@ -792,7 +792,7 @@ namespace Biaui.Controls
                     false);
         }
 
-        private static readonly Brush? _moBrush = Application.Current.FindResource("AccentBrushKey") as Brush;
+        private static readonly Brush? _moBrush = Application.Current.TryFindResource("AccentBrushKey") as Brush;
 
         private void DrawSpin(DrawingContext dc)
         {

@@ -624,7 +624,7 @@ namespace Biaui.Controls
             }
 
             var listBoxBorder = _items.Descendants().OfType<Border>().First();
-            listBoxBorder.BorderBrush = (Brush) FindResource("Item.SelectedActive.Border");
+            listBoxBorder.BorderBrush = (Brush) TryFindResource("Item.SelectedActive.Border");
 
             StartedContinuousEditingCommand?.ExecuteIfCan(null);
         }
