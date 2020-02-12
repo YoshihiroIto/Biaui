@@ -106,7 +106,7 @@ namespace Biaui.Controls.Internals
                     break;
 
                 case BiaWindowAction.Close:
-                    if (_parentWindow.CloseButtonBehavior == WindowCloseButtonBehavior.Normal)
+                    if (_parentWindow.CloseButtonBehavior == BiaWindowCloseButtonBehavior.Normal)
                         _parentWindow.Close();
                     
                     _parentWindow.InvokeCloseButtonClicked();

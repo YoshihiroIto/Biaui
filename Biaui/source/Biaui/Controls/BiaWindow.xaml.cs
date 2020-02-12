@@ -66,7 +66,7 @@ namespace Biaui.Controls
 
         #region CloseButtonBehavior
 
-        public WindowCloseButtonBehavior CloseButtonBehavior
+        public BiaWindowCloseButtonBehavior CloseButtonBehavior
         {
             get => _CloseButtonBehavior;
             set
@@ -76,19 +76,19 @@ namespace Biaui.Controls
             }
         }
 
-        private WindowCloseButtonBehavior _CloseButtonBehavior = WindowCloseButtonBehavior.Normal;
+        private BiaWindowCloseButtonBehavior _CloseButtonBehavior = BiaWindowCloseButtonBehavior.Normal;
 
         public static readonly DependencyProperty CloseButtonBehaviorProperty =
             DependencyProperty.Register(
                 nameof(CloseButtonBehavior),
-                typeof(WindowCloseButtonBehavior),
+                typeof(BiaWindowCloseButtonBehavior),
                 typeof(BiaWindow),
                 new PropertyMetadata(
                     Boxes.WindowCloseButtonBehaviorNormal,
                     (s, e) =>
                     {
                         var self = (BiaWindow) s;
-                        self._CloseButtonBehavior = (WindowCloseButtonBehavior) e.NewValue;
+                        self._CloseButtonBehavior = (BiaWindowCloseButtonBehavior) e.NewValue;
                     }));
 
         #endregion

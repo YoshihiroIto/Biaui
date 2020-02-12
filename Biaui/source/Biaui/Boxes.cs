@@ -125,8 +125,8 @@ namespace Biaui
         public static readonly object TextTrimmingModeStandard = TextTrimmingMode.Standard;
         public static readonly object TextTrimmingModeFilepath = TextTrimmingMode.Filepath;
         
-        public static readonly object WindowCloseButtonBehaviorNormal = WindowCloseButtonBehavior.Normal;
-        public static readonly object WindowCloseButtonBehaviorDoNothing = WindowCloseButtonBehavior.DoNothing;
+        public static readonly object WindowCloseButtonBehaviorNormal = BiaWindowCloseButtonBehavior.Normal;
+        public static readonly object WindowCloseButtonBehaviorDoNothing = BiaWindowCloseButtonBehavior.DoNothing;
         // ReSharper restore InconsistentNaming
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -269,12 +269,12 @@ namespace Biaui
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object WindowCloseButton(WindowCloseButtonBehavior v)
+        public static object WindowCloseButton(BiaWindowCloseButtonBehavior v)
         {
             return v switch
             {
-                WindowCloseButtonBehavior.Normal => WindowCloseButtonBehaviorNormal,
-                WindowCloseButtonBehavior.DoNothing => WindowCloseButtonBehaviorDoNothing,
+                BiaWindowCloseButtonBehavior.Normal => WindowCloseButtonBehaviorNormal,
+                BiaWindowCloseButtonBehavior.DoNothing => WindowCloseButtonBehaviorDoNothing,
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }

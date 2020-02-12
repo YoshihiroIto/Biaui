@@ -36,7 +36,7 @@ namespace Biaui
         private static Brush? _CheckerBrush;
     }
 
-    public enum WindowCloseButtonBehavior
+    public enum BiaWindowCloseButtonBehavior
     {
         Normal,
         DoNothing
