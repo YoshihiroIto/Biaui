@@ -93,7 +93,8 @@ namespace Biaui.Controls.Internals
         {
             base.OnClick();
 
-            Debug.Assert(_parentWindow != null);
+            if (_parentWindow == null)
+                return;
 
             switch (WindowAction)
             {
@@ -137,7 +138,8 @@ namespace Biaui.Controls.Internals
                 return;
             }
 
-            Debug.Assert(_parentWindow != null);
+            if (_parentWindow == null)
+                return;
 
             Visibility = WindowAction switch
             {
