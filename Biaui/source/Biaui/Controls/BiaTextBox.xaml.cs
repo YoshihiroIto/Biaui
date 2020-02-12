@@ -238,7 +238,7 @@ namespace Biaui.Controls
         
         #region TextTrimming
 
-        public TextTrimmingMode TextTrimming
+        public BiaTextTrimmingMode TextTrimming
         {
             get => _TextTrimming;
             set
@@ -248,12 +248,12 @@ namespace Biaui.Controls
             }
         }
 
-        private TextTrimmingMode _TextTrimming = TextTrimmingMode.Standard;
+        private BiaTextTrimmingMode _TextTrimming = BiaTextTrimmingMode.Standard;
 
         public static readonly DependencyProperty TextTrimmingProperty =
             DependencyProperty.Register(
                 nameof(TextTrimming),
-                typeof(TextTrimmingMode),
+                typeof(BiaTextTrimmingMode),
                 typeof(BiaTextBox),
                 new FrameworkPropertyMetadata(
                     Boxes.TextTrimmingModeStandard,
@@ -263,7 +263,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
-                        self._TextTrimming = (TextTrimmingMode) e.NewValue;
+                        self._TextTrimming = (BiaTextTrimmingMode) e.NewValue;
                     }));
 
         #endregion

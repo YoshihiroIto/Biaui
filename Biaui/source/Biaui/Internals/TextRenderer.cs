@@ -123,7 +123,7 @@ namespace Biaui.Internals
             DrawingContext dc,
             double maxWidth,
             TextAlignment align,
-            TextTrimmingMode trimming,
+            BiaTextTrimmingMode trimming,
             bool isUseCache)
         {
             if (text == null)
@@ -159,7 +159,7 @@ namespace Biaui.Internals
             DrawingContext dc,
             double maxWidth,
             TextAlignment align,
-            TextTrimmingMode trimming,
+            BiaTextTrimmingMode trimming,
             bool isUseCache)
         {
             if (NumberHelper.AreCloseZero(_fontSize))
@@ -175,9 +175,9 @@ namespace Biaui.Internals
 
             var gr = trimming switch
             {
-                TextTrimmingMode.None => MakeGlyphRunNone(visual, text, maxWidth, isUseCache),
-                TextTrimmingMode.Standard => MakeGlyphRunStandard(visual, text, maxWidth, isUseCache),
-                TextTrimmingMode.Filepath => MakeGlyphRunFilepath(visual, text, maxWidth, isUseCache),
+                BiaTextTrimmingMode.None => MakeGlyphRunNone(visual, text, maxWidth, isUseCache),
+                BiaTextTrimmingMode.Standard => MakeGlyphRunStandard(visual, text, maxWidth, isUseCache),
+                BiaTextTrimmingMode.Filepath => MakeGlyphRunFilepath(visual, text, maxWidth, isUseCache),
                 _ => throw new ArgumentOutOfRangeException(nameof(trimming), trimming, null)
             };
 
@@ -370,7 +370,7 @@ namespace Biaui.Internals
 
                 if (isUseCache)
                 {
-                    textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.None);
+                    textKey = MakeHashCode(text, textWidth, dpi, BiaTextTrimmingMode.None);
 
                     if (_textCache.TryGetValue(textKey, out var cachedGr))
                         return cachedGr;
@@ -474,7 +474,7 @@ namespace Biaui.Internals
 
                 if (isUseCache)
                 {
-                    textKey = MakeHashCode(text, textWidth, dpi, TextTrimmingMode.None);
+                    textKey = MakeHashCode(text, textWidth, dpi, BiaTextTrimmingMode.None);
 
                     if (_textCache.TryGetValue(textKey, out var cachedGr))
                         return cachedGr;
@@ -646,7 +646,7 @@ namespace Biaui.Internals
             ReadOnlySpan<char> text,
             double textWidth,
             double dpi,
-            TextTrimmingMode textTrimming)
+            BiaTextTrimmingMode textTrimming)
         {
             unchecked
             {

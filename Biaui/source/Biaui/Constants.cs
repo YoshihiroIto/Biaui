@@ -52,7 +52,7 @@ namespace Biaui
 		Minimize
     }
     
-    public enum TextTrimmingMode
+    public enum BiaTextTrimmingMode
     {
         None,
         Standard,

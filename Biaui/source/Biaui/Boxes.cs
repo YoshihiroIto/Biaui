@@ -121,9 +121,9 @@ namespace Biaui
         public static readonly object ToggleButtonBehaviorNormal = BiaToggleButtonBehavior.Normal;
         public static readonly object ToggleButtonBehaviorRadioButton = BiaToggleButtonBehavior.RadioButton;
 
-        public static readonly object TextTrimmingModeNone = TextTrimmingMode.None;
-        public static readonly object TextTrimmingModeStandard = TextTrimmingMode.Standard;
-        public static readonly object TextTrimmingModeFilepath = TextTrimmingMode.Filepath;
+        public static readonly object TextTrimmingModeNone = BiaTextTrimmingMode.None;
+        public static readonly object TextTrimmingModeStandard = BiaTextTrimmingMode.Standard;
+        public static readonly object TextTrimmingModeFilepath = BiaTextTrimmingMode.Filepath;
         
         public static readonly object WindowCloseButtonBehaviorNormal = BiaWindowCloseButtonBehavior.Normal;
         public static readonly object WindowCloseButtonBehaviorDoNothing = BiaWindowCloseButtonBehavior.DoNothing;
@@ -257,13 +257,13 @@ namespace Biaui
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object TextTrimming(TextTrimmingMode v)
+        public static object TextTrimming(BiaTextTrimmingMode v)
         {
             return v switch
             {
-                TextTrimmingMode.None => TextTrimmingModeNone,
-                TextTrimmingMode.Standard => TextTrimmingModeStandard,
-                TextTrimmingMode.Filepath => TextTrimmingModeFilepath,
+                BiaTextTrimmingMode.None => TextTrimmingModeNone,
+                BiaTextTrimmingMode.Standard => TextTrimmingModeStandard,
+                BiaTextTrimmingMode.Filepath => TextTrimmingModeFilepath,
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }
