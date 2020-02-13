@@ -30,6 +30,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         private double _mouseDownScrollY;
         private readonly FrameworkElement _target;
         private readonly IHasTransform _transformTarget;
+        private readonly IHasScalerRange _scalerRange;
 
         private enum OpType
         {
@@ -74,10 +75,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void InvokePostMouseLeftButtonDown(MouseButtonEventArgs e) => PostMouseLeftButtonDown?.Invoke(this, e);
 
-        internal MouseOperator(FrameworkElement target, IHasTransform transformTarget)
+        internal MouseOperator(FrameworkElement target, IHasTransform transformTarget, IHasScalerRange scalerRange)
         {
             _target = target;
             _transformTarget = transformTarget;
+            _scalerRange = scalerRange;
 
             _target.PreviewMouseLeftButtonDown += (_, e) =>
             {
@@ -302,7 +304,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 ? 1.25
                 : 1.0 / 1.25;
 
-            s = (s, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
+            s = (s, _scalerRange.ScalerMinimum, _scalerRange.ScalerMaximum).Clamp();
 
             var p = e.GetPosition(_target);
 

@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
@@ -22,7 +24,7 @@ namespace Biaui.Controls.NodeEditor
         BezierCurve
     }
 
-    public class BiaNodeEditor : BiaClippingBorder, IHasTransform
+    public class BiaNodeEditor : BiaClippingBorder, IHasTransform, IHasScalerRange
     {
         #region NodesSource
 
@@ -394,6 +396,66 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        #region ScalerMaximum
+
+        public double ScalerMaximum
+        {
+            get => _ScalerMaximum;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _ScalerMaximum)
+                    SetValue(ScalerMaximumProperty, value);
+            }
+        }
+
+        private double _ScalerMaximum = 2d;
+
+        public static readonly DependencyProperty ScalerMaximumProperty =
+            DependencyProperty.Register(
+                nameof(ScalerMaximum),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Double2,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._ScalerMaximum = (double) e.NewValue;
+                    }));
+
+        #endregion
+
+        #region ScalerMinimum
+
+        public double ScalerMinimum
+        {
+            get => _ScalerMinimum;
+            set
+            {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (value != _ScalerMinimum)
+                    SetValue(ScalerMinimumProperty, value);
+            }
+        }
+
+        private double _ScalerMinimum = 0.25;
+
+        public static readonly DependencyProperty ScalerMinimumProperty =
+            DependencyProperty.Register(
+                nameof(ScalerMinimum),
+                typeof(double),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    0.25,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._ScalerMinimum = (double) e.NewValue;
+                    }));
+
+        #endregion
+
         public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
 
         public TranslateTransform TranslateTransform { get; } = new TranslateTransform();
@@ -434,10 +496,10 @@ namespace Biaui.Controls.NodeEditor
 
         public BiaNodeEditor()
         {
-            _mouseOperator = new MouseOperator(this, this);
+            _mouseOperator = new MouseOperator(this, this, this);
 
-            for(var i = 0;i != NodeContainers.Length;++ i)
-                NodeContainers[i] = new NodeContainer(this, (BiaNodePanelLayer)i, _mouseOperator);
+            for (var i = 0; i != NodeContainers.Length; ++i)
+                NodeContainers[i] = new NodeContainer(this, (BiaNodePanelLayer) i, _mouseOperator);
 
             SetupPropertyEditCommand();
 
@@ -531,7 +593,6 @@ namespace Biaui.Controls.NodeEditor
         internal void InvokePropertyEditCompleted()
             => PropertyEditCompleted?.Invoke(this, EventArgs.Empty);
 
-
         private Slider CreateScaleSlider()
         {
             var scaleSlider = new Slider
@@ -541,10 +602,26 @@ namespace Biaui.Controls.NodeEditor
                 Orientation = Orientation.Vertical,
                 Margin = new Thickness(8),
                 Height = 200,
-                Minimum = Constants.NodeEditor_MinScale,
-                Maximum = Constants.NodeEditor_MaxScale,
                 Value = ScaleTransform.ScaleX
             };
+
+            BindingOperations.SetBinding(scaleSlider, RangeBase.MaximumProperty,
+                new Binding
+                {
+                    Path = new PropertyPath(nameof(ScalerMaximum)),
+                    Mode = BindingMode.OneWay,
+                    Source = this
+                }
+            );
+
+            BindingOperations.SetBinding(scaleSlider, RangeBase.MinimumProperty,
+                new Binding
+                {
+                    Path = new PropertyPath(nameof(ScalerMinimum)),
+                    Mode = BindingMode.OneWay,
+                    Source = this
+                }
+            );
 
             scaleSlider.ValueChanged += (_, __) =>
             {
@@ -569,7 +646,7 @@ namespace Biaui.Controls.NodeEditor
                 Focus();
 
                 _isInEditing = _mouseOperator.IsBoxSelect ||
-                              _mouseOperator.IsPanelMove;
+                               _mouseOperator.IsPanelMove;
 
                 if (_isInEditing == false)
                     return;
@@ -664,7 +741,7 @@ namespace Biaui.Controls.NodeEditor
             var viewCy = height * 0.5;
 
             var scale = (scaleX, scaleY).Min();
-            scale = (scale, Constants.NodeEditor_MinScale, Constants.NodeEditor_MaxScale).Clamp();
+            scale = (scale, ScalerMinimum, ScalerMaximum).Clamp();
 
             TranslateTransform.X = -centerX * scale + viewCx;
             TranslateTransform.Y = -centerY * scale + viewCy + OverlayHeaderHeight;
