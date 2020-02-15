@@ -41,8 +41,7 @@
                                                      IsReadOnly="{Binding IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}"
                                                      Saturation="{Binding Saturation, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type colorPicker:BiaColorPicker}}}" />
 
-                        <colorPicker:BiaColorBar x:Name="ValueBar"
-                                                 Grid.Row="{x:Static biaui:Boxes.Int0}"
+                        <colorPicker:BiaColorBar Grid.Row="{x:Static biaui:Boxes.Int0}"
                                                  Grid.Column="{x:Static biaui:Boxes.Int2}"
                                                  Width="{x:Static biaui:Boxes.BasicOneLineHeight}"
                                                  HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentRight}"

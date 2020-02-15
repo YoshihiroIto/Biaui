@@ -18,8 +18,7 @@
                                 <GridViewHeaderRowPresenter HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" Columns="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=Columns, Mode=OneWay}" />
                             </ScrollViewer>
 
-                            <controls:BiaTreeView x:Name="TreeView"
-                                                  HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
+                            <controls:BiaTreeView HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
                                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                                   AlternationCount="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaTreeListView}}, Path=AlternationCount, Mode=OneWay}"
                                                   BorderThickness="{x:Static biaui:Boxes.Thickness0}"
