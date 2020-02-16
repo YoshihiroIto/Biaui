@@ -9,7 +9,7 @@
                     xmlns:showcase="clr-namespace:Biaui.Showcase"
                     xmlns:standardControls="clr-namespace:Biaui.StandardControls;assembly=Biaui"
                     Title="Biaui Showcase"
-                    Width="1500"
+                    Width="1504"
                     Height="1140"
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
