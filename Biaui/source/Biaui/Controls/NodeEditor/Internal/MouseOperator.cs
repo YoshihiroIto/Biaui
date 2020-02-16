@@ -32,7 +32,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         private readonly IHasTransform _transformTarget;
         private readonly IHasScalerRange _scalerRange;
 
-        private enum OpType
+        private enum OperationType
         {
             None,
 
@@ -43,35 +43,58 @@ namespace Biaui.Controls.NodeEditor.Internal
             LinkMove,
         }
 
-        private OpType _opType = OpType.None;
+        private OperationType _Operation = OperationType.None;
 
-        internal bool IsOperating => _opType != OpType.None;
+        private OperationType Operation
+        {
+            get => _Operation;
+            set
+            {
+                if (_Operation == value)
+                    return;
 
-        internal bool IsBoxSelect => _opType == OpType.BoxSelect;
+                _Operation = value;
+                OperationChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
-        internal bool IsPanelMove => _opType == OpType.PanelMove;
+        internal bool IsOperating => Operation != OperationType.None;
 
-        internal bool IsLinkMove => _opType == OpType.LinkMove;
+        internal bool IsEditorScroll => Operation == OperationType.EditorScroll;
+
+        internal bool IsBoxSelect => Operation == OperationType.BoxSelect;
+
+        internal bool IsPanelMove => Operation == OperationType.PanelMove;
+
+        internal bool IsLinkMove => Operation == OperationType.LinkMove;
 
         internal bool IsMoved { get; private set; }
 
         internal event MouseButtonEventHandler? PrePreviewMouseLeftButtonDown;
+
         internal event MouseButtonEventHandler? PostPreviewMouseLeftButtonDown;
 
         internal event MouseButtonEventHandler? PrePreviewMouseLeftButtonUp;
+
         internal event MouseButtonEventHandler? PostPreviewMouseLeftButtonUp;
 
         internal event MouseButtonEventHandler? PreMouseLeftButtonDown;
+
         internal event MouseButtonEventHandler? PostMouseLeftButtonDown;
 
         internal event MouseButtonEventHandler? PreMouseLeftButtonUp;
+
         internal event MouseButtonEventHandler? PostMouseLeftButtonUp;
 
         internal event MouseEventHandler? PreMouseMove;
+
         internal event MouseEventHandler? PostMouseMove;
 
         internal event MouseWheelEventHandler? PreMouseWheel;
+
         internal event MouseWheelEventHandler? PostMouseWheel;
+
+        internal event EventHandler OperationChanged;
 
         internal void InvokePostMouseLeftButtonDown(MouseButtonEventArgs e) => PostMouseLeftButtonDown?.Invoke(this, e);
 
@@ -154,23 +177,23 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             // OpType
             {
-                _opType = OpType.None;
+                Operation = OperationType.None;
 
                 switch (targetType)
                 {
                     case TargetType.NodeEditor:
-                        _opType = KeyboardHelper.IsPressShift
-                            ? OpType.EditorScroll
-                            : OpType.BoxSelect;
+                        Operation = KeyboardHelper.IsPressShift
+                            ? OperationType.EditorScroll
+                            : OperationType.BoxSelect;
                         break;
 
                     case TargetType.NodePanel:
-                        _opType = OpType.PanelMove;
+                        Operation = OperationType.PanelMove;
                         PanelBeginMoving?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case TargetType.NodeLink:
-                        _opType = OpType.LinkMove;
+                        Operation = OperationType.LinkMove;
                         break;
 
                     default:
@@ -181,10 +204,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if (_opType == OpType.PanelMove)
+            if (Operation == OperationType.PanelMove)
                 PanelEndMoving?.Invoke(this, EventArgs.Empty);
 
-            _opType = OpType.None;
+            Operation = OperationType.None;
 
             if (_target.IsMouseCaptured)
                 _target.ReleaseMouseCapture();
@@ -192,26 +215,26 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void OnMouseMove(MouseEventArgs e)
         {
-            if (_opType != OpType.None)
+            if (Operation != OperationType.None)
                 IsMoved = true;
 
-            switch (_opType)
+            switch (Operation)
             {
-                case OpType.None:
+                case OperationType.None:
                     break;
 
-                case OpType.EditorScroll:
+                case OperationType.EditorScroll:
                     DoEditorScroll(e);
                     break;
 
-                case OpType.BoxSelect:
+                case OperationType.BoxSelect:
                     break;
 
-                case OpType.PanelMove:
+                case OperationType.PanelMove:
                     DoPanelMove(e);
                     break;
 
-                case OpType.LinkMove:
+                case OperationType.LinkMove:
                     DoLinkMove(e);
                     break;
 
@@ -235,14 +258,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             // OpType
             {
-                _opType = OpType.None;
-
-                switch (targetType)
+                Operation = targetType switch
                 {
-                    case TargetType.NodeEditor:
-                        _opType = OpType.EditorScroll;
-                        break;
-                }
+                    TargetType.NodeEditor => OperationType.EditorScroll,
+                    _ => OperationType.None
+                };
             }
         }
 
@@ -271,7 +291,9 @@ namespace Biaui.Controls.NodeEditor.Internal
         }
 
         internal event EventHandler? PanelBeginMoving;
+
         internal event EventHandler? PanelEndMoving;
+
         internal event EventHandler<PanelMovingEventArgs>? PanelMoving;
 
         internal event EventHandler<LinkMovingEventArgs>? LinkMoving;

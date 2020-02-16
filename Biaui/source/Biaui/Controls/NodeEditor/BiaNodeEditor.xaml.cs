@@ -553,6 +553,13 @@ namespace Biaui.Controls.NodeEditor
                 LinkChanged += (_, __) => backgroundPanel.Invalidate();
                 _mouseOperator.PreMouseLeftButtonUp += (_, __) => backgroundPanel.Invalidate();
             }
+
+            _mouseOperator.OperationChanged += (_, __) =>
+            {
+                Cursor = _mouseOperator.IsEditorScroll
+                    ? Cursors.SizeAll
+                    : Cursors.Arrow;
+            };
         }
 
         private void UpdateLinksSource(
