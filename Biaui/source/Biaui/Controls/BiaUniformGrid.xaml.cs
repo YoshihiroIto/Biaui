@@ -166,8 +166,8 @@ namespace Biaui.Controls
             var xIndex = 0;
             var yIndex = 0;
 
-            var baseChildWidth = Math.Floor(arrangeSize.Width / _columns);
-            var childHeight = Math.Floor(arrangeSize.Height / _rows);
+            var (baseChildWidth, childHeight) =
+                this.RoundLayoutValue(arrangeSize.Width / _columns, arrangeSize.Height / _rows);
 
             var dpiSpacing = Spacing * this.PixelsPerDip();
             var childBounds = new Rect();
@@ -198,7 +198,6 @@ namespace Biaui.Controls
                 childBounds.Width = xIndex == columns - 1
                     ? childBounds.Width = arrangeSize.Width - childWidth * (columns - 1)
                     : Math.Max(0, childWidth - dpiSpacing);
-
                 childBounds.Height = yIndex == _rows - 1
                     ? childBounds.Height = arrangeSize.Height - childHeight * (_rows - 1)
                     : Math.Max(0, childHeight - dpiSpacing);
