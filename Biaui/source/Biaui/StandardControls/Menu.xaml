@@ -178,7 +178,8 @@
     <Style TargetType="{x:Type Menu}">
         <Setter Property="FontFamily" Value="{DynamicResource BiauiFontFamily}" />
         <Setter Property="Background" Value="Transparent" />
-
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        
         <Style.Resources>
             <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="{x:Type Separator}">
                 <Setter Property="Height" Value="{x:Static biaui:Boxes.Double1}" />
