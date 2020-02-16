@@ -25,7 +25,7 @@
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 
-    <PackageVersion>1.0.14</PackageVersion>
+    <PackageVersion>1.0.15</PackageVersion>
 
     <LangVersion>8</LangVersion>
     <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
