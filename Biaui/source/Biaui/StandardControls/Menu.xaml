@@ -79,7 +79,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="Role" Value="TopLevelHeader">
-                            <Setter Property="Padding" Value="8,4,8,2" />
+                            <Setter Property="Padding" Value="8,4" />
                             <Setter TargetName="SubMenuPopup" Property="Placement" Value="Bottom" />
                             <Setter TargetName="ColumnIcon" Property="MinWidth" Value="{x:Static biaui:Boxes.Double0}" />
                             <Setter TargetName="ColumnArrow" Property="Width" Value="Auto" />
@@ -89,7 +89,7 @@
                         </Trigger>
 
                         <Trigger Property="Role" Value="TopLevelItem">
-                            <Setter Property="Padding" Value="8,4,8,2" />
+                            <Setter Property="Padding" Value="8,4" />
                             <Setter TargetName="ColumnIcon" Property="MinWidth" Value="{x:Static biaui:Boxes.Double0}" />
                             <Setter TargetName="ColumnArrow" Property="Width" Value="Auto" />
                             <Setter TargetName="IconPresenter" Property="Visibility" Value="{x:Static biaui:Boxes.VisibilityCollapsed}" />
