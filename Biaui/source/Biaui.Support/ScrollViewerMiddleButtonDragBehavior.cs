@@ -72,7 +72,8 @@ namespace Biaui
                     0 => Cursors.Arrow,
                     1 => Cursors.SizeWE,
                     2 => Cursors.SizeNS,
-                    3 => Cursors.SizeAll
+                    3 => Cursors.SizeAll,
+                    _ => throw new IndexOutOfRangeException()
                 };
 
                 AssociatedObject.CaptureMouse();
