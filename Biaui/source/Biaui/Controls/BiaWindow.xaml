@@ -90,7 +90,7 @@
                                 <!--  Menu  -->
                                 <ContentControl Grid.Row="{x:Static biaui:Boxes.Int1}"
                                                 Grid.RowSpan="{x:Static biaui:Boxes.Int2}"
-                                                Margin="47,1,0,0"
+                                                Margin="47,0,0,0"
                                                 HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentLeft}"
                                                 VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"
                                                 Content="{Binding Menu, RelativeSource={RelativeSource AncestorType={x:Type controls:BiaWindow}}}"
