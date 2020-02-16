@@ -1,6 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Biaui.Internals;
+using System.Windows.Controls.Primitives;
+using Application = System.Windows.Application;
+using Cursor = System.Windows.Input.Cursor;
+using Cursors = System.Windows.Input.Cursors;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using ToolTip = System.Windows.Controls.ToolTip;
 
 namespace Biaui
 {
@@ -44,8 +53,28 @@ namespace Biaui
                 // ReSharper disable once SuspiciousTypeConversion.Global
                 _previousPos = e.GetPosition(ParentControl);
 
+                var scrollBars = AssociatedObject
+                    .Descendants()
+                    .OfType<ScrollBar>()
+                    .Where(x => x.Visibility == Visibility.Visible);
+
+                var v = 0;
+                foreach (var scrollBar in scrollBars)
+                {
+                    if (scrollBar.Orientation == Orientation.Horizontal) v |= 1;
+                    else /*if (scrollBar.Orientation == Orientation.Vertical)*/ v |= 2;
+                }
+
                 _cursor = AssociatedObject.Cursor;
-                AssociatedObject.Cursor = Cursors.SizeNS;
+
+                AssociatedObject.Cursor = v switch
+                {
+                    0 => Cursors.Arrow,
+                    1 => Cursors.SizeWE,
+                    2 => Cursors.SizeNS,
+                    3 => Cursors.SizeAll
+                };
+
                 AssociatedObject.CaptureMouse();
 
                 // Disable ToolTip
@@ -55,6 +84,7 @@ namespace Biaui
                     _disableToolTipStyle.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));
                     _disableToolTipStyle.Seal();
                 }
+
                 foreach (Window? window in Application.Current.Windows)
                     window?.Resources.Add(typeof(ToolTip), _disableToolTipStyle);
 
