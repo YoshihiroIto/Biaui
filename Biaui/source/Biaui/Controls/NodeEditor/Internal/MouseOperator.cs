@@ -94,7 +94,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal event MouseWheelEventHandler? PostMouseWheel;
 
-        internal event EventHandler OperationChanged;
+        internal event EventHandler? OperationChanged;
 
         internal void InvokePostMouseLeftButtonDown(MouseButtonEventArgs e) => PostMouseLeftButtonDown?.Invoke(this, e);
 
