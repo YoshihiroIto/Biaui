@@ -100,7 +100,7 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
         }
 
         private static readonly LruCache<ValueTuple<ImmutableVec2_double, ImmutableVec2_double, BiaNodeSlotDir, BiaNodeSlotDir>, ImmutableRect_double> _boundingBoxCache =
-            new LruCache<(ImmutableVec2_double, ImmutableVec2_double, BiaNodeSlotDir, BiaNodeSlotDir), ImmutableRect_double>(10000, false);
+            new LruCache<(ImmutableVec2_double, ImmutableVec2_double, BiaNodeSlotDir, BiaNodeSlotDir), ImmutableRect_double>(10000);
 
         private void DrawArrow(
             StreamGeometryContext ctx,

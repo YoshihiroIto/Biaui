@@ -39,7 +39,7 @@ namespace Biaui.Internals.Converter
             return result;
         }
 
-        private static readonly LruCache<double, object> _thicknessCache = new LruCache<double, object>(8, false);
+        private static readonly LruCache<double, object> _thicknessCache = new LruCache<double, object>(8);
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {

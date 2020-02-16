@@ -230,6 +230,6 @@ namespace Biaui.Extension
                 new RawColor4(src.R * (1.0f / 255.0f), src.G * (1.0f / 255.0f), src.B * (1.0f / 255.0f), 1.0f));
 
         private static readonly LruCache<long, ImmutableRect_float> _boundingBoxCache =
-            new LruCache<long, ImmutableRect_float>(10000, false);
+            new LruCache<long, ImmutableRect_float>(10000);
     }
 }

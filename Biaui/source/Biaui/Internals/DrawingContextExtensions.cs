@@ -91,6 +91,6 @@ namespace Biaui.Internals
             dc.DrawGeometry(brush, pen, geom);
         }
 
-        private static readonly LruCache<long, StreamGeometry> _bezierCache = new LruCache<long, StreamGeometry>(10000, false);
+        private static readonly LruCache<long, StreamGeometry> _bezierCache = new LruCache<long, StreamGeometry>(10000);
     }
 }

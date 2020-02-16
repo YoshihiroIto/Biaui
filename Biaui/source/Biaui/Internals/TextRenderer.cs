@@ -658,10 +658,10 @@ namespace Biaui.Internals
             }
         }
 
-        private readonly LruCache<long, (GlyphRun, double)> _textCache = new LruCache<long, (GlyphRun, double)>(10_0000, false);
-        private readonly LruCache<long, double> _textWidthCache = new LruCache<long, double>(10_0000, false);
+        private readonly LruCache<long, (GlyphRun, double)> _textCache = new LruCache<long, (GlyphRun, double)>(10_0000);
+        private readonly LruCache<long, double> _textWidthCache = new LruCache<long, double>(10_0000);
 
-        private readonly LruCache<long, TranslateTransform> _translateCache = new LruCache<long, TranslateTransform>(1000, false);
+        private readonly LruCache<long, TranslateTransform> _translateCache = new LruCache<long, TranslateTransform>(1000);
 
         private readonly IDictionary<int, ushort>? _toGlyphMap;
         private readonly IDictionary<ushort, double>? _advanceWidthsDict;
