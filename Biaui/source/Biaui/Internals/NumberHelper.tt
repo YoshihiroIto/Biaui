@@ -23,6 +23,13 @@ foreach (var typeName in new[]{"float", "double", "int"})
         _ => ""
     };
 #>
+
+<# if (typeName == "float") { #>
+        private const <#= typeName #> EPSILON_float = 1.192092896e-07F;
+<# }else if (typeName == "double") { #>
+        private const <#= typeName #> EPSILON_double = 2.2204460492503131e-016;
+<# } #>
+
 <# if (typeName != "int") { #>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static <#= typeName #> DistanceSq(in this ValueTuple<ImmutableVec2_<#= typeName #>, ImmutableVec2_<#= typeName #>> pos)
@@ -36,16 +43,10 @@ foreach (var typeName in new[]{"float", "double", "int"})
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool AreClose(<#= typeName #> value1, <#= typeName #> value2)
         {
-<# if (typeName == "float") { #>
-            const <#= typeName #> EPSILON = (float)1.4e-45;
-<# }else{ #>
-            const <#= typeName #> EPSILON = 2.2204460492503131e-016;
-<# } #>
-
             if (value1 == value2)
                 return true;
 
-            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0<#= suffix #>) * EPSILON;
+            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10<#= suffix #>) * EPSILON_<#= typeName #>;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -54,16 +55,10 @@ foreach (var typeName in new[]{"float", "double", "int"})
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool AreCloseZero(<#= typeName #> value1)
         {
-<# if (typeName == "float") { #>
-            const <#= typeName #> EPSILON = (float)1.4e-45;
-<# }else{ #>
-            const <#= typeName #> EPSILON = 2.2204460492503131e-016;
-<# } #>
-
             if (value1 == 0<#= suffix #>)
                 return true;
 
-            var eps = (Math.Abs(value1) + 10.0<#= suffix #>) * EPSILON;
+            var eps = (Math.Abs(value1) + 10<#= suffix #>) * EPSILON_<#= typeName #>;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);

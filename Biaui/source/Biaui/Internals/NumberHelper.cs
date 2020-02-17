@@ -10,6 +10,9 @@ namespace Biaui.Internals
 {
     internal static class NumberHelper
     {
+
+        private const float EPSILON_float = 1.192092896e-07F;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static float DistanceSq(in this ValueTuple<ImmutableVec2_float, ImmutableVec2_float> pos)
         {
@@ -22,12 +25,10 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool AreClose(float value1, float value2)
         {
-            const float EPSILON = (float)1.4e-45;
-
             if (value1 == value2)
                 return true;
 
-            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0f) * EPSILON;
+            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10f) * EPSILON_float;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -36,12 +37,10 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool AreCloseZero(float value1)
         {
-            const float EPSILON = (float)1.4e-45;
-
             if (value1 == 0f)
                 return true;
 
-            var eps = (Math.Abs(value1) + 10.0f) * EPSILON;
+            var eps = (Math.Abs(value1) + 10f) * EPSILON_float;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
@@ -109,6 +108,9 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static float Min(in this ValueTuple<float, float, float, float> value)
              => (((value.Item1, value.Item2).Min(), value.Item3).Min(), value.Item4).Min();
+
+        private const double EPSILON_double = 2.2204460492503131e-016;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double DistanceSq(in this ValueTuple<ImmutableVec2_double, ImmutableVec2_double> pos)
         {
@@ -121,12 +123,10 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool AreClose(double value1, double value2)
         {
-            const double EPSILON = 2.2204460492503131e-016;
-
             if (value1 == value2)
                 return true;
 
-            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0d) * EPSILON;
+            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10d) * EPSILON_double;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -135,12 +135,10 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool AreCloseZero(double value1)
         {
-            const double EPSILON = 2.2204460492503131e-016;
-
             if (value1 == 0d)
                 return true;
 
-            var eps = (Math.Abs(value1) + 10.0d) * EPSILON;
+            var eps = (Math.Abs(value1) + 10d) * EPSILON_double;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
@@ -208,6 +206,8 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Min(in this ValueTuple<double, double, double, double> value)
              => (((value.Item1, value.Item2).Min(), value.Item3).Min(), value.Item4).Min();
+
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int Clamp01(int value)
