@@ -102,9 +102,11 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            var rect = this.RoundLayoutRenderRectangle(true);
+            var rounder = new LayoutRounder(this);
 
-            var borderPen = this.GetBorderPen(BorderColor);
+            var rect = rounder.RoundRenderRectangle(true);
+
+            var borderPen = rounder.GetBorderPen(BorderColor);
 
             if (IsEnabled)
             {

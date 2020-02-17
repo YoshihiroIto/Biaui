@@ -270,17 +270,19 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            var rect = this.RoundLayoutRenderRectangle(true);
+            var rect = rounder.RoundRenderRectangle(true);
 
             dc.DrawRectangle(Brushes.Transparent, null, rect);
         }
 
-        private void UpdateParams(MouseEventArgs e)
+        private void UpdateParams(in LayoutRounder rounder, MouseEventArgs e)
         {
             var pos = e.GetPosition(this);
 
-            var s = this.RoundLayoutValue(1);
+            var s = rounder.RoundLayoutValue(1);
             var x = (pos.X - s) / (ActualWidth - s * 2);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
 
@@ -305,13 +307,14 @@ namespace Biaui.Controls
             _isMouseDown = true;
             GuiHelper.HideCursor();
 
+            var rounder = new LayoutRounder(this);
 
             _ContinuousEditingStartValue = (Hue, Saturation);
             _isContinuousEdited = true;
 
             StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
-            UpdateParams(e);
+            UpdateParams(rounder, e);
 
             CaptureMouse();
 
@@ -329,8 +332,10 @@ namespace Biaui.Controls
 
             if (_isMouseDown == false)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            UpdateParams(e);
+            UpdateParams(rounder, e);
 
             e.Handled = true;
         }
@@ -347,7 +352,9 @@ namespace Biaui.Controls
 
             // マウス位置を補正する
             {
-                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
+                var rounder = new LayoutRounder(this);
+                
+                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(rounder, ActualWidth, ActualHeight, Hue, Saturation);
 
                 var mousePos = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref pos));
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);

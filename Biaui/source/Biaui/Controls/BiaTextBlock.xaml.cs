@@ -64,7 +64,7 @@ namespace Biaui.Controls
                     }));
 
         #endregion
-        
+
         #region TextTrimming
 
         public BiaTextTrimmingMode TextTrimming
@@ -110,7 +110,10 @@ namespace Biaui.Controls
                 return;
 
             if (IsHitTestVisible)
-                dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
+            {
+                var rounder = new LayoutRounder(this);
+                dc.DrawRectangle(Brushes.Transparent, null, rounder.RoundRenderRectangle(false));
+            }
 
             if (Text != null &&
                 Foreground != null)
@@ -135,7 +138,9 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            _textWidth = string.IsNullOrEmpty(Text) ? 0 : this.RoundLayoutValue(Math.Ceiling(DefaultTextRenderer.Instance.CalcWidth(Text)));
+            var rounder = new LayoutRounder(this);
+            
+            _textWidth = string.IsNullOrEmpty(Text) ? 0 : rounder.RoundLayoutValue(Math.Ceiling(DefaultTextRenderer.Instance.CalcWidth(Text)));
         }
     }
 }

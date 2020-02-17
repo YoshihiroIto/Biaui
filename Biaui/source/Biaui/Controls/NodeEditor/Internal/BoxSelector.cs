@@ -46,13 +46,15 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             if (_mouseOperator.IsBoxSelect == false)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
             if (Visibility != Visibility.Visible)
                 Visibility = Visibility.Visible;
 
-            var r = this.RoundLayoutRect(_mouseOperator.SelectionRect);
+            var r = rounder.RoundLayoutRect(_mouseOperator.SelectionRect);
 
-            var borderWidth = this.RoundLayoutValue(2);
+            var borderWidth = rounder.RoundLayoutValue(2);
 
             SetLeft(_left, r.X);
             SetTop(_left, r.Y);
@@ -87,9 +89,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         protected override void OnRender(DrawingContext dc)
         {
+            var rounder = new LayoutRounder(this);
+            
             var pen = Caches.GetDashedPen(
                 new ByteColor(0xFF, 0x41, 0x69, 0xE1),
-                this.RoundLayoutValue(2));
+                rounder.RoundLayoutValue(2));
 
             dc.DrawLine(
                 pen,

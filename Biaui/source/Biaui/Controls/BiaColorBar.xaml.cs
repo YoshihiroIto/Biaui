@@ -266,6 +266,8 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
+            var rounder = new LayoutRounder(this);
+
             VisualEdgeMode = EdgeMode.Unspecified;
 
             if (_isRequestUpdateBackgroundBrush)
@@ -273,30 +275,27 @@ namespace Biaui.Controls
                 _isRequestUpdateBackgroundBrush = false;
                 UpdateBackgroundBrush();
             }
-
-            var rect = this.RoundLayoutRenderRectangle(true);
-            dc.DrawRectangle(_backgroundBrush, this.GetBorderPen(BorderColor), rect);
+            
+            var rect = rounder.RoundRenderRectangle(true);
+            dc.DrawRectangle(_backgroundBrush, rounder.GetBorderPen(BorderColor), rect);
 
             // Cursor
-            this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
+            this.DrawPointCursor(rounder, dc, MakeCursorRenderPos(rounder), IsEnabled, IsReadOnly);
         }
 
-        private ImmutableVec2_double CursorRenderPos
+        private ImmutableVec2_double MakeCursorRenderPos(in LayoutRounder rounder)
         {
-            get
-            {
-                var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
-                var h = this.RoundLayoutValue(ActualHeight - bw * 2);
-                var y = NumberHelper.Clamp01(Value) * h;
+            var h = rounder.RoundLayoutValue(ActualHeight - bw * 2);
+            var y = NumberHelper.Clamp01(Value) * h;
 
-                if (IsInverseValue)
-                    y = h - y;
+            if (IsInverseValue)
+                y = h - y;
 
-                y += bw;
+            y += bw;
 
-                return new ImmutableVec2_double(this.RoundLayoutValue(ActualWidth / 2), this.RoundLayoutValue(y));
-            }
+            return new ImmutableVec2_double(rounder.RoundLayoutValue(ActualWidth / 2), rounder.RoundLayoutValue(y));
         }
 
         private static Brush? _disabledBackgroundBrush;
@@ -319,9 +318,11 @@ namespace Biaui.Controls
 
         private void UpdateParams(MouseEventArgs e)
         {
+            var rounder = new LayoutRounder(this);
+            
             var pos = e.GetPosition(this);
 
-            var s = this.RoundLayoutValue(1);
+            var s = rounder.RoundLayoutValue(1);
             var y = (pos.Y - s) / (ActualHeight - s * 2);
             y = NumberHelper.Clamp01(y);
 
@@ -382,7 +383,9 @@ namespace Biaui.Controls
 
             // マウス位置を補正する
             {
-                var cp = CursorRenderPos;
+                var rounder = new LayoutRounder(this);
+                
+                var cp = MakeCursorRenderPos(rounder);
                 var p = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref cp));
                 Win32Helper.SetCursorPos((int) p.X, (int) p.Y);
             }

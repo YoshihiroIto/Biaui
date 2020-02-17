@@ -73,14 +73,16 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            DrawBackground(dc);
+            DrawBackground(rounder, dc);
 
             // ボックス
             dc.DrawRoundedRectangle(
                 Background,
-                this.GetBorderPen(BoxBorderColor),
-                this.RoundLayoutRect(
+                rounder.GetBorderPen(BoxBorderColor),
+                rounder.RoundLayoutRect(
                     0 + FrameworkElementExtensions.BorderHalfWidth, 
                     2 + FrameworkElementExtensions.BorderHalfWidth,
                     16 - FrameworkElementExtensions.BorderWidth,
@@ -96,9 +98,9 @@ namespace Biaui.Controls
             DrawCaption(dc);
         }
 
-        protected void DrawBackground(DrawingContext dc)
+        protected void DrawBackground(in LayoutRounder rounder, DrawingContext dc)
         {
-            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
+            dc.DrawRectangle(Brushes.Transparent, null, rounder.RoundRenderRectangle(false));
         }
 
         protected void DrawCaption(DrawingContext dc)

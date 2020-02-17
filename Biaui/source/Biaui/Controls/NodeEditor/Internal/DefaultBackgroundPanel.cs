@@ -93,6 +93,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.PushTransform(_parent.TranslateTransform);
             dc.PushTransform(_parent.ScaleTransform);
             {
+                var rounder = new LayoutRounder(this);
+                
                 foreach (var curve in _curves)
                 {
                     if (curve.Key.IsHightlight)
@@ -100,8 +102,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var pen =
                         (curve.Key.Style & BiaNodeLinkStyle.DashedLine) != 0
-                            ? Caches.GetDashedPen(curve.Key.Color, this.RoundLayoutValue(LineWidth))
-                            : Caches.GetPen(curve.Key.Color, this.RoundLayoutValue(LineWidth));
+                            ? Caches.GetDashedPen(curve.Key.Color, rounder.RoundLayoutValue(LineWidth))
+                            : Caches.GetPen(curve.Key.Color, rounder.RoundLayoutValue(LineWidth));
 
                     ((IDisposable) curve.Value.Ctx).Dispose();
                     dc.DrawGeometry(Caches.GetSolidColorBrush(curve.Key.Color), pen, curve.Value.Geom);

@@ -400,14 +400,16 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            DrawBackground(dc);
+            DrawBackground(rounder, dc);
 
             var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
 
             if (isCornerRadiusZero == false)
                 dc.PushClip(
-                    Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, true));
+                    Caches.GetClipGeom(rounder, ActualWidth, ActualHeight, CornerRadius, true));
             {
                 var displayItem = ItemToStringConverter?.Convert(SelectedItem, typeof(string),
                                       ItemToStringConverterParameter, CultureInfo.CurrentUICulture)
@@ -417,7 +419,7 @@ namespace Biaui.Controls
                     if (Foreground != null)
                         DefaultTextRenderer.Instance.Draw(
                             this,
-                            displayItem.ToString() ?? "",
+                            displayItem.ToString(),
                             4.5, 3.5,
                             Foreground,
                             dc,
@@ -439,18 +441,18 @@ namespace Biaui.Controls
             }
         }
 
-        private void DrawBackground(DrawingContext dc)
+        private void DrawBackground(in LayoutRounder rounder, DrawingContext dc)
         {
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     Background,
-                    this.GetBorderPen(BorderColor),
-                    this.RoundLayoutRenderRectangle(true));
+                    rounder.GetBorderPen(BorderColor),
+                    rounder.RoundRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     Background,
-                    this.GetBorderPen(BorderColor),
-                    this.RoundLayoutRenderRectangle(true),
+                    rounder.GetBorderPen(BorderColor),
+                    rounder.RoundRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }

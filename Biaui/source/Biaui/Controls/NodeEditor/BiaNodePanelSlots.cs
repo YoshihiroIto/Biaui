@@ -40,6 +40,8 @@ namespace Biaui.Controls.NodeEditor
             if (nodeItem == null)
                 return;
 
+            var rounder = new LayoutRounder(this);
+            
             if (_parent == null)
                 _parent = this.GetParent<BiaNodeEditor>() ?? throw new NullReferenceException();
 
@@ -82,7 +84,7 @@ namespace Biaui.Controls.NodeEditor
                 curve.Ctx.DrawEllipse(Unsafe.As<ImmutableVec2_double, Point>(ref slotPos), r, r, true, true);
             }
 
-            var pen = Caches.GetPen(ByteColor.Black, this.RoundLayoutValue(2));
+            var pen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(2));
 
             foreach (var c in _ellipses)
             {

@@ -140,14 +140,16 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
             // Border
             {
-                var p = this.GetBorderPen(BorderColor);
+                var p = rounder.GetBorderPen(BorderColor);
 
-                var w = this.RoundLayoutValue(ActualWidth - 0.5);
-                var h = this.RoundLayoutValue(ActualHeight - 0.5);
-                var z = this.RoundLayoutValue(0.5);
+                var w = rounder.RoundLayoutValue(ActualWidth - 0.5);
+                var h = rounder.RoundLayoutValue(ActualHeight - 0.5);
+                var z = rounder.RoundLayoutValue(0.5);
 
                 var p0 = new Point(z, z);
                 var p1 = new Point(w, z);
@@ -166,14 +168,14 @@ namespace Biaui.Controls
             }
 
             // Cursor
-            this.DrawPointCursor(dc, CursorRenderPos, IsEnabled, IsReadOnly);
+            this.DrawPointCursor(rounder, dc, MakeCursorRenderPos(rounder), IsEnabled, IsReadOnly);
         }
 
-        private ImmutableVec2_double CursorRenderPos =>
-            MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
+        private ImmutableVec2_double MakeCursorRenderPos(in LayoutRounder rounder) =>
+            MakeCursorRenderPos(rounder, ActualWidth, ActualHeight, Hue, Saturation);
 
         internal static ImmutableVec2_double MakeCursorRenderPos(
-            Visual visual,
+            in LayoutRounder rounder,
             double actualWidth,
             double actualHeight,
             double hue,
@@ -182,14 +184,14 @@ namespace Biaui.Controls
             hue = NumberHelper.Clamp01(hue);
             saturation = NumberHelper.Clamp01(saturation);
 
-            var bw = visual.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
-            var w = visual.RoundLayoutValue(actualWidth - bw * 2);
-            var h = visual.RoundLayoutValue(actualHeight - bw * 2);
+            var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var w = rounder.RoundLayoutValue(actualWidth - bw * 2);
+            var h = rounder.RoundLayoutValue(actualHeight - bw * 2);
 
             var x = hue * w + bw;
             var y = (1 - saturation) * h + bw;
 
-            return new ImmutableVec2_double(visual.RoundLayoutValue(x), visual.RoundLayoutValue(y));
+            return new ImmutableVec2_double(rounder.RoundLayoutValue(x), rounder.RoundLayoutValue(y));
         }
     }
 }

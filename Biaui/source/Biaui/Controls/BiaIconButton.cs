@@ -77,6 +77,8 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
             // 背景
             {
@@ -84,12 +86,12 @@ namespace Biaui.Controls
                     dc.DrawRectangle(
                         Background,
                         null,
-                        this.RoundLayoutRenderRectangle(false));
+                        rounder.RoundRenderRectangle(false));
                 else
                     dc.DrawRoundedRectangle(
                         Background,
                         null,
-                        this.RoundLayoutRenderRectangle(false),
+                        rounder.RoundRenderRectangle(false),
                         CornerRadius,
                         CornerRadius);
             }

@@ -5,13 +5,13 @@ namespace Biaui.Internals
 {
     internal static class RenderHelper
     {
-        internal static void DrawPointCursor(this Visual visual, DrawingContext dc, in ImmutableVec2_double pos, bool isEnabled, bool isReadOnly)
+        internal static void DrawPointCursor(this Visual visual, in LayoutRounder rounder, DrawingContext dc, in ImmutableVec2_double pos, bool isEnabled, bool isReadOnly)
         {
-            var pointIn = Caches.GetPen(ByteColor.White, visual.RoundLayoutValue(PointCursorRadius - 2));
-            var pointInIsReadOnly = Caches.GetPen(ByteColor.Gray, visual.RoundLayoutValue(PointCursorRadius - 2));
-            var pointOut = Caches.GetPen(ByteColor.Black, visual.RoundLayoutValue(PointCursorRadius));
+            var pointIn = Caches.GetPen(ByteColor.White, rounder.RoundLayoutValue(PointCursorRadius - 2));
+            var pointInIsReadOnly = Caches.GetPen(ByteColor.Gray, rounder.RoundLayoutValue(PointCursorRadius - 2));
+            var pointOut = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(PointCursorRadius));
  
-            var s = visual.RoundLayoutValue(1);
+            var s = rounder.RoundLayoutValue(1);
 
             var ob = pointOut;
             var ib = isEnabled == false || isReadOnly ? pointInIsReadOnly : pointIn;

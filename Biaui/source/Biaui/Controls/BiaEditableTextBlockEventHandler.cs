@@ -78,9 +78,11 @@ namespace Biaui.Controls
         {
             var textBox = (TextBox) sender;
 
+            var rounder = new LayoutRounder(textBox);
+            
             // 自コントロール上であれば、終了させない
             var pos = e.GetPosition(textBox);
-            var rect = textBox.RoundLayoutRenderRectangle(false);
+            var rect = rounder.RoundRenderRectangle(false);
             if (rect.Contains(pos))
                 return;
 

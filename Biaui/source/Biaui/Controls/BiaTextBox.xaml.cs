@@ -235,7 +235,7 @@ namespace Biaui.Controls
                     }));
 
         #endregion
-        
+
         #region TextTrimming
 
         public BiaTextTrimmingMode TextTrimming
@@ -285,12 +285,14 @@ namespace Biaui.Controls
                 ActualHeight <= 1)
                 return;
 
-            DrawBackground(dc);
+            var rounder = new LayoutRounder(this);
+
+            DrawBackground(rounder, dc);
 
             var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
 
             if (isCornerRadiusZero == false)
-                dc.PushClip(Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, true));
+                dc.PushClip(Caches.GetClipGeom(rounder, ActualWidth, ActualHeight, CornerRadius, true));
             {
                 if (_isEditing == false &&
                     string.IsNullOrEmpty(TargetText) &&
@@ -320,27 +322,27 @@ namespace Biaui.Controls
                         TextTrimming,
                         true);
             }
-            
+
             if (isCornerRadiusZero == false)
                 dc.Pop();
         }
 
         private string? TargetText => _isEditing ? _textBox?.Text : Text;
 
-        private void DrawBackground(DrawingContext dc)
+        private void DrawBackground(in LayoutRounder rounder, DrawingContext dc)
         {
             var brush = Background;
 
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     brush,
-                    this.GetBorderPen(BorderColor),
-                    this.RoundLayoutRenderRectangle(true));
+                    rounder.GetBorderPen(BorderColor),
+                    rounder.RoundRenderRectangle(true));
             else
                 dc.DrawRoundedRectangle(
                     brush,
-                    this.GetBorderPen(BorderColor),
-                    this.RoundLayoutRenderRectangle(true),
+                    rounder.GetBorderPen(BorderColor),
+                    rounder.RoundRenderRectangle(true),
                     CornerRadius,
                     CornerRadius);
         }
@@ -467,9 +469,11 @@ namespace Biaui.Controls
 
         private void TextBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            var rounder = new LayoutRounder(this);
+            
             // 自コントロール上であれば、終了させない
             var pos = e.GetPosition(this);
-            var rect = this.RoundLayoutRenderRectangle(false);
+            var rect = rounder.RoundRenderRectangle(false);
             if (rect.Contains(pos))
                 return;
 

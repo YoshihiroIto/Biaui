@@ -73,8 +73,10 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            dc.DrawRectangle(Brushes.Transparent, null, this.RoundLayoutRenderRectangle(false));
+            dc.DrawRectangle(Brushes.Transparent, null, rounder.RoundRenderRectangle(false));
 
             if (IsEnabled)
             {
@@ -88,7 +90,7 @@ namespace Biaui.Controls
                     IsPressed
                         ? MarkBrush
                         : Background,
-                    this.GetBorderPen(color),
+                    rounder.GetBorderPen(color),
                     new Point(8, 10),
                     7, 7);
             }
@@ -96,7 +98,7 @@ namespace Biaui.Controls
             {
                 dc.DrawEllipse(
                     null,
-                    this.GetBorderPen(MarkBorderColor),
+                    rounder.GetBorderPen(MarkBorderColor),
                     new Point(8, 10),
                     7, 7);
             }

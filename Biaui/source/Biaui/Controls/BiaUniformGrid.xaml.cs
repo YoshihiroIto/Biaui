@@ -165,9 +165,11 @@ namespace Biaui.Controls
         {
             var xIndex = 0;
             var yIndex = 0;
+            
+            var rounder = new LayoutRounder(this);
 
-            var (baseChildWidth, childHeight) =
-                this.RoundLayoutValue(arrangeSize.Width / _columns, arrangeSize.Height / _rows);
+            var baseChildWidth= rounder.RoundLayoutValue(arrangeSize.Width / _columns);
+            var childHeight = rounder.RoundLayoutValue(arrangeSize.Height / _rows);
 
             var dpiSpacing = Spacing * this.PixelsPerDip();
             var childBounds = new Rect();

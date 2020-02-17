@@ -278,18 +278,20 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            var rect = this.RoundLayoutRenderRectangle(true);
+            var rect = rounder.RoundRenderRectangle(true);
 
             dc.DrawRectangle(Brushes.Transparent, null, rect);
         }
 
         /// <returns>マウスがホイール外を指しているか？</returns>
-        private bool UpdateParams(MouseEventArgs e)
+        private bool UpdateParams(in LayoutRounder rounder, MouseEventArgs e)
         {
             var pos = e.GetPosition(this);
 
-            var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
             var width = ActualWidth - bw * 2;
             var height = ActualHeight - bw * 2;
@@ -327,21 +329,22 @@ namespace Biaui.Controls
 
             if (IsReadOnly)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
             var pos = e.GetPosition(this);
-            if (IsOutSide(Unsafe.As<Point, ImmutableVec2_double>(ref pos)))
+            if (IsOutSide(rounder, Unsafe.As<Point, ImmutableVec2_double>(ref pos)))
                 return;
 
             _isMouseDown = true;
             GuiHelper.HideCursor();
 
-
             _ContinuousEditingStartValue = (Hue, Saturation);
             _isContinuousEdited = true;
 
             StartedContinuousEditingCommand?.ExecuteIfCan(null);
-
-            UpdateParams(e);
+            
+            UpdateParams(rounder, e);
 
             CaptureMouse();
 
@@ -359,13 +362,15 @@ namespace Biaui.Controls
 
             if (_isMouseDown == false)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            var isOut = UpdateParams(e);
+            var isOut = UpdateParams(rounder, e);
 
             // マウス位置を補正する
             if (isOut)
             {
-                var pos = BiaHsvWheelCursor.MakeCursorRenderPos(this, ActualWidth, ActualHeight, Hue, Saturation);
+                var pos = BiaHsvWheelCursor.MakeCursorRenderPos(rounder, ActualWidth, ActualHeight, Hue, Saturation);
 
                 var mousePos = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref pos));
                 Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
@@ -429,9 +434,9 @@ namespace Biaui.Controls
             e.Handled = true;
         }
 
-        private bool IsOutSide(in ImmutableVec2_double pos)
+        private bool IsOutSide(in LayoutRounder rounder, in ImmutableVec2_double pos)
         {
-            var bw = this.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
+            var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
             var width = ActualWidth - bw * 2;
             var height = ActualHeight - bw * 2;

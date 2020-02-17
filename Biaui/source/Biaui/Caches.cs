@@ -74,7 +74,7 @@ namespace Biaui
             return b;
         }
 
-        public static Geometry GetClipGeom(Visual visual, double w, double h, double cornerRadius, bool isWidthBorder)
+        public static Geometry GetClipGeom(in LayoutRounder rounder, double w, double h, double cornerRadius, bool isWidthBorder)
         {
             var hashCode = HashCodeMaker.Make(w, h, cornerRadius, isWidthBorder);
 
@@ -87,7 +87,7 @@ namespace Biaui
                 {
                     RadiusX = cornerRadius,
                     RadiusY = cornerRadius,
-                    Rect = visual.RoundLayoutRect(
+                    Rect = rounder.RoundLayoutRect(
                         FrameworkElementExtensions.BorderWidth * 0.5,
                         FrameworkElementExtensions.BorderWidth * 0.5,
                         w - FrameworkElementExtensions.BorderWidth,
@@ -100,7 +100,7 @@ namespace Biaui
                 {
                     RadiusX = cornerRadius,
                     RadiusY = cornerRadius,
-                    Rect = visual.RoundLayoutRect(0, 0, w, h)
+                    Rect = rounder.RoundLayoutRect(0, 0, w, h)
                 };
             }
 

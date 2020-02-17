@@ -671,17 +671,19 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
-            DrawBackground(dc);
+            DrawBackground(rounder, dc);
 
             var isCornerRadiusZero = NumberHelper.AreCloseZero(CornerRadius);
 
             if (isCornerRadiusZero == false)
                 dc.PushClip(
-                    Caches.GetClipGeom(this, ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
+                    Caches.GetClipGeom(rounder, ActualWidth, ActualHeight, CornerRadius, IsVisibleBorder));
             {
                 if (Mode == BiaNumberEditorMode.Simple)
-                    DrawSlider(dc);
+                    DrawSlider(rounder, dc);
 
                 DrawText(dc);
 
@@ -695,10 +697,10 @@ namespace Biaui.Controls
                 dc.Pop();
 
             if (IsVisibleBorder)
-                DrawBorder(dc);
+                DrawBorder(rounder, dc);
         }
 
-        private void DrawBackground(DrawingContext dc)
+        private void DrawBackground(in LayoutRounder rounder, DrawingContext dc)
         {
             var brush = _isEditing
                 ? _textBox?.Background
@@ -711,34 +713,34 @@ namespace Biaui.Controls
                 dc.DrawRectangle(
                     brush,
                     null,
-                    this.RoundLayoutRenderRectangle(IsVisibleBorder));
+                    rounder.RoundRenderRectangle(IsVisibleBorder));
             else
                 dc.DrawRoundedRectangle(
                     brush,
                     null,
-                    this.RoundLayoutRenderRectangle(IsVisibleBorder),
+                    rounder.RoundRenderRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
 
-        private void DrawBorder(DrawingContext dc)
+        private void DrawBorder(in LayoutRounder rounder, DrawingContext dc)
         {
             if (NumberHelper.AreCloseZero(CornerRadius))
                 dc.DrawRectangle(
                     Brushes.Transparent,
-                    this.GetBorderPen(BorderColor),
-                    this.RoundLayoutRenderRectangle(IsVisibleBorder)
+                    rounder.GetBorderPen(BorderColor),
+                    rounder.RoundRenderRectangle(IsVisibleBorder)
                 );
             else
                 dc.DrawRoundedRectangle(
                     Brushes.Transparent,
-                    this.GetBorderPen(BorderColor),
-                    this.RoundLayoutRenderRectangle(IsVisibleBorder),
+                    rounder.GetBorderPen(BorderColor),
+                    rounder.RoundRenderRectangle(IsVisibleBorder),
                     CornerRadius,
                     CornerRadius);
         }
 
-        private void DrawSlider(DrawingContext dc)
+        private void DrawSlider(in LayoutRounder rounder, DrawingContext dc)
         {
             if (SliderWidth <= 0.0f)
                 return;
@@ -750,9 +752,9 @@ namespace Biaui.Controls
             if (brush == null)
                 return;
 
-            var w = (UiValue - ActualSliderMinimum) * this.RoundLayoutRenderWidth(IsVisibleBorder) / SliderWidth;
-            var r = this.RoundLayoutRenderRectangle(IsVisibleBorder);
-            r.Width = (this.RoundLayoutValue(w), 0.0).Max();
+            var w = (UiValue - ActualSliderMinimum) * rounder.RoundRenderWidth(IsVisibleBorder) / SliderWidth;
+            var r = rounder.RoundRenderRectangle(IsVisibleBorder);
+            r.Width = (rounder.RoundLayoutValue(w), 0.0).Max();
 
             dc.DrawRectangle(brush, null, r);
         }
@@ -1127,9 +1129,11 @@ namespace Biaui.Controls
 
         private void TextBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            var rounder = new LayoutRounder(this);
+            
             // 自コントロール上であれば、終了させない
             var pos = e.GetPosition(this);
-            var rect = this.RoundLayoutRenderRectangle(false);
+            var rect = rounder.RoundRenderRectangle(false);
             if (rect.Contains(pos))
                 return;
 

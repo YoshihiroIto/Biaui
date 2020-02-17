@@ -506,10 +506,12 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
             // 背景
             {
-                dc.PushClip(Caches.GetClipGeom(this, RenderSize.Width, RenderSize.Height, Constants.BasicCornerRadiusPrim, false));
+                dc.PushClip(Caches.GetClipGeom(rounder, RenderSize.Width, RenderSize.Height, Constants.BasicCornerRadiusPrim, false));
 
                 var index = 0;
                 var isEnabled = IsEnabled;
@@ -525,46 +527,46 @@ namespace Biaui.Controls
                         var isMouseOver = IsMouseOverButton(index);
                         var isPressed = IsPressedButton(index);
 
-                        DrawButton(dc, x, y, isEnabled, isChecked, isMouseOver, isPressed);
+                        DrawButton(rounder, dc, x, y, isEnabled, isChecked, isMouseOver, isPressed);
                     }
                 }
 
                 dc.Pop();
             }
 
-            var borderPen = this.GetBorderPen(new ByteColor(0xFF, 0x2D, 0x2D, 0x30));
+            var borderPen = rounder.GetBorderPen(new ByteColor(0xFF, 0x2D, 0x2D, 0x30));
 
             // 境界線
             {
                 {
-                    var x = this.RoundLayoutValue(RenderSize.Width);
-                    var y = this.RoundLayoutValue(RenderSize.Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
+                    var x = rounder.RoundLayoutValue(RenderSize.Width);
+                    var y = rounder.RoundLayoutValue(RenderSize.Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
 
                     dc.DrawLine(borderPen, new Point(0, y), new Point(x, y));
                 }
 
                 {
-                    var y = this.RoundLayoutValue(RenderSize.Height + FrameworkElementExtensions.BorderHalfWidth);
+                    var y = rounder.RoundLayoutValue(RenderSize.Height + FrameworkElementExtensions.BorderHalfWidth);
 
                     for (var column = 1; column != ColumnCount; ++column)
                     {
-                        var x = this.RoundLayoutValue(column * ButtonWidth + FrameworkElementExtensions.BorderHalfWidth);
+                        var x = rounder.RoundLayoutValue(column * ButtonWidth + FrameworkElementExtensions.BorderHalfWidth);
                         dc.DrawLine(borderPen, new Point(x, 0), new Point(x, y));
                     }
                 }
             }
         }
 
-        private void DrawButton(DrawingContext dc, double x, double y, bool isEnabled, bool isChecked, bool isMouseOver, bool isPressed)
+        private static void DrawButton(in LayoutRounder rounder, DrawingContext dc, double x, double y, bool isEnabled, bool isChecked, bool isMouseOver, bool isPressed)
         {
             dc.DrawRectangle(
                 SelectBrush(isEnabled, isChecked, isMouseOver, isPressed),
                 null,
                 new Rect(
-                    this.RoundLayoutValue(x), 
-                    this.RoundLayoutValue(y),
-                    this.RoundLayoutValue(ButtonWidth),
-                    this.RoundLayoutValue(ButtonHeight)));
+                    rounder.RoundLayoutValue(x), 
+                    rounder.RoundLayoutValue(y),
+                    rounder.RoundLayoutValue(ButtonWidth),
+                    rounder.RoundLayoutValue(ButtonHeight)));
         }
 
         private static Brush SelectBrush(bool isEnabled, bool isChecked, bool isMouseOver, bool isPressed)

@@ -95,7 +95,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        internal void Render(DrawingContext dc, in ImmutableRect_double rect, double scale)
+        internal void Render(in LayoutRounder rounder, DrawingContext dc, in ImmutableRect_double rect, double scale)
         {
             if (IsNodeSlotDragging == false)
                 return;
@@ -109,7 +109,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(ByteColor.Black, 5));
             dc.DrawBezier(BezierPoints, Caches.GetCapPen(ByteColor.WhiteSmoke, 3));
 
-            var slotPen = Caches.GetPen(ByteColor.Black, this.RoundLayoutValue(2));
+            var slotPen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(2));
 
             // 接続元ポートの丸
             var srcRect = new ImmutableRect_double(
@@ -245,6 +245,8 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (_parent.IsNodeSlotDragging == false)
                 return;
+            
+            var rounder = new LayoutRounder(this);
 
             var scale = _parent.Scale.ScaleX;
             var rect = _parent.Transform(new ImmutableRect_double(0, 0, ActualWidth, ActualHeight));
@@ -267,17 +269,13 @@ namespace Biaui.Controls.NodeEditor.Internal
                     dc.PushTransform(_parent.Translate);
                     dc.PushTransform(_parent.Scale);
                     {
-                        _parent.Render(dc, rect, scale);
+                        _parent.Render(rounder, dc, rect, scale);
                     }
                     dc.Pop();
                     dc.Pop();
                 }
                 dc.Pop();
-
-                //dc.DrawRectangle(null, Caches.GetPen(Colors.BlueViolet, 1), this.RoundLayoutRenderRectangle(false));
             }
-
-            //TextRenderer.Default.Draw(isHit.ToString(), 0, 0, Brushes.WhiteSmoke, dc, ActualWidth, TextAlignment.Left);
         }
     }
 }
