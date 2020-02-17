@@ -30,71 +30,28 @@ namespace Biaui.Internals
 
         internal static (double Red, double Green, double Blue) HsvToRgb(double hue, double saturation, double value)
         {
-            var h = NumberHelper.AreClose(hue, 1)
-                ? 0
-                : hue;
+            var h = NumberHelper.AreClose(hue, 1) ? 0 : hue;
             var s = saturation;
             var v = value;
 
-            double r, g, b;
-
             if (NumberHelper.AreCloseZero(s))
+                return (v, v, v);
+
+            var dh = Math.Floor(h / (60.0 / 360));
+            var p = v * (1 - s);
+            var q = v * (1 - s * (h / (60.0 / 360) - dh));
+            var t = v * (1 - s * (1 - (h / (60.0 / 360) - dh)));
+
+            return dh switch
             {
-                r = v;
-                g = v;
-                b = v;
-            }
-            else
-            {
-                var dh = Math.Floor(h / (60.0 / 360));
-                var p = v * (1 - s);
-                var q = v * (1 - s * (h / (60.0 / 360) - dh));
-                var t = v * (1 - s * (1 - (h / (60.0 / 360) - dh)));
-
-                switch (dh)
-                {
-                    case 0:
-                        r = v;
-                        g = t;
-                        b = p;
-                        break;
-
-                    case 1:
-                        r = q;
-                        g = v;
-                        b = p;
-                        break;
-
-                    case 2:
-                        r = p;
-                        g = v;
-                        b = t;
-                        break;
-
-                    case 3:
-                        r = p;
-                        g = q;
-                        b = v;
-                        break;
-
-                    case 4:
-                        r = t;
-                        g = p;
-                        b = v;
-                        break;
-
-                    case 5:
-                        r = v;
-                        g = p;
-                        b = q;
-                        break;
-
-                    default:
-                        throw new Exception();
-                }
-            }
-
-            return (r, g, b);
+                0 => (v, t, p),
+                1 => (q, v, p),
+                2 => (p, v, t),
+                3 => (p, q, v),
+                4 => (t, p, v),
+                5 => (v, p, q),
+                _ => throw new Exception()
+            };
         }
     }
 }
