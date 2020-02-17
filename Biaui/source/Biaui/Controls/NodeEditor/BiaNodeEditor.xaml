@@ -4,7 +4,8 @@
                     xmlns:biaui="clr-namespace:Biaui">
     <Style TargetType="{x:Type nodeEditor:BiaNodeEditor}">
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
-
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        
         <!--  キー操作を受け付けるためにフォーカスをあてる  -->
         <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolTrue}" />
     </Style>
