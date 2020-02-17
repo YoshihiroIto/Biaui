@@ -71,8 +71,8 @@ namespace Biaui.Internals
                 var v0112 = new ImmutableVec2_float((v01.X + v12.X) * 0.5f, (v01.Y + v12.Y) * 0.5f);
                 var v1223 = new ImmutableVec2_float((v12.X + v23.X) * 0.5f, (v12.Y + v23.Y) * 0.5f);
 
-                if (NumberHelper.Abs(v0112.X - v1223.X) < 0.00001f &&
-                    NumberHelper.Abs(v0112.Y - v1223.Y) < 0.00001f)
+                if (Math.Abs(v0112.X - v1223.X) < 0.00001f &&
+                    Math.Abs(v0112.Y - v1223.Y) < 0.00001f)
                     return rect.IntersectsWith(v0112);
 
                 var c = new ImmutableVec2_float((v0112.X + v1223.X) * 0.5f, (v0112.Y + v1223.Y) * 0.5f);
@@ -271,8 +271,8 @@ namespace Biaui.Internals
                 var v0112 = new ImmutableVec2_double((v01.X + v12.X) * 0.5d, (v01.Y + v12.Y) * 0.5d);
                 var v1223 = new ImmutableVec2_double((v12.X + v23.X) * 0.5d, (v12.Y + v23.Y) * 0.5d);
 
-                if (NumberHelper.Abs(v0112.X - v1223.X) < 0.00001d &&
-                    NumberHelper.Abs(v0112.Y - v1223.Y) < 0.00001d)
+                if (Math.Abs(v0112.X - v1223.X) < 0.00001d &&
+                    Math.Abs(v0112.Y - v1223.Y) < 0.00001d)
                     return rect.IntersectsWith(v0112);
 
                 var c = new ImmutableVec2_double((v0112.X + v1223.X) * 0.5d, (v0112.Y + v1223.Y) * 0.5d);

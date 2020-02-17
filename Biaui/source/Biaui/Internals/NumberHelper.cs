@@ -27,7 +27,7 @@ namespace Biaui.Internals
             if (value1 == value2)
                 return true;
 
-            var eps = (Abs(value1) + Abs(value2) + 10.0f) * EPSILON;
+            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0f) * EPSILON;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -41,17 +41,11 @@ namespace Biaui.Internals
             if (value1 == 0f)
                 return true;
 
-            var eps = (Abs(value1) + 10.0f) * EPSILON;
+            var eps = (Math.Abs(value1) + 10.0f) * EPSILON;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static float Abs(float value)
-            => value > 0f
-                ? value
-                : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static float Clamp01(float value)
@@ -132,7 +126,7 @@ namespace Biaui.Internals
             if (value1 == value2)
                 return true;
 
-            var eps = (Abs(value1) + Abs(value2) + 10.0d) * EPSILON;
+            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0d) * EPSILON;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -146,17 +140,11 @@ namespace Biaui.Internals
             if (value1 == 0d)
                 return true;
 
-            var eps = (Abs(value1) + 10.0d) * EPSILON;
+            var eps = (Math.Abs(value1) + 10.0d) * EPSILON;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static double Abs(double value)
-            => value > 0d
-                ? value
-                : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Clamp01(double value)
@@ -220,12 +208,6 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static double Min(in this ValueTuple<double, double, double, double> value)
              => (((value.Item1, value.Item2).Min(), value.Item3).Min(), value.Item4).Min();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static int Abs(int value)
-            => value > 0
-                ? value
-                : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static int Clamp01(int value)

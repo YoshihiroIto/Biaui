@@ -114,7 +114,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var startItemCenter = start.Item.AlignPos().Y(b) + start.Item.Size.Height(b) * 0.5;
             var startItemSlotOffset =
-                start.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - start.Pos.Y(b));
+                start.Item.Size.Height(b) * 0.5 - Math.Abs(startItemCenter - start.Pos.Y(b));
             var fold = MinSlotOffset + startItemSlotOffset;
 
             var startFoldPos = start.Pos.X(b) + fold;
@@ -160,10 +160,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var startItemCenter = unit1.Item.AlignPos().Y(b) + unit1.Item.Size.Height(b) * 0.5;
             var startItemSlotOffset =
-                unit1.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(startItemCenter - unit1.Pos.Y(b));
+                unit1.Item.Size.Height(b) * 0.5 - Math.Abs(startItemCenter - unit1.Pos.Y(b));
 
             var endItemCenter = unit2.Item.AlignPos().Y(b) + unit2.Item.Size.Height(b) * 0.5;
-            var endItemSlotOffset = unit2.Item.Size.Height(b) * 0.5 - NumberHelper.Abs(endItemCenter - unit2.Pos.Y(b));
+            var endItemSlotOffset = unit2.Item.Size.Height(b) * 0.5 - Math.Abs(endItemCenter - unit2.Pos.Y(b));
             var fold = MinSlotOffset + (startItemSlotOffset, endItemSlotOffset).Max();
 
             var foldPos = unit1.Slot.Dir == Transposer.NodeSlotDir(BiaNodeSlotDir.Left, b)
@@ -330,12 +330,12 @@ namespace Biaui.Controls.NodeEditor.Internal
                     if (IsVertical)
                     {
                         var itemCenter = Item.AlignPos().X + Item.Size.Width * 0.5;
-                        itemSlotOffset = Item.Size.Width * 0.5 - NumberHelper.Abs(itemCenter - Pos.X);
+                        itemSlotOffset = Item.Size.Width * 0.5 - Math.Abs(itemCenter - Pos.X);
                     }
                     else
                     {
                         var itemCenter = Item.AlignPos().Y + Item.Size.Height * 0.5;
-                        itemSlotOffset = Item.Size.Height * 0.5 - NumberHelper.Abs(itemCenter - Pos.Y);
+                        itemSlotOffset = Item.Size.Height * 0.5 - Math.Abs(itemCenter - Pos.Y);
                     }
                 }
 

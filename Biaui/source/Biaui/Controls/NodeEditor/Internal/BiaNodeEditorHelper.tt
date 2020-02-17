@@ -80,8 +80,8 @@ foreach (var typeName in new[]{"float", "double"})
                 var v0112 = new ImmutableVec2_<#= typeName #>((v01.X + v12.X) * 0.5<#= suffix #>, (v01.Y + v12.Y) * 0.5<#= suffix #>);
                 var v1223 = new ImmutableVec2_<#= typeName #>((v12.X + v23.X) * 0.5<#= suffix #>, (v12.Y + v23.Y) * 0.5<#= suffix #>);
 
-                if (NumberHelper.Abs(v0112.X - v1223.X) < 0.00001<#= suffix #> &&
-                    NumberHelper.Abs(v0112.Y - v1223.Y) < 0.00001<#= suffix #>)
+                if (Math.Abs(v0112.X - v1223.X) < 0.00001<#= suffix #> &&
+                    Math.Abs(v0112.Y - v1223.Y) < 0.00001<#= suffix #>)
                     return rect.IntersectsWith(v0112);
 
                 var c = new ImmutableVec2_<#= typeName #>((v0112.X + v1223.X) * 0.5<#= suffix #>, (v0112.Y + v1223.Y) * 0.5<#= suffix #>);

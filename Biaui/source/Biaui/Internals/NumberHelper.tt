@@ -45,7 +45,7 @@ foreach (var typeName in new[]{"float", "double", "int"})
             if (value1 == value2)
                 return true;
 
-            var eps = (Abs(value1) + Abs(value2) + 10.0<#= suffix #>) * EPSILON;
+            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0<#= suffix #>) * EPSILON;
             var delta = value1 - value2;
 
             return (-eps < delta) && (eps > delta);
@@ -63,18 +63,12 @@ foreach (var typeName in new[]{"float", "double", "int"})
             if (value1 == 0<#= suffix #>)
                 return true;
 
-            var eps = (Abs(value1) + 10.0<#= suffix #>) * EPSILON;
+            var eps = (Math.Abs(value1) + 10.0<#= suffix #>) * EPSILON;
             var delta = value1;
 
             return (-eps < delta) && (eps > delta);
         }
 <# } #>
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Abs(<#= typeName #> value)
-            => value > 0<#= suffix #>
-                ? value
-                : -value;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static <#= typeName #> Clamp01(<#= typeName #> value)
