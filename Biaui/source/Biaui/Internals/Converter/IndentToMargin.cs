@@ -20,8 +20,8 @@ namespace Biaui.Internals.Converter
             var length = 19.0;
 
             if (values.Length == 2)
-                if (values[1] is double)
-                    length = (double) values[1];
+                if (values[1] is double v)
+                    length = v;
 
             var k = length * item.GetDepth();
 
