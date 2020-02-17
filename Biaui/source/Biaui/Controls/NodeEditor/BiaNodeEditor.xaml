@@ -8,5 +8,11 @@
         
         <!--  キー操作を受け付けるためにフォーカスをあてる  -->
         <Setter Property="Focusable" Value="{x:Static biaui:Boxes.BoolTrue}" />
+        
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
+                <Setter Property="Background" Value="{DynamicResource InactiveBackgroundBrushKey}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
