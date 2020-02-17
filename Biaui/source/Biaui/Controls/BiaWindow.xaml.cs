@@ -267,19 +267,8 @@ namespace Biaui.Controls
 
         #endregion
 
-        private static Brush DefaultIcon
-        {
-            get
-            {
-                if (_DefaultIcon == null)
-                {
-                    _DefaultIcon = Caches.GetSolidColorBrush(new ByteColor(0xFF, 0x53, 0x7C, 0xCE));
-                    _DefaultIcon.Freeze();
-                }
-
-                return _DefaultIcon;
-            }
-        }
+        private static Brush DefaultIcon =>
+            _DefaultIcon ??= Caches.GetSolidColorBrush(new ByteColor(0xFF, 0x53, 0x7C, 0xCE));
 
         private static Brush? _DefaultIcon;
 
