@@ -22,8 +22,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
-                    <controls:BiaClippingBorder x:Name="Bd"
-                                                Background="{TemplateBinding Background}"
+                    <controls:BiaClippingBorder Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 CornerRadius="{x:Static biaui:Boxes.GroupCornerRadius}">
