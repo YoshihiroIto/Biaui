@@ -28,6 +28,8 @@ namespace Biaui
             Length = 19
         };
 
+        public static readonly IndentToMarginConverter LengthConverter = new IndentToMarginConverter();
+
         public static Brush CheckerBrush => _CheckerBrush ??= (Brush) Application.Current.TryFindResource("CheckerBrush");
 
         private static Brush? _CheckerBrush;

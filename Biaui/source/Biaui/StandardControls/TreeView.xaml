@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls"
-                    xmlns:converter="clr-namespace:Biaui.Internals.Converter"
                     xmlns:internals="clr-namespace:Biaui.Internals">
     <Style TargetType="{x:Type TreeView}">
         <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrushKey}" />
@@ -110,10 +109,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
-                    <ControlTemplate.Resources>
-                        <converter:IndentToMargin x:Key="LengthConverter" />
-                    </ControlTemplate.Resources>
-
                     <StackPanel>
                         <Border Name="Bd"
                                 Padding="{TemplateBinding Padding}"
@@ -125,7 +120,7 @@
                                     <Style TargetType="{x:Type Grid}">
                                         <Setter Property="Margin">
                                             <Setter.Value>
-                                                <MultiBinding Converter="{StaticResource LengthConverter}">
+                                                <MultiBinding Converter="{x:Static biaui:Constants.LengthConverter}">
                                                     <Binding RelativeSource="{RelativeSource TemplatedParent}" />
                                                 </MultiBinding>
                                             </Setter.Value>

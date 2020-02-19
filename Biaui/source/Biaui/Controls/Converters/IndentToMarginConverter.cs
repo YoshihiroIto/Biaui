@@ -3,11 +3,12 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Biaui.Internals;
 using Jewelry.Collections;
 
-namespace Biaui.Internals.Converter
+namespace Biaui.Controls.Converters
 {
-    internal class IndentToMargin : IMultiValueConverter
+    public class IndentToMarginConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
