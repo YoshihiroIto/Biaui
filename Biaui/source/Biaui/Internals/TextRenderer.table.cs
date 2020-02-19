@@ -6,7 +6,9 @@ namespace Biaui.Internals
 {
 internal partial class TextRendererImpl<TIsDefault>
 {
-private static readonly double DefaultFontLineSpacing = 1.4853515625;
+private const double DefaultFontLineSpacing = 1.4853515625;
+private const ushort DefaultDotGlyphIndex = 18;
+private const double DefaultDotAdvanceWidth = 3.4921875;
 [MethodImpl(MethodImplOptions.AggressiveInlining)]
 private static ref ushort GetDefaultGlyphIndexTable(){
 var byteTable = new ReadOnlySpan<byte>(new byte[] {

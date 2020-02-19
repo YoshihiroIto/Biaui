@@ -93,17 +93,18 @@ namespace Biaui.Internals
             if (typeof(TIsDefault) == typeof(IsDefaultTextureRenderer))
             {
                 _fontLineSpacing = DefaultFontLineSpacing;
+                _dotGlyphIndex = DefaultDotGlyphIndex;
+                _dotAdvanceWidth = DefaultDotAdvanceWidth;
             }
             else
             {
                 _fontLineSpacing = fontFamily.LineSpacing;
+                (_dotGlyphIndex, _dotAdvanceWidth) = CalcGlyphIndexAndWidth('.');
 
                 _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
                 _toGlyphMap = _glyphTypeface.CharacterToGlyphMap;
                 _advanceWidthsDict = _glyphTypeface.AdvanceWidths;
             }
-
-            (_dotGlyphIndex, _dotAdvanceWidth) = CalcGlyphIndexAndWidth('.');
 
 #if DEBUG
             // グリフデータテーブルを作る
@@ -701,6 +702,9 @@ namespace Biaui.Internals
             var glyphIndexByteArray = MemoryMarshal.Cast<ushort, byte>(glyphIndexArray).ToArray();
             var advanceWidthByteArray = MemoryMarshal.Cast<double, byte>(advanceWidthArray).ToArray();
 
+            var dotGlyphIndex = Unsafe.Add(ref MemoryMarshal.GetReference(MemoryMarshal.Cast<byte, ushort>(glyphIndexByteArray)), (IntPtr) '.');
+            var dotAdvanceWidth = Unsafe.Add(ref MemoryMarshal.GetReference(MemoryMarshal.Cast<byte, double>(advanceWidthByteArray)), (IntPtr) '.'); 
+            
             var sb = new StringBuilder();
 
             sb.AppendLine("// ReSharper disable All");
@@ -712,7 +716,9 @@ namespace Biaui.Internals
             sb.AppendLine("internal partial class TextRendererImpl<TIsDefault>");
             sb.AppendLine("{");
 
-            sb.AppendLine($"private static readonly double DefaultFontLineSpacing = {fontFamily.LineSpacing};");
+            sb.AppendLine($"private const double DefaultFontLineSpacing = {fontFamily.LineSpacing};");
+            sb.AppendLine($"private const ushort DefaultDotGlyphIndex = {dotGlyphIndex};");
+            sb.AppendLine($"private const double DefaultDotAdvanceWidth = {dotAdvanceWidth};");
 
             sb.AppendLine("[MethodImpl(MethodImplOptions.AggressiveInlining)]");
             sb.AppendLine("private static ref ushort GetDefaultGlyphIndexTable(){");
