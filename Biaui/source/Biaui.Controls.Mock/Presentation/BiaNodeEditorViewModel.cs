@@ -449,6 +449,8 @@ namespace Biaui.Controls.Mock.Presentation
             set => SetProperty(ref _Pos, value);
         }
 
+        public bool NeedAlign => true;
+
         #endregion
 
         public abstract BiaNodePanelLayer Layer { get; }
