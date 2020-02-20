@@ -45,7 +45,7 @@
                             </Border.Style>
 
                             <Grid>
-                                <!--  タイトル下地  -->
+                                <!--  Title Background -->
                                 <Rectangle Fill="#303038" StrokeThickness="{x:Static biaui:Boxes.Double0}" />
 
                                 <!--  Title  -->
@@ -80,7 +80,7 @@
                                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
                                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
 
-                                <!--  影  -->
+                                <!--  Shadow  -->
                                 <Rectangle Height="{x:Static biaui:Boxes.Double5}"
                                            Margin="0,32,0,0"
                                            VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentTop}"

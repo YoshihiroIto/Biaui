@@ -51,7 +51,7 @@
                                     <RowDefinition Height="{x:Static biaui:Boxes.GridLengthStar}" />
                                 </Grid.RowDefinitions>
 
-                                <!--  タイトル下地  -->
+                                <!--  Title Background -->
                                 <Rectangle Grid.Row="{x:Static biaui:Boxes.Int0}"
                                            Grid.RowSpan="{x:Static biaui:Boxes.Int2}"
                                            Margin="{x:Static biaui:Boxes.Thickness0}"
@@ -101,7 +101,7 @@
                                                   HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentStretch}"
                                                   VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentStretch}" />
 
-                                <!--  影  -->
+                                <!--  Shadow  -->
                                 <Rectangle Grid.Row="{x:Static biaui:Boxes.Int0}"
                                            Grid.RowSpan="{x:Static biaui:Boxes.Int3}"
                                            Height="{x:Static biaui:Boxes.Double5}"
