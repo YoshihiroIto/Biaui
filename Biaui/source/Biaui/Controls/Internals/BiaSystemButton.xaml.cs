@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace Biaui.Controls.Internals
 {
-    internal class SystemButton : Button
+    internal class BiaSystemButton : Button
     {
         #region BiaWindowAction
 
@@ -21,12 +21,12 @@ namespace Biaui.Controls.Internals
         private BiaWindowAction _WindowAction;
 
         public static readonly DependencyProperty WindowActionProperty =
-            DependencyProperty.Register(nameof(WindowAction), typeof(BiaWindowAction), typeof(SystemButton),
+            DependencyProperty.Register(nameof(WindowAction), typeof(BiaWindowAction), typeof(BiaSystemButton),
                 new PropertyMetadata(
                     Boxes.WindowActionNone,
                     (s, e) =>
                     {
-                        var self = (SystemButton) s;
+                        var self = (BiaSystemButton) s;
                         self._WindowAction = (BiaWindowAction) e.NewValue;
                     }));
 
@@ -50,12 +50,12 @@ namespace Biaui.Controls.Internals
             DependencyProperty.Register(
                 nameof(IsVisibleButton),
                 typeof(bool),
-                typeof(SystemButton),
+                typeof(BiaSystemButton),
                 new PropertyMetadata(
                     Boxes.BoolTrue,
                     (s, e) =>
                     {
-                        var self = (SystemButton) s;
+                        var self = (BiaSystemButton) s;
                         self._IsVisibleButton = (bool)e.NewValue;
 
                         self.MakeVisibility();
@@ -63,10 +63,10 @@ namespace Biaui.Controls.Internals
         
         #endregion
 
-        static SystemButton()
+        static BiaSystemButton()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(SystemButton),
-                new FrameworkPropertyMetadata(typeof(SystemButton)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaSystemButton),
+                new FrameworkPropertyMetadata(typeof(BiaSystemButton)));
         }
 
         private BiaWindow? _parentWindow;

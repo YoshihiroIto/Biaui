@@ -27,6 +27,6 @@
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
 
         <!--  Internals  -->
-        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/SystemButton.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/BiaSystemButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
