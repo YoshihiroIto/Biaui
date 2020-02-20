@@ -8,16 +8,17 @@ namespace Biaui
 {
     public readonly ref struct LayoutRounder
     {
+        public readonly double DpiScale;
+        
         private readonly FrameworkElement _element;
-        private readonly double _dpiScale;
         private readonly double _inverseDpiScale;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LayoutRounder(FrameworkElement element)
         {
             _element = element;
-            _dpiScale = element.PixelsPerDip();
-            _inverseDpiScale = 1d / _dpiScale;
+            DpiScale = element.PixelsPerDip();
+            _inverseDpiScale = 1d / DpiScale;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -80,13 +81,23 @@ namespace Biaui
                 RoundLayoutValue(h));
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Rect RoundLayoutRect(Rect rect)
+        {
+            return new Rect(
+                RoundLayoutValue(rect.X),
+                RoundLayoutValue(rect.Y),
+                RoundLayoutValue(rect.Width),
+                RoundLayoutValue(rect.Height));
+        }
+        
         public double RoundLayoutValue(double value)
         {
             double newValue;
 
-            if (NumberHelper.AreClose(_dpiScale, 1d) == false)
+            if (NumberHelper.AreClose(DpiScale, 1d) == false)
             {
-                newValue = Math.Round(value * _dpiScale) * _inverseDpiScale;
+                newValue = Math.Round(value * DpiScale) * _inverseDpiScale;
 
                 if (double.IsNaN(newValue) ||
                     double.IsInfinity(newValue) ||

@@ -163,15 +163,16 @@ namespace Biaui.Controls
 
         protected override Size ArrangeOverride(Size arrangeSize)
         {
+            var rounder = new LayoutRounder(this);
+            var isScale1 = NumberHelper.AreClose(rounder.DpiScale, 1d);
+            
             var xIndex = 0;
             var yIndex = 0;
-            
-            var rounder = new LayoutRounder(this);
 
+            var roundedSpacing = rounder.RoundLayoutValue(Spacing);
             var baseChildWidth= rounder.RoundLayoutValue(arrangeSize.Width / _columns);
             var childHeight = rounder.RoundLayoutValue(arrangeSize.Height / _rows);
-
-            var dpiSpacing = Spacing * this.PixelsPerDip();
+                
             var childBounds = new Rect();
 
             var fillColumns = InternalChildren.Count % _columns;
@@ -199,10 +200,18 @@ namespace Biaui.Controls
                 childBounds.Y = yIndex * childHeight;
                 childBounds.Width = xIndex == columns - 1
                     ? childBounds.Width = arrangeSize.Width - childWidth * (columns - 1)
-                    : Math.Max(0, childWidth - dpiSpacing);
+                    : Math.Max(0, childWidth - roundedSpacing);
                 childBounds.Height = yIndex == _rows - 1
                     ? childBounds.Height = arrangeSize.Height - childHeight * (_rows - 1)
-                    : Math.Max(0, childHeight - dpiSpacing);
+                    : Math.Max(0, childHeight - roundedSpacing);
+
+                if (isScale1)
+                {
+                    childBounds.X = Math.Ceiling(childBounds.X);
+                    childBounds.Y = Math.Ceiling(childBounds.Y);
+                }
+                else
+                    childBounds = rounder.RoundLayoutRect(childBounds);
 
                 child.Arrange(childBounds);
 
