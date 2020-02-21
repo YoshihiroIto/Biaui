@@ -63,6 +63,35 @@ namespace Biaui.Controls
                     }));
 
         #endregion
+        
+        #region HamburgerMenuItem
+        
+        public BiaHamburgerMenu? HamburgerMenu
+        {
+            get => _hamburgerMenu;
+            set
+            {
+                if (value != _hamburgerMenu)
+                    SetValue(HamburgerMenuProperty, value);
+            }
+        }
+        
+        private BiaHamburgerMenu? _hamburgerMenu;
+        
+        public static readonly DependencyProperty HamburgerMenuProperty =
+            DependencyProperty.Register(
+                nameof(HamburgerMenu),
+                typeof(BiaHamburgerMenu),
+                typeof(BiaWindow),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (BiaWindow) s;
+                        self._hamburgerMenu = (BiaHamburgerMenu)e.NewValue;
+                    }));
+
+        #endregion
 
         #region CloseButtonBehavior
 

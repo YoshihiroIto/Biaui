@@ -97,6 +97,14 @@
         </Menu>
     </controls:BiaWindow.Menu>
 
+    <controls:BiaWindow.HamburgerMenu>
+        <controls:BiaHamburgerMenu>
+            <MenuItem Header="Hamburger A" />
+            <MenuItem Header="Hamburger B" />
+            <MenuItem Header="Hamburger C" />
+        </controls:BiaHamburgerMenu>
+    </controls:BiaWindow.HamburgerMenu>
+
     <DockPanel>
         <controls:BiaProgressPanel DockPanel.Dock="Bottom" />
 

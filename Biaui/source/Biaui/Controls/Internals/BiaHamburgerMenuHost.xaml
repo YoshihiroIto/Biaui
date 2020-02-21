@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:biaui1="clr-namespace:Biaui"
+                    xmlns:internals="clr-namespace:Biaui.Internals"
+                    xmlns:internals1="clr-namespace:Biaui.Controls.Internals">
+    <ResourceDictionary.MergedDictionaries>
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/StandardControls/Menu.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="{x:Type internals1:BiaHamburgerMenuHost}">
+        <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="{x:Static biaui1:Boxes.BoolTrue}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Menu>
+                        <Menu.Style>
+                            <Style TargetType="{x:Type Menu}" BasedOn="{StaticResource {x:Type Menu}}">
+                                <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrushKey}" />
+                                <Setter Property="Width" Value="{x:Static biaui1:Boxes.Double32}" />
+                                <Setter Property="Height" Value="{x:Static biaui1:Boxes.Double32}" />
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="{x:Static biaui1:Boxes.BoolTrue}">
+                                        <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource ActiveBorderBrushKey}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource AccentBrushKey}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Menu.Style>
+                    </Menu>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="MenuItem" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

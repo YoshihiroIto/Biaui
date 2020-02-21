@@ -10,6 +10,7 @@
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaComboBox.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaEditableTextBlock.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaFilteringComboBox.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHamburgerMenu.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHighlightTextBlock.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaIconToggleButton.xaml" />
@@ -28,5 +29,6 @@
 
         <!--  Internals  -->
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/BiaSystemButton.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/BiaHamburgerMenuHost.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
