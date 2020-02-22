@@ -13,6 +13,7 @@
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHamburgerMenu.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHighlightTextBlock.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHsvBoxCursor.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaHyperlinkButton.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaIconToggleButton.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaNumberEditor.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaProgressPanel.xaml" />

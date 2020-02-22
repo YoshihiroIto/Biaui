@@ -107,6 +107,11 @@
 
     <DockPanel>
         <controls:BiaProgressPanel DockPanel.Dock="Bottom" />
+        <controls:BiaHyperlinkButton Margin="8"
+                                     HorizontalAlignment="Left"
+                                     Click="BiaButtonBase_OnClick"
+                                     Content="https://github.com/YoshihiroIto/Biaui/tree/master/Biaui"
+                                     DockPanel.Dock="Bottom" />
 
         <StackPanel Margin="8" Orientation="Horizontal">
             <StackPanel Margin="0,4,0,0"
