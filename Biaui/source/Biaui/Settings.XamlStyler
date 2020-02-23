@@ -21,7 +21,10 @@
         "*:*, *",
         "PageSource, PageIndex, Offset, Color, TargetName, Property, Value, StartPoint, EndPoint",
         "mc:Ignorable, d:IsDataSource, d:LayoutOverrides, d:IsStaticText",
-        "Storyboard.*, From, To, Duration"
+        "Storyboard.*, From, To, Duration",
+        "X, Y, Z, W",
+        "R, G, B, A",
+        "Red, Green, Blue, Alpha",
     ],
     "FirstLineAttributes": "",
     "OrderAttributesByName": true,
@@ -38,5 +41,5 @@
     "ThicknessSeparator": 2,
     "ThicknessAttributes": "Margin, Padding, BorderThickness, ThumbnailClipMargin",
     "FormatOnSave": false,
-    "CommentPadding": 2
+    "CommentPadding": 2,
 }
