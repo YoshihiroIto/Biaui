@@ -158,7 +158,10 @@ namespace Biaui.Controls
                 maxChildDesiredHeight = Math.Max(maxChildDesiredHeight, childDesiredSize.Height);
             }
 
-            return new Size(maxChildDesiredWidth * _columns, maxChildDesiredHeight * _rows);
+            var w = maxChildDesiredWidth * _columns + Spacing * (_columns - 1);
+            var h = maxChildDesiredHeight * _rows + Spacing * (_rows - 1);
+
+            return new Size(w, h);
         }
 
         protected override Size ArrangeOverride(Size arrangeSize)
@@ -173,7 +176,7 @@ namespace Biaui.Controls
             var baseChildWidth= rounder.RoundLayoutValue(arrangeSize.Width / _columns);
             var childHeight = rounder.RoundLayoutValue(arrangeSize.Height / _rows);
                 
-            var childBounds = new Rect();
+            var childBounds = default(Rect);
 
             var fillColumns = InternalChildren.Count % _columns;
             var isLastFill = IsFillLastRow && (fillColumns == 0);
@@ -182,6 +185,7 @@ namespace Biaui.Controls
             {
                 var child = InternalChildren[i];
 
+#if false
                 double childWidth;
                 int columns;
 
@@ -204,7 +208,13 @@ namespace Biaui.Controls
                 childBounds.Height = yIndex == _rows - 1
                     ? childBounds.Height = arrangeSize.Height - childHeight * (_rows - 1)
                     : Math.Max(0, childHeight - roundedSpacing);
+#endif
 
+                childBounds.X = (ActualWidth + roundedSpacing) / _columns * xIndex;
+                childBounds.Y = (ActualHeight + roundedSpacing) / _rows * yIndex;
+                childBounds.Width = Math.Max(0, (ActualWidth + roundedSpacing) / _columns - roundedSpacing);
+                childBounds.Height = Math.Max(0, (ActualHeight + roundedSpacing) / _rows - roundedSpacing);
+                
                 if (isScale1)
                 {
                     childBounds.X = Math.Ceiling(childBounds.X);
