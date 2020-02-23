@@ -11,7 +11,8 @@
                 <ControlTemplate TargetType="{x:Type controls:BiaToggleSwitch}">
                     <controls:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int2}"
                                              CornerRadius="{x:Static biaui:Boxes.BasicCornerRadius}"
-                                             Spacing="{x:Static biaui:Boxes.Double1}">
+                                             HorizontalSpacing="{x:Static biaui:Boxes.Double1}"
+                                             VerticalSpacing="{x:Static biaui:Boxes.Double1}">
                         <controls:BiaToggleButton Behavior="{x:Static biaui:Boxes.ToggleButtonBehaviorRadioButton}"
                                                   Content="{Binding EnabledLabel, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                   CornerRadius="{x:Static biaui:Boxes.Double0}"

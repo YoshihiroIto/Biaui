@@ -9,35 +9,63 @@ namespace Biaui.Controls
 {
     public class BiaUniformGrid : Panel
     {
-        #region Spacing
-
-        public double Spacing
+        #region HorizontalSpacing
+        
+        public double HorizontalSpacing
         {
-            get => _Spacing;
+            get => _HorizontalSpacing;
             set
             {
-                if (NumberHelper.AreClose(value, _Spacing) == false)
-                    SetValue(SpacingProperty, Boxes.Double(value));
+                if (NumberHelper.AreClose(value, _HorizontalSpacing) == false)
+                    SetValue(HorizontalSpacingProperty, value);
             }
         }
-
-        private double _Spacing;
-
-        public static readonly DependencyProperty SpacingProperty =
+        
+        private double _HorizontalSpacing;
+        
+        public static readonly DependencyProperty HorizontalSpacingProperty =
             DependencyProperty.Register(
-                nameof(Spacing),
+                nameof(HorizontalSpacing),
                 typeof(double),
                 typeof(BiaUniformGrid),
-                new FrameworkPropertyMetadata(
+                new PropertyMetadata(
                     Boxes.Double0,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._Spacing = (double) e.NewValue;
+                        self._HorizontalSpacing = (double)e.NewValue;
                     }));
+        
+        #endregion
+        
 
+        #region VerticalSpacing
+        
+        public double VerticalSpacing
+        {
+            get => _VerticalSpacing;
+            set
+            {
+                if (NumberHelper.AreClose(value, _VerticalSpacing) == false)
+                    SetValue(VerticalSpacingProperty, value);
+            }
+        }
+        
+        private double _VerticalSpacing;
+        
+        public static readonly DependencyProperty VerticalSpacingProperty =
+            DependencyProperty.Register(
+                nameof(VerticalSpacing),
+                typeof(double),
+                typeof(BiaUniformGrid),
+                new PropertyMetadata(
+                    Boxes.Double0,
+                    (s, e) =>
+                    {
+                        var self = (BiaUniformGrid) s;
+                        self._VerticalSpacing = (double)e.NewValue;
+                    }));
+        
         #endregion
 
         #region Columns
@@ -158,8 +186,8 @@ namespace Biaui.Controls
                 maxChildDesiredHeight = Math.Max(maxChildDesiredHeight, childDesiredSize.Height);
             }
 
-            var w = maxChildDesiredWidth * _columns + Spacing * (_columns - 1);
-            var h = maxChildDesiredHeight * _rows + Spacing * (_rows - 1);
+            var w = maxChildDesiredWidth * _columns + HorizontalSpacing * (_columns - 1);
+            var h = maxChildDesiredHeight * _rows + VerticalSpacing * (_rows - 1);
 
             return new Size(w, h);
         }
@@ -172,7 +200,8 @@ namespace Biaui.Controls
             var xIndex = 0;
             var yIndex = 0;
 
-            var roundedSpacing = rounder.RoundLayoutValue(Spacing);
+            var roundedHorizontalSpacing = rounder.RoundLayoutValue(HorizontalSpacing);
+            var roundedVerticalSpacing = rounder.RoundLayoutValue(VerticalSpacing);
             var baseChildWidth= rounder.RoundLayoutValue(arrangeSize.Width / _columns);
             var childHeight = rounder.RoundLayoutValue(arrangeSize.Height / _rows);
                 
@@ -210,10 +239,10 @@ namespace Biaui.Controls
                     : Math.Max(0, childHeight - roundedSpacing);
 #endif
 
-                childBounds.X = (ActualWidth + roundedSpacing) / _columns * xIndex;
-                childBounds.Y = (ActualHeight + roundedSpacing) / _rows * yIndex;
-                childBounds.Width = Math.Max(0, (ActualWidth + roundedSpacing) / _columns - roundedSpacing);
-                childBounds.Height = Math.Max(0, (ActualHeight + roundedSpacing) / _rows - roundedSpacing);
+                childBounds.X = (ActualWidth + roundedHorizontalSpacing) / _columns * xIndex;
+                childBounds.Y = (ActualHeight + roundedVerticalSpacing) / _rows * yIndex;
+                childBounds.Width = Math.Max(0, (ActualWidth + roundedHorizontalSpacing) / _columns - roundedHorizontalSpacing);
+                childBounds.Height = Math.Max(0, (ActualHeight + roundedVerticalSpacing) / _rows - roundedVerticalSpacing);
                 
                 if (isScale1)
                 {

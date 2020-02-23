@@ -121,73 +121,73 @@
 
                 <controls:BiaColorPicker Grid.Row="0"
                                          Grid.Column="0"
-                                         Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
-                                         Green="{Binding Green, Mode=TwoWay}"
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
-                                         Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
-                                         Value="{Binding Value, Mode=OneWayToSource}" />
+                                         Value="{Binding Value, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Blue="{Binding Blue, Mode=TwoWay}" />
 
                 <controls:BiaColorPicker Grid.Row="0"
                                          Grid.Column="2"
-                                         Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
-                                         Green="{Binding Green, Mode=TwoWay}"
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
                                          IsReadOnly="True"
-                                         Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
-                                         Value="{Binding Value, Mode=OneWayToSource}" />
+                                         Value="{Binding Value, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Blue="{Binding Blue, Mode=TwoWay}" />
 
                 <controls:BiaColorPicker Grid.Row="0"
                                          Grid.Column="4"
-                                         Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
-                                         Green="{Binding Green, Mode=TwoWay}"
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
                                          IsEnabled="False"
-                                         Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
-                                         Value="{Binding Value, Mode=OneWayToSource}" />
+                                         Value="{Binding Value, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Blue="{Binding Blue, Mode=TwoWay}" />
 
                 <controls:BiaColorPicker Grid.Row="1"
                                          Grid.Column="0"
                                          Margin="0,16,0,0"
-                                         Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
-                                         Green="{Binding Green, Mode=TwoWay}"
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
-                                         Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
                                          Style="{StaticResource BiaColorPickerWheelStyle}"
-                                         Value="{Binding Value, Mode=OneWayToSource}" />
+                                         Value="{Binding Value, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Blue="{Binding Blue, Mode=TwoWay}" />
 
                 <controls:BiaColorPicker Grid.Row="1"
                                          Grid.Column="2"
                                          Margin="0,16,0,0"
-                                         Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
-                                         Green="{Binding Green, Mode=TwoWay}"
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
                                          IsReadOnly="True"
-                                         Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
                                          Style="{StaticResource BiaColorPickerWheelStyle}"
-                                         Value="{Binding Value, Mode=OneWayToSource}" />
+                                         Value="{Binding Value, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Blue="{Binding Blue, Mode=TwoWay}" />
 
                 <controls:BiaColorPicker Grid.Row="1"
                                          Grid.Column="4"
                                          Margin="0,16,0,0"
-                                         Blue="{Binding Blue, Mode=TwoWay}"
                                          DataContext="{Binding BiaColorPickerViewModel}"
-                                         Green="{Binding Green, Mode=TwoWay}"
                                          Hue="{Binding Hue, Mode=OneWayToSource}"
                                          IsEnabled="False"
-                                         Red="{Binding Red, Mode=TwoWay}"
                                          Saturation="{Binding Saturation, Mode=OneWayToSource}"
                                          Style="{StaticResource BiaColorPickerWheelStyle}"
-                                         Value="{Binding Value, Mode=OneWayToSource}" />
+                                         Value="{Binding Value, Mode=OneWayToSource}"
+                                         Red="{Binding Red, Mode=TwoWay}"
+                                         Green="{Binding Green, Mode=TwoWay}"
+                                         Blue="{Binding Blue, Mode=TwoWay}" />
             </Grid>
         </TabItem>
 
@@ -288,38 +288,31 @@
                                               IsEnabled="False" />
                 </StackPanel>
 
-                <controls:BiaClippingBorder Width="160"
-                                            Margin="32,4,0,0"
-                                            VerticalAlignment="Top"
-                                            CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}">
-                    <controls:BiaUniformGrid Columns="4" Spacing="1">
-                        <controls:BiaUniformGrid.Resources>
-                            <Style TargetType="{x:Type controls:BiaToggleButton}">
-                                <Setter Property="CornerRadius" Value="0" />
-                            </Style>
-                        </controls:BiaUniformGrid.Resources>
+                <controls:BiaUniformGrid Width="160"
+                                         Margin="32,4,0,0"
+                                         VerticalAlignment="Top"
+                                         Columns="4"
+                                         Style="{StaticResource BiaUniformGridGroupingStyle}">
+                    <controls:BiaToggleButton Content="A0" />
+                    <controls:BiaToggleButton Content="A1" />
+                    <controls:BiaToggleButton Content="A2" />
+                    <controls:BiaToggleButton Content="A3" />
 
-                        <controls:BiaToggleButton Content="A0" />
-                        <controls:BiaToggleButton Content="A1" />
-                        <controls:BiaToggleButton Content="A2" />
-                        <controls:BiaToggleButton Content="A3" />
+                    <controls:BiaToggleButton Content="B0" />
+                    <controls:BiaToggleButton Content="B1" />
+                    <controls:BiaToggleButton Content="B2" />
+                    <controls:BiaToggleButton Content="B3" />
 
-                        <controls:BiaToggleButton Content="B0" />
-                        <controls:BiaToggleButton Content="B1" />
-                        <controls:BiaToggleButton Content="B2" />
-                        <controls:BiaToggleButton Content="B3" />
+                    <controls:BiaToggleButton Content="C0" />
+                    <controls:BiaToggleButton Content="C1" />
+                    <controls:BiaToggleButton Content="C2" />
+                    <controls:BiaToggleButton Content="C3" />
 
-                        <controls:BiaToggleButton Content="C0" />
-                        <controls:BiaToggleButton Content="C1" />
-                        <controls:BiaToggleButton Content="C2" />
-                        <controls:BiaToggleButton Content="C3" />
-
-                        <controls:BiaToggleButton Content="D0" />
-                        <controls:BiaToggleButton Content="D1" />
-                        <controls:BiaToggleButton Content="D2" />
-                        <controls:BiaToggleButton Content="D3" />
-                    </controls:BiaUniformGrid>
-                </controls:BiaClippingBorder>
+                    <controls:BiaToggleButton Content="D0" />
+                    <controls:BiaToggleButton Content="D1" />
+                    <controls:BiaToggleButton Content="D2" />
+                    <controls:BiaToggleButton Content="D3" />
+                </controls:BiaUniformGrid>
 
                 <StackPanel Width="100"
                             Margin="32,0,0,0"

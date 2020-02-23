@@ -62,7 +62,7 @@
                                               TopRight="{x:Static biaui:Boxes.Double0}" />
                             </colorPicker:BiaClippingBorder.CornerRadius>
 
-                            <colorPicker:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int1}" Spacing="{x:Static biaui:Boxes.Double1}">
+                            <colorPicker:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int1}">
                                 <colorPicker:BiaUniformGrid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
                                         <Setter Property="SliderMinimum" Value="{x:Static biaui:Boxes.Double0}" />
@@ -119,7 +119,7 @@
                                               TopRight="{x:Static biaui:Boxes.Double0}" />
                             </colorPicker:BiaClippingBorder.CornerRadius>
 
-                            <colorPicker:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int1}" Spacing="{x:Static biaui:Boxes.Double1}">
+                            <colorPicker:BiaUniformGrid Columns="{x:Static biaui:Boxes.Int1}">
                                 <colorPicker:BiaUniformGrid.Resources>
                                     <Style BasedOn="{StaticResource {x:Type colorPicker:BiaNumberEditor}}" TargetType="{x:Type colorPicker:BiaNumberEditor}">
                                         <Setter Property="Minimum" Value="{x:Static biaui:Boxes.Double0}" />

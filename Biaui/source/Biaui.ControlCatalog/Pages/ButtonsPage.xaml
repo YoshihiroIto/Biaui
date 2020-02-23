@@ -9,7 +9,7 @@
              mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Left">
         <TextBlock Style="{StaticResource FirstSubGroupTextBlockStyle}" Text="Standard Button" />
-        <controls:BiaUniformGrid Columns="2" Spacing="8">
+        <controls:BiaUniformGrid Columns="2" HorizontalSpacing="32" VerticalSpacing="8">
             <controls:BiaTextBlock Text="Enabled" />
             <controls:BiaTextBlock Text="Disabled" />
 
@@ -28,7 +28,7 @@
         </controls:BiaUniformGrid>
 
         <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaButton" />
-        <controls:BiaUniformGrid Columns="2" Spacing="8">
+        <controls:BiaUniformGrid Columns="2" HorizontalSpacing="32" VerticalSpacing="8">
             <controls:BiaTextBlock Text="Enabled" />
             <controls:BiaTextBlock Text="Disabled" />
 
@@ -37,7 +37,7 @@
         </controls:BiaUniformGrid>
 
         <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaIconButton" />
-        <controls:BiaUniformGrid Columns="2" Spacing="8">
+        <controls:BiaUniformGrid Columns="2" HorizontalSpacing="32" VerticalSpacing="8">
             <controls:BiaTextBlock Text="Enabled" />
             <controls:BiaTextBlock Text="Disabled" />
 
@@ -77,7 +77,7 @@
         </controls:BiaUniformGrid>
 
         <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="Grouping BiaIconButton" />
-        <controls:BiaUniformGrid Columns="2" Spacing="8">
+        <controls:BiaUniformGrid Columns="2" HorizontalSpacing="32" VerticalSpacing="8">
             <controls:BiaTextBlock Text="Enabled" />
             <controls:BiaTextBlock Text="Disabled" />
 
