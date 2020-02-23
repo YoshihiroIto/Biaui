@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Biaui.Controls"
+                    xmlns:biaui="clr-namespace:Biaui">
+    <Style x:Key="BiaUniformGridGroupingStyle" TargetType="{x:Type controls:BiaUniformGrid}" BasedOn="{StaticResource {x:Type controls:BiaUniformGrid}}">
+        <Style.Resources>
+            <Style TargetType="{x:Type controls:BiaButton}">
+                <Setter Property="CornerRadius" Value="0" />
+            </Style>
+            <Style TargetType="{x:Type controls:BiaToggleButton}">
+                <Setter Property="CornerRadius" Value="0" />
+            </Style>
+            <Style TargetType="{x:Type controls:BiaIconButton}">
+                <Setter Property="CornerRadius" Value="0" />
+            </Style>
+            <Style TargetType="{x:Type controls:BiaIconToggleButton}">
+                <Setter Property="CornerRadius" Value="0" />
+            </Style>
+        </Style.Resources>
+
+        <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.GroupCornerRadius}" />
+    </Style>
+    
+    <Style x:Key="BiaUniformGridSmallGroupingStyle" TargetType="{x:Type controls:BiaUniformGrid}" BasedOn="{StaticResource BiaUniformGridGroupingStyle}">
+        <Setter Property="CornerRadius" Value="{x:Static biaui:Constants.BasicCornerRadius}" />
+    </Style>
+</ResourceDictionary>

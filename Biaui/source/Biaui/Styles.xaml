@@ -32,9 +32,10 @@
         <!--  Controls  -->
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerLightweightStyle.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaColorPickerWheelStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaUniformGridStyle.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowDialogStyle.xaml" />
-        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowTemplatedDialogStyle.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowSpaceSavingStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowTemplatedDialogStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
