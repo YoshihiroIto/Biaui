@@ -1,0 +1,67 @@
+﻿<controls:BiaWindow x:Class="Biaui.ControlCatalog.MainWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controlCatalog="clr-namespace:Biaui.ControlCatalog"
+                    xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    Width="900"
+                    Height="700"
+                    WindowStartupLocation="CenterScreen"
+                    mc:Ignorable="d">
+    <controls:BiaWindow.Style>
+        <Style BasedOn="{StaticResource BiaWindowDialogStyle}" TargetType="controlCatalog:MainWindow">
+            <Setter Property="WindowChrome.WindowChrome">
+                <Setter.Value>
+                    <WindowChrome CaptionHeight="42" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </controls:BiaWindow.Style>
+    
+    <DockPanel>
+        <TextBlock Margin="8"
+                   DockPanel.Dock="Top"
+                   FontSize="18"
+                   Text="Biaui Control Catalog" />
+
+        <Rectangle Height="1"
+                   DockPanel.Dock="Top"
+                   Stroke="{StaticResource AccentBrushKey.Dark}"
+                   StrokeThickness="1" />
+
+        <ListBox Width="120"
+                 DockPanel.Dock="Left"
+                 ItemsSource="{Binding Pages, RelativeSource={RelativeSource AncestorType={x:Type controlCatalog:MainWindow}}, Mode=OneTime}"
+                 SelectedItem="{Binding SelectedPage, RelativeSource={RelativeSource AncestorType={x:Type controlCatalog:MainWindow}}, Mode=TwoWay}">
+            <ListBox.Template>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ScrollViewer Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </ListBox.Template>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <controls:BiaTextBlock Text="{Binding Name, Mode=OneTime}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Rectangle Width="1"
+                   DockPanel.Dock="Left"
+                   Stroke="{StaticResource AccentBrushKey.Dark}"
+                   StrokeThickness="1" />
+
+        <ContentControl Content="{Binding SelectedPage, RelativeSource={RelativeSource AncestorType={x:Type controlCatalog:MainWindow}}, Mode=OneWay}">
+            <ContentControl.Resources>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    <Setter Property="Margin" Value="4" />
+                </Style>
+            </ContentControl.Resources>
+        </ContentControl>
+    </DockPanel>
+</controls:BiaWindow>

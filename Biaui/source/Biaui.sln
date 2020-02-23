@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biaui.Controls.Test", "Biau
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.Benchmark", "Biaui.Benchmark\Biaui.Benchmark.csproj", "{71AC7F4A-3F3A-4C36-8894-D1D0B14569A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biaui.ControlCatalog", "Biaui.ControlCatalog\Biaui.ControlCatalog.csproj", "{E8C1B052-9175-4A58-952C-AF665451E0BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{87816734-FEA3-49A0-8544-25A1CE3A32C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,11 +55,19 @@ Global
 		{71AC7F4A-3F3A-4C36-8894-D1D0B14569A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71AC7F4A-3F3A-4C36-8894-D1D0B14569A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71AC7F4A-3F3A-4C36-8894-D1D0B14569A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8C1B052-9175-4A58-952C-AF665451E0BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8C1B052-9175-4A58-952C-AF665451E0BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8C1B052-9175-4A58-952C-AF665451E0BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8C1B052-9175-4A58-952C-AF665451E0BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C51F622-779E-4415-B8F2-198ECFC34C66}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E8C1B052-9175-4A58-952C-AF665451E0BE} = {87816734-FEA3-49A0-8544-25A1CE3A32C5}
+		{6E37C028-A7B4-4BC6-97ED-2DC055F77BEE} = {87816734-FEA3-49A0-8544-25A1CE3A32C5}
 	EndGlobalSection
 EndGlobal
