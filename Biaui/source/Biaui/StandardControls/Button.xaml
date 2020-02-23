@@ -15,7 +15,7 @@
         </Setter>
 
         <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -77,9 +77,7 @@
            BasedOn="{StaticResource SharpButtonStyle}"
            TargetType="{x:Type Button}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="FontSize" Value="{x:Static biaui:Boxes.Double16}" />
         <Setter Property="IsTabStop" Value="{x:Static biaui:Boxes.BoolFalse}" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
