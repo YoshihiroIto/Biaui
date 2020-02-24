@@ -119,7 +119,7 @@ namespace Biaui.Controls
             {
                 textStates.Fill(0);
 
-                ReadOnlySpan<char> textSpan = Text.AsSpan();
+                var textSpan = Text.AsSpan();
 
                 foreach (var wordsSpan in wordsSpans)
                 {
