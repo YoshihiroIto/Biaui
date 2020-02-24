@@ -1,10 +1,10 @@
 ﻿namespace Biaui.ControlCatalog.Pages
 {
-    public partial class ButtonsPage
+    public partial class ButtonPage
     {
-        public ButtonsPage()
+        public ButtonPage()
         {
-            Name = "Buttons";
+            Name = "Button";
             InitializeComponent();
         }
     }

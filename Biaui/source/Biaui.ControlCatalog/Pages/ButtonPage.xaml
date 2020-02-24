@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Biaui.ControlCatalog.Pages.ButtonsPage"
+﻿<UserControl x:Class="Biaui.ControlCatalog.Pages.ButtonPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
