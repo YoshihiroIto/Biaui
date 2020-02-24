@@ -209,7 +209,7 @@ namespace Biaui.Controls
 
             var xIndex = 0;
             var yIndex = 0;
-            var isLastRow = false;
+            var isLastRow = yIndex == _rows - 1;
 
             var x = 0d;
             var y = 0d;
