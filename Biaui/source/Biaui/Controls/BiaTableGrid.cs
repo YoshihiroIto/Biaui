@@ -106,10 +106,11 @@ namespace Biaui.Controls
             {
                 var columnCount = 0;
                 var rowCount = 0;
-                var isLastRow = false;
 
                 var rows = childCount / Columns;
-
+                
+                var isLastRow = rowCount == rows - 1;
+                
                 for (var i = 0; i != childCount; ++i)
                 {
                     var child = (FrameworkElement) VisualTreeHelper.GetChild(this, i);
@@ -117,10 +118,12 @@ namespace Biaui.Controls
                     SetColumn(child, columnCount);
                     SetRow(child, rowCount);
 
-                    var px = columnCount == Columns - 1
+                    var isLastItem = i == childCount - 1;
+
+                    var px = columnCount == Columns - 1 || isLastItem
                         ? 0d
                         : Spacing.Width;
-                    var py = isLastRow
+                    var py = isLastRow  || isLastItem
                         ? 0d
                         : Spacing.Height;
                     
