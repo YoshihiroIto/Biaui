@@ -1,5 +1,8 @@
 # Biaui
-[![Biaui NuGet package](https://img.shields.io/nuget/v/Biaui)](https://www.nuget.org/packages/Biaui) ![.NET Core Version: >= 3.1](https://img.shields.io/badge/.NET%20Core-%3E%3D%203.1-brightgreen) ![.NET Framework version: >= 4.7](https://img.shields.io/badge/.NET%20Framework-%3E%3D%204.7-brightgreen) [![MIT License](http://img.shields.io/badge/license-MIT-lightgray)](LICENSE)  
+[![Biaui NuGet package](https://img.shields.io/nuget/v/Biaui)](https://www.nuget.org/packages/Biaui) 
+![.NET Core Version: >= 3.1](https://img.shields.io/badge/.NET%20Core-%3E%3D%203.1-brightgreen) 
+![.NET Framework version: >= 4.7](https://img.shields.io/badge/.NET%20Framework-%3E%3D%204.7-brightgreen) 
+[![MIT License](http://img.shields.io/badge/license-MIT-lightgray)](LICENSE)  
 
 WPF dark theme and controls for .NET Core and .NET Framework
 
@@ -130,6 +133,14 @@ namespace first_biaui
 ![Biaui](first-window.png)
 
 
+## Todo
+
+* More tutorial
+* More document
+* Light theme (white based)
+    * Currently fixed in dark theme
+* Changeable accent color
+    * Currently fixed in blue
 
 
 ## Reference External Assets
