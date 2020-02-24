@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Biaui.Controls"
                     xmlns:biaui="clr-namespace:Biaui">
-    <Style x:Key="BiaUniformGridGroupingStyle" TargetType="{x:Type controls:BiaUniformGrid}" BasedOn="{StaticResource {x:Type controls:BiaUniformGrid}}">
+    <Style x:Key="BiaUniformGridGroupingStyle" TargetType="{x:Type controls:BiaUniformGrid}">
         <Style.Resources>
             <Style TargetType="{x:Type controls:BiaButton}">
                 <Setter Property="CornerRadius" Value="0" />

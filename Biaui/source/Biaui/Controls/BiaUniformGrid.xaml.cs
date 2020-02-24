@@ -10,7 +10,7 @@ namespace Biaui.Controls
     public class BiaUniformGrid : Panel
     {
         #region HorizontalSpacing
-        
+
         public double HorizontalSpacing
         {
             get => _HorizontalSpacing;
@@ -20,9 +20,9 @@ namespace Biaui.Controls
                     SetValue(HorizontalSpacingProperty, value);
             }
         }
-        
+
         private double _HorizontalSpacing;
-        
+
         public static readonly DependencyProperty HorizontalSpacingProperty =
             DependencyProperty.Register(
                 nameof(HorizontalSpacing),
@@ -33,14 +33,14 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._HorizontalSpacing = (double)e.NewValue;
+                        self._HorizontalSpacing = (double) e.NewValue;
                     }));
-        
+
         #endregion
-        
+
 
         #region VerticalSpacing
-        
+
         public double VerticalSpacing
         {
             get => _VerticalSpacing;
@@ -50,9 +50,9 @@ namespace Biaui.Controls
                     SetValue(VerticalSpacingProperty, value);
             }
         }
-        
+
         private double _VerticalSpacing;
-        
+
         public static readonly DependencyProperty VerticalSpacingProperty =
             DependencyProperty.Register(
                 nameof(VerticalSpacing),
@@ -63,9 +63,9 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._VerticalSpacing = (double)e.NewValue;
+                        self._VerticalSpacing = (double) e.NewValue;
                     }));
-        
+
         #endregion
 
         #region Columns
@@ -168,18 +168,16 @@ namespace Biaui.Controls
         {
             UpdateComputedValues();
 
-            var childConstraint = new Size(
-                Math.Ceiling(constraint.Width / _columns),
-                Math.Ceiling(constraint.Height / _rows));
-            var maxChildDesiredWidth = 0.0;
-            var maxChildDesiredHeight = 0.0;
+            var childConstraint = new Size(constraint.Width / _columns, constraint.Height / _rows);
 
-            for (var i = 0; i != InternalChildren.Count; ++i)
+            var maxChildDesiredWidth = 0d;
+            var maxChildDesiredHeight = 0d;
+
+            for (int i = 0, count = InternalChildren.Count; i < count; ++i)
             {
                 var child = InternalChildren[i];
 
                 child.Measure(childConstraint);
-
                 var childDesiredSize = child.DesiredSize;
 
                 maxChildDesiredWidth = Math.Max(maxChildDesiredWidth, childDesiredSize.Width);
@@ -189,79 +187,34 @@ namespace Biaui.Controls
             var w = maxChildDesiredWidth * _columns + HorizontalSpacing * (_columns - 1);
             var h = maxChildDesiredHeight * _rows + VerticalSpacing * (_rows - 1);
 
+            _childWidth = maxChildDesiredWidth;
+            _childHeight = maxChildDesiredHeight;
+
             return new Size(w, h);
         }
 
+        private double _childWidth;
+        private double _childHeight;
+
         protected override Size ArrangeOverride(Size arrangeSize)
         {
-            var rounder = new LayoutRounder(this);
-            var isScale1 = NumberHelper.AreClose(rounder.DpiScale, 1d);
+            var childBounds = new Rect(0d, 0d, _childWidth, _childHeight);
             
-            var xIndex = 0;
-            var yIndex = 0;
+            var xStep = childBounds.Width + HorizontalSpacing;
+            var xBound = arrangeSize.Width - 1d;
 
-            var roundedHorizontalSpacing = rounder.RoundLayoutValue(HorizontalSpacing);
-            var roundedVerticalSpacing = rounder.RoundLayoutValue(VerticalSpacing);
-            var baseChildWidth= rounder.RoundLayoutValue(arrangeSize.Width / _columns);
-            var childHeight = rounder.RoundLayoutValue(arrangeSize.Height / _rows);
-                
-            var childBounds = default(Rect);
-
-            var fillColumns = InternalChildren.Count % _columns;
-            var isLastFill = IsFillLastRow && (fillColumns == 0);
-
-            for (var i = 0; i != InternalChildren.Count; ++i)
+            foreach (UIElement child in InternalChildren)
             {
-                var child = InternalChildren[i];
-
-#if false
-                double childWidth;
-                int columns;
-
-                if (yIndex != _rows - 1 || isLastFill)
-                {
-                    childWidth = baseChildWidth;
-                    columns = _columns;
-                }
-                else
-                {
-                    childWidth = Math.Floor(arrangeSize.Width / fillColumns);
-                    columns = fillColumns;
-                }
-
-                childBounds.X = xIndex * childWidth;
-                childBounds.Y = yIndex * childHeight;
-                childBounds.Width = xIndex == columns - 1
-                    ? childBounds.Width = arrangeSize.Width - childWidth * (columns - 1)
-                    : Math.Max(0, childWidth - roundedSpacing);
-                childBounds.Height = yIndex == _rows - 1
-                    ? childBounds.Height = arrangeSize.Height - childHeight * (_rows - 1)
-                    : Math.Max(0, childHeight - roundedSpacing);
-#endif
-
-                childBounds.X = (ActualWidth + roundedHorizontalSpacing) / _columns * xIndex;
-                childBounds.Y = (ActualHeight + roundedVerticalSpacing) / _rows * yIndex;
-                childBounds.Width = Math.Max(0, (ActualWidth + roundedHorizontalSpacing) / _columns - roundedHorizontalSpacing);
-                childBounds.Height = Math.Max(0, (ActualHeight + roundedVerticalSpacing) / _rows - roundedVerticalSpacing);
-                
-                if (isScale1)
-                {
-                    childBounds.X = Math.Ceiling(childBounds.X);
-                    childBounds.Y = Math.Ceiling(childBounds.Y);
-                }
-                else
-                    childBounds = rounder.RoundLayoutRect(childBounds);
-
                 child.Arrange(childBounds);
 
                 if (child.Visibility != Visibility.Collapsed)
                 {
-                    ++xIndex;
+                    childBounds.X += xStep;
 
-                    if (xIndex == _columns)
+                    if (childBounds.X >= xBound)
                     {
-                        xIndex = 0;
-                        ++yIndex;
+                        childBounds.Y += childBounds.Height + VerticalSpacing;
+                        childBounds.X = 0;
                     }
                 }
             }
@@ -307,6 +260,7 @@ namespace Biaui.Controls
 
         private int _rows;
         private int _columns;
+
 
         #region 角丸用処理
 
