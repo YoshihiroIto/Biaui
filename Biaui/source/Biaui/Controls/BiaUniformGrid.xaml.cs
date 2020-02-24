@@ -179,8 +179,11 @@ namespace Biaui.Controls
             var maxChildDesiredWidth = 0d;
             var maxChildDesiredHeight = 0d;
 
-            foreach (UIElement child in InternalChildren)
+            foreach (UIElement? child in InternalChildren)
             {
+                if (child == null)
+                    continue;
+                
                 child.Measure(childConstraint);
                 var childDesiredSize = child.DesiredSize;
 
@@ -214,8 +217,11 @@ namespace Biaui.Controls
             var x = 0d;
             var y = 0d;
 
-            foreach (UIElement child in InternalChildren)
+            foreach (UIElement? child in InternalChildren)
             {
+                if (child == null)
+                    continue;
+                
                 childBounds.Width = xIndex == _columns - 1
                     ? Math.Max(0d, arrangeSize.Width - childBounds.X)
                     : childWidth;
