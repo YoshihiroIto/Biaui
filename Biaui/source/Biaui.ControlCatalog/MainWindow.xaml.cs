@@ -49,6 +49,7 @@ namespace Biaui.ControlCatalog
             Pages = new UserControl[]
             {
                 new ButtonsPage(),
+                new ToggleButtonsPage(),
                 new ButtonsPage(),
                 new ButtonsPage(),
                 new ButtonsPage(),

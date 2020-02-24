@@ -100,7 +100,6 @@
            BasedOn="{StaticResource SharpToggleButtonStyle}"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="FontSize" Value="{x:Static biaui:Boxes.Double16}" />
         <Setter Property="IsTabStop" Value="{x:Static biaui:Boxes.BoolFalse}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
