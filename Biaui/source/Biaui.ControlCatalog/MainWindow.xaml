@@ -7,6 +7,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     Width="900"
                     Height="700"
+                    ShowInTaskbar="True"
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
     <controls:BiaWindow.Style>
@@ -18,7 +19,7 @@
             </Setter>
         </Style>
     </controls:BiaWindow.Style>
-    
+
     <DockPanel>
         <TextBlock Margin="8"
                    DockPanel.Dock="Top"
