@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <UseWPF>true</UseWPF>
+        <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
+        <LangVersion>8</LangVersion>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>1.0.0</Authors>
+        <Description>WPF dark theme and controls for .NET Core and .NET Framework</Description>
+        <Copyright>Copyright (c) 2018-2020 copyright Yoshihiro Ito (yo.i.jewelry.bab@gmail.com)</Copyright>
+        <PackageProjectUrl>https://github.com/YoshihiroIto/Biaui</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/YoshihiroIto/Biaui</RepositoryUrl>
+        <PackageTags>wpf dark-theme dark ui theme csharp dotnet wpf-dark-theme </PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Biaui\Biaui.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+    </ItemGroup>
+
+</Project>

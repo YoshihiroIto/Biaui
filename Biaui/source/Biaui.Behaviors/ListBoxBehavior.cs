@@ -1,18 +1,17 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
 
-namespace Biaui
+namespace Biaui.Behaviors
 {
     public class ListBoxBehavior : Behavior<ListBox>
     {
         #region ItemSelectionStartingCommand
 
-        public ICommand ItemSelectionStartingCommand
+        public ICommand? ItemSelectionStartingCommand
         {
-            get => _ItemSelectionStartingCommand ?? throw new NullReferenceException();
+            get => _ItemSelectionStartingCommand;
             set
             {
                 if (value != _ItemSelectionStartingCommand)
@@ -39,9 +38,9 @@ namespace Biaui
 
         #region ItemSelectionCompletedCommand
 
-        public ICommand ItemSelectionCompletedCommand
+        public ICommand? ItemSelectionCompletedCommand
         {
-            get => _ItemSelectionCompletedCommand ?? throw new NullReferenceException();
+            get => _ItemSelectionCompletedCommand;
             set
             {
                 if (value != _ItemSelectionCompletedCommand)

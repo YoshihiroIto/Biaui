@@ -2,16 +2,16 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Biaui.Internals;
-using System.Windows.Controls.Primitives;
 using Application = System.Windows.Application;
 using Cursor = System.Windows.Input.Cursor;
 using Cursors = System.Windows.Input.Cursors;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using ToolTip = System.Windows.Controls.ToolTip;
 
-namespace Biaui
+namespace Biaui.Behaviors
 {
     public class ScrollViewerMiddleButtonDragBehavior : Microsoft.Xaml.Behaviors.Behavior<ScrollViewer>
     {
@@ -40,7 +40,6 @@ namespace Biaui
 
             if (_isInDragging)
                 CancelDrag();
-
 
             else if (e.ChangedButton == MouseButton.Middle &&
                      e.ButtonState == MouseButtonState.Pressed)

@@ -8,7 +8,7 @@ using System.Windows.Media;
 using Biaui.Controls;
 using Biaui.Internals;
 
-namespace Biaui
+namespace Biaui.Behaviors
 {
     public class HighResponseExpanderBehavior : Microsoft.Xaml.Behaviors.Behavior<Expander>
     {
@@ -68,7 +68,7 @@ namespace Biaui
             if (isOn)
                 return;
 
-            var expander = (hitTestResult?.VisualHit as DependencyObject)?.GetParent<Expander>();
+            var expander = hitTestResult?.VisualHit?.GetParent<Expander>();
             if (expander == null)
                 return;
 
