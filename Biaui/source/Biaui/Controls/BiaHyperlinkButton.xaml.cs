@@ -100,13 +100,15 @@ namespace Biaui.Controls
 
                 if (Foreground is SolidColorBrush brush)
                 {
-                    var y = rounder.RoundLayoutValue(ActualHeight - 2d);
+                    var y = rounder.RoundLayoutValue(ActualHeight - 2d + FrameworkElementExtensions.BorderHalfWidth);
                     var pen = Caches.GetPen(brush.Color.ToByteColor(), 1d);
-                    
+
+                    var x = rounder.RoundLayoutValue(Math.Round(width));
+
                     dc.DrawLine(
                         pen,
                         new Point(0d, y), 
-                        new Point(width, y));
+                        new Point(x, y));
                 }
             }
         }
