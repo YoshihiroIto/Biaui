@@ -235,7 +235,7 @@
 
                 <controls:BiaUniformGrid Margin="0,4,0,0"
                                          HorizontalAlignment="Stretch"
-                                         HorizontalSpacing="1"
+                                         ColumnSpacing="1"
                                          Style="{StaticResource BiaUniformGridSmallGroupingStyle}">
                     <controls:BiaButton Content="A" />
                     <controls:BiaButton Content="ABCDEFG" />
@@ -243,7 +243,7 @@
 
                 <controls:BiaUniformGrid Margin="0,4,0,0"
                                          HorizontalAlignment="Stretch"
-                                         HorizontalSpacing="8"
+                                         ColumnSpacing="8"
                                          Style="{StaticResource BiaUniformGridSmallGroupingStyle}">
                     <Button Content="A" />
                     <Button Content="ABCDEFG" />

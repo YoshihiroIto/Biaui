@@ -3,7 +3,7 @@
                     xmlns:biaui="clr-namespace:Biaui"
                     xmlns:controls="clr-namespace:Biaui.Controls">
     <Style TargetType="{x:Type controls:BiaUniformGrid}">
-        <Setter Property="HorizontalSpacing" Value="{x:Static biaui:Boxes.Double1}" />
-        <Setter Property="VerticalSpacing" Value="{x:Static biaui:Boxes.Double1}" />
+        <Setter Property="ColumnSpacing" Value="{x:Static biaui:Boxes.Double1}" />
+        <Setter Property="RowSpacing" Value="{x:Static biaui:Boxes.Double1}" />
     </Style>
 </ResourceDictionary>

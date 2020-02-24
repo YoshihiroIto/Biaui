@@ -9,23 +9,23 @@ namespace Biaui.Controls
 {
     public class BiaUniformGrid : Panel
     {
-        #region HorizontalSpacing
+        #region ColumnSpacing
 
-        public double HorizontalSpacing
+        public double ColumnSpacing
         {
-            get => _HorizontalSpacing;
+            get => _columnSpacing;
             set
             {
-                if (NumberHelper.AreClose(value, _HorizontalSpacing) == false)
-                    SetValue(HorizontalSpacingProperty, value);
+                if (NumberHelper.AreClose(value, _columnSpacing) == false)
+                    SetValue(ColumnSpacingProperty, value);
             }
         }
 
-        private double _HorizontalSpacing;
+        private double _columnSpacing;
 
-        public static readonly DependencyProperty HorizontalSpacingProperty =
+        public static readonly DependencyProperty ColumnSpacingProperty =
             DependencyProperty.Register(
-                nameof(HorizontalSpacing),
+                nameof(ColumnSpacing),
                 typeof(double),
                 typeof(BiaUniformGrid),
                 new PropertyMetadata(
@@ -33,29 +33,29 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._HorizontalSpacing = (double) e.NewValue;
+                        self._columnSpacing = (double) e.NewValue;
                     }));
 
         #endregion
 
 
-        #region VerticalSpacing
+        #region RowSpacing
 
-        public double VerticalSpacing
+        public double RowSpacing
         {
-            get => _VerticalSpacing;
+            get => _rowSpacing;
             set
             {
-                if (NumberHelper.AreClose(value, _VerticalSpacing) == false)
-                    SetValue(VerticalSpacingProperty, value);
+                if (NumberHelper.AreClose(value, _rowSpacing) == false)
+                    SetValue(RowSpacingProperty, value);
             }
         }
 
-        private double _VerticalSpacing;
+        private double _rowSpacing;
 
-        public static readonly DependencyProperty VerticalSpacingProperty =
+        public static readonly DependencyProperty RowSpacingProperty =
             DependencyProperty.Register(
-                nameof(VerticalSpacing),
+                nameof(RowSpacing),
                 typeof(double),
                 typeof(BiaUniformGrid),
                 new PropertyMetadata(
@@ -63,7 +63,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaUniformGrid) s;
-                        self._VerticalSpacing = (double) e.NewValue;
+                        self._rowSpacing = (double) e.NewValue;
                     }));
 
         #endregion
@@ -184,8 +184,8 @@ namespace Biaui.Controls
                 maxChildDesiredHeight = Math.Max(maxChildDesiredHeight, childDesiredSize.Height);
             }
 
-            var w = maxChildDesiredWidth * _columns + HorizontalSpacing * (_columns - 1);
-            var h = maxChildDesiredHeight * _rows + VerticalSpacing * (_rows - 1);
+            var w = maxChildDesiredWidth * _columns + ColumnSpacing * (_columns - 1);
+            var h = maxChildDesiredHeight * _rows + RowSpacing * (_rows - 1);
 
             _childWidth = maxChildDesiredWidth;
             _childHeight = maxChildDesiredHeight;
@@ -200,7 +200,7 @@ namespace Biaui.Controls
         {
             var childBounds = new Rect(0d, 0d, _childWidth, _childHeight);
             
-            var xStep = childBounds.Width + HorizontalSpacing;
+            var xStep = childBounds.Width + ColumnSpacing;
             var xBound = arrangeSize.Width - 1d;
 
             foreach (UIElement child in InternalChildren)
@@ -213,7 +213,7 @@ namespace Biaui.Controls
 
                     if (childBounds.X >= xBound)
                     {
-                        childBounds.Y += childBounds.Height + VerticalSpacing;
+                        childBounds.Y += childBounds.Height + RowSpacing;
                         childBounds.X = 0;
                     }
                 }
