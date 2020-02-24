@@ -109,7 +109,7 @@ namespace Biaui.Controls
                     MarkBrush,
                     null,
                     new Point(8, 10),
-                    5, 5);
+                    4.5, 4.5);
             }
 
             // キャプション

@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Biaui.ControlCatalog.Pages.RadioButtonPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <ScrollViewer Padding="18" Style="{StaticResource BasicScrollViewerStyle}">
+        <StackPanel>
+            <TextBlock Style="{StaticResource FirstSubGroupTextBlockStyle}" Text="Standard RadioButton" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <StackPanel>
+                        <RadioButton Content="Apple" IsChecked="True" />
+                        <RadioButton Content="Orange" />
+                        <RadioButton Content="Cherry" />
+                        <RadioButton Content="Banana" />
+                    </StackPanel>
+                    
+                    <StackPanel IsEnabled="False">
+                        <RadioButton Content="Apple" IsChecked="True" />
+                        <RadioButton Content="Orange" />
+                        <RadioButton Content="Cherry" />
+                        <RadioButton Content="Banana" />
+                    </StackPanel>
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaRadioButton" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <StackPanel>
+                        <controls:BiaRadioButton Content="Apple" IsChecked="True" />
+                        <controls:BiaRadioButton Content="Orange" />
+                        <controls:BiaRadioButton Content="Cherry" />
+                        <controls:BiaRadioButton Content="Banana" />
+                    </StackPanel>
+                    
+                    <StackPanel IsEnabled="False">
+                        <controls:BiaRadioButton Content="Apple" IsChecked="True" />
+                        <controls:BiaRadioButton Content="Orange" />
+                        <controls:BiaRadioButton Content="Cherry" />
+                        <controls:BiaRadioButton Content="Banana" />
+                    </StackPanel>
+                </controls:BiaTableGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
