@@ -25,10 +25,15 @@
     </controls:BiaWindow.Style>
 
     <DockPanel>
-        <TextBlock Margin="8"
-                   DockPanel.Dock="Top"
-                   FontSize="18"
-                   Text="Biaui Control Catalog" />
+        <StackPanel Margin="8"
+                    DockPanel.Dock="Top"
+                    Orientation="Horizontal">
+            <TextBlock FontSize="18" Text="Biaui Control Catalog" />
+            <controls:BiaTextBlock Margin="4,0,0,0"
+                                   VerticalAlignment="Top"
+                                   Foreground="LawnGreen"
+                                   Text="[WIP]" />
+        </StackPanel>
 
         <Rectangle Height="1"
                    DockPanel.Dock="Top"
