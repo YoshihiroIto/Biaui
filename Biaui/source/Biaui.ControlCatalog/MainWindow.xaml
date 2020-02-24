@@ -8,6 +8,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     Width="800"
                     Height="700"
+                    Title="Biaui Control Catalog"
                     ShowInTaskbar="True"
                     WindowStartupLocation="CenterScreen"
                     mc:Ignorable="d">
@@ -28,7 +29,7 @@
         <StackPanel Margin="8"
                     DockPanel.Dock="Top"
                     Orientation="Horizontal">
-            <TextBlock FontSize="18" Text="Biaui Control Catalog" />
+            <TextBlock FontSize="18" Text="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type controlCatalog:MainWindow}}, Mode=OneWay}" />
             <controls:BiaTextBlock Margin="4,0,0,0"
                                    VerticalAlignment="Top"
                                    Foreground="LawnGreen"
