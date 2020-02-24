@@ -94,6 +94,13 @@
                     </controls:BiaUniformGrid>
                 </controls:BiaTableGrid>
             </Border>
+            
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaHyperlinkButton" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaHyperlinkButton Click="BiaButtonBase_OnClick"  Content="https://github.com/YoshihiroIto/Biaui/" />
+                </controls:BiaTableGrid>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
