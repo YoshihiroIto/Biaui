@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -8,19 +6,6 @@ namespace Biaui.Controls
 {
     public class BiaTableGrid : Grid
     {
-        protected static DependencyProperty GetMarginProperty(DependencyObject obj)
-        {
-            foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(obj))
-            {
-                var dpd = DependencyPropertyDescriptor.FromProperty(pd);
-
-                if (dpd != null && dpd.Name == nameof(Margin))
-                    return dpd.DependencyProperty;
-            }
-
-            return null;
-        }
-
         #region Spacing
 
         public Size Spacing
