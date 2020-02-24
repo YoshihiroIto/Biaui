@@ -35,6 +35,11 @@
                 <Setter Property="Background" Value="{DynamicResource AccentBrushKey}" />
                 <Setter Property="BoxBorderColor" Value="{DynamicResource AccentColorKey}" />
             </Trigger>
+            
+            <Trigger Property="IsPressed" Value="{x:Static biaui:Boxes.BoolTrue}">
+                <Setter Property="Background" Value="{DynamicResource AccentBrushKey}" />
+                <Setter Property="BoxBorderColor" Value="{DynamicResource AccentColorKey}" />
+            </Trigger>
 
             <Trigger Property="IsEnabled" Value="{x:Static biaui:Boxes.BoolFalse}">
                 <Setter Property="MarkBrush" Value="{DynamicResource InactiveForegroundBrushKey}" />
