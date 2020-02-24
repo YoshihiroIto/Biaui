@@ -57,12 +57,6 @@
                    Stroke="{StaticResource AccentBrushKey.Dark}"
                    StrokeThickness="1" />
 
-        <ContentControl Content="{Binding SelectedPage, RelativeSource={RelativeSource AncestorType={x:Type controlCatalog:MainWindow}}, Mode=OneWay}">
-            <ContentControl.Resources>
-                <Style TargetType="{x:Type ContentPresenter}">
-                    <Setter Property="Margin" Value="16" />
-                </Style>
-            </ContentControl.Resources>
-        </ContentControl>
+        <ContentControl Content="{Binding SelectedPage, RelativeSource={RelativeSource AncestorType={x:Type controlCatalog:MainWindow}}, Mode=OneWay}" />
     </DockPanel>
 </controls:BiaWindow>

@@ -7,38 +7,54 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <StackPanel>
-        <TextBlock Style="{StaticResource FirstSubGroupTextBlockStyle}" Text="Standard CheckBox" />
-        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
-            <CheckBox Content="DefaultStyle" />
-            <CheckBox Content="DefaultStyle" IsEnabled="False" />
-            
-            <CheckBox Content="DefaultStyle" IsChecked="True" />
-            <CheckBox Content="DefaultStyle" IsChecked="True" IsEnabled="False" />
-        </controls:BiaTableGrid>
-        
-        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaCheckBox" />
-        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
-            <controls:BiaCheckBox Content="DefaultStyle" />
-            <controls:BiaCheckBox Content="DefaultStyle" IsEnabled="False" />
-            
-            <controls:BiaCheckBox Content="DefaultStyle" IsChecked="True" />
-            <controls:BiaCheckBox Content="DefaultStyle" IsChecked="True" IsEnabled="False" />
-        </controls:BiaTableGrid>
-        
-        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaToggleSwitch" />
-        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
-            <controls:BiaToggleSwitch />
-        </controls:BiaTableGrid>
-        
-        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaToggleSwitch (Specify Label)" />
-        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
-            <controls:BiaToggleSwitch EnabledLabel="OK" DisabledLabel="Cancel"/>
-        </controls:BiaTableGrid>
-        
-        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaFlagBox" />
-        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
-            <controls:BiaFlagBox />
-        </controls:BiaTableGrid>
-    </StackPanel>
+    <ScrollViewer Padding="18" Style="{StaticResource BasicScrollViewerStyle}">
+        <StackPanel>
+            <TextBlock Style="{StaticResource FirstSubGroupTextBlockStyle}" Text="Standard CheckBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <CheckBox Content="DefaultStyle" />
+                    <CheckBox Content="DefaultStyle" IsEnabled="False" />
+
+                    <CheckBox Content="DefaultStyle" IsChecked="True" />
+                    <CheckBox Content="DefaultStyle"
+                              IsChecked="True"
+                              IsEnabled="False" />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaCheckBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaCheckBox Content="DefaultStyle" />
+                    <controls:BiaCheckBox Content="DefaultStyle" IsEnabled="False" />
+
+                    <controls:BiaCheckBox Content="DefaultStyle" IsChecked="True" />
+                    <controls:BiaCheckBox Content="DefaultStyle"
+                                          IsChecked="True"
+                                          IsEnabled="False" />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaToggleSwitch" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaToggleSwitch />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaToggleSwitch (Specify Label)" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaToggleSwitch DisabledLabel="Cancel" EnabledLabel="OK" />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaFlagBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaFlagBox />
+                </controls:BiaTableGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
