@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Biaui.ControlCatalog.Pages.CheckBoxPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <StackPanel>
+        <TextBlock Style="{StaticResource FirstSubGroupTextBlockStyle}" Text="Standard CheckBox" />
+        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+            <CheckBox Content="DefaultStyle" />
+            <CheckBox Content="DefaultStyle" IsEnabled="False" />
+            
+            <CheckBox Content="DefaultStyle" IsChecked="True" />
+            <CheckBox Content="DefaultStyle" IsChecked="True" IsEnabled="False" />
+        </controls:BiaTableGrid>
+        
+        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaCheckBox" />
+        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+            <controls:BiaCheckBox Content="DefaultStyle" />
+            <controls:BiaCheckBox Content="DefaultStyle" IsEnabled="False" />
+            
+            <controls:BiaCheckBox Content="DefaultStyle" IsChecked="True" />
+            <controls:BiaCheckBox Content="DefaultStyle" IsChecked="True" IsEnabled="False" />
+        </controls:BiaTableGrid>
+        
+        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaToggleSwitch" />
+        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+            <controls:BiaToggleSwitch />
+        </controls:BiaTableGrid>
+        
+        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaToggleSwitch (Specify Label)" />
+        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+            <controls:BiaToggleSwitch EnabledLabel="OK" DisabledLabel="Cancel"/>
+        </controls:BiaTableGrid>
+        
+        <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaFlagBox" />
+        <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+            <controls:BiaFlagBox />
+        </controls:BiaTableGrid>
+    </StackPanel>
+</UserControl>
