@@ -167,16 +167,16 @@ namespace Biaui.Controls
         protected override Size MeasureOverride(Size constraint)
         {
             UpdateComputedValues();
-
-            var childConstraint = new Size(constraint.Width / _columns, constraint.Height / _rows);
+            
+            var childConstraint = new Size(
+                (constraint.Width - ColumnSpacing * (_columns - 1)) / _columns, 
+                (constraint.Height - RowSpacing * (_rows - 1)) / _rows);
 
             var maxChildDesiredWidth = 0d;
             var maxChildDesiredHeight = 0d;
 
-            for (int i = 0, count = InternalChildren.Count; i < count; ++i)
+            foreach (UIElement child in InternalChildren)
             {
-                var child = InternalChildren[i];
-
                 child.Measure(childConstraint);
                 var childDesiredSize = child.DesiredSize;
 
@@ -187,21 +187,24 @@ namespace Biaui.Controls
             var w = maxChildDesiredWidth * _columns + ColumnSpacing * (_columns - 1);
             var h = maxChildDesiredHeight * _rows + RowSpacing * (_rows - 1);
 
-            _childWidth = maxChildDesiredWidth;
-            _childHeight = maxChildDesiredHeight;
-
             return new Size(w, h);
         }
 
-        private double _childWidth;
-        private double _childHeight;
-
         protected override Size ArrangeOverride(Size arrangeSize)
         {
-            var childBounds = new Rect(0d, 0d, _childWidth, _childHeight);
+            var rounder = new LayoutRounder(this);
             
-            var xStep = childBounds.Width + ColumnSpacing;
-            var xBound = arrangeSize.Width - 1d;
+            var childWidth = (arrangeSize.Width - ColumnSpacing * (_columns - 1)) / _columns;
+            var childHeight = (arrangeSize.Height - RowSpacing * (_rows - 1)) / _rows;
+            
+            var childBounds = rounder.RoundLayoutRect(new Rect(0d, 0d, childWidth, childHeight));
+            
+            var xStep = childWidth + ColumnSpacing;
+            
+            var xIndex = 0;
+
+            var x = 0d;
+            var y = 0d;
 
             foreach (UIElement child in InternalChildren)
             {
@@ -209,19 +212,26 @@ namespace Biaui.Controls
 
                 if (child.Visibility != Visibility.Collapsed)
                 {
-                    childBounds.X += xStep;
+                    x += xStep;
+                    childBounds.X = rounder.RoundLayoutValue(x);
+                    
+                    ++xIndex;
 
-                    if (childBounds.X >= xBound)
+                    if (xIndex == _columns)
                     {
-                        childBounds.Y += childBounds.Height + RowSpacing;
-                        childBounds.X = 0;
+                        x = 0d;
+                        y += childHeight + RowSpacing;
+                        xIndex = 0;
+
+                        childBounds.X = rounder.RoundLayoutValue(x);
+                        childBounds.Y = rounder.RoundLayoutValue(y);
                     }
                 }
             }
 
             return arrangeSize;
         }
-
+        
         private void UpdateComputedValues()
         {
             _columns = Columns;
