@@ -7,7 +7,7 @@
     </Style>
 
     <Style TargetType="TextBlock" x:Key="SubGroupTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="Margin" Value="0,16,0,8" />
+        <Setter Property="Margin" Value="0,40,0,8" />
         <Setter Property="FontSize" Value="16" />
     </Style>
 
