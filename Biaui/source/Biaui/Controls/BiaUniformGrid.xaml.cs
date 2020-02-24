@@ -167,10 +167,14 @@ namespace Biaui.Controls
         protected override Size MeasureOverride(Size constraint)
         {
             UpdateComputedValues();
-            
+
+            var rounder = new LayoutRounder(this);
+            var cs = rounder.RoundLayoutValue(ColumnSpacing);
+            var rs = rounder.RoundLayoutValue(RowSpacing);
+
             var childConstraint = new Size(
-                (constraint.Width - ColumnSpacing * (_columns - 1)) / _columns, 
-                (constraint.Height - RowSpacing * (_rows - 1)) / _rows);
+                (constraint.Width - cs * (_columns - 1)) / _columns,
+                (constraint.Height - rs * (_rows - 1)) / _rows);
 
             var maxChildDesiredWidth = 0d;
             var maxChildDesiredHeight = 0d;
@@ -184,8 +188,8 @@ namespace Biaui.Controls
                 maxChildDesiredHeight = Math.Max(maxChildDesiredHeight, childDesiredSize.Height);
             }
 
-            var w = maxChildDesiredWidth * _columns + ColumnSpacing * (_columns - 1);
-            var h = maxChildDesiredHeight * _rows + RowSpacing * (_rows - 1);
+            var w = maxChildDesiredWidth * _columns + cs * (_columns - 1);
+            var h = maxChildDesiredHeight * _rows + rs * (_rows - 1);
 
             return new Size(w, h);
         }
@@ -193,45 +197,62 @@ namespace Biaui.Controls
         protected override Size ArrangeOverride(Size arrangeSize)
         {
             var rounder = new LayoutRounder(this);
-            
-            var childWidth = (arrangeSize.Width - ColumnSpacing * (_columns - 1)) / _columns;
-            var childHeight = (arrangeSize.Height - RowSpacing * (_rows - 1)) / _rows;
-            
-            var childBounds = rounder.RoundLayoutRect(new Rect(0d, 0d, childWidth, childHeight));
-            
-            var xStep = childWidth + ColumnSpacing;
-            
+            var cs = rounder.RoundLayoutValue(ColumnSpacing);
+            var rs = rounder.RoundLayoutValue(RowSpacing);
+
+            var childWidth = Math.Floor((arrangeSize.Width - cs * (_columns - 1)) / _columns);
+            var childHeight = Math.Floor((arrangeSize.Height - rs * (_rows - 1)) / _rows);
+
+            var childBounds = default(Rect);
+
+            var xStep = childWidth + cs;
+
             var xIndex = 0;
+            var yIndex = 0;
+            var isLastRow = false;
 
             var x = 0d;
             var y = 0d;
 
             foreach (UIElement child in InternalChildren)
             {
+                childBounds.Width = xIndex == _columns - 1
+                    ? Math.Max(0d, arrangeSize.Width - childBounds.X)
+                    : childWidth;
+
+                childBounds.Height = isLastRow
+                    ? Math.Max(0d, arrangeSize.Height - childBounds.Y)
+                    : childHeight;
+
                 child.Arrange(childBounds);
 
                 if (child.Visibility != Visibility.Collapsed)
                 {
-                    x += xStep;
-                    childBounds.X = rounder.RoundLayoutValue(x);
-                    
                     ++xIndex;
 
                     if (xIndex == _columns)
                     {
                         x = 0d;
-                        y += childHeight + RowSpacing;
+                        y += childHeight + rs;
+                        
                         xIndex = 0;
+                        ++yIndex;
+                        isLastRow = yIndex == _rows - 1;
 
-                        childBounds.X = rounder.RoundLayoutValue(x);
+                        childBounds.X = 0d;
                         childBounds.Y = rounder.RoundLayoutValue(y);
+                    }
+                    else
+                    {
+                        x += xStep;
+                        childBounds.X = rounder.RoundLayoutValue(x);
                     }
                 }
             }
 
             return arrangeSize;
         }
-        
+
         private void UpdateComputedValues()
         {
             _columns = Columns;
@@ -270,7 +291,6 @@ namespace Biaui.Controls
 
         private int _rows;
         private int _columns;
-
 
         #region 角丸用処理
 
