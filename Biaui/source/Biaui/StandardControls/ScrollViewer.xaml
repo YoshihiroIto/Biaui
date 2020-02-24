@@ -120,7 +120,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        
+
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Opacity" Value="0.9" />
@@ -212,7 +212,7 @@
                     <Grid Background="Transparent"
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
-                        <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        <ScrollContentPresenter Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Width="{x:Static biaui:Boxes.Double8}"
@@ -248,7 +248,7 @@
                     <Grid Background="Transparent"
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
-                        <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        <ScrollContentPresenter Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Width="{x:Static biaui:Boxes.Double8}"
@@ -275,7 +275,7 @@
                     <Grid Background="Transparent"
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
-                        <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        <ScrollContentPresenter Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Grid.Row="{x:Static biaui:Boxes.Int0}"
@@ -312,7 +312,7 @@
                     <Grid Background="Transparent"
                           MouseLeave="OnMouseLeave"
                           PreviewMouseMove="OnPreviewMouseMove">
-                        <DockPanel Margin="{TemplateBinding Padding}">
+                        <DockPanel>
                             <ScrollViewer DockPanel.Dock="{x:Static biaui:Boxes.DockTop}"
                                           Focusable="{x:Static biaui:Boxes.BoolFalse}"
                                           HorizontalScrollBarVisibility="Hidden"
@@ -330,6 +330,7 @@
                             </ScrollViewer>
 
                             <ScrollContentPresenter Name="PART_ScrollContentPresenter"
+                                                    Margin="{TemplateBinding Padding}"
                                                     CanContentScroll="{x:Static biaui:Boxes.BoolTrue}"
                                                     CanHorizontallyScroll="{x:Static biaui:Boxes.BoolFalse}"
                                                     CanVerticallyScroll="{x:Static biaui:Boxes.BoolFalse}"
@@ -383,7 +384,7 @@
                             <RowDefinition Height="{x:Static biaui:Boxes.GridLengthAuto}" />
                         </Grid.RowDefinitions>
 
-                        <ScrollContentPresenter CanContentScroll="{TemplateBinding CanContentScroll}" />
+                        <ScrollContentPresenter Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Grid.Row="{x:Static biaui:Boxes.Int0}"
@@ -430,6 +431,7 @@
 
                         <ScrollContentPresenter Grid.RowSpan="2"
                                                 Grid.ColumnSpan="2"
+                                                Margin="{TemplateBinding Padding}"
                                                 CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                         <ScrollBar Name="PART_VerticalScrollBar"
