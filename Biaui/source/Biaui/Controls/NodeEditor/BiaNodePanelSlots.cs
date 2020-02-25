@@ -48,11 +48,31 @@ namespace Biaui.Controls.NodeEditor
             var canConnectLink = _parent.CanConnectLink;
             var isMouseOverNode = nodeItem.IsMouseOver && canConnectLink;
 
+            var baseRadius = Biaui.Internals.Constants.SlotMarkRadius;
+            var baseHighlightRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight;
+            var baseRadiusSq = baseRadius * baseRadius;
+
+            Pen pen;
+
+            if ((nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace)))
+            {
+                var invScale = 1d / this.CalcCompositeRenderScale();
+                baseRadius *= invScale;
+                baseHighlightRadius *= invScale;
+                baseRadiusSq *= invScale * invScale;     // 半径の二乗なのでスケールも２度掛ける
+                
+                pen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(2d * invScale));
+            }
+            else
+            {
+                pen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(2d));
+            }
+            
             foreach (var slot in nodeItem.EnabledSlots())
             {
                 var slotPos = slot.MakePos(nodeItem.Size.Width, nodeItem.Size.Height);
 
-                var r = Biaui.Internals.Constants.SlotMarkRadius;
+                var r = baseRadius;
 
                 // ポート自体が有効でパネルがマウスオーバー時は、ポート自体のマウス位置見て半径を作る
                 if (isMouseOverNode)
@@ -62,8 +82,8 @@ namespace Biaui.Controls.NodeEditor
                         var slotData = new BiaNodeItemSlotIdPair(nodeItem, slot.Id);
 
                         if (_parent.NodeSlotEnabledChecker.IsEnableSlot(slotData))
-                            if ((slotPos, _mousePoint).DistanceSq() <= Biaui.Internals.Constants.SlotMarkRadiusSq)
-                                r = Biaui.Internals.Constants.SlotMarkRadius_Highlight;
+                            if ((slotPos, _mousePoint).DistanceSq() <= baseRadiusSq)
+                                r = baseHighlightRadius;
                     }
                 }
 
@@ -83,8 +103,6 @@ namespace Biaui.Controls.NodeEditor
 
                 curve.Ctx.DrawEllipse(Unsafe.As<ImmutableVec2_double, Point>(ref slotPos), r, r, true, true);
             }
-
-            var pen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(2));
 
             foreach (var c in _ellipses)
             {

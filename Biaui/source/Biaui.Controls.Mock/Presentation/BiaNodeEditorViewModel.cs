@@ -455,6 +455,8 @@ namespace Biaui.Controls.Mock.Presentation
 
         public abstract BiaNodePanelLayer Layer { get; }
 
+        public BiaNodePaneFlags Flags => BiaNodePaneFlags.None;
+
         public Func<BiaNodeSlot, Point> MakeSlotPos { get; } = null;
 
         public bool CanMoveByDragging(CanMoveByDraggingArgs args) => true;

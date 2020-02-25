@@ -416,7 +416,10 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 Type? nodeItemType = null;
 
-                ImmutableRect_double itemRect;
+                var isNoViewportCulling = nodeItem.Flags.HasFlag(BiaNodePaneFlags.NoViewportCulling);
+                var itemRect = default(ImmutableRect_double);
+                
+                if (isNoViewportCulling == false)
                 {
                     if (nodeItem.Size == default)
                     {
@@ -443,7 +446,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     }
                 }
 
-                if (viewportRect.IntersectsWith(itemRect))
+                if (isNoViewportCulling || viewportRect.IntersectsWith(itemRect))
                 {
                     if (nodePanel == null)
                     {
