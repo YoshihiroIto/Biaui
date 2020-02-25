@@ -26,6 +26,8 @@
                                 Width="{x:Static biaui:Boxes.Double16}"
                                 Height="{x:Static biaui:Boxes.Double16}"
                                 Margin="0,2"
+                                UseLayoutRounding="{x:Static biaui:Boxes.BoolFalse}"
+                                SnapsToDevicePixels="{x:Static biaui:Boxes.BoolFalse}"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{x:Static biaui:Boxes.VerticalAlignmentCenter}"
                                 Background="{TemplateBinding Background}"
@@ -33,6 +35,8 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="16">
                             <Ellipse x:Name="optionMark"
+                                     UseLayoutRounding="{x:Static biaui:Boxes.BoolFalse}"
+                                     SnapsToDevicePixels="{x:Static biaui:Boxes.BoolFalse}"
                                      Width="{x:Static biaui:Boxes.Double10}"
                                      Height="{x:Static biaui:Boxes.Double10}"
                                      HorizontalAlignment="{x:Static biaui:Boxes.HorizontalAlignmentCenter}"
