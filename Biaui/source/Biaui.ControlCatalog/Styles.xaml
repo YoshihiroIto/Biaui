@@ -1,25 +1,42 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui">
-    <Style TargetType="TextBlock" x:Key="FirstSubGroupTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="FirstSubGroupTextBlockStyle"
+           BasedOn="{StaticResource {x:Type TextBlock}}"
+           TargetType="TextBlock">
         <Setter Property="Margin" Value="0,0,0,8" />
         <Setter Property="FontSize" Value="16" />
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="SubGroupTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}">
+    <Style x:Key="SubGroupTextBlockStyle"
+           BasedOn="{StaticResource {x:Type TextBlock}}"
+           TargetType="TextBlock">
         <Setter Property="Margin" Value="0,40,0,8" />
         <Setter Property="FontSize" Value="16" />
     </Style>
-    
+
     <Style x:Key="SubGroupBorderStyle" TargetType="Border">
-        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrushKey}"></Setter>
-        <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="Padding" Value="16"></Setter>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrushKey}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="16" />
     </Style>
-    
+
     <Style x:Key="SubGroupTableGridStyle" TargetType="controls:BiaTableGrid">
         <Setter Property="Columns" Value="2" />
         <Setter Property="Spacing" Value="32,16" />
         <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="InfoStackPanelStyle" TargetType="StackPanel">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Margin" Value="32,0,0,0" />
+        <Setter Property="Background" Value="{StaticResource SemiactiveBackgroundBrushKey}" />
+        <Setter Property="DockPanel.Dock" Value="Right" />
+    </Style>
+
+    <Style x:Key="InfoTableGridStyle" TargetType="controls:BiaTableGrid">
+        <Setter Property="Margin" Value="16" />
+        <Setter Property="Columns" Value="2" />
+        <Setter Property="Spacing" Value="8,2" />
     </Style>
 </ResourceDictionary>

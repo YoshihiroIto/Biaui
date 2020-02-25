@@ -39,6 +39,10 @@
             <Border Style="{StaticResource SubGroupBorderStyle}">
                 <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
                     <controls:BiaToggleSwitch />
+                    <controls:BiaToggleSwitch IsEnabled="False" />
+
+                    <controls:BiaToggleSwitch IsChecked="True" />
+                    <controls:BiaToggleSwitch IsChecked="True" IsEnabled="False" />
                 </controls:BiaTableGrid>
             </Border>
 
@@ -46,14 +50,48 @@
             <Border Style="{StaticResource SubGroupBorderStyle}">
                 <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
                     <controls:BiaToggleSwitch DisabledLabel="Cancel" EnabledLabel="OK" />
+                    <controls:BiaToggleSwitch DisabledLabel="Cancel"
+                                              EnabledLabel="OK"
+                                              IsEnabled="False" />
+
+                    <controls:BiaToggleSwitch DisabledLabel="Cancel"
+                                              EnabledLabel="OK"
+                                              IsChecked="True" />
+                    <controls:BiaToggleSwitch DisabledLabel="Cancel"
+                                              EnabledLabel="OK"
+                                              IsChecked="True"
+                                              IsEnabled="False" />
                 </controls:BiaTableGrid>
             </Border>
 
             <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaFlagBox" />
+
             <Border Style="{StaticResource SubGroupBorderStyle}">
-                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
-                    <controls:BiaFlagBox />
-                </controls:BiaTableGrid>
+                <DockPanel>
+                    <StackPanel Style="{StaticResource InfoStackPanelStyle}">
+                        <controls:BiaTableGrid Style="{StaticResource InfoTableGridStyle}">
+                            <controls:BiaTextBlock Text="MouseDown:" />
+                            <controls:BiaTextBlock Text="Enable" />
+                            <controls:BiaTextBlock Text="Shift + MouseDown:" />
+                            <controls:BiaTextBlock Text="Toggle" />
+                            <controls:BiaTextBlock Text="Shift + MouseDrag:" />
+                            <controls:BiaTextBlock Text="Toggle and Fill" />
+                        </controls:BiaTableGrid>
+                    </StackPanel>
+
+                    <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                        <controls:BiaFlagBox />
+                        <controls:BiaFlagBox IsEnabled="False" />
+
+                        <controls:BiaFlagBox Flag0="True"
+                                             Flag3="True"
+                                             Flag7="True" />
+                        <controls:BiaFlagBox Flag0="True"
+                                             Flag3="True"
+                                             Flag7="True"
+                                             IsEnabled="False" />
+                    </controls:BiaTableGrid>
+                </DockPanel>
             </Border>
         </StackPanel>
     </ScrollViewer>
