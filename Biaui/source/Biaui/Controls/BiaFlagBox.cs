@@ -761,5 +761,10 @@ namespace Biaui.Controls
 
             return new Size(ColumnCount * ButtonWidth, RowCount * ButtonHeight);
         }
+
+        protected override Size ArrangeOverride(Size arrangeSize)
+        {
+            return new Size(ColumnCount * ButtonWidth, RowCount * ButtonHeight);
+        }
     }
 }
