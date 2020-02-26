@@ -148,17 +148,22 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (nodeItems == null)
                 return;
 
-            const double SlotRadius = Biaui.Internals.Constants.SlotMarkRadius;
+            var invScale = 1d / Scale.ScaleX;
 
             foreach (var nodeItem in nodeItems)
             {
+                var slotRadius = Biaui.Internals.Constants.SlotMarkRadius;
+
+                if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
+                    slotRadius *= invScale;
+                
                 var nodePos = nodeItem.Pos;
-                if (mousePos.X < nodePos.X - SlotRadius) continue;
-                if (mousePos.Y < nodePos.Y - SlotRadius) continue;
+                if (mousePos.X < nodePos.X - slotRadius) continue;
+                if (mousePos.Y < nodePos.Y - slotRadius) continue;
 
                 var nodeSize = nodeItem.Size;
-                if (mousePos.X > nodePos.X + nodeSize.Width + SlotRadius) continue;
-                if (mousePos.Y > nodePos.Y + nodeSize.Height + SlotRadius) continue;
+                if (mousePos.X > nodePos.X + nodeSize.Width + slotRadius) continue;
+                if (mousePos.Y > nodePos.Y + nodeSize.Height + slotRadius) continue;
 
                 foreach (var slot in nodeItem.EnabledSlots())
                 {
@@ -168,18 +173,19 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                     var slotPos = nodeItem.MakeSlotPosDefault(slot);
 
-                    if (slot.HitCheck(slotPos, mousePos) == false)
-                        continue;
-
-                    _parent.TargetNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);
-
-                    break;
+                    if (slot.HitCheck(invScale, nodeItem, slotPos, mousePos))
+                    {
+                        _parent.TargetNodeSlotConnecting = new BiaNodeItemSlotPair(nodeItem, slot);
+                        break;
+                    }
                 }
 
                 if (_parent.TargetNodeSlotConnecting != null)
                     break;
             }
         }
+
+        private static int i;
 
         internal void Invalidate()
         {

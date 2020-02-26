@@ -887,7 +887,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
 
             var pos = e.GetPosition(panel);
-            var slot = nodeItem.FindSlotFromPos(Unsafe.As<Point, ImmutableVec2_double>(ref pos));
+            var slot = nodeItem.FindSlotFromPos(Unsafe.As<Point, ImmutableVec2_double>(ref pos), this);
 
             // 元スロットが無効であればリンク処置は行わない
             if (slot != null)

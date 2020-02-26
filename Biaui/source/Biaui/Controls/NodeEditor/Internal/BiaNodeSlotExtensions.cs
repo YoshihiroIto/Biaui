@@ -1,23 +1,28 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
+using Biaui.Interfaces;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor.Internal
 {
     internal static class BiaNodeSlotExtensions
     {
-        internal static bool HitCheck(this BiaNodeSlot slot, in ImmutableVec2_double slotPos, in ImmutableVec2_double mousePos)
+        internal static bool HitCheck(
+            this BiaNodeSlot slot,
+            double invScale, IBiaNodeItem nodeItem,
+            in ImmutableVec2_double slotPos, in ImmutableVec2_double mousePos)
         {
             if (slot.TargetSlotHitChecker != null)
-            {
                 if (slot.TargetSlotHitChecker(slotPos.ToPoint(), mousePos.ToPoint()) == false)
                     return false;
-            }
-            else if ((slotPos, mousePos).DistanceSq() > Biaui.Internals.Constants.SlotMarkRadiusSq)
-                return false;
 
-            return true;
+            var slotMarkRadiusSq = Biaui.Internals.Constants.SlotMarkRadiusSq;
+
+            if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
+                slotMarkRadiusSq *= invScale * invScale;
+
+            return (slotPos, mousePos).DistanceSq() <= slotMarkRadiusSq;
         }
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ImmutableVec2_double MakePos(this BiaNodeSlot slot, double panelWidth, double panelHeight)

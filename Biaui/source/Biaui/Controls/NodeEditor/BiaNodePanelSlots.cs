@@ -49,17 +49,17 @@ namespace Biaui.Controls.NodeEditor
             var isMouseOverNode = nodeItem.IsMouseOver && canConnectLink;
 
             var baseRadius = Biaui.Internals.Constants.SlotMarkRadius;
+            var baseRadiusSq = Biaui.Internals.Constants.SlotMarkRadiusSq;
             var baseHighlightRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight;
-            var baseRadiusSq = baseRadius * baseRadius;
 
             Pen pen;
 
-            if ((nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace)))
+            if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
             {
                 var invScale = 1d / this.CalcCompositeRenderScale();
                 baseRadius *= invScale;
-                baseHighlightRadius *= invScale;
                 baseRadiusSq *= invScale * invScale;     // 半径の二乗なのでスケールも２度掛ける
+                baseHighlightRadius *= invScale;
                 
                 pen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(2d * invScale));
             }

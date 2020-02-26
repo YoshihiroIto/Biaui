@@ -106,8 +106,10 @@ foreach (var typeName in new[]{"float", "double"})
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_<#= typeName #> operator /(in ImmutableVec2_<#= typeName #> v1, <#= typeName #> v2)
             => new ImmutableVec2_<#= typeName #>(v1.X / v2, v1.Y / v2);
-    }
 
+        public override string ToString()
+            => $"({X},{Y})";
+    }
 <#
 }
 #>

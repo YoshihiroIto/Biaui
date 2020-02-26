@@ -60,19 +60,22 @@ namespace Biaui.Controls.NodeEditor.Internal
             return new ImmutableVec2_double(itemPos.X + slotLocalPos.X, itemPos.Y + slotLocalPos.Y);
         }
 
-        internal static BiaNodeSlot? FindSlotFromPos(this IBiaNodeItem nodeItem, in ImmutableVec2_double pos)
+        internal static BiaNodeSlot? FindSlotFromPos(
+            this IBiaNodeItem nodeItem, in ImmutableVec2_double pos, FrameworkElement control)
         {
             if (nodeItem.Slots == null)
                 return null;
 
             var itemSize = nodeItem.Size;
 
+            var slotMarkRadiusSq = control.MakeSlotMarkRadiusSq(nodeItem);
+            
             foreach (var slot in nodeItem.EnabledSlots())
             {
                 var slotLocalPos = slot.MakePos(itemSize.Width, itemSize.Height);
 
                 var d = (slotLocalPos, pos).DistanceSq();
-                if (d <= Biaui.Internals.Constants.SlotMarkRadiusSq)
+                if (d <= slotMarkRadiusSq)
                     return slot;
             }
 

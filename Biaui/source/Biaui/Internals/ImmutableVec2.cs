@@ -97,8 +97,10 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_float operator /(in ImmutableVec2_float v1, float v2)
             => new ImmutableVec2_float(v1.X / v2, v1.Y / v2);
-    }
 
+        public override string ToString()
+            => $"({X},{Y})";
+    }
     [DebuggerDisplay("X:{X}, Y:{Y}")]
     public readonly struct ImmutableVec2_double : IEquatable<ImmutableVec2_double>
     {
@@ -185,8 +187,10 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_double operator /(in ImmutableVec2_double v1, double v2)
             => new ImmutableVec2_double(v1.X / v2, v1.Y / v2);
-    }
 
+        public override string ToString()
+            => $"({X},{Y})";
+    }
 
 }
 
