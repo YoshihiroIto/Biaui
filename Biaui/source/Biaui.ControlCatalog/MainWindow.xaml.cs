@@ -51,7 +51,8 @@ namespace Biaui.ControlCatalog
                 new ButtonPage(),
                 new ToggleButtonPage(),
                 new CheckBoxPage(),
-                new RadioButtonPage()
+                new RadioButtonPage(),
+                new TextBoxPage()
             };
 
             SelectedPage = Pages[0];

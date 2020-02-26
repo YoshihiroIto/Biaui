@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="Biaui.ControlCatalog.Pages.TextBoxPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width" Value="160" />
+        </Style>
+
+        <Style TargetType="controls:BiaTextBox" BasedOn="{StaticResource {x:Type controls:BiaTextBox}}">
+            <Setter Property="Width" Value="160" />
+        </Style>
+    </UserControl.Resources>
+
+
+    <ScrollViewer Padding="18" Style="{StaticResource BasicScrollViewerStyle}">
+        <StackPanel>
+            <TextBlock Style="{StaticResource FirstSubGroupTextBlockStyle}" Text="Standard TextBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <TextBox Text="DefaultStyle" />
+                    <TextBox IsEnabled="False" Text="DefaultStyle" />
+
+                    <TextBox IsReadOnly="True" Text="ReadOnly" />
+                    <TextBox IsEnabled="False"
+                             IsReadOnly="True"
+                             Text="ReadOnly" />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaTextBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaTextBox Text="DefaultStyle" />
+                    <controls:BiaTextBox IsEnabled="False" Text="DefaultStyle" />
+
+                    <controls:BiaTextBox IsReadOnly="True" Text="ReadOnly" />
+                    <controls:BiaTextBox IsEnabled="False"
+                                         IsReadOnly="True"
+                                         Text="ReadOnly" />
+                </controls:BiaTableGrid>
+            </Border>
+            
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaTextBox (Watermark)" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaTextBox Watermark="Name" />
+                    <controls:BiaTextBox Watermark="Name" IsEnabled="False" />
+
+                    <controls:BiaTextBox Watermark="Name" IsReadOnly="True" />
+                    <controls:BiaTextBox Watermark="Name" IsEnabled="False"
+                                         IsReadOnly="True" />
+                </controls:BiaTableGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
