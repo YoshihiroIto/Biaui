@@ -296,12 +296,12 @@ namespace Biaui.Controls
             {
                 if (_isEditing == false &&
                     string.IsNullOrEmpty(TargetText) &&
-                    Watermark != null &&
+                    string.IsNullOrEmpty(Watermark) == false &&
                     WatermarkForeground != null)
-                    DefaultTextRenderer.Instance.Draw(
+                    TextRenderer.Italic.Draw(
                         this,
                         Watermark,
-                        4.5, 3.5,
+                        5d, 4d,
                         WatermarkForeground,
                         dc,
                         (1.0, ActualWidth - 9).Max(),
@@ -309,12 +309,12 @@ namespace Biaui.Controls
                         TextTrimming,
                         true);
 
-                if (TargetText != null &&
+                if (string.IsNullOrEmpty(TargetText) == false &&
                     Foreground != null)
                     DefaultTextRenderer.Instance.Draw(
                         this,
                         TargetText,
-                        4.5, 3.5,
+                        5d, 4d,
                         Foreground,
                         dc,
                         (1.0, ActualWidth - 9).Max(),
