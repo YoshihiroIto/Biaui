@@ -16,10 +16,6 @@
                 <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsKeyboardFocusWithin" Value="{x:Static biaui:Boxes.BoolTrue}">
-                <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrushKey}" />
-            </Trigger>
-
             <Trigger Property="IsReadOnly" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
                 <Setter Property="WatermarkForeground" Value="{DynamicResource InactiveForegroundBrushKey}" />
