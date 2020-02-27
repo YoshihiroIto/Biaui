@@ -185,8 +185,6 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
         }
 
-        private static int i;
-
         internal void Invalidate()
         {
             UpdateBezierPoints();
