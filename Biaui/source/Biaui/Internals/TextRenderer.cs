@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -15,6 +16,19 @@ namespace Biaui.Internals
 {
     internal class TextRenderer : TextRendererImpl<IsNotDefaultTextureRenderer>
     {
+        internal static TextRenderer Italic =>
+            LazyInitializer.EnsureInitialized(ref _Italic, () =>
+            {
+                var fontFamily = (FontFamily) TextElement.FontFamilyProperty.DefaultMetadata.DefaultValue;
+                var fontSize = (double) TextElement.FontSizeProperty.DefaultMetadata.DefaultValue;
+
+                return new TextRenderer(
+                    fontFamily, fontSize,
+                    FontStyles.Italic, FontWeights.Normal, FontStretches.Normal);
+            });
+
+        private static TextRenderer? _Italic;
+
         internal TextRenderer(
             FontFamily fontFamily,
             double fontSize,
@@ -98,12 +112,12 @@ namespace Biaui.Internals
             }
             else
             {
-                _fontLineSpacing = fontFamily.LineSpacing;
-                (_dotGlyphIndex, _dotAdvanceWidth) = CalcGlyphIndexAndWidth('.');
-
                 _glyphDataCache = new Dictionary<int, (ushort GlyphIndex, double AdvanceWidth)>();
                 _toGlyphMap = _glyphTypeface.CharacterToGlyphMap;
                 _advanceWidthsDict = _glyphTypeface.AdvanceWidths;
+
+                _fontLineSpacing = fontFamily.LineSpacing;
+                (_dotGlyphIndex, _dotAdvanceWidth) = CalcGlyphIndexAndWidth('.');
             }
 
 #if DEBUG
@@ -129,7 +143,7 @@ namespace Biaui.Internals
         {
             if (text == null)
                 return 0d;
-            
+
             return Draw(
                 visual,
                 text.AsSpan(),
@@ -585,9 +599,9 @@ namespace Biaui.Internals
         private ReadOnlySpan<char> TrimmingFilepathText(ReadOnlySpan<char> text, double maxWidth, char[] buffer)
         {
             // ref: https://www.codeproject.com/Tips/467054/WPF-PathTrimmingTextBlock
-            
+
             bool widthOk;
-            
+
 #if NETCOREAPP3_1
             var filename = Path.GetFileName(text);
             var directory = Path.GetDirectoryName(text);
@@ -703,8 +717,8 @@ namespace Biaui.Internals
             var advanceWidthByteArray = MemoryMarshal.Cast<double, byte>(advanceWidthArray).ToArray();
 
             var dotGlyphIndex = Unsafe.Add(ref MemoryMarshal.GetReference(MemoryMarshal.Cast<byte, ushort>(glyphIndexByteArray)), (IntPtr) '.');
-            var dotAdvanceWidth = Unsafe.Add(ref MemoryMarshal.GetReference(MemoryMarshal.Cast<byte, double>(advanceWidthByteArray)), (IntPtr) '.'); 
-            
+            var dotAdvanceWidth = Unsafe.Add(ref MemoryMarshal.GetReference(MemoryMarshal.Cast<byte, double>(advanceWidthByteArray)), (IntPtr) '.');
+
             var sb = new StringBuilder();
 
             sb.AppendLine("// ReSharper disable All");
