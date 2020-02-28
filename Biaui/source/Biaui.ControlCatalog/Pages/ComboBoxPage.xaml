@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="Biaui.ControlCatalog.Pages.ComboBoxPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:Biaui.ControlCatalog.Pages"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
+            <Setter Property="Width" Value="160" />
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type controls:BiaComboBox}}" TargetType="controls:BiaComboBox">
+            <Setter Property="Width" Value="160" />
+        </Style>
+
+        <pages:FruitsToStringConverter x:Key="FruitsToString" />
+
+        <DataTemplate x:Key="FruitsItemTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource FruitsToString}, Mode=OneWay}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ScrollViewer Padding="18" Style="{StaticResource BasicScrollViewerStyle}">
+        <StackPanel>
+            <TextBlock Style="{StaticResource FirstSubGroupTextBlockStyle}" Text="Standard ComboBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <ComboBox ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}" SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                    <ComboBox IsEnabled="False"
+                              ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                              SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+
+                    <ComboBox ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}" SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                    <ComboBox IsEnabled="False"
+                              ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                              SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+
+                    <ComboBox ItemTemplate="{StaticResource FruitsItemTemplate}"
+                              ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                              SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+
+                    <ComboBox IsEnabled="False"
+                              ItemTemplate="{StaticResource FruitsItemTemplate}"
+                              ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                              SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaComboBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaComboBox ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}" SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                    <controls:BiaComboBox IsEnabled="False"
+                                          ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                                          SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+
+                    <controls:BiaComboBox ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}" SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                    <controls:BiaComboBox IsEnabled="False"
+                                          ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                                          SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaComboBox (Converter)" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaComboBox ItemToStringConverter="{StaticResource FruitsToString}"
+                                          ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                                          SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+
+                    <controls:BiaComboBox IsEnabled="False"
+                                          ItemToStringConverter="{StaticResource FruitsToString}"
+                                          ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                                          SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                </controls:BiaTableGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
