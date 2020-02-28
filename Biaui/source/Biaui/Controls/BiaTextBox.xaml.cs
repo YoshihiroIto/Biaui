@@ -304,7 +304,7 @@ namespace Biaui.Controls
                         5d, 4d,
                         WatermarkForeground,
                         dc,
-                        (1.0, ActualWidth - 9).Max(),
+                        (1d, ActualWidth - 9d).Max(),
                         TextAlignment.Left,
                         TextTrimming,
                         true);
@@ -317,7 +317,7 @@ namespace Biaui.Controls
                         5d, 4d,
                         Foreground,
                         dc,
-                        (1.0, ActualWidth - 9).Max(),
+                        (1d, ActualWidth - 9d).Max(),
                         TextAlignment.Left,
                         TextTrimming,
                         true);
