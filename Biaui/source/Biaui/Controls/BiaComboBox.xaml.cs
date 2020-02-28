@@ -356,7 +356,7 @@ namespace Biaui.Controls
                     }));
 
         #endregion
-        
+
         #region TextTrimming
 
         public BiaTextTrimmingMode TextTrimming
@@ -400,7 +400,7 @@ namespace Biaui.Controls
             if (ActualWidth <= 1 ||
                 ActualHeight <= 1)
                 return;
-            
+
             var rounder = new LayoutRounder(this);
 
             DrawBackground(rounder, dc);
@@ -420,10 +420,10 @@ namespace Biaui.Controls
                         DefaultTextRenderer.Instance.Draw(
                             this,
                             displayItem.ToString(),
-                            4.5, 3.5,
+                            5d, 4d,
                             Foreground,
                             dc,
-                            (1.0, ActualWidth - 32).Max(), // ▼分の幅を引く
+                            (1d, ActualWidth - 24d).Max(), // ▼分の幅を引く
                             TextAlignment.Left,
                             TextTrimming,
                             true);
@@ -433,7 +433,7 @@ namespace Biaui.Controls
 
             // マーク
             {
-                var offset = new TranslateTransform(ActualWidth - SystemParameters.VerticalScrollBarWidth, 10.5);
+                var offset = new TranslateTransform(ActualWidth - 15d, 10.5d);
 
                 dc.PushTransform(offset);
                 dc.DrawGeometry(MarkBrush, null, MarkGeom);
