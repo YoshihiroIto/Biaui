@@ -128,13 +128,13 @@ namespace Biaui.Controls
             descriptor.RemoveValueChanged(parent, UpdateClearButtonHandler);
         }
 
-        private void UpdateClearButtonHandler(object? sender, EventArgs e)
+        private static void UpdateClearButtonHandler(object? sender, EventArgs e)
         {
             if (sender is FrameworkElement popup)
                 UpdateClearButton(popup);
         }
 
-        private void UpdateClearButton(FrameworkElement popup)
+        private static void UpdateClearButton(FrameworkElement popup)
         {
             var parent = popup.GetParent<BiaFilteringComboBox>();
             var clearButton = popup.Descendants().OfType<Button>().FirstOrDefault();
