@@ -104,12 +104,6 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
-                            <Setter Property="IsSelected" Value="{x:Static biaui:Boxes.BoolTrue}" />
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </Setter.Value>
         </Setter>
