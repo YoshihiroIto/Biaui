@@ -52,6 +52,14 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
         <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
 
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <controls:BiaHighlightTextBlock Text="{Binding Mode=OneWay}" Words="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:BiaFilteringComboBox}}, Mode=OneWay, Path=FilterWords}" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type ComboBoxItem}">
