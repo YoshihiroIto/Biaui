@@ -17,6 +17,10 @@
             <Setter Property="Width" Value="160" />
         </Style>
 
+        <Style BasedOn="{StaticResource {x:Type controls:BiaFilteringComboBox}}" TargetType="controls:BiaFilteringComboBox">
+            <Setter Property="Width" Value="160" />
+        </Style>
+
         <pages:FruitsToStringConverter x:Key="FruitsToString" />
 
         <DataTemplate x:Key="FruitsItemTemplate">
@@ -76,6 +80,20 @@
                                           ItemToStringConverter="{StaticResource FruitsToString}"
                                           ItemsSource="{Binding EnumItems, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
                                           SelectedItem="{Binding SelectedEnumItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                </controls:BiaTableGrid>
+            </Border>
+
+            <TextBlock Style="{StaticResource SubGroupTextBlockStyle}" Text="BiaFilteringComboBox" />
+            <Border Style="{StaticResource SubGroupBorderStyle}">
+                <controls:BiaTableGrid Style="{StaticResource SubGroupTableGridStyle}">
+                    <controls:BiaFilteringComboBox FilterWords="{Binding FilterWords, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}"
+                                                   ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                                                   SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
+                    
+                    <controls:BiaFilteringComboBox FilterWords="{Binding FilterWords, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}"
+                                                   IsEnabled="False"
+                                                   ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=OneTime}"
+                                                   SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type pages:ComboBoxPage}}, Mode=TwoWay}" />
                 </controls:BiaTableGrid>
             </Border>
         </StackPanel>

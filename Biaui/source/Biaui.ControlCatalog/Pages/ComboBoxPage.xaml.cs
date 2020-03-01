@@ -8,16 +8,34 @@ namespace Biaui.ControlCatalog.Pages
 {
     public partial class ComboBoxPage
     {
-        public string[] Items => new[]
+        #region Items
+
+        public string[] Items
         {
-            "Africa",
-            "Asia",
-            "Europe",
-            "North America",
-            "South America",
-            "Antarctica",
-            "Australia"
-        };
+            get => _Items;
+            set
+            {
+                if (value != _Items)
+                    SetValue(ItemsProperty, value);
+            }
+        }
+
+        private string[] _Items;
+
+        public static readonly DependencyProperty ItemsProperty =
+            DependencyProperty.Register(
+                nameof(Items),
+                typeof(string[]),
+                typeof(ComboBoxPage),
+                new PropertyMetadata(
+                    default,
+                    (s, e) =>
+                    {
+                        var self = (ComboBoxPage) s;
+                        self._Items = (string[]) e.NewValue;
+                    }));
+
+        #endregion
 
         #region SelectedItem
 
@@ -36,7 +54,7 @@ namespace Biaui.ControlCatalog.Pages
         #endregion
 
         public Fruits[] EnumItems => Enum.GetValues(typeof(Fruits)).Cast<Fruits>().ToArray();
-        
+
         #region SelectedEnumItem
 
         public Fruits SelectedEnumItem
@@ -53,10 +71,37 @@ namespace Biaui.ControlCatalog.Pages
 
         #endregion
 
+        #region FilterWords
+
+        public string FilterWords
+        {
+            get => (string) GetValue(FilterWordsProperty);
+            set => SetValue(FilterWordsProperty, value);
+        }
+
+        public static readonly DependencyProperty FilterWordsProperty =
+            DependencyProperty.Register(
+                nameof(FilterWords),
+                typeof(string),
+                typeof(ComboBoxPage));
+
+        #endregion
+
         public ComboBoxPage()
         {
             Name = "ComboBox";
             InitializeComponent();
+
+            Items = new[]
+            {
+                "Africa",
+                "Asia",
+                "Europe",
+                "North America",
+                "South America",
+                "Antarctica",
+                "Australia"
+            };
 
             SelectedItem = Items[0];
             SelectedEnumItem = EnumItems[0];
