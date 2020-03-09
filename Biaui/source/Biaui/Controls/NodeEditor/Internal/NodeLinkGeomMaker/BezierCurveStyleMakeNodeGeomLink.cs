@@ -39,8 +39,8 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
                     continue;
 
-                var item1 = link.ItemSlot1.Item ?? throw new NullReferenceException();
-                var item2 = link.ItemSlot2.Item ?? throw new NullReferenceException();
+                var item1 = link.SourceSlot.Item ?? throw new NullReferenceException();
+                var item2 = link.TargetSlot.Item ?? throw new NullReferenceException();
                 var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1!);
                 var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2!);
                 var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1!.Dir);

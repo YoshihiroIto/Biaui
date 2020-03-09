@@ -168,8 +168,8 @@ namespace Biaui.Controls.Mock.Presentation
                 var selectedNodes = new HashSet<IBiaNodeItem>(Nodes.Where(x => x.IsSelected));
 
                 var linksWithSelectedNode = Links
-                    .Where(x => selectedNodes.Contains(x.ItemSlot1.Item) ||
-                                selectedNodes.Contains(x.ItemSlot2.Item))
+                    .Where(x => selectedNodes.Contains(x.SourceSlot.Item) ||
+                                selectedNodes.Contains(x.TargetSlot.Item))
                     .ToArray();
 
                 foreach (var node in selectedNodes)
@@ -212,8 +212,8 @@ namespace Biaui.Controls.Mock.Presentation
                         };
 
                 var linksWithSelectedNode = Links
-                    .Where(x => removedNode == x.ItemSlot1.Item ||
-                                removedNode == x.ItemSlot2.Item)
+                    .Where(x => removedNode == x.SourceSlot.Item ||
+                                removedNode == x.TargetSlot.Item)
                     .ToArray();
 
                 foreach (var link in linksWithSelectedNode)
@@ -250,8 +250,8 @@ namespace Biaui.Controls.Mock.Presentation
                 {
                     Links.Add(new NodeLink
                     {
-                        ItemSlot1 = e.Source,
-                        ItemSlot2 = e.Target,
+                        SourceSlot = e.Source,
+                        TargetSlot = e.Target,
                         Color = ByteColor.LimeGreen,
                         Style = (connectedCount & 1) == 0
                             ? BiaNodeLinkStyle.None | BiaNodeLinkStyle.Arrow
@@ -284,8 +284,8 @@ namespace Biaui.Controls.Mock.Presentation
                         };
 
                     foreach (var link in Links)
-                        if (link.ItemSlot1.Item == node ||
-                            link.ItemSlot2.Item == node)
+                        if (link.SourceSlot.Item == node ||
+                            link.TargetSlot.Item == node)
                             link.Reset();
                 }
             });
@@ -301,12 +301,12 @@ namespace Biaui.Controls.Mock.Presentation
         {
             foreach (var link in links)
             {
-                if (link.ItemSlot1 == source &&
-                    link.ItemSlot2 == target)
+                if (link.SourceSlot == source &&
+                    link.TargetSlot == target)
                     return link;
 
-                if (link.ItemSlot2 == source &&
-                    link.ItemSlot1 == target)
+                if (link.SourceSlot == source &&
+                    link.TargetSlot == target)
                     return link;
             }
 
@@ -382,8 +382,8 @@ namespace Biaui.Controls.Mock.Presentation
                 links.Add(
                     new NodeLink
                     {
-                        ItemSlot1 = new BiaNodeItemSlotIdPair(nodes[i - 1], NodeSlotId.Make("OutputA")),
-                        ItemSlot2 = new BiaNodeItemSlotIdPair(nodes[i], NodeSlotId.Make("InputA")),
+                        SourceSlot = new BiaNodeItemSlotIdPair(nodes[i - 1], NodeSlotId.Make("OutputA")),
+                        TargetSlot = new BiaNodeItemSlotIdPair(nodes[i], NodeSlotId.Make("InputA")),
 
                         Color = ByteColor.DeepPink,
                         Style = (i & 1) == 0
@@ -639,24 +639,24 @@ namespace Biaui.Controls.Mock.Presentation
     {
         #region ItemSlot1
 
-        private BiaNodeItemSlotIdPair _ItemSlot1;
+        private BiaNodeItemSlotIdPair _sourceSlot;
 
-        public BiaNodeItemSlotIdPair ItemSlot1
+        public BiaNodeItemSlotIdPair SourceSlot
         {
-            get => _ItemSlot1;
-            set => SetProperty(ref _ItemSlot1, value);
+            get => _sourceSlot;
+            set => SetProperty(ref _sourceSlot, value);
         }
 
         #endregion
 
         #region ItemSlot2
 
-        private BiaNodeItemSlotIdPair _ItemSlot2;
+        private BiaNodeItemSlotIdPair _targetSlot;
 
-        public BiaNodeItemSlotIdPair ItemSlot2
+        public BiaNodeItemSlotIdPair TargetSlot
         {
-            get => _ItemSlot2;
-            set => SetProperty(ref _ItemSlot2, value);
+            get => _targetSlot;
+            set => SetProperty(ref _targetSlot, value);
         }
 
         #endregion

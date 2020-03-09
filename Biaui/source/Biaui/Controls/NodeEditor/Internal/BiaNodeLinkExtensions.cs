@@ -14,8 +14,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 internalData = new InternalBiaNodeLinkData
                 {
-                    Slot1 = self.ItemSlot1.FindSlot(),
-                    Slot2 = self.ItemSlot2.FindSlot()
+                    Slot1 = self.SourceSlot.FindSlot(),
+                    Slot2 = self.TargetSlot.FindSlot()
                 };
                 self.InternalData = internalData;
             }

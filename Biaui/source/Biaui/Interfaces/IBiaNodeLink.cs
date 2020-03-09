@@ -9,9 +9,9 @@ namespace Biaui.Interfaces
 {
     public interface IBiaNodeLink : INotifyPropertyChanged
     {
-        BiaNodeItemSlotIdPair ItemSlot1 { get; }
+        BiaNodeItemSlotIdPair SourceSlot { get; }
 
-        BiaNodeItemSlotIdPair ItemSlot2 { get; }
+        BiaNodeItemSlotIdPair TargetSlot { get; }
 
         ByteColor Color { get; }
 
@@ -34,8 +34,8 @@ namespace Biaui.Interfaces
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsHighlight(this IBiaNodeLink self)
         {
-            var item1 = self.ItemSlot1.Item ?? throw new NullReferenceException();
-            var item2 = self.ItemSlot2.Item ?? throw new NullReferenceException();
+            var item1 = self.SourceSlot.Item ?? throw new NullReferenceException();
+            var item2 = self.TargetSlot.Item ?? throw new NullReferenceException();
 
             return item1.IsSelected || item1.IsPreSelected || item1.IsMouseOver ||
                    item2.IsSelected || item2.IsPreSelected || item2.IsMouseOver;
@@ -50,8 +50,8 @@ namespace Biaui.Interfaces
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValueTuple<ImmutableVec2_double, ImmutableVec2_double, ImmutableVec2_double, ImmutableVec2_double> MakeBezierCurve(this IBiaNodeLink self)
         {
-            var item1 = self.ItemSlot1.Item ?? throw new NullReferenceException();
-            var item2 = self.ItemSlot2.Item ?? throw new NullReferenceException();
+            var item1 = self.SourceSlot.Item ?? throw new NullReferenceException();
+            var item2 = self.TargetSlot.Item ?? throw new NullReferenceException();
 
             var pos1 = item1.MakeSlotPosDefault(self.InternalData().Slot1!);
             var pos2 = item2.MakeSlotPosDefault(self.InternalData().Slot2!);
@@ -64,8 +64,8 @@ namespace Biaui.Interfaces
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MakeBezierCurve(this IBiaNodeLink self, Span<ImmutableVec2_float> result)
         {
-            var item1 = self.ItemSlot1.Item ?? throw new NullReferenceException();
-            var item2 = self.ItemSlot2.Item ?? throw new NullReferenceException();
+            var item1 = self.SourceSlot.Item ?? throw new NullReferenceException();
+            var item2 = self.TargetSlot.Item ?? throw new NullReferenceException();
 
             var pos1 = item1.MakeSlotPosDefault(self.InternalData().Slot1!);
             var pos2 = item2.MakeSlotPosDefault(self.InternalData().Slot2!);
