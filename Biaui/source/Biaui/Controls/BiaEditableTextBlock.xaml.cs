@@ -87,7 +87,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaEditableTextBlock) s;
-                        self._Watermark = (string) e.NewValue;
+                        self._Watermark = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion

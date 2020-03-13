@@ -158,7 +158,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._Caption = (string) e.NewValue;
+                        self._Caption = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion
@@ -306,7 +306,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._DisplayFormat = (string) e.NewValue;
+                        self._DisplayFormat = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion
@@ -334,7 +334,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaNumberEditor) s;
-                        self._UnitString = (string) e.NewValue;
+                        self._UnitString = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion

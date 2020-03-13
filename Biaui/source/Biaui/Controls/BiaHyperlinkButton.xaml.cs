@@ -31,7 +31,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaHyperlinkButton) s;
-                        self._content = (string) e.NewValue;
+                        self._content = e.NewValue?.ToString() ?? "";
                         self.UpdateSize();
                     }));
 

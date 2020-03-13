@@ -34,7 +34,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
-                        self._Text = (string) e.NewValue;
+                        self._Text = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion
@@ -63,7 +63,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaTextBox) s;
-                        self._Watermark = (string) e.NewValue;
+                        self._Watermark = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion

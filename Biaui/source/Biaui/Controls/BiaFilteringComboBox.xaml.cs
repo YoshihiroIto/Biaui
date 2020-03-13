@@ -34,7 +34,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaFilteringComboBox) s;
-                        self._filterWords = (string) e.NewValue;
+                        self._filterWords = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion

@@ -68,7 +68,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaHighlightTextBlock) s;
-                        self._Words = (string) e.NewValue;
+                        self._Words = e.NewValue?.ToString() ?? "";
                     }));
 
         #endregion

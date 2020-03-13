@@ -31,7 +31,7 @@ namespace Biaui.Controls
                     (s, e) =>
                     {
                         var self = (BiaTextBlock) s;
-                        self._Text = (string) e.NewValue;
+                        self._Text = e.NewValue?.ToString() ?? "";
                         self.UpdateSize();
                     }));
 
