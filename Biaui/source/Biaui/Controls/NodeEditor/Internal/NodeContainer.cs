@@ -390,8 +390,12 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal void RefreshMouseState()
         {
-            foreach (var child in Children)
+            using var children = Children.ToTempBuffer();
+
+            for (var i = 0; i != children.Length; ++i)
             {
+                var child = children[i];
+                
                 if (child.IsActive == false)
                     continue;
 
