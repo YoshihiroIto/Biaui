@@ -716,6 +716,9 @@ namespace Biaui.Controls.NodeEditor
 
             foreach (var node in targetNodes)
             {
+                if (node.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
+                    continue;
+                
                 minX = (minX, node.Pos.X).Min();
                 maxX = (maxX, node.Pos.X + node.Size.Width).Max();
                 minY = (minY, node.Pos.Y).Min();
