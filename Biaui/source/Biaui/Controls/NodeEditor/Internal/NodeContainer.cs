@@ -595,7 +595,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             {
                 Span<int> buffer = stackalloc int[16];
 
-                var enabledSlotIds = new TempBuffer<int>(buffer);
+                using var enabledSlotIds = new TempBuffer<int>(buffer);
 
                 try
                 {
