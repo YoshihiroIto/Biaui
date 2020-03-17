@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor;
@@ -7,9 +6,9 @@ using Biaui.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
 using Jewelry.Collections;
+using Jewelry.Memory;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
-
 using BezierSegment = SharpDX.Direct2D1.BezierSegment;
 using Brush = SharpDX.Direct2D1.Brush;
 using SolidColorBrush = SharpDX.Direct2D1.SolidColorBrush;
@@ -21,8 +20,8 @@ namespace Biaui.Extension
     {
         private readonly BiaNodeEditor _parent;
 
-        private const float BaseLineWidth = 1.0f;
-        private const float ArrowSize = 40.0f;
+        private const float BaseLineWidth = 1.5f;
+        private const float ArrowSize = 30.0f;
 
         public D2dBackgroundPanel(BiaNodeEditor parent)
         {
@@ -49,9 +48,6 @@ namespace Biaui.Extension
             DrawCurves(target, isDrawArrow, lineWidth);
         }
 
-        private readonly Dictionary<long, (ByteColor color, bool isHighlight, PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>
-            _sinks = new Dictionary<long, (ByteColor color, bool isHighlight, PathGeometry curveGeom, GeometrySink curveSink, PathGeometry? arrowGeom, GeometrySink? arrowSink)>();
-
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
             if (_parent.LinksSource == null)
@@ -66,10 +62,17 @@ namespace Biaui.Extension
                 (float) viewport.Height + inflate * 2.0f
             );
 
-            Span<ImmutableVec2_float> bezier = stackalloc ImmutableVec2_float[4];
-
             var hasHighlightCurves = false;
-            
+
+            var borderColor = ByteColor.Black;
+            var borderKey = HashCodeMaker.To32(borderColor.HashCode);
+            if (ResourceCache.TryGetValue(borderKey, out var borderBrushObj) == false)
+                borderBrushObj = ResourceCache.Add(borderKey, t => ColorToBrushConv(t, borderColor));
+            var borderBrush = borderBrushObj as Brush;
+
+            Span<ImmutableVec2_float> bezier = stackalloc ImmutableVec2_float[4];
+            using var curves = new TempBuffer<(PathGeometry Geom, GeometrySink Sink, IBiaNodeLink Link)>(256);
+
             foreach (IBiaNodeLink? link in _parent.LinksSource)
             {
                 if (link == null)
@@ -85,11 +88,11 @@ namespace Biaui.Extension
 
                 if (isHighlight)
                     hasHighlightCurves = true;
-                
+
                 // ハイライトがあれば、非ハイライトを表示しない
                 if (hasHighlightCurves && isHighlight == false)
                     continue;
-                
+
                 link.MakeBezierCurve(bezier);
                 var keyBezier = MakeHashCode(bezier);
                 if (_boundingBoxCache.TryGetValue(keyBezier, out var bb) == false)
@@ -97,75 +100,46 @@ namespace Biaui.Extension
                     bb = BiaNodeEditorHelper.MakeBoundingBox(bezier);
                     _boundingBoxCache.Add(keyBezier, bb);
                 }
+
                 if (bb.IntersectsWith(lineCullingRect) == false)
                     continue;
 
-                GeometrySink curveSink;
-                GeometrySink? arrowSink;
+                var curveGeom = new PathGeometry(target.Factory);
+                var curveSink = curveGeom.Open();
+                curveSink.SetFillMode(FillMode.Winding);
+
+                curveSink.BeginFigure(Unsafe.As<ImmutableVec2_float, RawVector2>(ref bezier[0]), FigureBegin.Hollow);
+                curveSink.AddBezier(Unsafe.As<ImmutableVec2_float, BezierSegment>(ref bezier[1]));
+                curveSink.EndFigure(FigureEnd.Open);
+
+                if (isDrawArrow)
+                    DrawArrow(curveSink, bezier);
+
+                curveSink.Close();
+
+                // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+                curves.Add((curveGeom, curveSink, link));
+            }
+
+            foreach (var (geom, sink, link) in curves.Buffer)
+            {
+                var isHighlight = link.IsHighlight();
+
+                if (hasHighlightCurves == false || isHighlight)
                 {
                     var key = HashCodeMaker.Make(link.Color, isHighlight);
+                    var resKey = HashCodeMaker.To32(key);
+                    if (ResourceCache.TryGetValue(resKey, out var brush) == false)
+                        brush = ResourceCache.Add(resKey, t => ColorToBrushConv(t, link.Color));
 
-                    if (_sinks.TryGetValue(key, out var p))
-                    {
-                        curveSink = p.curveSink;
-                        arrowSink = p.arrowSink;
-                    }
-                    else
-                    {
-                        var curveGeom = new PathGeometry(target.Factory);
-                        curveSink = curveGeom.Open();
-                        curveSink.SetFillMode(FillMode.Winding);
-
-                        var arrowGeom = isDrawArrow ? new PathGeometry(target.Factory) : null;
-                        arrowSink = arrowGeom?.Open();
-                        arrowSink?.SetFillMode(FillMode.Winding);
-
-                        _sinks[key] = (link.Color, isHighlight, curveGeom, curveSink, arrowGeom, arrowSink);
-                    }
+                    target.DrawGeometry(geom, borderBrush, lineWidth * 2f);
+                    target.DrawGeometry(geom, brush as Brush, lineWidth);
+                    target.FillGeometry(geom, brush as Brush);
                 }
 
-                // 接続線
-                {
-                    curveSink.BeginFigure(Unsafe.As<ImmutableVec2_float, RawVector2>(ref bezier[0]), FigureBegin.Hollow);
-                    curveSink.AddBezier(Unsafe.As<ImmutableVec2_float, BezierSegment>(ref bezier[1]));
-                    curveSink.EndFigure(FigureEnd.Open);
-                }
-
-                // 矢印
-                if (arrowSink != null)
-                    DrawArrow(arrowSink, bezier);
+                sink.Dispose();
+                geom.Dispose();
             }
-
-            foreach (var sink in _sinks)
-            {
-                // ハイライトがあれば、非ハイライトを表示しない
-                if (hasHighlightCurves && sink.Value.isHighlight == false)
-                    continue;
-                
-                // ブラシ取得
-                var resKey = HashCodeMaker.To32(sink.Key);
-                if (ResourceCache.TryGetValue(resKey, out var brush) == false)
-                    brush = ResourceCache.Add(resKey, t => ColorToBrushConv(t, sink.Value.color));
-
-                // 接続線カーブ
-                {
-                    sink.Value.curveSink.Close();
-                    target.DrawGeometry(sink.Value.curveGeom, brush as Brush, sink.Value.isHighlight ? lineWidth * 2.0f : lineWidth);
-                    sink.Value.curveSink.Dispose();
-                    sink.Value.curveGeom.Dispose();
-                }
-
-                // 矢印
-                if (sink.Value.arrowSink != null)
-                {
-                    sink.Value.arrowSink.Close();
-                    target.FillGeometry(sink.Value.arrowGeom, brush as Brush);
-                    sink.Value.arrowSink.Dispose();
-                    sink.Value.arrowGeom?.Dispose();
-                }
-            }
-
-            _sinks.Clear();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
