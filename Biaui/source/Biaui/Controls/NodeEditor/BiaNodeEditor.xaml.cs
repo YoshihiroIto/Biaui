@@ -456,6 +456,35 @@ namespace Biaui.Controls.NodeEditor
 
         #endregion
 
+        #region IsVisibleScaleSlider
+        
+        public bool IsVisibleScaleSlider
+        {
+            get => _IsVisibleScaleSlider;
+            set
+            {
+                if (value != _IsVisibleScaleSlider)
+                    SetValue(IsVisibleScaleSliderProperty, value);
+            }
+        }
+        
+        private bool _IsVisibleScaleSlider = true;
+        
+        public static readonly DependencyProperty IsVisibleScaleSliderProperty =
+            DependencyProperty.Register(
+                nameof(IsVisibleScaleSlider),
+                typeof(bool),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.BoolTrue,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._IsVisibleScaleSlider = (bool)e.NewValue;
+                    }));
+        
+        #endregion
+
         public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
 
         public TranslateTransform TranslateTransform { get; } = new TranslateTransform();
@@ -627,6 +656,16 @@ namespace Biaui.Controls.NodeEditor
                     Path = new PropertyPath(nameof(ScalerMinimum)),
                     Mode = BindingMode.OneWay,
                     Source = this
+                }
+            );
+            
+            BindingOperations.SetBinding(scaleSlider, VisibilityProperty,
+                new Binding
+                {
+                    Path = new PropertyPath(nameof(IsVisibleScaleSlider)),
+                    Mode = BindingMode.OneWay,
+                    Source = this,
+                    Converter = new BooleanToVisibilityConverter()
                 }
             );
 
