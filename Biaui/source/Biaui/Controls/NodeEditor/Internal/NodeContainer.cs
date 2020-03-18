@@ -74,7 +74,11 @@ namespace Biaui.Controls.NodeEditor.Internal
             _mouseOperator = mouseOperator;
 
             _parent.SizeChanged += (_, __) => UpdateChildrenBag();
-            _parent.NodesSourceChanging += (_, __) => Clear();
+            _parent.NodesSourceChanging += (_, __) =>
+            {
+                Clear();
+                _parent.FitAllNodes();
+            };
             _parent.ScaleTransform.Changed += (_, __) => UpdateChildrenBag();
             _parent.TranslateTransform.Changed += (_, __) => UpdateChildrenBag();
 
