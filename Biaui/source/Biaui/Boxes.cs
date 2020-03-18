@@ -80,6 +80,8 @@ namespace Biaui
         public static readonly object Thickness0 = new Thickness(0);
         public static readonly object Thickness1 = new Thickness(1);
         public static readonly object Thickness2 = new Thickness(2);
+        public static readonly object Thickness3 = new Thickness(3);
+        public static readonly object Thickness4 = new Thickness(4);
         public static readonly object Thickness8 = new Thickness(8);
         public static readonly object Thickness10 = new Thickness(10);
         public static readonly object Thickness12 = new Thickness(12);
