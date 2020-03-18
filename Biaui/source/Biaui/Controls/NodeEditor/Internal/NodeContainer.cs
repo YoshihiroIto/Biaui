@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -399,7 +400,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             for (var i = 0; i != children.Length; ++i)
             {
                 var child = children[i];
-                
+
                 if (child.IsActive == false)
                     continue;
 
@@ -426,7 +427,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 var isNoViewportCulling = nodeItem.Flags.HasFlag(BiaNodePaneFlags.NoViewportCulling);
                 var itemRect = default(ImmutableRect_double);
-                
+
                 if (isNoViewportCulling == false)
                 {
                     if (nodeItem.Size == default)
@@ -844,27 +845,61 @@ namespace Biaui.Controls.NodeEditor.Internal
             e.Handled = true;
         }
 
-        private static void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
+        private void NodePanel_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            var panel = (BiaNodePanel) sender;
-
-            if (panel.IsActive == false)
+            var nodePanel = (BiaNodePanel) sender;
+            if (nodePanel.IsActive == false)
                 return;
 
-            var nodeItem = (IBiaNodeItem) panel.DataContext;
+            var nodeItem = (IBiaNodeItem) nodePanel.DataContext;
+
+            var parentMousePos = e.GetPosition(_parent);
+            var nodePanelMouesPos = e.GetPosition(nodePanel);
+
+            // マウスが親コントロールの外を指していたらマウスオーバー状態ではない
+            if (parentMousePos.X <= 0d || parentMousePos.X >= _parent.ActualWidth ||
+                parentMousePos.Y <= 0d || parentMousePos.Y >= _parent.ActualHeight)
+            {
+                Leave();
+                return;
+            }
 
             // 親コントロールがマウスキャプチャーしてもここに飛んでくる
             // IsMouseOverを作りたいので、マウス位置とノードコントロールの位置・サイズを見てマウスオーバー状態を作る
-            var mouesPos = e.GetPosition(panel);
-            if (mouesPos.X >= 0 && mouesPos.X < nodeItem.Size.Width &&
-                mouesPos.Y >= 0 && mouesPos.Y < nodeItem.Size.Height)
-                return;
+            if (nodePanelMouesPos.X >= 0 && nodePanelMouesPos.X < nodeItem.Size.Width &&
+                nodePanelMouesPos.Y >= 0 && nodePanelMouesPos.Y < nodeItem.Size.Height)
+            {
+                // マウス直下のコントロールがノードパネル出なければマウスオーバーでない
+                // →マウス直下のコントロールの親にBiaNodeEditorが見つからなければマウスオーバーではない
+                var window = this.GetParent<Window>();
+                if (window != null)
+                {
+                    var windowMousePos = e.GetPosition(window);
+                    var hit = VisualTreeHelper.HitTest(window, windowMousePos);
 
-            nodeItem.IsMouseOver = false;
+                    var hitControl = hit.VisualHit;
+                    if (hitControl != null)
+                    {
+                        if (hitControl.GetParent<BiaNodeEditor>() == null)
+                        {
+                            Leave();
+                            return;
+                        }
+                    }
+                }
+                else
+                    return;
+            }
 
-            panel.InvalidateSlots();
+            Leave();
 
-            e.Handled = true;
+            //////////////////////////////////////////////////////////////////////////////////
+            void Leave()
+            {
+                nodeItem.IsMouseOver = false;
+                nodePanel.InvalidateSlots();
+                e.Handled = true;
+            }
         }
 
         private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
