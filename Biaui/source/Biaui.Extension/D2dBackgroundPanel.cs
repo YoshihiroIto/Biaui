@@ -21,7 +21,7 @@ namespace Biaui.Extension
         private readonly BiaNodeEditor _parent;
 
         private const float BaseLineWidth = 1.5f;
-        private const float ArrowSize = 30.0f;
+        private const float BaseArrowSize = 8.0f;
 
         public D2dBackgroundPanel(BiaNodeEditor parent)
         {
@@ -42,18 +42,19 @@ namespace Biaui.Extension
             var ty = (float) _parent.TranslateTransform.Y;
             target.Transform = new RawMatrix3x2(s, 0, 0, s, tx, ty);
 
-            var isDrawArrow = _parent.Scale > 0.125;
             var lineWidth = BaseLineWidth / s;
 
-            DrawCurves(target, isDrawArrow, lineWidth);
+            DrawCurves(target, lineWidth);
         }
 
-        private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
+        private void DrawCurves(DeviceContext target, float lineWidth)
         {
             if (_parent.LinksSource == null)
                 return;
 
-            var inflate = ArrowSize * (float) _parent.ScaleTransform.ScaleX;
+            var arrowSize = BaseArrowSize / (float) _parent.ScaleTransform.ScaleX;
+
+            var inflate = arrowSize;
             var viewport = _parent.TransformRect(ActualWidth, ActualHeight);
             var lineCullingRect = new ImmutableRect_float(
                 (float) viewport.X - inflate,
@@ -64,10 +65,9 @@ namespace Biaui.Extension
 
             var hasHighlightCurves = false;
 
-            var borderColor = ByteColor.Black;
-            var borderKey = HashCodeMaker.To32(borderColor.HashCode);
+            var borderKey = HashCodeMaker.To32(ByteColor.Black.HashCode);
             if (ResourceCache.TryGetValue(borderKey, out var borderBrushObj) == false)
-                borderBrushObj = ResourceCache.Add(borderKey, t => ColorToBrushConv(t, borderColor));
+                borderBrushObj = ResourceCache.Add(borderKey, t => ColorToBrushConv(t, ByteColor.Black));
             var borderBrush = borderBrushObj as Brush;
 
             Span<ImmutableVec2_float> bezier = stackalloc ImmutableVec2_float[4];
@@ -112,8 +112,7 @@ namespace Biaui.Extension
                 curveSink.AddBezier(Unsafe.As<ImmutableVec2_float, BezierSegment>(ref bezier[1]));
                 curveSink.EndFigure(FigureEnd.Open);
 
-                if (isDrawArrow)
-                    DrawArrow(curveSink, bezier);
+                DrawArrow(curveSink, bezier, arrowSize);
 
                 curveSink.Close();
 
@@ -164,7 +163,8 @@ namespace Biaui.Extension
 
         private static void DrawArrow(
             GeometrySink sink,
-            ReadOnlySpan<ImmutableVec2_float> bezier)
+            ReadOnlySpan<ImmutableVec2_float> bezier,
+            float arrowSize)
         {
             var b1X = BiaNodeEditorHelper.Bezier(bezier[0].X, bezier[1].X, bezier[2].X, bezier[3].X, 0.5001f);
             var b1Y = BiaNodeEditorHelper.Bezier(bezier[0].Y, bezier[1].Y, bezier[2].Y, bezier[3].Y, 0.5001f);
@@ -176,8 +176,8 @@ namespace Biaui.Extension
             var r = MathF.Atan2(sy, sx) + MathF.PI * 0.5f;
             var m = (MathF.Sin(r), MathF.Cos(r));
 
-            var l1 = new ImmutableVec2_float(ArrowSize / 1.732f, ArrowSize / 1.732f * 2.0f);
-            var l2 = new ImmutableVec2_float(-ArrowSize / 1.732f, ArrowSize / 1.732f * 2.0f);
+            var l1 = new ImmutableVec2_float(arrowSize / 1.732f, arrowSize / 1.732f * 2.0f);
+            var l2 = new ImmutableVec2_float(-arrowSize / 1.732f, arrowSize / 1.732f * 2.0f);
 
             var t1X = (bezier[0].X + bezier[3].X) * 0.5f;
             var t1Y = (bezier[0].Y + bezier[3].Y) * 0.5f;
