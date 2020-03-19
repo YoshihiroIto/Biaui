@@ -37,17 +37,17 @@ namespace Biaui.Extension
             if (_parent.LinksSource == null)
                 return;
 
-            var s = (float) _parent.Scale;
+            var scale = (float) _parent.Scale;
             var tx = (float) _parent.TranslateTransform.X;
             var ty = (float) _parent.TranslateTransform.Y;
-            target.Transform = new RawMatrix3x2(s, 0, 0, s, tx, ty);
+            target.Transform = new RawMatrix3x2(scale, 0f, 0f, scale, tx, ty);
 
-            var lineWidth = BaseLineWidth / s;
-
-            DrawCurves(target, lineWidth);
+            var isDrawArrow = scale > 0.085f; 
+            var lineWidth = BaseLineWidth / scale;
+            DrawCurves(target, isDrawArrow, lineWidth);
         }
 
-        private void DrawCurves(DeviceContext target, float lineWidth)
+        private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
             if (_parent.LinksSource == null)
                 return;
@@ -59,8 +59,8 @@ namespace Biaui.Extension
             var lineCullingRect = new ImmutableRect_float(
                 (float) viewport.X - inflate,
                 (float) viewport.Y - inflate,
-                (float) viewport.Width + inflate * 2.0f,
-                (float) viewport.Height + inflate * 2.0f
+                (float) viewport.Width + inflate * 2f,
+                (float) viewport.Height + inflate * 2f
             );
 
             var hasHighlightCurves = false;
@@ -112,7 +112,8 @@ namespace Biaui.Extension
                 curveSink.AddBezier(Unsafe.As<ImmutableVec2_float, BezierSegment>(ref bezier[1]));
                 curveSink.EndFigure(FigureEnd.Open);
 
-                DrawArrow(curveSink, bezier, arrowSize);
+                if (isDrawArrow)
+                    DrawArrow(curveSink, bezier, arrowSize);
 
                 curveSink.Close();
 
