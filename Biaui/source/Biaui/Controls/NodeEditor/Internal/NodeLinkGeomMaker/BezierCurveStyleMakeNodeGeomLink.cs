@@ -43,8 +43,10 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
                 var item2 = link.TargetSlot.Item ?? throw new NullReferenceException();
                 var pos1 = item1.MakeSlotPosDefault(link.InternalData().Slot1!);
                 var pos2 = item2.MakeSlotPosDefault(link.InternalData().Slot2!);
-                var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1!.Dir);
-                var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2!.Dir);
+
+                var handleLength = pos1.Distance(pos2) * 0.5d;
+                var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, link.InternalData().Slot1!.Dir, handleLength);
+                var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, link.InternalData().Slot2!.Dir, handleLength);
 
                 // ReSharper disable AccessToModifiedClosure
                 var bb = _boundingBoxCache.GetOrAdd(

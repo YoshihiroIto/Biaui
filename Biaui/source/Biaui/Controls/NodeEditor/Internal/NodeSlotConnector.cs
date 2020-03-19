@@ -80,18 +80,23 @@ namespace Biaui.Controls.NodeEditor.Internal
             var srcPos = _parent.SourceNodeSlotConnecting.MakeSlotPos();
 
             BezierPoints[0] = srcPos;
-            BezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _parent.SourceNodeSlotConnecting.Slot.Dir);
 
             if (_parent.TargetNodeSlotConnecting.IsNull)
             {
+                var handleLength = srcPos.Distance(_mousePos) * 0.5d;
+                
+                BezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _parent.SourceNodeSlotConnecting.Slot.Dir, handleLength);
                 BezierPoints[2] = _mousePos;
                 BezierPoints[3] = _mousePos;
             }
             else
             {
                 var targetSlotPos = _parent.TargetNodeSlotConnecting.MakeSlotPos();
+                
+                var handleLength = srcPos.Distance(targetSlotPos) * 0.5d;
 
-                BezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetSlotPos, _parent.TargetNodeSlotConnecting.Slot.Dir);
+                BezierPoints[1] = BiaNodeEditorHelper.MakeBezierControlPoint(srcPos, _parent.SourceNodeSlotConnecting.Slot.Dir, handleLength);
+                BezierPoints[2] = BiaNodeEditorHelper.MakeBezierControlPoint(targetSlotPos, _parent.TargetNodeSlotConnecting.Slot.Dir, handleLength);
                 BezierPoints[3] = targetSlotPos;
             }
         }

@@ -22,21 +22,21 @@ foreach (var typeName in new[]{"float", "double"})
 
         private const <#= typeName #> ControlPointLength_<#= typeName #> = 200<#= suffix #>;
 
-        internal static ImmutableVec2_<#= typeName #> MakeBezierControlPoint(in ImmutableVec2_<#= typeName #> src, BiaNodeSlotDir dir)
+        internal static ImmutableVec2_<#= typeName #> MakeBezierControlPoint(in ImmutableVec2_<#= typeName #> src, BiaNodeSlotDir dir, <#= typeName #> handleLength)
         {
             switch (dir)
             {
                 case BiaNodeSlotDir.Left:
-                    return new ImmutableVec2_<#= typeName #>(src.X - ControlPointLength_<#= typeName #>, src.Y);
+                    return new ImmutableVec2_<#= typeName #>(src.X - handleLength, src.Y);
 
                 case BiaNodeSlotDir.Top:
-                    return new ImmutableVec2_<#= typeName #>(src.X, src.Y - ControlPointLength_<#= typeName #>);
+                    return new ImmutableVec2_<#= typeName #>(src.X, src.Y - handleLength);
 
                 case BiaNodeSlotDir.Right:
-                    return new ImmutableVec2_<#= typeName #>(src.X + ControlPointLength_<#= typeName #>, src.Y);
+                    return new ImmutableVec2_<#= typeName #>(src.X + handleLength, src.Y);
 
                 case BiaNodeSlotDir.Bottom:
-                    return new ImmutableVec2_<#= typeName #>(src.X, src.Y + ControlPointLength_<#= typeName #>);
+                    return new ImmutableVec2_<#= typeName #>(src.X, src.Y + handleLength);
 
                 default:
                     throw new ArgumentOutOfRangeException();

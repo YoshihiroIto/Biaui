@@ -13,21 +13,21 @@ namespace Biaui.Internals
 
         private const float ControlPointLength_float = 200f;
 
-        internal static ImmutableVec2_float MakeBezierControlPoint(in ImmutableVec2_float src, BiaNodeSlotDir dir)
+        internal static ImmutableVec2_float MakeBezierControlPoint(in ImmutableVec2_float src, BiaNodeSlotDir dir, float handleLength)
         {
             switch (dir)
             {
                 case BiaNodeSlotDir.Left:
-                    return new ImmutableVec2_float(src.X - ControlPointLength_float, src.Y);
+                    return new ImmutableVec2_float(src.X - handleLength, src.Y);
 
                 case BiaNodeSlotDir.Top:
-                    return new ImmutableVec2_float(src.X, src.Y - ControlPointLength_float);
+                    return new ImmutableVec2_float(src.X, src.Y - handleLength);
 
                 case BiaNodeSlotDir.Right:
-                    return new ImmutableVec2_float(src.X + ControlPointLength_float, src.Y);
+                    return new ImmutableVec2_float(src.X + handleLength, src.Y);
 
                 case BiaNodeSlotDir.Bottom:
-                    return new ImmutableVec2_float(src.X, src.Y + ControlPointLength_float);
+                    return new ImmutableVec2_float(src.X, src.Y + handleLength);
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -213,21 +213,21 @@ namespace Biaui.Internals
 
         private const double ControlPointLength_double = 200d;
 
-        internal static ImmutableVec2_double MakeBezierControlPoint(in ImmutableVec2_double src, BiaNodeSlotDir dir)
+        internal static ImmutableVec2_double MakeBezierControlPoint(in ImmutableVec2_double src, BiaNodeSlotDir dir, double handleLength)
         {
             switch (dir)
             {
                 case BiaNodeSlotDir.Left:
-                    return new ImmutableVec2_double(src.X - ControlPointLength_double, src.Y);
+                    return new ImmutableVec2_double(src.X - handleLength, src.Y);
 
                 case BiaNodeSlotDir.Top:
-                    return new ImmutableVec2_double(src.X, src.Y - ControlPointLength_double);
+                    return new ImmutableVec2_double(src.X, src.Y - handleLength);
 
                 case BiaNodeSlotDir.Right:
-                    return new ImmutableVec2_double(src.X + ControlPointLength_double, src.Y);
+                    return new ImmutableVec2_double(src.X + handleLength, src.Y);
 
                 case BiaNodeSlotDir.Bottom:
-                    return new ImmutableVec2_double(src.X, src.Y + ControlPointLength_double);
+                    return new ImmutableVec2_double(src.X, src.Y + handleLength);
 
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -48,20 +48,6 @@ namespace Biaui.Interfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValueTuple<ImmutableVec2_double, ImmutableVec2_double, ImmutableVec2_double, ImmutableVec2_double> MakeBezierCurve(this IBiaNodeLink self)
-        {
-            var item1 = self.SourceSlot.Item ?? throw new NullReferenceException();
-            var item2 = self.TargetSlot.Item ?? throw new NullReferenceException();
-
-            var pos1 = item1.MakeSlotPosDefault(self.InternalData().Slot1!);
-            var pos2 = item2.MakeSlotPosDefault(self.InternalData().Slot2!);
-            var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, self.InternalData().Slot1!.Dir);
-            var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, self.InternalData().Slot2!.Dir);
-
-            return (pos1, pos1C, pos2C, pos2);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void MakeBezierCurve(this IBiaNodeLink self, Span<ImmutableVec2_float> result)
         {
             var item1 = self.SourceSlot.Item ?? throw new NullReferenceException();
@@ -69,8 +55,11 @@ namespace Biaui.Interfaces
 
             var pos1 = item1.MakeSlotPosDefault(self.InternalData().Slot1!);
             var pos2 = item2.MakeSlotPosDefault(self.InternalData().Slot2!);
-            var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, self.InternalData().Slot1!.Dir);
-            var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, self.InternalData().Slot2!.Dir);
+
+            var handleLength = pos1.Distance(pos2) * 0.5d;
+            
+            var pos1C = BiaNodeEditorHelper.MakeBezierControlPoint(pos1, self.InternalData().Slot1!.Dir, handleLength);
+            var pos2C = BiaNodeEditorHelper.MakeBezierControlPoint(pos2, self.InternalData().Slot2!.Dir, handleLength);
 
             result[0] = new ImmutableVec2_float((float)pos1.X,  (float)pos1.Y);
             result[1] = new ImmutableVec2_float((float)pos1C.X, (float)pos1C.Y);

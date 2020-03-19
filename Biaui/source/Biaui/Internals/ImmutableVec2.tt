@@ -73,6 +73,21 @@ foreach (var typeName in new[]{"float", "double"})
             => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public <#= typeName #> Distance(in ImmutableVec2_<#= typeName #> other)
+        {
+            return <#= mathClass #>.Sqrt(DistanceSq(other));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public <#= typeName #> DistanceSq(in ImmutableVec2_<#= typeName #> other)
+        {
+            var dx = X - other.X;
+            var dy = Y - other.Y;
+
+            return dx * dx + dy * dy;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_<#= typeName #> SetSize(in ImmutableVec2_<#= typeName #> v, <#= typeName #> size)
         {
             var n = v.LengthSq;

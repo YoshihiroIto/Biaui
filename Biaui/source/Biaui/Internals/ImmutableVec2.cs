@@ -64,6 +64,21 @@ namespace Biaui.Internals
             => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float Distance(in ImmutableVec2_float other)
+        {
+            return MathF.Sqrt(DistanceSq(other));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float DistanceSq(in ImmutableVec2_float other)
+        {
+            var dx = X - other.X;
+            var dy = Y - other.Y;
+
+            return dx * dx + dy * dy;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_float SetSize(in ImmutableVec2_float v, float size)
         {
             var n = v.LengthSq;
@@ -152,6 +167,21 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
             => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double Distance(in ImmutableVec2_double other)
+        {
+            return Math.Sqrt(DistanceSq(other));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double DistanceSq(in ImmutableVec2_double other)
+        {
+            var dx = X - other.X;
+            var dy = Y - other.Y;
+
+            return dx * dx + dy * dy;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ImmutableVec2_double SetSize(in ImmutableVec2_double v, double size)
