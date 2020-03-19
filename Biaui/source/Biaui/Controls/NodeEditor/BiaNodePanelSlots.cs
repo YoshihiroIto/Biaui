@@ -48,9 +48,9 @@ namespace Biaui.Controls.NodeEditor
             var canConnectLink = _parent.CanConnectLink;
             var isMouseOverNode = nodeItem.IsMouseOver && canConnectLink;
 
-            var baseRadius = Biaui.Internals.Constants.SlotMarkRadius;
-            var baseRadiusSq = Biaui.Internals.Constants.SlotMarkRadiusSq;
-            var baseHighlightRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight;
+            var baseRadius = Biaui.Internals.Constants.SlotMarkRadius(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
+            var baseRadiusSq = Biaui.Internals.Constants.SlotMarkRadiusSq(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
+            var baseHighlightRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
 
             Pen pen;
 

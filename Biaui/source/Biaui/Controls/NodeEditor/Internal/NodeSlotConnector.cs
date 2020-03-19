@@ -32,6 +32,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
         private readonly PropertyChangeNotifier _sourceNotifier;
+
         private readonly PropertyChangeNotifier _targetNotifier;
         // ReSharper restore PrivateFieldCanBeConvertedToLocalVariable
 
@@ -66,7 +67,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             var p = _parent.TransformPos(e.MousePos.X, e.MousePos.Y);
             _mousePos = Unsafe.As<Point, ImmutableVec2_double>(ref p);
 
-            UpdateLinkTarget(_mousePos, (IEnumerable<IBiaNodeItem>?)_parent.NodesSource);
+            UpdateLinkTarget(_mousePos, (IEnumerable<IBiaNodeItem>?) _parent.NodesSource);
 
             Invalidate();
         }
@@ -103,40 +104,69 @@ namespace Biaui.Controls.NodeEditor.Internal
             if (double.IsNaN(_mousePos.X))
                 return;
 
-            var radius = Biaui.Internals.Constants.SlotMarkRadius_Highlight2 * scale;
+            var invScale = 1d / Scale.ScaleX;
 
             // 接続線
-            dc.DrawBezier(BezierPoints, Caches.GetCapPen(ByteColor.Black, 5));
-            dc.DrawBezier(BezierPoints, Caches.GetCapPen(ByteColor.WhiteSmoke, 3));
-
-            var slotPen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(2));
+            dc.DrawBezier(BezierPoints, Caches.GetCapPen(ByteColor.Black, 5d * invScale));
+            dc.DrawBezier(BezierPoints, Caches.GetCapPen(ByteColor.WhiteSmoke, 3d * invScale));
 
             // 接続元ポートの丸
-            var srcRect = new ImmutableRect_double(
-                BezierPoints[0].X - radius, BezierPoints[0].Y - radius, radius * 2, radius * 2);
-
-            if (rect.IntersectsWith(srcRect))
             {
-                dc.DrawCircle(
-                    Caches.GetSolidColorBrush(_parent.SourceNodeSlotConnecting.Slot.Color),
-                    slotPen,
-                    Unsafe.As<ImmutableVec2_double, Point>(ref BezierPoints[0]),
-                    Biaui.Internals.Constants.SlotMarkRadius_Highlight2);
+                var isSourceDesktopSpace = _parent.SourceNodeSlotConnecting.Item.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace);
+                var sourceRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight2(isSourceDesktopSpace) * scale;
+
+                if (isSourceDesktopSpace)
+                    sourceRadius *= invScale;
+
+                var srcRect = new ImmutableRect_double(
+                    BezierPoints[0].X - sourceRadius, BezierPoints[0].Y - sourceRadius,
+                    sourceRadius * 2d, sourceRadius * 2d);
+
+                if (rect.IntersectsWith(srcRect))
+                {
+                    var drawRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight2(isSourceDesktopSpace);
+                    
+                    if (isSourceDesktopSpace)
+                         drawRadius *= invScale;
+
+                    var penWidth = isSourceDesktopSpace ? 2d * invScale : 2d;
+                    var slotPen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(penWidth));
+                    
+                    dc.DrawCircle(
+                        Caches.GetSolidColorBrush(_parent.SourceNodeSlotConnecting.Slot.Color),
+                        slotPen,
+                        Unsafe.As<ImmutableVec2_double, Point>(ref BezierPoints[0]),
+                        drawRadius);
+                }
             }
 
             // 接続先ポートの丸
             if (_parent.TargetNodeSlotConnecting.IsNotNull)
             {
+                var isTargetDesktopSpace = _parent.TargetNodeSlotConnecting.Item.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace);
+                var targetRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight2(isTargetDesktopSpace) * scale;
+
+                if (isTargetDesktopSpace)
+                    targetRadius *= invScale;
+
                 var targetRect = new ImmutableRect_double(
-                    BezierPoints[3].X - radius, BezierPoints[3].Y - radius, radius * 2, radius * 2);
+                    BezierPoints[3].X - targetRadius, BezierPoints[3].Y - targetRadius,
+                    targetRadius * 2d, targetRadius * 2d);
 
                 if (rect.IntersectsWith(targetRect))
                 {
+                    var drawRadius = Biaui.Internals.Constants.SlotMarkRadius_Highlight2(isTargetDesktopSpace);
+                    if (isTargetDesktopSpace)
+                         drawRadius *= invScale;
+                    
+                    var penWidth = isTargetDesktopSpace ? 2d * invScale : 2d;
+                    var slotPen = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(penWidth));
+                    
                     dc.DrawCircle(
                         Caches.GetSolidColorBrush(_parent.TargetNodeSlotConnecting.Slot.Color),
                         slotPen,
                         Unsafe.As<ImmutableVec2_double, Point>(ref BezierPoints[3]),
-                        Biaui.Internals.Constants.SlotMarkRadius_Highlight2);
+                        drawRadius);
                 }
             }
         }
@@ -152,11 +182,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             foreach (var nodeItem in nodeItems)
             {
-                var slotRadius = Biaui.Internals.Constants.SlotMarkRadius;
+                var slotRadius = Biaui.Internals.Constants.SlotMarkRadius(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
 
                 if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
                     slotRadius *= invScale;
-                
+
                 var nodePos = nodeItem.Pos;
                 if (mousePos.X < nodePos.X - slotRadius) continue;
                 if (mousePos.Y < nodePos.Y - slotRadius) continue;
@@ -249,7 +279,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             if (_parent.IsNodeSlotDragging == false)
                 return;
-            
+
             var rounder = new LayoutRounder(this);
 
             var scale = _parent.Scale.ScaleX;

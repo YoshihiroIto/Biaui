@@ -49,7 +49,7 @@ namespace Biaui.Internals
 
         internal static double MakeSlotMarkRadius(this FrameworkElement self, IBiaNodeItem nodeItem)
         {
-            var slotMarkRadius = Constants.SlotMarkRadius;
+            var slotMarkRadius = Constants.SlotMarkRadius(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
 
             if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
             {
@@ -62,7 +62,7 @@ namespace Biaui.Internals
 
         internal static double MakeSlotMarkRadiusSq(this FrameworkElement self, IBiaNodeItem nodeItem)
         {
-            var slotMarkRadiusSq = Constants.SlotMarkRadiusSq;
+            var slotMarkRadiusSq = Constants.SlotMarkRadiusSq(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
 
             if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
             {

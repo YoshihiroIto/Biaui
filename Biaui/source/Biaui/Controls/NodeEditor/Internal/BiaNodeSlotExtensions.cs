@@ -16,7 +16,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 if (slot.TargetSlotHitChecker(slotPos.ToPoint(), mousePos.ToPoint()) == false)
                     return false;
 
-            var slotMarkRadiusSq = Biaui.Internals.Constants.SlotMarkRadiusSq;
+            var slotMarkRadiusSq = Biaui.Internals.Constants.SlotMarkRadiusSq(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
 
             if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
                 slotMarkRadiusSq *= invScale * invScale;
