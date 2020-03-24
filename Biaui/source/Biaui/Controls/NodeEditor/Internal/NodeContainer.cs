@@ -603,7 +603,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                 try
                 {
                     // 接続元は常に有効にする
-                    if (target == args.Source.Item)
+                    if (args.Timing == BiaNodeSlotEnableTiming.ConnectionStarting && target == args.Source.Item)
                         enabledSlotIds.Add(args.Source.SlotId);
                     else
                         _parent.NodeSlotEnabledChecker.Check(target, args, ref enabledSlotIds);
