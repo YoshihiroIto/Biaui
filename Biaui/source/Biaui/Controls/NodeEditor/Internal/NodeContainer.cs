@@ -598,10 +598,8 @@ namespace Biaui.Controls.NodeEditor.Internal
             }
             else
             {
-                Span<int> buffer = stackalloc int[16];
-
                 // ※引数に積むのため、using ぜずDispose()をコールする
-                var enabledSlotIds = new TempBuffer<int>(buffer);
+                var enabledSlotIds = new TempBuffer<int>(stackalloc int[64]);
 
                 try
                 {
