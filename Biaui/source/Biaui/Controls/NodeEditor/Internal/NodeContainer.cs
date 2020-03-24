@@ -8,7 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -603,7 +602,11 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 try
                 {
-                    _parent.NodeSlotEnabledChecker.Check(target, args, ref enabledSlotIds);
+                    // 接続元は常に有効にする
+                    if (target == args.Source.Item)
+                        enabledSlotIds.Add(args.Source.SlotId);
+                    else
+                        _parent.NodeSlotEnabledChecker.Check(target, args, ref enabledSlotIds);
 
                     var ids = enabledSlotIds.Buffer;
                     for (var i = 0; i != ids.Length; ++i)
