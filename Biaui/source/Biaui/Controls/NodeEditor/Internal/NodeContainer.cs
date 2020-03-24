@@ -906,34 +906,29 @@ namespace Biaui.Controls.NodeEditor.Internal
         private void NodePanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var panel = (BiaNodePanel) sender;
-            Debug.Assert(panel.IsActive);
 
+            Debug.Assert(panel.IsActive);
             var nodeItem = (IBiaNodeItem) panel.DataContext;
 
-            // スロット上のクリックでは選択状態の操作はしない
-            var mousePos = e.GetPosition(panel);
-            if (VisualTreeHelper.HitTest(panel, mousePos).VisualHit is BiaNodePanelSlots == false)
+            if (nodeItem.IsSelected == false)
             {
-                if (nodeItem.IsSelected == false)
+                // [Ctrl]押下で追加する
+                if (KeyboardHelper.IsPressControl == false)
                 {
-                    // [Ctrl]押下で追加する
-                    if (KeyboardHelper.IsPressControl == false)
-                    {
-                        _parent.InvokePropertyEditStarting();
+                    _parent.InvokePropertyEditStarting();
 
-                        ClearSelectedNodes();
-                        nodeItem.IsSelected = true;
+                    ClearSelectedNodes();
+                    nodeItem.IsSelected = true;
 
-                        _parent.InvokePropertyEditCompleted();
-                    }
-                    else
-                        nodeItem.IsSelected = true;
+                    _parent.InvokePropertyEditCompleted();
                 }
                 else
-                {
-                    if (KeyboardHelper.IsPressControl)
-                        nodeItem.IsSelected = false;
-                }
+                    nodeItem.IsSelected = true;
+            }
+            else
+            {
+                if (KeyboardHelper.IsPressControl)
+                    nodeItem.IsSelected = false;
             }
 
             var pos = e.GetPosition(panel);
