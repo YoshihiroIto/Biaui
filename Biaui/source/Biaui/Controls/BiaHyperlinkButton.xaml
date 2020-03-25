@@ -13,7 +13,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource InactiveForegroundBrushKey}" />
             </Trigger>
 
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsMouseOver" Value="{x:Static biaui:Boxes.BoolTrue}">
                 <Setter Property="Foreground" Value="{DynamicResource AccentBrushKey.IsMouseOver}" />
             </Trigger>
         </Style.Triggers>
