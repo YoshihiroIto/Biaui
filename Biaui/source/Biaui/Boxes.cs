@@ -92,11 +92,11 @@ namespace Biaui
 
         public static readonly object GridLengthStar = new GridLength(1, GridUnitType.Star);
         public static readonly object GridLengthAuto = new GridLength(1, GridUnitType.Auto);
-        
+
         public static readonly object VisibilityVisible = System.Windows.Visibility.Visible;
         public static readonly object VisibilityCollapsed = System.Windows.Visibility.Collapsed;
         public static readonly object VisibilityHidden = System.Windows.Visibility.Hidden;
-        
+
         public static readonly object HorizontalAlignmentLeft = HorizontalAlignment.Left;
         public static readonly object HorizontalAlignmentCenter = HorizontalAlignment.Center;
         public static readonly object HorizontalAlignmentRight = HorizontalAlignment.Right;
@@ -107,6 +107,9 @@ namespace Biaui
         public static readonly object VerticalAlignmentBottom = VerticalAlignment.Bottom;
         public static readonly object VerticalAlignmentStretch = VerticalAlignment.Stretch;
         
+        public static readonly object OrientationHorizontal = Orientation.Horizontal;
+        public static readonly object OrientationVertical = Orientation.Vertical;
+
         public static readonly object DockLeft = Dock.Left;
         public static readonly object DockTop = Dock.Top;
         public static readonly object DockRight = Dock.Right;
@@ -126,11 +129,24 @@ namespace Biaui
         public static readonly object TextTrimmingModeNone = BiaTextTrimmingMode.None;
         public static readonly object TextTrimmingModeStandard = BiaTextTrimmingMode.Standard;
         public static readonly object TextTrimmingModeFilepath = BiaTextTrimmingMode.Filepath;
-        
+
         public static readonly object WindowCloseButtonBehaviorNormal = BiaWindowCloseButtonBehavior.Normal;
         public static readonly object WindowCloseButtonBehaviorDoNothing = BiaWindowCloseButtonBehavior.DoNothing;
+
+        public static readonly object NodeEditorScaleSliderLocationLeft = BiaNodeEditorScaleSliderLocation.Left;
+        public static readonly object NodeEditorScaleSliderLocationLeftTop = BiaNodeEditorScaleSliderLocation.LeftTop;
+        public static readonly object NodeEditorScaleSliderLocationTopLeft = BiaNodeEditorScaleSliderLocation.TopLeft;
+        public static readonly object NodeEditorScaleSliderLocationTop = BiaNodeEditorScaleSliderLocation.Top;
+        public static readonly object NodeEditorScaleSliderLocationTopRight = BiaNodeEditorScaleSliderLocation.TopRight;
+        public static readonly object NodeEditorScaleSliderLocationRightTop = BiaNodeEditorScaleSliderLocation.RightTop;
+        public static readonly object NodeEditorScaleSliderLocationRight = BiaNodeEditorScaleSliderLocation.Right;
+        public static readonly object NodeEditorScaleSliderLocationRightBottom = BiaNodeEditorScaleSliderLocation.RightBottom;
+        public static readonly object NodeEditorScaleSliderLocationBottomRight = BiaNodeEditorScaleSliderLocation.BottomRight;
+        public static readonly object NodeEditorScaleSliderLocationBottom = BiaNodeEditorScaleSliderLocation.Bottom;
+        public static readonly object NodeEditorScaleSliderLocationBottomLeft = BiaNodeEditorScaleSliderLocation.BottomLeft;
+        public static readonly object NodeEditorScaleSliderLocationLeftBottom = BiaNodeEditorScaleSliderLocation.LeftBottom;
         // ReSharper restore InconsistentNaming
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object Bool(bool i) => i ? BoolTrue : BoolFalse;
 
@@ -257,7 +273,7 @@ namespace Biaui
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object TextTrimming(BiaTextTrimmingMode v)
         {
@@ -269,7 +285,7 @@ namespace Biaui
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object WindowCloseButton(BiaWindowCloseButtonBehavior v)
         {
@@ -277,6 +293,27 @@ namespace Biaui
             {
                 BiaWindowCloseButtonBehavior.Normal => WindowCloseButtonBehaviorNormal,
                 BiaWindowCloseButtonBehavior.DoNothing => WindowCloseButtonBehaviorDoNothing,
+                _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static object NodeEditorScaleSliderLocation(BiaNodeEditorScaleSliderLocation v)
+        {
+            return v switch
+            {
+                BiaNodeEditorScaleSliderLocation.Left => NodeEditorScaleSliderLocationLeft,
+                BiaNodeEditorScaleSliderLocation.LeftTop => NodeEditorScaleSliderLocationLeftTop,
+                BiaNodeEditorScaleSliderLocation.TopLeft => NodeEditorScaleSliderLocationTopLeft,
+                BiaNodeEditorScaleSliderLocation.Top => NodeEditorScaleSliderLocationTop,
+                BiaNodeEditorScaleSliderLocation.TopRight => NodeEditorScaleSliderLocationTopRight,
+                BiaNodeEditorScaleSliderLocation.RightTop => NodeEditorScaleSliderLocationRightTop,
+                BiaNodeEditorScaleSliderLocation.Right => NodeEditorScaleSliderLocationRight,
+                BiaNodeEditorScaleSliderLocation.RightBottom => NodeEditorScaleSliderLocationRightBottom,
+                BiaNodeEditorScaleSliderLocation.BottomRight => NodeEditorScaleSliderLocationBottomRight,
+                BiaNodeEditorScaleSliderLocation.Bottom => NodeEditorScaleSliderLocationBottom,
+                BiaNodeEditorScaleSliderLocation.BottomLeft => NodeEditorScaleSliderLocationBottomLeft,
+                BiaNodeEditorScaleSliderLocation.LeftBottom => NodeEditorScaleSliderLocationLeftBottom,
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }

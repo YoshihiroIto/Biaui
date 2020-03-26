@@ -1,5 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:biaui="clr-namespace:Biaui">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:biaui="clr-namespace:Biaui"
+                    xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor">
     <Style x:Key="RepeatButtonTransparentStyle" TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle" Value="{x:Static biaui:Boxes.BoolTrue}" />
         <Setter Property="Background" Value="Transparent" />
@@ -187,6 +189,96 @@
             <Trigger Property="Orientation" Value="Vertical">
                 <Setter Property="Template" Value="{StaticResource SliderVertical}" />
             </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="NodeEditorScaleSliderStyle"
+           BasedOn="{StaticResource {x:Type Slider}}"
+           TargetType="{x:Type Slider}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationLeft}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationVertical}" />
+                <Setter Property="Height" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationLeftTop}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationVertical}" />
+                <Setter Property="Height" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationTopLeft}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationHorizontal}" />
+                <Setter Property="Width" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationTop}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentCenter}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationHorizontal}" />
+                <Setter Property="Width" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationTopRight}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentRight}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationHorizontal}" />
+                <Setter Property="Width" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationRightTop}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentRight}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentTop}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationVertical}" />
+                <Setter Property="Height" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationRight}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentRight}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentCenter}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationVertical}" />
+                <Setter Property="Height" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationRightBottom}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentRight}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentBottom}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationVertical}" />
+                <Setter Property="Height" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationBottomRight}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentRight}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentBottom}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationHorizontal}" />
+                <Setter Property="Width" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationBottom}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentCenter}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentBottom}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationHorizontal}" />
+                <Setter Property="Width" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationBottomLeft}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentBottom}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationHorizontal}" />
+                <Setter Property="Width" Value="200" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ScaleSliderLocation, RelativeSource={RelativeSource AncestorType={x:Type nodeEditor:BiaNodeEditor}}}" Value="{x:Static biaui:Boxes.NodeEditorScaleSliderLocationLeftBottom}">
+                <Setter Property="HorizontalAlignment" Value="{x:Static biaui:Boxes.HorizontalAlignmentLeft}" />
+                <Setter Property="VerticalAlignment" Value="{x:Static biaui:Boxes.VerticalAlignmentBottom}" />
+                <Setter Property="Orientation" Value="{x:Static biaui:Boxes.OrientationVertical}" />
+                <Setter Property="Height" Value="200" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 </ResourceDictionary>

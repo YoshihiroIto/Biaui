@@ -24,6 +24,22 @@ namespace Biaui.Controls.NodeEditor
         BezierCurve
     }
 
+    public enum BiaNodeEditorScaleSliderLocation
+    {
+        Left,
+        LeftTop,
+        TopLeft,
+        Top,
+        TopRight,
+        RightTop,
+        Right,
+        RightBottom,
+        BottomRight,
+        Bottom,
+        BottomLeft,
+        LeftBottom
+    }
+
     public class BiaNodeEditor : BiaClippingBorder, IHasTransform, IHasScalerRange
     {
         #region NodesSource
@@ -484,6 +500,64 @@ namespace Biaui.Controls.NodeEditor
                     }));
         
         #endregion
+        
+        #region ScaleSliderLocation
+        
+        public BiaNodeEditorScaleSliderLocation ScaleSliderLocation
+        {
+            get => _ScaleSliderLocation;
+            set
+            {
+                if (value != _ScaleSliderLocation)
+                    SetValue(ScaleSliderLocationProperty, value);
+            }
+        }
+        
+        private BiaNodeEditorScaleSliderLocation _ScaleSliderLocation = BiaNodeEditorScaleSliderLocation.Right;
+        
+        public static readonly DependencyProperty ScaleSliderLocationProperty =
+            DependencyProperty.Register(
+                nameof(ScaleSliderLocation),
+                typeof(BiaNodeEditorScaleSliderLocation),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.NodeEditorScaleSliderLocationRight,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._ScaleSliderLocation = (BiaNodeEditorScaleSliderLocation)e.NewValue;
+                    }));
+        
+        #endregion
+        
+        #region ScaleSliderMargin
+        
+        public Thickness ScaleSliderMargin
+        {
+            get => _ScaleSliderMargin;
+            set
+            {
+                if (value != _ScaleSliderMargin)
+                    SetValue(ScaleSliderMarginProperty, value);
+            }
+        }
+        
+        private Thickness _ScaleSliderMargin = new Thickness(8);
+        
+        public static readonly DependencyProperty ScaleSliderMarginProperty =
+            DependencyProperty.Register(
+                nameof(ScaleSliderMargin),
+                typeof(Thickness),
+                typeof(BiaNodeEditor),
+                new PropertyMetadata(
+                    Boxes.Thickness8,
+                    (s, e) =>
+                    {
+                        var self = (BiaNodeEditor) s;
+                        self._ScaleSliderMargin = (Thickness)e.NewValue;
+                    }));
+        
+        #endregion
 
         public ScaleTransform ScaleTransform { get; } = new ScaleTransform();
 
@@ -633,12 +707,8 @@ namespace Biaui.Controls.NodeEditor
         {
             var scaleSlider = new Slider
             {
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Center,
-                Orientation = Orientation.Vertical,
-                Margin = new Thickness(8),
-                Height = 200,
-                Value = ScaleTransform.ScaleX
+                Value = ScaleTransform.ScaleX,
+                Style = Application.Current.TryFindResource("NodeEditorScaleSliderStyle") as Style
             };
 
             BindingOperations.SetBinding(scaleSlider, RangeBase.MaximumProperty,
@@ -654,6 +724,15 @@ namespace Biaui.Controls.NodeEditor
                 new Binding
                 {
                     Path = new PropertyPath(nameof(ScalerMinimum)),
+                    Mode = BindingMode.OneWay,
+                    Source = this
+                }
+            );
+            
+            BindingOperations.SetBinding(scaleSlider, RangeBase.MarginProperty,
+                new Binding
+                {
+                    Path = new PropertyPath(nameof(ScaleSliderMargin)),
                     Mode = BindingMode.OneWay,
                     Source = this
                 }
