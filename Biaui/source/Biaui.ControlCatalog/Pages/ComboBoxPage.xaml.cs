@@ -12,7 +12,7 @@ namespace Biaui.ControlCatalog.Pages
 
         public string[] Items
         {
-            get => _Items;
+            get => _Items ?? throw new NullReferenceException();
             set
             {
                 if (value != _Items)
@@ -20,7 +20,7 @@ namespace Biaui.ControlCatalog.Pages
             }
         }
 
-        private string[] _Items;
+        private string[]? _Items;
 
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register(
@@ -118,7 +118,7 @@ namespace Biaui.ControlCatalog.Pages
 
     public class FruitsToStringConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is Fruits fruits))
                 return null;

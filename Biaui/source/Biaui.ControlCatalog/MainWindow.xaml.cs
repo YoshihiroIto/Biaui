@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using Biaui.ControlCatalog.Pages;
 
@@ -6,13 +7,13 @@ namespace Biaui.ControlCatalog
 {
     public partial class MainWindow
     {
-        public UserControl[] Pages { get; private set; }
+        public UserControl[]? Pages { get; private set; }
 
         #region SelectedPage
         
         public UserControl SelectedPage
         {
-            get => _SelectedPage;
+            get => _SelectedPage ?? throw new NullReferenceException();
             set
             {
                 if (value != _SelectedPage)
@@ -20,7 +21,7 @@ namespace Biaui.ControlCatalog
             }
         }
         
-        private UserControl _SelectedPage;
+        private UserControl? _SelectedPage;
         
         public static readonly DependencyProperty SelectedPageProperty =
             DependencyProperty.Register(

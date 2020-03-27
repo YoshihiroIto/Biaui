@@ -409,7 +409,7 @@ namespace Biaui.Internals
                         _fontSize,
                         (float) dpi,
                         newGlyphIndexes,
-                        new Point(0, _glyphTypeface.Baseline * _fontSize),
+                        new Point(0, _glyphTypeface!.Baseline * _fontSize),
                         newAdvanceWidths,
                         null, null, null, null, null, null), textWidth);
 
