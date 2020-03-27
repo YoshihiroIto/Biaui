@@ -1,9 +1,9 @@
-﻿using System;
+﻿#if !NETCOREAPP3_1
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Biaui.Internals
 {
-#if !NETCOREAPP3_1
     internal static class MathF
     {
         // ReSharper disable once InconsistentNaming
@@ -21,5 +21,5 @@ namespace Biaui.Internals
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Cos(float a) => (float) Math.Cos(a);
     }
-#endif
 }
+#endif
