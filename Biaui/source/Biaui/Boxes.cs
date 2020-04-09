@@ -51,6 +51,7 @@ namespace Biaui
         public static readonly object Double24 = 24.0;
         public static readonly object Double32 = 32.0;
         public static readonly object Double36 = 36.0;
+        public static readonly object Double128 = 128.0;
         public static readonly object Double256 = 256.0;
         public static readonly object Double65536 = 65536.0;
         public static readonly object DoubleMin = double.MinValue;
