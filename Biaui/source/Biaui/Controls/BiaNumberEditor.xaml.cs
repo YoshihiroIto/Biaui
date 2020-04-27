@@ -652,7 +652,72 @@ namespace Biaui.Controls
                     }));
 
         #endregion
+        
+        #region CaptionAlignment
+        
+        public TextAlignment CaptionAlignment
+        {
+            get => _CaptionAlignment;
+            set
+            {
+                if (value != _CaptionAlignment)
+                    SetValue(CaptionAlignmentProperty, Boxes.TextAlignment(value));
+            }
+        }
+        
+        private TextAlignment _CaptionAlignment = TextAlignment.Left;
+        
+        public static readonly DependencyProperty CaptionAlignmentProperty =
+            DependencyProperty.Register(
+                nameof(CaptionAlignment),
+                typeof(TextAlignment),
+                typeof(BiaNumberEditor),
+                new FrameworkPropertyMetadata(
+                    Boxes.TextAlignmentLeft,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._CaptionAlignment = (TextAlignment)e.NewValue;
+                    }));
+        
+        #endregion
+        
+        #region ValueAlignment
+        
+        public TextAlignment ValueAlignment
+        {
+            get => _ValueAlignment;
+            set
+            {
+                if (value != _ValueAlignment)
+                    SetValue(CaptionAlignmentProperty, Boxes.TextAlignment(value));
+            }
+        }
+        
+        private TextAlignment _ValueAlignment = TextAlignment.Right;
+        
+        public static readonly DependencyProperty ValueAlignmentProperty =
+            DependencyProperty.Register(
+                nameof(ValueAlignment),
+                typeof(TextAlignment),
+                typeof(BiaNumberEditor),
+                new FrameworkPropertyMetadata(
+                    Boxes.TextAlignmentRight,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                    FrameworkPropertyMetadataOptions.AffectsRender |
+                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                    (s, e) =>
+                    {
+                        var self = (BiaNumberEditor) s;
+                        self._ValueAlignment = (TextAlignment)e.NewValue;
+                    }));
+        
+        #endregion
 
+        // ReSharper disable once EventNeverSubscribedTo.Global
         public event EventHandler? ValueChanged;
 
         static BiaNumberEditor()
@@ -765,33 +830,39 @@ namespace Biaui.Controls
         {
             var offsetY = (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
 
+            var textWidth = ActualWidth - Padding.Left - Padding.Right - SpinWidth * 2;
+            var textX = Padding.Left + SpinWidth;
+            var textY = Padding.Top + offsetY;
+            
             if (Caption != null &&
                 CaptionForeground != null)
                 DefaultTextRenderer.Instance.Draw(
                     this,
                     Caption,
-                    Padding.Left + SpinWidth,
-                    Padding.Top + offsetY,
+                    textX,
+                    textY,
                     CaptionForeground,
                     dc,
-                    ActualWidth - Padding.Left - Padding.Right,
-                    TextAlignment.Left,
+                    textWidth,
+                    CaptionAlignment,
                     TextTrimming,
                     false);
 
             if (UiValueString != null &&
                 Foreground != null)
+            {
                 DefaultTextRenderer.Instance.Draw(
                     this,
                     UiValueString,
-                    Padding.Left,
-                    Padding.Top + offsetY,
+                    textX,
+                    textY,
                     Foreground,
                     dc,
-                    ActualWidth - Padding.Left - Padding.Right - SpinWidth,
-                    TextAlignment.Right,
+                    textWidth,
+                    ValueAlignment,
                     BiaTextTrimmingMode.None,
                     false);
+            }
         }
 
         private static readonly Brush? _moBrush = Application.Current.TryFindResource("AccentBrushKey") as Brush;

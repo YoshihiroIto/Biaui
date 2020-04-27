@@ -107,9 +107,14 @@ namespace Biaui
         public static readonly object VerticalAlignmentTop = VerticalAlignment.Top;
         public static readonly object VerticalAlignmentBottom = VerticalAlignment.Bottom;
         public static readonly object VerticalAlignmentStretch = VerticalAlignment.Stretch;
-        
+
         public static readonly object OrientationHorizontal = Orientation.Horizontal;
         public static readonly object OrientationVertical = Orientation.Vertical;
+
+        public static readonly object TextAlignmentLeft    = System.Windows.TextAlignment.Left;
+        public static readonly object TextAlignmentRight   = System.Windows.TextAlignment.Right;
+        public static readonly object TextAlignmentCenter  = System.Windows.TextAlignment.Center;
+        public static readonly object TextAlignmentJustify = System.Windows.TextAlignment.Justify;
 
         public static readonly object DockLeft = Dock.Left;
         public static readonly object DockTop = Dock.Top;
@@ -271,6 +276,19 @@ namespace Biaui
                 System.Windows.Visibility.Visible => VisibilityVisible,
                 System.Windows.Visibility.Hidden => VisibilityHidden,
                 System.Windows.Visibility.Collapsed => VisibilityCollapsed,
+                _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static object TextAlignment(TextAlignment v)
+        {
+            return v switch
+            {
+                System.Windows.TextAlignment.Left => TextAlignmentLeft,
+                System.Windows.TextAlignment.Right => TextAlignmentRight,
+                System.Windows.TextAlignment.Center => TextAlignmentCenter,
+                System.Windows.TextAlignment.Justify => TextAlignmentJustify,
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }
