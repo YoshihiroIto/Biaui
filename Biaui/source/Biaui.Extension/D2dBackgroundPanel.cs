@@ -30,7 +30,7 @@ namespace Biaui.Extension
             _parent = parent;
         }
 
-        public override void Render(DeviceContext target)
+        protected override void Render(DeviceContext target)
         {
             target.Clear(default(RawColor4));
 
