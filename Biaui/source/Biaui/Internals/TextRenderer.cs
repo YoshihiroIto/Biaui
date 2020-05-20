@@ -82,9 +82,6 @@ namespace Biaui.Internals
             FontWeight weight,
             FontStretch stretch)
         {
-            if (fontFamily == null)
-                return;
-
             var typeface = new Typeface(fontFamily, style, weight, stretch);
 
             if (typeface.TryGetGlyphTypeface(out _glyphTypeface) == false)
@@ -141,9 +138,6 @@ namespace Biaui.Internals
             BiaTextTrimmingMode trimming,
             bool isUseCache)
         {
-            if (text == null)
-                return 0d;
-
             return Draw(
                 visual,
                 text.AsSpan(),
@@ -159,9 +153,7 @@ namespace Biaui.Internals
 
         internal double CalcWidth(string text)
         {
-            return text == null
-                ? 0d
-                : CalcWidth(text.AsSpan());
+            return CalcWidth(text.AsSpan());
         }
 #endif
 
@@ -504,6 +496,9 @@ namespace Biaui.Internals
 
                 glyphIndexes.Slice(0, textLength).CopyTo(newGlyphIndexes.AsSpan());
                 advanceWidths.Slice(0, textLength).CopyTo(newAdvanceWidths.AsSpan());
+
+                if (_glyphTypeface == null)
+                    throw new InvalidDataException();
 
                 var gr =
                     (new GlyphRun(
