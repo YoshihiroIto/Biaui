@@ -113,7 +113,7 @@ namespace Biaui.Controls
         private void UpdateSibling()
         {
             var parent = Parent;
-            if (parent == null)
+            if (parent is null)
                 return;
 
             foreach (var child in LogicalTreeHelper.GetChildren(parent))

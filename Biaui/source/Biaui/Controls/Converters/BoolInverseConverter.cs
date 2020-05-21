@@ -8,7 +8,7 @@ namespace Biaui.Controls.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value is null)
                 return Binding.DoNothing;
 
             if (value is bool b)
@@ -19,7 +19,7 @@ namespace Biaui.Controls.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value is null)
                 return Binding.DoNothing;
 
             if (value is bool b)

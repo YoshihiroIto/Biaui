@@ -14,7 +14,7 @@ namespace Biaui.Internals
     {
         public static IEnumerable<DependencyObject> Children(this DependencyObject obj)
         {
-            if (obj == null)
+            if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
 
             if (obj is Popup popup)
@@ -34,7 +34,7 @@ namespace Biaui.Internals
 
         public static IEnumerable<DependencyObject> Descendants(this DependencyObject obj)
         {
-            if (obj == null)
+            if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
 
             var children = ArrayPool<DependencyObject>.Shared.Rent(obj.MaximumChildrenCount());

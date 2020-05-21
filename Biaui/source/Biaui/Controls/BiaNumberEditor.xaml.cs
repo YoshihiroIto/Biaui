@@ -771,7 +771,7 @@ namespace Biaui.Controls
                 ? _textBox?.Background
                 : Background;
 
-            if (brush == null)
+            if (brush is null)
                 return;
 
             if (NumberHelper.AreCloseZero(CornerRadius))
@@ -814,7 +814,7 @@ namespace Biaui.Controls
                 ? _textBox?.Background
                 : SliderBrush;
 
-            if (brush == null)
+            if (brush is null)
                 return;
 
             var w = (UiValue - ActualSliderMinimum) * rounder.RoundRenderWidth(IsVisibleBorder) / SliderWidth;
@@ -869,7 +869,7 @@ namespace Biaui.Controls
 
         private void DrawSpin(DrawingContext dc)
         {
-            if (_DecSpinGeom == null)
+            if (_DecSpinGeom is null)
                 SetupSpinGeom();
             
             var spinBackground = Caches.GetSolidColorBrush(new ByteColor(0x40, 0x00, 0x00, 0x00));
@@ -1167,7 +1167,7 @@ namespace Biaui.Controls
             if (_isEditing)
                 return;
 
-            if (_textBox == null)
+            if (_textBox is null)
             {
                 _textBox = new TextBox
                 {

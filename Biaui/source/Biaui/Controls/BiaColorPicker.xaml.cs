@@ -604,7 +604,7 @@ namespace Biaui.Controls
         {
             SizeChanged += (_, e) =>
             {
-                if (_redEditor == null)
+                if (_redEditor is null)
                     return;
 
                 if (e.NewSize.Width > 300)
@@ -693,13 +693,13 @@ namespace Biaui.Controls
                             break;
                     }
                 }
-                else if (_valueBar == null && e is BiaColorBar colorBar)
+                else if (_valueBar is null && e is BiaColorBar colorBar)
                     _valueBar = colorBar;
                 
-                else if (_wheelBackground == null && e is BiaHsvWheelBackground hsvWheelBackground)
+                else if (_wheelBackground is null && e is BiaHsvWheelBackground hsvWheelBackground)
                     _wheelBackground = hsvWheelBackground;
                 
-                else if (_boxBackground == null && e is BiaHsvBoxBackground hsvBoxBackground)
+                else if (_boxBackground is null && e is BiaHsvBoxBackground hsvBoxBackground)
                     _boxBackground = hsvBoxBackground;
             }
 

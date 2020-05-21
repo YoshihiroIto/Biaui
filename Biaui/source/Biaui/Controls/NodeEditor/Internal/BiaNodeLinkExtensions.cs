@@ -10,7 +10,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             InternalBiaNodeLinkData internalData;
 
-            if (self.InternalData == null)
+            if (self.InternalData is null)
             {
                 internalData = new InternalBiaNodeLinkData
                 {

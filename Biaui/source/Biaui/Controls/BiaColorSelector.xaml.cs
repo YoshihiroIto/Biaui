@@ -276,7 +276,7 @@ namespace Biaui.Controls
 
         private void ShowPopup()
         {
-            if (_popup == null)
+            if (_popup is null)
             {
                 _items = new ListBox
                 {
@@ -334,7 +334,7 @@ namespace Biaui.Controls
 
             _popup.IsOpen = true;
 
-            if (_items.SelectedItem == null)
+            if (_items.SelectedItem is null)
             {
                 _items.Focus();
             }

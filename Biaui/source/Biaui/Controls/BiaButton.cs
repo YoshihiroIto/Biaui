@@ -132,7 +132,7 @@ namespace Biaui.Controls
 
         private void UpdateSize()
         {
-            var w = Content == null
+            var w = Content is null
                 ? 0.0
                 : DefaultTextRenderer.Instance.CalcWidth(Content);
 

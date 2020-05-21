@@ -78,7 +78,7 @@ namespace Biaui.Behaviors
                 AssociatedObject.CaptureMouse();
 
                 // Disable ToolTip
-                if (_disableToolTipStyle == null)
+                if (_disableToolTipStyle is null)
                 {
                     _disableToolTipStyle = new Style(typeof(ToolTip));
                     _disableToolTipStyle.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));

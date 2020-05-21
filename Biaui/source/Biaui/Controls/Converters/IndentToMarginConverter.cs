@@ -12,7 +12,7 @@ namespace Biaui.Controls.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null)
+            if (values is null)
                 return Boxes.Thickness0;
 
             if (!(values[0] is TreeViewItem item))

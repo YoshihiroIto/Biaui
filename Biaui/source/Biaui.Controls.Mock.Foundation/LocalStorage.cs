@@ -58,7 +58,7 @@ namespace Biaui.Controls.Mock.Foundation
         private static void SetupDir(string path)
         {
             var dir = Path.GetDirectoryName(path);
-            if (dir == null)
+            if (dir is null)
                 return;
 
             Directory.CreateDirectory(dir);

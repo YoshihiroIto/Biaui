@@ -392,7 +392,7 @@ namespace Biaui.Controls
 
         private void ShowEditBox()
         {
-            if (_textBox == null)
+            if (_textBox is null)
             {
                 _textBox = new TextBox
                 {

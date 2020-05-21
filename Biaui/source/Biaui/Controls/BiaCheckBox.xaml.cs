@@ -110,10 +110,10 @@ namespace Biaui.Controls
 
         protected void DrawCaption(DrawingContext dc, double x, double y)
         {
-            if (Content == null)
+            if (Content is null)
                 return;
 
-            if (Foreground == null)
+            if (Foreground is null)
                 return;
 
             DefaultTextRenderer.Instance.Draw(this, Content, x, y, Foreground, dc, ActualWidth - x, TextAlignment.Left, TextTrimming, true);

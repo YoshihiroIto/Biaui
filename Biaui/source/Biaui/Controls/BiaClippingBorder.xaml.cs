@@ -42,7 +42,7 @@ namespace Biaui.Controls
         {
             var child = Child;
 
-            if (child == null)
+            if (child is null)
                 return;
 
             var key = HashCodeMaker.Make(

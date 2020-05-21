@@ -246,7 +246,7 @@ namespace Biaui.Controls.Mock.Presentation
 
                 var l = FindNodeLink(Links, e.Source, e.Target);
 
-                if (l == null)
+                if (l is null)
                 {
                     Links.Add(new NodeLink
                     {

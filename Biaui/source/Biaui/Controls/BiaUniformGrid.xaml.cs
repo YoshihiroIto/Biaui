@@ -181,7 +181,7 @@ namespace Biaui.Controls
 
             foreach (UIElement? child in InternalChildren)
             {
-                if (child == null)
+                if (child is null)
                     continue;
                 
                 child.Measure(childConstraint);
@@ -219,7 +219,7 @@ namespace Biaui.Controls
 
             foreach (UIElement? child in InternalChildren)
             {
-                if (child == null)
+                if (child is null)
                     continue;
                 
                 childBounds.Width = xIndex == _columns - 1

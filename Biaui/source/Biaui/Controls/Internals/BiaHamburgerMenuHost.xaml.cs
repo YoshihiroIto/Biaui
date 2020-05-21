@@ -52,12 +52,12 @@ namespace Biaui.Controls.Internals
         private void UpdateMenuItem()
         {
             var menu = this.Descendants().OfType<Menu?>().FirstOrDefault();
-            if (menu == null)
+            if (menu is null)
                 return;
 
             menu.Items.Clear();
             
-            if (MenuItem == null)
+            if (MenuItem is null)
                 return;
 
             menu.Items.Add(MenuItem);

@@ -534,7 +534,7 @@ namespace Biaui.Controls
 
         private void ShowPopup()
         {
-            if (_popup == null)
+            if (_popup is null)
             {
                 _items = new ListBox
                 {
@@ -600,7 +600,7 @@ namespace Biaui.Controls
             _popup.IsOpen = true;
             IsOpen = true;
 
-            if (_items.SelectedItem == null)
+            if (_items.SelectedItem is null)
             {
                 _items.Focus();
             }
@@ -758,7 +758,7 @@ namespace Biaui.Controls
         [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
         private void MoveSelectedItem(int dir)
         {
-            if (ItemsSource == null)
+            if (ItemsSource is null)
                 return;
 
             using var tempItems = new TempBuffer<object>(128);

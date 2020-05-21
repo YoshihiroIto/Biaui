@@ -811,7 +811,7 @@ namespace Biaui.Controls.NodeEditor
 
         public void FitAllNodes()
         {
-            if (NodesSource == null)
+            if (NodesSource is null)
                 return;
 
             FitNodesInternal(NodesSource.Cast<IBiaNodeItem>());
@@ -819,7 +819,7 @@ namespace Biaui.Controls.NodeEditor
 
         public void FitSelectedNodes()
         {
-            if (NodesSource == null)
+            if (NodesSource is null)
                 return;
 
             FitNodesInternal(NodesSource.Cast<IBiaNodeItem>().Where(x => x.IsSelected));

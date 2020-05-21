@@ -192,7 +192,7 @@ namespace Biaui.Controls
 
             var parent = treeViewItem.GetParent<BiaTreeView>();
 
-            if (parent == null)
+            if (parent is null)
                 return;
 
             var selectedItems = parent.SelectedItems;
@@ -209,12 +209,12 @@ namespace Biaui.Controls
 
             if (isSelected)
             {
-                if (parent.SelectedItem == null)
+                if (parent.SelectedItem is null)
                     parent.SelectedItem = treeViewItem.DataContext;
             }
             else
             {
-                if (selectedItems == null || selectedItems.Count == 0)
+                if (selectedItems is null || selectedItems.Count == 0)
                     parent.SelectedItem = null;
                 else
                     parent.SelectedItem = selectedItems[0];
@@ -356,7 +356,7 @@ namespace Biaui.Controls
                 _ => null
             };
 
-            if (targetItem == null)
+            if (targetItem is null)
             {
                 e.Handled = true;
                 return;
@@ -395,7 +395,7 @@ namespace Biaui.Controls
                         return;
 
             var treeViewItem = orgSource.GetParent<TreeViewItem>();
-            if (treeViewItem == null)
+            if (treeViewItem is null)
                 return;
 
             switch (Keyboard.Modifiers)
@@ -408,7 +408,7 @@ namespace Biaui.Controls
                 case ModifierKeys.Shift:
                     if (isDown)
                     {
-                        if (_multipleSelectionEdgeItemDataContext == null)
+                        if (_multipleSelectionEdgeItemDataContext is null)
                             SelectSingleItem(treeViewItem);
                         else
                             SelectMultipleItems(treeViewItem);
@@ -439,7 +439,7 @@ namespace Biaui.Controls
 
                 foreach (var item in items)
                 {
-                    if (firstItem == null)
+                    if (firstItem is null)
                         firstItem = item;
 
                     SetIsSelected(item, true);
@@ -488,10 +488,10 @@ namespace Biaui.Controls
 
         private void SelectMultipleItems(TreeViewItem edgeItem)
         {
-            if (_multipleSelectionEdgeItemDataContext == null)
+            if (_multipleSelectionEdgeItemDataContext is null)
                 return;
 
-            if (edgeItem == null)
+            if (edgeItem is null)
                 return;
 
             if (edgeItem.DataContext == _multipleSelectionEdgeItemDataContext)
@@ -532,7 +532,7 @@ namespace Biaui.Controls
         private T? GetRelativeItem<T>(T item, int relativePosition)
             where T : ItemsControl
         {
-            if (item == null)
+            if (item is null)
                 throw new ArgumentNullException(nameof(item));
 
             using var items = this.EnumerateChildren<T>().ToTempBuffer(128);

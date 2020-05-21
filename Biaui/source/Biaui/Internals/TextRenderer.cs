@@ -497,7 +497,7 @@ namespace Biaui.Internals
                 glyphIndexes.Slice(0, textLength).CopyTo(newGlyphIndexes.AsSpan());
                 advanceWidths.Slice(0, textLength).CopyTo(newAdvanceWidths.AsSpan());
 
-                if (_glyphTypeface == null)
+                if (_glyphTypeface is null)
                     throw new InvalidDataException();
 
                 var gr =

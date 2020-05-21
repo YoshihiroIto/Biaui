@@ -31,13 +31,13 @@ namespace Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker
 
             foreach (IBiaNodeLink? link in linksSource)
             {
-                if (link == null)
+                if (link is null)
                     continue;
 
                 if (link.IsVisible == false)
                     continue;
 
-                if (link.InternalData().Slot1 == null || link.InternalData().Slot2 == null)
+                if (link.InternalData().Slot1 is null || link.InternalData().Slot2 is null)
                     continue;
 
                 var item1 = link.SourceSlot.Item ?? throw new NullReferenceException();

@@ -180,7 +180,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             _parent.TargetNodeSlotConnecting = default;
 
-            if (nodeItems == null)
+            if (nodeItems is null)
                 return;
 
             var invScale = 1d / Scale.ScaleX;

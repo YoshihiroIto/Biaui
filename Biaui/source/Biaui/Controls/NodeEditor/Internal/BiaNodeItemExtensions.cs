@@ -15,7 +15,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             InternalBiaNodeItemData internalData;
 
-            if (self.InternalData == null)
+            if (self.InternalData is null)
             {
                 internalData = new InternalBiaNodeItemData();
                 self.InternalData = internalData;
@@ -63,7 +63,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         internal static BiaNodeSlot? FindSlotFromPos(
             this IBiaNodeItem nodeItem, in ImmutableVec2_double pos, FrameworkElement control)
         {
-            if (nodeItem.Slots == null)
+            if (nodeItem.Slots is null)
                 return null;
 
             var itemSize = nodeItem.Size;
@@ -84,7 +84,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         internal static BiaNodeSlot? FindSlotFromId(this IBiaNodeItem nodeItem, int slotId)
         {
-            if (nodeItem.Slots == null)
+            if (nodeItem.Slots is null)
                 return null;
 
             if (nodeItem.Slots.TryGetValue(slotId, out var slot))

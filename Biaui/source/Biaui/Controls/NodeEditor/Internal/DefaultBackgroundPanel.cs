@@ -57,7 +57,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void DrawNodeLink(DrawingContext dc)
         {
-            if (_parent.LinksSource == null)
+            if (_parent.LinksSource is null)
                 return;
 
             var inflate = ArrowSize * _parent.ScaleTransform.ScaleX;

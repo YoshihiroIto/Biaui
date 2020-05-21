@@ -69,7 +69,7 @@ namespace Biaui.Behaviors
                 return;
 
             var expander = hitTestResult?.VisualHit?.GetParent<Expander>();
-            if (expander == null)
+            if (expander is null)
                 return;
 
             if (IsOnHeader() == false)
@@ -97,7 +97,7 @@ namespace Biaui.Behaviors
                 return;
 
             var otherExpander = (hitTestResult?.VisualHit as FrameworkElement)?.GetParent<Expander>();
-            if (otherExpander == null)
+            if (otherExpander is null)
                 return;
 
             if (otherExpander.IsEnabled)
@@ -114,7 +114,7 @@ namespace Biaui.Behaviors
         private (bool isOn, HitTestResult? hitTestResult) IsOnIgnoreControls()
         {
             var window = AssociatedObject.GetParent<Window>();
-            if (window == null)
+            if (window is null)
                 return (false, null);
 
             var hitTestResult = VisualTreeHelper.HitTest(window, Mouse.GetPosition(window));
@@ -135,13 +135,13 @@ namespace Biaui.Behaviors
         private bool IsOnHeader()
         {
             var window = AssociatedObject.GetParent<Window>();
-            if (window == null)
+            if (window is null)
                 return false;
 
             var hitTestResult = VisualTreeHelper.HitTest(window, Mouse.GetPosition(window));
 
             var header = (hitTestResult?.VisualHit as FrameworkElement)?.GetParent<ToggleButton>();
-            if (header == null)
+            if (header is null)
                 return false;
 
             if (header.Name != "HeaderSite")

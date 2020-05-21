@@ -60,7 +60,7 @@ namespace Biaui.Controls
                     var selectedItem = items.FirstOrDefault(x => x.IsSelected);
                     var isDown = e.Key == Key.Down;
 
-                    if (selectedItem == null)
+                    if (selectedItem is null)
                     {
                         var item = isDown
                             ? items.FirstOrDefault()
@@ -90,7 +90,7 @@ namespace Biaui.Controls
             var popup = (FrameworkElement) sender;
             var parent = popup.GetParent<BiaFilteringComboBox>();
 
-            if (parent == null)
+            if (parent is null)
                 return;
 
             parent.FilterWords = "";

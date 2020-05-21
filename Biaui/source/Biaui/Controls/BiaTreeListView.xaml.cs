@@ -344,7 +344,7 @@ namespace Biaui.Controls
 
                 treeViewSv.ScrollChanged += (___, e) =>
                 {
-                    if (_headerSv == null)
+                    if (_headerSv is null)
                         _headerSv = this.Descendants().OfType<ScrollViewer>().First(x => x.Name == "HeaderScrollViewer");
 
                     _headerSv.Width = e.ViewportWidth;

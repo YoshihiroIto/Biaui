@@ -15,7 +15,7 @@ namespace Biaui.Controls.NodeEditor
             Slot = slot;
         }
 
-        public bool IsNull => Item == null;
+        public bool IsNull => Item is null;
         public bool IsNotNull => Item != null;
 
         internal ImmutableVec2_double MakeSlotPos() => Item.MakeSlotPosDefault(Slot);
@@ -65,7 +65,7 @@ namespace Biaui.Controls.NodeEditor
 
         internal BiaNodeSlot? FindSlot()
         {
-            if (Item?.Slots == null)
+            if (Item?.Slots is null)
                 return null;
 
             if (Item.Slots.TryGetValue(SlotId, out var slot))

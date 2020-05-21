@@ -59,12 +59,12 @@ namespace GalaSoft.MvvmLight.Command
                 (s, e) =>
                 {
                     var sender = s as EventToCommand;
-                    if (sender == null)
+                    if (sender is null)
                     {
                         return;
                     }
 
-                    if (sender.AssociatedObject == null)
+                    if (sender.AssociatedObject is null)
                     {
                         return;
                     }
@@ -95,12 +95,12 @@ namespace GalaSoft.MvvmLight.Command
                 (s, e) =>
                 {
                     var sender = s as EventToCommand;
-                    if (sender == null)
+                    if (sender is null)
                     {
                         return;
                     }
 
-                    if (sender.AssociatedObject == null)
+                    if (sender.AssociatedObject is null)
                     {
                         return;
                     }
@@ -199,7 +199,7 @@ namespace GalaSoft.MvvmLight.Command
         {
             get
             {
-                return _mustToggleValue == null
+                return _mustToggleValue is null
                            ? MustToggleIsEnabled
                            : _mustToggleValue.Value;
             }
@@ -349,7 +349,7 @@ namespace GalaSoft.MvvmLight.Command
             var command = GetCommand();
             var commandParameter = CommandParameterValue;
 
-            if (commandParameter == null
+            if (commandParameter is null
                 && PassEventArgsToCommand)
             {
                 commandParameter = parameter;
@@ -366,7 +366,7 @@ namespace GalaSoft.MvvmLight.Command
             EventToCommand element,
             DependencyPropertyChangedEventArgs e)
         {
-            if (element == null)
+            if (element is null)
             {
                 return;
             }
@@ -390,7 +390,7 @@ namespace GalaSoft.MvvmLight.Command
         {
             var element = GetAssociatedObject();
 
-            return AssociatedObject == null
+            return AssociatedObject is null
                 || (element != null
                    && !element.IsEnabled);
         }
@@ -399,7 +399,7 @@ namespace GalaSoft.MvvmLight.Command
         {
             var element = GetAssociatedObject();
 
-            if (element == null)
+            if (element is null)
             {
                 return;
             }

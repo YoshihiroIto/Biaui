@@ -92,7 +92,7 @@ namespace Biaui.Controls.Internals
         {
             base.OnClick();
 
-            if (_parentWindow == null)
+            if (_parentWindow is null)
                 return;
 
             switch (WindowAction)
@@ -137,7 +137,7 @@ namespace Biaui.Controls.Internals
                 return;
             }
 
-            if (_parentWindow == null)
+            if (_parentWindow is null)
                 return;
 
             Visibility = WindowAction switch

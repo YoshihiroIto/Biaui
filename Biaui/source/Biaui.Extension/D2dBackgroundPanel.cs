@@ -34,7 +34,7 @@ namespace Biaui.Extension
         {
             target.Clear(default(RawColor4));
 
-            if (_parent.LinksSource == null)
+            if (_parent.LinksSource is null)
                 return;
 
             var scale = (float) _parent.Scale;
@@ -49,7 +49,7 @@ namespace Biaui.Extension
 
         private void DrawCurves(DeviceContext target, bool isDrawArrow, float lineWidth)
         {
-            if (_parent.LinksSource == null)
+            if (_parent.LinksSource is null)
                 return;
 
             var arrowSize = BaseArrowSize / (float) _parent.ScaleTransform.ScaleX;
@@ -75,7 +75,7 @@ namespace Biaui.Extension
 
             foreach (IBiaNodeLink? link in _parent.LinksSource)
             {
-                if (link == null)
+                if (link is null)
                     continue;
 
                 if (link.IsVisible == false)

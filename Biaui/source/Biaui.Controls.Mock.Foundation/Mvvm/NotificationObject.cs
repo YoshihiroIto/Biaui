@@ -48,14 +48,14 @@ namespace Biaui.Controls.Mock.Foundation.Mvvm
             // ReSharper disable once InconsistentlySynchronizedField
             var pc = (PropertyChangedEventArgs)_propChanged[propertyName];
 
-            if (pc == null)
+            if (pc is null)
             {
                 // double-checked;
                 lock (_propChanged)
                 {
                     pc = (PropertyChangedEventArgs)_propChanged[propertyName];
 
-                    if (pc == null)
+                    if (pc is null)
                     {
                         pc = new PropertyChangedEventArgs(propertyName);
                         _propChanged[propertyName] = pc;

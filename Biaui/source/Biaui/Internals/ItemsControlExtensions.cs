@@ -9,7 +9,7 @@ namespace Biaui.Internals
         internal static IEnumerable<T> EnumerateChildren<T>(this ItemsControl self)
             where T : ItemsControl
         {
-            if (self == null)
+            if (self is null)
                 throw new ArgumentNullException(nameof(self));
 
             for (var i = 0; i < self.Items.Count; i++)

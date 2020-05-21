@@ -301,7 +301,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                         return false;
 
                     var panel = FindPanel(node);
-                    if (panel == null)
+                    if (panel is null)
                         return false;
 
                     if (IsHitVisual(rect, node, panel) == false)
@@ -348,7 +348,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void RemoveNodePanel(BiaNodePanel panel)
         {
-            if (panel == null)
+            if (panel is null)
                 throw new ArgumentNullException(nameof(panel));
 
             ReturnNodePanel(panel);
@@ -357,7 +357,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
         private void ReturnNodePanel(BiaNodePanel panel)
         {
-            if (panel == null)
+            if (panel is null)
                 throw new ArgumentNullException(nameof(panel));
 
             panel.DataContext = null;
@@ -456,15 +456,15 @@ namespace Biaui.Controls.NodeEditor.Internal
 
                 if (isNoViewportCulling || viewportRect.IntersectsWith(itemRect))
                 {
-                    if (nodePanel == null)
+                    if (nodePanel is null)
                     {
                         var style = nodeItem.InternalData().Style;
 
                         nodePanel = FindOrCreateNodePanel();
 
-                        if (style == null)
+                        if (style is null)
                         {
-                            if (nodeItemType == null)
+                            if (nodeItemType is null)
                                 nodeItemType = nodeItem.GetType();
 
                             if (_styleDict.TryGetValue(nodeItemType, out style) == false)
@@ -476,8 +476,8 @@ namespace Biaui.Controls.NodeEditor.Internal
                             nodeItem.InternalData().Style = style;
                         }
 
-                        if (nodePanel.Style == null ||
-                            style == null ||
+                        if (nodePanel.Style is null ||
+                            style is null ||
                             nodePanel.Style.GetHashCode() != style.GetHashCode())
                         {
                             if (nodePanel.DataContext != null)
@@ -579,7 +579,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         {
             target.InternalData().EnableSlots.Clear();
 
-            if (_parent.NodeSlotEnabledChecker == null)
+            if (_parent.NodeSlotEnabledChecker is null)
             {
                 var enabledSlotIds = target.Slots?.Keys;
 
@@ -679,7 +679,7 @@ namespace Biaui.Controls.NodeEditor.Internal
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    if (e.NewItems == null)
+                    if (e.NewItems is null)
                         break;
 
                     foreach (IBiaNodeItem? nodeItem in e.NewItems)
@@ -699,7 +699,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    if (e.OldItems == null)
+                    if (e.OldItems is null)
                         break;
 
                     foreach (IBiaNodeItem? nodeItem in e.OldItems)
@@ -823,7 +823,7 @@ namespace Biaui.Controls.NodeEditor.Internal
         private void ChangeElementInternal(IBiaNodeItem node)
         {
             var panel = FindPanel(node);
-            if (panel == null)
+            if (panel is null)
                 return;
 
             ChangeElement(panel);
@@ -881,7 +881,7 @@ namespace Biaui.Controls.NodeEditor.Internal
                     var hitControl = hit.VisualHit;
                     if (hitControl != null)
                     {
-                        if (hitControl.GetParent<BiaNodeEditor>() == null)
+                        if (hitControl.GetParent<BiaNodeEditor>() is null)
                         {
                             Leave();
                             return;
@@ -948,13 +948,13 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             _mouseOperator.OnMouseLeftButtonDown(
                 e,
-                slot == null
+                slot is null
                     ? MouseOperator.TargetType.NodePanel
                     : MouseOperator.TargetType.NodeLink);
 
             if (_mouseOperator.IsLinkMove)
             {
-                if (slot == null)
+                if (slot is null)
                     throw new NotSupportedException();
 
                 if (_parent.CanConnectLink)

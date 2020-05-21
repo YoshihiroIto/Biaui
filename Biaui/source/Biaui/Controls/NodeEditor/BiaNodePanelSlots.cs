@@ -37,12 +37,12 @@ namespace Biaui.Controls.NodeEditor
                 return;
 
             var nodeItem = (IBiaNodeItem) DataContext;
-            if (nodeItem == null)
+            if (nodeItem is null)
                 return;
 
             var rounder = new LayoutRounder(this);
             
-            if (_parent == null)
+            if (_parent is null)
                 _parent = this.GetParent<BiaNodeEditor>() ?? throw new NullReferenceException();
 
             var canConnectLink = _parent.CanConnectLink;
