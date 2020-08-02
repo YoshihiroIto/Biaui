@@ -7,95 +7,12 @@ float4 main(float2 uv : TEXCOORD) : COLOR
 	if (IsEnabled != 0.0f)
 	{
 		float h = uv.x;
-		float s = uv.y;
+		float s = 1 - uv.y;
 
-		float3 color;
+        // https://qiita.com/keim_at_si/items/c2d1afd6443f3040e900
+        float3 color = ((clamp(abs(frac(h + float3(0, 2, 1) / 3) * 6 - 3) - 1, 0, 1) - 1) * s + 1) * Value;
 
-	#if 0
-		if (h < 1.0/6)
-		{
-			color.r = 1;
-			color.g = lerp(0, 1, h * 6);
-			color.b = 0;
-		}
-		else if (h < 2.0/6)
-		{
-			color.r = lerp(1, 0, (h - 1.0/6) * 6);
-			color.g = 1;
-			color.b = 0;
-		}
-		else if (h < 3.0/6)
-		{
-			color.r = 0;
-			color.g = 1;
-			color.b = lerp(0, 1, (h - 2.0/6) * 6);
-		}
-		else if (h < 4.0/6)
-		{
-			color.r = 0;
-			color.g = lerp(1, 0, (h - 3.0/6) * 6);
-			color.b = 1;
-		}
-		else if (h < 5.0/6)
-		{
-			color.r = lerp(0, 1, (h - 4.0/6) * 6);
-			color.g = 0;
-			color.b = 1;
-		}
-		else
-		{
-			color.r = 1;
-			color.g = 0;
-			color.b = lerp(1, 0, (h - 5.0/6) * 6);
-		}
-	#else
-		if (h < 3.0/6)
-		{
-			if (h < 1.0/6)
-			{
-				color.r = 1;
-				color.g = lerp(0, 1, h * 6);
-				color.b = 0;
-			}
-			else if (h < 2.0/6)
-			{
-				color.r = lerp(1, 0, (h - 1.0/6) * 6);
-				color.g = 1;
-				color.b = 0;
-			}
-			else
-			{
-				color.r = 0;
-				color.g = 1;
-				color.b = lerp(0, 1, (h - 2.0/6) * 6);
-			}
-		}
-		else
-		{
-			if (h < 4.0/6)
-			{
-				color.r = 0;
-				color.g = lerp(1, 0, (h - 3.0/6) * 6);
-				color.b = 1;
-			}
-			else if (h < 5.0/6)
-			{
-				color.r = lerp(0, 1, (h - 4.0/6) * 6);
-				color.g = 0;
-				color.b = 1;
-			}
-			else
-			{
-				color.r = 1;
-				color.g = 0;
-				color.b = lerp(1, 0, (h - 5.0/6) * 6);
-			}
-		}
-	#endif
-
-		float3 c = lerp(color, float3(1, 1, 1), s);
-
-		return float4(c * Value, 1);
+		return float4(color, 1);
 	}
 	else
 	{
