@@ -26,7 +26,6 @@
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaTreeView.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaUniformGrid.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindow.xaml" />
-        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditor.xaml" />
 
         <!--  Internals  -->
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/Internals/BiaSystemButton.xaml" />

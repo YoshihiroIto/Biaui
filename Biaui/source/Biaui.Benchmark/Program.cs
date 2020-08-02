@@ -7,7 +7,6 @@ namespace Biaui.Benchmark
         // ReSharper disable once UnusedParameter.Local
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<BiaNodeEditorHelperTest>();
         }
     }
 }

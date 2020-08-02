@@ -47,11 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BiaNodeEditorHelper.tt</DependentUpon>
-    </None>
     <None Include="Internals\ImmutableCircle.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -86,10 +81,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Controls\NodeEditor\Internal\BiaNodeEditorHelper.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BiaNodeEditorHelper.cs</LastGenOutput>
-    </None>
     <None Update="Internals\ImmutableCircle.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ImmutableCircle.cs</LastGenOutput>
@@ -113,11 +104,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\NodeEditor\Internal\BiaNodeEditorHelper.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BiaNodeEditorHelper.tt</DependentUpon>
-    </Compile>
     <Compile Update="Internals\ImmutableCircle.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

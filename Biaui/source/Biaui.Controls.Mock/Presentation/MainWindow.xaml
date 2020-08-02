@@ -3,12 +3,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:behavior="clr-namespace:Biaui.Controls.Mock.Control.Behavior"
                     xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:biaui="clr-namespace:Biaui;assembly=Biaui"
-                    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command"
                     xmlns:controls="clr-namespace:Biaui.Controls;assembly=Biaui"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:nodeEditor="clr-namespace:Biaui.Controls.NodeEditor;assembly=Biaui"
                     xmlns:presentation="clr-namespace:Biaui.Controls.Mock.Presentation"
                     Title="Biaui.Controls.Mock"
                     Width="1000"
@@ -537,52 +534,6 @@
                     <controls:BiaTextBlock IsEnabled="False" Text="{Binding BiaTextBlockViewModel.TextB}" />
                 </StackPanel>
             </StackPanel>
-        </TabItem>
-
-        <TabItem Header="BiaNodeEditor">
-            <DockPanel>
-                <WrapPanel Margin="4,8,4,0"
-                           DockPanel.Dock="Top"
-                           Orientation="Horizontal">
-                    <WrapPanel.Resources>
-                        <Style TargetType="{x:Type controls:BiaButton}">
-                            <Setter Property="Margin" Value="0,0,4,4" />
-                        </Style>
-                    </WrapPanel.Resources>
-
-                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.AddNodeCommand, Mode=OneWay}" Content="Add Node" />
-                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.RemoveSelectedNodesCommand, Mode=OneWay}" Content="Remove Selected Nodes" />
-                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ClearNodesCommand, Mode=OneWay}" Content="Clear Nodes" />
-                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceLastNodeCommand, Mode=OneWay}" Content="Replace Last Node" />
-                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ReplaceNodesSourceCommand, Mode=OneWay}" Content="Replace Nodes Source" />
-                    <controls:BiaButton Command="{Binding BiaNodeEditorViewModel.ChangeSelectedNodeSlotsCommand, Mode=OneWay}" Content="Change Selected Node Slots" />
-                </WrapPanel>
-
-                <nodeEditor:BiaNodeEditor Margin="4"
-                                          BorderBrush="{DynamicResource TextBoxBorderBrushKey}"
-                                          BorderThickness="1"
-                                          CornerRadius="{x:Static biaui:Constants.GroupCornerRadius}"
-                                          LinksSource="{Binding BiaNodeEditorViewModel.Links, Mode=OneWay}"
-                                          NodeSlotEnabledChecker="{Binding BiaNodeEditorViewModel.NodeSlotEnabledChecker, Mode=OneWay}"
-                                          NodesSource="{Binding BiaNodeEditorViewModel.Nodes, Mode=OneWay}">
-                    <nodeEditor:BiaNodeEditor.Resources>
-                        <ResourceDictionary>
-                            <ResourceDictionary.MergedDictionaries>
-                                <ResourceDictionary Source="NodeEditor/NodePanel.xaml" />
-                            </ResourceDictionary.MergedDictionaries>
-                        </ResourceDictionary>
-                    </nodeEditor:BiaNodeEditor.Resources>
-
-                    <behaviors:Interaction.Triggers>
-                        <behaviors:EventTrigger EventName="NodeLinkStarting">
-                            <command:EventToCommand Command="{Binding BiaNodeEditorViewModel.NodeLinkStartingCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
-                        </behaviors:EventTrigger>
-                        <behaviors:EventTrigger EventName="NodeLinkCompleted">
-                            <command:EventToCommand Command="{Binding BiaNodeEditorViewModel.NodeLinkCompletedCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
-                        </behaviors:EventTrigger>
-                    </behaviors:Interaction.Triggers>
-                </nodeEditor:BiaNodeEditor>
-            </DockPanel>
         </TabItem>
     </TabControl>
 </controls:BiaWindow>
