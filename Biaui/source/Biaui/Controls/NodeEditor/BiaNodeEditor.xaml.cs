@@ -13,7 +13,6 @@ using System.Windows.Media;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor.Environment;
 using Biaui.Controls.NodeEditor.Internal;
-using Biaui.Interfaces;
 using Biaui.Internals;
 
 namespace Biaui.Controls.NodeEditor
@@ -708,7 +707,7 @@ namespace Biaui.Controls.NodeEditor
             var scaleSlider = new Slider
             {
                 Value = ScaleTransform.ScaleX,
-                Style = Application.Current.TryFindResource("NodeEditorScaleSliderStyle") as Style
+                Style = Application.Current.TryFindResource("BiaNodeEditorScaleSliderStyle") as Style
             };
 
             BindingOperations.SetBinding(scaleSlider, RangeBase.MaximumProperty,

@@ -36,6 +36,7 @@
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowDialogStyle.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowSpaceSavingStyle.xaml" />
         <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/BiaWindowTemplatedDialogStyle.xaml" />
+        <internals:SharedResourceDictionary Source="pack://application:,,,/Biaui;component/Controls/NodeEditor/BiaNodeEditorScaleSliderStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
