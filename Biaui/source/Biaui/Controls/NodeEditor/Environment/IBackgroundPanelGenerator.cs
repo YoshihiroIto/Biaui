@@ -1,6 +1,4 @@
-﻿using Biaui.Controls.NodeEditor;
-
-namespace Biaui.Environment
+﻿namespace Biaui.Controls.NodeEditor.Environment
 {
     public interface IBackgroundPanelGenerator
     {

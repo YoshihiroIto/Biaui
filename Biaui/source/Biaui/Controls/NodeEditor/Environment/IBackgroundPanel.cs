@@ -1,4 +1,4 @@
-﻿namespace Biaui.Environment
+﻿namespace Biaui.Controls.NodeEditor.Environment
 {
     public interface IBackgroundPanel
     {

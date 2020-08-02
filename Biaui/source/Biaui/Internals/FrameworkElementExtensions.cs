@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
+using Biaui.Controls.NodeEditor;
 using Biaui.Interfaces;
 
 namespace Biaui.Internals

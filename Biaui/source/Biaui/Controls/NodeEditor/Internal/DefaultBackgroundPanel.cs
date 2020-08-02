@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
+using Biaui.Controls.NodeEditor.Environment;
 using Biaui.Controls.NodeEditor.Internal.NodeLinkGeomMaker;
-using Biaui.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
 

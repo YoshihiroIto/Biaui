@@ -1,8 +1,7 @@
-﻿using Biaui.Controls.NodeEditor;
+﻿using Biaui.Controls.NodeEditor.Environment;
 using Biaui.Controls.NodeEditor.Internal;
-using Biaui.Environment;
 
-namespace Biaui
+namespace Biaui.Controls.NodeEditor
 {
     public static class BiauiEnvironment
     {

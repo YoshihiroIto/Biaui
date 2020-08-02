@@ -11,8 +11,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Controls.Internals;
+using Biaui.Controls.NodeEditor.Environment;
 using Biaui.Controls.NodeEditor.Internal;
-using Biaui.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
-using Biaui.Controls.NodeEditor;
+using Biaui.Interfaces;
 
-namespace Biaui.Interfaces
+namespace Biaui.Controls.NodeEditor
 {
     public interface IBiaNodeItem : IBiaHasPos, INotifyPropertyChanged
     {

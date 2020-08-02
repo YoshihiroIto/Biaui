@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Biaui.Controls.Internals;
 using Biaui.Controls.NodeEditor;
-using Biaui.Environment;
+using Biaui.Controls.NodeEditor.Environment;
 using Biaui.Interfaces;
 using Biaui.Internals;
 using Jewelry.Collections;

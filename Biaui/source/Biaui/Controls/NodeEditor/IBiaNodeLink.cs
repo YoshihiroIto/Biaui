@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Biaui.Controls.NodeEditor;
 using Biaui.Controls.NodeEditor.Internal;
 using Biaui.Internals;
 
-namespace Biaui.Interfaces
+namespace Biaui.Controls.NodeEditor
 {
     public interface IBiaNodeLink : INotifyPropertyChanged
     {
