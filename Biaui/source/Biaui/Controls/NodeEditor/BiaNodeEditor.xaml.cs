@@ -224,7 +224,7 @@ namespace Biaui.Controls.NodeEditor
             set
             {
                 if (value != _NodeLinkStyle)
-                    SetValue(NodeLinkStyleProperty, Boxes.NodeEditorNodeLinkStyle(value));
+                    SetValue(NodeLinkStyleProperty, NodeEditorBoxes.NodeLinkStyle(value));
             }
         }
 
@@ -234,7 +234,7 @@ namespace Biaui.Controls.NodeEditor
             DependencyProperty.Register(nameof(NodeLinkStyle), typeof(BiaNodeEditorNodeLinkStyle),
                 typeof(BiaNodeEditor),
                 new FrameworkPropertyMetadata(
-                    Boxes.NodeEditorNodeLinkStyleAxisAlign,
+                    NodeEditorBoxes.NodeLinkStyleAxisAlign,
                     FrameworkPropertyMetadataOptions.AffectsRender |
                     FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
                     (s, e) =>
@@ -521,7 +521,7 @@ namespace Biaui.Controls.NodeEditor
                 typeof(BiaNodeEditorScaleSliderLocation),
                 typeof(BiaNodeEditor),
                 new PropertyMetadata(
-                    Boxes.NodeEditorScaleSliderLocationRight,
+                    NodeEditorBoxes.ScaleSliderLocationRight,
                     (s, e) =>
                     {
                         var self = (BiaNodeEditor) s;

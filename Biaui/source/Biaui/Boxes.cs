@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using Biaui.Controls;
-using Biaui.Controls.NodeEditor;
 
 namespace Biaui
 {
@@ -66,9 +65,6 @@ namespace Biaui
 
         public static readonly object NumberModeSimple = BiaNumberEditorMode.Simple;
         public static readonly object NumberModeWideRange = BiaNumberEditorMode.WideRange;
-
-        public static readonly object NodeEditorNodeLinkStyleAxisAlign = BiaNodeEditorNodeLinkStyle.AxisAlign;
-        public static readonly object NodeEditorNodeLinkStyleBezierCurve = BiaNodeEditorNodeLinkStyle.BezierCurve;
 
         public static readonly object BasicOneLineHeight = Constants.BasicOneLineHeight;
         public static readonly object BasicCornerRadiusPrim = Constants.BasicCornerRadiusPrim;
@@ -138,19 +134,6 @@ namespace Biaui
 
         public static readonly object WindowCloseButtonBehaviorNormal = BiaWindowCloseButtonBehavior.Normal;
         public static readonly object WindowCloseButtonBehaviorDoNothing = BiaWindowCloseButtonBehavior.DoNothing;
-
-        public static readonly object NodeEditorScaleSliderLocationLeft = BiaNodeEditorScaleSliderLocation.Left;
-        public static readonly object NodeEditorScaleSliderLocationLeftTop = BiaNodeEditorScaleSliderLocation.LeftTop;
-        public static readonly object NodeEditorScaleSliderLocationTopLeft = BiaNodeEditorScaleSliderLocation.TopLeft;
-        public static readonly object NodeEditorScaleSliderLocationTop = BiaNodeEditorScaleSliderLocation.Top;
-        public static readonly object NodeEditorScaleSliderLocationTopRight = BiaNodeEditorScaleSliderLocation.TopRight;
-        public static readonly object NodeEditorScaleSliderLocationRightTop = BiaNodeEditorScaleSliderLocation.RightTop;
-        public static readonly object NodeEditorScaleSliderLocationRight = BiaNodeEditorScaleSliderLocation.Right;
-        public static readonly object NodeEditorScaleSliderLocationRightBottom = BiaNodeEditorScaleSliderLocation.RightBottom;
-        public static readonly object NodeEditorScaleSliderLocationBottomRight = BiaNodeEditorScaleSliderLocation.BottomRight;
-        public static readonly object NodeEditorScaleSliderLocationBottom = BiaNodeEditorScaleSliderLocation.Bottom;
-        public static readonly object NodeEditorScaleSliderLocationBottomLeft = BiaNodeEditorScaleSliderLocation.BottomLeft;
-        public static readonly object NodeEditorScaleSliderLocationLeftBottom = BiaNodeEditorScaleSliderLocation.LeftBottom;
         // ReSharper restore InconsistentNaming
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -232,17 +215,6 @@ namespace Biaui
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object NodeEditorNodeLinkStyle(BiaNodeEditorNodeLinkStyle i)
-        {
-            return i switch
-            {
-                BiaNodeEditorNodeLinkStyle.AxisAlign => NodeEditorNodeLinkStyleAxisAlign,
-                BiaNodeEditorNodeLinkStyle.BezierCurve => NodeEditorNodeLinkStyleBezierCurve,
-                _ => throw new ArgumentOutOfRangeException(nameof(i), i, null)
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object WindowAction(BiaWindowAction a)
         {
             return a switch
@@ -312,27 +284,6 @@ namespace Biaui
             {
                 BiaWindowCloseButtonBehavior.Normal => WindowCloseButtonBehaviorNormal,
                 BiaWindowCloseButtonBehavior.DoNothing => WindowCloseButtonBehaviorDoNothing,
-                _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object NodeEditorScaleSliderLocation(BiaNodeEditorScaleSliderLocation v)
-        {
-            return v switch
-            {
-                BiaNodeEditorScaleSliderLocation.Left => NodeEditorScaleSliderLocationLeft,
-                BiaNodeEditorScaleSliderLocation.LeftTop => NodeEditorScaleSliderLocationLeftTop,
-                BiaNodeEditorScaleSliderLocation.TopLeft => NodeEditorScaleSliderLocationTopLeft,
-                BiaNodeEditorScaleSliderLocation.Top => NodeEditorScaleSliderLocationTop,
-                BiaNodeEditorScaleSliderLocation.TopRight => NodeEditorScaleSliderLocationTopRight,
-                BiaNodeEditorScaleSliderLocation.RightTop => NodeEditorScaleSliderLocationRightTop,
-                BiaNodeEditorScaleSliderLocation.Right => NodeEditorScaleSliderLocationRight,
-                BiaNodeEditorScaleSliderLocation.RightBottom => NodeEditorScaleSliderLocationRightBottom,
-                BiaNodeEditorScaleSliderLocation.BottomRight => NodeEditorScaleSliderLocationBottomRight,
-                BiaNodeEditorScaleSliderLocation.Bottom => NodeEditorScaleSliderLocationBottom,
-                BiaNodeEditorScaleSliderLocation.BottomLeft => NodeEditorScaleSliderLocationBottomLeft,
-                BiaNodeEditorScaleSliderLocation.LeftBottom => NodeEditorScaleSliderLocationLeftBottom,
                 _ => throw new ArgumentOutOfRangeException(nameof(v), v, null)
             };
         }
