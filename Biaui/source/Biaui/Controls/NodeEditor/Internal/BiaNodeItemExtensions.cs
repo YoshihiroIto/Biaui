@@ -68,7 +68,7 @@ namespace Biaui.Controls.NodeEditor.Internal
 
             var itemSize = nodeItem.Size;
 
-            var slotMarkRadiusSq = control.MakeSlotMarkRadiusSq(nodeItem);
+            var slotMarkRadiusSq = MakeSlotMarkRadiusSq(control, nodeItem);
             
             foreach (var slot in nodeItem.EnabledSlots())
             {
@@ -98,6 +98,19 @@ namespace Biaui.Controls.NodeEditor.Internal
             return nodeItem.InternalData().EnableSlots ??
                    nodeItem.Slots?.Values ??
                    Enumerable.Empty<BiaNodeSlot>();
+        }
+        
+        private static double MakeSlotMarkRadiusSq(FrameworkElement self, IBiaNodeItem nodeItem)
+        {
+            var slotMarkRadiusSq = Biaui.Internals.Constants.SlotMarkRadiusSq(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
+
+            if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
+            {
+                var invScale = 1d / self.CalcCompositeRenderScale();
+                slotMarkRadiusSq *= invScale * invScale;
+            }
+
+            return slotMarkRadiusSq;
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using Biaui.Controls.NodeEditor;
-using Biaui.Interfaces;
 
 namespace Biaui.Internals
 {
@@ -46,32 +44,6 @@ namespace Biaui.Internals
             } while (p != null);
 
             return scale;
-        }
-
-        internal static double MakeSlotMarkRadius(this FrameworkElement self, IBiaNodeItem nodeItem)
-        {
-            var slotMarkRadius = Constants.SlotMarkRadius(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
-
-            if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
-            {
-                var invScale = 1d / self.CalcCompositeRenderScale();
-                slotMarkRadius *= invScale;
-            }
-
-            return slotMarkRadius;
-        }
-
-        internal static double MakeSlotMarkRadiusSq(this FrameworkElement self, IBiaNodeItem nodeItem)
-        {
-            var slotMarkRadiusSq = Constants.SlotMarkRadiusSq(nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace));
-
-            if (nodeItem.Flags.HasFlag(BiaNodePaneFlags.DesktopSpace))
-            {
-                var invScale = 1d / self.CalcCompositeRenderScale();
-                slotMarkRadiusSq *= invScale * invScale;
-            }
-
-            return slotMarkRadiusSq;
         }
 
         internal static void SetMouseClipping(this FrameworkElement self)
