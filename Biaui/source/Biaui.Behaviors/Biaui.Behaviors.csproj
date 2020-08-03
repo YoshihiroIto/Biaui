@@ -6,12 +6,17 @@
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Authors>1.0.0</Authors>
+        <Authors>Yoshihiro Ito</Authors>
         <Description>WPF dark theme and controls for .NET Core and .NET Framework</Description>
         <Copyright>Copyright (c) 2018-2020 copyright Yoshihiro Ito (yo.i.jewelry.bab@gmail.com)</Copyright>
         <PackageProjectUrl>https://github.com/YoshihiroIto/Biaui</PackageProjectUrl>
         <RepositoryUrl>https://github.com/YoshihiroIto/Biaui</RepositoryUrl>
         <PackageTags>wpf dark-theme dark ui theme csharp dotnet wpf-dark-theme </PackageTags>
+
+        <IsPackable Condition="'$(biaui_build_nuget)' == '1'">true</IsPackable>
+        <IsPackable Condition="'$(biaui_build_nuget)' != '1'">false</IsPackable>
+        <PackageOutputPath>../../nupkg</PackageOutputPath>
+        <PackageVersion>1.0.1</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
