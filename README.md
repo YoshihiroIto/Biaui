@@ -4,7 +4,7 @@
 ![.NET Framework version: >= 4.7](https://img.shields.io/badge/.NET%20Framework-%3E%3D%204.7-brightgreen) 
 [![MIT License](http://img.shields.io/badge/license-MIT-lightgray)](LICENSE)  
 
-WPF dark theme and controls for .NET Core and .NET Framework
+WPF dark theme and controls for .NET
 
 [Biaui.Showcase.csproj](https://github.com/YoshihiroIto/Biaui/tree/master/Biaui/source/Biaui.Showcase)
 ![Biaui.Showcase.csproj](biaui.png)
@@ -33,6 +33,7 @@ WPF dark theme and controls for .NET Core and .NET Framework
 
 ## Target Frameworks
 
+* .NET 5.0
 * .NET Core 3.1
 * .NET Framework 4.7 or 4.7.2 or 4.8
 
