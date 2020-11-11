@@ -29,7 +29,7 @@
     <PackageVersion>1.0.22</PackageVersion>
 
     <LangVersion>8</LangVersion>
-    <TargetFrameworks>net47;net472;net48;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net47;net472;net48;netcoreapp3.1;net5.0-windows</TargetFrameworks>
 
     <IsPackable Condition="'$(biaui_build_nuget)' == '1'">true</IsPackable>
     <IsPackable Condition="'$(biaui_build_nuget)' != '1'">false</IsPackable>
