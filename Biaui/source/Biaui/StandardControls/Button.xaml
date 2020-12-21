@@ -14,7 +14,6 @@
             </Setter.Value>
         </Setter>
 
-        <Setter Property="Height" Value="{x:Static biaui:Boxes.BasicOneLineHeight}" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
 
         <Setter Property="Template">
