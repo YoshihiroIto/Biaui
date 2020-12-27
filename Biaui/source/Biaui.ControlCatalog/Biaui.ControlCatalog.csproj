@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <UseWPF>true</UseWPF>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
+        <TargetFrameworks>net5.0-windows;netcoreapp3.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
