@@ -124,7 +124,7 @@ namespace Biaui.Internals
 #endif
         }
 
-#if !NETCOREAPP3_1
+#if !NETCOREAPP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal double Draw(
             Visual visual,
@@ -230,7 +230,7 @@ namespace Biaui.Internals
             return gr.Width;
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
 #endif
         internal double CalcWidth(ReadOnlySpan<char> text)
@@ -313,7 +313,7 @@ namespace Biaui.Internals
 
         internal double FontHeight => _fontLineSpacing * _fontSize;
 
-#if NETCOREAPP3_1
+#if NETCOREAPP
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
 #endif
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
@@ -420,7 +420,7 @@ namespace Biaui.Internals
             }
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
 #endif
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
@@ -568,7 +568,7 @@ namespace Biaui.Internals
             return (newTextWidth + dot3Width, newCount);
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
 #endif
         private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
@@ -588,7 +588,7 @@ namespace Biaui.Internals
             }
         }
 
-#if NETCOREAPP3_1
+#if NETCOREAPP
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
 #endif
         private ReadOnlySpan<char> TrimmingFilepathText(ReadOnlySpan<char> text, double maxWidth, char[] buffer)
@@ -597,7 +597,7 @@ namespace Biaui.Internals
 
             bool widthOk;
 
-#if NETCOREAPP3_1
+#if NETCOREAPP
             var filename = Path.GetFileName(text);
             var directory = Path.GetDirectoryName(text);
 #else
