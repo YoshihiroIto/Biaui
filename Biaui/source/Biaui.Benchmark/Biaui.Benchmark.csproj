@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <Nullable>enable</Nullable>
-        <TargetFrameworks>netcoreapp3.1;net5.0-windows</TargetFrameworks>
+        <TargetFrameworks>net6.0-windows;net7.0-windows</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

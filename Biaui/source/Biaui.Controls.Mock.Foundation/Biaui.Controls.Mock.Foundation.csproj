@@ -3,8 +3,9 @@
   <PropertyGroup>
     <AssemblyName>Biaui.Controls.Mock.Foundation</AssemblyName>
 
-    <LangVersion>8</LangVersion>
+    <LangVersion>default</LangVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

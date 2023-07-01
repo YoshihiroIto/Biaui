@@ -8,7 +8,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <Nullable>enable</Nullable>
-    <Nullable Condition="'$(TargetFramework)' != 'netcoreapp3.1'">annotations</Nullable>
+    <Nullable Condition="'$(TargetFramework)' != 'netcoreapp3.1'">enable</Nullable>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
@@ -28,8 +28,8 @@
 
     <PackageVersion>1.0.22</PackageVersion>
 
-    <LangVersion>8</LangVersion>
-    <TargetFrameworks>net47;net472;net48;netcoreapp3.1;net5.0-windows</TargetFrameworks>
+    <LangVersion>default</LangVersion>
+    <TargetFrameworks>net6.0-windows;net7.0-windows</TargetFrameworks>
 
     <IsPackable Condition="'$(biaui_build_nuget)' == '1'">true</IsPackable>
     <IsPackable Condition="'$(biaui_build_nuget)' != '1'">false</IsPackable>
