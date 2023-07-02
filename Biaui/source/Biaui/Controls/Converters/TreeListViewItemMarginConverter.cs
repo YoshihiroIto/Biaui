@@ -14,13 +14,13 @@ public class TreeListViewItemMarginConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (!(value is TreeViewItem item))
+        if (value is not TreeViewItem item)
             return Boxes.Thickness0;
 
-        var right = Length * (item.GetDepth() + 1.0);
-        var left = IsFirstColumn ? -6.0 : right * -1.0;
+        var right = Length * (item.GetDepth() + 1d);
+        var left = IsFirstColumn ? -6d : right * -1d;
 
-        return new Thickness(left, 0, right, 0);
+        return new Thickness(left, 0d, right, 0d);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

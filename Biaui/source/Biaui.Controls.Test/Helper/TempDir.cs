@@ -45,7 +45,7 @@ internal class TempDir : IDisposable
         {
             var fullPath = Path.Combine(RootPath, path);
             // ReSharper disable once AssignNullToNotNullAttribute
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? throw new InvalidOperationException());
 
             File.WriteAllText(
                 fullPath,

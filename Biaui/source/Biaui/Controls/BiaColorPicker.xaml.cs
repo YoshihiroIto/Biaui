@@ -128,7 +128,7 @@ public class BiaColorPicker : Control
         }
     }
 
-    private double _RedMaximum = 1.0;
+    private double _RedMaximum = 1d;
 
     public static readonly DependencyProperty RedMaximumProperty =
         DependencyProperty.Register(nameof(RedMaximum), typeof(double), typeof(BiaColorPicker),
@@ -607,7 +607,7 @@ public class BiaColorPicker : Control
             if (_redEditor is null)
                 return;
 
-            if (e.NewSize.Width > 300)
+            if (e.NewSize.Width > 300d)
             {
                 if (_redEditor != null)
                     _redEditor.Caption = "Red";
@@ -775,86 +775,87 @@ public class BiaColorPicker : Control
             Debug.Assert(_editingDepth > 0);
 
             --_editingDepth;
-            if (_editingDepth == 0)
+
+            if (_editingDepth != 0)
+                return;
+
+            if (EndContinuousEditingCommand is null)
+                return;
+
+            if (EndContinuousEditingCommand.CanExecute(null))
             {
-                if (EndContinuousEditingCommand != null)
-                {
-                    if (EndContinuousEditingCommand.CanExecute(null))
-                    {
-                        var changedValue = (Red, Green, Blue);
+                var changedValue = (Red, Green, Blue);
 
-                        (Red, Green, Blue) = _continuousEditingStartValue;
+                (Red, Green, Blue) = _continuousEditingStartValue;
 
-                        EndContinuousEditingCommand.Execute(null);
+                EndContinuousEditingCommand.Execute(null);
 
-                        (Red, Green, Blue) = changedValue;
-                    }
-                }
+                (Red, Green, Blue) = changedValue;
             }
         });
 
-        if (_redEditor != null)
+        if (_redEditor is not null)
         {
             _redEditor.StartedContinuousEditingCommand = started;
             _redEditor.EndContinuousEditingCommand = end;
         }
 
-        if (_greenEditor != null)
+        if (_greenEditor is not null)
         {
             _greenEditor.StartedContinuousEditingCommand = started;
             _greenEditor.EndContinuousEditingCommand = end;
         }
 
-        if (_blueEditor != null)
+        if (_blueEditor is not null)
         {
             _blueEditor.StartedContinuousEditingCommand = started;
             _blueEditor.EndContinuousEditingCommand = end;
         }
 
-        if (_alphaEditor != null)
+        if (_alphaEditor is not null)
         {
             _alphaEditor.StartedContinuousEditingCommand = started;
             _alphaEditor.EndContinuousEditingCommand = end;
         }
 
-        if (_hueEditor != null)
+        if (_hueEditor is not null)
         {
             _hueEditor.StartedContinuousEditingCommand = started;
             _hueEditor.EndContinuousEditingCommand = end;
         }
 
-        if (_saturationEditor != null)
+        if (_saturationEditor is not null)
         {
             _saturationEditor.StartedContinuousEditingCommand = started;
             _saturationEditor.EndContinuousEditingCommand = end;
         }
 
-        if (_valueEditor != null)
+        if (_valueEditor is not null)
         {
             _valueEditor.StartedContinuousEditingCommand = started;
             _valueEditor.EndContinuousEditingCommand = end;
         }
 
-        if (_valueBar != null)
+        if (_valueBar is not null)
         {
             _valueBar.StartedContinuousEditingCommand = started;
             _valueBar.EndContinuousEditingCommand = end;
         }
 
-        if (_wheelBackground != null)
+        if (_wheelBackground is not null)
         {
             _wheelBackground.StartedContinuousEditingCommand = started;
             _wheelBackground.EndContinuousEditingCommand = end;
         }
 
-        if (_boxBackground != null)
+        if (_boxBackground is not null)
         {
             _boxBackground.StartedContinuousEditingCommand = started;
             _boxBackground.EndContinuousEditingCommand = end;
         }
     }
 
-    private class DelegateCommand : ICommand
+    private sealed class DelegateCommand : ICommand
     {
         private readonly Action _execute;
 
@@ -863,13 +864,13 @@ public class BiaColorPicker : Control
             _execute = execute;
         }
 
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        bool ICommand.CanExecute(object parameter) => true;
-        void ICommand.Execute(object parameter) => _execute();
+        bool ICommand.CanExecute(object? parameter) => true;
+        void ICommand.Execute(object? parameter) => _execute();
     }
 }

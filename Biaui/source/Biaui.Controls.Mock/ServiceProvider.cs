@@ -26,6 +26,8 @@ public class ServiceProvider : Container
                     new NullDisposableChecker()
 #endif
             );
+            
+            Options.ResolveUnregisteredConcreteTypes = true;
 
 #if DEBUG
             Verify();

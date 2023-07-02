@@ -110,8 +110,8 @@ public class BiaHsvWheelCursor : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         var rounder = new LayoutRounder(this);
@@ -134,21 +134,21 @@ public class BiaHsvWheelCursor : FrameworkElement
         saturation = NumberHelper.Clamp01(saturation);
 
         var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
-        var w = rounder.RoundLayoutValue(actualWidth - bw * 2);
-        var h = rounder.RoundLayoutValue(actualHeight - bw * 2);
+        var w = rounder.RoundLayoutValue(actualWidth - bw * 2d);
+        var h = rounder.RoundLayoutValue(actualHeight - bw * 2d);
 
-        var r = hue * 2.0 * Math.PI;
+        var r = hue * 2d * Math.PI;
 
         var (cx, cy) = MakeAspectRatioCorrection(actualWidth, actualHeight);
 
-        var x = bw + Math.Cos(r) * saturation * (w * 0.5) / cx + w * 0.5;
-        var y = bw + Math.Sin(r) * saturation * (h * 0.5) / cy + h * 0.5;
+        var x = bw + Math.Cos(r) * saturation * (w * 0.5d) / cx + w * 0.5d;
+        var y = bw + Math.Sin(r) * saturation * (h * 0.5d) / cy + h * 0.5d;
 
         return new ImmutableVec2_double(rounder.RoundLayoutValue(x), rounder.RoundLayoutValue(y));
     }
 
     internal static (double X, double Y) MakeAspectRatioCorrection(double actualWidth, double actualHeight)
         => actualWidth > actualHeight
-            ? (actualWidth / actualHeight, 1.0)
-            : (1.0, actualHeight / actualWidth);
+            ? (actualWidth / actualHeight, 1d)
+            : (1d, actualHeight / actualWidth);
 }

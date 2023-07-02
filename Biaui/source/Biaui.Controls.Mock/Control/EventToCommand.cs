@@ -1,5 +1,11 @@
 ﻿// ReSharper disable All
 
+#pragma warning disable CS8622
+#pragma warning disable CS8625
+#pragma warning disable CS8603
+#pragma warning disable CS8604
+#pragma warning disable CS8618
+
 // https://raw.githubusercontent.com/lbugnion/mvvmlight/master/GalaSoft.MvvmLight/GalaSoft.MvvmLight.Platform%20(NET45)/Command/EventToCommand.cs
 
 // ****************************************************************************

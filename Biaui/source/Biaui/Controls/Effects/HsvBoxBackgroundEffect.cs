@@ -98,7 +98,7 @@ internal class HsvBoxBackgroundEffect : ShaderEffect
         }
     }
 
-    private Point3D _DisableColor = new Point3D(1.0, 0.0, 0.0);
+    private Point3D _DisableColor = new (1d, 0d, 0d);
 
     public static readonly DependencyProperty DisableColorProperty =
         DependencyProperty.Register(nameof(DisableColor), typeof(Point3D), typeof(HsvBoxBackgroundEffect),

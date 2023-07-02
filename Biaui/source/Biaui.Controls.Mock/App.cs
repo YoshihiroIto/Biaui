@@ -11,7 +11,8 @@ public class App : IDisposable
     private readonly Container _dic;
     private readonly ILogger _logger;
 
-    private string _appConfigFilePath;
+    private string? _appConfigFilePath;
+    private LocalStorageRepository<AppConfig>? _configRepos;
 
     public App(Container dic, ILogger logger, AppConfig appConfig)
     {
@@ -19,17 +20,17 @@ public class App : IDisposable
         _logger = logger;
         _appConfig = appConfig;
 
-        _logger?.Info("Start Application");
+        _logger.Info("Start Application");
     }
 
     public void Dispose()
     {
+        _ = _configRepos ?? throw new InvalidOperationException();
+        
         _appConfig.Save(_configRepos);
 
-        _logger?.Info("End Application");
+        _logger.Info("End Application");
     }
-
-    private LocalStorageRepository<AppConfig> _configRepos;
 
     public void Setup(CommandLine commandLine)
     {

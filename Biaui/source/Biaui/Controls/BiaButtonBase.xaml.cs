@@ -40,12 +40,12 @@ public class BiaButtonBase : FrameworkElement
                 {
                     var self = (BiaButtonBase) s;
 
-                    if (self._Command != null)
+                    if (self._Command is not null)
                         self._Command.CanExecuteChanged -= self.CommandOnCanExecuteChanged;
 
                     self._Command = (ICommand) e.NewValue;
 
-                    if (self._Command != null)
+                    if (self._Command is not null)
                         self._Command.CanExecuteChanged += self.CommandOnCanExecuteChanged;
 
                     self.CommandOnCanExecuteChanged(null, EventArgs.Empty);
@@ -53,8 +53,10 @@ public class BiaButtonBase : FrameworkElement
 
     private void CommandOnCanExecuteChanged(object? sender, EventArgs e)
     {
-        if (Command != null)
-            IsEnabled = Command.CanExecute(CommandParameter);
+        if (Command is null)
+            return;
+
+        IsEnabled = Command.CanExecute(CommandParameter);
     }
 
     #endregion
@@ -276,9 +278,9 @@ public class BiaButtonBase : FrameworkElement
         var pos = e.GetPosition(this);
 
         return
-            pos.X >= 0.0 &&
+            pos.X >= 0d &&
             pos.X <= ActualWidth &&
-            pos.Y >= 0.0 &&
+            pos.Y >= 0d &&
             pos.Y <= ActualHeight;
     }
 

@@ -77,8 +77,8 @@ public class BiaButton : BiaButtonBase
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -100,21 +100,25 @@ public class BiaButton : BiaButtonBase
         }
 
         // キャプション
-        const double y = 4.0; // todo:正しく求める
+        const double y = 4d; // todo:正しく求める
 
-        if (Content != null)
-            if (Foreground != null)
-                DefaultTextRenderer.Instance.Draw(
-                    this,
-                    Content,
-                    Constants.ButtonPaddingX,
-                    y,
-                    Foreground,
-                    dc,
-                    ActualWidth - Constants.ButtonPaddingX * 2.0,
-                    TextAlignment.Center,
-                    TextTrimming,
-                    true);
+        if (Content is null)
+            return;
+
+        if (Foreground is null)
+            return;
+
+        DefaultTextRenderer.Instance.Draw(
+            this,
+            Content,
+            Constants.ButtonPaddingX,
+            y,
+            Foreground,
+            dc,
+            ActualWidth - Constants.ButtonPaddingX * 2d,
+            TextAlignment.Center,
+            TextTrimming,
+            true);
     }
 
     private double _textWidth;
@@ -122,6 +126,7 @@ public class BiaButton : BiaButtonBase
     protected override Size MeasureOverride(Size constraint)
     {
         var h = Height;
+        
         if (double.IsNaN(h))
             h = Constants.BasicOneLineHeight;
         else if (double.IsInfinity(h))
@@ -133,7 +138,7 @@ public class BiaButton : BiaButtonBase
     private void UpdateSize()
     {
         var w = Content is null
-            ? 0.0
+            ? 0d
             : DefaultTextRenderer.Instance.CalcWidth(Content);
 
         _textWidth = Math.Ceiling(Constants.ButtonPaddingX + w + Constants.ButtonPaddingX);

@@ -397,8 +397,8 @@ public class BiaComboBox : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         var rounder = new LayoutRounder(this);
@@ -540,10 +540,10 @@ public class BiaComboBox : FrameworkElement
             {
                 IsTabStop = false,
                 FocusVisualStyle = null,
-                Margin = new Thickness(0, 0, 3, 3),
+                Margin = new Thickness(0d, 0d, 3d, 3d),
                 Effect = new DropShadowEffect
                 {
-                    ShadowDepth = 2,
+                    ShadowDepth = 2d,
                     Color = Colors.Black
                 }
             };
@@ -558,7 +558,7 @@ public class BiaComboBox : FrameworkElement
                 StaysOpen = false,
                 Focusable = false,
                 RenderTransform = _scale,
-                HorizontalOffset = -2,
+                HorizontalOffset = -2d,
                 PlacementTarget = this
             };
 
@@ -580,8 +580,8 @@ public class BiaComboBox : FrameworkElement
             _popup.Closed += PopupOnClosed;
         }
 
-        Debug.Assert(_items != null);
-        Debug.Assert(_scale != null);
+        Debug.Assert(_items is not null);
+        Debug.Assert(_scale is not null);
 
         if (_isReqUpdateListBoxItemTemplate)
         {

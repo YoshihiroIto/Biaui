@@ -111,12 +111,12 @@ public static class Caches
         return c;
     }
 
-    private static readonly Dictionary<long, RectangleGeometry> _clipGeoms = new Dictionary<long, RectangleGeometry>();
+    private static readonly Dictionary<long, RectangleGeometry> _clipGeoms = new ();
 
-    private static readonly Dictionary<long, Pen> _borderPens = new Dictionary<long, Pen>();
-    private static readonly Dictionary<long, Pen> _capPens = new Dictionary<long, Pen>();
-    private static readonly Dictionary<long, Pen> _dashedPens = new Dictionary<long, Pen>();
-    private static readonly Dictionary<long, SolidColorBrush> _solidColorBrushes = new Dictionary<long, SolidColorBrush>();
+    private static readonly Dictionary<long, Pen> _borderPens = new ();
+    private static readonly Dictionary<long, Pen> _capPens = new ();
+    private static readonly Dictionary<long, Pen> _dashedPens = new ();
+    private static readonly Dictionary<long, SolidColorBrush> _solidColorBrushes = new ();
 
     public static TraversalRequest PreviousTraversalRequest
         => _PreviousTraversalRequest ??= new TraversalRequest(FocusNavigationDirection.Previous);

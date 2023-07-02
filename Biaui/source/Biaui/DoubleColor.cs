@@ -25,12 +25,12 @@ public struct DoubleColor
         => HashCodeMaker.To32(HashCodeMaker.Make(R, G, B, A));
     // ReSharper restore NonReadonlyMemberInGetHashCode
 
-    public static readonly DoubleColor Zero = new DoubleColor
+    public static readonly DoubleColor Zero = new ()
     {
-        R = 0.0,
-        G = 0.0,
-        B = 0.0,
-        A = 0.0
+        R = 0d,
+        G = 0d,
+        B = 0d,
+        A = 0d
     };
 
     public double R { get; set; }
@@ -47,7 +47,7 @@ public struct DoubleColor
         );
     
     public ByteColor ByteColor =>
-        new ByteColor(
+        new (
             (byte) (NumberHelper.Clamp01(A) * 0xFF),
             (byte) (NumberHelper.Clamp01(R) * 0xFF),
             (byte) (NumberHelper.Clamp01(G) * 0xFF),

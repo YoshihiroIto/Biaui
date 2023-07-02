@@ -6,12 +6,12 @@ namespace Biaui.Internals;
 
 internal static class FrameworkElementExtensions
 {
-    internal const double BorderWidth = 1.0;
-    internal const double BorderHalfWidth = BorderWidth * 0.5;
+    internal const double BorderWidth = 1d;
+    internal const double BorderHalfWidth = BorderWidth * 0.5d;
     
     internal static double CalcCompositeRenderScale(this FrameworkElement self)
     {
-        var scale = 1.0;
+        var scale = 1d;
 
         var p = self as DependencyObject;
 
@@ -25,7 +25,7 @@ internal static class FrameworkElementExtensions
                     {
                         foreach (var c in tg.Children)
                         {
-                            if (!(c is ScaleTransform sc))
+                            if (c is not ScaleTransform sc)
                                 continue;
 
                             scale *= sc.ScaleX;
@@ -49,7 +49,7 @@ internal static class FrameworkElementExtensions
     internal static void SetMouseClipping(this FrameworkElement self)
     {
         var p0 = new Point(0, 0);
-        var p1 = new Point(self.ActualWidth + 1, self.ActualHeight + 1);
+        var p1 = new Point(self.ActualWidth + 1d, self.ActualHeight + 1d);
         var dp0 = self.PointToScreen(p0);
         var dp1 = self.PointToScreen(p1);
         var cr = new Win32Helper.RECT((int) dp0.X, (int) dp0.Y, (int) dp1.X, (int) dp1.Y);
@@ -63,7 +63,7 @@ internal static class FrameworkElementExtensions
 
     internal static bool IsInActualSize(this FrameworkElement self, Point pos)
     {
-        return pos.X >= 0 && pos.X <= self.ActualWidth &&
-               pos.Y >= 0 && pos.Y <= self.ActualHeight;
+        return pos.X >= 0d && pos.X <= self.ActualWidth &&
+               pos.Y >= 0d && pos.Y <= self.ActualHeight;
     }
 }

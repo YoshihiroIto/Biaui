@@ -70,8 +70,8 @@ public class BiaRadioButton : BiaToggleButton
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -91,16 +91,16 @@ public class BiaRadioButton : BiaToggleButton
                     ? MarkBrush
                     : Background,
                 rounder.GetBorderPen(color),
-                new Point(8, 10),
-                7, 7);
+                new Point(8d, 10d),
+                7d, 7d);
         }
         else
         {
             dc.DrawEllipse(
                 null,
                 rounder.GetBorderPen(MarkBorderColor),
-                new Point(8, 10),
-                7, 7);
+                new Point(8d, 10d),
+                7d, 7d);
         }
 
         if (IsChecked)
@@ -108,13 +108,13 @@ public class BiaRadioButton : BiaToggleButton
             dc.DrawEllipse(
                 MarkBrush,
                 null,
-                new Point(8, 10),
-                4.5, 4.5);
+                new Point(8d, 10d),
+                4.5d, 4.5d);
         }
 
         // キャプション
-        if (Content != null &&
-            Foreground != null)
-            DefaultTextRenderer.Instance.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left, TextTrimming, true);
+        if (Content is not null &&
+            Foreground is not null)
+            DefaultTextRenderer.Instance.Draw(this, Content, 16d + 4d, 2d, Foreground, dc, ActualWidth, TextAlignment.Left, TextTrimming, true);
     }
 }

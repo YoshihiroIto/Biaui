@@ -266,7 +266,7 @@ internal class BiaHsvWheelBackground : Canvas
         _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
         _isEnabledChangeNotifier.ValueChanged += (_, __) =>
         {
-            _effect.IsEnabled = IsEnabled ? 1.0f : 0.0f;
+            _effect.IsEnabled = IsEnabled ? 1f : 0f;
             InvalidateVisual();
         };
     }
@@ -275,8 +275,8 @@ internal class BiaHsvWheelBackground : Canvas
     {
         base.OnRender(dc);
 
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -293,21 +293,21 @@ internal class BiaHsvWheelBackground : Canvas
 
         var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
-        var width = ActualWidth - bw * 2;
-        var height = ActualHeight - bw * 2;
+        var width = ActualWidth - bw * 2d;
+        var height = ActualHeight - bw * 2d;
 
         var x = (pos.X - bw) / width;
         var y = (pos.Y - bw) / height;
 
-        var dx = x - 0.5;
-        var dy = y - 0.5;
+        var dx = x - 0.5d;
+        var dy = y - 0.5d;
 
         var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
         dx *= cx;
         dy *= cy;
 
-        var h = (Math.Atan2(-dy, -dx) + Math.PI) / (2.0 * Math.PI);
-        var s = Math.Sqrt(dx * dx + dy * dy) * 2;
+        var h = (Math.Atan2(-dy, -dx) + Math.PI) / (2d * Math.PI);
+        var s = Math.Sqrt(dx * dx + dy * dy) * 2d;
         var ss = s;
 
         h = NumberHelper.Clamp01(h);
@@ -316,7 +316,7 @@ internal class BiaHsvWheelBackground : Canvas
         Hue = h;
         Saturation = s;
 
-        return ss > 1;
+        return ss > 1d;
     }
 
     private bool _isMouseDown;
@@ -438,21 +438,21 @@ internal class BiaHsvWheelBackground : Canvas
     {
         var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
-        var width = ActualWidth - bw * 2;
-        var height = ActualHeight - bw * 2;
+        var width = ActualWidth - bw * 2d;
+        var height = ActualHeight - bw * 2d;
 
         var x = (pos.X - bw) / width;
         var y = (pos.Y - bw) / height;
 
-        var dx = x - 0.5;
-        var dy = y - 0.5;
+        var dx = x - 0.5d;
+        var dy = y - 0.5d;
 
         var (cx, cy) = BiaHsvWheelCursor.MakeAspectRatioCorrection(ActualWidth, ActualHeight);
         dx *= cx;
         dy *= cy;
 
-        var s = Math.Sqrt(dx * dx + dy * dy) * 2;
+        var s = Math.Sqrt(dx * dx + dy * dy) * 2d;
 
-        return s > 1;
+        return s > 1d;
     }
 }

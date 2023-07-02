@@ -5,5 +5,5 @@ namespace Biaui.Controls.Mock.Foundation.Interface;
 public interface IRepository<T>
 {
     Task SaveAsync(T obj);
-    Task<T> LoadAsync();
+    Task<T?> LoadAsync();
 }

@@ -15,7 +15,7 @@ public class BiaClippingBorder : Border
         base.OnRender(dc);
     }
 
-    public override UIElement Child
+    public override UIElement? Child
     {
         get => base.Child;
 
@@ -46,7 +46,7 @@ public class BiaClippingBorder : Border
             return;
 
         var key = HashCodeMaker.Make(
-            Child.RenderSize.Width, Child.RenderSize.Height,
+            child.RenderSize.Width, child.RenderSize.Height,
             CornerRadius.BottomLeft, CornerRadius.BottomRight,
             CornerRadius.TopLeft, CornerRadius.TopRight);
 
@@ -59,8 +59,8 @@ public class BiaClippingBorder : Border
                 NumberHelper.AreClose(CornerRadius.BottomLeft, CornerRadius.TopLeft);
 
             clipRect = isSame
-                ? MakeRoundRectangleGeometrySameCorner(new Rect(Child.RenderSize), CornerRadius, BorderThickness)
-                : MakeRoundRectangleGeometry(new Rect(Child.RenderSize), CornerRadius, BorderThickness);
+                ? MakeRoundRectangleGeometrySameCorner(new Rect(child.RenderSize), CornerRadius, BorderThickness)
+                : MakeRoundRectangleGeometry(new Rect(child.RenderSize), CornerRadius, BorderThickness);
 
             _clipRectCache.Add(key, clipRect);
         }
@@ -70,12 +70,12 @@ public class BiaClippingBorder : Border
 
     private object? _oldClip;
 
-    private static readonly Dictionary<long, Geometry> _clipRectCache = new Dictionary<long, Geometry>();
+    private static readonly Dictionary<long, Geometry> _clipRectCache = new ();
 
     private static Geometry MakeRoundRectangleGeometrySameCorner(Rect baseRect, CornerRadius cornerRadius,
         Thickness borderThickness)
     {
-        var radius = (0.0, cornerRadius.TopLeft - borderThickness.Left * 0.5).Max();
+        var radius = (0d, cornerRadius.TopLeft - borderThickness.Left * 0.5d).Max();
 
         var clipRect = new RectangleGeometry
         {
@@ -93,56 +93,56 @@ public class BiaClippingBorder : Border
     private static Geometry MakeRoundRectangleGeometry(Rect baseRect, CornerRadius cornerRadius, Thickness borderThickness)
     {
         if (cornerRadius.TopLeft < double.Epsilon)
-            cornerRadius.TopLeft = 0.0;
+            cornerRadius.TopLeft = 0d;
 
         if (cornerRadius.TopRight < double.Epsilon)
-            cornerRadius.TopRight = 0.0;
+            cornerRadius.TopRight = 0d;
 
         if (cornerRadius.BottomLeft < double.Epsilon)
-            cornerRadius.BottomLeft = 0.0;
+            cornerRadius.BottomLeft = 0d;
 
         if (cornerRadius.BottomRight < double.Epsilon)
-            cornerRadius.BottomRight = 0.0;
+            cornerRadius.BottomRight = 0d;
 
-        var leftHalf = borderThickness.Left * 0.5;
+        var leftHalf = borderThickness.Left * 0.5d;
         if (leftHalf < double.Epsilon)
-            leftHalf = 0.0;
+            leftHalf = 0d;
 
-        var topHalf = borderThickness.Top * 0.5;
+        var topHalf = borderThickness.Top * 0.5d;
         if (topHalf < double.Epsilon)
-            topHalf = 0.0;
+            topHalf = 0d;
 
-        var rightHalf = borderThickness.Right * 0.5;
+        var rightHalf = borderThickness.Right * 0.5d;
         if (rightHalf < double.Epsilon)
-            rightHalf = 0.0;
+            rightHalf = 0d;
 
-        var bottomHalf = borderThickness.Bottom * 0.5;
+        var bottomHalf = borderThickness.Bottom * 0.5d;
         if (bottomHalf < double.Epsilon)
-            bottomHalf = 0.0;
+            bottomHalf = 0d;
 
         var topLeftRect = new Rect(
             baseRect.Location.X,
             baseRect.Location.Y,
-            (0.0, cornerRadius.TopLeft - leftHalf).Max(),
-            (0.0, cornerRadius.TopLeft - rightHalf).Max());
+            (0d, cornerRadius.TopLeft - leftHalf).Max(),
+            (0d, cornerRadius.TopLeft - rightHalf).Max());
 
         var topRightRect = new Rect(
             baseRect.Location.X + baseRect.Width - cornerRadius.TopRight + rightHalf,
             baseRect.Location.Y,
-            (0.0, cornerRadius.TopRight - rightHalf).Max(),
-            (0.0, cornerRadius.TopRight - topHalf).Max());
+            (0d, cornerRadius.TopRight - rightHalf).Max(),
+            (0d, cornerRadius.TopRight - topHalf).Max());
 
         var bottomRightRect = new Rect(
             baseRect.Location.X + baseRect.Width - cornerRadius.BottomRight + rightHalf,
             baseRect.Location.Y + baseRect.Height - cornerRadius.BottomRight + bottomHalf,
-            (0.0, cornerRadius.BottomRight - rightHalf).Max(),
-            (0.0, cornerRadius.BottomRight - bottomHalf).Max());
+            (0d, cornerRadius.BottomRight - rightHalf).Max(),
+            (0d, cornerRadius.BottomRight - bottomHalf).Max());
 
         var bottomLeftRect = new Rect(
             baseRect.Location.X,
             baseRect.Location.Y + baseRect.Height - cornerRadius.BottomLeft + bottomHalf,
-            (0.0, cornerRadius.BottomLeft - leftHalf).Max(),
-            (0.0, cornerRadius.BottomLeft - bottomHalf).Max());
+            (0d, cornerRadius.BottomLeft - leftHalf).Max(),
+            (0d, cornerRadius.BottomLeft - bottomHalf).Max());
 
         if (topLeftRect.Right > topRightRect.Left)
         {
@@ -157,7 +157,7 @@ public class BiaClippingBorder : Border
             topRightRect = new Rect(
                 baseRect.Left + newWidth,
                 topRightRect.Location.Y,
-                (0.0, baseRect.Width - newWidth).Max(),
+                (0d, baseRect.Width - newWidth).Max(),
                 topRightRect.Height);
         }
 
@@ -175,7 +175,7 @@ public class BiaClippingBorder : Border
                 bottomRightRect.Location.X,
                 baseRect.Top + newHeight,
                 bottomRightRect.Width,
-                (0.0, baseRect.Height - newHeight).Max());
+                (0d, baseRect.Height - newHeight).Max());
         }
 
         if (bottomRightRect.Left < bottomLeftRect.Right)
@@ -191,7 +191,7 @@ public class BiaClippingBorder : Border
             bottomRightRect = new Rect(
                 baseRect.Left + newWidth,
                 bottomRightRect.Location.Y,
-                (0.0, baseRect.Width - newWidth).Max(),
+                (0d, baseRect.Width - newWidth).Max(),
                 bottomRightRect.Height);
         }
 
@@ -209,7 +209,7 @@ public class BiaClippingBorder : Border
                 bottomLeftRect.Location.X,
                 baseRect.Top + newHeight,
                 bottomLeftRect.Width,
-                (0.0, baseRect.Height - newHeight).Max());
+                (0d, baseRect.Height - newHeight).Max());
         }
 
         var clipRect = new StreamGeometry();
@@ -218,19 +218,19 @@ public class BiaClippingBorder : Border
         {
             context.BeginFigure(topLeftRect.BottomLeft, true, true);
 
-            context.ArcTo(topLeftRect.TopRight, topLeftRect.Size, 0, false, SweepDirection.Clockwise,
+            context.ArcTo(topLeftRect.TopRight, topLeftRect.Size, 0d, false, SweepDirection.Clockwise,
                 true, true);
 
             context.LineTo(topRightRect.TopLeft, true, true);
-            context.ArcTo(topRightRect.BottomRight, topRightRect.Size, 0, false, SweepDirection.Clockwise,
+            context.ArcTo(topRightRect.BottomRight, topRightRect.Size, 0d, false, SweepDirection.Clockwise,
                 true, true);
 
             context.LineTo(bottomRightRect.TopRight, true, true);
-            context.ArcTo(bottomRightRect.BottomLeft, bottomRightRect.Size, 0, false, SweepDirection.Clockwise,
+            context.ArcTo(bottomRightRect.BottomLeft, bottomRightRect.Size, 0d, false, SweepDirection.Clockwise,
                 true, true);
 
             context.LineTo(bottomLeftRect.BottomRight, true, true);
-            context.ArcTo(bottomLeftRect.TopLeft, bottomLeftRect.Size, 0, false, SweepDirection.Clockwise,
+            context.ArcTo(bottomLeftRect.TopLeft, bottomLeftRect.Size, 0d, false, SweepDirection.Clockwise,
                 true, true);
         }
 

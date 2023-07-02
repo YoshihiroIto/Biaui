@@ -8,7 +8,7 @@ namespace Biaui.Controls.Mock;
 public class AppConfig
 {
     public void Load(IRepository<AppConfig> repos)
-        => CopyFrom(repos.LoadAsync().Result);
+        => CopyFrom(repos.LoadAsync().Result ?? new AppConfig());
 
     public void Save(IRepository<AppConfig> repos)
         => repos.SaveAsync(this).Wait();

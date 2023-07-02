@@ -105,8 +105,8 @@ public class BiaTextBlock : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         if (IsHitTestVisible)
@@ -120,7 +120,7 @@ public class BiaTextBlock : FrameworkElement
             DefaultTextRenderer.Instance.Draw(
                 this,
                 Text,
-                0, 0,
+                0d, 0d,
                 Foreground,
                 dc,
                 ActualWidth,

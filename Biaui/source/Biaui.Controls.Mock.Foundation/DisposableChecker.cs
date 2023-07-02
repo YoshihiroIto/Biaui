@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using Biaui.Controls.Mock.Foundation.Exception;
@@ -10,12 +9,14 @@ namespace Biaui.Controls.Mock.Foundation;
 
 public class DisposableChecker : IDisposableChecker
 {
+#pragma warning disable CS8618
     private ConcurrentDictionary<IDisposable, int> _Disposables;
+#pragma warning restore CS8618
 
     private ConcurrentDictionary<IDisposable, int> Disposables =>
         LazyInitializer.EnsureInitialized(ref _Disposables, () => new ConcurrentDictionary<IDisposable, int>());
 
-    private Action<string> _showError;
+    private Action<string>? _showError;
     private int _single;
 
     public void Start(Action<string> showError)
@@ -55,8 +56,6 @@ public class DisposableChecker : IDisposableChecker
 
     public void Add(IDisposable disposable)
     {
-        Debug.Assert(disposable != null);
-
         if (Disposables.ContainsKey(disposable))
             _showError?.Invoke("Found multiple addition.    -- " + disposable.GetType());
 
@@ -65,8 +64,6 @@ public class DisposableChecker : IDisposableChecker
 
     public void Remove(IDisposable disposable)
     {
-        Debug.Assert(disposable != null);
-
         if (Disposables.ContainsKey(disposable) == false)
             _showError?.Invoke("Found multiple removing.    -- " + disposable.GetType());
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Biaui.Controls.Mock.Foundation.Interface;
 
 namespace Biaui.Controls.Mock.Foundation;
@@ -6,7 +7,7 @@ namespace Biaui.Controls.Mock.Foundation;
 public class LocalStorageRepository<T> : IRepository<T>
 {
     private readonly LocalStorage _localStorage;
-    private string _path;
+    private string? _path;
 
     public LocalStorageRepository(LocalStorage localStorage)
     {
@@ -22,11 +23,15 @@ public class LocalStorageRepository<T> : IRepository<T>
 
     public Task SaveAsync(T obj)
     {
+        _ = _path ?? throw new InvalidOperationException();
+        
         return _localStorage.WriteAsync(obj, _path);
     }
 
-    public Task<T> LoadAsync()
+    public Task<T?> LoadAsync()
     {
+        _ = _path ?? throw new InvalidOperationException();
+    
         return _localStorage.ReadAsync<T>(_path);
     }
 }

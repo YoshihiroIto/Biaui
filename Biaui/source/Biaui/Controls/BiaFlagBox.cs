@@ -503,8 +503,8 @@ public class BiaFlagBox : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -540,9 +540,9 @@ public class BiaFlagBox : FrameworkElement
         {
             {
                 var x = rounder.RoundLayoutValue(RenderSize.Width);
-                var y = rounder.RoundLayoutValue(RenderSize.Height * 0.5 + FrameworkElementExtensions.BorderHalfWidth);
+                var y = rounder.RoundLayoutValue(RenderSize.Height * 0.5d + FrameworkElementExtensions.BorderHalfWidth);
 
-                dc.DrawLine(borderPen, new Point(0, y), new Point(x, y));
+                dc.DrawLine(borderPen, new Point(0d, y), new Point(x, y));
             }
 
             {
@@ -551,7 +551,7 @@ public class BiaFlagBox : FrameworkElement
                 for (var column = 1; column != ColumnCount; ++column)
                 {
                     var x = rounder.RoundLayoutValue(column * ButtonWidth + FrameworkElementExtensions.BorderHalfWidth);
-                    dc.DrawLine(borderPen, new Point(x, 0), new Point(x, y));
+                    dc.DrawLine(borderPen, new Point(x, 0d), new Point(x, y));
                 }
             }
         }
@@ -597,8 +597,6 @@ public class BiaFlagBox : FrameworkElement
             : _buttonBackgroundBrushKey;
     }
 
-    #region Brush
-
     private static readonly Brush _buttonInactiveBackgroundBrushKey =
         (Brush) Application.Current.TryFindResource("ButtonInactiveBackgroundBrushKey");
 
@@ -619,8 +617,6 @@ public class BiaFlagBox : FrameworkElement
 
     private static readonly Brush _buttonBackgroundBrushKey =
         (Brush) Application.Current.TryFindResource("ButtonBackgroundBrushKey");
-
-    #endregion
 
     private bool _isContinuousEdited;
     private uint _ContinuousEditingStartValue;
@@ -746,8 +742,8 @@ public class BiaFlagBox : FrameworkElement
         return this.IsInActualSize(pos);
     }
 
-    private const double ButtonWidth = 16.0;
-    private const double ButtonHeight = 16.0;
+    private const double ButtonWidth = 16d;
+    private const double ButtonHeight = 16d;
 
     private const int ColumnCount = 4;
     private const int RowCount = 2;

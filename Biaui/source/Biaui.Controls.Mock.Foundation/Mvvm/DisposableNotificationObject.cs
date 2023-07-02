@@ -8,23 +8,22 @@ namespace Biaui.Controls.Mock.Foundation.Mvvm
     public class DisposableNotificationObject : NotificationObject, IDisposable
     {
         private readonly IDisposableChecker _disposableChecker;
-        public EventHandler Disposing;
+        public EventHandler? Disposing;
 
         private CompositeDisposable _Trashes;
 
-        public CompositeDisposable Trashes
-        {
-            get { return LazyInitializer.EnsureInitialized(ref _Trashes, () => new CompositeDisposable()); }
-        }
+        public CompositeDisposable Trashes => LazyInitializer.EnsureInitialized(ref _Trashes, () => new CompositeDisposable());
 
         private bool _disposed;
 
+#pragma warning disable CS8618
         public DisposableNotificationObject(IDisposableChecker disposableChecker)
         {
             _disposableChecker = disposableChecker;
 
             _disposableChecker.Add(this);
         }
+#pragma warning restore CS8618
 
         protected virtual void Dispose(bool disposing)
         {
@@ -34,6 +33,7 @@ namespace Biaui.Controls.Mock.Foundation.Mvvm
             Disposing?.Invoke(this, EventArgs.Empty);
 
             if (disposing)
+                // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
                 _Trashes?.Dispose();
 
             _disposed = true;

@@ -20,7 +20,7 @@ public class WindowDisposeDataContextOnClosedBehavior : Behavior<Window>
         base.OnDetaching();
     }
 
-    private void AssociatedObjectOnClosed(object sender, EventArgs eventArgs)
+    private void AssociatedObjectOnClosed(object? sender, EventArgs eventArgs)
     {
         (AssociatedObject.DataContext as IDisposable)?.Dispose();
     }

@@ -137,8 +137,8 @@ public class BiaHsvBoxCursor : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -147,19 +147,19 @@ public class BiaHsvBoxCursor : FrameworkElement
         {
             var p = rounder.GetBorderPen(BorderColor);
 
-            var w = rounder.RoundLayoutValue(ActualWidth - 0.5);
-            var h = rounder.RoundLayoutValue(ActualHeight - 0.5);
-            var z = rounder.RoundLayoutValue(0.5);
+            var w = rounder.RoundLayoutValue(ActualWidth - 0.5d);
+            var h = rounder.RoundLayoutValue(ActualHeight - 0.5d);
+            var z = rounder.RoundLayoutValue(0.5d);
 
             var p0 = new Point(z, z);
             var p1 = new Point(w, z);
             var p2 = new Point(z, h);
             var p3 = new Point(w, h);
 
-            var p0A = new Point(z - 0.5, z);
-            var p1A = new Point(w + 0.5, z);
-            var p2A = new Point(z - 0.5, h);
-            var p3A = new Point(w + 0.5, h);
+            var p0A = new Point(z - 0.5d, z);
+            var p1A = new Point(w + 0.5d, z);
+            var p2A = new Point(z - 0.5d, h);
+            var p3A = new Point(w + 0.5d, h);
 
             dc.DrawLine(p, p0A, p1A);
             dc.DrawLine(p, p1, p3);
@@ -185,11 +185,11 @@ public class BiaHsvBoxCursor : FrameworkElement
         saturation = NumberHelper.Clamp01(saturation);
 
         var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
-        var w = rounder.RoundLayoutValue(actualWidth - bw * 2);
-        var h = rounder.RoundLayoutValue(actualHeight - bw * 2);
+        var w = rounder.RoundLayoutValue(actualWidth - bw * 2d);
+        var h = rounder.RoundLayoutValue(actualHeight - bw * 2d);
 
         var x = hue * w + bw;
-        var y = (1 - saturation) * h + bw;
+        var y = (1d - saturation) * h + bw;
 
         return new ImmutableVec2_double(rounder.RoundLayoutValue(x), rounder.RoundLayoutValue(y));
     }

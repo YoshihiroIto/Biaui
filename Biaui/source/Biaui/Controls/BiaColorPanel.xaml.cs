@@ -98,8 +98,8 @@ public class BiaColorPanel : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         var rounder = new LayoutRounder(this);

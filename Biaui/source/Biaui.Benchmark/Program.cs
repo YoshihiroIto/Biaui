@@ -1,6 +1,4 @@
-﻿using BenchmarkDotNet.Running;
-
-namespace Biaui.Benchmark;
+﻿namespace Biaui.Benchmark;
 
 class Program
 {

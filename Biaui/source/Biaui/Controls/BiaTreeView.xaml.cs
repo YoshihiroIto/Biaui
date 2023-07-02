@@ -18,13 +18,13 @@ public class BiaTreeView : TreeView
     public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.Register(
         nameof(SelectedItems), typeof(IList), typeof(BiaTreeView));
 
-    public IList SelectedItems
+    public IList? SelectedItems
     {
-        get => (IList) GetValue(SelectedItemsProperty);
+        get => (IList?) GetValue(SelectedItemsProperty);
         set => SetValue(SelectedItemsProperty, value);
     }
 
-    public new static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
+    public static new readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
         nameof(SelectedItem), typeof(object), typeof(BiaTreeView),
         new FrameworkPropertyMetadata(OnSelectedItemChanged));
 
@@ -248,21 +248,20 @@ public class BiaTreeView : TreeView
     {
         c.CollectionChanged += ItemsSourceOnCollectionChanged;
 
-        if (!(c is IList list))
+        if (c is not IList list)
             return;
 
         foreach (var item in list)
         {
-            if (!(item is IBiaHasChildren hasChildren))
+            if (item is not IBiaHasChildren hasChildren)
                 continue;
 
             if (hasChildren.Children is INotifyCollectionChanged ncc)
                 AddCollectionChangedEvent(ncc);
 
             foreach (var child in hasChildren.Children)
-                if (child is IBiaHasChildren nccHasChildren)
-                    if (nccHasChildren.Children is INotifyCollectionChanged nccChild)
-                        AddCollectionChangedEvent(nccChild);
+                if (child is IBiaHasChildren { Children: INotifyCollectionChanged nccChild })
+                    AddCollectionChangedEvent(nccChild);
         }
     }
 
@@ -270,30 +269,31 @@ public class BiaTreeView : TreeView
     {
         c.CollectionChanged -= ItemsSourceOnCollectionChanged;
 
-        if (!(c is IList list))
+        if (c is not IList list)
             return;
 
         foreach (var item in list)
         {
-            if (!(item is IBiaHasChildren hasChildren))
+            if (item is not IBiaHasChildren hasChildren)
                 continue;
 
             if (hasChildren.Children is INotifyCollectionChanged ncc)
                 RemoveCollectionChangedEvent(ncc);
 
             foreach (var child in hasChildren.Children)
-                if (child is IBiaHasChildren nccHasChildren)
-                    if (nccHasChildren.Children is INotifyCollectionChanged nccChild)
-                        RemoveCollectionChangedEvent(nccChild);
+                if (child is IBiaHasChildren { Children: INotifyCollectionChanged nccChild })
+                    RemoveCollectionChangedEvent(nccChild);
         }
     }
 
-    private void ItemsSourceOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void ItemsSourceOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
                 {
+                    _ = e.NewItems ?? throw new InvalidOperationException();
+                
                     var vm = e.NewItems[0];
 
                     var item = this.EnumerateChildren<TreeViewItem>().FirstOrDefault(x => x.DataContext == vm);
@@ -309,6 +309,8 @@ public class BiaTreeView : TreeView
                 }
 
             case NotifyCollectionChangedAction.Remove:
+                _ = e.OldItems ?? throw new InvalidOperationException();
+            
                 if (SelectedItems != null)
                 {
                     foreach (var item in e.OldItems)
@@ -339,7 +341,7 @@ public class BiaTreeView : TreeView
     {
         base.OnPreviewKeyDown(e);
 
-        if (!(e.OriginalSource is TreeViewItem treeViewItem))
+        if (e.OriginalSource is not TreeViewItem treeViewItem)
             return;
 
         // [CTRL] + A
@@ -384,7 +386,7 @@ public class BiaTreeView : TreeView
 
     private void OnPreviewMouseLeftButton(MouseButtonEventArgs e, bool isDown)
     {
-        if (!(e.OriginalSource is FrameworkElement orgSource))
+        if (e.OriginalSource is not FrameworkElement orgSource)
             return;
 
         // アイテムの改変マークだったら選択処理を行わない
@@ -439,8 +441,7 @@ public class BiaTreeView : TreeView
 
             foreach (var item in items)
             {
-                if (firstItem is null)
-                    firstItem = item;
+                firstItem ??= item;
 
                 SetIsSelected(item, true);
             }
@@ -489,9 +490,6 @@ public class BiaTreeView : TreeView
     private void SelectMultipleItems(TreeViewItem edgeItem)
     {
         if (_multipleSelectionEdgeItemDataContext is null)
-            return;
-
-        if (edgeItem is null)
             return;
 
         if (edgeItem.DataContext == _multipleSelectionEdgeItemDataContext)

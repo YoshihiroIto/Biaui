@@ -52,7 +52,7 @@ internal sealed class PropertyChangeNotifier : DependencyObject, IDisposable
         }
     }
 
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value",
+    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value),
         typeof(object), typeof(PropertyChangeNotifier), new FrameworkPropertyMetadata(null, OnPropertyChanged));
 
     private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

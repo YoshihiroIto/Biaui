@@ -7,7 +7,7 @@ public class BiaTextBlockViewModel : ViewModelBase
 {
     #region TextA
 
-    private string _TextA;
+    private string _TextA = "";
 
     public string TextA
     {
@@ -19,7 +19,7 @@ public class BiaTextBlockViewModel : ViewModelBase
 
     #region TextB
 
-    private string _TextB;
+    private string _TextB = "";
 
     public string TextB
     {
@@ -31,7 +31,7 @@ public class BiaTextBlockViewModel : ViewModelBase
 
     #region TextC
 
-    private string _TextC;
+    private string _TextC = "";
 
     public string TextC
     {

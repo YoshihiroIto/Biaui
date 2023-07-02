@@ -228,8 +228,8 @@ public class BiaColorSelector : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         var rounder = new LayoutRounder(this);
@@ -242,14 +242,14 @@ public class BiaColorSelector : FrameworkElement
         {
             if (NumberHelper.AreCloseZero(CornerRadius))
             {
-                if (_background != null && _background.Color.A != 0xFF)
+                if (_background.Color.A != 0xFF)
                     dc.DrawRectangle(Constants.CheckerBrush, null, rect);
 
                 dc.DrawRectangle(_background, borderPen, rect);
             }
             else
             {
-                if (_background != null && _background.Color.A != 0xFF)
+                if (_background.Color.A != 0xFF)
                     dc.DrawRoundedRectangle(Constants.CheckerBrush, null, rect, CornerRadius, CornerRadius);
 
                 dc.DrawRoundedRectangle(_background, borderPen, rect, CornerRadius, CornerRadius);
@@ -282,10 +282,10 @@ public class BiaColorSelector : FrameworkElement
             {
                 IsTabStop = false,
                 FocusVisualStyle = null,
-                Margin = new Thickness(0, 0, 3, 3),
+                Margin = new Thickness(0d, 0d, 3d, 3d),
                 Effect = new DropShadowEffect
                 {
-                    ShadowDepth = 2,
+                    ShadowDepth = 2d,
                     Color = Colors.Black
                 }
             };
@@ -301,8 +301,8 @@ public class BiaColorSelector : FrameworkElement
                 RenderTransform = _scale,
                 PlacementTarget = this,
                 Placement = PlacementMode.Left,
-                HorizontalOffset = 2,
-                VerticalOffset = -4
+                HorizontalOffset = 2d,
+                VerticalOffset = -4d
             };
 
             _items.SetBinding(ItemsControl.ItemsSourceProperty,
@@ -394,7 +394,7 @@ public class BiaColorSelector : FrameworkElement
         var pos = Mouse.GetPosition(lb);
         var hit = VisualTreeHelper.HitTest(lb, pos);
 
-        if (!(hit?.VisualHit is Border))
+        if (hit?.VisualHit is not Border)
         {
             return;
         }

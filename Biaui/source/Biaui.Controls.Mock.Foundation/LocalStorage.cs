@@ -14,7 +14,7 @@ public class LocalStorage
         _logger = logger;
     }
 
-    public async Task<T> ReadAsync<T>(string path)
+    public async Task<T?> ReadAsync<T>(string path)
     {
         try
         {

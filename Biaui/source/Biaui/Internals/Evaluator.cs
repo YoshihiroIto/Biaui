@@ -9,7 +9,7 @@ internal static class Evaluator
         try
         {
             var result = _dataTable.Compute(statement,"");
-            return result?.ToString() ?? "";
+            return result.ToString() ?? "";
         }
         catch
         {
@@ -17,5 +17,5 @@ internal static class Evaluator
         }
     }
 
-    private static readonly DataTable _dataTable = new DataTable();
+    private static readonly DataTable _dataTable = new ();
 }

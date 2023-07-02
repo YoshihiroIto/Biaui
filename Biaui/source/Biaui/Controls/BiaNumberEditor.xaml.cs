@@ -733,8 +733,8 @@ public class BiaNumberEditor : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -807,7 +807,7 @@ public class BiaNumberEditor : FrameworkElement
 
     private void DrawSlider(in LayoutRounder rounder, DrawingContext dc)
     {
-        if (SliderWidth <= 0.0f)
+        if (SliderWidth <= 0d)
             return;
 
         var brush = _isEditing
@@ -819,23 +819,23 @@ public class BiaNumberEditor : FrameworkElement
 
         var w = (UiValue - ActualSliderMinimum) * rounder.RoundRenderWidth(IsVisibleBorder) / SliderWidth;
         var r = rounder.RoundRenderRectangle(IsVisibleBorder);
-        r.Width = (rounder.RoundLayoutValue(w), 0.0).Max();
+        r.Width = (rounder.RoundLayoutValue(w), 0d).Max();
 
         dc.DrawRectangle(brush, null, r);
     }
 
-    private const double SpinWidth = 14.0;
+    private const double SpinWidth = 14d;
 
     private void DrawText(DrawingContext dc)
     {
-        var offsetY = (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
+        var offsetY = (ActualHeight - Constants.BasicOneLineHeight) * 0.5d;
 
-        var textWidth = ActualWidth - Padding.Left - Padding.Right - SpinWidth * 2;
+        var textWidth = ActualWidth - Padding.Left - Padding.Right - SpinWidth * 2d;
         var textX = Padding.Left + SpinWidth;
         var textY = Padding.Top + offsetY;
             
-        if (Caption != null &&
-            CaptionForeground != null)
+        if (Caption is not null &&
+            CaptionForeground is not null)
             DefaultTextRenderer.Instance.Draw(
                 this,
                 Caption,
@@ -848,8 +848,7 @@ public class BiaNumberEditor : FrameworkElement
                 TextTrimming,
                 false);
 
-        if (UiValueString != null &&
-            Foreground != null)
+        if (Foreground is not null)
         {
             DefaultTextRenderer.Instance.Draw(
                 this,
@@ -874,13 +873,13 @@ public class BiaNumberEditor : FrameworkElement
             
         var spinBackground = Caches.GetSolidColorBrush(new ByteColor(0x40, 0x00, 0x00, 0x00));
             
-        var offsetY = 8 + (ActualHeight - Constants.BasicOneLineHeight) * 0.5;
+        var offsetY = 8d + (ActualHeight - Constants.BasicOneLineHeight) * 0.5d;
 
         {
-            var offsetX = 5.0;
+            var offsetX = 5d;
 
             if (_mouseOverType == MouseOverType.DecSpin)
-                dc.DrawRectangle(spinBackground, null, new Rect(0, 0, SpinWidth, ActualHeight));
+                dc.DrawRectangle(spinBackground, null, new Rect(0d, 0d, SpinWidth, ActualHeight));
 
             var key = HashCodeMaker.Make(offsetX, offsetY);
 
@@ -899,11 +898,11 @@ public class BiaNumberEditor : FrameworkElement
         }
 
         {
-            var offsetX = ActualWidth - 5.0 * 2 + 1;
+            var offsetX = ActualWidth - 5d * 2d + 1d;
 
             if (_mouseOverType == MouseOverType.IncSpin)
                 dc.DrawRectangle(spinBackground, null,
-                    new Rect(ActualWidth - SpinWidth, 0, SpinWidth, ActualHeight));
+                    new Rect(ActualWidth - SpinWidth, 0d, SpinWidth, ActualHeight));
 
             var key = HashCodeMaker.Make(offsetX, offsetY);
 
@@ -962,7 +961,7 @@ public class BiaNumberEditor : FrameworkElement
         e.Handled = true;
     }
 
-    private const double ClickPlayWidth = 4;
+    private const double ClickPlayWidth = 4d;
 
     protected override void OnMouseMove(MouseEventArgs e)
     {
@@ -1005,7 +1004,7 @@ public class BiaNumberEditor : FrameworkElement
             case BiaNumberEditorMode.Simple:
                 {
                     // 0から1
-                    var xr = (currentPos.X, 0.0, ActualWidth).Clamp() / ActualWidth;
+                    var xr = (currentPos.X, 0d, ActualWidth).Clamp() / ActualWidth;
                     newValue = SliderWidth * xr + ActualSliderMinimum;
                     break;
                 }
@@ -1014,8 +1013,8 @@ public class BiaNumberEditor : FrameworkElement
                 {
                     // Ctrl押下中は５倍速い
                     var s = KeyboardHelper.IsPressControl
-                        ? 5.0
-                        : 1.0;
+                        ? 5d
+                        : 1d;
                     var w = currentPos.X - _oldPos.X;
                     var v = oldValue + s * w * Increment;
 
@@ -1086,7 +1085,7 @@ public class BiaNumberEditor : FrameworkElement
             {
                 // Ctrl押下中は５倍速い
                 var inc = KeyboardHelper.IsPressControl
-                    ? Increment * 5
+                    ? Increment * 5d
                     : Increment;
 
                 if (p.X <= SpinWidth && IsReadOnly == false)
@@ -1123,7 +1122,7 @@ public class BiaNumberEditor : FrameworkElement
     {
         var x = e.GetPosition(this).X;
 
-        if (x < 0)
+        if (x < 0d)
             return MouseOverType.None;
 
         if (x >= ActualWidth)
@@ -1310,7 +1309,7 @@ public class BiaNumberEditor : FrameworkElement
     protected override Size ArrangeOverride(Size finalSize)
     {
         if (_isEditing)
-            _textBox?.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
+            _textBox?.Arrange(new Rect(new Point(0d, 0d), _textBox.DesiredSize));
 
         return base.ArrangeOverride(finalSize);
     }
@@ -1371,9 +1370,9 @@ public class BiaNumberEditor : FrameworkElement
             using (var ctx = _IncSpinGeom.Open())
             {
                 ctx.DrawTriangle(
-                    new Point(4, 4),
-                    new Point(0, 0),
-                    new Point(0, 8),
+                    new Point(4d, 4d),
+                    new Point(0d, 0d),
+                    new Point(0d, 8d),
                     true,
                     true);
             }
@@ -1397,7 +1396,7 @@ public class BiaNumberEditor : FrameworkElement
 
     private double ActualMaximum => (Minimum, Maximum).Max();
 
-    private string? UiValueString
+    private string UiValueString
     {
         get
         {
@@ -1407,7 +1406,7 @@ public class BiaNumberEditor : FrameworkElement
             var v = MakeValueFromString(_textBox?.Text ?? "");
 
             return
-                v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
+                v.Result is MakeValueResult.Ok or MakeValueResult.Continue
                     ? Concat(v.Value.ToString(DisplayFormat), UnitString)
                     : Concat(FormattedValueString, UnitString);
         }
@@ -1429,7 +1428,7 @@ public class BiaNumberEditor : FrameworkElement
             var v = MakeValueFromString(_textBox?.Text ?? "");
 
             return
-                v.Result == MakeValueResult.Ok || v.Result == MakeValueResult.Continue
+                v.Result is MakeValueResult.Ok or MakeValueResult.Continue
                     ? v.Value
                     : Value;
         }
@@ -1438,5 +1437,5 @@ public class BiaNumberEditor : FrameworkElement
     private static StreamGeometry? _DecSpinGeom;
     private static StreamGeometry? _IncSpinGeom;
 
-    private static readonly Dictionary<long, TranslateTransform> _translateTransformCache = new Dictionary<long, TranslateTransform>();
+    private static readonly Dictionary<long, TranslateTransform> _translateTransformCache = new();
 }

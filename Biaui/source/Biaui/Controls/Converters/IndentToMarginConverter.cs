@@ -10,24 +10,22 @@ namespace Biaui.Controls.Converters;
 
 public class IndentToMarginConverter : IMultiValueConverter
 {
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    private static readonly LruCache<double, object> _thicknessCache = new(8);
+
+    public object Convert(object[]? values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values is null)
+        if (values?[0] is not TreeViewItem item)
             return Boxes.Thickness0;
 
-        if (!(values[0] is TreeViewItem item))
-            return Boxes.Thickness0;
+        var length = 19d;
 
-        var length = 19.0;
-
-        if (values.Length == 2)
-            if (values[1] is double v)
-                length = v;
+        if (values is [_, double v])
+            length = v;
 
         var k = length * item.GetDepth();
 
         // ReSharper disable once CompareOfFloatsByEqualityOperator
-        if (k == 0)
+        if (k == 0d)
             return Boxes.Thickness0;
 
         if (_thicknessCache.TryGetValue(k, out var result) == false)
@@ -39,8 +37,6 @@ public class IndentToMarginConverter : IMultiValueConverter
 
         return result;
     }
-
-    private static readonly LruCache<double, object> _thicknessCache = new LruCache<double, object>(8);
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {

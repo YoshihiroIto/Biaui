@@ -25,7 +25,7 @@ namespace Biaui.Showcase
             set => base.Text = value;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public TextEditor()
         {

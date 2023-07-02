@@ -88,7 +88,7 @@ public partial class BiaEditableTextBlockEventHandler
 
         var parent = textBox.GetParent<BiaEditableTextBlock>();
 
-        Debug.Assert(parent != null);
+        Debug.Assert(parent is not null);
 
         FinishEditing(parent, textBox);
     }

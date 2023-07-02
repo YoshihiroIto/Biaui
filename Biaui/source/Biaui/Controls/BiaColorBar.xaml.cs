@@ -262,8 +262,8 @@ public class BiaColorBar : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         var rounder = new LayoutRounder(this);
@@ -287,7 +287,7 @@ public class BiaColorBar : FrameworkElement
     {
         var bw = rounder.RoundLayoutValue(FrameworkElementExtensions.BorderWidth);
 
-        var h = rounder.RoundLayoutValue(ActualHeight - bw * 2);
+        var h = rounder.RoundLayoutValue(ActualHeight - bw * 2d);
         var y = NumberHelper.Clamp01(Value) * h;
 
         if (IsInverseValue)
@@ -295,7 +295,7 @@ public class BiaColorBar : FrameworkElement
 
         y += bw;
 
-        return new ImmutableVec2_double(rounder.RoundLayoutValue(ActualWidth / 2), rounder.RoundLayoutValue(y));
+        return new ImmutableVec2_double(rounder.RoundLayoutValue(ActualWidth / 2d), rounder.RoundLayoutValue(y));
     }
 
     private static Brush? _disabledBackgroundBrush;
@@ -304,7 +304,7 @@ public class BiaColorBar : FrameworkElement
     {
         if (IsEnabled)
         {
-            _backgroundBrush = new LinearGradientBrush(Color1.ToColor(), Color0.ToColor(), 90);
+            _backgroundBrush = new LinearGradientBrush(Color1.ToColor(), Color0.ToColor(), 90d);
             _backgroundBrush.Freeze();
         }
         else
@@ -323,10 +323,10 @@ public class BiaColorBar : FrameworkElement
         var pos = e.GetPosition(this);
 
         var s = rounder.RoundLayoutValue(1);
-        var y = (pos.Y - s) / (ActualHeight - s * 2);
+        var y = (pos.Y - s) / (ActualHeight - s * 2d);
         y = NumberHelper.Clamp01(y);
 
-        Value = IsInverseValue ? 1 - y : y;
+        Value = IsInverseValue ? 1d - y : y;
     }
 
     private bool _isMouseDown;

@@ -7,9 +7,9 @@ namespace Biaui.StandardControls;
 
 public partial class ScrollViewerEventHandler
 {
-    private const double Response = 150.0;
-    private const double MaxOpacity = 0.6;
-    private const double BarWidth = 8.0;
+    private const double Response = 150d;
+    private const double MaxOpacity = 0.6d;
+    private const double BarWidth = 8.0d;
 
     private void OnPreviewMouseMove(object sender, MouseEventArgs e)
     {
@@ -22,8 +22,8 @@ public partial class ScrollViewerEventHandler
         var posX = pos.X;
         var posY = pos.Y;
 
-        var width = (1.0, self.ActualWidth - BarWidth).Max();
-        var height = (1.0, self.ActualHeight - BarWidth).Max();
+        var width = (1d, self.ActualWidth - BarWidth).Max();
+        var height = (1d, self.ActualHeight - BarWidth).Max();
 
         if (ScrollViewerAttachedProperties.GetIsLeftVerticalScrollBar(self))
             posX = width - posX;
@@ -51,7 +51,7 @@ public partial class ScrollViewerEventHandler
         if (self is null)
             return;
 
-        ScrollViewerAttachedProperties.SetVerticalScrollBarOpacity(self, 0.0);
-        ScrollViewerAttachedProperties.SetHorizontalScrollBarOpacity(self, 0.0);
+        ScrollViewerAttachedProperties.SetVerticalScrollBarOpacity(self, 0d);
+        ScrollViewerAttachedProperties.SetHorizontalScrollBarOpacity(self, 0d);
     }
 }

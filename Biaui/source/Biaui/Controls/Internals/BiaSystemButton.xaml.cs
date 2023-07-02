@@ -75,7 +75,7 @@ internal class BiaSystemButton : Button
     {
         base.OnInitialized(e);
 
-        _parentWindow = (BiaWindow)Window.GetWindow(this);
+        _parentWindow = (BiaWindow?)Window.GetWindow(this);
 
         if (_parentWindow != null)
             _parentWindow.StateChanged += ParentWindowOnStateChanged;

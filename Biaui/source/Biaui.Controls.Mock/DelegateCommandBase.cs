@@ -11,53 +11,55 @@ public interface IDelegateCommand : ICommand
 
 public interface IDelegateCommand<T> : ICommand
 {
-    IDelegateCommand<T> Setup(Action<T> execute);
-    IDelegateCommand<T> Setup(Action<T> execute, Func<T, bool> canExecute);
+    IDelegateCommand<T> Setup(Action<T?> execute);
+    IDelegateCommand<T> Setup(Action<T?> execute, Func<T?, bool> canExecute);
 }
 
-public class DelegateCommandBase : IDelegateCommand
+public abstract class DelegateCommandBase : IDelegateCommand
 {
-    private Action _execute;
-    private Func<bool> _canExecute;
+    private Action? _execute;
+    private Func<bool>? _canExecute;
 
     public IDelegateCommand Setup(Action execute)
     {
-        return Setup(execute, null);
+        _execute = execute;
+        return this;
     }
 
     public IDelegateCommand Setup(Action execute, Func<bool> canExecute)
     {
         _execute = execute;
         _canExecute = canExecute;
-
         return this;
     }
 
-    public virtual event EventHandler CanExecuteChanged;
+    public abstract event EventHandler? CanExecuteChanged;
 
-    bool ICommand.CanExecute(object parameter) => _canExecute?.Invoke() ?? true;
-    void ICommand.Execute(object parameter) => _execute?.Invoke();
+    bool ICommand.CanExecute(object? parameter) => _canExecute?.Invoke() ?? true;
+    void ICommand.Execute(object? parameter) => _execute?.Invoke();
 }
 
-public class DelegateCommandBase<T> : IDelegateCommand<T>
+public abstract class DelegateCommandBase<T> : IDelegateCommand<T>
 {
-    private Action<T> _execute;
-    private Func<T, bool> _canExecute;
+    private Action<T?>? _execute;
+    private Func<T?, bool>? _canExecute;
 
-    public IDelegateCommand<T> Setup(Action<T> execute)
+    public IDelegateCommand<T> Setup(Action<T?> execute)
     {
-        return Setup(execute, null);
+        _execute = execute;
+        return this;
     }
 
-    public IDelegateCommand<T> Setup(Action<T> execute, Func<T, bool> canExecute)
+    public IDelegateCommand<T> Setup(Action<T?> execute, Func<T?, bool> canExecute)
     {
         _execute = execute;
         _canExecute = canExecute;
         return this;
     }
 
-    public virtual event EventHandler CanExecuteChanged;
+    public abstract event EventHandler? CanExecuteChanged;
 
-    bool ICommand.CanExecute(object parameter) => _canExecute?.Invoke((T) parameter) ?? true;
-    void ICommand.Execute(object parameter) => _execute?.Invoke((T) parameter);
+    bool ICommand.CanExecute(object? parameter) => _canExecute?.Invoke((T?) parameter) ?? true;
+    
+    void ICommand.Execute(object? parameter) => _execute?.Invoke((T?) parameter);
 }

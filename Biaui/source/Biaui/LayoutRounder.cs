@@ -55,7 +55,7 @@ public readonly ref struct LayoutRounder
         }
         else
         {
-            return new Rect(0, 0, RoundRenderWidth(isWithBorder),
+            return new Rect(0d, 0d, RoundRenderWidth(isWithBorder),
                 RoundRenderHeight(isWithBorder));
         }
         // ReSharper restore ConditionIsAlwaysTrueOrFalse

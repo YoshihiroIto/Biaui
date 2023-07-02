@@ -1,22 +1,15 @@
 ﻿using System.Windows.Input;
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
+using System;
 
 namespace Biaui.Controls.Mock.Presentation;
 
 public class BiaToggleButtonViewModel : ViewModelBase
 {
-    #region CommandA
-
-    private ICommand _CommandA;
-
-    public ICommand CommandA
-    {
-        get => _CommandA;
-        set => SetProperty(ref _CommandA, value);
-    }
-
-    #endregion
+    public ICommand CommandA { get; }
+    public ICommand CommandB { get; }
+    public ICommand CommandC { get; }
 
     #region CountA
 
@@ -30,38 +23,14 @@ public class BiaToggleButtonViewModel : ViewModelBase
 
     #endregion
 
-    #region CommandB
-
-    private ICommand _CommandB;
-
-    public ICommand CommandB
-    {
-        get => _CommandB;
-        set => SetProperty(ref _CommandB, value);
-    }
-
-    #endregion
-
     #region ResultB
 
-    private string _ResultB;
+    private string _ResultB = "";
 
     public string ResultB
     {
         get => _ResultB;
         set => SetProperty(ref _ResultB, value);
-    }
-
-    #endregion
-
-    #region CommandC
-
-    private ICommand _CommandC;
-
-    public ICommand CommandC
-    {
-        get => _CommandC;
-        set => SetProperty(ref _CommandC, value);
     }
 
     #endregion
@@ -104,8 +73,8 @@ public class BiaToggleButtonViewModel : ViewModelBase
 
     public BiaToggleButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
     {
-        _CommandA = new DelegateCommand().Setup(() => ++CountA);
-        _CommandB = new DelegateCommand<string>().Setup(p => ResultB = p);
-        _CommandC = new DelegateCommand().Setup(() => ++CountC, () => CountC < 3);
+        CommandA = new DelegateCommand().Setup(() => ++CountA);
+        CommandB = new DelegateCommand<string>().Setup(p => ResultB = p ?? throw new InvalidOperationException());
+        CommandC = new DelegateCommand().Setup(() => ++CountC, () => CountC < 3);
     }
 }

@@ -60,13 +60,15 @@ public partial class BiaFilteringComboBoxEventHandler
                 var selectedItem = items.FirstOrDefault(x => x.IsSelected);
                 var isDown = e.Key == Key.Down;
 
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                 if (selectedItem is null)
                 {
                     var item = isDown
                         ? items.FirstOrDefault()
                         : items.LastOrDefault();
 
-                    if (item != null)
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+                    if (item is not null)
                         item.IsSelected = true;
                 }
                 else
@@ -77,7 +79,7 @@ public partial class BiaFilteringComboBoxEventHandler
                     nextIndex = Math.Max(nextIndex, 0);
                     nextIndex = Math.Min(nextIndex, items.Length - 1);
 
-                    var nextItem = items[nextIndex];
+                    var nextItem = items[nextIndex] ?? throw new InvalidOperationException();
                     nextItem.IsSelected = true;
                 }
 
@@ -109,7 +111,7 @@ public partial class BiaFilteringComboBoxEventHandler
     private void Popup_OnLoaded(object sender, RoutedEventArgs e)
     {
         var popup = (Popup) sender;
-        var parent = popup.GetParent<BiaFilteringComboBox>();
+        var parent = popup.GetParent<BiaFilteringComboBox>() ?? throw new InvalidOperationException();
 
         var descriptor = DependencyPropertyDescriptor.FromProperty(BiaFilteringComboBox.FilterWordsProperty,
             typeof(BiaFilteringComboBox));
@@ -120,7 +122,7 @@ public partial class BiaFilteringComboBoxEventHandler
     private void Popup_OnUnloaded(object sender, RoutedEventArgs e)
     {
         var popup = (Popup) sender;
-        var parent = popup.GetParent<BiaFilteringComboBox>();
+        var parent = popup.GetParent<BiaFilteringComboBox>() ?? throw new InvalidOperationException();
 
         var descriptor = DependencyPropertyDescriptor.FromProperty(BiaFilteringComboBox.FilterWordsProperty,
             typeof(BiaFilteringComboBox));

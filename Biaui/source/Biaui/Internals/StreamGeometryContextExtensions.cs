@@ -8,7 +8,7 @@ namespace Biaui.Internals;
 internal static class StreamGeometryContextExtensions
 {
     // https://stackoverflow.com/questions/2979834/how-to-draw-a-full-ellipse-in-a-streamgeometry-in-wpf
-    private static readonly double ControlPointRatio = (Math.Sqrt(2) - 1) * 4 / 3;
+    private static readonly double ControlPointRatio = (Math.Sqrt(2d) - 1) * 4d / 3d;
 
     internal static void DrawEllipse(this StreamGeometryContext ctx,
         Point center, double radiusX, double radiusY, bool isFilled, bool isStroked)

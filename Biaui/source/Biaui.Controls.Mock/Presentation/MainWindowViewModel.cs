@@ -7,113 +7,15 @@ namespace Biaui.Controls.Mock.Presentation;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    #region BiaNumberEditorViewModel
-
-    private BiaNumberEditorViewModel _BiaNumberEditorViewModel;
-
-    public BiaNumberEditorViewModel BiaNumberEditorViewModel
-    {
-        get => _BiaNumberEditorViewModel;
-        set => SetProperty(ref _BiaNumberEditorViewModel, value);
-    }
-
-    #endregion
-
-    #region BiaColorPickerViewModel
-
-    private BiaColorPickerViewModel _BiaColorPickerViewModel;
-
-    public BiaColorPickerViewModel BiaColorPickerViewModel
-    {
-        get => _BiaColorPickerViewModel;
-        set => SetProperty(ref _BiaColorPickerViewModel, value);
-    }
-
-    #endregion
-
-    #region BiaButtonViewModel
-
-    private BiaButtonViewModel _BiaButtonViewModel;
-
-    public BiaButtonViewModel BiaButtonViewModel
-    {
-        get => _BiaButtonViewModel;
-        set => SetProperty(ref _BiaButtonViewModel, value);
-    }
-
-    #endregion
-
-    #region BiaToggleButtonViewModel
-
-    private BiaToggleButtonViewModel _BiaToggleButtonViewModel;
-
-    public BiaToggleButtonViewModel BiaToggleButtonViewModel
-    {
-        get => _BiaToggleButtonViewModel;
-        set => SetProperty(ref _BiaToggleButtonViewModel, value);
-    }
-
-    #endregion
-
-    #region BiaCheckBoxViewModel
-
-    private BiaCheckBoxViewModel _BiaCheckBoxViewModel;
-
-    public BiaCheckBoxViewModel BiaCheckBoxViewModel
-    {
-        get => _BiaCheckBoxViewModel;
-        set => SetProperty(ref _BiaCheckBoxViewModel, value);
-    }
-
-    #endregion
-
-    #region BiaRadioButtonViewModel
-
-    private BiaRadioButtonViewModel _BiaRadioButtonViewModel;
-
-    public BiaRadioButtonViewModel BiaRadioButtonViewModel
-    {
-        get => _BiaRadioButtonViewModel;
-        set => SetProperty(ref _BiaRadioButtonViewModel, value);
-    }
-
-    #endregion
-
-    #region BiaTextBoxViewModel
-
-    private BiaTextBoxViewModel _BiaTextBoxViewModel;
-
-    public BiaTextBoxViewModel BiaTextBoxViewModel
-    {
-        get => _BiaTextBoxViewModel;
-        set => SetProperty(ref _BiaTextBoxViewModel, value);
-    }
-
-    #endregion
-
-    #region BiaComboBoxViewModel
-        
-    private BiaComboBoxViewModel _BiaComboBoxViewModel;
-        
-    public BiaComboBoxViewModel BiaComboBoxViewModel
-    {
-        get => _BiaComboBoxViewModel;
-        set => SetProperty(ref _BiaComboBoxViewModel, value);
-    }
-        
-    #endregion
-
-    #region BiaTextBlockViewModel
-        
-    private BiaTextBlockViewModel _BiaTextBlockViewModel;
-        
-    public BiaTextBlockViewModel BiaTextBlockViewModel
-    {
-        get => _BiaTextBlockViewModel;
-        set => SetProperty(ref _BiaTextBlockViewModel, value);
-    }
-        
-    #endregion
+    public BiaNumberEditorViewModel BiaNumberEditorViewModel { get; }
+    public BiaColorPickerViewModel BiaColorPickerViewModel { get; }
+    public BiaButtonViewModel BiaButtonViewModel { get; }
+    public BiaToggleButtonViewModel BiaToggleButtonViewModel { get; }
+    public BiaCheckBoxViewModel BiaCheckBoxViewModel { get; }
+    public BiaRadioButtonViewModel BiaRadioButtonViewModel { get; }
+    public BiaTextBoxViewModel BiaTextBoxViewModel { get; }
+    public BiaComboBoxViewModel BiaComboBoxViewModel { get; }
+    public BiaTextBlockViewModel BiaTextBlockViewModel { get; }
 
     public MainWindowViewModel(Container dic, IDisposableChecker disposableChecker)
         : base(disposableChecker)

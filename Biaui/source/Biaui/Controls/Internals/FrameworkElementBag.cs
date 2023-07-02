@@ -9,9 +9,9 @@ internal class FrameworkElementBag<T> : FrameworkElement
 {
     internal IReadOnlyList<T> Children => _children;
         
-    private readonly List<T> _children = new List<T>();
-    private readonly HashSet<T> _childrenForSearch = new HashSet<T>();
-    private readonly HashSet<T> _changedElements = new HashSet<T>();
+    private readonly List<T> _children = new ();
+    private readonly HashSet<T> _childrenForSearch = new ();
+    private readonly HashSet<T> _changedElements = new ();
 
     static FrameworkElementBag()
     {
@@ -61,7 +61,7 @@ internal class FrameworkElementBag<T> : FrameworkElement
         if (_children.Count == 0)
             return;
 
-        if (Equals(_children[_children.Count - 1], child))
+        if (Equals(_children[^1], child))
             return;
 
         _children.Remove(child);

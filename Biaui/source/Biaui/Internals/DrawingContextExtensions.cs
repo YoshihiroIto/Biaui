@@ -91,5 +91,5 @@ internal static class DrawingContextExtensions
         dc.DrawGeometry(brush, pen, geom);
     }
 
-    private static readonly LruCache<long, StreamGeometry> _bezierCache = new LruCache<long, StreamGeometry>(10000);
+    private static readonly LruCache<long, StreamGeometry> _bezierCache = new (10000);
 }

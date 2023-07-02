@@ -7,7 +7,7 @@ namespace Biaui.Internals;
 
 public class SharedResourceDictionary : ResourceDictionary
 {
-    private static readonly Dictionary<int, ResourceDictionary> _sharedDictionaries = new Dictionary<int, ResourceDictionary>();
+    private static readonly Dictionary<int, ResourceDictionary> _sharedDictionaries = new ();
 
     private static readonly bool _isInDesignerMode;
 

@@ -97,8 +97,8 @@ public class BiaHighlightTextBlock : BiaTextBlock
 
     private void RenderHighlight(DrawingContext dc, ReadOnlySpan<StringSplitter.StringSpan> wordsSpans, string words)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         if (string.IsNullOrEmpty(Text))
@@ -144,7 +144,7 @@ public class BiaHighlightTextBlock : BiaTextBlock
             var index = 0;
             var startIndex = 0;
 
-            var x = 0.0;
+            var x = 0d;
 
             while (true)
             {
@@ -180,7 +180,7 @@ public class BiaHighlightTextBlock : BiaTextBlock
         }
         finally
         {
-            if (textStatesArray != null)
+            if (textStatesArray is not null)
                 ArrayPool<byte>.Shared.Return(textStatesArray);
         }
     }
@@ -193,7 +193,7 @@ public class BiaHighlightTextBlock : BiaTextBlock
         var w = DefaultTextRenderer.Instance.Draw(
             this,
             text.AsSpan(startIndex, length),
-            x, 0,
+            x, 0d,
             brush,
             dc,
             ActualWidth - x,

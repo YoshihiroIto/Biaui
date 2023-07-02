@@ -168,7 +168,7 @@ internal partial class TextRendererImpl<TIsDefault>
                 break;
 
             case TextAlignment.Center:
-                x += (maxWidth - gr.Width) / 2;
+                x += (maxWidth - gr.Width) / 2d;
                 break;
 
             default:
@@ -307,7 +307,7 @@ internal partial class TextRendererImpl<TIsDefault>
 
         try
         {
-            var textWidth = 0.0;
+            var textWidth = 0d;
             var isTrimmed = false;
             var newCount = 0;
             {
@@ -498,7 +498,7 @@ internal partial class TextRendererImpl<TIsDefault>
         Debug.Assert(textWidth > maxWidth);
 
         // 文字列に ... を加える分を考慮して削る文字数を求める
-        var dot3Width = _dotAdvanceWidth * 3.0;
+        var dot3Width = _dotAdvanceWidth * 3.0d;
 
         var removeCount = 1;
         var newTextWidth = textWidth;
@@ -516,7 +516,7 @@ internal partial class TextRendererImpl<TIsDefault>
 
         var newCount = bufferSize - removeCount + 3;
         if (newCount < 3)
-            return (0.0, 0);
+            return (0d, 0);
 
         // 文字列に ... を追加する
         glyphIndexes[newCount - 1 - 2] = _dotGlyphIndex;
@@ -699,7 +699,7 @@ internal partial class TextRendererImpl<TIsDefault>
         sb.AppendLine("}");
         sb.AppendLine("}");
 
-        var outputDir = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "TextRenderer.table.cs");
+        var outputDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "TextRenderer.table.cs");
         File.WriteAllText(outputDir, sb.ToString());
     }
 

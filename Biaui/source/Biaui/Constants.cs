@@ -6,29 +6,29 @@ namespace Biaui;
 
 public static class Constants
 {
-    public const double BasicCornerRadiusPrim = 4;
-    public static CornerRadius BasicCornerRadius = new CornerRadius(BasicCornerRadiusPrim);
+    public const double BasicCornerRadiusPrim = 4d;
+    public static CornerRadius BasicCornerRadius = new (BasicCornerRadiusPrim);
 
-    public const double GroupCornerRadiusPrim = 8;
-    public static CornerRadius GroupCornerRadius = new CornerRadius(GroupCornerRadiusPrim);
+    public const double GroupCornerRadiusPrim = 8d;
+    public static CornerRadius GroupCornerRadius = new (GroupCornerRadiusPrim);
 
-    public const double BasicOneLineHeight = 24;
+    public const double BasicOneLineHeight = 24d;
 
-    public const double ButtonPaddingX = 10;
-    public const double ButtonPaddingY = 3;
+    public const double ButtonPaddingX = 10d;
+    public const double ButtonPaddingY = 3d;
 
-    public static readonly TreeListViewItemMarginConverter TreeListViewItemFirstMarginConverter = new TreeListViewItemMarginConverter
+    public static readonly TreeListViewItemMarginConverter TreeListViewItemFirstMarginConverter = new()
     {
         IsFirstColumn = true,
         Length = 19
     };
 
-    public static readonly TreeListViewItemMarginConverter TreeListViewItemMarginConverter = new TreeListViewItemMarginConverter
+    public static readonly TreeListViewItemMarginConverter TreeListViewItemMarginConverter = new()
     {
         Length = 19
     };
 
-    public static readonly IndentToMarginConverter LengthConverter = new IndentToMarginConverter();
+    public static readonly IndentToMarginConverter LengthConverter = new ();
 
     public static Brush CheckerBrush => _CheckerBrush ??= (Brush) Application.Current.TryFindResource("CheckerBrush");
 

@@ -70,8 +70,8 @@ public class BiaCheckBox : BiaToggleButton
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -83,10 +83,10 @@ public class BiaCheckBox : BiaToggleButton
             Background,
             rounder.GetBorderPen(BoxBorderColor),
             rounder.RoundLayoutRect(
-                0 + FrameworkElementExtensions.BorderHalfWidth, 
-                2 + FrameworkElementExtensions.BorderHalfWidth,
-                16 - FrameworkElementExtensions.BorderWidth,
-                16 - FrameworkElementExtensions.BorderWidth),
+                0d + FrameworkElementExtensions.BorderHalfWidth, 
+                2d + FrameworkElementExtensions.BorderHalfWidth,
+                16d - FrameworkElementExtensions.BorderWidth,
+                16d - FrameworkElementExtensions.BorderWidth),
             CornerRadius, 
             CornerRadius);
 
@@ -105,7 +105,7 @@ public class BiaCheckBox : BiaToggleButton
 
     protected void DrawCaption(DrawingContext dc)
     {
-        DrawCaption(dc, 16 + 4, 2);
+        DrawCaption(dc, 16d + 4d, 2d);
     }
 
     protected void DrawCaption(DrawingContext dc, double x, double y)

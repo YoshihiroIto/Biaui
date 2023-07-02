@@ -281,8 +281,8 @@ public class BiaTextBox : FrameworkElement
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         var rounder = new LayoutRounder(this);
@@ -506,7 +506,7 @@ public class BiaTextBox : FrameworkElement
     protected override Size ArrangeOverride(Size finalSize)
     {
         if (_isEditing)
-            _textBox?.Arrange(new Rect(new Point(0, 0), _textBox.DesiredSize));
+            _textBox?.Arrange(new Rect(new Point(0d, 0d), _textBox.DesiredSize));
 
         return base.ArrangeOverride(finalSize);
     }

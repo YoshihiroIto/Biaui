@@ -106,10 +106,7 @@ public class ListBoxBehavior : Behavior<ListBox>
             }
         }
 
-        var isMove =
-            e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right ||
-            e.Key == Key.Prior || e.Key == Key.Next ||
-            e.Key == Key.End || e.Key == Key.Home;
+        var isMove = e.Key is Key.Up or Key.Down or Key.Left or Key.Right or Key.Prior or Key.Next or Key.End or Key.Home;
 
         if (isMove)
         {

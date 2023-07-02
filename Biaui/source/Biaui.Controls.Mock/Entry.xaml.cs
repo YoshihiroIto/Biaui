@@ -32,14 +32,19 @@ public partial class Entry
         e.Run();
     }
 
-    private static CommandLine _commandLine;
-    private static string _configDir;
+    private static CommandLine? _commandLine;
+    private static string? _configDir;
 
-    private ServiceProvider _serviceProvider;
+    private ServiceProvider? _serviceProvider;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        
+        if(_configDir is null)
+            throw new InvalidOperationException();
+        if(_commandLine is null)
+            throw new InvalidOperationException();
 
         _serviceProvider = new ServiceProvider(_configDir);
         _serviceProvider.GetInstance<IDisposableChecker>().Start(m => MessageBox.Show(m));
@@ -53,6 +58,9 @@ public partial class Entry
 
     protected override void OnExit(ExitEventArgs e)
     {
+        if(_serviceProvider is null)
+            throw new InvalidOperationException();
+        
         _serviceProvider.GetInstance<IDisposableChecker>().End();
         _serviceProvider.Dispose();
 
@@ -61,6 +69,9 @@ public partial class Entry
 
     private void SetupLog()
     {
+        if(_serviceProvider is null)
+            throw new InvalidOperationException();
+        
         Trace.Listeners.Add(new WpfTraceListener("Trace", _serviceProvider.GetInstance<ILogger>()));
 
         PresentationTraceSources.Refresh();
@@ -68,11 +79,11 @@ public partial class Entry
         PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Error | SourceLevels.Warning;
     }
 
-    private class WpfTraceListener : TraceListener
+    private sealed class WpfTraceListener : TraceListener
     {
         private readonly string _sign;
         private readonly ILogger _logger;
-        private readonly StringBuilder _sb = new StringBuilder();
+        private readonly StringBuilder _sb = new ();
 
         public WpfTraceListener(string sign, ILogger logger)
         {
@@ -80,12 +91,12 @@ public partial class Entry
             _logger = logger;
         }
             
-        public override void Write(string message)
+        public override void Write(string? message)
         {
             _sb.Append(message);
         }
 
-        public override void WriteLine(string message)
+        public override void WriteLine(string? message)
         {
             _sb.Append(message);
 

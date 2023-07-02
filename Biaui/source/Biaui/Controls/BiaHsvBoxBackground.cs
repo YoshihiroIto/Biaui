@@ -258,7 +258,7 @@ internal class BiaHsvBoxBackground : Canvas
         _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
         _isEnabledChangeNotifier.ValueChanged += (_, __) =>
         {
-            _effect.IsEnabled = IsEnabled ? 1.0f : 0.0f;
+            _effect.IsEnabled = IsEnabled ? 1f : 0f;
             InvalidateVisual();
         };
     }
@@ -267,8 +267,8 @@ internal class BiaHsvBoxBackground : Canvas
     {
         base.OnRender(dc);
 
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -283,14 +283,14 @@ internal class BiaHsvBoxBackground : Canvas
         var pos = e.GetPosition(this);
 
         var s = rounder.RoundLayoutValue(1);
-        var x = (pos.X - s) / (ActualWidth - s * 2);
-        var y = (pos.Y - s) / (ActualHeight - s * 2);
+        var x = (pos.X - s) / (ActualWidth - s * 2d);
+        var y = (pos.Y - s) / (ActualHeight - s * 2d);
 
         x = NumberHelper.Clamp01(x);
         y = NumberHelper.Clamp01(y);
 
         Hue = x;
-        Saturation = 1 - y;
+        Saturation = 1d - y;
     }
 
     private bool _isMouseDown;

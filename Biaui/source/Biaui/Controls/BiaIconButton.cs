@@ -49,7 +49,7 @@ public class BiaIconButton : BiaButtonBase
         }
     }
 
-    private double _contentSize = 24;
+    private double _contentSize = 24d;
 
     public static readonly DependencyProperty ContentSizeProperty =
         DependencyProperty.Register(nameof(ContentSize), typeof(double), typeof(BiaIconButton),
@@ -74,8 +74,8 @@ public class BiaIconButton : BiaButtonBase
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
             
         var rounder = new LayoutRounder(this);
@@ -124,11 +124,11 @@ public class BiaIconButton : BiaButtonBase
         {
             scale = new ScaleTransform();
 
-            var size = Math.Max(Math.Min(ActualWidth, ActualHeight) - padding * 2, 0);
+            var size = Math.Max(Math.Min(ActualWidth, ActualHeight) - padding * 2d, 0d);
             scale.ScaleX = size / ContentSize;
             scale.ScaleY = size / ContentSize;
-            scale.CenterX = ActualWidth * 0.5;
-            scale.CenterY = ActualHeight * 0.5;
+            scale.CenterX = ActualWidth * 0.5d;
+            scale.CenterY = ActualHeight * 0.5d;
 
             _scaleCache.Add(hash, scale);
         }
@@ -136,5 +136,5 @@ public class BiaIconButton : BiaButtonBase
         return scale;
     }
 
-    private static readonly LruCache<long, ScaleTransform> _scaleCache = new LruCache<long, ScaleTransform>(16);
+    private static readonly LruCache<long, ScaleTransform> _scaleCache = new (16);
 }

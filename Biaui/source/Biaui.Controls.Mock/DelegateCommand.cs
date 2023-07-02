@@ -5,7 +5,7 @@ namespace Biaui.Controls.Mock;
 
 public class DelegateCommand : DelegateCommandBase
 {
-    public override event EventHandler CanExecuteChanged
+    public override event EventHandler? CanExecuteChanged
     {
         add => CommandManager.RequerySuggested += value;
         remove => CommandManager.RequerySuggested -= value;
@@ -14,7 +14,7 @@ public class DelegateCommand : DelegateCommandBase
 
 public class DelegateCommand<T> : DelegateCommandBase<T>
 {
-    public override event EventHandler CanExecuteChanged
+    public override event EventHandler? CanExecuteChanged
     {
         add => CommandManager.RequerySuggested += value;
         remove => CommandManager.RequerySuggested -= value;

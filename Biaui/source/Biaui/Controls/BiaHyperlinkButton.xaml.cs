@@ -77,8 +77,8 @@ public class BiaHyperlinkButton : BiaButtonBase
 
     protected override void OnRender(DrawingContext dc)
     {
-        if (ActualWidth <= 1 ||
-            ActualHeight <= 1)
+        if (ActualWidth <= 1d ||
+            ActualHeight <= 1d)
             return;
 
         var rounder = new LayoutRounder(this);
@@ -90,7 +90,7 @@ public class BiaHyperlinkButton : BiaButtonBase
             var width = DefaultTextRenderer.Instance.Draw(
                 this,
                 Content,
-                0, 0,
+                0d, 0d,
                 Foreground,
                 dc,
                 ActualWidth,
@@ -124,6 +124,6 @@ public class BiaHyperlinkButton : BiaButtonBase
     {
         var rounder = new LayoutRounder(this);
             
-        _textWidth = string.IsNullOrEmpty(Content) ? 0 : rounder.RoundLayoutValue(Math.Ceiling(DefaultTextRenderer.Instance.CalcWidth(Content)));
+        _textWidth = string.IsNullOrEmpty(Content) ? 0d : rounder.RoundLayoutValue(Math.Ceiling(DefaultTextRenderer.Instance.CalcWidth(Content)));
     }
 }

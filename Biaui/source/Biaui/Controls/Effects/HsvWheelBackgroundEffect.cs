@@ -130,7 +130,7 @@ internal class HsvWheelBackgroundEffect : ShaderEffect
         }
     }
 
-    private Point3D _BorderColor = new Point3D(1.0, 0.0, 0.0);
+    private Point3D _BorderColor = new (1.0, 0.0, 0.0);
 
     public static readonly DependencyProperty BorderColorProperty =
         DependencyProperty.Register(nameof(BorderColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),
@@ -187,7 +187,7 @@ internal class HsvWheelBackgroundEffect : ShaderEffect
         }
     }
 
-    private Point3D _DisableColor = new Point3D(1.0, 0.0, 0.0);
+    private Point3D _DisableColor = new (1d, 0d, 0d);
 
     public static readonly DependencyProperty DisableColorProperty =
         DependencyProperty.Register(nameof(DisableColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),

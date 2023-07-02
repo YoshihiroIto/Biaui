@@ -12,9 +12,9 @@ public class BiaComboBoxViewModel : ViewModelBase
 {
     #region ShortItems
 
-    private ObservableCollection<string> _ShortItems;
+    private ObservableCollection<string>? _ShortItems;
 
-    public ObservableCollection<string> ShortItems
+    public ObservableCollection<string>? ShortItems
     {
         get => _ShortItems;
         set => SetProperty(ref _ShortItems, value);
@@ -24,9 +24,9 @@ public class BiaComboBoxViewModel : ViewModelBase
 
     #region LongItems
 
-    private ObservableCollection<string> _LongItems;
+    private ObservableCollection<string>? _LongItems;
 
-    public ObservableCollection<string> LongItems
+    public ObservableCollection<string>? LongItems
     {
         get => _LongItems;
         set => SetProperty(ref _LongItems, value);
@@ -36,7 +36,7 @@ public class BiaComboBoxViewModel : ViewModelBase
 
     #region SelectedShortItem
 
-    private string _SelectedShortItem;
+    private string _SelectedShortItem = "";
 
     public string SelectedShortItem
     {
@@ -48,7 +48,7 @@ public class BiaComboBoxViewModel : ViewModelBase
 
     #region SelectedLongItem
 
-    private string _SelectedLongItem;
+    private string _SelectedLongItem = "";
 
     public string SelectedLongItem
     {
@@ -74,7 +74,7 @@ public class BiaComboBoxViewModel : ViewModelBase
 
     #region SelectedA
 
-    private string _SelectedA;
+    private string _SelectedA = "";
 
     public string SelectedA
     {
@@ -86,7 +86,7 @@ public class BiaComboBoxViewModel : ViewModelBase
 
     #region SelectedB
 
-    private string _SelectedB;
+    private string _SelectedB = "";
 
     public string SelectedB
     {
@@ -98,7 +98,7 @@ public class BiaComboBoxViewModel : ViewModelBase
 
     #region SelectedC
 
-    private string _SelectedC;
+    private string _SelectedC = "";
 
     public string SelectedC
     {
@@ -192,28 +192,19 @@ public enum Fruits
 
 public class FruitsToStringConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (!(value is Fruits fruits))
+        if (value is not Fruits fruits)
             return null;
 
-        switch (fruits)
+        return fruits switch
         {
-            case Fruits.Apple:
-                return "りんご";
-
-            case Fruits.Banana:
-                return "バナナ";
-
-            case Fruits.Pine:
-                return "パイン";
-
-            case Fruits.Lemon:
-                return "レモン";
-
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            Fruits.Apple => "りんご",
+            Fruits.Banana => "バナナ",
+            Fruits.Pine => "パイン",
+            Fruits.Lemon => "レモン",
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

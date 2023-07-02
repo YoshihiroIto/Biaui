@@ -81,7 +81,7 @@ public class ScrollViewerMiddleButtonDragBehavior : Microsoft.Xaml.Behaviors.Beh
             if (_disableToolTipStyle is null)
             {
                 _disableToolTipStyle = new Style(typeof(ToolTip));
-                _disableToolTipStyle.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));
+                _disableToolTipStyle.Setters.Add(new Setter(UIElement.VisibilityProperty, Boxes.VisibilityCollapsed));
                 _disableToolTipStyle.Seal();
             }
 
@@ -97,8 +97,7 @@ public class ScrollViewerMiddleButtonDragBehavior : Microsoft.Xaml.Behaviors.Beh
         if (IsEnabled == false)
             return;
 
-        if (e.ChangedButton == MouseButton.Middle &&
-            e.ButtonState == MouseButtonState.Released)
+        if (e is { ChangedButton: MouseButton.Middle, ButtonState: MouseButtonState.Released })
         {
             CancelDrag();
             e.Handled = true;
