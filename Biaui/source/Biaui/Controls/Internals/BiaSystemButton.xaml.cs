@@ -2,151 +2,150 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Biaui.Controls.Internals
+namespace Biaui.Controls.Internals;
+
+internal class BiaSystemButton : Button
 {
-    internal class BiaSystemButton : Button
+    #region BiaWindowAction
+
+    public BiaWindowAction WindowAction
     {
-        #region BiaWindowAction
-
-        public BiaWindowAction WindowAction
+        get => _WindowAction;
+        set
         {
-            get => _WindowAction;
-            set
-            {
-                if (value != _WindowAction)
-                    SetValue(WindowActionProperty, Boxes.WindowAction(value));
-            }
+            if (value != _WindowAction)
+                SetValue(WindowActionProperty, Boxes.WindowAction(value));
         }
+    }
 
-        private BiaWindowAction _WindowAction;
+    private BiaWindowAction _WindowAction;
 
-        public static readonly DependencyProperty WindowActionProperty =
-            DependencyProperty.Register(nameof(WindowAction), typeof(BiaWindowAction), typeof(BiaSystemButton),
-                new PropertyMetadata(
-                    Boxes.WindowActionNone,
-                    (s, e) =>
-                    {
-                        var self = (BiaSystemButton) s;
-                        self._WindowAction = (BiaWindowAction) e.NewValue;
-                    }));
+    public static readonly DependencyProperty WindowActionProperty =
+        DependencyProperty.Register(nameof(WindowAction), typeof(BiaWindowAction), typeof(BiaSystemButton),
+            new PropertyMetadata(
+                Boxes.WindowActionNone,
+                (s, e) =>
+                {
+                    var self = (BiaSystemButton) s;
+                    self._WindowAction = (BiaWindowAction) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region IsVisibleButton
+    #region IsVisibleButton
         
-        public bool IsVisibleButton
+    public bool IsVisibleButton
+    {
+        get => _IsVisibleButton;
+        set
         {
-            get => _IsVisibleButton;
-            set
-            {
-                if (value != _IsVisibleButton)
-                    SetValue(IsVisibleButtonProperty, Boxes.Bool(value));
-            }
+            if (value != _IsVisibleButton)
+                SetValue(IsVisibleButtonProperty, Boxes.Bool(value));
         }
+    }
         
-        private bool _IsVisibleButton = true;
+    private bool _IsVisibleButton = true;
         
-        public static readonly DependencyProperty IsVisibleButtonProperty =
-            DependencyProperty.Register(
-                nameof(IsVisibleButton),
-                typeof(bool),
-                typeof(BiaSystemButton),
-                new PropertyMetadata(
-                    Boxes.BoolTrue,
-                    (s, e) =>
-                    {
-                        var self = (BiaSystemButton) s;
-                        self._IsVisibleButton = (bool)e.NewValue;
+    public static readonly DependencyProperty IsVisibleButtonProperty =
+        DependencyProperty.Register(
+            nameof(IsVisibleButton),
+            typeof(bool),
+            typeof(BiaSystemButton),
+            new PropertyMetadata(
+                Boxes.BoolTrue,
+                (s, e) =>
+                {
+                    var self = (BiaSystemButton) s;
+                    self._IsVisibleButton = (bool)e.NewValue;
 
-                        self.MakeVisibility();
-                    }));
+                    self.MakeVisibility();
+                }));
         
-        #endregion
+    #endregion
 
-        static BiaSystemButton()
+    static BiaSystemButton()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaSystemButton),
+            new FrameworkPropertyMetadata(typeof(BiaSystemButton)));
+    }
+
+    private BiaWindow? _parentWindow;
+
+    protected override void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized(e);
+
+        _parentWindow = (BiaWindow)Window.GetWindow(this);
+
+        if (_parentWindow != null)
+            _parentWindow.StateChanged += ParentWindowOnStateChanged;
+
+        MakeVisibility();
+    }
+
+    private void ParentWindowOnStateChanged(object? sender, EventArgs e)
+    {
+        MakeVisibility();
+    }
+
+    protected override void OnClick()
+    {
+        base.OnClick();
+
+        if (_parentWindow is null)
+            return;
+
+        switch (WindowAction)
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaSystemButton),
-                new FrameworkPropertyMetadata(typeof(BiaSystemButton)));
-        }
+            case BiaWindowAction.None:
+                break;
 
-        private BiaWindow? _parentWindow;
+            case BiaWindowAction.Active:
+                _parentWindow.Activate();
+                break;
 
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-
-            _parentWindow = (BiaWindow)Window.GetWindow(this);
-
-            if (_parentWindow != null)
-                _parentWindow.StateChanged += ParentWindowOnStateChanged;
-
-            MakeVisibility();
-        }
-
-        private void ParentWindowOnStateChanged(object? sender, EventArgs e)
-        {
-            MakeVisibility();
-        }
-
-        protected override void OnClick()
-        {
-            base.OnClick();
-
-            if (_parentWindow is null)
-                return;
-
-            switch (WindowAction)
-            {
-                case BiaWindowAction.None:
-                    break;
-
-                case BiaWindowAction.Active:
-                    _parentWindow.Activate();
-                    break;
-
-                case BiaWindowAction.Close:
-                    if (_parentWindow.CloseButtonBehavior == BiaWindowCloseButtonBehavior.Normal)
-                        _parentWindow.Close();
+            case BiaWindowAction.Close:
+                if (_parentWindow.CloseButtonBehavior == BiaWindowCloseButtonBehavior.Normal)
+                    _parentWindow.Close();
                     
-                    _parentWindow.InvokeCloseButtonClicked();
+                _parentWindow.InvokeCloseButtonClicked();
 
-                    break;
+                break;
 
-                case BiaWindowAction.Maximize:
-                    _parentWindow.WindowState = WindowState.Maximized;
-                    break;
+            case BiaWindowAction.Maximize:
+                _parentWindow.WindowState = WindowState.Maximized;
+                break;
 
-                case BiaWindowAction.Minimize:
-                    _parentWindow.WindowState = WindowState.Minimized;
-                    break;
+            case BiaWindowAction.Minimize:
+                _parentWindow.WindowState = WindowState.Minimized;
+                break;
 
-                case BiaWindowAction.Normalize:
-                    _parentWindow.WindowState = WindowState.Normal;
-                    break;
+            case BiaWindowAction.Normalize:
+                _parentWindow.WindowState = WindowState.Normal;
+                break;
 
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+    }
 
-        private void MakeVisibility()
+    private void MakeVisibility()
+    {
+        if (IsVisibleButton == false)
         {
-            if (IsVisibleButton == false)
-            {
-                Visibility = Visibility.Collapsed;
-                return;
-            }
-
-            if (_parentWindow is null)
-                return;
-
-            Visibility = WindowAction switch
-            {
-                BiaWindowAction.Maximize => _parentWindow.WindowState != WindowState.Maximized ? Visibility.Visible : Visibility.Collapsed,
-                BiaWindowAction.Minimize => _parentWindow.WindowState != WindowState.Minimized ? Visibility.Visible : Visibility.Collapsed,
-                BiaWindowAction.Normalize => _parentWindow.WindowState != WindowState.Normal ? Visibility.Visible : Visibility.Collapsed,
-                _ => Visibility
-            };
+            Visibility = Visibility.Collapsed;
+            return;
         }
+
+        if (_parentWindow is null)
+            return;
+
+        Visibility = WindowAction switch
+        {
+            BiaWindowAction.Maximize => _parentWindow.WindowState != WindowState.Maximized ? Visibility.Visible : Visibility.Collapsed,
+            BiaWindowAction.Minimize => _parentWindow.WindowState != WindowState.Minimized ? Visibility.Visible : Visibility.Collapsed,
+            BiaWindowAction.Normalize => _parentWindow.WindowState != WindowState.Normal ? Visibility.Visible : Visibility.Collapsed,
+            _ => Visibility
+        };
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace Biaui.ControlCatalog.Pages
+﻿namespace Biaui.ControlCatalog.Pages;
+
+public partial class RadioButtonPage
 {
-    public partial class RadioButtonPage
+    public RadioButtonPage()
     {
-        public RadioButtonPage()
-        {
-            Name = "RadioButton";
-            InitializeComponent();
-        }
+        Name = "RadioButton";
+        InitializeComponent();
     }
 }

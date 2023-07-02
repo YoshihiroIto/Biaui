@@ -12,122 +12,119 @@ using System.Windows;
 
 #nullable enable
 
-namespace Biaui.Internals
-{
+namespace Biaui.Internals;
+
 <#
 foreach (var typeName in new[]{"float", "double"})
 {
     var mathClass = typeName == "float" ? "MathF" : "Math";
     var suffix = typeName == "float" ? "f" : "d";
 #>
-    [DebuggerDisplay("X:{X}, Y:{Y}")]
-    public readonly struct ImmutableVec2_<#= typeName #> : IEquatable<ImmutableVec2_<#= typeName #>>
+[DebuggerDisplay("X:{X}, Y:{Y}")]
+public readonly struct ImmutableVec2_<#= typeName #> : IEquatable<ImmutableVec2_<#= typeName #>>
+{
+    public readonly <#= typeName #> X;
+    public readonly <#= typeName #> Y;
+
+    public <#= typeName #> Length => <#= mathClass #>.Sqrt(X * X + Y * Y);
+    public <#= typeName #> LengthSq => X * X + Y * Y;
+
+    public static ImmutableVec2_<#= typeName #> Zero = new ImmutableVec2_<#= typeName #>();
+
+    public ImmutableVec2_<#= typeName #>(<#= typeName #> x, <#= typeName #> y)
+        => (X, Y) = (x, y);
+
+    public ImmutableVec2_<#= typeName #>(Point p)
+        => (X, Y) = ((<#= typeName #>)p.X, (<#= typeName #>)p.Y);
+
+    public ImmutableVec2_<#= typeName #>(Size p)
+        => (X, Y) = ((<#= typeName #>)p.Width, (<#= typeName #>)p.Height);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Point ToPoint()
+        => new Point(X, Y);
+
+    // ReSharper disable CompareOfFloatsByEqualityOperator
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(in ImmutableVec2_<#= typeName #> source1, in ImmutableVec2_<#= typeName #> source2)
+        => source1.X == source2.X &&
+           source1.Y == source2.Y;
+    // ReSharper restore CompareOfFloatsByEqualityOperator
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(in ImmutableVec2_<#= typeName #> source1, in ImmutableVec2_<#= typeName #> source2)
+        => !(source1 == source2);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Equals(ImmutableVec2_<#= typeName #> other)
+        => this == other;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool Equals(object? obj)
     {
-        public readonly <#= typeName #> X;
-        public readonly <#= typeName #> Y;
+        if (obj is ImmutableVec2_<#= typeName #> other)
+            return this == other;
 
-        public <#= typeName #> Length => <#= mathClass #>.Sqrt(X * X + Y * Y);
-        public <#= typeName #> LengthSq => X * X + Y * Y;
-
-        public static ImmutableVec2_<#= typeName #> Zero = new ImmutableVec2_<#= typeName #>();
-
-        public ImmutableVec2_<#= typeName #>(<#= typeName #> x, <#= typeName #> y)
-            => (X, Y) = (x, y);
-
-        public ImmutableVec2_<#= typeName #>(Point p)
-            => (X, Y) = ((<#= typeName #>)p.X, (<#= typeName #>)p.Y);
-
-        public ImmutableVec2_<#= typeName #>(Size p)
-            => (X, Y) = ((<#= typeName #>)p.Width, (<#= typeName #>)p.Height);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Point ToPoint()
-            => new Point(X, Y);
-
-        // ReSharper disable CompareOfFloatsByEqualityOperator
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator ==(in ImmutableVec2_<#= typeName #> source1, in ImmutableVec2_<#= typeName #> source2)
-            => source1.X == source2.X &&
-               source1.Y == source2.Y;
-        // ReSharper restore CompareOfFloatsByEqualityOperator
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool operator !=(in ImmutableVec2_<#= typeName #> source1, in ImmutableVec2_<#= typeName #> source2)
-            => !(source1 == source2);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Equals(ImmutableVec2_<#= typeName #> other)
-            => this == other;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool Equals(object? obj)
-        {
-            if (obj is ImmutableVec2_<#= typeName #> other)
-                return this == other;
-
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override int GetHashCode()
-            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public <#= typeName #> Distance(in ImmutableVec2_<#= typeName #> other)
-        {
-            return <#= mathClass #>.Sqrt(DistanceSq(other));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public <#= typeName #> DistanceSq(in ImmutableVec2_<#= typeName #> other)
-        {
-            var dx = X - other.X;
-            var dy = Y - other.Y;
-
-            return dx * dx + dy * dy;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ImmutableVec2_<#= typeName #> SetSize(in ImmutableVec2_<#= typeName #> v, <#= typeName #> size)
-        {
-            var n = v.LengthSq;
-
-            if (NumberHelper.AreCloseZero(n))
-                return new ImmutableVec2_<#= typeName #>(0<#= suffix #>, 0<#= suffix #>);
-
-            var l = 1<#= suffix #> / <#= mathClass #>.Sqrt(n);
-
-            return new ImmutableVec2_<#= typeName #>(size * v.X * l, size * v.Y * l);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ImmutableVec2_<#= typeName #> Lerp(<#= typeName #> ratio, in ImmutableVec2_<#= typeName #> v1, in ImmutableVec2_<#= typeName #> v2)
-            => new ImmutableVec2_<#= typeName #>(
-                (v2.X - v1.X) * ratio + v1.X,
-                (v2.Y - v1.Y) * ratio + v1.Y);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ImmutableVec2_<#= typeName #> operator +(in ImmutableVec2_<#= typeName #> v1, in ImmutableVec2_<#= typeName #> v2)
-            => new ImmutableVec2_<#= typeName #>(v1.X + v2.X, v1.Y + v2.Y);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ImmutableVec2_<#= typeName #> operator -(in ImmutableVec2_<#= typeName #> v1, in ImmutableVec2_<#= typeName #> v2)
-            => new ImmutableVec2_<#= typeName #>(v1.X - v2.X, v1.Y - v2.Y);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ImmutableVec2_<#= typeName #> operator *(in ImmutableVec2_<#= typeName #> v1, <#= typeName #> v2)
-            => new ImmutableVec2_<#= typeName #>(v1.X * v2, v1.Y * v2);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ImmutableVec2_<#= typeName #> operator /(in ImmutableVec2_<#= typeName #> v1, <#= typeName #> v2)
-            => new ImmutableVec2_<#= typeName #>(v1.X / v2, v1.Y / v2);
-
-        public override string ToString()
-            => $"({X},{Y})";
+        return false;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override int GetHashCode()
+        => HashCodeMaker.To32(HashCodeMaker.Make(X, Y));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public <#= typeName #> Distance(in ImmutableVec2_<#= typeName #> other)
+    {
+        return <#= mathClass #>.Sqrt(DistanceSq(other));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public <#= typeName #> DistanceSq(in ImmutableVec2_<#= typeName #> other)
+    {
+        var dx = X - other.X;
+        var dy = Y - other.Y;
+
+        return dx * dx + dy * dy;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ImmutableVec2_<#= typeName #> SetSize(in ImmutableVec2_<#= typeName #> v, <#= typeName #> size)
+    {
+        var n = v.LengthSq;
+
+        if (NumberHelper.AreCloseZero(n))
+            return new ImmutableVec2_<#= typeName #>(0<#= suffix #>, 0<#= suffix #>);
+
+        var l = 1<#= suffix #> / <#= mathClass #>.Sqrt(n);
+
+        return new ImmutableVec2_<#= typeName #>(size * v.X * l, size * v.Y * l);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ImmutableVec2_<#= typeName #> Lerp(<#= typeName #> ratio, in ImmutableVec2_<#= typeName #> v1, in ImmutableVec2_<#= typeName #> v2)
+        => new ImmutableVec2_<#= typeName #>(
+            (v2.X - v1.X) * ratio + v1.X,
+            (v2.Y - v1.Y) * ratio + v1.Y);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ImmutableVec2_<#= typeName #> operator +(in ImmutableVec2_<#= typeName #> v1, in ImmutableVec2_<#= typeName #> v2)
+        => new ImmutableVec2_<#= typeName #>(v1.X + v2.X, v1.Y + v2.Y);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ImmutableVec2_<#= typeName #> operator -(in ImmutableVec2_<#= typeName #> v1, in ImmutableVec2_<#= typeName #> v2)
+        => new ImmutableVec2_<#= typeName #>(v1.X - v2.X, v1.Y - v2.Y);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ImmutableVec2_<#= typeName #> operator *(in ImmutableVec2_<#= typeName #> v1, <#= typeName #> v2)
+        => new ImmutableVec2_<#= typeName #>(v1.X * v2, v1.Y * v2);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ImmutableVec2_<#= typeName #> operator /(in ImmutableVec2_<#= typeName #> v1, <#= typeName #> v2)
+        => new ImmutableVec2_<#= typeName #>(v1.X / v2, v1.Y / v2);
+
+    public override string ToString()
+        => $"({X},{Y})";
+}
 <#
 }
 #>
-
-}
-

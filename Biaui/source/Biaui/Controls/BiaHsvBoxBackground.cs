@@ -6,404 +6,403 @@ using System.Windows.Media;
 using Biaui.Controls.Effects;
 using Biaui.Internals;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+internal class BiaHsvBoxBackground : Canvas
 {
-    internal class BiaHsvBoxBackground : Canvas
+    #region Hue
+
+    public double Hue
     {
-        #region Hue
-
-        public double Hue
+        get => _Hue;
+        set
         {
-            get => _Hue;
-            set
-            {
-                if (NumberHelper.AreClose(value, _Hue) == false)
-                    SetValue(HueProperty, Boxes.Double(value));
-            }
+            if (NumberHelper.AreClose(value, _Hue) == false)
+                SetValue(HueProperty, Boxes.Double(value));
         }
+    }
 
-        private double _Hue;
+    private double _Hue;
 
-        public static readonly DependencyProperty HueProperty =
-            DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvBoxBackground),
-                new FrameworkPropertyMetadata(
-                    Boxes.Double0,
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._Hue = (double) e.NewValue;
-                    }));
+    public static readonly DependencyProperty HueProperty =
+        DependencyProperty.Register(nameof(Hue), typeof(double), typeof(BiaHsvBoxBackground),
+            new FrameworkPropertyMetadata(
+                Boxes.Double0,
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._Hue = (double) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region Saturation
+    #region Saturation
 
-        public double Saturation
+    public double Saturation
+    {
+        get => _Saturation;
+        set
         {
-            get => _Saturation;
-            set
-            {
-                if (NumberHelper.AreClose(value, _Saturation) == false)
-                    SetValue(SaturationProperty, Boxes.Double(value));
-            }
+            if (NumberHelper.AreClose(value, _Saturation) == false)
+                SetValue(SaturationProperty, Boxes.Double(value));
         }
+    }
 
-        private double _Saturation;
+    private double _Saturation;
 
-        public static readonly DependencyProperty SaturationProperty =
-            DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvBoxBackground),
-                new FrameworkPropertyMetadata(
-                    Boxes.Double0,
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._Saturation = (double) e.NewValue;
-                    }));
+    public static readonly DependencyProperty SaturationProperty =
+        DependencyProperty.Register(nameof(Saturation), typeof(double), typeof(BiaHsvBoxBackground),
+            new FrameworkPropertyMetadata(
+                Boxes.Double0,
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._Saturation = (double) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region Value
+    #region Value
 
-        public double Value
+    public double Value
+    {
+        get => _Value;
+        set
         {
-            get => _Value;
-            set
-            {
-                if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, Boxes.Double(value));
-            }
+            if (NumberHelper.AreClose(value, _Value) == false)
+                SetValue(ValueProperty, Boxes.Double(value));
         }
+    }
 
-        private double _Value;
+    private double _Value;
 
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvBoxBackground),
-                new FrameworkPropertyMetadata(
-                    Boxes.Double0,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._Value = (double) e.NewValue;
+    public static readonly DependencyProperty ValueProperty =
+        DependencyProperty.Register(nameof(Value), typeof(double), typeof(BiaHsvBoxBackground),
+            new FrameworkPropertyMetadata(
+                Boxes.Double0,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._Value = (double) e.NewValue;
 
-                        self._effect.Value = NumberHelper.Clamp01(self._Value);
-                    }));
+                    self._effect.Value = NumberHelper.Clamp01(self._Value);
+                }));
 
-        #endregion
+    #endregion
 
-        #region IsReadOnly
+    #region IsReadOnly
 
-        public bool IsReadOnly
+    public bool IsReadOnly
+    {
+        get => _IsReadOnly;
+        set
         {
-            get => _IsReadOnly;
-            set
-            {
-                if (value != _IsReadOnly)
-                    SetValue(IsReadOnlyProperty, Boxes.Bool(value));
-            }
+            if (value != _IsReadOnly)
+                SetValue(IsReadOnlyProperty, Boxes.Bool(value));
         }
+    }
 
-        private bool _IsReadOnly;
+    private bool _IsReadOnly;
 
-        public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBoxBackground),
-                new FrameworkPropertyMetadata(
-                    Boxes.BoolFalse,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._IsReadOnly = (bool) e.NewValue;
-                    }));
+    public static readonly DependencyProperty IsReadOnlyProperty =
+        DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(BiaHsvBoxBackground),
+            new FrameworkPropertyMetadata(
+                Boxes.BoolFalse,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._IsReadOnly = (bool) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region StartedContinuousEditingCommand
+    #region StartedContinuousEditingCommand
 
-        public ICommand? StartedContinuousEditingCommand
+    public ICommand? StartedContinuousEditingCommand
+    {
+        get => _StartedContinuousEditingCommand;
+        set
         {
-            get => _StartedContinuousEditingCommand;
-            set
-            {
-                if (value != _StartedContinuousEditingCommand)
-                    SetValue(StartedContinuousEditingCommandProperty, value);
-            }
+            if (value != _StartedContinuousEditingCommand)
+                SetValue(StartedContinuousEditingCommandProperty, value);
         }
+    }
 
-        private ICommand? _StartedContinuousEditingCommand;
+    private ICommand? _StartedContinuousEditingCommand;
 
-        public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
-            DependencyProperty.Register(
-                nameof(StartedContinuousEditingCommand),
-                typeof(ICommand),
-                typeof(BiaHsvBoxBackground),
-                new PropertyMetadata(
-                    default(ICommand),
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
-                    }));
+    public static readonly DependencyProperty StartedContinuousEditingCommandProperty =
+        DependencyProperty.Register(
+            nameof(StartedContinuousEditingCommand),
+            typeof(ICommand),
+            typeof(BiaHsvBoxBackground),
+            new PropertyMetadata(
+                default(ICommand),
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._StartedContinuousEditingCommand = (ICommand) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region EndContinuousEditingCommand
+    #region EndContinuousEditingCommand
 
-        public ICommand? EndContinuousEditingCommand
+    public ICommand? EndContinuousEditingCommand
+    {
+        get => _EndContinuousEditingCommand;
+        set
         {
-            get => _EndContinuousEditingCommand;
-            set
-            {
-                if (value != _EndContinuousEditingCommand)
-                    SetValue(EndContinuousEditingCommandProperty, value);
-            }
+            if (value != _EndContinuousEditingCommand)
+                SetValue(EndContinuousEditingCommandProperty, value);
         }
+    }
 
-        private ICommand? _EndContinuousEditingCommand;
+    private ICommand? _EndContinuousEditingCommand;
 
-        public static readonly DependencyProperty EndContinuousEditingCommandProperty =
-            DependencyProperty.Register(
-                nameof(EndContinuousEditingCommand),
-                typeof(ICommand),
-                typeof(BiaHsvBoxBackground),
-                new PropertyMetadata(
-                    default(ICommand),
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._EndContinuousEditingCommand = (ICommand) e.NewValue;
-                    }));
+    public static readonly DependencyProperty EndContinuousEditingCommandProperty =
+        DependencyProperty.Register(
+            nameof(EndContinuousEditingCommand),
+            typeof(ICommand),
+            typeof(BiaHsvBoxBackground),
+            new PropertyMetadata(
+                default(ICommand),
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._EndContinuousEditingCommand = (ICommand) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region StartedBatchEditingCommand
+    #region StartedBatchEditingCommand
 
-        public ICommand? StartedBatchEditingCommand
+    public ICommand? StartedBatchEditingCommand
+    {
+        get => _StartedBatchEditingCommand;
+        set
         {
-            get => _StartedBatchEditingCommand;
-            set
-            {
-                if (value != _StartedBatchEditingCommand)
-                    SetValue(StartedBatchEditingCommandProperty, value);
-            }
+            if (value != _StartedBatchEditingCommand)
+                SetValue(StartedBatchEditingCommandProperty, value);
         }
+    }
 
-        private ICommand? _StartedBatchEditingCommand;
+    private ICommand? _StartedBatchEditingCommand;
 
-        public static readonly DependencyProperty StartedBatchEditingCommandProperty =
-            DependencyProperty.Register(
-                nameof(StartedBatchEditingCommand),
-                typeof(ICommand),
-                typeof(BiaHsvBoxBackground),
-                new PropertyMetadata(
-                    default(ICommand),
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._StartedBatchEditingCommand = (ICommand) e.NewValue;
-                    }));
+    public static readonly DependencyProperty StartedBatchEditingCommandProperty =
+        DependencyProperty.Register(
+            nameof(StartedBatchEditingCommand),
+            typeof(ICommand),
+            typeof(BiaHsvBoxBackground),
+            new PropertyMetadata(
+                default(ICommand),
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._StartedBatchEditingCommand = (ICommand) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region EndBatchEditingCommand
+    #region EndBatchEditingCommand
 
-        public ICommand? EndBatchEditingCommand
+    public ICommand? EndBatchEditingCommand
+    {
+        get => _EndBatchEditingCommand;
+        set
         {
-            get => _EndBatchEditingCommand;
-            set
-            {
-                if (value != _EndBatchEditingCommand)
-                    SetValue(EndBatchEditingCommandProperty, value);
-            }
+            if (value != _EndBatchEditingCommand)
+                SetValue(EndBatchEditingCommandProperty, value);
         }
+    }
 
-        private ICommand? _EndBatchEditingCommand;
+    private ICommand? _EndBatchEditingCommand;
 
-        public static readonly DependencyProperty EndBatchEditingCommandProperty =
-            DependencyProperty.Register(
-                nameof(EndBatchEditingCommand),
-                typeof(ICommand),
-                typeof(BiaHsvBoxBackground),
-                new PropertyMetadata(
-                    default(ICommand),
-                    (s, e) =>
-                    {
-                        var self = (BiaHsvBoxBackground) s;
-                        self._EndBatchEditingCommand = (ICommand) e.NewValue;
-                    }));
+    public static readonly DependencyProperty EndBatchEditingCommandProperty =
+        DependencyProperty.Register(
+            nameof(EndBatchEditingCommand),
+            typeof(ICommand),
+            typeof(BiaHsvBoxBackground),
+            new PropertyMetadata(
+                default(ICommand),
+                (s, e) =>
+                {
+                    var self = (BiaHsvBoxBackground) s;
+                    self._EndBatchEditingCommand = (ICommand) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        private readonly HsvBoxBackgroundEffect _effect = new HsvBoxBackgroundEffect();
+    private readonly HsvBoxBackgroundEffect _effect = new HsvBoxBackgroundEffect();
 
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        private readonly PropertyChangeNotifier _isEnabledChangeNotifier;
+    // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+    private readonly PropertyChangeNotifier _isEnabledChangeNotifier;
 
-        static BiaHsvBoxBackground()
+    static BiaHsvBoxBackground()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvBoxBackground),
+            new FrameworkPropertyMetadata(typeof(BiaHsvBoxBackground)));
+    }
+
+    public BiaHsvBoxBackground()
+    {
+        Effect = _effect;
+
+        RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+
+        _effect.DisableColor = ((ByteColor) TryFindResource("InactiveColorPickerColorKey")).ToPoint3D();
+
+        _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
+        _isEnabledChangeNotifier.ValueChanged += (_, __) =>
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHsvBoxBackground),
-                new FrameworkPropertyMetadata(typeof(BiaHsvBoxBackground)));
-        }
+            _effect.IsEnabled = IsEnabled ? 1.0f : 0.0f;
+            InvalidateVisual();
+        };
+    }
 
-        public BiaHsvBoxBackground()
-        {
-            Effect = _effect;
+    protected override void OnRender(DrawingContext dc)
+    {
+        base.OnRender(dc);
 
-            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-
-            _effect.DisableColor = ((ByteColor) TryFindResource("InactiveColorPickerColorKey")).ToPoint3D();
-
-            _isEnabledChangeNotifier = new PropertyChangeNotifier(this, IsEnabledProperty);
-            _isEnabledChangeNotifier.ValueChanged += (_, __) =>
-            {
-                _effect.IsEnabled = IsEnabled ? 1.0f : 0.0f;
-                InvalidateVisual();
-            };
-        }
-
-        protected override void OnRender(DrawingContext dc)
-        {
-            base.OnRender(dc);
-
-            if (ActualWidth <= 1 ||
-                ActualHeight <= 1)
-                return;
+        if (ActualWidth <= 1 ||
+            ActualHeight <= 1)
+            return;
             
-            var rounder = new LayoutRounder(this);
+        var rounder = new LayoutRounder(this);
 
-            var rect = rounder.RoundRenderRectangle(true);
+        var rect = rounder.RoundRenderRectangle(true);
 
-            dc.DrawRectangle(Brushes.Transparent, null, rect);
-        }
+        dc.DrawRectangle(Brushes.Transparent, null, rect);
+    }
 
-        private void UpdateParams(in LayoutRounder rounder, MouseEventArgs e)
-        {
-            var pos = e.GetPosition(this);
+    private void UpdateParams(in LayoutRounder rounder, MouseEventArgs e)
+    {
+        var pos = e.GetPosition(this);
 
-            var s = rounder.RoundLayoutValue(1);
-            var x = (pos.X - s) / (ActualWidth - s * 2);
-            var y = (pos.Y - s) / (ActualHeight - s * 2);
+        var s = rounder.RoundLayoutValue(1);
+        var x = (pos.X - s) / (ActualWidth - s * 2);
+        var y = (pos.Y - s) / (ActualHeight - s * 2);
 
-            x = NumberHelper.Clamp01(x);
-            y = NumberHelper.Clamp01(y);
+        x = NumberHelper.Clamp01(x);
+        y = NumberHelper.Clamp01(y);
 
-            Hue = x;
-            Saturation = 1 - y;
-        }
+        Hue = x;
+        Saturation = 1 - y;
+    }
 
-        private bool _isMouseDown;
-        private bool _isContinuousEdited;
-        private (double, double) _ContinuousEditingStartValue;
+    private bool _isMouseDown;
+    private bool _isContinuousEdited;
+    private (double, double) _ContinuousEditingStartValue;
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnMouseLeftButtonDown(e);
 
-            if (IsReadOnly)
-                return;
+        if (IsReadOnly)
+            return;
 
-            _isMouseDown = true;
-            GuiHelper.HideCursor();
+        _isMouseDown = true;
+        GuiHelper.HideCursor();
 
-            var rounder = new LayoutRounder(this);
+        var rounder = new LayoutRounder(this);
 
-            _ContinuousEditingStartValue = (Hue, Saturation);
-            _isContinuousEdited = true;
+        _ContinuousEditingStartValue = (Hue, Saturation);
+        _isContinuousEdited = true;
 
-            StartedContinuousEditingCommand?.ExecuteIfCan(null);
+        StartedContinuousEditingCommand?.ExecuteIfCan(null);
 
-            UpdateParams(rounder, e);
+        UpdateParams(rounder, e);
 
-            CaptureMouse();
+        CaptureMouse();
 
-            this.SetMouseClipping();
+        this.SetMouseClipping();
 
-            e.Handled = true;
-        }
+        e.Handled = true;
+    }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
+    protected override void OnMouseMove(MouseEventArgs e)
+    {
+        base.OnMouseMove(e);
 
-            if (IsReadOnly)
-                return;
+        if (IsReadOnly)
+            return;
 
-            if (_isMouseDown == false)
-                return;
+        if (_isMouseDown == false)
+            return;
             
-            var rounder = new LayoutRounder(this);
+        var rounder = new LayoutRounder(this);
 
-            UpdateParams(rounder, e);
+        UpdateParams(rounder, e);
 
-            e.Handled = true;
-        }
+        e.Handled = true;
+    }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+    protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+    {
+        base.OnMouseLeftButtonUp(e);
+
+        if (IsReadOnly)
+            return;
+
+        if (_isMouseDown == false)
+            return;
+
+        // マウス位置を補正する
         {
-            base.OnMouseLeftButtonUp(e);
-
-            if (IsReadOnly)
-                return;
-
-            if (_isMouseDown == false)
-                return;
-
-            // マウス位置を補正する
-            {
-                var rounder = new LayoutRounder(this);
+            var rounder = new LayoutRounder(this);
                 
-                var pos = BiaHsvBoxCursor.MakeCursorRenderPos(rounder, ActualWidth, ActualHeight, Hue, Saturation);
+            var pos = BiaHsvBoxCursor.MakeCursorRenderPos(rounder, ActualWidth, ActualHeight, Hue, Saturation);
 
-                var mousePos = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref pos));
-                Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
+            var mousePos = PointToScreen(Unsafe.As<ImmutableVec2_double, Point>(ref pos));
+            Win32Helper.SetCursorPos((int) mousePos.X, (int) mousePos.Y);
+        }
+
+        _isMouseDown = false;
+        GuiHelper.ShowCursor();
+        this.ResetMouseClipping();
+        ReleaseMouseCapture();
+
+        if (_isContinuousEdited)
+        {
+            if (EndContinuousEditingCommand != null)
+            {
+                if (EndContinuousEditingCommand.CanExecute(null))
+                {
+                    var changedValue = (Hue, Saturation);
+                    (Hue, Saturation) = _ContinuousEditingStartValue;
+
+                    EndContinuousEditingCommand.Execute(null);
+
+                    StartedBatchEditingCommand?.ExecuteIfCan(null);
+
+                    (Hue, Saturation) = changedValue;
+
+                    EndBatchEditingCommand?.ExecuteIfCan(null);
+                }
             }
 
+            _isContinuousEdited = false;
+        }
+
+
+        e.Handled = true;
+    }
+
+    protected override void OnMouseLeave(MouseEventArgs e)
+    {
+        base.OnMouseLeave(e);
+
+        if (_isMouseDown)
+        {
             _isMouseDown = false;
+            ReleaseMouseCapture();
             GuiHelper.ShowCursor();
             this.ResetMouseClipping();
-            ReleaseMouseCapture();
-
-            if (_isContinuousEdited)
-            {
-                if (EndContinuousEditingCommand != null)
-                {
-                    if (EndContinuousEditingCommand.CanExecute(null))
-                    {
-                        var changedValue = (Hue, Saturation);
-                        (Hue, Saturation) = _ContinuousEditingStartValue;
-
-                        EndContinuousEditingCommand.Execute(null);
-
-                        StartedBatchEditingCommand?.ExecuteIfCan(null);
-
-                        (Hue, Saturation) = changedValue;
-
-                        EndBatchEditingCommand?.ExecuteIfCan(null);
-                    }
-                }
-
-                _isContinuousEdited = false;
-            }
-
-
-            e.Handled = true;
         }
 
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            base.OnMouseLeave(e);
-
-            if (_isMouseDown)
-            {
-                _isMouseDown = false;
-                ReleaseMouseCapture();
-                GuiHelper.ShowCursor();
-                this.ResetMouseClipping();
-            }
-
-            e.Handled = true;
-        }
+        e.Handled = true;
     }
 }

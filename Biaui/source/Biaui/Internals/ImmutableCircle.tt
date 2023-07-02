@@ -11,49 +11,48 @@ using System.Runtime.CompilerServices;
 
 #nullable enable
 
-namespace Biaui.Internals
-{
+namespace Biaui.Internals;
+
 <#
 foreach (var typeName in new[]{"float", "double"})
 {
 #>
-    [DebuggerDisplay("X:{CenterX}, Y:{CenterY}, Radius:{Radius}")]
-    public readonly struct ImmutableCircle_<#= typeName #> : IEquatable<ImmutableCircle_<#= typeName #>>
+[DebuggerDisplay("X:{CenterX}, Y:{CenterY}, Radius:{Radius}")]
+public readonly struct ImmutableCircle_<#= typeName #> : IEquatable<ImmutableCircle_<#= typeName #>>
+{
+    public readonly <#= typeName #> CenterX;
+    public readonly <#= typeName #> CenterY;
+    public readonly <#= typeName #> Radius;
+
+    public ImmutableCircle_<#= typeName #>(<#= typeName #> centerX, <#= typeName #> centerY, <#= typeName #> radius)
+        => (CenterX, CenterY, Radius) = (centerX, centerY, radius);
+
+    // ReSharper disable CompareOfFloatsByEqualityOperator
+    public static bool operator ==(in ImmutableCircle_<#= typeName #> source1, in ImmutableCircle_<#= typeName #> source2)
+        => source1.CenterX == source2.CenterX &&
+           source1.CenterY == source2.CenterY &&
+           source1.Radius == source2.Radius;
+    // ReSharper restore CompareOfFloatsByEqualityOperator
+
+    public static bool operator !=(in ImmutableCircle_<#= typeName #> source1, in ImmutableCircle_<#= typeName #> source2)
+        => !(source1 == source2);
+
+    public bool Equals(ImmutableCircle_<#= typeName #> other)
+        => this == other;
+
+    public override bool Equals(object? obj)
     {
-        public readonly <#= typeName #> CenterX;
-        public readonly <#= typeName #> CenterY;
-        public readonly <#= typeName #> Radius;
+        if (obj is ImmutableCircle_<#= typeName #> other)
+            return this == other;
 
-        public ImmutableCircle_<#= typeName #>(<#= typeName #> centerX, <#= typeName #> centerY, <#= typeName #> radius)
-            => (CenterX, CenterY, Radius) = (centerX, centerY, radius);
-
-        // ReSharper disable CompareOfFloatsByEqualityOperator
-        public static bool operator ==(in ImmutableCircle_<#= typeName #> source1, in ImmutableCircle_<#= typeName #> source2)
-            => source1.CenterX == source2.CenterX &&
-               source1.CenterY == source2.CenterY &&
-               source1.Radius == source2.Radius;
-        // ReSharper restore CompareOfFloatsByEqualityOperator
-
-        public static bool operator !=(in ImmutableCircle_<#= typeName #> source1, in ImmutableCircle_<#= typeName #> source2)
-            => !(source1 == source2);
-
-        public bool Equals(ImmutableCircle_<#= typeName #> other)
-            => this == other;
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is ImmutableCircle_<#= typeName #> other)
-                return this == other;
-
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override int GetHashCode()
-            => HashCodeMaker.To32(HashCodeMaker.Make(CenterX, CenterY, Radius));
+        return false;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override int GetHashCode()
+        => HashCodeMaker.To32(HashCodeMaker.Make(CenterX, CenterY, Radius));
+}
 
 <#
 }
 #>
-}

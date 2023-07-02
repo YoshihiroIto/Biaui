@@ -2,21 +2,20 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Biaui.Controls.Converters
+namespace Biaui.Controls.Converters;
+
+public class DoubleColorToBrushConverter : IValueConverter
 {
-    public class DoubleColorToBrushConverter : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (!(value is DoubleColor item))
-                return null!;
+        if (!(value is DoubleColor item))
+            return null!;
 
-            return Caches.GetSolidColorBrush(item.ByteColor);
-        }
+        return Caches.GetSolidColorBrush(item.ByteColor);
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaProgressPanel : Control
 {
-    public class BiaProgressPanel : Control
+    static BiaProgressPanel()
     {
-        static BiaProgressPanel()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaProgressPanel),
-                new FrameworkPropertyMetadata(typeof(BiaProgressPanel)));
-        }
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaProgressPanel),
+            new FrameworkPropertyMetadata(typeof(BiaProgressPanel)));
     }
 }

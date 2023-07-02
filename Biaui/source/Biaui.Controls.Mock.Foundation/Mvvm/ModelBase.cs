@@ -1,6 +1,5 @@
-﻿namespace Biaui.Controls.Mock.Foundation.Mvvm
+﻿namespace Biaui.Controls.Mock.Foundation.Mvvm;
+
+public class ModelBase : NotificationObject
 {
-    public class ModelBase : NotificationObject
-    {
-    }
 }

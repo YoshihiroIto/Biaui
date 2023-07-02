@@ -3,61 +3,60 @@ using System.Windows;
 using System.Windows.Controls;
 using Biaui.ControlCatalog.Pages;
 
-namespace Biaui.ControlCatalog
+namespace Biaui.ControlCatalog;
+
+public partial class MainWindow
 {
-    public partial class MainWindow
+    public UserControl[]? Pages { get; private set; }
+
+    #region SelectedPage
+        
+    public UserControl SelectedPage
     {
-        public UserControl[]? Pages { get; private set; }
-
-        #region SelectedPage
-        
-        public UserControl SelectedPage
+        get => _SelectedPage ?? throw new NullReferenceException();
+        set
         {
-            get => _SelectedPage ?? throw new NullReferenceException();
-            set
-            {
-                if (value != _SelectedPage)
-                    SetValue(SelectedPageProperty, value);
-            }
+            if (value != _SelectedPage)
+                SetValue(SelectedPageProperty, value);
         }
+    }
         
-        private UserControl? _SelectedPage;
+    private UserControl? _SelectedPage;
         
-        public static readonly DependencyProperty SelectedPageProperty =
-            DependencyProperty.Register(
-                nameof(SelectedPage),
-                typeof(UserControl),
-                typeof(MainWindow),
-                new PropertyMetadata(
-                    default,
-                    (s, e) =>
-                    {
-                        var self = (MainWindow) s;
-                        self._SelectedPage = (UserControl)e.NewValue;
-                    }));
+    public static readonly DependencyProperty SelectedPageProperty =
+        DependencyProperty.Register(
+            nameof(SelectedPage),
+            typeof(UserControl),
+            typeof(MainWindow),
+            new PropertyMetadata(
+                default,
+                (s, e) =>
+                {
+                    var self = (MainWindow) s;
+                    self._SelectedPage = (UserControl)e.NewValue;
+                }));
         
-        #endregion
+    #endregion
 
-        public MainWindow()
+    public MainWindow()
+    {
+        InitializeComponent();
+
+        Setup();
+    }
+
+    private void Setup()
+    {
+        Pages = new UserControl[]
         {
-            InitializeComponent();
+            new ButtonPage(),
+            new ToggleButtonPage(),
+            new CheckBoxPage(),
+            new RadioButtonPage(),
+            new TextBoxPage(),
+            new ComboBoxPage()
+        };
 
-            Setup();
-        }
-
-        private void Setup()
-        {
-            Pages = new UserControl[]
-            {
-                new ButtonPage(),
-                new ToggleButtonPage(),
-                new CheckBoxPage(),
-                new RadioButtonPage(),
-                new TextBoxPage(),
-                new ComboBoxPage()
-            };
-
-            SelectedPage = Pages[0];
-        }
+        SelectedPage = Pages[0];
     }
 }

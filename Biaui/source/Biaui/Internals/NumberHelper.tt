@@ -9,126 +9,126 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Biaui.Internals
+namespace Biaui.Internals;
+
+internal static class NumberHelper
 {
-    internal static class NumberHelper
-    {
 <#
 foreach (var typeName in new[]{"float", "double", "int"})
 {
-    var suffix = typeName switch
-    {
-        "float" => "f",
-        "double" => "d",
-        _ => ""
-    };
+var suffix = typeName switch
+{
+    "float" => "f",
+    "double" => "d",
+    _ => ""
+};
 #>
 
 <# if (typeName == "float") { #>
-        private const <#= typeName #> EPSILON_float = 1.192092896e-07F;
+    private const <#= typeName #> EPSILON_float = 1.192092896e-07F;
 <# }else if (typeName == "double") { #>
-        private const <#= typeName #> EPSILON_double = 2.2204460492503131e-016;
+    private const <#= typeName #> EPSILON_double = 2.2204460492503131e-016;
 <# } #>
 
 <# if (typeName != "int") { #>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> DistanceSq(in this ValueTuple<ImmutableVec2_<#= typeName #>, ImmutableVec2_<#= typeName #>> pos)
-        {
-            var w = pos.Item1.X - pos.Item2.X;
-            var h = pos.Item1.Y - pos.Item2.Y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> DistanceSq(in this ValueTuple<ImmutableVec2_<#= typeName #>, ImmutableVec2_<#= typeName #>> pos)
+    {
+        var w = pos.Item1.X - pos.Item2.X;
+        var h = pos.Item1.Y - pos.Item2.Y;
 
-            return w * w + h * h;
-        }
+        return w * w + h * h;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static bool AreClose(<#= typeName #> value1, <#= typeName #> value2)
-        {
-            if (value1 == value2)
-                return true;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static bool AreClose(<#= typeName #> value1, <#= typeName #> value2)
+    {
+        if (value1 == value2)
+            return true;
 
-            var eps = (Math.Abs(value1) + Math.Abs(value2) + 10<#= suffix #>) * EPSILON_<#= typeName #>;
-            var delta = value1 - value2;
+        var eps = (Math.Abs(value1) + Math.Abs(value2) + 10<#= suffix #>) * EPSILON_<#= typeName #>;
+        var delta = value1 - value2;
 
-            return (-eps < delta) && (eps > delta);
-        }
+        return (-eps < delta) && (eps > delta);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static bool AreCloseZero(<#= typeName #> value1)
-        {
-            if (value1 == 0<#= suffix #>)
-                return true;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static bool AreCloseZero(<#= typeName #> value1)
+    {
+        if (value1 == 0<#= suffix #>)
+            return true;
 
-            var eps = (Math.Abs(value1) + 10<#= suffix #>) * EPSILON_<#= typeName #>;
-            var delta = value1;
+        var eps = (Math.Abs(value1) + 10<#= suffix #>) * EPSILON_<#= typeName #>;
+        var delta = value1;
 
-            return (-eps < delta) && (eps > delta);
-        }
+        return (-eps < delta) && (eps > delta);
+    }
 <# } #>
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Clamp01(<#= typeName #> value)
-        {
-            if (value <= 0<#= suffix #>)
-                return 0<#= suffix #>;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Clamp01(<#= typeName #> value)
+    {
+        if (value <= 0<#= suffix #>)
+            return 0<#= suffix #>;
 
-            if (value >= 1<#= suffix #>)
-                return 1<#= suffix #>;
+        if (value >= 1<#= suffix #>)
+            return 1<#= suffix #>;
 
-            return value;
-        }
-
-        /// <summary>
-        /// value, min, max
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Clamp(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>> value)
-        {
-            Debug.Assert(value.Item2 <= value.Item3);
-
-            if (value.Item1 < value.Item2)
-                return value.Item2;
-
-            if (value.Item1 > value.Item3)
-                return value.Item3;
-
-            return value.Item1;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static (<#= typeName #> Min, <#= typeName #> Max) MinMax(in this ValueTuple<<#= typeName #>, <#= typeName #>> value)
-            => value.Item1 < value.Item2
-                ? (value.Item1, value.Item2)
-                : (value.Item2, value.Item1);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Max(in this ValueTuple<<#= typeName #>, <#= typeName #>> value)
-            => value.Item1 > value.Item2
-                ? value.Item1
-                : value.Item2;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Min(in this ValueTuple<<#= typeName #>, <#= typeName #>> value)
-            => value.Item1 < value.Item2
-                ? value.Item1
-                : value.Item2;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Max(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>> value)
-             => ((value.Item1, value.Item2).Max(), value.Item3).Max();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Min(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>> value)
-             => ((value.Item1, value.Item2).Min(), value.Item3).Min();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Max(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>, <#= typeName #>> value)
-             => (((value.Item1, value.Item2).Max(), value.Item3).Max(), value.Item4).Max();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static <#= typeName #> Min(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>, <#= typeName #>> value)
-             => (((value.Item1, value.Item2).Min(), value.Item3).Min(), value.Item4).Min();
-<#
-       }
-#>
+        return value;
     }
+
+    /// <summary>
+    /// value, min, max
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Clamp(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>> value)
+    {
+        Debug.Assert(value.Item2 <= value.Item3);
+
+        if (value.Item1 < value.Item2)
+            return value.Item2;
+
+        if (value.Item1 > value.Item3)
+            return value.Item3;
+
+        return value.Item1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static (<#= typeName #> Min, <#= typeName #> Max) MinMax(in this ValueTuple<<#= typeName #>, <#= typeName #>> value)
+        => value.Item1 < value.Item2
+            ? (value.Item1, value.Item2)
+            : (value.Item2, value.Item1);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Max(in this ValueTuple<<#= typeName #>, <#= typeName #>> value)
+        => value.Item1 > value.Item2
+            ? value.Item1
+            : value.Item2;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Min(in this ValueTuple<<#= typeName #>, <#= typeName #>> value)
+        => value.Item1 < value.Item2
+            ? value.Item1
+            : value.Item2;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Max(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>> value)
+         => ((value.Item1, value.Item2).Max(), value.Item3).Max();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Min(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>> value)
+         => ((value.Item1, value.Item2).Min(), value.Item3).Min();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Max(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>, <#= typeName #>> value)
+         => (((value.Item1, value.Item2).Max(), value.Item3).Max(), value.Item4).Max();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static <#= typeName #> Min(in this ValueTuple<<#= typeName #>, <#= typeName #>, <#= typeName #>, <#= typeName #>> value)
+         => (((value.Item1, value.Item2).Min(), value.Item3).Min(), value.Item4).Min();
+<#
+   }
+#>
 }
+

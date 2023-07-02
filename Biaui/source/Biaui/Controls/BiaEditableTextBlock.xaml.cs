@@ -2,128 +2,127 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaEditableTextBlock : Control
 {
-    public class BiaEditableTextBlock : Control
+    #region IsEditing
+        
+    public bool IsEditing
     {
-        #region IsEditing
-        
-        public bool IsEditing
+        get => _IsEditing;
+        set
         {
-            get => _IsEditing;
-            set
-            {
-                if (value != _IsEditing)
-                    SetValue(IsEditingProperty, Boxes.Bool(value));
-            }
+            if (value != _IsEditing)
+                SetValue(IsEditingProperty, Boxes.Bool(value));
         }
+    }
         
-        private bool _IsEditing;
+    private bool _IsEditing;
         
-        public static readonly DependencyProperty IsEditingProperty =
-            DependencyProperty.Register(
-                nameof(IsEditing),
-                typeof(bool),
-                typeof(BiaEditableTextBlock),
-                new PropertyMetadata(
-                    Boxes.BoolFalse,
-                    (s, e) =>
-                    {
-                        var self = (BiaEditableTextBlock) s;
-                        self._IsEditing = (bool)e.NewValue;
-                    }));
+    public static readonly DependencyProperty IsEditingProperty =
+        DependencyProperty.Register(
+            nameof(IsEditing),
+            typeof(bool),
+            typeof(BiaEditableTextBlock),
+            new PropertyMetadata(
+                Boxes.BoolFalse,
+                (s, e) =>
+                {
+                    var self = (BiaEditableTextBlock) s;
+                    self._IsEditing = (bool)e.NewValue;
+                }));
         
-        #endregion
+    #endregion
 
-        #region Text
+    #region Text
         
-        public string? Text
+    public string? Text
+    {
+        get => _Text;
+        set
         {
-            get => _Text;
-            set
-            {
-                if (value != _Text)
-                    SetValue(TextProperty, value);
-            }
+            if (value != _Text)
+                SetValue(TextProperty, value);
         }
+    }
         
-        private string? _Text;
+    private string? _Text;
         
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register(
-                nameof(Text),
-                typeof(string),
-                typeof(BiaEditableTextBlock),
-                new PropertyMetadata(
-                    default,
-                    (s, e) =>
-                    {
-                        var self = (BiaEditableTextBlock) s;
-                        self._Text = (string)e.NewValue;
-                    }));
+    public static readonly DependencyProperty TextProperty =
+        DependencyProperty.Register(
+            nameof(Text),
+            typeof(string),
+            typeof(BiaEditableTextBlock),
+            new PropertyMetadata(
+                default,
+                (s, e) =>
+                {
+                    var self = (BiaEditableTextBlock) s;
+                    self._Text = (string)e.NewValue;
+                }));
         
-        #endregion
+    #endregion
 
-        #region Watermark
+    #region Watermark
 
-        public string? Watermark
+    public string? Watermark
+    {
+        get => _Watermark;
+        set
         {
-            get => _Watermark;
-            set
-            {
-                if (value != _Watermark)
-                    SetValue(WatermarkProperty, value);
-            }
+            if (value != _Watermark)
+                SetValue(WatermarkProperty, value);
         }
+    }
 
-        private string? _Watermark;
+    private string? _Watermark;
 
-        public static readonly DependencyProperty WatermarkProperty =
-            DependencyProperty.Register(nameof(Watermark), typeof(string), typeof(BiaEditableTextBlock),
-                new FrameworkPropertyMetadata(
-                    default(string),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaEditableTextBlock) s;
-                        self._Watermark = e.NewValue?.ToString() ?? "";
-                    }));
+    public static readonly DependencyProperty WatermarkProperty =
+        DependencyProperty.Register(nameof(Watermark), typeof(string), typeof(BiaEditableTextBlock),
+            new FrameworkPropertyMetadata(
+                default(string),
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaEditableTextBlock) s;
+                    self._Watermark = e.NewValue?.ToString() ?? "";
+                }));
 
-        #endregion
+    #endregion
 
-        #region WatermarkForeground
+    #region WatermarkForeground
 
-        public Brush? WatermarkForeground
+    public Brush? WatermarkForeground
+    {
+        get => _WatermarkForeground;
+        set
         {
-            get => _WatermarkForeground;
-            set
-            {
-                if (value != _WatermarkForeground)
-                    SetValue(WatermarkForegroundProperty, value);
-            }
+            if (value != _WatermarkForeground)
+                SetValue(WatermarkForegroundProperty, value);
         }
+    }
 
-        private Brush? _WatermarkForeground;
+    private Brush? _WatermarkForeground;
 
-        public static readonly DependencyProperty WatermarkForegroundProperty =
-            DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaEditableTextBlock),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaEditableTextBlock) s;
-                        self._WatermarkForeground = (Brush) e.NewValue;
-                    }));
+    public static readonly DependencyProperty WatermarkForegroundProperty =
+        DependencyProperty.Register(nameof(WatermarkForeground), typeof(Brush), typeof(BiaEditableTextBlock),
+            new FrameworkPropertyMetadata(
+                default(Brush),
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaEditableTextBlock) s;
+                    self._WatermarkForeground = (Brush) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        static BiaEditableTextBlock()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaEditableTextBlock),
-                new FrameworkPropertyMetadata(typeof(BiaEditableTextBlock)));
-        }
+    static BiaEditableTextBlock()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaEditableTextBlock),
+            new FrameworkPropertyMetadata(typeof(BiaEditableTextBlock)));
     }
 }

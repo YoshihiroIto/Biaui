@@ -2,111 +2,110 @@
 using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
 
-namespace Biaui.Controls.Mock.Presentation
+namespace Biaui.Controls.Mock.Presentation;
+
+public class BiaToggleButtonViewModel : ViewModelBase
 {
-    public class BiaToggleButtonViewModel : ViewModelBase
+    #region CommandA
+
+    private ICommand _CommandA;
+
+    public ICommand CommandA
     {
-        #region CommandA
+        get => _CommandA;
+        set => SetProperty(ref _CommandA, value);
+    }
 
-        private ICommand _CommandA;
+    #endregion
 
-        public ICommand CommandA
-        {
-            get => _CommandA;
-            set => SetProperty(ref _CommandA, value);
-        }
+    #region CountA
 
-        #endregion
+    private int _CountA;
 
-        #region CountA
+    public int CountA
+    {
+        get => _CountA;
+        set => SetProperty(ref _CountA, value);
+    }
 
-        private int _CountA;
+    #endregion
 
-        public int CountA
-        {
-            get => _CountA;
-            set => SetProperty(ref _CountA, value);
-        }
+    #region CommandB
 
-        #endregion
+    private ICommand _CommandB;
 
-        #region CommandB
+    public ICommand CommandB
+    {
+        get => _CommandB;
+        set => SetProperty(ref _CommandB, value);
+    }
 
-        private ICommand _CommandB;
+    #endregion
 
-        public ICommand CommandB
-        {
-            get => _CommandB;
-            set => SetProperty(ref _CommandB, value);
-        }
+    #region ResultB
 
-        #endregion
+    private string _ResultB;
 
-        #region ResultB
+    public string ResultB
+    {
+        get => _ResultB;
+        set => SetProperty(ref _ResultB, value);
+    }
 
-        private string _ResultB;
+    #endregion
 
-        public string ResultB
-        {
-            get => _ResultB;
-            set => SetProperty(ref _ResultB, value);
-        }
+    #region CommandC
 
-        #endregion
+    private ICommand _CommandC;
 
-        #region CommandC
+    public ICommand CommandC
+    {
+        get => _CommandC;
+        set => SetProperty(ref _CommandC, value);
+    }
 
-        private ICommand _CommandC;
+    #endregion
 
-        public ICommand CommandC
-        {
-            get => _CommandC;
-            set => SetProperty(ref _CommandC, value);
-        }
+    #region CountC
 
-        #endregion
+    private int _CountC;
 
-        #region CountC
+    public int CountC
+    {
+        get => _CountC;
+        set => SetProperty(ref _CountC, value);
+    }
 
-        private int _CountC;
+    #endregion
 
-        public int CountC
-        {
-            get => _CountC;
-            set => SetProperty(ref _CountC, value);
-        }
+    #region IsCheckedX
 
-        #endregion
+    private bool _IsCheckedX;
 
-        #region IsCheckedX
+    public bool IsCheckedX
+    {
+        get => _IsCheckedX;
+        set => SetProperty(ref _IsCheckedX, value);
+    }
 
-        private bool _IsCheckedX;
+    #endregion
 
-        public bool IsCheckedX
-        {
-            get => _IsCheckedX;
-            set => SetProperty(ref _IsCheckedX, value);
-        }
+    #region IsCheckedY
 
-        #endregion
+    private bool _IsCheckedY;
 
-        #region IsCheckedY
+    public bool IsCheckedY
+    {
+        get => _IsCheckedY;
+        set => SetProperty(ref _IsCheckedY, value);
+    }
 
-        private bool _IsCheckedY;
+    #endregion
 
-        public bool IsCheckedY
-        {
-            get => _IsCheckedY;
-            set => SetProperty(ref _IsCheckedY, value);
-        }
-
-        #endregion
-
-        public BiaToggleButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
-        {
-            _CommandA = new DelegateCommand().Setup(() => ++CountA);
-            _CommandB = new DelegateCommand<string>().Setup(p => ResultB = p);
-            _CommandC = new DelegateCommand().Setup(() => ++CountC, () => CountC < 3);
-        }
+    public BiaToggleButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
+    {
+        _CommandA = new DelegateCommand().Setup(() => ++CountA);
+        _CommandB = new DelegateCommand<string>().Setup(p => ResultB = p);
+        _CommandC = new DelegateCommand().Setup(() => ++CountC, () => CountC < 3);
     }
 }

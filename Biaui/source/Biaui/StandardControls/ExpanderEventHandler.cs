@@ -3,29 +3,28 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Biaui.Internals;
 
-namespace Biaui.StandardControls
+namespace Biaui.StandardControls;
+
+public partial class ExpanderEventHandler
 {
-    public partial class ExpanderEventHandler
+    private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
-        private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        e.Handled = true;
+
+        var e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
         {
-            e.Handled = true;
+            RoutedEvent = UIElement.MouseWheelEvent
+        };
 
-            var e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
-            {
-                RoutedEvent = UIElement.MouseWheelEvent
-            };
+        (sender as UIElement)?.RaiseEvent(e2);
+    }
 
-            (sender as UIElement)?.RaiseEvent(e2);
-        }
+    private void Frame_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        var c = (StackPanel) sender;
+        var expander = c.GetParent<Expander>();
 
-        private void Frame_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var c = (StackPanel) sender;
-            var expander = c.GetParent<Expander>();
-
-            if (expander != null)
-                c.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
-        }
+        if (expander != null)
+            c.Tag = expander.IsExpanded ? Boxes.Double1 : Boxes.Double0;
     }
 }

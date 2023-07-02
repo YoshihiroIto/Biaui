@@ -2,164 +2,163 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaTableGrid : Grid
 {
-    public class BiaTableGrid : Grid
+    #region Spacing
+
+    public Size Spacing
     {
-        #region Spacing
-
-        public Size Spacing
+        get => _Spacing;
+        set
         {
-            get => _Spacing;
-            set
+            if (value != _Spacing)
+                SetValue(SpacingProperty, value);
+        }
+    }
+
+    private Size _Spacing;
+
+    public static readonly DependencyProperty SpacingProperty =
+        DependencyProperty.Register(
+            nameof(Spacing),
+            typeof(Size),
+            typeof(BiaTableGrid),
+            new PropertyMetadata(
+                default(Size),
+                (s, e) =>
+                {
+                    var self = (BiaTableGrid) s;
+                    self._Spacing = (Size) e.NewValue;
+
+                    self.UpdateColumns();
+                }));
+
+    #endregion
+
+    #region Columns
+
+    public int Columns
+    {
+        get => _Columns;
+        set
+        {
+            if (value != _Columns)
+                SetValue(ColumnsProperty, Boxes.Int(value));
+        }
+    }
+
+    private int _Columns;
+
+    public static readonly DependencyProperty ColumnsProperty =
+        DependencyProperty.Register(
+            nameof(Columns),
+            typeof(int),
+            typeof(BiaTableGrid),
+            new FrameworkPropertyMetadata(
+                Boxes.Int0,
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                (s, e) =>
+                {
+                    var self = (BiaTableGrid) s;
+                    self._Columns = (int) e.NewValue;
+
+                    self.UpdateColumns();
+                }));
+
+    #endregion
+
+    private void UpdateColumns()
+    {
+        var childCount = VisualTreeHelper.GetChildrenCount(this);
+
+        {
+            while (ColumnDefinitions.Count < childCount)
             {
-                if (value != _Spacing)
-                    SetValue(SpacingProperty, value);
+                var cd = new ColumnDefinition
+                {
+                    Width = new GridLength(0, GridUnitType.Auto)
+                };
+                ColumnDefinitions.Add(cd);
             }
+
+            while (ColumnDefinitions.Count > childCount)
+                ColumnDefinitions.RemoveAt(ColumnDefinitions.Count - 1);
         }
 
-        private Size _Spacing;
-
-        public static readonly DependencyProperty SpacingProperty =
-            DependencyProperty.Register(
-                nameof(Spacing),
-                typeof(Size),
-                typeof(BiaTableGrid),
-                new PropertyMetadata(
-                    default(Size),
-                    (s, e) =>
-                    {
-                        var self = (BiaTableGrid) s;
-                        self._Spacing = (Size) e.NewValue;
-
-                        self.UpdateColumns();
-                    }));
-
-        #endregion
-
-        #region Columns
-
-        public int Columns
         {
-            get => _Columns;
-            set
+            var rows = childCount / Columns;
+
+            while (RowDefinitions.Count < rows)
             {
-                if (value != _Columns)
-                    SetValue(ColumnsProperty, Boxes.Int(value));
+                var rd = new RowDefinition
+                {
+                    Height = new GridLength(0, GridUnitType.Star)
+                };
+                RowDefinitions.Add(rd);
             }
+
+            while (RowDefinitions.Count > rows)
+                RowDefinitions.RemoveAt(RowDefinitions.Count - 1);
         }
 
-        private int _Columns;
-
-        public static readonly DependencyProperty ColumnsProperty =
-            DependencyProperty.Register(
-                nameof(Columns),
-                typeof(int),
-                typeof(BiaTableGrid),
-                new FrameworkPropertyMetadata(
-                    Boxes.Int0,
-                    FrameworkPropertyMetadataOptions.AffectsMeasure,
-                    (s, e) =>
-                    {
-                        var self = (BiaTableGrid) s;
-                        self._Columns = (int) e.NewValue;
-
-                        self.UpdateColumns();
-                    }));
-
-        #endregion
-
-        private void UpdateColumns()
         {
-            var childCount = VisualTreeHelper.GetChildrenCount(this);
+            var columnCount = 0;
+            var rowCount = 0;
 
-            {
-                while (ColumnDefinitions.Count < childCount)
-                {
-                    var cd = new ColumnDefinition
-                    {
-                        Width = new GridLength(0, GridUnitType.Auto)
-                    };
-                    ColumnDefinitions.Add(cd);
-                }
-
-                while (ColumnDefinitions.Count > childCount)
-                    ColumnDefinitions.RemoveAt(ColumnDefinitions.Count - 1);
-            }
-
-            {
-                var rows = childCount / Columns;
-
-                while (RowDefinitions.Count < rows)
-                {
-                    var rd = new RowDefinition
-                    {
-                        Height = new GridLength(0, GridUnitType.Star)
-                    };
-                    RowDefinitions.Add(rd);
-                }
-
-                while (RowDefinitions.Count > rows)
-                    RowDefinitions.RemoveAt(RowDefinitions.Count - 1);
-            }
-
-            {
-                var columnCount = 0;
-                var rowCount = 0;
-
-                var rows = childCount / Columns;
+            var rows = childCount / Columns;
                 
-                var isLastRow = rowCount == rows - 1;
+            var isLastRow = rowCount == rows - 1;
                 
-                for (var i = 0; i != childCount; ++i)
+            for (var i = 0; i != childCount; ++i)
+            {
+                var child = (FrameworkElement) VisualTreeHelper.GetChild(this, i);
+                    
+                SetColumn(child, columnCount);
+                SetRow(child, rowCount);
+
+                var isLastItem = i == childCount - 1;
+
+                var px = columnCount == Columns - 1 || isLastItem
+                    ? 0d
+                    : Spacing.Width;
+                var py = isLastRow  || isLastItem
+                    ? 0d
+                    : Spacing.Height;
+                    
+                child.Margin = new Thickness(0d, 0d, px, py);
+
+                ++columnCount;
+
+                if (columnCount == Columns)
                 {
-                    var child = (FrameworkElement) VisualTreeHelper.GetChild(this, i);
-                    
-                    SetColumn(child, columnCount);
-                    SetRow(child, rowCount);
+                    columnCount = 0;
+                    ++rowCount;
 
-                    var isLastItem = i == childCount - 1;
-
-                    var px = columnCount == Columns - 1 || isLastItem
-                        ? 0d
-                        : Spacing.Width;
-                    var py = isLastRow  || isLastItem
-                        ? 0d
-                        : Spacing.Height;
-                    
-                    child.Margin = new Thickness(0d, 0d, px, py);
-
-                    ++columnCount;
-
-                    if (columnCount == Columns)
-                    {
-                        columnCount = 0;
-                        ++rowCount;
-
-                        isLastRow = rowCount == rows - 1;
-                    }
+                    isLastRow = rowCount == rows - 1;
                 }
             }
         }
+    }
 
-        protected override Size ArrangeOverride(Size arrangeSize)
+    protected override Size ArrangeOverride(Size arrangeSize)
+    {
+        if (_isRequestUpdateColumns)
         {
-            if (_isRequestUpdateColumns)
-            {
-                UpdateColumns();
-                _isRequestUpdateColumns = false;
-            }
-
-            return base.ArrangeOverride(arrangeSize);
+            UpdateColumns();
+            _isRequestUpdateColumns = false;
         }
 
-        private bool _isRequestUpdateColumns;
+        return base.ArrangeOverride(arrangeSize);
+    }
 
-        protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
-        {
-            _isRequestUpdateColumns = true;
+    private bool _isRequestUpdateColumns;
 
-            base.OnVisualChildrenChanged(visualAdded, visualRemoved);
-        }
+    protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
+    {
+        _isRequestUpdateColumns = true;
+
+        base.OnVisualChildrenChanged(visualAdded, visualRemoved);
     }
 }

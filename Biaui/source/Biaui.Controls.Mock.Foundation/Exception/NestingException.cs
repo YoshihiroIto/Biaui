@@ -1,6 +1,5 @@
-﻿namespace Biaui.Controls.Mock.Foundation.Exception
+﻿namespace Biaui.Controls.Mock.Foundation.Exception;
+
+public class NestingException : System.Exception
 {
-    public class NestingException : System.Exception
-    {
-    }
 }

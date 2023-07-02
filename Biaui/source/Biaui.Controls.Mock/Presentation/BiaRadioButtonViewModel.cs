@@ -1,120 +1,119 @@
 ﻿using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
 
-namespace Biaui.Controls.Mock.Presentation
+namespace Biaui.Controls.Mock.Presentation;
+
+public class BiaRadioButtonViewModel : ViewModelBase
 {
-    public class BiaRadioButtonViewModel : ViewModelBase
+    #region GroupA_X
+        
+    private bool _GroupA_X;
+        
+    public bool GroupA_X
     {
-        #region GroupA_X
+        get => _GroupA_X;
+        set => SetProperty(ref _GroupA_X, value);
+    }
         
-        private bool _GroupA_X;
+    #endregion
         
-        public bool GroupA_X
-        {
-            get => _GroupA_X;
-            set => SetProperty(ref _GroupA_X, value);
-        }
+    #region GroupA_Y
         
-        #endregion
+    private bool _GroupA_Y;
         
-        #region GroupA_Y
+    public bool GroupA_Y
+    {
+        get => _GroupA_Y;
+        set => SetProperty(ref _GroupA_Y, value);
+    }
         
-        private bool _GroupA_Y;
+    #endregion
         
-        public bool GroupA_Y
-        {
-            get => _GroupA_Y;
-            set => SetProperty(ref _GroupA_Y, value);
-        }
+    #region GroupA_Z
         
-        #endregion
+    private bool _GroupA_Z;
         
-        #region GroupA_Z
+    public bool GroupA_Z
+    {
+        get => _GroupA_Z;
+        set => SetProperty(ref _GroupA_Z, value);
+    }
         
-        private bool _GroupA_Z;
+    #endregion
         
-        public bool GroupA_Z
-        {
-            get => _GroupA_Z;
-            set => SetProperty(ref _GroupA_Z, value);
-        }
+    #region GroupB_X
         
-        #endregion
+    private bool _GroupB_X;
         
-        #region GroupB_X
+    public bool GroupB_X
+    {
+        get => _GroupB_X;
+        set => SetProperty(ref _GroupB_X, value);
+    }
         
-        private bool _GroupB_X;
+    #endregion
         
-        public bool GroupB_X
-        {
-            get => _GroupB_X;
-            set => SetProperty(ref _GroupB_X, value);
-        }
+    #region GroupB_Y
         
-        #endregion
+    private bool _GroupB_Y;
         
-        #region GroupB_Y
+    public bool GroupB_Y
+    {
+        get => _GroupB_Y;
+        set => SetProperty(ref _GroupB_Y, value);
+    }
         
-        private bool _GroupB_Y;
+    #endregion
         
-        public bool GroupB_Y
-        {
-            get => _GroupB_Y;
-            set => SetProperty(ref _GroupB_Y, value);
-        }
+    #region GroupB_Z
         
-        #endregion
+    private bool _GroupB_Z;
         
-        #region GroupB_Z
+    public bool GroupB_Z
+    {
+        get => _GroupB_Z;
+        set => SetProperty(ref _GroupB_Z, value);
+    }
         
-        private bool _GroupB_Z;
+    #endregion
         
-        public bool GroupB_Z
-        {
-            get => _GroupB_Z;
-            set => SetProperty(ref _GroupB_Z, value);
-        }
+    #region GroupC_X
         
-        #endregion
+    private bool _GroupC_X;
         
-        #region GroupC_X
+    public bool GroupC_X
+    {
+        get => _GroupC_X;
+        set => SetProperty(ref _GroupC_X, value);
+    }
         
-        private bool _GroupC_X;
+    #endregion
         
-        public bool GroupC_X
-        {
-            get => _GroupC_X;
-            set => SetProperty(ref _GroupC_X, value);
-        }
+    #region GroupC_Y
         
-        #endregion
+    private bool _GroupC_Y;
         
-        #region GroupC_Y
+    public bool GroupC_Y
+    {
+        get => _GroupC_Y;
+        set => SetProperty(ref _GroupC_Y, value);
+    }
         
-        private bool _GroupC_Y;
+    #endregion
         
-        public bool GroupC_Y
-        {
-            get => _GroupC_Y;
-            set => SetProperty(ref _GroupC_Y, value);
-        }
+    #region GroupC_Z
         
-        #endregion
+    private bool _GroupC_Z;
         
-        #region GroupC_Z
+    public bool GroupC_Z
+    {
+        get => _GroupC_Z;
+        set => SetProperty(ref _GroupC_Z, value);
+    }
         
-        private bool _GroupC_Z;
+    #endregion
         
-        public bool GroupC_Z
-        {
-            get => _GroupC_Z;
-            set => SetProperty(ref _GroupC_Z, value);
-        }
-        
-        #endregion
-        
-        public BiaRadioButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
-        {
-        }
+    public BiaRadioButtonViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
+    {
     }
 }

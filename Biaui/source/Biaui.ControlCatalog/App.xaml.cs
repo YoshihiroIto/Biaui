@@ -1,6 +1,5 @@
-﻿namespace Biaui.ControlCatalog
+﻿namespace Biaui.ControlCatalog;
+
+public partial class App
 {
-    public partial class App
-    {
-    }
 }

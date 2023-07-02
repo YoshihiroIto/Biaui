@@ -2,120 +2,119 @@
 using System.Windows.Media;
 using Biaui.Internals;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaRadioButton : BiaToggleButton
 {
-    public class BiaRadioButton : BiaToggleButton
+    #region MarkBorderColor
+
+    public ByteColor MarkBorderColor
     {
-        #region MarkBorderColor
-
-        public ByteColor MarkBorderColor
+        get => _markBorderColor;
+        set
         {
-            get => _markBorderColor;
-            set
-            {
-                if (value != _markBorderColor)
-                    SetValue(MarkBorderColorProperty, value);
-            }
+            if (value != _markBorderColor)
+                SetValue(MarkBorderColorProperty, value);
         }
+    }
 
-        private ByteColor _markBorderColor;
+    private ByteColor _markBorderColor;
 
-        public static readonly DependencyProperty MarkBorderColorProperty =
-            DependencyProperty.Register(nameof(MarkBorderColor), typeof(ByteColor), typeof(BiaRadioButton),
-                new FrameworkPropertyMetadata(
-                    Boxes.ByteColorTransparent,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaRadioButton) s;
-                        self._markBorderColor = (ByteColor) e.NewValue;
-                    }));
+    public static readonly DependencyProperty MarkBorderColorProperty =
+        DependencyProperty.Register(nameof(MarkBorderColor), typeof(ByteColor), typeof(BiaRadioButton),
+            new FrameworkPropertyMetadata(
+                Boxes.ByteColorTransparent,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaRadioButton) s;
+                    self._markBorderColor = (ByteColor) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region MarkBrush
+    #region MarkBrush
 
-        public Brush? MarkBrush
+    public Brush? MarkBrush
+    {
+        get => _MarkBrush;
+        set
         {
-            get => _MarkBrush;
-            set
-            {
-                if (value != _MarkBrush)
-                    SetValue(MarkBrushProperty, value);
-            }
+            if (value != _MarkBrush)
+                SetValue(MarkBrushProperty, value);
         }
+    }
 
-        private Brush? _MarkBrush;
+    private Brush? _MarkBrush;
 
-        public static readonly DependencyProperty MarkBrushProperty =
-            DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaRadioButton),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaRadioButton) s;
-                        self._MarkBrush = (Brush) e.NewValue;
-                    }));
+    public static readonly DependencyProperty MarkBrushProperty =
+        DependencyProperty.Register(nameof(MarkBrush), typeof(Brush), typeof(BiaRadioButton),
+            new FrameworkPropertyMetadata(
+                default(Brush),
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaRadioButton) s;
+                    self._MarkBrush = (Brush) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
         
-        static BiaRadioButton()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaRadioButton),
-                new FrameworkPropertyMetadata(typeof(BiaRadioButton)));
-        }
+    static BiaRadioButton()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaRadioButton),
+            new FrameworkPropertyMetadata(typeof(BiaRadioButton)));
+    }
 
-        protected override void OnRender(DrawingContext dc)
-        {
-            if (ActualWidth <= 1 ||
-                ActualHeight <= 1)
-                return;
+    protected override void OnRender(DrawingContext dc)
+    {
+        if (ActualWidth <= 1 ||
+            ActualHeight <= 1)
+            return;
             
-            var rounder = new LayoutRounder(this);
+        var rounder = new LayoutRounder(this);
 
-            dc.DrawRectangle(Brushes.Transparent, null, rounder.RoundRenderRectangle(false));
+        dc.DrawRectangle(Brushes.Transparent, null, rounder.RoundRenderRectangle(false));
 
-            if (IsEnabled)
-            {
-                var color =
-                    IsMouseOver
-                        ? MarkBorderColor
-                        : (Background as SolidColorBrush)?.Color.ToByteColor() ?? MarkBorderColor;
+        if (IsEnabled)
+        {
+            var color =
+                IsMouseOver
+                    ? MarkBorderColor
+                    : (Background as SolidColorBrush)?.Color.ToByteColor() ?? MarkBorderColor;
 
 
-                dc.DrawEllipse(
-                    IsPressed
-                        ? MarkBrush
-                        : Background,
-                    rounder.GetBorderPen(color),
-                    new Point(8, 10),
-                    7, 7);
-            }
-            else
-            {
-                dc.DrawEllipse(
-                    null,
-                    rounder.GetBorderPen(MarkBorderColor),
-                    new Point(8, 10),
-                    7, 7);
-            }
-
-            if (IsChecked)
-            {
-                dc.DrawEllipse(
-                    MarkBrush,
-                    null,
-                    new Point(8, 10),
-                    4.5, 4.5);
-            }
-
-            // キャプション
-            if (Content != null &&
-                Foreground != null)
-                DefaultTextRenderer.Instance.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left, TextTrimming, true);
+            dc.DrawEllipse(
+                IsPressed
+                    ? MarkBrush
+                    : Background,
+                rounder.GetBorderPen(color),
+                new Point(8, 10),
+                7, 7);
         }
+        else
+        {
+            dc.DrawEllipse(
+                null,
+                rounder.GetBorderPen(MarkBorderColor),
+                new Point(8, 10),
+                7, 7);
+        }
+
+        if (IsChecked)
+        {
+            dc.DrawEllipse(
+                MarkBrush,
+                null,
+                new Point(8, 10),
+                4.5, 4.5);
+        }
+
+        // キャプション
+        if (Content != null &&
+            Foreground != null)
+            DefaultTextRenderer.Instance.Draw(this, Content, 16 + 4, 2, Foreground, dc, ActualWidth, TextAlignment.Left, TextTrimming, true);
     }
 }

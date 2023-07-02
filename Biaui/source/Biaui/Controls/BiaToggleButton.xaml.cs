@@ -1,127 +1,126 @@
 ﻿using System;
 using System.Windows;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public enum BiaToggleButtonBehavior
 {
-    public enum BiaToggleButtonBehavior
+    Normal,
+    RadioButton
+}
+
+public class BiaToggleButton : BiaButton
+{
+    #region IsChecked
+
+    public bool IsChecked
     {
-        Normal,
-        RadioButton
+        get => _IsChecked;
+        set
+        {
+            if (value != _IsChecked)
+                SetValue(IsCheckedProperty, Boxes.Bool(value));
+        }
     }
 
-    public class BiaToggleButton : BiaButton
-    {
-        #region IsChecked
+    private bool _IsChecked;
 
-        public bool IsChecked
-        {
-            get => _IsChecked;
-            set
-            {
-                if (value != _IsChecked)
-                    SetValue(IsCheckedProperty, Boxes.Bool(value));
-            }
-        }
-
-        private bool _IsChecked;
-
-        public static readonly DependencyProperty IsCheckedProperty =
-            DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaToggleButton),
-                new FrameworkPropertyMetadata(
-                    Boxes.BoolFalse,
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaToggleButton) s;
-                        self._IsChecked = (bool) e.NewValue;
-                    })
+    public static readonly DependencyProperty IsCheckedProperty =
+        DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaToggleButton),
+            new FrameworkPropertyMetadata(
+                Boxes.BoolFalse,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
                 {
-                    BindsTwoWayByDefault = true
-                }
-            );
-
-        #endregion
-
-        #region Behavior
-
-        public BiaToggleButtonBehavior Behavior
-        {
-            get => _Behavior;
-            set
+                    var self = (BiaToggleButton) s;
+                    self._IsChecked = (bool) e.NewValue;
+                })
             {
-                if (value != _Behavior)
-                    SetValue(BehaviorProperty, Boxes.ToggleButtonBehavior(value));
+                BindsTwoWayByDefault = true
             }
-        }
+        );
 
-        private BiaToggleButtonBehavior _Behavior = BiaToggleButtonBehavior.Normal;
+    #endregion
 
-        public static readonly DependencyProperty BehaviorProperty =
-            DependencyProperty.Register(
-                nameof(Behavior),
-                typeof(BiaToggleButtonBehavior),
-                typeof(BiaToggleButton),
-                new FrameworkPropertyMetadata(
-                    Boxes.ToggleButtonBehaviorNormal,
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaToggleButton) s;
-                        self._Behavior = (BiaToggleButtonBehavior) e.NewValue;
-                    }));
+    #region Behavior
 
-        #endregion
-
-        static BiaToggleButton()
+    public BiaToggleButtonBehavior Behavior
+    {
+        get => _Behavior;
+        set
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaToggleButton),
-                new FrameworkPropertyMetadata(typeof(BiaToggleButton)));
+            if (value != _Behavior)
+                SetValue(BehaviorProperty, Boxes.ToggleButtonBehavior(value));
         }
+    }
 
-        protected override void Clicked()
+    private BiaToggleButtonBehavior _Behavior = BiaToggleButtonBehavior.Normal;
+
+    public static readonly DependencyProperty BehaviorProperty =
+        DependencyProperty.Register(
+            nameof(Behavior),
+            typeof(BiaToggleButtonBehavior),
+            typeof(BiaToggleButton),
+            new FrameworkPropertyMetadata(
+                Boxes.ToggleButtonBehaviorNormal,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaToggleButton) s;
+                    self._Behavior = (BiaToggleButtonBehavior) e.NewValue;
+                }));
+
+    #endregion
+
+    static BiaToggleButton()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaToggleButton),
+            new FrameworkPropertyMetadata(typeof(BiaToggleButton)));
+    }
+
+    protected override void Clicked()
+    {
+        switch (Behavior)
         {
-            switch (Behavior)
-            {
-                case BiaToggleButtonBehavior.Normal:
-                    IsChecked = !IsChecked;
-                    base.InvokeClicked();
+            case BiaToggleButtonBehavior.Normal:
+                IsChecked = !IsChecked;
+                base.InvokeClicked();
 
-                    break;
+                break;
 
-                case BiaToggleButtonBehavior.RadioButton:
-                    if (IsChecked)
-                        return;
+            case BiaToggleButtonBehavior.RadioButton:
+                if (IsChecked)
+                    return;
 
-                    IsChecked = true;
+                IsChecked = true;
 
-                    base.InvokeClicked();
+                base.InvokeClicked();
 
-                    if (IsChecked)
-                        UpdateSibling();
+                if (IsChecked)
+                    UpdateSibling();
 
-                    break;
+                break;
 
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+    }
 
-        private void UpdateSibling()
+    private void UpdateSibling()
+    {
+        var parent = Parent;
+        if (parent is null)
+            return;
+
+        foreach (var child in LogicalTreeHelper.GetChildren(parent))
         {
-            var parent = Parent;
-            if (parent is null)
-                return;
-
-            foreach (var child in LogicalTreeHelper.GetChildren(parent))
-            {
-                if (child is BiaToggleButton toggleButton &&
-                    toggleButton != this)
-                    toggleButton.IsChecked = false;
-            }
+            if (child is BiaToggleButton toggleButton &&
+                toggleButton != this)
+                toggleButton.IsChecked = false;
         }
     }
 }

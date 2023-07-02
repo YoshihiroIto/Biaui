@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 
-namespace Biaui.Interfaces
+namespace Biaui.Interfaces;
+
+public interface IBiaHasChildren
 {
-    public interface IBiaHasChildren
-    {
-        IEnumerable Children { get; }
-    }
+    IEnumerable Children { get; }
 }

@@ -2,27 +2,26 @@
 using System.Windows;
 using Biaui.Controls;
 
-namespace Biaui.Showcase
+namespace Biaui.Showcase;
+
+/// <summary>
+/// MainWindow.xaml の相互作用ロジック
+/// </summary>
+public partial class MainWindow 
 {
-    /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
-    /// </summary>
-    public partial class MainWindow 
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            DataContext = new Data();
-        }
+        DataContext = new Data();
+    }
 
-        private void BiaButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            var b = (BiaHyperlinkButton) sender;
+    private void BiaButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+        var b = (BiaHyperlinkButton) sender;
             
-            using var proc = Process.Start(new ProcessStartInfo("cmd", $"/c start {b.Content}") {CreateNoWindow = true});
+        using var proc = Process.Start(new ProcessStartInfo("cmd", $"/c start {b.Content}") {CreateNoWindow = true});
 
-            proc?.WaitForExit();
-        }
+        proc?.WaitForExit();
     }
 }

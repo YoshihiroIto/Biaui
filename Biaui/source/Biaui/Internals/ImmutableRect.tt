@@ -12,384 +12,381 @@ using System.Windows;
 
 #nullable enable
 
-namespace Biaui.Internals
-{
+namespace Biaui.Internals;
+
 <#
 foreach (var typeName in new[]{"float", "double"})
 {
     var suffix = typeName == "float" ? "f" : "d";
 #>
-    public readonly struct ImmutableRect_<#= typeName #> : IEquatable<ImmutableRect_<#= typeName #>>
+public readonly struct ImmutableRect_<#= typeName #> : IEquatable<ImmutableRect_<#= typeName #>>
+{
+    public readonly <#= typeName #> X;
+    public readonly <#= typeName #> Y;
+    public readonly <#= typeName #> Width;
+    public readonly <#= typeName #> Height;
+
+    public bool HasArea => Width > 0<#= suffix #> && Height > 0<#= suffix #>;
+
+    public <#= typeName #> Left => X;
+    public <#= typeName #> Top => Y;
+    public <#= typeName #> Right => X + Width;
+    public <#= typeName #> Bottom => Y + Height;
+
+    public ImmutableVec2_<#= typeName #> TopLeft => new ImmutableVec2_<#= typeName #>(Left, Top);
+    public ImmutableVec2_<#= typeName #> TopRight => new ImmutableVec2_<#= typeName #>(Right, Top);
+    public ImmutableVec2_<#= typeName #> BottomLeft => new ImmutableVec2_<#= typeName #>(Left, Bottom);
+    public ImmutableVec2_<#= typeName #> BottomRight => new ImmutableVec2_<#= typeName #>(Right, Bottom);
+
+    public ImmutableRect_<#= typeName #>(<#= typeName #> x, <#= typeName #> y, <#= typeName #> width, <#= typeName #> height)
+        => (X, Y, Width, Height) = (x, y, width, height);
+
+    public ImmutableRect_<#= typeName #>(Point pos, Size size)
+        => (X, Y, Width, Height) = ((<#= typeName #>)pos.X, (<#= typeName #>)pos.Y, (<#= typeName #>)size.Width, (<#= typeName #>)size.Height);
+
+    public ImmutableRect_<#= typeName #>(Point pos0, Point pos1)
     {
-        public readonly <#= typeName #> X;
-        public readonly <#= typeName #> Y;
-        public readonly <#= typeName #> Width;
-        public readonly <#= typeName #> Height;
-
-        public bool HasArea => Width > 0<#= suffix #> && Height > 0<#= suffix #>;
-
-        public <#= typeName #> Left => X;
-        public <#= typeName #> Top => Y;
-        public <#= typeName #> Right => X + Width;
-        public <#= typeName #> Bottom => Y + Height;
-
-        public ImmutableVec2_<#= typeName #> TopLeft => new ImmutableVec2_<#= typeName #>(Left, Top);
-        public ImmutableVec2_<#= typeName #> TopRight => new ImmutableVec2_<#= typeName #>(Right, Top);
-        public ImmutableVec2_<#= typeName #> BottomLeft => new ImmutableVec2_<#= typeName #>(Left, Bottom);
-        public ImmutableVec2_<#= typeName #> BottomRight => new ImmutableVec2_<#= typeName #>(Right, Bottom);
-
-        public ImmutableRect_<#= typeName #>(<#= typeName #> x, <#= typeName #> y, <#= typeName #> width, <#= typeName #> height)
-            => (X, Y, Width, Height) = (x, y, width, height);
-
-        public ImmutableRect_<#= typeName #>(Point pos, Size size)
-            => (X, Y, Width, Height) = ((<#= typeName #>)pos.X, (<#= typeName #>)pos.Y, (<#= typeName #>)size.Width, (<#= typeName #>)size.Height);
-
-        public ImmutableRect_<#= typeName #>(Point pos0, Point pos1)
-        {
-            var (minX, maxX) = (pos0.X, pos1.X).MinMax();
-            var (minY, maxY) = (pos0.Y, pos1.Y).MinMax();
-
-            (X, Y, Width, Height) = (
-                (<#= typeName #>)minX,
-                (<#= typeName #>)minY,
-                (<#= typeName #>)(maxX - minX),
-                (<#= typeName #>)(maxY - minY)
-            );
-        }
-
-        public ImmutableRect_<#= typeName #>(in ImmutableVec2_<#= typeName #> pos0, in ImmutableVec2_<#= typeName #> pos1)
-        {
-            var (minX, maxX) = (pos0.X, pos1.X).MinMax();
-            var (minY, maxY) = (pos0.Y, pos1.Y).MinMax();
-
-            (X, Y, Width, Height) = (
-                (<#= typeName #>)minX,
-                (<#= typeName #>)minY,
-                (<#= typeName #>)(maxX - minX),
-                (<#= typeName #>)(maxY - minY)
-            );
-        }
-
-        public ImmutableRect_<#= typeName #>(Span<Point> points)
-        {
-            if (points.Length == 0)
-            {
-                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
-                return;
-            }
-
-            var minX = points[0].X;
-            var minY = points[0].Y;
-            var maxX = points[0].X;
-            var maxY = points[0].Y;
-
-            for (var i = 1; i < points.Length; ++i)
-            {
-                minX = (minX, points[i].X).Min();
-                maxX = (maxX, points[i].X).Max();
-
-                minY = (minY, points[i].Y).Min();
-                maxY = (maxY, points[i].Y).Max();
-            }
-
-            (X, Y, Width, Height) = (
-                (<#= typeName #>)minX,
-                (<#= typeName #>)minY,
-                (<#= typeName #>)(maxX - minX),
-                (<#= typeName #>)(maxY - minY)
-            );
-        }
-
-        public ImmutableRect_<#= typeName #>(ReadOnlySpan<Point> points)
-        {
-            if (points.Length == 0)
-            {
-                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
-                return;
-            }
-
-            var minX = points[0].X;
-            var minY = points[0].Y;
-            var maxX = points[0].X;
-            var maxY = points[0].Y;
-
-            for (var i = 1; i < points.Length; ++i)
-            {
-                minX = (minX, points[i].X).Min();
-                maxX = (maxX, points[i].X).Max();
-
-                minY = (minY, points[i].Y).Min();
-                maxY = (maxY, points[i].Y).Max();
-            }
-
-            (X, Y, Width, Height) = (
-                (<#= typeName #>)minX,
-                (<#= typeName #>)minY,
-                (<#= typeName #>)(maxX - minX),
-                (<#= typeName #>)(maxY - minY)
-            );
-        }
-
-        public ImmutableRect_<#= typeName #>(IEnumerable<Point> points)
-        {
-            var minX = double.MaxValue;
-            var minY = double.MaxValue;
-            var maxX = double.MinValue;
-            var maxY = double.MinValue;
-
-            var isAny = false;
-
-            foreach (var point in points)
-            {
-                isAny = true;
-
-                minX = (minX, point.X).Min();
-                maxX = (maxX, point.X).Max();
-
-                minY = (minY, point.Y).Min();
-                maxY = (maxY, point.Y).Max();
-            }
-
-            if (isAny)
-                (X, Y, Width, Height) = (
-                    (<#= typeName #>)minX,
-                    (<#= typeName #>)minY,
-                    (<#= typeName #>)(maxX - minX),
-                    (<#= typeName #>)(maxY - minY)
-                );
-            else
-                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
-        }
-
-        public ImmutableRect_<#= typeName #>(Span<ImmutableVec2_<#= typeName #>> points)
-        {
-            if (points.Length == 0)
-            {
-                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
-                return;
-            }
-
-            var minX = points[0].X;
-            var minY = points[0].Y;
-            var maxX = points[0].X;
-            var maxY = points[0].Y;
-
-            for (var i = 1; i < points.Length; ++i)
-            {
-                minX = (minX, points[i].X).Min();
-                maxX = (maxX, points[i].X).Max();
-
-                minY = (minY, points[i].Y).Min();
-                maxY = (maxY, points[i].Y).Max();
-            }
-
-            (X, Y, Width, Height) = (
-                minX,
-                minY,
-                maxX - minX,
-                maxY - minY
-            );
-        }
-
-        public ImmutableRect_<#= typeName #>(ReadOnlySpan<ImmutableVec2_<#= typeName #>> points)
-        {
-            if (points.Length == 0)
-            {
-                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
-                return;
-            }
-
-            var minX = points[0].X;
-            var minY = points[0].Y;
-            var maxX = points[0].X;
-            var maxY = points[0].Y;
-
-            for (var i = 1; i < points.Length; ++i)
-            {
-                minX = (minX, points[i].X).Min();
-                maxX = (maxX, points[i].X).Max();
-
-                minY = (minY, points[i].Y).Min();
-                maxY = (maxY, points[i].Y).Max();
-            }
-
-            (X, Y, Width, Height) = (
-                minX,
-                minY,
-                maxX - minX,
-                maxY - minY
-            );
-        }
-
-        public ImmutableRect_<#= typeName #>(IEnumerable<ImmutableVec2_<#= typeName #>> points)
-        {
-            var minX = <#= typeName #>.MaxValue;
-            var minY = <#= typeName #>.MaxValue;
-            var maxX = <#= typeName #>.MinValue;
-            var maxY = <#= typeName #>.MinValue;
-
-            var isAny = false;
-
-            foreach (var point in points)
-            {
-                isAny = true;
-
-                minX = (minX, point.X).Min();
-                maxX = (maxX, point.X).Max();
-
-                minY = (minY, point.Y).Min();
-                maxY = (maxY, point.Y).Max();
-            }
-
-            if (isAny)
-                (X, Y, Width, Height) = (
-                    minX,
-                    minY,
-                    maxX - minX,
-                    maxY - minY
-                );
-            else
-                (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
-        }
-
-        public enum CtorPoint4
-        {
-        };
-
-        public ImmutableRect_<#= typeName #>(ReadOnlySpan<Point> points, CtorPoint4 _)
-        {
-            var minX = (points[0].X, points[1].X, points[2].X, points[3].X).Min();
-            var maxX = (points[0].X, points[1].X, points[2].X, points[3].X).Max();
-            var minY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Min();
-            var maxY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Max();
-
-            (X, Y, Width, Height) = (
-                (<#= typeName #>)minX,
-                (<#= typeName #>)minY,
-                (<#= typeName #>)(maxX - minX),
-                (<#= typeName #>)(maxY - minY)
-            );
-        }
-
-        public ImmutableRect_<#= typeName #>(ReadOnlySpan<ImmutableVec2_<#= typeName #>> points, CtorPoint4 _)
-        {
-            var minX = (points[0].X, points[1].X, points[2].X, points[3].X).Min();
-            var maxX = (points[0].X, points[1].X, points[2].X, points[3].X).Max();
-            var minY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Min();
-            var maxY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Max();
-
-            (X, Y, Width, Height) = (
-                minX,
-                minY,
-                maxX - minX,
-                maxY - minY
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IntersectsWith(in ImmutableRect_<#= typeName #> target)
-        {
-            var right = X + Width;
-            var bottom = Y + Height;
-            var targetRight = target.X + target.Width;
-            var targetBottom = target.Y + target.Height;
-
-            return target.X <= right && targetRight >= X && target.Y <= bottom && targetBottom >= Y;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IntersectsWith(in ImmutableVec2_<#= typeName #> target)
-        {
-            var right = X + Width;
-            var bottom = Y + Height;
-
-            return target.X >= X &&
-                   target.X < right &&
-                   target.Y >= bottom &&
-                   target.Y < bottom;
-        }
-
-        public bool IntersectsWith(in ImmutableCircle_<#= typeName #> target)
-        {
-            var right = X + Width;
-            var bottom = Y + Height;
-
-            if (target.CenterX > X &&
-                target.CenterX < right &&
-                target.CenterY > Y - target.Radius &&
-                target.CenterY < bottom + target.Radius)
-                return true;
-
-            if (target.CenterX > X - target.Radius &&
-                target.CenterX < right + target.Radius &&
-                target.CenterY > Y &&
-                target.CenterY < bottom)
-                return true;
-
-            var rr = target.Radius * target.Radius;
-
-            var xx1 = (X - target.CenterX) * (X - target.CenterX);
-            var yy1 = (Y - target.CenterY) * (Y - target.CenterY);
-
-            var xx2 = (right - target.CenterX) * (right - target.CenterX);
-            var yy2 = (bottom - target.CenterY) * (bottom - target.CenterY);
-
-            if (xx1 + yy1 < rr)
-                return true;
-
-            if (xx2 + yy1 < rr)
-                return true;
-
-            if (xx1 + yy2 < rr)
-                return true;
-
-            if (xx2 + yy2 < rr)
-                return true;
-
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Contains(Point p)
-            => p.X >= X &&
-               p.X < X + Width &&
-               p.Y >= Y &&
-               p.Y < Y + Height;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Contains(in ImmutableVec2_<#= typeName #> p)
-            => p.X >= X &&
-               p.X < X + Width &&
-               p.Y >= Y &&
-               p.Y < Y + Height;
-
-        public static bool operator ==(in ImmutableRect_<#= typeName #> source1, in ImmutableRect_<#= typeName #> source2)
-            => source1.X == source2.X &&
-               source1.Y == source2.Y &&
-               source1.Width == source2.Width &&
-               source1.Height == source2.Height;
-
-        public static bool operator !=(in ImmutableRect_<#= typeName #> source1, in ImmutableRect_<#= typeName #> source2)
-            => !(source1 == source2);
-
-        public bool Equals(ImmutableRect_<#= typeName #> other)
-            => this == other;
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is ImmutableRect_<#= typeName #> other)
-                return this == other;
-
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override int GetHashCode()
-            => HashCodeMaker.To32(HashCodeMaker.Make(X, Y, Width, Height));
+        var (minX, maxX) = (pos0.X, pos1.X).MinMax();
+        var (minY, maxY) = (pos0.Y, pos1.Y).MinMax();
+
+        (X, Y, Width, Height) = (
+            (<#= typeName #>)minX,
+            (<#= typeName #>)minY,
+            (<#= typeName #>)(maxX - minX),
+            (<#= typeName #>)(maxY - minY)
+        );
     }
+
+    public ImmutableRect_<#= typeName #>(in ImmutableVec2_<#= typeName #> pos0, in ImmutableVec2_<#= typeName #> pos1)
+    {
+        var (minX, maxX) = (pos0.X, pos1.X).MinMax();
+        var (minY, maxY) = (pos0.Y, pos1.Y).MinMax();
+
+        (X, Y, Width, Height) = (
+            (<#= typeName #>)minX,
+            (<#= typeName #>)minY,
+            (<#= typeName #>)(maxX - minX),
+            (<#= typeName #>)(maxY - minY)
+        );
+    }
+
+    public ImmutableRect_<#= typeName #>(Span<Point> points)
+    {
+        if (points.Length == 0)
+        {
+            (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
+            return;
+        }
+
+        var minX = points[0].X;
+        var minY = points[0].Y;
+        var maxX = points[0].X;
+        var maxY = points[0].Y;
+
+        for (var i = 1; i < points.Length; ++i)
+        {
+            minX = (minX, points[i].X).Min();
+            maxX = (maxX, points[i].X).Max();
+
+            minY = (minY, points[i].Y).Min();
+            maxY = (maxY, points[i].Y).Max();
+        }
+
+        (X, Y, Width, Height) = (
+            (<#= typeName #>)minX,
+            (<#= typeName #>)minY,
+            (<#= typeName #>)(maxX - minX),
+            (<#= typeName #>)(maxY - minY)
+        );
+    }
+
+    public ImmutableRect_<#= typeName #>(ReadOnlySpan<Point> points)
+    {
+        if (points.Length == 0)
+        {
+            (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
+            return;
+        }
+
+        var minX = points[0].X;
+        var minY = points[0].Y;
+        var maxX = points[0].X;
+        var maxY = points[0].Y;
+
+        for (var i = 1; i < points.Length; ++i)
+        {
+            minX = (minX, points[i].X).Min();
+            maxX = (maxX, points[i].X).Max();
+
+            minY = (minY, points[i].Y).Min();
+            maxY = (maxY, points[i].Y).Max();
+        }
+
+        (X, Y, Width, Height) = (
+            (<#= typeName #>)minX,
+            (<#= typeName #>)minY,
+            (<#= typeName #>)(maxX - minX),
+            (<#= typeName #>)(maxY - minY)
+        );
+    }
+
+    public ImmutableRect_<#= typeName #>(IEnumerable<Point> points)
+    {
+        var minX = double.MaxValue;
+        var minY = double.MaxValue;
+        var maxX = double.MinValue;
+        var maxY = double.MinValue;
+
+        var isAny = false;
+
+        foreach (var point in points)
+        {
+            isAny = true;
+
+            minX = (minX, point.X).Min();
+            maxX = (maxX, point.X).Max();
+
+            minY = (minY, point.Y).Min();
+            maxY = (maxY, point.Y).Max();
+        }
+
+        if (isAny)
+            (X, Y, Width, Height) = (
+                (<#= typeName #>)minX,
+                (<#= typeName #>)minY,
+                (<#= typeName #>)(maxX - minX),
+                (<#= typeName #>)(maxY - minY)
+            );
+        else
+            (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
+    }
+
+    public ImmutableRect_<#= typeName #>(Span<ImmutableVec2_<#= typeName #>> points)
+    {
+        if (points.Length == 0)
+        {
+            (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
+            return;
+        }
+
+        var minX = points[0].X;
+        var minY = points[0].Y;
+        var maxX = points[0].X;
+        var maxY = points[0].Y;
+
+        for (var i = 1; i < points.Length; ++i)
+        {
+            minX = (minX, points[i].X).Min();
+            maxX = (maxX, points[i].X).Max();
+
+            minY = (minY, points[i].Y).Min();
+            maxY = (maxY, points[i].Y).Max();
+        }
+
+        (X, Y, Width, Height) = (
+            minX,
+            minY,
+            maxX - minX,
+            maxY - minY
+        );
+    }
+
+    public ImmutableRect_<#= typeName #>(ReadOnlySpan<ImmutableVec2_<#= typeName #>> points)
+    {
+        if (points.Length == 0)
+        {
+            (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
+            return;
+        }
+
+        var minX = points[0].X;
+        var minY = points[0].Y;
+        var maxX = points[0].X;
+        var maxY = points[0].Y;
+
+        for (var i = 1; i < points.Length; ++i)
+        {
+            minX = (minX, points[i].X).Min();
+            maxX = (maxX, points[i].X).Max();
+
+            minY = (minY, points[i].Y).Min();
+            maxY = (maxY, points[i].Y).Max();
+        }
+
+        (X, Y, Width, Height) = (
+            minX,
+            minY,
+            maxX - minX,
+            maxY - minY
+        );
+    }
+
+    public ImmutableRect_<#= typeName #>(IEnumerable<ImmutableVec2_<#= typeName #>> points)
+    {
+        var minX = <#= typeName #>.MaxValue;
+        var minY = <#= typeName #>.MaxValue;
+        var maxX = <#= typeName #>.MinValue;
+        var maxY = <#= typeName #>.MinValue;
+
+        var isAny = false;
+
+        foreach (var point in points)
+        {
+            isAny = true;
+
+            minX = (minX, point.X).Min();
+            maxX = (maxX, point.X).Max();
+
+            minY = (minY, point.Y).Min();
+            maxY = (maxY, point.Y).Max();
+        }
+
+        if (isAny)
+            (X, Y, Width, Height) = (
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+        else
+            (X, Y, Width, Height) = (0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>, 0<#= suffix #>);
+    }
+
+    public enum CtorPoint4
+    {
+    };
+
+    public ImmutableRect_<#= typeName #>(ReadOnlySpan<Point> points, CtorPoint4 _)
+    {
+        var minX = (points[0].X, points[1].X, points[2].X, points[3].X).Min();
+        var maxX = (points[0].X, points[1].X, points[2].X, points[3].X).Max();
+        var minY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Min();
+        var maxY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Max();
+
+        (X, Y, Width, Height) = (
+            (<#= typeName #>)minX,
+            (<#= typeName #>)minY,
+            (<#= typeName #>)(maxX - minX),
+            (<#= typeName #>)(maxY - minY)
+        );
+    }
+
+    public ImmutableRect_<#= typeName #>(ReadOnlySpan<ImmutableVec2_<#= typeName #>> points, CtorPoint4 _)
+    {
+        var minX = (points[0].X, points[1].X, points[2].X, points[3].X).Min();
+        var maxX = (points[0].X, points[1].X, points[2].X, points[3].X).Max();
+        var minY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Min();
+        var maxY = (points[0].Y, points[1].Y, points[2].Y, points[3].Y).Max();
+
+        (X, Y, Width, Height) = (
+            minX,
+            minY,
+            maxX - minX,
+            maxY - minY
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IntersectsWith(in ImmutableRect_<#= typeName #> target)
+    {
+        var right = X + Width;
+        var bottom = Y + Height;
+        var targetRight = target.X + target.Width;
+        var targetBottom = target.Y + target.Height;
+
+        return target.X <= right && targetRight >= X && target.Y <= bottom && targetBottom >= Y;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IntersectsWith(in ImmutableVec2_<#= typeName #> target)
+    {
+        var right = X + Width;
+        var bottom = Y + Height;
+
+        return target.X >= X &&
+               target.X < right &&
+               target.Y >= bottom &&
+               target.Y < bottom;
+    }
+
+    public bool IntersectsWith(in ImmutableCircle_<#= typeName #> target)
+    {
+        var right = X + Width;
+        var bottom = Y + Height;
+
+        if (target.CenterX > X &&
+            target.CenterX < right &&
+            target.CenterY > Y - target.Radius &&
+            target.CenterY < bottom + target.Radius)
+            return true;
+
+        if (target.CenterX > X - target.Radius &&
+            target.CenterX < right + target.Radius &&
+            target.CenterY > Y &&
+            target.CenterY < bottom)
+            return true;
+
+        var rr = target.Radius * target.Radius;
+
+        var xx1 = (X - target.CenterX) * (X - target.CenterX);
+        var yy1 = (Y - target.CenterY) * (Y - target.CenterY);
+
+        var xx2 = (right - target.CenterX) * (right - target.CenterX);
+        var yy2 = (bottom - target.CenterY) * (bottom - target.CenterY);
+
+        if (xx1 + yy1 < rr)
+            return true;
+
+        if (xx2 + yy1 < rr)
+            return true;
+
+        if (xx1 + yy2 < rr)
+            return true;
+
+        if (xx2 + yy2 < rr)
+            return true;
+
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Contains(Point p)
+        => p.X >= X &&
+           p.X < X + Width &&
+           p.Y >= Y &&
+           p.Y < Y + Height;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Contains(in ImmutableVec2_<#= typeName #> p)
+        => p.X >= X &&
+           p.X < X + Width &&
+           p.Y >= Y &&
+           p.Y < Y + Height;
+
+    public static bool operator ==(in ImmutableRect_<#= typeName #> source1, in ImmutableRect_<#= typeName #> source2)
+        => source1.X == source2.X &&
+           source1.Y == source2.Y &&
+           source1.Width == source2.Width &&
+           source1.Height == source2.Height;
+
+    public static bool operator !=(in ImmutableRect_<#= typeName #> source1, in ImmutableRect_<#= typeName #> source2)
+        => !(source1 == source2);
+
+    public bool Equals(ImmutableRect_<#= typeName #> other)
+        => this == other;
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is ImmutableRect_<#= typeName #> other)
+            return this == other;
+
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override int GetHashCode()
+        => HashCodeMaker.To32(HashCodeMaker.Make(X, Y, Width, Height));
+}
 <#
 }
 #>
-
-}
-

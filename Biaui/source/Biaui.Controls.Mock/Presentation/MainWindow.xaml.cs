@@ -1,13 +1,12 @@
-﻿namespace Biaui.Controls.Mock.Presentation
+﻿namespace Biaui.Controls.Mock.Presentation;
+
+/// <summary>
+/// MainWindow.xaml の相互作用ロジック
+/// </summary>
+public partial class MainWindow 
 {
-    /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
-    /// </summary>
-    public partial class MainWindow 
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

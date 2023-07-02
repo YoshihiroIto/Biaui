@@ -1,36 +1,35 @@
 ﻿using Biaui.Controls.Mock.Foundation.Interface;
 using Biaui.Controls.Mock.Foundation.Mvvm;
 
-namespace Biaui.Controls.Mock.Presentation
+namespace Biaui.Controls.Mock.Presentation;
+
+public class BiaCheckBoxViewModel : ViewModelBase
 {
-    public class BiaCheckBoxViewModel : ViewModelBase
+    #region IsCheckedX
+
+    private bool _IsCheckedX;
+
+    public bool IsCheckedX
     {
-        #region IsCheckedX
+        get => _IsCheckedX;
+        set => SetProperty(ref _IsCheckedX, value);
+    }
 
-        private bool _IsCheckedX;
+    #endregion
 
-        public bool IsCheckedX
-        {
-            get => _IsCheckedX;
-            set => SetProperty(ref _IsCheckedX, value);
-        }
+    #region IsCheckedY
 
-        #endregion
+    private bool _IsCheckedY;
 
-        #region IsCheckedY
+    public bool IsCheckedY
+    {
+        get => _IsCheckedY;
+        set => SetProperty(ref _IsCheckedY, value);
+    }
 
-        private bool _IsCheckedY;
+    #endregion
 
-        public bool IsCheckedY
-        {
-            get => _IsCheckedY;
-            set => SetProperty(ref _IsCheckedY, value);
-        }
-
-        #endregion
-
-        public BiaCheckBoxViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
-        {
-        }
+    public BiaCheckBoxViewModel(IDisposableChecker disposableChecker) : base(disposableChecker)
+    {
     }
 }

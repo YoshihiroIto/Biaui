@@ -1,11 +1,10 @@
-﻿namespace Biaui.ControlCatalog.Pages
+﻿namespace Biaui.ControlCatalog.Pages;
+
+public partial class ToggleButtonPage
 {
-    public partial class ToggleButtonPage
+    public ToggleButtonPage()
     {
-        public ToggleButtonPage()
-        {
-            Name = "ToggleButton";
-            InitializeComponent();
-        }
+        Name = "ToggleButton";
+        InitializeComponent();
     }
 }

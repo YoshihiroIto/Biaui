@@ -3,64 +3,63 @@ using System.Windows;
 using System.Windows.Controls;
 using Biaui.Internals;
 
-namespace Biaui.Controls.Internals
+namespace Biaui.Controls.Internals;
+
+internal class BiaHamburgerMenuHost : Control
 {
-    internal class BiaHamburgerMenuHost : Control
+    #region HamburgerMenuItem
+        
+    public BiaHamburgerMenu? MenuItem
     {
-        #region HamburgerMenuItem
-        
-        public BiaHamburgerMenu? MenuItem
+        get => _menuItem;
+        set
         {
-            get => _menuItem;
-            set
-            {
-                if (value != _menuItem)
-                    SetValue(MenuItemProperty, value);
-            }
+            if (value != _menuItem)
+                SetValue(MenuItemProperty, value);
         }
+    }
         
-        private BiaHamburgerMenu? _menuItem;
+    private BiaHamburgerMenu? _menuItem;
         
-        public static readonly DependencyProperty MenuItemProperty =
-            DependencyProperty.Register(
-                nameof(MenuItem),
-                typeof(BiaHamburgerMenu),
-                typeof(BiaHamburgerMenuHost),
-                new PropertyMetadata(
-                    default,
-                    (s, e) =>
-                    {
-                        var self = (BiaHamburgerMenuHost) s;
-                        self._menuItem = (BiaHamburgerMenu)e.NewValue;
+    public static readonly DependencyProperty MenuItemProperty =
+        DependencyProperty.Register(
+            nameof(MenuItem),
+            typeof(BiaHamburgerMenu),
+            typeof(BiaHamburgerMenuHost),
+            new PropertyMetadata(
+                default,
+                (s, e) =>
+                {
+                    var self = (BiaHamburgerMenuHost) s;
+                    self._menuItem = (BiaHamburgerMenu)e.NewValue;
 
-                        self.UpdateMenuItem();
-                    }));
+                    self.UpdateMenuItem();
+                }));
 
-        #endregion
+    #endregion
 
-        static BiaHamburgerMenuHost()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHamburgerMenuHost),
-                new FrameworkPropertyMetadata(typeof(BiaHamburgerMenuHost)));
-        }
+    static BiaHamburgerMenuHost()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHamburgerMenuHost),
+            new FrameworkPropertyMetadata(typeof(BiaHamburgerMenuHost)));
+    }
         
-        public override void OnApplyTemplate()
-        {
-            UpdateMenuItem();
-        }
+    public override void OnApplyTemplate()
+    {
+        UpdateMenuItem();
+    }
         
-        private void UpdateMenuItem()
-        {
-            var menu = this.Descendants().OfType<Menu?>().FirstOrDefault();
-            if (menu is null)
-                return;
+    private void UpdateMenuItem()
+    {
+        var menu = this.Descendants().OfType<Menu?>().FirstOrDefault();
+        if (menu is null)
+            return;
 
-            menu.Items.Clear();
+        menu.Items.Clear();
             
-            if (MenuItem is null)
-                return;
+        if (MenuItem is null)
+            return;
 
-            menu.Items.Add(MenuItem);
-        }
+        menu.Items.Add(MenuItem);
     }
 }

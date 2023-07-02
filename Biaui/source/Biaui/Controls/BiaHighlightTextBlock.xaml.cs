@@ -7,201 +7,200 @@ using System.Windows.Media;
 using Biaui.Internals;
 using Jewelry.Text;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaHighlightTextBlock : BiaTextBlock
 {
-    public class BiaHighlightTextBlock : BiaTextBlock
+    #region Highlight
+
+    public Brush? Highlight
     {
-        #region Highlight
-
-        public Brush? Highlight
+        get => _Highlight;
+        set
         {
-            get => _Highlight;
-            set
-            {
-                if (value != _Highlight)
-                    SetValue(HighlightProperty, value);
-            }
+            if (value != _Highlight)
+                SetValue(HighlightProperty, value);
         }
+    }
 
-        private Brush? _Highlight;
+    private Brush? _Highlight;
 
-        public static readonly DependencyProperty HighlightProperty =
-            DependencyProperty.Register(
-                nameof(Highlight),
-                typeof(Brush),
-                typeof(BiaHighlightTextBlock),
-                new FrameworkPropertyMetadata(
-                    default,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaHighlightTextBlock) s;
-                        self._Highlight = (Brush) e.NewValue;
-                    }));
-
-        #endregion
-
-        #region Words
-
-        public string? Words
-        {
-            get => _Words;
-            set
-            {
-                if (value != _Words)
-                    SetValue(WordsProperty, value);
-            }
-        }
-
-        private string? _Words;
-
-        public static readonly DependencyProperty WordsProperty =
-            DependencyProperty.Register(
-                nameof(Words),
-                typeof(string),
-                typeof(BiaHighlightTextBlock),
-                new FrameworkPropertyMetadata(
-                    default,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaHighlightTextBlock) s;
-                        self._Words = e.NewValue?.ToString() ?? "";
-                    }));
-
-        #endregion
-
-        static BiaHighlightTextBlock()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHighlightTextBlock),
-                new FrameworkPropertyMetadata(typeof(BiaHighlightTextBlock)));
-        }
-
-        [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
-        protected override void OnRender(DrawingContext dc)
-        {
-            using var ss = new StringSplitter(stackalloc StringSplitter.StringSpan[32]);
-
-            var wordsArray = ss.Split(Words, ' ', StringSplitOptions.RemoveEmptyEntries);
-
-            if (wordsArray.Length == 0)
-                base.OnRender(dc);
-            else
-            {
-                if (Words != null)
-                    RenderHighlight(dc, wordsArray, Words);
-            }
-        }
-
-        private void RenderHighlight(DrawingContext dc, ReadOnlySpan<StringSplitter.StringSpan> wordsSpans, string words)
-        {
-            if (ActualWidth <= 1 ||
-                ActualHeight <= 1)
-                return;
-
-            if (string.IsNullOrEmpty(Text))
-                return;
-
-            var textStatesArray =
-                Text.Length >= 512
-                    ? ArrayPool<byte>.Shared.Rent(Text.Length)
-                    : null;
-
-            // ReSharper disable once MergeConditionalExpression
-            var textStates =
-                textStatesArray != null
-                    ? textStatesArray.AsSpan(0, Text.Length)
-                    : stackalloc byte[Text.Length];
-
-            try
-            {
-                textStates.Fill(0);
-
-                var textSpan = Text.AsSpan();
-
-                foreach (var wordsSpan in wordsSpans)
+    public static readonly DependencyProperty HighlightProperty =
+        DependencyProperty.Register(
+            nameof(Highlight),
+            typeof(Brush),
+            typeof(BiaHighlightTextBlock),
+            new FrameworkPropertyMetadata(
+                default,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
                 {
-                    var stateOffset = 0;
+                    var self = (BiaHighlightTextBlock) s;
+                    self._Highlight = (Brush) e.NewValue;
+                }));
 
-                    var wordSpan = wordsSpan.ToSpan(words.AsSpan());
+    #endregion
 
-                    while (true)
-                    {
-                        var wordIndex = textSpan.Slice(stateOffset).IndexOf(wordSpan, StringComparison.OrdinalIgnoreCase);
-                        if (wordIndex == -1)
-                            break;
+    #region Words
 
-                        for (var i = 0; i != wordSpan.Length; ++i)
-                            textStates[stateOffset + wordIndex + i] = 1;
+    public string? Words
+    {
+        get => _Words;
+        set
+        {
+            if (value != _Words)
+                SetValue(WordsProperty, value);
+        }
+    }
 
-                        stateOffset += wordIndex + wordSpan.Length;
-                    }
-                }
+    private string? _Words;
 
-                var state = textStates[0];
-                var index = 0;
-                var startIndex = 0;
+    public static readonly DependencyProperty WordsProperty =
+        DependencyProperty.Register(
+            nameof(Words),
+            typeof(string),
+            typeof(BiaHighlightTextBlock),
+            new FrameworkPropertyMetadata(
+                default,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaHighlightTextBlock) s;
+                    self._Words = e.NewValue?.ToString() ?? "";
+                }));
 
-                var x = 0.0;
+    #endregion
+
+    static BiaHighlightTextBlock()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHighlightTextBlock),
+            new FrameworkPropertyMetadata(typeof(BiaHighlightTextBlock)));
+    }
+
+    [SuppressMessage("ReSharper", "PossiblyImpureMethodCallOnReadonlyVariable")]
+    protected override void OnRender(DrawingContext dc)
+    {
+        using var ss = new StringSplitter(stackalloc StringSplitter.StringSpan[32]);
+
+        var wordsArray = ss.Split(Words, ' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (wordsArray.Length == 0)
+            base.OnRender(dc);
+        else
+        {
+            if (Words != null)
+                RenderHighlight(dc, wordsArray, Words);
+        }
+    }
+
+    private void RenderHighlight(DrawingContext dc, ReadOnlySpan<StringSplitter.StringSpan> wordsSpans, string words)
+    {
+        if (ActualWidth <= 1 ||
+            ActualHeight <= 1)
+            return;
+
+        if (string.IsNullOrEmpty(Text))
+            return;
+
+        var textStatesArray =
+            Text.Length >= 512
+                ? ArrayPool<byte>.Shared.Rent(Text.Length)
+                : null;
+
+        // ReSharper disable once MergeConditionalExpression
+        var textStates =
+            textStatesArray != null
+                ? textStatesArray.AsSpan(0, Text.Length)
+                : stackalloc byte[Text.Length];
+
+        try
+        {
+            textStates.Fill(0);
+
+            var textSpan = Text.AsSpan();
+
+            foreach (var wordsSpan in wordsSpans)
+            {
+                var stateOffset = 0;
+
+                var wordSpan = wordsSpan.ToSpan(words.AsSpan());
 
                 while (true)
                 {
-                    if (textStates[index] != state)
-                    {
-                        var brush =
-                            textStates[startIndex] == 0
-                                ? Foreground
-                                : Highlight;
-
-                        if (brush != null)
-                            x = RenderText(dc, Text, startIndex, index - 1, x, brush);
-
-                        state = textStates[index];
-                        startIndex = index;
-                    }
-
-                    ++index;
-
-                    if (index == Text.Length)
-                    {
-                        var brush =
-                            textStates[startIndex] == 0
-                                ? Foreground
-                                : Highlight;
-
-                        if (brush != null)
-                            RenderText(dc, Text, startIndex, index - 1, x, brush);
-
+                    var wordIndex = textSpan.Slice(stateOffset).IndexOf(wordSpan, StringComparison.OrdinalIgnoreCase);
+                    if (wordIndex == -1)
                         break;
-                    }
+
+                    for (var i = 0; i != wordSpan.Length; ++i)
+                        textStates[stateOffset + wordIndex + i] = 1;
+
+                    stateOffset += wordIndex + wordSpan.Length;
                 }
             }
-            finally
+
+            var state = textStates[0];
+            var index = 0;
+            var startIndex = 0;
+
+            var x = 0.0;
+
+            while (true)
             {
-                if (textStatesArray != null)
-                    ArrayPool<byte>.Shared.Return(textStatesArray);
+                if (textStates[index] != state)
+                {
+                    var brush =
+                        textStates[startIndex] == 0
+                            ? Foreground
+                            : Highlight;
+
+                    if (brush != null)
+                        x = RenderText(dc, Text, startIndex, index - 1, x, brush);
+
+                    state = textStates[index];
+                    startIndex = index;
+                }
+
+                ++index;
+
+                if (index == Text.Length)
+                {
+                    var brush =
+                        textStates[startIndex] == 0
+                            ? Foreground
+                            : Highlight;
+
+                    if (brush != null)
+                        RenderText(dc, Text, startIndex, index - 1, x, brush);
+
+                    break;
+                }
             }
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private double RenderText(DrawingContext dc, string text, int startIndex, int endIndex, double x, Brush brush)
+        finally
         {
-            var length = endIndex - startIndex + 1;
-
-            var w = DefaultTextRenderer.Instance.Draw(
-                this,
-                text.AsSpan(startIndex, length),
-                x, 0,
-                brush,
-                dc,
-                ActualWidth - x,
-                TextAlignment.Left,
-                TextTrimming,
-                true);
-
-            return x + w;
+            if (textStatesArray != null)
+                ArrayPool<byte>.Shared.Return(textStatesArray);
         }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private double RenderText(DrawingContext dc, string text, int startIndex, int endIndex, double x, Brush brush)
+    {
+        var length = endIndex - startIndex + 1;
+
+        var w = DefaultTextRenderer.Instance.Draw(
+            this,
+            text.AsSpan(startIndex, length),
+            x, 0,
+            brush,
+            dc,
+            ActualWidth - x,
+            TextAlignment.Left,
+            TextTrimming,
+            true);
+
+        return x + w;
     }
 }

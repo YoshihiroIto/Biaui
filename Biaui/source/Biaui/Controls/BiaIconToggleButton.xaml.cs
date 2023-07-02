@@ -1,53 +1,52 @@
 ﻿using System.Windows;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaIconToggleButton : BiaIconButton
 {
-    public class BiaIconToggleButton : BiaIconButton
+    #region IsChecked
+
+    public bool IsChecked
     {
-        #region IsChecked
-
-        public bool IsChecked
+        get => _IsChecked;
+        set
         {
-            get => _IsChecked;
-            set
-            {
-                if (value != _IsChecked)
-                    SetValue(IsCheckedProperty, Boxes.Bool(value));
-            }
+            if (value != _IsChecked)
+                SetValue(IsCheckedProperty, Boxes.Bool(value));
         }
+    }
 
-        private bool _IsChecked;
+    private bool _IsChecked;
 
-        public static readonly DependencyProperty IsCheckedProperty =
-            DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaIconToggleButton),
-                new FrameworkPropertyMetadata(
-                    Boxes.BoolFalse,
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaIconToggleButton) s;
-                        self._IsChecked = (bool) e.NewValue;
-                    })
+    public static readonly DependencyProperty IsCheckedProperty =
+        DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(BiaIconToggleButton),
+            new FrameworkPropertyMetadata(
+                Boxes.BoolFalse,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault |
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
                 {
-                    BindsTwoWayByDefault = true
-                }
-            );
+                    var self = (BiaIconToggleButton) s;
+                    self._IsChecked = (bool) e.NewValue;
+                })
+            {
+                BindsTwoWayByDefault = true
+            }
+        );
 
-        #endregion
+    #endregion
 
-        static BiaIconToggleButton()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaIconToggleButton),
-                new FrameworkPropertyMetadata(typeof(BiaIconToggleButton)));
-        }
+    static BiaIconToggleButton()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaIconToggleButton),
+            new FrameworkPropertyMetadata(typeof(BiaIconToggleButton)));
+    }
 
-        protected override void Clicked()
-        {
-            IsChecked = !IsChecked;
+    protected override void Clicked()
+    {
+        IsChecked = !IsChecked;
 
-            base.Clicked();
-        }
+        base.Clicked();
     }
 }

@@ -1,24 +1,23 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Biaui.Internals
+namespace Biaui.Internals;
+
+internal static class GuiHelper
 {
-    internal static class GuiHelper
+    public static void ShowCursor()
     {
-        public static void ShowCursor()
+        while (ShowCursor(true) < 0)
         {
-            while (ShowCursor(true) < 0)
-            {
-            }
         }
-
-        public static void HideCursor()
-        {
-            while (ShowCursor(false) >= 0)
-            {
-            }
-        }
-
-        [DllImport("user32.dll")]
-        private static extern int ShowCursor(bool bShow);
     }
+
+    public static void HideCursor()
+    {
+        while (ShowCursor(false) >= 0)
+        {
+        }
+    }
+
+    [DllImport("user32.dll")]
+    private static extern int ShowCursor(bool bShow);
 }

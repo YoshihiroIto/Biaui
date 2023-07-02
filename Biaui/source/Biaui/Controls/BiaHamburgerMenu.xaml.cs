@@ -1,14 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaHamburgerMenu : MenuItem
 {
-    public class BiaHamburgerMenu : MenuItem
+    static BiaHamburgerMenu()
     {
-        static BiaHamburgerMenu()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHamburgerMenu),
-                new FrameworkPropertyMetadata(typeof(BiaHamburgerMenu)));
-        }
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaHamburgerMenu),
+            new FrameworkPropertyMetadata(typeof(BiaHamburgerMenu)));
     }
 }

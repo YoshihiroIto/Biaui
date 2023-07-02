@@ -1,12 +1,11 @@
 ﻿using BenchmarkDotNet.Running;
 
-namespace Biaui.Benchmark
+namespace Biaui.Benchmark;
+
+class Program
 {
-    class Program
+    // ReSharper disable once UnusedParameter.Local
+    static void Main(string[] args)
     {
-        // ReSharper disable once UnusedParameter.Local
-        static void Main(string[] args)
-        {
-        }
     }
 }

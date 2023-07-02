@@ -1,12 +1,11 @@
-﻿namespace Biaui.Controls.Mock.Foundation.Interface
+﻿namespace Biaui.Controls.Mock.Foundation.Interface;
+
+public interface ILogger
 {
-    public interface ILogger
-    {
-        void Trace(string m);
-        void Debug(string m);
-        void Info(string m);
-        void Warn(string m);
-        void Error(string m);
-        void Fatal(string m);
-    }
+    void Trace(string m);
+    void Debug(string m);
+    void Info(string m);
+    void Warn(string m);
+    void Error(string m);
+    void Fatal(string m);
 }

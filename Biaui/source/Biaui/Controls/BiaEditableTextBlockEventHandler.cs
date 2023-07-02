@@ -4,100 +4,99 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Biaui.Internals;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public partial class BiaEditableTextBlockEventHandler
 {
-    public partial class BiaEditableTextBlockEventHandler
+    private void TextBox_Loaded(object sender, RoutedEventArgs e)
     {
-        private void TextBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            var textBox = (TextBox) sender;
+        var textBox = (TextBox) sender;
 
-            textBox.CaptureMouse();
-            textBox.Focus();
+        textBox.CaptureMouse();
+        textBox.Focus();
+    }
+
+    private string? _startText;
+
+    private void TextBlock_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        var parent = ((BiaTextBlock)sender).GetParent<BiaEditableTextBlock>();
+
+        Debug.Assert(parent != null);
+
+        if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
+        {
+            parent.IsEditing = true;
+            _startText = parent.Text;
         }
 
-        private string? _startText;
+        var listItem = parent.GetParent<ListBoxItem>();
+        if (listItem != null)
+            listItem.IsSelected = true;
+    }
 
-        private void TextBlock_OnMouseDown(object sender, MouseButtonEventArgs e)
+    private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+    {
+        var textBox = (TextBox) sender;
+        var parent = textBox.GetParent<BiaEditableTextBlock>();
+
+        Debug.Assert(parent != null);
+
+        FinishEditing(parent, textBox);
+    }
+
+    private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        var textBox = (TextBox) sender;
+        var parent = textBox.GetParent<BiaEditableTextBlock>();
+
+        Debug.Assert(parent != null);
+
+        switch (e.Key)
         {
-            var parent = ((BiaTextBlock)sender).GetParent<BiaEditableTextBlock>();
+            case Key.Tab:
+                parent.Text = textBox.Text;
+                FinishEditing(parent, textBox);
+                e.Handled = true;
+                break;
 
-            Debug.Assert(parent != null);
+            case Key.Return:
+                parent.Text = textBox.Text;
+                FinishEditing(parent, textBox);
+                e.Handled = true;
+                break;
 
-            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
-            {
-                parent.IsEditing = true;
-                _startText = parent.Text;
-            }
-
-            var listItem = parent.GetParent<ListBoxItem>();
-            if (listItem != null)
-                listItem.IsSelected = true;
+            case Key.Escape:
+                parent.Text = _startText;
+                FinishEditing(parent, textBox);
+                e.Handled = true;
+                break;
         }
+    }
 
-        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var textBox = (TextBox) sender;
-            var parent = textBox.GetParent<BiaEditableTextBlock>();
+    private void TextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        var textBox = (TextBox) sender;
 
-            Debug.Assert(parent != null);
-
-            FinishEditing(parent, textBox);
-        }
-
-        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            var textBox = (TextBox) sender;
-            var parent = textBox.GetParent<BiaEditableTextBlock>();
-
-            Debug.Assert(parent != null);
-
-            switch (e.Key)
-            {
-                case Key.Tab:
-                    parent.Text = textBox.Text;
-                    FinishEditing(parent, textBox);
-                    e.Handled = true;
-                    break;
-
-                case Key.Return:
-                    parent.Text = textBox.Text;
-                    FinishEditing(parent, textBox);
-                    e.Handled = true;
-                    break;
-
-                case Key.Escape:
-                    parent.Text = _startText;
-                    FinishEditing(parent, textBox);
-                    e.Handled = true;
-                    break;
-            }
-        }
-
-        private void TextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var textBox = (TextBox) sender;
-
-            var rounder = new LayoutRounder(textBox);
+        var rounder = new LayoutRounder(textBox);
             
-            // 自コントロール上であれば、終了させない
-            var pos = e.GetPosition(textBox);
-            var rect = rounder.RoundRenderRectangle(false);
-            if (rect.Contains(pos))
-                return;
+        // 自コントロール上であれば、終了させない
+        var pos = e.GetPosition(textBox);
+        var rect = rounder.RoundRenderRectangle(false);
+        if (rect.Contains(pos))
+            return;
 
-            var parent = textBox.GetParent<BiaEditableTextBlock>();
+        var parent = textBox.GetParent<BiaEditableTextBlock>();
 
-            Debug.Assert(parent != null);
+        Debug.Assert(parent != null);
 
-            FinishEditing(parent, textBox);
-        }
+        FinishEditing(parent, textBox);
+    }
 
-        private static void FinishEditing(BiaEditableTextBlock parent, TextBox textBox)
-        {
-            textBox.ReleaseMouseCapture();
+    private static void FinishEditing(BiaEditableTextBlock parent, TextBox textBox)
+    {
+        textBox.ReleaseMouseCapture();
 
-            parent.IsEditing = false;
-        }
+        parent.IsEditing = false;
     }
 }

@@ -1,27 +1,26 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace Biaui.Internals
+namespace Biaui.Internals;
+
+internal static class RenderHelper
 {
-    internal static class RenderHelper
+    internal static void DrawPointCursor(this Visual visual, in LayoutRounder rounder, DrawingContext dc, in ImmutableVec2_double pos, bool isEnabled, bool isReadOnly)
     {
-        internal static void DrawPointCursor(this Visual visual, in LayoutRounder rounder, DrawingContext dc, in ImmutableVec2_double pos, bool isEnabled, bool isReadOnly)
-        {
-            var pointIn = Caches.GetPen(ByteColor.White, rounder.RoundLayoutValue(PointCursorRadius - 2));
-            var pointInIsReadOnly = Caches.GetPen(ByteColor.Gray, rounder.RoundLayoutValue(PointCursorRadius - 2));
-            var pointOut = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(PointCursorRadius));
- 
-            var s = rounder.RoundLayoutValue(1);
+        var pointIn = Caches.GetPen(ByteColor.White, rounder.RoundLayoutValue(PointCursorRadius - 2));
+        var pointInIsReadOnly = Caches.GetPen(ByteColor.Gray, rounder.RoundLayoutValue(PointCursorRadius - 2));
+        var pointOut = Caches.GetPen(ByteColor.Black, rounder.RoundLayoutValue(PointCursorRadius));
 
-            var ob = pointOut;
-            var ib = isEnabled == false || isReadOnly ? pointInIsReadOnly : pointIn;
+        var s = rounder.RoundLayoutValue(1);
 
-            var p = new Point(pos.X, pos.Y);
+        var ob = pointOut;
+        var ib = isEnabled == false || isReadOnly ? pointInIsReadOnly : pointIn;
 
-            dc.DrawEllipse(ob.Brush, ob, p, s, s);
-            dc.DrawEllipse(ib.Brush, ib, p, s, s);
-        }
+        var p = new Point(pos.X, pos.Y);
 
-        private const double PointCursorRadius = 6;
+        dc.DrawEllipse(ob.Brush, ob, p, s, s);
+        dc.DrawEllipse(ib.Brush, ib, p, s, s);
     }
+
+    private const double PointCursorRadius = 6;
 }

@@ -4,203 +4,202 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Media3D;
 using Biaui.Internals;
 
-namespace Biaui.Controls.Effects
+namespace Biaui.Controls.Effects;
+
+internal class HsvWheelBackgroundEffect : ShaderEffect
 {
-    internal class HsvWheelBackgroundEffect : ShaderEffect
+    static HsvWheelBackgroundEffect()
     {
-        static HsvWheelBackgroundEffect()
+        _PixelShader = new PixelShader
         {
-            _PixelShader = new PixelShader
-            {
-                UriSource = new Uri("pack://application:,,,/Biaui;component/Controls/Effects/HsvWheelBackgroundEffect.ps")
-            };
+            UriSource = new Uri("pack://application:,,,/Biaui;component/Controls/Effects/HsvWheelBackgroundEffect.ps")
+        };
 
-            _PixelShader.Freeze();
-        }
-
-        // ReSharper disable once InconsistentNaming
-        private static readonly PixelShader _PixelShader;
-
-        internal HsvWheelBackgroundEffect()
-        {
-            PixelShader = _PixelShader;
-            UpdateShaderValue(ValueProperty);
-            UpdateShaderValue(AspectRatioCorrectionXProperty);
-            UpdateShaderValue(AspectRatioCorrectionYProperty);
-            UpdateShaderValue(BorderColorProperty);
-            UpdateShaderValue(IsEnabledProperty);
-            UpdateShaderValue(DisableColorProperty);
-        }
-
-        #region Value
-
-        public double Value
-        {
-            get => _Value;
-            set
-            {
-                if (NumberHelper.AreClose(value, _Value) == false)
-                    SetValue(ValueProperty, Boxes.Double(value));
-            }
-        }
-
-        private double _Value;
-
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(nameof(Value), typeof(double), typeof(HsvWheelBackgroundEffect),
-                new PropertyMetadata(
-                    Boxes.Double0,
-                    (s, e) =>
-                    {
-                        var self = (HsvWheelBackgroundEffect) s;
-                        self._Value = (double) e.NewValue;
-
-                        PixelShaderConstantCallback(0)(s, e);
-                    }));
-
-        #endregion
-
-        #region AspectRatioCorrectionX
-
-        public double AspectRatioCorrectionX
-        {
-            get => _AspectRatioCorrectionX;
-            set
-            {
-                if (NumberHelper.AreClose(value, _AspectRatioCorrectionX) == false)
-                    SetValue(AspectRatioCorrectionXProperty, Boxes.Double(value));
-            }
-        }
-
-        private double _AspectRatioCorrectionX = 1;
-
-        public static readonly DependencyProperty AspectRatioCorrectionXProperty =
-            DependencyProperty.Register(nameof(AspectRatioCorrectionX), typeof(double),
-                typeof(HsvWheelBackgroundEffect),
-                new PropertyMetadata(
-                    Boxes.Double1,
-                    (s, e) =>
-                    {
-                        var self = (HsvWheelBackgroundEffect) s;
-                        self._AspectRatioCorrectionX = (double) e.NewValue;
-
-                        PixelShaderConstantCallback(1)(s, e);
-                    }));
-
-        #endregion
-
-        #region AspectRatioCorrectionY
-
-        public double AspectRatioCorrectionY
-        {
-            get => _AspectRatioCorrectionY;
-            set
-            {
-                if (NumberHelper.AreClose(value, _AspectRatioCorrectionY) == false)
-                    SetValue(AspectRatioCorrectionYProperty, Boxes.Double(value));
-            }
-        }
-
-        private double _AspectRatioCorrectionY = 1;
-
-        public static readonly DependencyProperty AspectRatioCorrectionYProperty =
-            DependencyProperty.Register(nameof(AspectRatioCorrectionY), typeof(double),
-                typeof(HsvWheelBackgroundEffect),
-                new PropertyMetadata(
-                    Boxes.Double1,
-                    (s, e) =>
-                    {
-                        var self = (HsvWheelBackgroundEffect) s;
-                        self._AspectRatioCorrectionY = (double) e.NewValue;
-
-                        PixelShaderConstantCallback(2)(s, e);
-                    }));
-
-        #endregion
-
-        #region BorderColor
-
-        public Point3D BorderColor
-        {
-            get => _BorderColor;
-            set
-            {
-                if (value != _BorderColor)
-                    SetValue(BorderColorProperty, value);
-            }
-        }
-
-        private Point3D _BorderColor = new Point3D(1.0, 0.0, 0.0);
-
-        public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.Register(nameof(BorderColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),
-                new PropertyMetadata(
-                    Boxes.Point3dRed,
-                    (s, e) =>
-                    {
-                        var self = (HsvWheelBackgroundEffect) s;
-                        self._BorderColor = (Point3D) e.NewValue;
-
-                        PixelShaderConstantCallback(3)(s, e);
-                    }));
-
-        #endregion
-
-        #region IsEnabled
-
-        public float IsEnabled
-        {
-            get => _IsEnabled;
-            set
-            {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (value != _IsEnabled)
-                    SetValue(IsEnabledProperty, Boxes.Float(value));
-            }
-        }
-
-        private float _IsEnabled = 1.0f;
-
-        public static readonly DependencyProperty IsEnabledProperty =
-            DependencyProperty.Register(nameof(IsEnabled), typeof(float), typeof(HsvWheelBackgroundEffect),
-                new PropertyMetadata(
-                    Boxes.Float1,
-                    (s, e) =>
-                    {
-                        var self = (HsvWheelBackgroundEffect) s;
-                        self._IsEnabled = (float) e.NewValue;
-
-                        PixelShaderConstantCallback(6)(s, e);
-                    }));
-
-        #endregion
-
-        #region DisableColor
-
-        public Point3D DisableColor
-        {
-            get => _DisableColor;
-            set
-            {
-                if (value != _DisableColor)
-                    SetValue(DisableColorProperty, value);
-            }
-        }
-
-        private Point3D _DisableColor = new Point3D(1.0, 0.0, 0.0);
-
-        public static readonly DependencyProperty DisableColorProperty =
-            DependencyProperty.Register(nameof(DisableColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),
-                new PropertyMetadata(
-                    Boxes.Point3dRed,
-                    (s, e) =>
-                    {
-                        var self = (HsvWheelBackgroundEffect) s;
-                        self._DisableColor = (Point3D) e.NewValue;
-
-                        PixelShaderConstantCallback(7)(s, e);
-                    }));
-
-        #endregion
+        _PixelShader.Freeze();
     }
+
+    // ReSharper disable once InconsistentNaming
+    private static readonly PixelShader _PixelShader;
+
+    internal HsvWheelBackgroundEffect()
+    {
+        PixelShader = _PixelShader;
+        UpdateShaderValue(ValueProperty);
+        UpdateShaderValue(AspectRatioCorrectionXProperty);
+        UpdateShaderValue(AspectRatioCorrectionYProperty);
+        UpdateShaderValue(BorderColorProperty);
+        UpdateShaderValue(IsEnabledProperty);
+        UpdateShaderValue(DisableColorProperty);
+    }
+
+    #region Value
+
+    public double Value
+    {
+        get => _Value;
+        set
+        {
+            if (NumberHelper.AreClose(value, _Value) == false)
+                SetValue(ValueProperty, Boxes.Double(value));
+        }
+    }
+
+    private double _Value;
+
+    public static readonly DependencyProperty ValueProperty =
+        DependencyProperty.Register(nameof(Value), typeof(double), typeof(HsvWheelBackgroundEffect),
+            new PropertyMetadata(
+                Boxes.Double0,
+                (s, e) =>
+                {
+                    var self = (HsvWheelBackgroundEffect) s;
+                    self._Value = (double) e.NewValue;
+
+                    PixelShaderConstantCallback(0)(s, e);
+                }));
+
+    #endregion
+
+    #region AspectRatioCorrectionX
+
+    public double AspectRatioCorrectionX
+    {
+        get => _AspectRatioCorrectionX;
+        set
+        {
+            if (NumberHelper.AreClose(value, _AspectRatioCorrectionX) == false)
+                SetValue(AspectRatioCorrectionXProperty, Boxes.Double(value));
+        }
+    }
+
+    private double _AspectRatioCorrectionX = 1;
+
+    public static readonly DependencyProperty AspectRatioCorrectionXProperty =
+        DependencyProperty.Register(nameof(AspectRatioCorrectionX), typeof(double),
+            typeof(HsvWheelBackgroundEffect),
+            new PropertyMetadata(
+                Boxes.Double1,
+                (s, e) =>
+                {
+                    var self = (HsvWheelBackgroundEffect) s;
+                    self._AspectRatioCorrectionX = (double) e.NewValue;
+
+                    PixelShaderConstantCallback(1)(s, e);
+                }));
+
+    #endregion
+
+    #region AspectRatioCorrectionY
+
+    public double AspectRatioCorrectionY
+    {
+        get => _AspectRatioCorrectionY;
+        set
+        {
+            if (NumberHelper.AreClose(value, _AspectRatioCorrectionY) == false)
+                SetValue(AspectRatioCorrectionYProperty, Boxes.Double(value));
+        }
+    }
+
+    private double _AspectRatioCorrectionY = 1;
+
+    public static readonly DependencyProperty AspectRatioCorrectionYProperty =
+        DependencyProperty.Register(nameof(AspectRatioCorrectionY), typeof(double),
+            typeof(HsvWheelBackgroundEffect),
+            new PropertyMetadata(
+                Boxes.Double1,
+                (s, e) =>
+                {
+                    var self = (HsvWheelBackgroundEffect) s;
+                    self._AspectRatioCorrectionY = (double) e.NewValue;
+
+                    PixelShaderConstantCallback(2)(s, e);
+                }));
+
+    #endregion
+
+    #region BorderColor
+
+    public Point3D BorderColor
+    {
+        get => _BorderColor;
+        set
+        {
+            if (value != _BorderColor)
+                SetValue(BorderColorProperty, value);
+        }
+    }
+
+    private Point3D _BorderColor = new Point3D(1.0, 0.0, 0.0);
+
+    public static readonly DependencyProperty BorderColorProperty =
+        DependencyProperty.Register(nameof(BorderColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),
+            new PropertyMetadata(
+                Boxes.Point3dRed,
+                (s, e) =>
+                {
+                    var self = (HsvWheelBackgroundEffect) s;
+                    self._BorderColor = (Point3D) e.NewValue;
+
+                    PixelShaderConstantCallback(3)(s, e);
+                }));
+
+    #endregion
+
+    #region IsEnabled
+
+    public float IsEnabled
+    {
+        get => _IsEnabled;
+        set
+        {
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (value != _IsEnabled)
+                SetValue(IsEnabledProperty, Boxes.Float(value));
+        }
+    }
+
+    private float _IsEnabled = 1.0f;
+
+    public static readonly DependencyProperty IsEnabledProperty =
+        DependencyProperty.Register(nameof(IsEnabled), typeof(float), typeof(HsvWheelBackgroundEffect),
+            new PropertyMetadata(
+                Boxes.Float1,
+                (s, e) =>
+                {
+                    var self = (HsvWheelBackgroundEffect) s;
+                    self._IsEnabled = (float) e.NewValue;
+
+                    PixelShaderConstantCallback(6)(s, e);
+                }));
+
+    #endregion
+
+    #region DisableColor
+
+    public Point3D DisableColor
+    {
+        get => _DisableColor;
+        set
+        {
+            if (value != _DisableColor)
+                SetValue(DisableColorProperty, value);
+        }
+    }
+
+    private Point3D _DisableColor = new Point3D(1.0, 0.0, 0.0);
+
+    public static readonly DependencyProperty DisableColorProperty =
+        DependencyProperty.Register(nameof(DisableColor), typeof(Point3D), typeof(HsvWheelBackgroundEffect),
+            new PropertyMetadata(
+                Boxes.Point3dRed,
+                (s, e) =>
+                {
+                    var self = (HsvWheelBackgroundEffect) s;
+                    self._DisableColor = (Point3D) e.NewValue;
+
+                    PixelShaderConstantCallback(7)(s, e);
+                }));
+
+    #endregion
 }

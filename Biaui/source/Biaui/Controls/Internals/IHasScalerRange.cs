@@ -1,8 +1,7 @@
-﻿namespace Biaui.Controls.Internals
+﻿namespace Biaui.Controls.Internals;
+
+public interface IHasScalerRange
 {
-    public interface IHasScalerRange
-    {
-        double ScalerMaximum { get; }
-        double ScalerMinimum { get; }
-    }
+    double ScalerMaximum { get; }
+    double ScalerMinimum { get; }
 }

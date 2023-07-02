@@ -4,294 +4,293 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Biaui.Internals;
 
-namespace Biaui.Controls
+namespace Biaui.Controls;
+
+public class BiaButtonBase : FrameworkElement
 {
-    public class BiaButtonBase : FrameworkElement
+    public static readonly RoutedEvent ClickEvent =
+        EventManager.RegisterRoutedEvent(nameof(Click), RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler), typeof(BiaButtonBase));
+
+    public event RoutedEventHandler Click
     {
-        public static readonly RoutedEvent ClickEvent =
-            EventManager.RegisterRoutedEvent(nameof(Click), RoutingStrategy.Bubble,
-                typeof(RoutedEventHandler), typeof(BiaButtonBase));
+        add => AddHandler(ClickEvent, value);
+        remove => RemoveHandler(ClickEvent, value);
+    }
 
-        public event RoutedEventHandler Click
+    #region Command
+
+    public ICommand? Command
+    {
+        get => _Command;
+        set
         {
-            add => AddHandler(ClickEvent, value);
-            remove => RemoveHandler(ClickEvent, value);
+            if (value != _Command)
+                SetValue(CommandProperty, value);
         }
+    }
 
-        #region Command
+    private ICommand? _Command;
 
-        public ICommand? Command
+    public static readonly DependencyProperty CommandProperty =
+        DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(BiaButtonBase),
+            new PropertyMetadata(
+                default(ICommand),
+                (s, e) =>
+                {
+                    var self = (BiaButtonBase) s;
+
+                    if (self._Command != null)
+                        self._Command.CanExecuteChanged -= self.CommandOnCanExecuteChanged;
+
+                    self._Command = (ICommand) e.NewValue;
+
+                    if (self._Command != null)
+                        self._Command.CanExecuteChanged += self.CommandOnCanExecuteChanged;
+
+                    self.CommandOnCanExecuteChanged(null, EventArgs.Empty);
+                }));
+
+    private void CommandOnCanExecuteChanged(object? sender, EventArgs e)
+    {
+        if (Command != null)
+            IsEnabled = Command.CanExecute(CommandParameter);
+    }
+
+    #endregion
+
+    #region CommandParameter
+
+    public object? CommandParameter
+    {
+        get => _CommandParameter;
+        set
         {
-            get => _Command;
-            set
-            {
-                if (value != _Command)
-                    SetValue(CommandProperty, value);
-            }
+            if (value != _CommandParameter)
+                SetValue(CommandParameterProperty, value);
         }
+    }
 
-        private ICommand? _Command;
+    private object? _CommandParameter;
 
-        public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(BiaButtonBase),
-                new PropertyMetadata(
-                    default(ICommand),
-                    (s, e) =>
-                    {
-                        var self = (BiaButtonBase) s;
+    public static readonly DependencyProperty CommandParameterProperty =
+        DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(BiaButtonBase),
+            new PropertyMetadata(
+                default,
+                (s, e) =>
+                {
+                    var self = (BiaButtonBase) s;
+                    self._CommandParameter = e.NewValue;
+                }));
 
-                        if (self._Command != null)
-                            self._Command.CanExecuteChanged -= self.CommandOnCanExecuteChanged;
+    #endregion
 
-                        self._Command = (ICommand) e.NewValue;
+    #region Background
 
-                        if (self._Command != null)
-                            self._Command.CanExecuteChanged += self.CommandOnCanExecuteChanged;
-
-                        self.CommandOnCanExecuteChanged(null, EventArgs.Empty);
-                    }));
-
-        private void CommandOnCanExecuteChanged(object? sender, EventArgs e)
+    public Brush? Background
+    {
+        get => _Background;
+        set
         {
-            if (Command != null)
-                IsEnabled = Command.CanExecute(CommandParameter);
+            if (value != _Background)
+                SetValue(BackgroundProperty, value);
         }
+    }
 
-        #endregion
+    private Brush? _Background;
 
-        #region CommandParameter
+    public static readonly DependencyProperty BackgroundProperty =
+        DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaButtonBase),
+            new FrameworkPropertyMetadata(
+                default(Brush),
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaButtonBase) s;
+                    self._Background = (Brush) e.NewValue;
+                }));
 
-        public object? CommandParameter
+    #endregion
+
+    #region Foreground
+
+    public Brush? Foreground
+    {
+        get => _Foreground;
+        set
         {
-            get => _CommandParameter;
-            set
-            {
-                if (value != _CommandParameter)
-                    SetValue(CommandParameterProperty, value);
-            }
+            if (value != _Foreground)
+                SetValue(ForegroundProperty, value);
         }
+    }
 
-        private object? _CommandParameter;
+    private Brush? _Foreground;
 
-        public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(BiaButtonBase),
-                new PropertyMetadata(
-                    default,
-                    (s, e) =>
-                    {
-                        var self = (BiaButtonBase) s;
-                        self._CommandParameter = e.NewValue;
-                    }));
+    public static readonly DependencyProperty ForegroundProperty =
+        DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaButtonBase),
+            new FrameworkPropertyMetadata(
+                default(Brush),
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaButtonBase) s;
+                    self._Foreground = (Brush) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region Background
+    #region CornerRadius
 
-        public Brush? Background
+    public double CornerRadius
+    {
+        get => _CornerRadius;
+        set
         {
-            get => _Background;
-            set
-            {
-                if (value != _Background)
-                    SetValue(BackgroundProperty, value);
-            }
+            if (NumberHelper.AreClose(value, _CornerRadius) == false)
+                SetValue(CornerRadiusProperty, Boxes.Double(value));
         }
+    }
 
-        private Brush? _Background;
+    private double _CornerRadius;
 
-        public static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(BiaButtonBase),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaButtonBase) s;
-                        self._Background = (Brush) e.NewValue;
-                    }));
+    public static readonly DependencyProperty CornerRadiusProperty =
+        DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaButtonBase),
+            new FrameworkPropertyMetadata(
+                Boxes.Double0,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaButtonBase) s;
+                    self._CornerRadius = (double) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region Foreground
+    #region IsPressed
 
-        public Brush? Foreground
+    public bool IsPressed
+    {
+        get => _IsPressed;
+        set
         {
-            get => _Foreground;
-            set
-            {
-                if (value != _Foreground)
-                    SetValue(ForegroundProperty, value);
-            }
+            if (value != _IsPressed)
+                SetValue(IsPressedProperty, Boxes.Bool(value));
         }
+    }
 
-        private Brush? _Foreground;
+    private bool _IsPressed;
 
-        public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(BiaButtonBase),
-                new FrameworkPropertyMetadata(
-                    default(Brush),
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaButtonBase) s;
-                        self._Foreground = (Brush) e.NewValue;
-                    }));
+    public static readonly DependencyProperty IsPressedProperty =
+        DependencyProperty.Register(nameof(IsPressed), typeof(bool), typeof(BiaButtonBase),
+            new FrameworkPropertyMetadata(
+                Boxes.BoolFalse,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaButtonBase) s;
+                    self._IsPressed = (bool) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region CornerRadius
+    #region IsPressedMouseOver
 
-        public double CornerRadius
+    public bool IsPressedMouseOver
+    {
+        get => _isPressedMouseOver;
+        set
         {
-            get => _CornerRadius;
-            set
-            {
-                if (NumberHelper.AreClose(value, _CornerRadius) == false)
-                    SetValue(CornerRadiusProperty, Boxes.Double(value));
-            }
+            if (value != _isPressedMouseOver)
+                SetValue(IsPressedMouseOverProperty, Boxes.Bool(value));
         }
+    }
 
-        private double _CornerRadius;
+    private bool _isPressedMouseOver;
 
-        public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register(nameof(CornerRadius), typeof(double), typeof(BiaButtonBase),
-                new FrameworkPropertyMetadata(
-                    Boxes.Double0,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaButtonBase) s;
-                        self._CornerRadius = (double) e.NewValue;
-                    }));
+    public static readonly DependencyProperty IsPressedMouseOverProperty =
+        DependencyProperty.Register(nameof(IsPressedMouseOver), typeof(bool), typeof(BiaButtonBase),
+            new FrameworkPropertyMetadata(
+                Boxes.BoolFalse,
+                FrameworkPropertyMetadataOptions.AffectsRender |
+                FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
+                (s, e) =>
+                {
+                    var self = (BiaButtonBase) s;
+                    self._isPressedMouseOver = (bool) e.NewValue;
+                }));
 
-        #endregion
+    #endregion
 
-        #region IsPressed
+    static BiaButtonBase()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaButtonBase),
+            new FrameworkPropertyMetadata(typeof(BiaButtonBase)));
+    }
 
-        public bool IsPressed
-        {
-            get => _IsPressed;
-            set
-            {
-                if (value != _IsPressed)
-                    SetValue(IsPressedProperty, Boxes.Bool(value));
-            }
-        }
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnMouseLeftButtonDown(e);
 
-        private bool _IsPressed;
+        IsPressed = IsInMouse(e);
 
-        public static readonly DependencyProperty IsPressedProperty =
-            DependencyProperty.Register(nameof(IsPressed), typeof(bool), typeof(BiaButtonBase),
-                new FrameworkPropertyMetadata(
-                    Boxes.BoolFalse,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaButtonBase) s;
-                        self._IsPressed = (bool) e.NewValue;
-                    }));
+        CaptureMouse();
 
-        #endregion
+        e.Handled = true;
+    }
 
-        #region IsPressedMouseOver
+    protected override void OnMouseMove(MouseEventArgs e)
+    {
+        base.OnMouseMove(e);
 
-        public bool IsPressedMouseOver
-        {
-            get => _isPressedMouseOver;
-            set
-            {
-                if (value != _isPressedMouseOver)
-                    SetValue(IsPressedMouseOverProperty, Boxes.Bool(value));
-            }
-        }
+        IsPressedMouseOver = IsInMouse(e);
 
-        private bool _isPressedMouseOver;
+        e.Handled = true;
+    }
 
-        public static readonly DependencyProperty IsPressedMouseOverProperty =
-            DependencyProperty.Register(nameof(IsPressedMouseOver), typeof(bool), typeof(BiaButtonBase),
-                new FrameworkPropertyMetadata(
-                    Boxes.BoolFalse,
-                    FrameworkPropertyMetadataOptions.AffectsRender |
-                    FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender,
-                    (s, e) =>
-                    {
-                        var self = (BiaButtonBase) s;
-                        self._isPressedMouseOver = (bool) e.NewValue;
-                    }));
+    protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+    {
+        base.OnMouseLeftButtonUp(e);
 
-        #endregion
+        if (IsPressed == false)
+            return;
 
-        static BiaButtonBase()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BiaButtonBase),
-                new FrameworkPropertyMetadata(typeof(BiaButtonBase)));
-        }
+        if (IsMouseCaptured)
+            ReleaseMouseCapture();
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
+        IsPressed = false;
 
-            IsPressed = IsInMouse(e);
+        if (IsInMouse(e) == false)
+            return;
 
-            CaptureMouse();
+        Clicked();
 
-            e.Handled = true;
-        }
+        e.Handled = true;
+    }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
+    private bool IsInMouse(MouseEventArgs e)
+    {
+        var pos = e.GetPosition(this);
 
-            IsPressedMouseOver = IsInMouse(e);
+        return
+            pos.X >= 0.0 &&
+            pos.X <= ActualWidth &&
+            pos.Y >= 0.0 &&
+            pos.Y <= ActualHeight;
+    }
 
-            e.Handled = true;
-        }
+    protected virtual void Clicked()
+    {
+        InvokeClicked();
+    }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonUp(e);
+    protected virtual void InvokeClicked()
+    {
+        RaiseEvent(new RoutedEventArgs(ClickEvent, this));
 
-            if (IsPressed == false)
-                return;
-
-            if (IsMouseCaptured)
-                ReleaseMouseCapture();
-
-            IsPressed = false;
-
-            if (IsInMouse(e) == false)
-                return;
-
-            Clicked();
-
-            e.Handled = true;
-        }
-
-        private bool IsInMouse(MouseEventArgs e)
-        {
-            var pos = e.GetPosition(this);
-
-            return
-                pos.X >= 0.0 &&
-                pos.X <= ActualWidth &&
-                pos.Y >= 0.0 &&
-                pos.Y <= ActualHeight;
-        }
-
-        protected virtual void Clicked()
-        {
-            InvokeClicked();
-        }
-
-        protected virtual void InvokeClicked()
-        {
-            RaiseEvent(new RoutedEventArgs(ClickEvent, this));
-
-            Command?.ExecuteIfCan(CommandParameter);
-        }
+        Command?.ExecuteIfCan(CommandParameter);
     }
 }
