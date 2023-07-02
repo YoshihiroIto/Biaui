@@ -6,12 +6,11 @@ namespace Biaui.Controls.Converters;
 
 public class DoubleColorToBrushConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (!(value is DoubleColor item))
-            return null!;
-
-        return Caches.GetSolidColorBrush(item.ByteColor);
+        return value is not DoubleColor item
+            ? null
+            : Caches.GetSolidColorBrush(item.ByteColor);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
