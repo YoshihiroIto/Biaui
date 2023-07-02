@@ -8,7 +8,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <Nullable>enable</Nullable>
-    <Nullable Condition="'$(TargetFramework)' != 'netcoreapp3.1'">enable</Nullable>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
@@ -38,9 +37,6 @@
 
   <ItemGroup>
     <Compile Include="..\..\externals\D2dControl\D2dControl\*.cs" LinkBase="D2dControl" />
-    <Compile Include="..\Biaui\Internals\MathF.cs">
-      <Link>MathF.cs</Link>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup Condition="'$(biaui_build_nuget)' == '1'">

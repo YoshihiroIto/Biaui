@@ -6,7 +6,6 @@
     <RootNamespace>Biaui</RootNamespace>
 
     <Nullable>enable</Nullable>
-    <Nullable Condition="'$(TargetFramework)' != 'netcoreapp3.1'">enable</Nullable>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 

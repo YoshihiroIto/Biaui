@@ -17,9 +17,9 @@ public class AppDriver : IDisposable
         {
             const string exe =
 #if DEBUG
-                "../../../../Biaui.Controls.Mock/bin/Debug/netcoreapp3.1/Biaui.Controls.Mock.exe";
+                "../../../../Biaui.Controls.Mock/bin/Debug/net7.0-windows/Biaui.Controls.Mock.exe";
 #else
-                    "../../../../Biaui.Controls.Mock/bin/Release/netcoreapp3.1/Biaui.Controls.Mock.exe";
+                    "../../../../Biaui.Controls.Mock/bin/Release/net7.0-windows/Biaui.Controls.Mock.exe";
 #endif
 
             return Path.GetFullPath(exe);

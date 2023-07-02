@@ -124,39 +124,6 @@ internal partial class TextRendererImpl<TIsDefault>
 #endif
     }
 
-#if !NETCOREAPP
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal double Draw(
-        Visual visual,
-        string text,
-        double x,
-        double y,
-        Brush brush,
-        DrawingContext dc,
-        double maxWidth,
-        TextAlignment align,
-        BiaTextTrimmingMode trimming,
-        bool isUseCache)
-    {
-        return Draw(
-            visual,
-            text.AsSpan(),
-            x,
-            y,
-            brush,
-            dc,
-            maxWidth,
-            align,
-            trimming,
-            isUseCache);
-    }
-
-    internal double CalcWidth(string text)
-    {
-        return CalcWidth(text.AsSpan());
-    }
-#endif
-
     internal double Draw(
         Visual visual,
         ReadOnlySpan<char> text,
@@ -230,9 +197,7 @@ internal partial class TextRendererImpl<TIsDefault>
         return gr.Width;
     }
 
-#if NETCOREAPP
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
     internal double CalcWidth(ReadOnlySpan<char> text)
     {
         if (NumberHelper.AreCloseZero(_fontSize))
@@ -313,9 +278,7 @@ internal partial class TextRendererImpl<TIsDefault>
 
     internal double FontHeight => _fontLineSpacing * _fontSize;
 
-#if NETCOREAPP
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
     private (GlyphRun GlyphRun, double Width) MakeGlyphRunNone(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
     {
         var srcTextLength = text.Length;
@@ -420,9 +383,7 @@ internal partial class TextRendererImpl<TIsDefault>
         }
     }
 
-#if NETCOREAPP
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
     private (GlyphRun GlyphRun, double Width) MakeGlyphRunStandard(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
     {
         // ※ +3 「...」 が増えることがあるためのバッファ
@@ -568,9 +529,7 @@ internal partial class TextRendererImpl<TIsDefault>
         return (newTextWidth + dot3Width, newCount);
     }
 
-#if NETCOREAPP
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
     private (GlyphRun GlyphRun, double Width) MakeGlyphRunFilepath(Visual visual, ReadOnlySpan<char> text, double maxWidth, bool isUseCache)
     {
         var buffer = ArrayPool<char>.Shared.Rent(text.Length);
@@ -588,23 +547,15 @@ internal partial class TextRendererImpl<TIsDefault>
         }
     }
 
-#if NETCOREAPP
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-#endif
     private ReadOnlySpan<char> TrimmingFilepathText(ReadOnlySpan<char> text, double maxWidth, char[] buffer)
     {
         // ref: https://www.codeproject.com/Tips/467054/WPF-PathTrimmingTextBlock
 
         bool widthOk;
 
-#if NETCOREAPP
         var filename = Path.GetFileName(text);
         var directory = Path.GetDirectoryName(text);
-#else
-        var textString = text.ToString();
-        var filename = Path.GetFileName(textString).AsSpan();
-        var directory = Path.GetDirectoryName(textString).AsSpan();
-#endif
 
         var changedWidth = false;
 
