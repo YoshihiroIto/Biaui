@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Biaui.Interfaces;
 using Biaui.Internals;
 using Jewelry.Memory;
+using System.Collections.Generic;
 
 namespace Biaui.Controls;
 
@@ -225,11 +226,16 @@ public class BiaTreeView : TreeView
 
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly PropertyChangeNotifier _itemsSourceChangeNotifier;
+    
+    private readonly Dictionary<INotifyCollectionChanged, INotifyCollectionChangedWeakEventListener>
+        _collectionChangedWeakEventListeners = new();
 
     public BiaTreeView()
     {
         _itemsSourceChangeNotifier = new PropertyChangeNotifier(this, ItemsSourceProperty);
         _itemsSourceChangeNotifier.ValueChanged += ItemsSourceChangedHandler;
+        
+        Unloaded += (_, _) => ClearCollectionChangedWeakEventListeners();
     }
 
     private void ItemsSourceChangedHandler(object? sender, EventArgs e)
@@ -246,7 +252,8 @@ public class BiaTreeView : TreeView
 
     private void AddCollectionChangedEvent(INotifyCollectionChanged c)
     {
-        c.CollectionChanged += ItemsSourceOnCollectionChanged;
+        _collectionChangedWeakEventListeners.Add(c,
+            CollectionChangedWeakEventListenerBuilder.Build(c, ItemsSourceOnCollectionChanged));
 
         if (c is not IList list)
             return;
@@ -267,7 +274,11 @@ public class BiaTreeView : TreeView
 
     private void RemoveCollectionChangedEvent(INotifyCollectionChanged c)
     {
-        c.CollectionChanged -= ItemsSourceOnCollectionChanged;
+        if (_collectionChangedWeakEventListeners.TryGetValue(c, out var listener))
+        {
+            listener.Dispose();
+            _collectionChangedWeakEventListeners.Remove(c);
+        }
 
         if (c is not IList list)
             return;
@@ -291,7 +302,7 @@ public class BiaTreeView : TreeView
             SelectedItem = SelectedItems.Count == 0 ? null : SelectedItems[0];
     }
 
-    private void ItemsSourceOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void ItemsSourceOnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
         switch (e.Action)
         {
@@ -550,5 +561,13 @@ public class BiaTreeView : TreeView
             return items[relativeIndex];
 
         return null;
+    }
+    
+    private void ClearCollectionChangedWeakEventListeners()
+    {
+        foreach (var listener in _collectionChangedWeakEventListeners.Values)
+            listener.Dispose();
+
+        _collectionChangedWeakEventListeners.Clear();
     }
 }
