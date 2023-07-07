@@ -274,6 +274,8 @@ public class BiaTreeView : TreeView
 
         foreach (var item in list)
         {
+            SelectedItems?.Remove(item);
+        
             if (item is not IBiaHasChildren hasChildren)
                 continue;
 
@@ -284,6 +286,9 @@ public class BiaTreeView : TreeView
                 if (child is IBiaHasChildren { Children: INotifyCollectionChanged nccChild })
                     RemoveCollectionChangedEvent(nccChild);
         }
+
+        if (SelectedItems is not null)
+            SelectedItem = SelectedItems.Count == 0 ? null : SelectedItems[0];
     }
 
     private void ItemsSourceOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
